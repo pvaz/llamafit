@@ -10,8 +10,11 @@ from llamafit.hardware import current_os
 from llamafit.hardware.runner import Runner, SubprocessRunner
 from llamafit.llamacpp.detect import detect_install
 from llamafit.llamacpp.server import HttpClient, HttpxClient, candidate_ports, discover_with_probes
+from llamafit.logging import get_logger
 from llamafit.models.host import OsName
 from llamafit.models.llamacpp import LlamaCpp
+
+_log = get_logger("llamacpp")
 
 
 def detect_llamacpp(
@@ -46,6 +49,15 @@ def detect_llamacpp(
     servers, server_probes = discover_with_probes(http, candidate_ports(env))
     llamacpp.running_servers = servers
     llamacpp.probes = [*probes, *server_probes]
+    if llamacpp.installed:
+        _log.debug(
+            "llama.cpp found: build %s at %s, %d servers running",
+            llamacpp.build,
+            llamacpp.path,
+            len(servers),
+        )
+    else:
+        _log.debug("llama.cpp not found, %d servers running", len(servers))
     return llamacpp
 
 
