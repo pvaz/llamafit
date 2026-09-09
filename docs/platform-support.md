@@ -13,9 +13,9 @@ it, so a `doctor` warning can always be traced here.
 | `cpuinfo` | all | the `py-cpuinfo` library | CPU model, instruction sets (AVX2, AVX-512, AMX, NEON, SVE) | model "unknown", no instruction sets; core counts still come from `psutil` |
 | `cpu-cores` | all | `psutil.cpu_count(logical=False)` and `psutil.cpu_count(logical=True)` | physical and logical core counts | counts fall back to one core (physical and logical); thread choice degrades |
 | `sysctl-perflevel` | macOS | `sysctl -n hw.perflevel0.physicalcpu` | performance-core count | all physical cores are treated as performance cores |
-| `memory-modules` | Windows | PowerShell `Get-CimInstance Win32_PhysicalMemory` | DDR type, speed, number of populated modules | totals only; bandwidth is measured or assumed |
-| `memory-modules` | macOS | `system_profiler SPMemoryDataType -json` | memory type, number of modules listed | same |
-| `memory-modules` | Linux | `dmidecode -t memory` (needs root) | DDR type, speed, number of populated modules | same; run `sudo llamafit system` once if you want the facts recorded |
+| `memory-modules` | Windows | PowerShell `Get-CimInstance Win32_PhysicalMemory` (`BankLabel`, `DeviceLocator` included) | DDR type, speed, number of populated modules, and the channel count when the slot labels encode one | totals only; bandwidth is measured or assumed |
+| `memory-modules` | macOS | `system_profiler SPMemoryDataType -json` | memory type, number of modules listed | same; the channel count is never reported here |
+| `memory-modules` | Linux | `dmidecode -t memory` (needs root) | DDR type, speed, number of populated modules, and the channel count when `Locator`/`Bank Locator` encode one | same; run `sudo llamafit system` once if you want the facts recorded |
 | `memory-totals` | all | `psutil.virtual_memory()` | total and available memory | memory budgets cannot be computed until this works |
 | `paths` | all | `platformdirs` and the home directory | the downloads directory, whose free space is reported | only the working directory's volume is reported; set `LLAMAFIT_HOME` if there is no home directory |
 | `nvidia-smi` | Windows, Linux | `nvidia-smi --query-gpu=index,name,memory.total,memory.used,driver_version --format=csv,noheader,nounits` | NVIDIA name, VRAM total and used, driver | the GPU is listed by name only (from WMI or lspci), VRAM unknown |
@@ -27,14 +27,34 @@ it, so a `doctor` warning can always be traced here.
 | `server:<port>` | all | HTTP `GET /health` (1 s timeout), then `/v1/models`, `/props` (1.5 s timeout each) on 8080, 8081, 8098 and `LLAMA_SERVER_PORT` | running servers, their model and context | none listed |
 
 The module count is not the channel count: a dual-channel board with four modules reports four
-modules and says nothing about channels. No source above reports a channel count, so LlamaFit
-leaves it unknown and does not compute the theoretical `speed x 8 bytes x channels` estimate
-from it; the estimate returns when a probe genuinely reads the channel count.
+modules, and the module count alone says nothing about channels. On Windows and Linux, the
+slot labels the module count comes from (`BankLabel`/`DeviceLocator`, or `dmidecode`'s `Bank
+Locator`/`Locator`) usually also encode the channel, either as a letter in forms such as
+`ChannelA-DIMM1`, `Channel A Slot 0`, `DIMM_A1`, `DIMM A1`, `A1_DIMM0` or the bare
+`CHANNEL A`, or as a controller number in `ControllerN-DIMMx` (the controller number is the
+channel on boards that report it this way, one integrated memory controller per channel);
+LlamaFit parses whichever it finds and counts the distinct identifiers
+across populated modules. An uninformative label such as `BANK 0`, or a form not recognised,
+leaves the channel count unknown rather than guessing, so the theoretical
+`speed x 8 bytes x channels` estimate only runs once a channel was genuinely parsed out. macOS's
+`system_profiler` reports no such labels, so the channel count stays unknown there.
 
-The RAM bandwidth measurement is not a probe: it runs in-process and reports `measured` when
-it can allocate its buffer (more accurate with NumPy: `pip install llamafit[fast]`),
-`estimated` when the channel count is known (no current source reports it), and `assumed`
-(40 GB/s) when nothing better is known.
+The RAM bandwidth measurement is not a probe: it runs in-process, and it measures *sequential
+read* bandwidth specifically, not a copy. llama.cpp streams weights out of RAM during
+generation and writes almost nothing back, so a read is what predicts generation speed; a
+copy moves each byte twice (read and write, three times on a write-allocate cache), so a copy
+figure is not comparable to a read figure and would mislead an estimator calibrated against
+real generation speed. With NumPy importable (`pip install llamafit[fast]`), it splits a
+buffer across a thread pool sized to the physical core count (capped at 8) and runs a
+memory-bound reduction (`.max()`) over the slices concurrently, because a single thread
+cannot saturate a multi-channel memory controller; that result is labelled `measured`.
+Without NumPy, a single-threaded pure-Python `bytearray` copy is used instead (there is no
+faster read-only option in pure Python), scaled by a documented correction factor (3.0x,
+`PURE_PYTHON_CORRECTION`) and labelled `estimated`, since it under-reports the real read
+figure for two independent reasons at once (single-threaded, and a copy rather than a read)
+and the correction is only an approximation. `estimated` is also used for the DDR-facts
+calculation above when the in-process measurement is unavailable or implausible, and `assumed`
+(40 GB/s) is the last resort when nothing better is known.
 
 A GPU's memory bandwidth and fp16 compute are not measured: they come from a bundled table of
 vendor specifications matched by device name, which is why the tables label them `spec`. Only
