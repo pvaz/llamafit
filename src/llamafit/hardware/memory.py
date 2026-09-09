@@ -64,6 +64,13 @@ def channel_from_labels(bank_label: str | None, device_locator: str | None) -> s
     Returns ``None`` for a label that does not encode a channel, such as ``BANK 0``
     (which numbers slots or ranks, not channels) or a bare ``DIMM 0``: an unrecognised
     label must never be silently treated as its own channel.
+
+    A module whose own labels do not parse contributes nothing to the identifier set
+    that ``_count_channels`` builds from repeated calls to this function; it is simply
+    dropped rather than counted as an extra, unidentified channel. On a board with
+    mixed or partially unrecognised firmware labels this can undercount, never
+    overcount: the resulting channel count is a real lower bound on how many channels
+    are actually in use, not an inflated guess.
     """
     for label in (bank_label, device_locator):
         if not label:
@@ -79,7 +86,13 @@ def channel_from_labels(bank_label: str | None, device_locator: str | None) -> s
 
 
 def _count_channels(pairs: list[tuple[str | None, str | None]]) -> int | None:
-    """Distinct channel identifiers across a populated module's label pairs, or ``None``."""
+    """Distinct channel identifiers across a populated module's label pairs, or ``None``.
+
+    A module whose pair does not parse (see ``channel_from_labels``) is dropped, not
+    counted as its own channel, so a board with some unrecognised labels can undercount
+    but never overcount: treat the result as a lower bound on the true channel count,
+    not an exact figure, when the module count is higher than expected for it.
+    """
     ids = {cid for bank, locator in pairs if (cid := channel_from_labels(bank, locator))}
     return len(ids) or None
 

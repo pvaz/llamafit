@@ -126,14 +126,18 @@ def test_measurement_is_plausible_on_a_real_machine() -> None:
 def test_read_bandwidth_scales_linearly_with_buffer_size_beyond_cache() -> None:
     """A cache-resident buffer would report an inflated, size-independent figure.
 
-    Comparing a well-beyond-cache buffer against one 4x larger confirms the reduction
+    Comparing well-beyond-cache buffers from 256 MiB up to 2 GiB confirms the reduction
     is genuinely reading from RAM each pass (time scaling with size, not a constant-time
     no-op the buffer size happened to multiply) rather than being served from cache.
     """
-    small = measure_ram_read_bandwidth_gbps(duration_s=0.1, buffer_mb=256)
-    large = measure_ram_read_bandwidth_gbps(duration_s=0.1, buffer_mb=1024)
-    assert small is not None and large is not None
-    # Loose bounds: true DRAM bandwidth is roughly constant across buffer sizes once both
+    results = [
+        measure_ram_read_bandwidth_gbps(duration_s=0.1, buffer_mb=buffer_mb)
+        for buffer_mb in (256, 1024, 2048)
+    ]
+    assert all(result is not None for result in results)
+    values = [result[0] for result in results if result is not None]
+    # Loose bounds: true DRAM bandwidth is roughly constant across buffer sizes once all
     # are well beyond the last-level cache, unlike a cache-resident buffer which would not
     # slow down at all as it grows. This only rules out a gross cache artifact.
-    assert 0.5 <= large[0] / small[0] <= 2.0
+    for value in values[1:]:
+        assert 0.5 <= value / values[0] <= 2.0
