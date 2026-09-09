@@ -16,10 +16,30 @@ built, and their flags may still change. The [roadmap](../ROADMAP.md) says what 
 | `--json` | Print machine-readable JSON instead of tables. |
 | `--verbose`, `-v` | Log details to `llamafit.log` in the log directory (see [architecture.md](architecture.md)) at debug level and show tracebacks for unexpected errors. |
 | `--no-color` | Disable colours; useful when piping into files. |
+| `--language TAG` | Speak this language, for example `pt_PT`. It is read before anything is rendered, so `--language pt_PT --help` comes out in Portuguese too. Without it LlamaFit reads `LLAMAFIT_LANGUAGE`, then the operating system's locale, then falls back to English. A language it does not have falls back to English and names the ones it does have; a request served by another region's catalog says so. The notice goes to stderr, so `--json` stays machine-readable. See [translations.md](translations.md). |
 | `--version` | Print the version and exit. |
 | `--profile NAME\|FILE` | Score against a hardware profile instead of the live scan (phase 1C). |
 | `--memory SIZE`, `--ram SIZE`, `--cpu-cores N` | Override single values of the scan for a what-if (phase 1C). Sizes accept `8G`, `7.5GiB`, `512M`. |
 | `--max-context N` | Cap the context used for budgets and scores (phase 1C). |
+
+### What `--json` does and does not translate
+
+A JSON document holds two kinds of string, and LlamaFit treats them differently on purpose.
+
+**Keys and enumerated values never change with the language.** Field names, a finding's
+`level` (`ok`, `warn`, `error`), `bandwidth_source` (`measured`, `estimated`, `assumed`,
+`unknown`), probe names, backend names, capability and use-case ids, and model ids are
+identifiers. A script matches on them, and the same script works whatever the operator's
+locale says.
+
+**Prose does change with the language.** A finding's `title`, `detail` and `hint`,
+`llamacpp.problems` and a probe's `error` are sentences written for a person, and they are
+the same strings the tables print. Numbers inside that prose carry the language's own
+separators too, so a Portuguese `detail` reads `67,2 GB/s`. Do not parse them: read the
+typed fields beside them, which is what those are for.
+
+A pipeline that needs the prose to stay put should pass `--language en`, which pins it
+whatever the machine's locale says.
 
 ## Exit codes
 

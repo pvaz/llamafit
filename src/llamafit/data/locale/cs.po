@@ -1,0 +1,839 @@
+# Czech translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. It was written from the template in one pass and
+# has had no second reader. By the standard docs/translations.md sets for every language,
+# that is not enough: please read it line by line and correct it in a pull request.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: cs\n"
+"Language-Team: Czech\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "Hugging Face vrátil %(status)d při výpisu souborů pro %(repo)s."
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "Nepodařilo se z Hugging Face načíst výpis souborů pro %(repo)s."
+
+msgid "Check your network connection and try again."
+msgstr "Zkontrolujte síťové připojení a zkuste to znovu."
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "Odpověď Hugging Face pro %(repo)s neobsahovala výpis souborů."
+
+msgid "Check that the repository id is correct and public."
+msgstr "Zkontrolujte, že je identifikátor repozitáře správný a repozitář veřejný."
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "katalog má %(count)d problém"
+msgstr[1] "katalog má %(count)d problémy"
+msgstr[2] "katalog má %(count)d problémů"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "Podrobnosti získáte příkazem `llamafit catalog validate`."
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "nepodařilo se zapsat %(path)s: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "Zkontrolujte, že do adresáře lze zapisovat a že je v něm místo."
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "%(path)s má %(count)d problém a nelze jej obnovit"
+msgstr[1] "%(path)s má %(count)d problémy a nelze jej obnovit"
+msgstr[2] "%(path)s má %(count)d problémů a nelze jej obnovit"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "Nejprve spusťte `llamafit catalog validate` a soubor opravte."
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "Soubor %(path)s se nepodařilo přečíst celý, takže obnovení pouze %(model)s by zahodilo údaje, které si drží o modelech, jichž se tento běh nedotkne: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "Spusťte `llamafit catalog refresh` bez --model, aby se přestavěl celý soubor."
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "Najděte, změřte, nainstalujte a ověřte LLM s otevřenými vahami pro llama.cpp na vlastním počítači."
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "Vypisovat strojově čitelný JSON místo tabulek."
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "Zapisovat podrobnosti do llamafit.log v adresáři protokolů a zobrazovat výpisy zásobníku."
+
+msgid "Disable colours."
+msgstr "Vypnout barvy."
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "Mluvit tímto jazykem, například pt_PT. U jazyka, který LlamaFit nemá, se vrátí k angličtině a řekne, které jazyky má."
+
+msgid "Print the version and exit."
+msgstr "Vypsat verzi a skončit."
+
+msgid "Unexpected error: %(error)s"
+msgstr "Neočekávaná chyba: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "Spusťte znovu s --verbose pro úplný výpis zásobníku."
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "Údržba katalogu: kontrola jeho souborů, obnovení proměnlivých polí."
+
+msgid "Keep only this use case."
+msgstr "Ponechat jen tento případ použití."
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "Ponechat jen modely s touto schopností (lze opakovat)."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Ponechat jen tyto identifikátory licencí (lze opakovat)."
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "Zkontrolovat jen tento soubor místo vestavěného katalogu a vlastních úprav."
+
+msgid "Did you mean: %(ids)s?"
+msgstr "Nemysleli jste: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Spusťte `llamafit list` a uvidíte všechny identifikátory modelů."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "v katalogu není žádný model s názvem %(id)s"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "Nalezen %(count)d problém v katalogu; podrobnosti získáte příkazem `llamafit catalog validate`."
+msgstr[1] "Nalezeny %(count)d problémy v katalogu; podrobnosti získáte příkazem `llamafit catalog validate`."
+msgstr[2] "Nalezeno %(count)d problémů v katalogu; podrobnosti získáte příkazem `llamafit catalog validate`."
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "Žádný model neodpovídá. Zkuste širší --use-case, --capability, --license, --vendor nebo --search."
+
+msgid "invalid --use-case %(value)s"
+msgstr "neplatná hodnota --use-case: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Platné případy použití: %(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "neplatná hodnota --capability: %(values)s"
+msgstr[1] "neplatné hodnoty --capability: %(values)s"
+msgstr[2] "neplatné hodnoty --capability: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Platné schopnosti: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"Vypsat katalog modelů zúžený zadanými filtry.\n"
+"\n"
+"Tabulka ukazuje nejvýše tři schopnosti na model plus značku +N pro zbytek a je seřazena podle zobrazeného sloupce Kvalita; info nebo --json má všechny schopnosti."
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "Ponechat jen tohoto dodavatele, bez ohledu na velikost písmen."
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "Hledání podřetězce v identifikátoru, názvu, dodavateli nebo rodině, bez ohledu na velikost písmen."
+
+msgid "Show at most this many."
+msgstr "Zobrazit nejvýše tolik položek."
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "Zkratka pro llamafit list --search TEXT."
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "Text hledaný v identifikátoru, názvu, dodavateli nebo rodině."
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "Zobrazit údaje o jednom modelu, jeho zdroje a každou kvantizaci, kterou publikuje."
+
+msgid "A catalog model id."
+msgstr "Identifikátor modelu z katalogu."
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "Zkontrolovat soubory YAML katalogu proti schématu a vypsat jeden řádek na každý problém."
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "Zkontrolován %(count)d soubor, žádné problémy nenalezeny."
+msgstr[1] "Zkontrolovány %(count)d soubory, žádné problémy nenalezeny."
+msgstr[2] "Zkontrolováno %(count)d souborů, žádné problémy nenalezeny."
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "Obnovit názvy souborů, velikosti, kontrolní součty a údaje GGUF pro katalog z Hugging Face."
+
+msgid "Refresh only this model id."
+msgstr "Obnovit jen tento identifikátor modelu."
+
+msgid "Compute the refresh but write nothing."
+msgstr "Spočítat obnovení, ale nic nezapisovat."
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "Skončit s kódem 1, pokud by se něco změnilo; nic nemění, pro naplánovanou úlohu CI."
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: varování: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "varování: %(warning)s (%(count)d model: %(models)s)"
+msgstr[1] "varování: %(warning)s (%(count)d modely: %(models)s)"
+msgstr[2] "varování: %(warning)s (%(count)d modelů: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: chyba: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "Tip: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "obnovení potřebuje síťový přístup k Hugging Face; zkontrolujte připojení a správnost identifikátoru repozitáře."
+
+msgid "No changes."
+msgstr "Žádné změny."
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "Vypsat surový katalogový záznam jednoho modelu, ve výchozím stavu jako JSON nebo jako YAML s --yaml."
+
+msgid "Print YAML instead of JSON."
+msgstr "Vypisovat YAML místo JSON."
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "Vysvětlit, co bylo zjištěno, co selhalo a co by odemklo víc."
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "VAROV."
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "CHYBA"
+
+# The bandwidth source is read inside "%(gbps)s GB/s (%(source)s)", so all four labels are
+# impersonal short forms that fit that slot: "51 GB/s (změřeno)".
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "změřeno"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "odhadnuto"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "předpokládáno"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "neznámo"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s a %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "Počítač"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+# The English has no plural forms here, so a Czech noun after the number could only ever
+# agree for some counts. The count is put after the noun instead: "jádra: 2 / vlákna: 4".
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "jádra: %(physical)d / vlákna: %(logical)d"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d výkonné jádro"
+msgstr[1] "%(count)d výkonná jádra"
+msgstr[2] "%(count)d výkonných jader"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "isa neznámá"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d modul"
+msgstr[1] "%(count)d moduly"
+msgstr[2] "%(count)d modulů"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d kanál"
+msgstr[1] "%(count)d kanály"
+msgstr[2] "%(count)d kanálů"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+# Czech inflects "unknown" for the noun of the row it stands in: "propustnost", "velikost"
+# and "isa" are feminine, "model", "typ" and "kontext" masculine, and "sestavení" and the
+# bits-per-weight cell neuter.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "neznámá"
+
+msgid "Memory"
+msgstr "Paměť"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "celkem %(total)s, dostupné %(available)s; %(details)s; propustnost %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "typ neznámý"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "žádná nezjištěna"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, volných %(free)s"
+
+msgid "VRAM unknown"
+msgstr "VRAM neznámá"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (dle specifikace)"
+
+msgid "driver %(driver)s"
+msgstr "ovladač %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "bez údajů ze specifikace"
+
+msgid "Memory pool"
+msgstr "Fond paměti"
+
+msgid "unified (GPU shares system memory)"
+msgstr "sjednocený (GPU sdílí systémovou paměť)"
+
+msgid "Disk"
+msgstr "Disk"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: volných %(free)s z %(total)s"
+
+msgid "Installed"
+msgstr "Nainstalováno"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "ne"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "neznámé sestavení"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "ano, %(build)s v %(path)s"
+
+msgid "Backends"
+msgstr "Backendy"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "žádné nezjištěny"
+
+msgid "Local models"
+msgstr "Místní modely"
+
+msgid "Running"
+msgstr "Běží"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, kontext %(context)s"
+
+msgid "unknown model"
+msgstr "neznámý model"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "neznámý"
+
+msgid "Problem"
+msgstr "Problém"
+
+msgid "Probes"
+msgstr "Sondy"
+
+msgid "probe"
+msgstr "sonda"
+
+msgid "result"
+msgstr "výsledek"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "ok"
+
+msgid "no server"
+msgstr "žádný server"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "selhalo"
+
+msgid "Findings"
+msgstr "Zjištění"
+
+msgid "level"
+msgstr "úroveň"
+
+msgid "finding"
+msgstr "zjištění"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "Kvalita*"
+
+msgid "Params"
+msgstr "Param."
+
+msgid "Context"
+msgstr "Kontext"
+
+msgid "Capabilities"
+msgstr "Schopnosti"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "Kvalita je redakční základní hodnota, před jakoukoli ztrátou z kvantizace; spusťte `llamafit info <model>` a uvidíte testy se zdroji, které za ní stojí."
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "Param. je celkový/aktivní počet miliard u modelu se směsí expertů, nebo jedno číslo, když se rovnají."
+
+msgid "Models"
+msgstr "Modely"
+
+msgid "Vendor"
+msgstr "Dodavatel"
+
+msgid "Family"
+msgstr "Rodina"
+
+msgid "Release date"
+msgstr "Datum vydání"
+
+msgid "Licence"
+msgstr "Licence"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "Parametry"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "celkem %(total)sB, aktivních %(active)sB"
+
+msgid "%(tokens)s tokens native"
+msgstr "nativně %(tokens)s tokenů"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", rozšířeno na %(tokens)s pomocí %(method)s"
+
+msgid "unspecified method"
+msgstr "metoda neuvedena"
+
+msgid "Architecture"
+msgstr "Architektura"
+
+msgid "Notes"
+msgstr "Poznámky"
+
+msgid "Use cases"
+msgstr "Případy použití"
+
+msgid "Quality baseline"
+msgstr "Základní kvalita"
+
+msgid "Benchmark"
+msgstr "Benchmark"
+
+msgid "Source %(index)d"
+msgstr "Zdroj %(index)d"
+
+msgid "not read yet"
+msgstr "zatím nepřečteno"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d vrstva"
+msgstr[1] "%(count)d vrstvy"
+msgstr[2] "%(count)d vrstev"
+
+# The form is chosen by %(count)d, the total number of experts, even though %(used)d is the
+# number the reader's eye lands on just before the noun.
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d expert"
+msgstr[1] "%(count)d/%(used)d experti"
+msgstr[2] "%(count)d/%(used)d expertů"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d expert"
+msgstr[1] "%(count)d experti"
+msgstr[2] "%(count)d expertů"
+
+msgid "Quants"
+msgstr "Kvantizace"
+
+msgid "Name"
+msgstr "Název"
+
+msgid "Size"
+msgstr "Velikost"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "Údaje"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "neznámé"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "Zobrazit, co tento počítač má: CPU, paměť, GPU, disky a llama.cpp."
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "Vynechat měření propustnosti RAM."
+
+msgid "Command: %(command)s"
+msgstr "Příkaz: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "zkrácená hlavička GGUF: očekáváno %(wanted)d bajtů na offsetu %(offset)d, získáno %(got)d"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "Soubor se možná ještě stahuje, nebo na této URL není soubor GGUF."
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "neznámý typ hodnoty GGUF %(type)d na offsetu %(offset)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "Tento soubor možná používá novější typ metadat GGUF, než LlamaFit podporuje."
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "toto není soubor GGUF: chybná signatura %(magic)s na offsetu 0"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "Zkontrolujte, že je tento soubor opravdu model .gguf."
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "nepodporovaná verze GGUF %(version)d na offsetu 4"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit podporuje verze GGUF %(versions)s."
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "tyto soubory GGUF nejsou jeden rozdělený model: neshodnou se na '%(key)s' a uvádějí %(values)s"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "Předejte části jednoho modelu, ne několika."
+
+msgid "no GGUF header to read facts from"
+msgstr "není žádná hlavička GGUF, ze které by šlo přečíst údaje"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "Předejte soubor modelu, nebo všechny části rozděleného modelu."
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(count)d z %(total)d souborů GGUF nemá klíč '%(key)s', takže jejich místo v rozděleném modelu nelze určit"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "Předejte buď jeden nerozdělený soubor samostatně, nebo všechny části jednoho rozděleného modelu."
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "neúplná sada částí: model uvádí %(declared)d částí a dorazilo %(arrived)d (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "Předejte všechny části rozděleného modelu."
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "chybí část s metadaty modelu: získáno %(key)s %(numbers)s, očekávalo se, že jedno z nich bude 0"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "Předejte všechny části rozděleného modelu, včetně první."
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "neúplná sada částí: očekáváno %(key)s od 0 do %(last)d, získáno %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "Předejte každou část rozděleného modelu právě jednou."
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "neúplná sada částí: model uvádí %(declared)d tenzorů a jeho %(shards)d částí jich dohromady obsahuje %(held)d"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "nepodařilo se přečíst %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Zkontrolujte, že soubor existuje a lze jej číst."
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "nepodařilo se stáhnout %(url)s: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "Zkontrolujte síťové připojení a dostupnost této URL."
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s vrátil HTTP %(status)d místo 206 Partial Content; server možná nepodporuje rozsahové požadavky."
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "Ověřte, že URL ukazuje na stažitelný soubor GGUF."
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "neznámý"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi nevrátil žádné GPU"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi nevrátil žádnou kartu"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler nevrátil žádný displej"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI nevrátilo žádný videokontrolér"
+
+msgid "lspci found no display controllers"
+msgstr "lspci nenašlo žádný videokontrolér"
+
+msgid "no populated memory modules"
+msgstr "žádné osazené paměťové moduly"
+
+msgid "no SPMemoryDataType"
+msgstr "žádný SPMemoryDataType"
+
+msgid "empty command"
+msgstr "prázdný příkaz"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: vypršel časový limit po %(seconds)s s"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: nenalezen"
+
+msgid "no output"
+msgstr "žádný výstup"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "návratový kód %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "llama.cpp nenalezen: žádný llama-server v PATH, v LLAMA_CPP_PATH ani v obvyklých adresářích"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "vedle llama-server nebyly nalezeny žádné knihovny backendů ggml; sestavení může být statické"
+
+msgid "no llama-server answering"
+msgstr "žádný llama-server neodpovídá"
+
+msgid "unexpected response: %(error)s"
+msgstr "neočekávaná odpověď: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "Nainstalujte nebo opravte ovladač NVIDIA; nvidia-smi se dodává s ním a musí být v PATH."
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "Nainstalujte ROCm (Linux), aby byly vidět údaje o VRAM karet AMD; bez něj se GPU vypíše jen jménem."
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell nedokázal vypsat videokontroléry; spusťte to z běžné uživatelské relace."
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "Nainstalujte pciutils, aby šlo vypsat GPU jménem, když není k dispozici nástroj výrobce."
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "Typ a takt DDR nešly přečíst; na Linuxu spusťte jednou se sudo (dmidecode), nebo přijměte místo toho změřenou propustnost."
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo selhalo; model CPU a instrukční sady jsou neznámé."
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil nedokázal spočítat jádra CPU; volba počtu vláken se vrací k jednomu jádru. Přeinstalujte psutil příkazem `pip install --force-reinstall psutil`."
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil nedokázal přečíst celkovou paměť; dokud to nebude fungovat, nelze spočítat rozpočty. Přeinstalujte psutil příkazem `pip install --force-reinstall psutil`."
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "Nepodařilo se ze sysctl přečíst počet výkonných jader."
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server existuje, ale neuvedl verzi; spustitelný soubor může být poškozený."
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler selhal; informace o GPU nejsou k dispozici."
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "Žádný nástroj výrobce neuvedl velikost paměti GPU; zapište tuto velikost do hardwarového profilu, aby šlo pro tento počítač spočítat rozpočty."
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp nainstalován"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "sestavení %(build)s v %(path)s, backendy: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "neznámé"
+
+msgid "llama.cpp not found"
+msgstr "llama.cpp nenalezen"
+
+msgid "no llama-server binary was found"
+msgstr "spustitelný soubor llama-server nebyl nalezen"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "Nainstalujte llama.cpp (ve fázi 2 to LlamaFit udělá sám: `llamafit install llama.cpp`); do té doby stáhněte vydání z https://github.com/ggml-org/llama.cpp/releases a přidejte jeho adresář bin do PATH nebo do LLAMA_CPP_PATH."
+
+msgid "Memory size unknown"
+msgstr "Velikost paměti neznámá"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit nedokázal přečíst celkovou paměť tohoto počítače, takže nemůže zjistit, co se vejde."
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: v llama.cpp není backend %(backend)s"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp byl sestaven s backendy: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "neznámé"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "Nainstalujte sestavení llama.cpp s backendem %(backend)s nebo Vulkan, abyste mohli použít %(gpu)s."
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: velikost VRAM neznámá"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "nástroj výrobce, který hlásí paměť, nebyl k dispozici"
+
+msgid "No GPU detected"
+msgstr "Nezjištěno žádné GPU"
+
+msgid "models will run on the CPU only"
+msgstr "modely poběží jen na CPU"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "Pokud je GPU přítomné, zkontrolujte, že jsou nainstalované nástroje jeho ovladače."
+
+msgid "RAM bandwidth assumed"
+msgstr "Propustnost RAM předpokládána"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "používá se výchozí hodnota %(gbps)s GB/s"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "Nainstalujte numpy (`pip install llamafit[fast]`), aby LlamaFit mohl změřit propustnost RAM."
+
+msgid "Probe %(probe)s failed"
+msgstr "Sonda %(probe)s selhala"
+
+msgid "unknown error"
+msgstr "neznámá chyba"
+
+msgid "llama-server running at %(url)s"
+msgstr "llama-server běží na %(url)s"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "model %(model)s, kontext %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "neznámý"
+
+msgid "Low disk space on %(path)s"
+msgstr "Málo místa na disku v %(path)s"
+
+msgid "%(size)s free"
+msgstr "volných %(size)s"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "Většina užitečných modelů potřebuje 5 až 120 GB; uvolněte místo nebo změňte adresář pro stahování."
+
+# The thousands separator below is a no-break space (U+00A0), not an ordinary space
+# and not an empty translation. Czech groups digits with a space, and the entry is
+# read literally, so the space is the answer. Do not "tidy" it away.
+msgctxt "thousands separator"
+msgid ","
+msgstr " "
+
+msgctxt "decimal separator"
+msgid "."
+msgstr ","
+
+# B is not the English word for a thousand million; it is how these models are named.
+# The file is Qwen3-27B and the identifier in this row already says 27B, so a localised
+# abbreviation would make one row disagree with itself. Change it only if your readers
+# genuinely would not recognise B, and say in a comment here why.
+msgctxt "parameter count"
+msgid "B"
+msgstr "B"
+
+msgctxt "size"
+msgid "unknown"
+msgstr "neznámá"

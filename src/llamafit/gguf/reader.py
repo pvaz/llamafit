@@ -15,6 +15,7 @@ from collections.abc import Sequence
 from llamafit.errors import CatalogError
 from llamafit.gguf.source import ByteSource
 from llamafit.gguf.types import ValueType, is_misaligned, tensor_bytes, type_name
+from llamafit.i18n import _
 from llamafit.models.gguf import GgufHeader, TensorInfo
 
 _MAGIC = b"GGUF"
@@ -68,9 +69,12 @@ class _Cursor:
         chunk = self._buffer[start : start + length]
         if len(chunk) < length:
             raise CatalogError(
-                f"truncated GGUF header: wanted {length} bytes at offset {self.offset}, "
-                f"got {len(chunk)}",
-                hint="The file may still be downloading, or the URL may not be a GGUF file.",
+                _(
+                    "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, "
+                    "got %(got)d"
+                )
+                % {"wanted": length, "offset": self.offset, "got": len(chunk)},
+                hint=_("The file may still be downloading, or the URL may not be a GGUF file."),
             )
         self.offset = end
         return chunk
@@ -99,12 +103,16 @@ def _value(cursor: _Cursor, value_type: int) -> object:
     if value_type == ValueType.ARRAY:
         (element_type,) = struct.unpack("<I", cursor.take(4))
         (count,) = struct.unpack("<Q", cursor.take(8))
-        return [_value(cursor, element_type) for _ in range(count)]
+        # `_index` rather than `_`: this module imports the translator under that name,
+        # and a loop variable called `_` inside a function rebinds it to an int with
+        # nothing to warn you until the next translated call is not callable.
+        return [_value(cursor, element_type) for _index in range(count)]
     if value_type in _SCALARS:
         return _scalar(cursor, value_type)
     raise CatalogError(
-        f"unknown GGUF value type {value_type} at offset {cursor.offset}",
-        hint="This file may use a newer GGUF metadata type than LlamaFit supports.",
+        _("unknown GGUF value type %(type)d at offset %(offset)d")
+        % {"type": value_type, "offset": cursor.offset},
+        hint=_("This file may use a newer GGUF metadata type than LlamaFit supports."),
     )
 
 
@@ -125,20 +133,21 @@ def read_header(source: ByteSource) -> GgufHeader:
     magic = cursor.take(4)
     if magic != _MAGIC:
         raise CatalogError(
-            f"not a GGUF file: bad magic {magic!r} at offset 0",
-            hint="Check that this file is actually a .gguf model.",
+            _("not a GGUF file: bad magic %(magic)s at offset 0") % {"magic": repr(magic)},
+            hint=_("Check that this file is actually a .gguf model."),
         )
     (version,) = struct.unpack("<I", cursor.take(4))
     if version not in _SUPPORTED_VERSIONS:
         raise CatalogError(
-            f"unsupported GGUF version {version} at offset 4",
-            hint=f"LlamaFit supports GGUF versions {_SUPPORTED_VERSIONS}.",
+            _("unsupported GGUF version %(version)d at offset 4") % {"version": version},
+            hint=_("LlamaFit supports GGUF versions %(versions)s.")
+            % {"versions": _SUPPORTED_VERSIONS},
         )
     (tensor_count,) = struct.unpack("<Q", cursor.take(8))
     (metadata_kv_count,) = struct.unpack("<Q", cursor.take(8))
 
     metadata: dict[str, object] = {}
-    for _ in range(metadata_kv_count):
+    for _entry in range(metadata_kv_count):
         key = _string(cursor)
         (value_type,) = struct.unpack("<I", cursor.take(4))
         metadata[key] = _value(cursor, value_type)
@@ -150,10 +159,10 @@ def read_header(source: ByteSource) -> GgufHeader:
     tensors: list[TensorInfo] = []
     unknown_types: list[str] = []
     misaligned: list[str] = []
-    for _ in range(tensor_count):
+    for _tensor in range(tensor_count):
         name = _string(cursor)
         (n_dims,) = struct.unpack("<I", cursor.take(4))
-        dims = [struct.unpack("<Q", cursor.take(8))[0] for _ in range(n_dims)]
+        dims = [struct.unpack("<Q", cursor.take(8))[0] for _dim in range(n_dims)]
         (type_id,) = struct.unpack("<I", cursor.take(4))
         (offset,) = struct.unpack("<Q", cursor.take(8))
         try:
@@ -223,9 +232,12 @@ def _declared(headers: Sequence[GgufHeader], key: str) -> int | None:
     }
     if len(values) > 1:
         raise CatalogError(
-            f"these GGUF files are not one split model: they disagree about '{key}', "
-            f"declaring {sorted(values)}",
-            hint="Pass the shards of one model, not of several.",
+            _(
+                "these GGUF files are not one split model: they disagree about "
+                "'%(key)s', declaring %(values)s"
+            )
+            % {"key": key, "values": sorted(values)},
+            hint=_("Pass the shards of one model, not of several."),
         )
     return values.pop() if values else None
 
@@ -280,8 +292,8 @@ def merge_shard_headers(headers: Sequence[GgufHeader]) -> GgufHeader:
     """
     if not headers:
         raise CatalogError(
-            "no GGUF header to read facts from",
-            hint="Pass the model's file, or every shard of a split model.",
+            _("no GGUF header to read facts from"),
+            hint=_("Pass the model's file, or every shard of a split model."),
         )
     if len(headers) == 1 and not _declares_a_split(headers[0]):
         return headers[0]
@@ -296,50 +308,71 @@ def merge_shard_headers(headers: Sequence[GgufHeader]) -> GgufHeader:
             numbered.append((shard_no, header))
     if unnumbered:
         raise CatalogError(
-            f"{unnumbered} of {len(headers)} GGUF files carry no '{_SPLIT_NO}' key, so their "
-            "place in a split model cannot be established",
-            hint="Pass a single unsplit file on its own, or every shard of one split model.",
+            _(
+                "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their "
+                "place in a split model cannot be established"
+            )
+            % {"count": unnumbered, "total": len(headers), "key": _SPLIT_NO},
+            hint=_("Pass a single unsplit file on its own, or every shard of one split model."),
         )
 
     numbered.sort(key=lambda pair: pair[0])
-    shard_numbers = [shard_no for shard_no, _ in numbered]
+    shard_numbers = [shard_no for shard_no, _header in numbered]
 
     declared_shards = _declared(headers, _SPLIT_COUNT)
     if declared_shards is not None and declared_shards != len(numbered):
         raise CatalogError(
-            f"incomplete shard set: the model declares {declared_shards} shards and "
-            f"{len(numbered)} arrived ({_SPLIT_NO} {shard_numbers})",
-            hint="Pass every shard of the split model.",
+            _(
+                "incomplete shard set: the model declares %(declared)d shards and "
+                "%(arrived)d arrived (%(key)s %(numbers)s)"
+            )
+            % {
+                "declared": declared_shards,
+                "arrived": len(numbered),
+                "key": _SPLIT_NO,
+                "numbers": shard_numbers,
+            },
+            hint=_("Pass every shard of the split model."),
         )
 
     base = next((header for shard_no, header in numbered if shard_no == 0), None)
     if base is None:
         raise CatalogError(
-            f"the shard holding the model's metadata is missing: got {_SPLIT_NO} "
-            f"{shard_numbers}, expected one of them to be 0",
-            hint="Pass every shard of the split model, including the first.",
+            _(
+                "the shard holding the model's metadata is missing: got %(key)s "
+                "%(numbers)s, expected one of them to be 0"
+            )
+            % {"key": _SPLIT_NO, "numbers": shard_numbers},
+            hint=_("Pass every shard of the split model, including the first."),
         )
     if shard_numbers != list(range(len(numbered))):
         raise CatalogError(
-            f"incomplete shard set: expected {_SPLIT_NO} 0 to {len(numbered) - 1}, "
-            f"got {shard_numbers}",
-            hint="Pass each shard of the split model exactly once.",
+            _("incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s")
+            % {"key": _SPLIT_NO, "last": len(numbered) - 1, "numbers": shard_numbers},
+            hint=_("Pass each shard of the split model exactly once."),
         )
 
     tensors: list[TensorInfo] = []
-    for _, header in numbered:
+    for _shard_no, header in numbered:
         tensors.extend(header.tensors)
 
     declared_tensors = _declared(headers, _SPLIT_TENSORS_COUNT)
     if declared_tensors is not None and declared_tensors != len(tensors):
         raise CatalogError(
-            f"incomplete shard set: the model declares {declared_tensors} tensors and its "
-            f"{len(numbered)} shards hold {len(tensors)} between them",
-            hint="Pass every shard of the split model.",
+            _(
+                "incomplete shard set: the model declares %(declared)d tensors and its "
+                "%(shards)d shards hold %(held)d between them"
+            )
+            % {
+                "declared": declared_tensors,
+                "shards": len(numbered),
+                "held": len(tensors),
+            },
+            hint=_("Pass every shard of the split model."),
         )
 
     metadata = dict(base.metadata)
-    shards = [header for _, header in numbered]
+    shards = [header for _shard_no, header in numbered]
     for key in _DIAGNOSTIC_KEYS:
         collected = _merged_diagnostics(shards, key)
         if collected:

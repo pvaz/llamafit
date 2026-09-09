@@ -11,91 +11,1078 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: tests/fixtures/messages.py:27
-#: tests/fixtures/messages.py:52
-msgid "If a GPU is present, check that its driver tools are installed."
+#: src/llamafit/catalog/hf.py:193
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
 msgstr ""
 
-#: tests/fixtures/messages.py:28
-#: tests/fixtures/messages.py:64
-msgid "the vendor tool that reports memory was not available"
+#: src/llamafit/catalog/hf.py:200
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
 msgstr ""
 
-#: tests/fixtures/messages.py:30
-#: tests/fixtures/messages.py:44
-msgid "No GPU detected"
+#: src/llamafit/catalog/hf.py:202
+msgid "Check your network connection and try again."
 msgstr ""
 
-#: tests/fixtures/messages.py:31
-#: tests/fixtures/messages.py:105
-msgid "%(count)d module"
-msgid_plural "%(count)d modules"
-msgstr[0] ""
-msgstr[1] ""
-
-#: tests/fixtures/messages.py:32
-#: tests/fixtures/messages.py:84
-msgctxt "GPU"
-msgid "none detected"
+#: src/llamafit/catalog/hf.py:208
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
 msgstr ""
 
-#: tests/fixtures/messages.py:36
-msgid "llama.cpp installed"
+#: src/llamafit/catalog/hf.py:210
+#: src/llamafit/catalog/hf.py:195
+msgid "Check that the repository id is correct and public."
 msgstr ""
 
-#: tests/fixtures/messages.py:40
-msgid "llama.cpp not found"
-msgstr ""
-
-#: tests/fixtures/messages.py:48
-msgid "models will run on the CPU only"
-msgstr ""
-
-#: tests/fixtures/messages.py:56
-msgid "RAM bandwidth assumed"
-msgstr ""
-
-#: tests/fixtures/messages.py:60
-msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure it."
-msgstr ""
-
-#: tests/fixtures/messages.py:68
-msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
-msgstr ""
-
-#: tests/fixtures/messages.py:76
-msgctxt "memory bandwidth"
-msgid "unknown"
-msgstr ""
-
-#: tests/fixtures/messages.py:80
-msgctxt "bits per weight"
-msgid "unknown"
-msgstr ""
-
-#: tests/fixtures/messages.py:88
-msgctxt "backends"
-msgid "none detected"
-msgstr ""
-
-#: tests/fixtures/messages.py:92
-msgid "no server"
-msgstr ""
-
-#: tests/fixtures/messages.py:96
-msgid "Run again with --verbose for the full traceback."
-msgstr ""
-
-#: tests/fixtures/messages.py:101
-msgid "Skip the RAM bandwidth measurement."
-msgstr ""
-
-#: tests/fixtures/messages.py:109
+#: src/llamafit/catalog/loader.py:688
 msgid "the catalog has %(count)d problem"
 msgid_plural "the catalog has %(count)d problems"
 msgstr[0] ""
 msgstr[1] ""
 
-#: tests/fixtures/messages.py:117
+#: src/llamafit/catalog/loader.py:695
+msgid "Run `llamafit catalog validate` for details."
+msgstr ""
+
+#: src/llamafit/catalog/refresh.py:434
+msgid "could not write %(path)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/catalog/refresh.py:435
+msgid "Check that the directory is writable and has room."
+msgstr ""
+
+#: src/llamafit/catalog/refresh.py:539
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/catalog/refresh.py:546
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr ""
+
+#: src/llamafit/catalog/refresh.py:553
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr ""
+
+#: src/llamafit/catalog/refresh.py:558
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr ""
+
+#: src/llamafit/cli/app.py:36
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr ""
+
+#: src/llamafit/cli/app.py:103
+msgid "Print machine-readable JSON instead of tables."
+msgstr ""
+
+#: src/llamafit/cli/app.py:111
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr ""
+
+#: src/llamafit/cli/app.py:115
+msgid "Disable colours."
+msgstr ""
+
+#: src/llamafit/cli/app.py:125
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr ""
+
+#: src/llamafit/cli/app.py:136
+msgid "Print the version and exit."
+msgstr ""
+
+#: src/llamafit/cli/app.py:168
+msgid "Unexpected error: %(error)s"
+msgstr ""
+
+#: src/llamafit/cli/app.py:169
+msgid "Run again with --verbose for the full traceback."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:45
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:60
+msgid "Keep only this use case."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:65
+msgid "Keep only models with this capability (repeatable)."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:70
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:76
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:131
+msgid "Did you mean: %(ids)s?"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:133
+msgid "Run `llamafit list` to see every model id."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:136
+msgid "no model named %(id)s in the catalog"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:156
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/catalog_cmd.py:184
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:215
+msgid "invalid --use-case %(value)s"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:216
+msgid "Valid use cases: %(values)s"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:221
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/catalog_cmd.py:227
+msgid "Valid capabilities: %(values)s"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:242
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:258
+msgid "Keep only this vendor, case-insensitive."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:265
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:269
+msgid "Show at most this many."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:285
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:291
+msgid "Text to match against id, name, vendor or family."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:300
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:305
+#: src/llamafit/cli/catalog_cmd.py:536
+msgid "A catalog model id."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:336
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:355
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/catalog_cmd.py:388
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:396
+msgid "Refresh only this model id."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:401
+msgid "Compute the refresh but write nothing."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:408
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:454
+msgid "%(model)s: warning: %(warning)s"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:462
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/catalog_cmd.py:482
+msgid "%(model)s: error: %(error)s"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:494
+#: src/llamafit/cli/render.py:285
+#: src/llamafit/errors.py:40
+msgid "Hint: %(hint)s"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:496
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:505
+msgid "No changes."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:528
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:539
+msgid "Print YAML instead of JSON."
+msgstr ""
+
+#: src/llamafit/cli/doctor_cmd.py:22
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr ""
+
+#: src/llamafit/cli/render.py:38
+msgctxt "finding level"
+msgid "OK"
+msgstr ""
+
+#: src/llamafit/cli/render.py:39
+msgctxt "finding level"
+msgid "WARN"
+msgstr ""
+
+#: src/llamafit/cli/render.py:40
+msgctxt "finding level"
+msgid "ERROR"
+msgstr ""
+
+#: src/llamafit/cli/render.py:52
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr ""
+
+#: src/llamafit/cli/render.py:53
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr ""
+
+#: src/llamafit/cli/render.py:54
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr ""
+
+#: src/llamafit/cli/render.py:55
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr ""
+
+#: src/llamafit/cli/render.py:67
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr ""
+
+#: src/llamafit/cli/render.py:72
+msgid "%(bandwidth)s GB/s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:73
+msgid "%(compute)s TFLOPS fp16"
+msgstr ""
+
+#: src/llamafit/cli/render.py:82
+msgid "Host"
+msgstr ""
+
+#: src/llamafit/cli/render.py:86
+msgid "OS"
+msgstr ""
+
+#: src/llamafit/cli/render.py:88
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr ""
+
+#: src/llamafit/cli/render.py:92
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr ""
+
+#: src/llamafit/cli/render.py:97
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/render.py:103
+msgid "CPU"
+msgstr ""
+
+#: src/llamafit/cli/render.py:105
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:109
+msgid "isa unknown"
+msgstr ""
+
+#: src/llamafit/cli/render.py:121
+msgid "%(speed)d MT/s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:125
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/render.py:128
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/render.py:136
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr ""
+
+#: src/llamafit/cli/render.py:142
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr ""
+
+#: src/llamafit/cli/render.py:145
+msgid "Memory"
+msgstr ""
+
+#: src/llamafit/cli/render.py:147
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:151
+msgid "type unknown"
+msgstr ""
+
+#: src/llamafit/cli/render.py:157
+msgid "GPU"
+msgstr ""
+
+#: src/llamafit/cli/render.py:157
+msgctxt "GPU"
+msgid "none detected"
+msgstr ""
+
+#: src/llamafit/cli/render.py:160
+msgid "%(total)s VRAM, %(free)s free"
+msgstr ""
+
+#: src/llamafit/cli/render.py:166
+msgid "VRAM unknown"
+msgstr ""
+
+#: src/llamafit/cli/render.py:173
+msgid "%(specs)s (spec)"
+msgstr ""
+
+#: src/llamafit/cli/render.py:177
+msgid "driver %(driver)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:182
+msgid "GPU %(index)d"
+msgstr ""
+
+#: src/llamafit/cli/render.py:184
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:189
+msgid "no specs"
+msgstr ""
+
+#: src/llamafit/cli/render.py:194
+msgid "Memory pool"
+msgstr ""
+
+#: src/llamafit/cli/render.py:194
+msgid "unified (GPU shares system memory)"
+msgstr ""
+
+#: src/llamafit/cli/render.py:197
+msgid "Disk"
+msgstr ""
+
+#: src/llamafit/cli/render.py:199
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:216
+#: src/llamafit/cli/render.py:228
+msgid "Installed"
+msgstr ""
+
+#: src/llamafit/cli/render.py:216
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr ""
+
+#: src/llamafit/cli/render.py:219
+msgid "b%(build)d (%(commit)s)"
+msgstr ""
+
+#: src/llamafit/cli/render.py:224
+msgid "b%(build)d"
+msgstr ""
+
+#: src/llamafit/cli/render.py:226
+msgid "unknown build"
+msgstr ""
+
+#: src/llamafit/cli/render.py:229
+msgid "yes, %(build)s at %(path)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:232
+msgid "Backends"
+msgstr ""
+
+#: src/llamafit/cli/render.py:233
+#: src/llamafit/services/doctor.py:122
+msgctxt "backends"
+msgid "none detected"
+msgstr ""
+
+#: src/llamafit/cli/render.py:235
+msgid "Local models"
+msgstr ""
+
+#: src/llamafit/cli/render.py:238
+msgid "Running"
+msgstr ""
+
+#: src/llamafit/cli/render.py:240
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:243
+msgid "unknown model"
+msgstr ""
+
+#: src/llamafit/cli/render.py:244
+#: src/llamafit/services/doctor.py:235
+msgctxt "context length"
+msgid "unknown"
+msgstr ""
+
+#: src/llamafit/cli/render.py:249
+msgid "Problem"
+msgstr ""
+
+#: src/llamafit/cli/render.py:259
+msgid "Probes"
+msgstr ""
+
+#: src/llamafit/cli/render.py:260
+msgid "probe"
+msgstr ""
+
+#: src/llamafit/cli/render.py:261
+msgid "result"
+msgstr ""
+
+#: src/llamafit/cli/render.py:262
+msgid "ms"
+msgstr ""
+
+#: src/llamafit/cli/render.py:265
+msgctxt "probe result"
+msgid "ok"
+msgstr ""
+
+#: src/llamafit/cli/render.py:267
+msgid "no server"
+msgstr ""
+
+#: src/llamafit/cli/render.py:269
+msgctxt "probe result"
+msgid "failed"
+msgstr ""
+
+#: src/llamafit/cli/render.py:278
+msgid "Findings"
+msgstr ""
+
+#: src/llamafit/cli/render.py:279
+msgid "level"
+msgstr ""
+
+#: src/llamafit/cli/render.py:280
+msgid "finding"
+msgstr ""
+
+#: src/llamafit/cli/render.py:380
+msgid "ID"
+msgstr ""
+
+#: src/llamafit/cli/render.py:381
+msgid "Quality*"
+msgstr ""
+
+#: src/llamafit/cli/render.py:382
+msgid "Params"
+msgstr ""
+
+#: src/llamafit/cli/render.py:383
+#: src/llamafit/cli/render.py:591
+msgid "Context"
+msgstr ""
+
+#: src/llamafit/cli/render.py:384
+#: src/llamafit/cli/render.py:598
+msgid "Capabilities"
+msgstr ""
+
+#: src/llamafit/cli/render.py:391
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
+
+#: src/llamafit/cli/render.py:395
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
+
+#: src/llamafit/cli/render.py:517
+msgid "Models"
+msgstr ""
+
+#: src/llamafit/cli/render.py:557
+msgid "Vendor"
+msgstr ""
+
+#: src/llamafit/cli/render.py:558
+msgid "Family"
+msgstr ""
+
+#: src/llamafit/cli/render.py:559
+msgid "Release date"
+msgstr ""
+
+#: src/llamafit/cli/render.py:561
+msgid "Licence"
+msgstr ""
+
+#: src/llamafit/cli/render.py:562
+msgid "%(spdx)s (%(url)s)"
+msgstr ""
+
+#: src/llamafit/cli/render.py:565
+msgid "Parameters"
+msgstr ""
+
+#: src/llamafit/cli/render.py:567
+msgid "%(total)sB total, %(active)sB active"
+msgstr ""
+
+#: src/llamafit/cli/render.py:574
+msgid "%(tokens)s tokens native"
+msgstr ""
+
+#: src/llamafit/cli/render.py:582
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:584
+msgid "unspecified method"
+msgstr ""
+
+#: src/llamafit/cli/render.py:593
+msgid "Architecture"
+msgstr ""
+
+#: src/llamafit/cli/render.py:597
+msgid "Notes"
+msgstr ""
+
+#: src/llamafit/cli/render.py:599
+msgid "Use cases"
+msgstr ""
+
+#: src/llamafit/cli/render.py:600
+msgid "Quality baseline"
+msgstr ""
+
+#: src/llamafit/cli/render.py:603
+msgid "Benchmark"
+msgstr ""
+
+#: src/llamafit/cli/render.py:609
+msgid "Source %(index)d"
+msgstr ""
+
+#: src/llamafit/cli/render.py:618
+msgid "not read yet"
+msgstr ""
+
+#: src/llamafit/cli/render.py:622
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/render.py:628
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/render.py:633
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/render.py:647
+msgid "Quants"
+msgstr ""
+
+#: src/llamafit/cli/render.py:648
+msgid "Name"
+msgstr ""
+
+#: src/llamafit/cli/render.py:649
+msgid "Size"
+msgstr ""
+
+#: src/llamafit/cli/render.py:650
+msgid "BPW"
+msgstr ""
+
+#: src/llamafit/cli/render.py:651
+msgid "Facts"
+msgstr ""
+
+#: src/llamafit/cli/render.py:658
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr ""
+
+#: src/llamafit/cli/system_cmd.py:23
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr ""
+
+#: src/llamafit/cli/system_cmd.py:31
+msgid "Skip the RAM bandwidth measurement."
+msgstr ""
+
+#: src/llamafit/errors.py:38
+msgid "Command: %(command)s"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:72
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:77
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:113
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:115
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:136
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:137
+msgid "Check that this file is actually a .gguf model."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:142
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:143
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:235
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:240
+msgid "Pass the shards of one model, not of several."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:295
+msgid "no GGUF header to read facts from"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:296
+msgid "Pass the model's file, or every shard of a split model."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:311
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:316
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:325
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:335
+#: src/llamafit/gguf/reader.py:371
+msgid "Pass every shard of the split model."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:341
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:346
+msgid "Pass every shard of the split model, including the first."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:350
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:352
+msgid "Pass each shard of the split model exactly once."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:362
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr ""
+
+#: src/llamafit/gguf/source.py:75
+#: src/llamafit/gguf/source.py:89
+msgid "could not read %(path)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/gguf/source.py:76
+#: src/llamafit/gguf/source.py:90
+msgid "Check that the file exists and is readable."
+msgstr ""
+
+#: src/llamafit/gguf/source.py:200
+msgid "could not fetch %(url)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/gguf/source.py:201
+msgid "Check your network connection and that the URL is reachable."
+msgstr ""
+
+#: src/llamafit/gguf/source.py:208
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr ""
+
+#: src/llamafit/gguf/source.py:213
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr ""
+
+#: src/llamafit/hardware/cpu.py:87
+#: src/llamafit/hardware/cpu.py:92
+msgctxt "CPU model"
+msgid "unknown"
+msgstr ""
+
+#: src/llamafit/hardware/gpu.py:97
+msgid "nvidia-smi returned no GPUs"
+msgstr ""
+
+#: src/llamafit/hardware/gpu.py:121
+msgid "rocm-smi returned no cards"
+msgstr ""
+
+#: src/llamafit/hardware/gpu.py:139
+msgid "system_profiler returned no displays"
+msgstr ""
+
+#: src/llamafit/hardware/gpu.py:154
+msgid "WMI returned no video controllers"
+msgstr ""
+
+#: src/llamafit/hardware/gpu.py:177
+msgid "lspci found no display controllers"
+msgstr ""
+
+#: src/llamafit/hardware/memory.py:163
+#: src/llamafit/hardware/memory.py:222
+msgid "no populated memory modules"
+msgstr ""
+
+#: src/llamafit/hardware/memory.py:176
+msgid "no SPMemoryDataType"
+msgstr ""
+
+#: src/llamafit/hardware/runner.py:56
+#: src/llamafit/hardware/runner.py:118
+msgid "empty command"
+msgstr ""
+
+#: src/llamafit/hardware/runner.py:85
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr ""
+
+#: src/llamafit/hardware/runner.py:95
+msgid "%(program)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/hardware/runner.py:126
+#: src/llamafit/hardware/runner.py:76
+msgid "%(program)s: not found"
+msgstr ""
+
+#: src/llamafit/hardware/runner.py:151
+msgid "no output"
+msgstr ""
+
+#: src/llamafit/hardware/runner.py:152
+msgid "exit code %(code)d: %(detail)s"
+msgstr ""
+
+#: src/llamafit/llamacpp/detect.py:178
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr ""
+
+#: src/llamafit/llamacpp/detect.py:205
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr ""
+
+#: src/llamafit/llamacpp/server.py:117
+msgid "no llama-server answering"
+msgstr ""
+
+#: src/llamafit/llamacpp/server.py:151
+msgid "unexpected response: %(error)s"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:17
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:20
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:24
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:27
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:30
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:34
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:35
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:39
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:43
+msgid "Could not read performance-core count from sysctl."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:44
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:47
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:66
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:116
+msgid "llama.cpp installed"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:117
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:119
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:130
+msgid "llama.cpp not found"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:131
+msgid "no llama-server binary was found"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:132
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:147
+msgid "Memory size unknown"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:148
 msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:167
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:169
+msgid "llama.cpp was built with: %(backends)s"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:170
+msgctxt "backends"
+msgid "unknown"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:171
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:182
+msgid "%(gpu)s: VRAM size unknown"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:183
+msgid "the vendor tool that reports memory was not available"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:191
+msgid "No GPU detected"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:192
+msgid "models will run on the CPU only"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:193
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:201
+msgid "RAM bandwidth assumed"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:202
+msgid "using %(gbps)s GB/s as a default"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:204
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr ""
+
+#: src/llamafit/services/doctor.py:221
+msgid "Probe %(probe)s failed"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:222
+msgid "unknown error"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:231
+msgid "llama-server running at %(url)s"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:232
+msgid "model %(model)s, context %(context)s"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:234
+msgctxt "model name"
+msgid "unknown"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:245
+msgid "Low disk space on %(path)s"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:246
+msgid "%(size)s free"
+msgstr ""
+
+#: src/llamafit/services/doctor.py:247
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr ""
+
+#. Translators: this is punctuation, not prose. It is what your language puts between
+#. a number's groups of three digits: English writes 32,768, German 32.768 and French
+#. 32 768. Write the character your readers expect. A space is a character like any
+#. other here and is read as one, so a language that groups with a space says so by
+#. writing that space, and a no-break space if that is what it wants. Only a
+#. translation with nothing in it at all means untranslated, and that falls back to
+#. the English comma rather than to no separator.
+#: src/llamafit/units.py:41
+msgctxt "thousands separator"
+msgid ","
+msgstr ""
+
+#. Translators: this is punctuation, not prose. It is what your language puts before
+#. the fractional part of a number: English writes 127.8 and Portuguese 127,8. Write
+#. the character your readers expect; a space counts as a character here, the same as
+#. in the group separator above. Only a translation with nothing in it at all means
+#. untranslated, and that falls back to the English point.
+#: src/llamafit/units.py:51
+msgctxt "decimal separator"
+msgid "."
+msgstr ""
+
+#. Translators: leave this as B. It is not the English word "billion" — the long and
+#. short scales disagree about what one of those is — and it is not a number word at
+#. all. It is how these models are named: the file is Qwen3-27B, the vendor announces
+#. a 27B model, and this cell sits in the same row as that identifier, so a localised
+#. abbreviation would make one row disagree with itself. Readers of every language
+#. meet the B in the model's own name before they meet this table.
+#. The entry is here for the language whose readers genuinely would not recognise it.
+#. If yours is one, write what they do use; whitespace is read as written, for a form
+#. your language separates from the digits. Otherwise leave it, and leave it filled in
+#. rather than empty, so the next reader can see the question was asked.
+#: src/llamafit/units.py:66
+msgctxt "parameter count"
+msgid "B"
+msgstr ""
+
+#: src/llamafit/units.py:119
+msgctxt "size"
+msgid "unknown"
 msgstr ""

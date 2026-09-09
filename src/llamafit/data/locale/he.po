@@ -1,0 +1,846 @@
+# Hebrew translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. It was written from the English template in one
+# pass and it has had no second reader. By the standard docs/translations.md sets for
+# every language, that is not enough: please read it line by line and correct it in a
+# pull request.
+#
+# Hebrew is written right to left. Model ids, command names, flags, paths and product
+# names stay in Latin script by the project's rules, so many lines mix the two
+# directions; nothing in this file can decide how a terminal lays that out.
+#
+# Hebrew has three plural categories in CLDR: one, two and other. None of the nouns
+# counted here has a dual form of its own, so wherever the count reaches the sentence as
+# a digit the "two" form reads the same as "other"; it is written out anyway, because
+# the rule is the language's and not this catalog's. The one message that counts
+# something without printing the number uses all three.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: he\n"
+"Language-Team: Hebrew\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 2) ? 1 : 2);\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "Hugging Face החזיר %(status)d בעת הצגת רשימת הקבצים של %(repo)s."
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "לא ניתן היה לקרוא את רשימת הקבצים של %(repo)s מתוך Hugging Face."
+
+msgid "Check your network connection and try again."
+msgstr "בדוק את חיבור הרשת ונסה שוב."
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "התשובה של Hugging Face עבור %(repo)s לא כללה רשימת קבצים."
+
+msgid "Check that the repository id is correct and public."
+msgstr "ודא שמזהה המאגר נכון ושהמאגר ציבורי."
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "בקטלוג יש %(count)d בעיה"
+msgstr[1] "בקטלוג יש %(count)d בעיות"
+msgstr[2] "בקטלוג יש %(count)d בעיות"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "הרץ `llamafit catalog validate` לפרטים."
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "לא ניתן היה לכתוב את %(path)s: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "ודא שניתן לכתוב לתיקייה ושיש בה מקום."
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "בקובץ %(path)s יש %(count)d בעיה, ולכן לא ניתן לרענן אותו"
+msgstr[1] "בקובץ %(path)s יש %(count)d בעיות, ולכן לא ניתן לרענן אותו"
+msgstr[2] "בקובץ %(path)s יש %(count)d בעיות, ולכן לא ניתן לרענן אותו"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "הרץ `llamafit catalog validate` ותקן קודם את הקובץ."
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "לא ניתן היה לקרוא את %(path)s במלואו, ולכן רענון של %(model)s בלבד ימחק עובדות ששמורות בו על מודלים שהריצה הזאת אינה נוגעת בהם: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "הרץ `llamafit catalog refresh` בלי --model כדי לבנות מחדש את כל הקובץ."
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "איתור, מדידה, התקנה ואימות של מודלי שפה בעלי משקולות פתוחות עבור llama.cpp במחשב שלך."
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "הדפסת JSON קריא למכונה במקום טבלאות."
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "כתיבת פרטים אל llamafit.log בתיקיית היומנים והצגת מעקב הקריאות."
+
+msgid "Disable colours."
+msgstr "ביטול הצבעים."
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "דיבור בשפה הזאת, למשל pt_PT. שפה שאין ל-LlamaFit מוחלפת באנגלית, והוא מציין אילו שפות כן קיימות."
+
+msgid "Print the version and exit."
+msgstr "הדפסת הגרסה ויציאה."
+
+msgid "Unexpected error: %(error)s"
+msgstr "שגיאה בלתי צפויה: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "הרץ שוב עם --verbose כדי לראות את מעקב הקריאות המלא."
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "תחזוקת הקטלוג: אימות הקבצים שלו ורענון שדות משתנים."
+
+msgid "Keep only this use case."
+msgstr "השארת מקרה השימוש הזה בלבד."
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "השארת מודלים בעלי היכולת הזאת בלבד (אפשר לחזור על האפשרות)."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "השארת מזהי הרישיונות האלה בלבד (אפשר לחזור על האפשרות)."
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "אימות הקובץ הזה בלבד במקום הקטלוג המצורף וההתאמות האישיות."
+
+msgid "Did you mean: %(ids)s?"
+msgstr "האם התכוונת ל: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "הרץ `llamafit list` כדי לראות את כל מזהי המודלים."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "אין בקטלוג מודל בשם %(id)s"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "נמצאה %(count)d בעיה בקטלוג; הרץ `llamafit catalog validate` לפרטים."
+msgstr[1] "נמצאו %(count)d בעיות בקטלוג; הרץ `llamafit catalog validate` לפרטים."
+msgstr[2] "נמצאו %(count)d בעיות בקטלוג; הרץ `llamafit catalog validate` לפרטים."
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "לא נמצאו מודלים מתאימים. נסה ערך רחב יותר עבור --use-case, --capability, --license, --vendor או --search."
+
+msgid "invalid --use-case %(value)s"
+msgstr "ערך לא חוקי עבור --use-case: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "מקרי שימוש חוקיים: %(values)s"
+
+# The count never reaches this sentence, only the values do, so this is the one message
+# where Hebrew can say "two" in words instead of printing a digit, and all three forms
+# differ.
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "ערך לא חוקי עבור --capability: %(values)s"
+msgstr[1] "שני ערכים לא חוקיים עבור --capability: %(values)s"
+msgstr[2] "ערכים לא חוקיים עבור --capability: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "יכולות חוקיות: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"הצגת קטלוג המודלים, מצומצם לפי המסננים שניתנו.\n"
+"\n"
+"הטבלה מציגה לכל היותר שלוש יכולות לכל מודל, ולצדן סימון +N ליתר, והיא ממוינת לפי עמודת האיכות המוצגת; ב-info או עם --json מופיעות כל היכולות."
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "השארת היצרן הזה בלבד, בלי הבחנה בין אותיות גדולות לקטנות."
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "התאמת מחרוזת חלקית במזהה, בשם, ביצרן או במשפחה, בלי הבחנה בין אותיות גדולות לקטנות."
+
+msgid "Show at most this many."
+msgstr "הצגת מספר הפריטים הזה לכל היותר."
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "קיצור עבור llamafit list --search TEXT."
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "טקסט להתאמה מול המזהה, השם, היצרן או המשפחה."
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "הצגת העובדות של מודל אחד, המקורות שלו וכל קוונטיזציה שהוא מפרסם."
+
+msgid "A catalog model id."
+msgstr "מזהה של מודל מהקטלוג."
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "אימות קובצי YAML של הקטלוג מול הסכמה, והדפסת שורה לכל בעיה."
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "נבדק %(count)d קובץ, לא נמצאו בעיות."
+msgstr[1] "נבדקו %(count)d קבצים, לא נמצאו בעיות."
+msgstr[2] "נבדקו %(count)d קבצים, לא נמצאו בעיות."
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "רענון שמות הקבצים, הגדלים, סכומי הביקורת ועובדות ה-GGUF של הקטלוג מתוך Hugging Face."
+
+msgid "Refresh only this model id."
+msgstr "רענון מזהה המודל הזה בלבד."
+
+msgid "Compute the refresh but write nothing."
+msgstr "חישוב הרענון בלי לכתוב דבר."
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "יציאה עם 1 אם משהו היה משתנה; לא משנה דבר, עבור משימת CI מתוזמנת."
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: אזהרה: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "אזהרה: %(warning)s (%(count)d מודל: %(models)s)"
+msgstr[1] "אזהרה: %(warning)s (%(count)d מודלים: %(models)s)"
+msgstr[2] "אזהרה: %(warning)s (%(count)d מודלים: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: שגיאה: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "רמז: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "הרענון זקוק לגישת רשת אל Hugging Face; בדוק את החיבור שלך ושמזהה המאגר נכון."
+
+msgid "No changes."
+msgstr "אין שינויים."
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "הדפסת רשומת הקטלוג הגולמית של מודל אחד, כ-JSON כברירת מחדל או כ-YAML עם --yaml."
+
+msgid "Print YAML instead of JSON."
+msgstr "הדפסת YAML במקום JSON."
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "הסבר מה זוהה, מה נכשל ומה יפתח אפשרויות נוספות."
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "תקין"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "אזהרה"
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "שגיאה"
+
+# The four bandwidth labels say how the figure was arrived at, so they are written as
+# past passives agreeing with רוחב הפס, which is masculine.
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "נמדד"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "הוערך"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "הונח"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "לא ידוע"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s ו-%(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "מארח"
+
+msgid "OS"
+msgstr "מערכת הפעלה"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d ליבות / %(logical)d תהליכונים"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d ליבת ביצועים"
+msgstr[1] "%(count)d ליבות ביצועים"
+msgstr[2] "%(count)d ליבות ביצועים"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "ערכת ההוראות לא ידועה"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d מודול זיכרון"
+msgstr[1] "%(count)d מודולי זיכרון"
+msgstr[2] "%(count)d מודולי זיכרון"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d ערוץ"
+msgstr[1] "%(count)d ערוצים"
+msgstr[2] "%(count)d ערוצים"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+# Each row that says "unknown" names its own noun, and Hebrew follows that noun's
+# gender: רוחב הפס, הדגם, ההקשר and הגודל are masculine, ערכת ההוראות and הבנייה
+# feminine.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "לא ידוע"
+
+msgid "Memory"
+msgstr "זיכרון"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "%(total)s בסך הכול, %(available)s פנויים; %(details)s; רוחב פס %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "הסוג לא ידוע"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "לא זוהה אף כרטיס"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, מתוכם %(free)s פנויים"
+
+msgid "VRAM unknown"
+msgstr "VRAM לא ידוע"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (לפי המפרט)"
+
+msgid "driver %(driver)s"
+msgstr "מנהל התקן %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "אין מפרט"
+
+msgid "Memory pool"
+msgstr "מאגר זיכרון"
+
+msgid "unified (GPU shares system memory)"
+msgstr "מאוחד (ה-GPU חולק את זיכרון המערכת)"
+
+msgid "Disk"
+msgstr "דיסק"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: %(free)s פנויים מתוך %(total)s"
+
+msgid "Installed"
+msgstr "מותקן"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "לא"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "בנייה לא ידועה"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "כן, %(build)s בנתיב %(path)s"
+
+msgid "Backends"
+msgstr "מנגנונים עורפיים"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "לא זוהה אף מנגנון"
+
+msgid "Local models"
+msgstr "מודלים מקומיים"
+
+msgid "Running"
+msgstr "פועל"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, הקשר %(context)s"
+
+msgid "unknown model"
+msgstr "מודל לא ידוע"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "לא ידוע"
+
+msgid "Problem"
+msgstr "בעיה"
+
+msgid "Probes"
+msgstr "בדיקות"
+
+msgid "probe"
+msgstr "בדיקה"
+
+msgid "result"
+msgstr "תוצאה"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "תקין"
+
+msgid "no server"
+msgstr "אין שרת"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "נכשלה"
+
+msgid "Findings"
+msgstr "ממצאים"
+
+msgid "level"
+msgstr "רמה"
+
+msgid "finding"
+msgstr "ממצא"
+
+msgid "ID"
+msgstr "מזהה"
+
+msgid "Quality*"
+msgstr "איכות*"
+
+msgid "Params"
+msgstr "פרמטרים"
+
+msgid "Context"
+msgstr "הקשר"
+
+msgid "Capabilities"
+msgstr "יכולות"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "האיכות היא הבסיס העריכתי, לפני כל קנס על קוונטיזציה; הרץ `llamafit info <model>` כדי לראות את מבחני הביצועים המתועדים שמאחוריה."
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "פרמטרים הוא סך הכול/פעילים במיליארדים במודל תערובת מומחים, או מספר אחד כששניהם שווים."
+
+msgid "Models"
+msgstr "מודלים"
+
+msgid "Vendor"
+msgstr "יצרן"
+
+msgid "Family"
+msgstr "משפחה"
+
+msgid "Release date"
+msgstr "תאריך שחרור"
+
+msgid "Licence"
+msgstr "רישיון"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "פרמטרים"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "%(total)sB בסך הכול, %(active)sB פעילים"
+
+msgid "%(tokens)s tokens native"
+msgstr "%(tokens)s אסימונים במקור"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", %(tokens)s בהרחבה באמצעות %(method)s"
+
+msgid "unspecified method"
+msgstr "שיטה לא צוינה"
+
+msgid "Architecture"
+msgstr "ארכיטקטורה"
+
+msgid "Notes"
+msgstr "הערות"
+
+msgid "Use cases"
+msgstr "מקרי שימוש"
+
+msgid "Quality baseline"
+msgstr "בסיס האיכות"
+
+msgid "Benchmark"
+msgstr "מבחן ביצועים"
+
+msgid "Source %(index)d"
+msgstr "מקור %(index)d"
+
+msgid "not read yet"
+msgstr "טרם נקרא"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d שכבה"
+msgstr[1] "%(count)d שכבות"
+msgstr[2] "%(count)d שכבות"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d מומחה"
+msgstr[1] "%(count)d/%(used)d מומחים"
+msgstr[2] "%(count)d/%(used)d מומחים"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d מומחה"
+msgstr[1] "%(count)d מומחים"
+msgstr[2] "%(count)d מומחים"
+
+msgid "Quants"
+msgstr "קוונטיזציות"
+
+msgid "Name"
+msgstr "שם"
+
+msgid "Size"
+msgstr "גודל"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "עובדות"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "לא ידוע"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "הצגת מה שיש במכונה הזאת: CPU, זיכרון, כרטיסי GPU, דיסקים ו-llama.cpp."
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "דילוג על מדידת רוחב הפס של ה-RAM."
+
+msgid "Command: %(command)s"
+msgstr "פקודה: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "כותרת GGUF קטועה: ציפינו ל-%(wanted)d בתים בהיסט %(offset)d, והתקבלו %(got)d"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "ייתכן שהקובץ עדיין יורד, או שכתובת ה-URL אינה של קובץ GGUF."
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "סוג ערך GGUF לא ידוע %(type)d בהיסט %(offset)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "ייתכן שהקובץ הזה משתמש בסוג מטא-נתונים של GGUF חדש יותר ממה ש-LlamaFit תומך בו."
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "לא קובץ GGUF: חתימה שגויה %(magic)s בהיסט 0"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "ודא שהקובץ הזה אכן מודל בפורמט .gguf."
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "גרסת GGUF לא נתמכת %(version)d בהיסט 4"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit תומך בגרסאות GGUF %(versions)s."
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "קובצי ה-GGUF האלה אינם מודל מפוצל אחד: הם חלוקים על '%(key)s' ומצהירים %(values)s"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "העבר את המקטעים של מודל אחד, לא של כמה מודלים."
+
+msgid "no GGUF header to read facts from"
+msgstr "אין כותרת GGUF שאפשר לקרוא ממנה עובדות"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "העבר את קובץ המודל, או את כל המקטעים של מודל מפוצל."
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(count)d מתוך %(total)d קובצי GGUF אינם נושאים את המפתח '%(key)s', ולכן לא ניתן לקבוע את מקומם במודל מפוצל"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "העבר קובץ אחד לא מפוצל בפני עצמו, או את כל המקטעים של מודל מפוצל אחד."
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "מערך המקטעים חסר: המודל מצהיר על %(declared)d מקטעים, והגיעו %(arrived)d (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "העבר את כל המקטעים של המודל המפוצל."
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "המקטע שנושא את המטא-נתונים של המודל חסר: התקבל %(key)s %(numbers)s, וציפינו שאחד מהם יהיה 0"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "העבר את כל המקטעים של המודל המפוצל, כולל הראשון."
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "מערך המקטעים חסר: ציפינו ל-%(key)s מ-0 עד %(last)d, והתקבל %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "העבר כל מקטע של המודל המפוצל בדיוק פעם אחת."
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "מערך המקטעים חסר: המודל מצהיר על %(declared)d טנזורים, ו-%(shards)d המקטעים שלו מחזיקים יחד %(held)d"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "לא ניתן היה לקרוא את %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "ודא שהקובץ קיים וניתן לקריאה."
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "לא ניתן היה להביא את %(url)s: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "בדוק את חיבור הרשת ושכתובת ה-URL נגישה."
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s החזירה HTTP %(status)d במקום 206 Partial Content; ייתכן שהשרת אינו תומך בבקשות טווח."
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "ודא שכתובת ה-URL מצביעה על קובץ GGUF שניתן להורדה."
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "לא ידוע"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi לא החזיר כרטיסי GPU"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi לא החזיר כרטיסים"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler לא החזיר מסכים"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI לא החזיר בקרי וידאו"
+
+msgid "lspci found no display controllers"
+msgstr "lspci לא מצא בקרי תצוגה"
+
+msgid "no populated memory modules"
+msgstr "אין מודולי זיכרון מאוכלסים"
+
+msgid "no SPMemoryDataType"
+msgstr "אין SPMemoryDataType"
+
+msgid "empty command"
+msgstr "פקודה ריקה"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: תם הזמן לאחר %(seconds)s שניות"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: לא נמצא"
+
+msgid "no output"
+msgstr "אין פלט"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "קוד יציאה %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "llama.cpp לא נמצא: אין llama-server ב-PATH, ב-LLAMA_CPP_PATH או בתיקיות הרגילות"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "לא נמצאו ספריות מנגנון ggml לצד llama-server; ייתכן שהבנייה סטטית"
+
+msgid "no llama-server answering"
+msgstr "אין llama-server שמשיב"
+
+msgid "unexpected response: %(error)s"
+msgstr "תשובה בלתי צפויה: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "התקן או תקן את מנהל ההתקן של NVIDIA; nvidia-smi מגיע איתו וחייב להיות ב-PATH."
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "התקן ROCm (בלינוקס) כדי לחשוף את נתוני ה-VRAM של AMD; בלעדיו הכרטיס מופיע בשמו בלבד."
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell לא הצליח להציג את בקרי הווידאו; הרץ מתוך הפעלת משתמש רגילה."
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "התקן pciutils כדי להציג כרטיסי GPU בשמם כשאין כלי של היצרן."
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "סוג ה-DDR והמהירות לא היו קריאים; בלינוקס הרץ פעם אחת עם sudo (dmidecode), או הסתפק ברוחב הפס הנמדד."
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo נכשל; דגם ה-CPU וערכות ההוראות אינם ידועים."
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil לא הצליח לספור את ליבות ה-CPU; בחירת התהליכונים חוזרת לליבה אחת. התקן מחדש את psutil באמצעות `pip install --force-reinstall psutil`."
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil לא הצליח לקרוא את סך הזיכרון; אי אפשר לחשב תקציבים עד שזה יעבוד. התקן מחדש את psutil באמצעות `pip install --force-reinstall psutil`."
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "לא ניתן היה לקרוא מ-sysctl את מספר ליבות הביצועים."
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server קיים אך לא דיווח על גרסה; ייתכן שהקובץ הבינארי פגום."
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler נכשל; אין מידע על ה-GPU."
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "אף כלי של היצרן לא דיווח על גודל הזיכרון של ה-GPU; רשום את הגודל בפרופיל חומרה כדי שאפשר יהיה לחשב תקציבים למכונה הזאת."
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp מותקן"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "בנייה %(build)s בנתיב %(path)s, מנגנונים: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "לא ידועה"
+
+msgid "llama.cpp not found"
+msgstr "llama.cpp לא נמצא"
+
+msgid "no llama-server binary was found"
+msgstr "לא נמצא קובץ בינארי llama-server"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "התקן את llama.cpp (שלב 2 של LlamaFit יעשה זאת: `llamafit install llama.cpp`); עד אז הורד גרסה מ-https://github.com/ggml-org/llama.cpp/releases והוסף את תיקיית bin שלה ל-PATH או ל-LLAMA_CPP_PATH."
+
+msgid "Memory size unknown"
+msgstr "גודל הזיכרון לא ידוע"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit לא הצליח לקרוא את סך הזיכרון של המכונה הזאת, ולכן אינו יכול לקבוע מה ייכנס בה."
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: אין מנגנון עורפי %(backend)s ב-llama.cpp"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp נבנה עם: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "לא ידועים"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "התקן בנייה של llama.cpp עם המנגנון %(backend)s או Vulkan כדי להשתמש ב-%(gpu)s."
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: גודל ה-VRAM לא ידוע"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "הכלי של היצרן שמדווח על הזיכרון לא היה זמין"
+
+msgid "No GPU detected"
+msgstr "לא זוהה GPU"
+
+msgid "models will run on the CPU only"
+msgstr "המודלים ירוצו על ה-CPU בלבד"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "אם יש GPU, ודא שכלי מנהל ההתקן שלו מותקנים."
+
+msgid "RAM bandwidth assumed"
+msgstr "רוחב הפס של ה-RAM הונח"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "בשימוש %(gbps)s GB/s כברירת מחדל"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "התקן numpy (`pip install llamafit[fast]`) כדי ש-LlamaFit יוכל למדוד את רוחב הפס של ה-RAM."
+
+msgid "Probe %(probe)s failed"
+msgstr "הבדיקה %(probe)s נכשלה"
+
+msgid "unknown error"
+msgstr "שגיאה לא ידועה"
+
+msgid "llama-server running at %(url)s"
+msgstr "llama-server פועל בכתובת %(url)s"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "מודל %(model)s, הקשר %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "לא ידוע"
+
+msgid "Low disk space on %(path)s"
+msgstr "מעט מקום פנוי בדיסק ב-%(path)s"
+
+msgid "%(size)s free"
+msgstr "%(size)s פנויים"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "רוב המודלים השימושיים דורשים 5 עד 120 GB; פנה מקום או שנה את תיקיית ההורדות."
+
+msgctxt "thousands separator"
+msgid ","
+msgstr ","
+
+msgctxt "decimal separator"
+msgid "."
+msgstr "."
+
+# B is not the English word for a thousand million; it is how these models are named.
+# The file is Qwen3-27B and the identifier in this row already says 27B, so a localised
+# abbreviation would make one row disagree with itself. Change it only if your readers
+# genuinely would not recognise B, and say in a comment here why.
+msgctxt "parameter count"
+msgid "B"
+msgstr "B"
+
+msgctxt "size"
+msgid "unknown"
+msgstr "לא ידוע"

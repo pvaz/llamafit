@@ -6,7 +6,12 @@ the message is used, so one English word can be translated two ways. *none detec
 feminine in the GPU row and masculine in the Backends row, and no single Portuguese
 string is right in both.
 
-All four are plain module-level functions taking literal strings, so the extractor in
+``pgettext_literal`` is ``pgettext`` for the handful of entries that hold punctuation
+rather than prose. It differs in one thing: a translation of nothing but whitespace is a
+translation, because the space French groups a number's digits with is the answer to that
+entry and not the absence of one.
+
+All five are plain module-level functions taking literal strings, so the extractor in
 ``scripts/gen_messages.py`` can find every call by reading the syntax tree.
 
 Choosing a language is a one-off at start-up: ``set_language`` installs the translator
@@ -49,6 +54,10 @@ class Translator(Protocol):
         """Translate one message as used in ``context``, falling back to English."""
         ...
 
+    def pgettext_literal(self, context: str, message: str) -> str:
+        """Translate one message as used in ``context``, whitespace counting as a value."""
+        ...
+
     def ngettext(self, singular: str, plural: str, n: int) -> str:
         """Translate a message that counts something, falling back to English."""
         ...
@@ -73,6 +82,10 @@ class EnglishTranslator:
 
     def pgettext(self, context: str, message: str) -> str:
         """Return the message unchanged; the context only ever picks a translation."""
+        return message
+
+    def pgettext_literal(self, context: str, message: str) -> str:
+        """Return the message unchanged: English is the message, blank or not."""
         return message
 
     def ngettext(self, singular: str, plural: str, n: int) -> str:
@@ -108,6 +121,10 @@ class CatalogTranslator:
     def pgettext(self, context: str, message: str) -> str:
         """Translate one message through the catalog, under its context."""
         return self.catalog.pgettext(context, message)
+
+    def pgettext_literal(self, context: str, message: str) -> str:
+        """Read one entry of the catalog as it stands, whitespace included."""
+        return self.catalog.pgettext_literal(context, message)
 
     def ngettext(self, singular: str, plural: str, n: int) -> str:
         """Translate a counting message through the catalog."""
@@ -269,6 +286,30 @@ def pgettext(context: str, message: str) -> str:
         The translation filed under that context, or the English original.
     """
     return _active.pgettext(context, message)
+
+
+def pgettext_literal(context: str, message: str) -> str:
+    """Translate one message under ``context``, with whitespace counting as a value.
+
+    The lookup for an entry that holds punctuation rather than prose. :func:`pgettext`
+    treats a translation of nothing but whitespace as untranslated, because a blank line
+    is not what a half-finished sentence should degrade to; that rule makes the space
+    French, Russian, Swedish and Polish group a number's digits with unsayable. This
+    lookup takes the catalog at its word, and only an entry with no characters at all
+    falls back to the English.
+
+    Use it only where the code is asking for a character. Everything a reader reads as
+    words goes through :func:`pgettext`.
+
+    Args:
+        context: Where the message is used, which is part of what identifies it.
+        message: The English message.
+
+    Returns:
+        The translation filed under that context, exactly as the catalog spells it, or
+        the English original when the catalog leaves it empty.
+    """
+    return _active.pgettext_literal(context, message)
 
 
 def ngettext(singular: str, plural: str, n: int) -> str:

@@ -1,13 +1,14 @@
 """The worked set of messages the translation machinery is exercised against.
 
-These are real messages, copied from `llamafit.services.doctor`, `llamafit.cli.render`,
-`llamafit.cli.app` and `llamafit.catalog.loader`, wrapped here rather than at their call
-sites: four branches are editing those files at the moment, and the sweep that wraps them
-is a separate piece of work. Wrapping them here is what lets the extractor, the template
-and the Portuguese catalog be tested end to end before that sweep lands.
+Every message here is also wrapped at a real call site in `llamafit.services.doctor`,
+`llamafit.cli.render`, `llamafit.cli.app`, `llamafit.cli.system_cmd` and
+`llamafit.catalog.loader`, which is what makes it safe for the translation tests to
+assert on them word for word: a test that froze a real call site would turn improving
+one of those sentences into a broken build.
 
-When the sweep does land, these functions go away and `scripts.gen_messages.SOURCE_ROOTS`
-stops naming this file.
+`scripts.gen_messages.SOURCE_ROOTS` no longer names this file, so nothing here can add a
+message to the template on its own. Adding one that no call site in `src/` makes would
+show up at once, as a catalog entry the template does not have.
 """
 
 from llamafit.i18n import (
@@ -57,7 +58,9 @@ def bandwidth_assumed() -> str:
 
 
 def install_numpy() -> str:
-    return _("Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure it.")
+    return _(
+        "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+    )
 
 
 def vram_tool_missing() -> str:

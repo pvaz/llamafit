@@ -1,0 +1,812 @@
+# Simplified Chinese translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. It was written from the template in one pass and
+# has had no second reader. By the standard docs/translations.md sets for every language,
+# that is not enough: please read it line by line and correct it in a pull request.
+#
+# Chinese takes one plural form, so every plural message has a single msgstr[0] and the
+# count is carried by %(count)d, as it already is in the English.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
+"Language-Team: Chinese (Simplified)\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "列出 %(repo)s 的文件时，Hugging Face 返回了 %(status)d。"
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "无法从 Hugging Face 读取 %(repo)s 的文件列表。"
+
+msgid "Check your network connection and try again."
+msgstr "请检查网络连接后重试。"
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "Hugging Face 对 %(repo)s 的响应中没有文件列表。"
+
+msgid "Check that the repository id is correct and public."
+msgstr "请确认仓库 id 正确且是公开的。"
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "模型目录中有 %(count)d 个问题"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "运行 `llamafit catalog validate` 查看详情。"
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "无法写入 %(path)s：%(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "请确认该目录可写且有足够空间。"
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "%(path)s 中有 %(count)d 个问题，无法刷新"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "请先运行 `llamafit catalog validate` 并修复该文件。"
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "%(path)s 未能完整读取，因此只刷新 %(model)s 会丢掉它为本次运行不涉及的模型所记录的信息：%(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "运行不带 --model 的 `llamafit catalog refresh`，以重建整个文件。"
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "在自己的机器上为 llama.cpp 查找、估算大小、安装并校验开放权重 LLM。"
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "输出机器可读的 JSON，而不是表格。"
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "把详情写入日志目录下的 llamafit.log，并显示回溯信息。"
+
+msgid "Disable colours."
+msgstr "禁用彩色输出。"
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "使用这种语言，例如 pt_PT。LlamaFit 没有的语言会回退到英语，并会说明它有哪些语言。"
+
+msgid "Print the version and exit."
+msgstr "输出版本号后退出。"
+
+msgid "Unexpected error: %(error)s"
+msgstr "意外错误：%(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "加上 --verbose 重新运行，可以看到完整的回溯信息。"
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "维护模型目录：校验它的文件，刷新易变字段。"
+
+msgid "Keep only this use case."
+msgstr "只保留这个使用场景。"
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "只保留具备这项能力的模型（可重复指定）。"
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "只保留这些许可证标识（可重复指定）。"
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "只校验这个文件，而不是内置的模型目录和自定义覆盖。"
+
+msgid "Did you mean: %(ids)s?"
+msgstr "你是想找：%(ids)s？"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "运行 `llamafit list` 查看所有模型 id。"
+
+msgid "no model named %(id)s in the catalog"
+msgstr "模型目录中没有名为 %(id)s 的模型"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "发现 %(count)d 个模型目录问题；运行 `llamafit catalog validate` 查看详情。"
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "没有匹配的模型。请把 --use-case、--capability、--license、--vendor 或 --search 放宽一些。"
+
+msgid "invalid --use-case %(value)s"
+msgstr "--use-case 的值无效：%(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "有效的使用场景：%(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "--capability 的值无效：%(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "有效的能力：%(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"列出模型目录，并按给定的筛选条件缩小范围。\n"
+"\n"
+"表格中每个模型最多显示三项能力，其余的用 +N 标出，并按所显示的“质量”列排序；info 或 --json 会给出全部能力。"
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "只保留这个厂商，不区分大小写。"
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "对 id、名称、厂商或系列做不区分大小写的子串匹配。"
+
+msgid "Show at most this many."
+msgstr "最多显示这么多条。"
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "llamafit list --search TEXT 的简写。"
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "用来匹配 id、名称、厂商或系列的文本。"
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "显示某个模型的信息、来源，以及它发布的每个量化版本。"
+
+msgid "A catalog model id."
+msgstr "模型目录中的模型 id。"
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "按 schema 校验模型目录的 YAML 文件，每个问题输出一行。"
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "已检查 %(count)d 个文件，未发现问题。"
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "从 Hugging Face 刷新模型目录里的文件名、大小、校验和以及 GGUF 信息。"
+
+msgid "Refresh only this model id."
+msgstr "只刷新这个模型 id。"
+
+msgid "Compute the refresh but write nothing."
+msgstr "计算刷新结果，但不写入任何内容。"
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "只要有内容会改变就以 1 退出；不改动任何东西，供定时 CI 任务使用。"
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s：警告：%(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "警告：%(warning)s（%(count)d 个模型：%(models)s）"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s：错误：%(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "提示：%(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "刷新需要访问 Hugging Face 的网络；请检查你的连接，以及仓库 id 是否正确。"
+
+msgid "No changes."
+msgstr "没有变化。"
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "输出某个模型的原始目录条目，默认为 JSON，加上 --yaml 则为 YAML。"
+
+msgid "Print YAML instead of JSON."
+msgstr "输出 YAML，而不是 JSON。"
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "说明检测到了什么、什么失败了，以及做什么可以获得更多信息。"
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "警告"
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "错误"
+
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "实测"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "估算"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "假定"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "未知"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s，%(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "主机"
+
+msgid "OS"
+msgstr "系统"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s（%(arch)s）"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d 核 / %(logical)d 线程"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d 个性能核"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s；%(cores)s；%(isa)s"
+
+msgid "isa unknown"
+msgstr "指令集未知"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d 条内存"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d 个通道"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s（%(source)s）"
+
+# Chinese inflects for neither gender nor number, so every row that says
+# "unknown" or "none detected" reads the same. Each context is still filled in:
+# leaving one empty would drop that row back to English on its own.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "未知"
+
+msgid "Memory"
+msgstr "内存"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "共 %(total)s，可用 %(available)s；%(details)s；带宽 %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "类型未知"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "未检测到"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "显存 %(total)s，可用 %(free)s"
+
+msgid "VRAM unknown"
+msgstr "显存未知"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s（规格表）"
+
+msgid "driver %(driver)s"
+msgstr "驱动 %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s（%(backend)s）；%(vram)s；%(specs)s"
+
+msgid "no specs"
+msgstr "无规格数据"
+
+msgid "Memory pool"
+msgstr "内存池"
+
+msgid "unified (GPU shares system memory)"
+msgstr "统一内存（GPU 与系统共用内存）"
+
+msgid "Disk"
+msgstr "磁盘"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s：%(total)s 中可用 %(free)s"
+
+msgid "Installed"
+msgstr "已安装"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "否"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d（%(commit)s）"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "构建版本未知"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "是，%(build)s，位于 %(path)s"
+
+msgid "Backends"
+msgstr "后端"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "未检测到"
+
+msgid "Local models"
+msgstr "本地模型"
+
+msgid "Running"
+msgstr "运行中"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s：%(model)s，上下文 %(context)s"
+
+msgid "unknown model"
+msgstr "模型未知"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "未知"
+
+msgid "Problem"
+msgstr "问题"
+
+msgid "Probes"
+msgstr "探测"
+
+msgid "probe"
+msgstr "探测项"
+
+msgid "result"
+msgstr "结果"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "正常"
+
+msgid "no server"
+msgstr "无服务"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "失败"
+
+msgid "Findings"
+msgstr "诊断结果"
+
+msgid "level"
+msgstr "级别"
+
+msgid "finding"
+msgstr "说明"
+
+# These five are the list table's column headings, and the table is laid out for
+# an 80-column terminal. A Chinese character takes two terminal columns, so the
+# headings are kept as short as the meaning allows.
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "质量*"
+
+msgid "Params"
+msgstr "参数"
+
+msgid "Context"
+msgstr "上下文"
+
+msgid "Capabilities"
+msgstr "能力"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "质量是编辑给出的基准分，未计入任何量化带来的损失；运行 `llamafit info <model>` 可以看到支撑它的、注明出处的基准测试。"
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "对混合专家模型，参数一列是总量/激活量（单位：十亿）；两者相等时只显示一个数字。"
+
+msgid "Models"
+msgstr "模型"
+
+msgid "Vendor"
+msgstr "厂商"
+
+msgid "Family"
+msgstr "系列"
+
+msgid "Release date"
+msgstr "发布日期"
+
+msgid "Licence"
+msgstr "许可证"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s（%(url)s）"
+
+msgid "Parameters"
+msgstr "参数量"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "共 %(total)sB，激活 %(active)sB"
+
+msgid "%(tokens)s tokens native"
+msgstr "原生 %(tokens)s tokens"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr "，通过 %(method)s 扩展到 %(tokens)s"
+
+msgid "unspecified method"
+msgstr "方法未说明"
+
+msgid "Architecture"
+msgstr "架构"
+
+msgid "Notes"
+msgstr "备注"
+
+msgid "Use cases"
+msgstr "使用场景"
+
+msgid "Quality baseline"
+msgstr "质量基准"
+
+msgid "Benchmark"
+msgstr "基准测试"
+
+msgid "Source %(index)d"
+msgstr "来源 %(index)d"
+
+msgid "not read yet"
+msgstr "尚未读取"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d 层"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d 个专家"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d 个专家"
+
+msgid "Quants"
+msgstr "量化版本"
+
+msgid "Name"
+msgstr "名称"
+
+msgid "Size"
+msgstr "大小"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "信息"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "未知"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "显示这台机器有什么：CPU、内存、GPU、磁盘和 llama.cpp。"
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "跳过内存带宽实测。"
+
+msgid "Command: %(command)s"
+msgstr "命令：%(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "GGUF 头部被截断：在偏移 %(offset)d 处需要 %(wanted)d 字节，实际只有 %(got)d"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "该文件可能还在下载中，或者这个 URL 并不是 GGUF 文件。"
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "偏移 %(offset)d 处有未知的 GGUF 值类型 %(type)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "该文件使用的 GGUF 元数据类型可能比 LlamaFit 支持的更新。"
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "不是 GGUF 文件：偏移 0 处的魔数 %(magic)s 无效"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "请确认这个文件确实是 .gguf 模型。"
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "不支持的 GGUF 版本 %(version)d（偏移 4）"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit 支持的 GGUF 版本是 %(versions)s。"
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "这些 GGUF 文件不是同一个分片模型：它们对 '%(key)s' 的说法不一致，分别声明为 %(values)s"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "请传入同一个模型的各个分片，而不是多个模型的分片。"
+
+msgid "no GGUF header to read facts from"
+msgstr "没有可以读取信息的 GGUF 头部"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "请传入模型的文件，或者分片模型的全部分片。"
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(total)d 个 GGUF 文件里有 %(count)d 个没有 '%(key)s' 键，因此无法确定它们在分片模型中的位置"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "请单独传入一个未分片的文件，或者同一个分片模型的全部分片。"
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "分片不完整：模型声明有 %(declared)d 个分片，实际到了 %(arrived)d 个（%(key)s %(numbers)s）"
+
+msgid "Pass every shard of the split model."
+msgstr "请传入分片模型的全部分片。"
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "缺少存放模型元数据的那个分片：收到的是 %(key)s %(numbers)s，其中应当有一个为 0"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "请传入分片模型的全部分片，包括第一个。"
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "分片不完整：期望 %(key)s 从 0 到 %(last)d，实际得到 %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "分片模型的每个分片请只传入一次。"
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "分片不完整：模型声明有 %(declared)d 个张量，而它的 %(shards)d 个分片加起来只有 %(held)d 个"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "无法读取 %(path)s：%(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "请确认该文件存在且可读。"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "无法获取 %(url)s：%(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "请检查网络连接，以及这个 URL 是否可以访问。"
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s 返回了 HTTP %(status)d，而不是 206 Partial Content；该服务器可能不支持范围请求。"
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "请确认这个 URL 指向一个可下载的 GGUF 文件。"
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "未知"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi 没有返回任何 GPU"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi 没有返回任何显卡"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler 没有返回任何显示设备"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI 没有返回任何显示控制器"
+
+msgid "lspci found no display controllers"
+msgstr "lspci 没有找到任何显示控制器"
+
+msgid "no populated memory modules"
+msgstr "没有已插入的内存条"
+
+msgid "no SPMemoryDataType"
+msgstr "没有 SPMemoryDataType"
+
+msgid "empty command"
+msgstr "命令为空"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s：%(seconds)s 秒后超时"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s：%(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s：未找到"
+
+msgid "no output"
+msgstr "没有输出"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "退出码 %(code)d：%(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "未找到 llama.cpp：PATH、LLAMA_CPP_PATH 和常见目录中都没有 llama-server"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "在 llama-server 旁边没有找到 ggml 后端库；这个构建可能是静态链接的"
+
+msgid "no llama-server answering"
+msgstr "没有 llama-server 响应"
+
+msgid "unexpected response: %(error)s"
+msgstr "意外的响应：%(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "请安装或修复 NVIDIA 驱动；nvidia-smi 随驱动一起提供，并且必须在 PATH 中。"
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "请安装 ROCm（Linux）以获得 AMD 的显存数值；没有它时，这块 GPU 只能按名称列出。"
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell 无法列出显示控制器；请在普通用户会话中运行。"
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "请安装 pciutils，以便在没有厂商工具时按名称列出 GPU。"
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "无法读取 DDR 的类型和频率；在 Linux 上可以用 sudo 运行一次（dmidecode），或者改用实测带宽。"
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo 失败；CPU 型号和指令集未知。"
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil 无法统计 CPU 核心数；线程数回退为一个核心。请用 `pip install --force-reinstall psutil` 重新安装 psutil。"
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil 无法读取内存总量；在这一点解决之前无法计算预算。请用 `pip install --force-reinstall psutil` 重新安装 psutil。"
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "无法从 sysctl 读取性能核心的数量。"
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server 存在，但没有报告版本；这个可执行文件可能已损坏。"
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler 失败；无法获得 GPU 信息。"
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "没有任何厂商工具报告这块 GPU 的显存大小；请把大小记录到硬件配置里，这样才能为这台机器计算预算。"
+
+msgid "llama.cpp installed"
+msgstr "已安装 llama.cpp"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "构建 %(build)s，位于 %(path)s，后端：%(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "未知"
+
+msgid "llama.cpp not found"
+msgstr "未找到 llama.cpp"
+
+msgid "no llama-server binary was found"
+msgstr "没有找到 llama-server 可执行文件"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "请安装 llama.cpp（LlamaFit 第 2 阶段会做这件事：`llamafit install llama.cpp`）；在那之前，请从 https://github.com/ggml-org/llama.cpp/releases 下载一个发行版，并把它的 bin 目录加入 PATH 或 LLAMA_CPP_PATH。"
+
+msgid "Memory size unknown"
+msgstr "内存容量未知"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit 无法读取这台机器的内存总量，因此无法算出什么模型放得下。"
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s：llama.cpp 中没有 %(backend)s 后端"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp 构建时带的后端是：%(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "未知"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "请安装带 %(backend)s 或 Vulkan 后端的 llama.cpp 构建，才能使用 %(gpu)s。"
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s：显存容量未知"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "报告显存的厂商工具不可用"
+
+msgid "No GPU detected"
+msgstr "未检测到 GPU"
+
+msgid "models will run on the CPU only"
+msgstr "模型将只在 CPU 上运行"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "如果机器上确实有 GPU，请检查它的驱动工具是否已安装。"
+
+msgid "RAM bandwidth assumed"
+msgstr "内存带宽为假定值"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "默认按 %(gbps)s GB/s 计算"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "请安装 numpy（`pip install llamafit[fast]`），让 LlamaFit 能够实测内存带宽。"
+
+msgid "Probe %(probe)s failed"
+msgstr "探测 %(probe)s 失败"
+
+msgid "unknown error"
+msgstr "未知错误"
+
+msgid "llama-server running at %(url)s"
+msgstr "llama-server 正在 %(url)s 上运行"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "模型 %(model)s，上下文 %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "未知"
+
+msgid "Low disk space on %(path)s"
+msgstr "%(path)s 上磁盘空间不足"
+
+msgid "%(size)s free"
+msgstr "可用 %(size)s"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "大多数有用的模型需要 5 到 120 GB；请释放空间，或者改用别的下载目录。"
+
+msgctxt "thousands separator"
+msgid ","
+msgstr ","
+
+msgctxt "decimal separator"
+msgid "."
+msgstr "."
+
+# B is not the English word for a thousand million; it is how these models are named.
+# The file is Qwen3-27B and the identifier in this row already says 27B, so a localised
+# abbreviation would make one row disagree with itself. Change it only if your readers
+# genuinely would not recognise B, and say in a comment here why.
+msgctxt "parameter count"
+msgid "B"
+msgstr "B"
+
+msgctxt "size"
+msgid "unknown"
+msgstr "未知"

@@ -1,0 +1,830 @@
+# Bengali translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. এই অনুবাদটি ইংরেজি টেমপ্লেট থেকে এক দফায় লেখা হয়েছে
+# এবং দ্বিতীয় কোনো পাঠক এটি পড়েননি। docs/translations.md প্রতিটি ভাষার জন্য যে মান ঠিক করে
+# দেয়, সেই হিসেবে এটুকু যথেষ্ট নয়: অনুগ্রহ করে লাইন ধরে ধরে পড়ুন এবং pull request-এ ঠিক করে দিন।
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: bn\n"
+"Language-Team: Bengali\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+# Bengali counts zero with the singular, so the rule is (n > 1) and not English's
+# (n != 1): CLDR puts bn in the group whose singular covers i = 0 or n = 1. A counted
+# noun does not change shape after a numeral and its classifier, so the two forms of most
+# plural entries read alike; both are written out rather than left for the reader to
+# guess.
+#
+# Names that are not language stay in Latin script: LlamaFit, llama.cpp, Hugging Face,
+# GGUF, JSON, YAML, CUDA, Vulkan, Metal, flags, paths and tool names. So do the words
+# Bengali developers only ever write in English: backend, quant, shard, offset,
+# traceback, checksum, and context in the sense of a model's window.
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "%(repo)s-এর ফাইলের তালিকা নেওয়ার সময় Hugging Face %(status)d ফেরত দিয়েছে।"
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "Hugging Face থেকে %(repo)s-এর ফাইল তালিকা পড়া যায়নি।"
+
+msgid "Check your network connection and try again."
+msgstr "আপনার নেটওয়ার্ক সংযোগ দেখে নিন এবং আবার চেষ্টা করুন।"
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "%(repo)s-এর জন্য Hugging Face-এর উত্তরে কোনো ফাইল তালিকা ছিল না।"
+
+msgid "Check that the repository id is correct and public."
+msgstr "দেখে নিন যে রিপোজিটরি id সঠিক এবং সর্বজনীন।"
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "ক্যাটালগে %(count)dটি সমস্যা আছে"
+msgstr[1] "ক্যাটালগে %(count)dটি সমস্যা আছে"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "বিস্তারিত জানতে `llamafit catalog validate` চালান।"
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "%(path)s লেখা যায়নি: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "দেখে নিন যে ডিরেক্টরিতে লেখা যায় এবং তাতে জায়গা আছে।"
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "%(path)s-এ %(count)dটি সমস্যা আছে, তাই এটি রিফ্রেশ করা যাচ্ছে না"
+msgstr[1] "%(path)s-এ %(count)dটি সমস্যা আছে, তাই এটি রিফ্রেশ করা যাচ্ছে না"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "আগে `llamafit catalog validate` চালান এবং ফাইলটি ঠিক করুন।"
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "%(path)s পুরোটা পড়া যায়নি, তাই শুধু %(model)s রিফ্রেশ করলে এই চালানোয় যেসব মডেল ছোঁয়া হচ্ছে না তাদের সম্পর্কে রাখা তথ্য মুছে যাবে: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "পুরো ফাইলটি নতুন করে তৈরি করতে `llamafit catalog refresh` --model ছাড়া চালান।"
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "নিজের মেশিনে llama.cpp-এর জন্য open-weight LLM খুঁজুন, মাপ বুঝে নিন, ইনস্টল করুন এবং যাচাই করুন।"
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "টেবিলের বদলে মেশিন-পাঠযোগ্য JSON ছাপে।"
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "লগ ডিরেক্টরির llamafit.log-এ বিস্তারিত লেখে এবং traceback দেখায়।"
+
+msgid "Disable colours."
+msgstr "রং বন্ধ করে।"
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "এই ভাষায় কথা বলে, যেমন pt_PT। LlamaFit-এর কাছে যে ভাষা নেই, তার বদলে সে ইংরেজিতে ফিরে যায় এবং জানায় তার কাছে কোন কোন ভাষা আছে।"
+
+msgid "Print the version and exit."
+msgstr "সংস্করণ ছেপে বেরিয়ে যায়।"
+
+msgid "Unexpected error: %(error)s"
+msgstr "অপ্রত্যাশিত ত্রুটি: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "পুরো traceback দেখতে --verbose দিয়ে আবার চালান।"
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "ক্যাটালগ রক্ষণাবেক্ষণ করে: তার ফাইল যাচাই করে, বদলে যাওয়া ক্ষেত্রগুলি রিফ্রেশ করে।"
+
+msgid "Keep only this use case."
+msgstr "শুধু এই ব্যবহার-ধরনটি রাখে।"
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "শুধু এই ক্ষমতাসম্পন্ন মডেলগুলি রাখে (একাধিকবার দেওয়া যায়)।"
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "শুধু এই লাইসেন্স শনাক্তকারীগুলি রাখে (একাধিকবার দেওয়া যায়)।"
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "সঙ্গে আসা ক্যাটালগ ও নিজের পরিবর্তনের বদলে শুধু এই ফাইলটি যাচাই করে।"
+
+msgid "Did you mean: %(ids)s?"
+msgstr "আপনি কি বলতে চেয়েছিলেন: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "প্রতিটি মডেল id দেখতে `llamafit list` চালান।"
+
+msgid "no model named %(id)s in the catalog"
+msgstr "ক্যাটালগে %(id)s নামে কোনো মডেল নেই"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "ক্যাটালগে %(count)dটি সমস্যা পাওয়া গেছে; বিস্তারিত জানতে `llamafit catalog validate` চালান।"
+msgstr[1] "ক্যাটালগে %(count)dটি সমস্যা পাওয়া গেছে; বিস্তারিত জানতে `llamafit catalog validate` চালান।"
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "কোনো মডেল মেলেনি। --use-case, --capability, --license, --vendor বা --search আরও চওড়া করে দেখুন।"
+
+msgid "invalid --use-case %(value)s"
+msgstr "অবৈধ --use-case %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "বৈধ ব্যবহার-ধরন: %(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "--capability-এর অবৈধ মান: %(values)s"
+msgstr[1] "--capability-এর অবৈধ মান: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "বৈধ ক্ষমতা: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"দেওয়া ফিল্টার অনুযায়ী ছেঁকে মডেল ক্যাটালগ তালিকাভুক্ত করে।\n"
+"\n"
+"টেবিলে প্রতি মডেলে সর্বোচ্চ তিনটি ক্ষমতা দেখানো হয়, বাকিগুলির জন্য একটি +N চিহ্ন, আর যে গুণমান কলামটি দেখানো হচ্ছে সেই অনুসারে সাজানো; প্রতিটি ক্ষমতা info বা --json-এ পাওয়া যায়।"
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "শুধু এই ভেন্ডরটি রাখে, বড়-ছোট হাতের অক্ষরের তফাত না করে।"
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "id, নাম, ভেন্ডর বা পরিবারে উপ-স্ট্রিং মিল, বড়-ছোট হাতের অক্ষরের তফাত না করে।"
+
+msgid "Show at most this many."
+msgstr "সর্বোচ্চ এতগুলিই দেখায়।"
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "llamafit list --search TEXT-এর সংক্ষিপ্ত রূপ।"
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "যে লেখাটি id, নাম, ভেন্ডর বা পরিবারের সঙ্গে মেলাতে হবে।"
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "একটি মডেলের তথ্য, তার সূত্র এবং সে যত quant প্রকাশ করে সব দেখায়।"
+
+msgid "A catalog model id."
+msgstr "ক্যাটালগের একটি মডেল id।"
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "ক্যাটালগের YAML ফাইলগুলি স্কিমার সঙ্গে যাচাই করে এবং প্রতি সমস্যার জন্য একটি লাইন ছাপে।"
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "%(count)dটি ফাইল পরীক্ষা করা হয়েছে, কোনো সমস্যা পাওয়া যায়নি।"
+msgstr[1] "%(count)dটি ফাইল পরীক্ষা করা হয়েছে, কোনো সমস্যা পাওয়া যায়নি।"
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "ক্যাটালগের ফাইলের নাম, আকার, checksum এবং GGUF তথ্য Hugging Face থেকে রিফ্রেশ করে।"
+
+msgid "Refresh only this model id."
+msgstr "শুধু এই মডেল id রিফ্রেশ করে।"
+
+msgid "Compute the refresh but write nothing."
+msgstr "রিফ্রেশের হিসাব করে কিন্তু কিছু লেখে না।"
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "কিছু বদলাবে এমন হলে 1 দিয়ে বেরিয়ে যায়; কিছুই বদলায় না, নির্ধারিত CI job-এর জন্য।"
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: সতর্কতা: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "সতর্কতা: %(warning)s (%(count)dটি মডেল: %(models)s)"
+msgstr[1] "সতর্কতা: %(warning)s (%(count)dটি মডেল: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: ত্রুটি: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "ইঙ্গিত: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "refresh-এর জন্য Hugging Face পর্যন্ত নেটওয়ার্ক পৌঁছোনো দরকার; আপনার সংযোগ দেখে নিন এবং রিপোজিটরি id সঠিক কি না তাও দেখুন।"
+
+msgid "No changes."
+msgstr "কোনো পরিবর্তন নেই।"
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "একটি মডেলের কাঁচা ক্যাটালগ এন্ট্রি ছাপে, ডিফল্টে JSON হিসেবে বা --yaml দিলে YAML হিসেবে।"
+
+msgid "Print YAML instead of JSON."
+msgstr "JSON-এর বদলে YAML ছাপে।"
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "কী শনাক্ত হলো, কী ব্যর্থ হলো, আর কীসে আরও কিছু খুলবে তা ব্যাখ্যা করে।"
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "ঠিক"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "সতর্কতা"
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "ত্রুটি"
+
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "মাপা"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "আন্দাজ করা"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "ধরে নেওয়া"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "অজানা"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s এবং %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "মেশিন"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)dটি কোর / %(logical)dটি থ্রেড"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)dটি পারফরম্যান্স কোর"
+msgstr[1] "%(count)dটি পারফরম্যান্স কোর"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "isa অজানা"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)dটি মডিউল"
+msgstr[1] "%(count)dটি মডিউল"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)dটি চ্যানেল"
+msgstr[1] "%(count)dটি চ্যানেল"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+# Bengali does not inflect these row values for gender or number, so every row that says
+# unknown or none detected says the same words. Each context is still answered on its
+# own: leaving one empty would drop that row back to English while the others stayed
+# Bengali.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "অজানা"
+
+msgid "Memory"
+msgstr "মেমরি"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "মোট %(total)s, উপলব্ধ %(available)s; %(details)s; ব্যান্ডউইথ %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "ধরন অজানা"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "কোনোটি পাওয়া যায়নি"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, %(free)s খালি"
+
+msgid "VRAM unknown"
+msgstr "VRAM অজানা"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (স্পেক)"
+
+msgid "driver %(driver)s"
+msgstr "ড্রাইভার %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "কোনো স্পেক নেই"
+
+msgid "Memory pool"
+msgstr "মেমরি পুল"
+
+msgid "unified (GPU shares system memory)"
+msgstr "একীভূত (GPU সিস্টেম মেমরি ভাগ করে নেয়)"
+
+msgid "Disk"
+msgstr "ডিস্ক"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: %(total)s-এর মধ্যে %(free)s খালি"
+
+msgid "Installed"
+msgstr "ইনস্টল করা"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "না"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "অজানা বিল্ড"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "হ্যাঁ, %(build)s, %(path)s-এ"
+
+msgid "Backends"
+msgstr "Backends"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "কোনোটি পাওয়া যায়নি"
+
+msgid "Local models"
+msgstr "স্থানীয় মডেল"
+
+msgid "Running"
+msgstr "চলছে"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, context %(context)s"
+
+msgid "unknown model"
+msgstr "অজানা মডেল"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "অজানা"
+
+msgid "Problem"
+msgstr "সমস্যা"
+
+msgid "Probes"
+msgstr "পরীক্ষা"
+
+msgid "probe"
+msgstr "পরীক্ষা"
+
+msgid "result"
+msgstr "ফল"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "ঠিক"
+
+msgid "no server"
+msgstr "কোনো সার্ভার নেই"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "ব্যর্থ"
+
+msgid "Findings"
+msgstr "পর্যবেক্ষণ"
+
+msgid "level"
+msgstr "স্তর"
+
+msgid "finding"
+msgstr "পর্যবেক্ষণ"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "গুণমান*"
+
+msgid "Params"
+msgstr "প্যারাম"
+
+msgid "Context"
+msgstr "Context"
+
+msgid "Capabilities"
+msgstr "ক্ষমতা"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "গুণমান হলো সম্পাদকীয় ভিত্তি, quantisation-এর কোনো ক্ষতি ধরার আগের; এর পিছনের সূত্রসহ বেঞ্চমার্ক দেখতে `llamafit info <model>` চালান।"
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "mixture-of-experts মডেলের ক্ষেত্রে প্যারাম হলো মোট/সক্রিয় বিলিয়নে, আর দুটি সমান হলে একটিই সংখ্যা।"
+
+msgid "Models"
+msgstr "মডেল"
+
+msgid "Vendor"
+msgstr "ভেন্ডর"
+
+msgid "Family"
+msgstr "পরিবার"
+
+msgid "Release date"
+msgstr "প্রকাশের তারিখ"
+
+msgid "Licence"
+msgstr "লাইসেন্স"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "প্যারামিটার"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "মোট %(total)sB, সক্রিয় %(active)sB"
+
+msgid "%(tokens)s tokens native"
+msgstr "স্বাভাবিকভাবে %(tokens)s টোকেন"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", %(method)s দিয়ে বাড়িয়ে %(tokens)s"
+
+msgid "unspecified method"
+msgstr "পদ্ধতি অনির্দিষ্ট"
+
+msgid "Architecture"
+msgstr "আর্কিটেকচার"
+
+msgid "Notes"
+msgstr "মন্তব্য"
+
+msgid "Use cases"
+msgstr "ব্যবহার-ধরন"
+
+msgid "Quality baseline"
+msgstr "গুণমানের ভিত্তি"
+
+msgid "Benchmark"
+msgstr "বেঞ্চমার্ক"
+
+msgid "Source %(index)d"
+msgstr "সূত্র %(index)d"
+
+msgid "not read yet"
+msgstr "এখনো পড়া হয়নি"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)dটি লেয়ার"
+msgstr[1] "%(count)dটি লেয়ার"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)dটি এক্সপার্ট"
+msgstr[1] "%(count)d/%(used)dটি এক্সপার্ট"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)dটি এক্সপার্ট"
+msgstr[1] "%(count)dটি এক্সপার্ট"
+
+msgid "Quants"
+msgstr "Quants"
+
+msgid "Name"
+msgstr "নাম"
+
+msgid "Size"
+msgstr "আকার"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "তথ্য"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "অজানা"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "এই মেশিনে কী কী আছে তা দেখায়: CPU, মেমরি, GPU, ডিস্ক এবং llama.cpp।"
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "RAM ব্যান্ডউইথের মাপ নেওয়া বাদ দেয়।"
+
+msgid "Command: %(command)s"
+msgstr "কমান্ড: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "কাটা GGUF হেডার: offset %(offset)d-এ %(wanted)d বাইট দরকার ছিল, পাওয়া গেছে %(got)d"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "ফাইলটি হয়তো এখনো ডাউনলোড হচ্ছে, অথবা URL-টি কোনো GGUF ফাইলের নয়।"
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "offset %(offset)d-এ অজানা GGUF মানের ধরন %(type)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "এই ফাইলটি হয়তো GGUF মেটাডেটার এমন ধরন ব্যবহার করে যা LlamaFit যতটা সমর্থন করে তার চেয়ে নতুন।"
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "এটি GGUF ফাইল নয়: offset 0-এ ভুল magic %(magic)s"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "দেখে নিন যে এই ফাইলটি সত্যিই একটি .gguf মডেল।"
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "offset 4-এ অসমর্থিত GGUF সংস্করণ %(version)d"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit GGUF-এর %(versions)s সংস্করণ সমর্থন করে।"
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "এই GGUF ফাইলগুলি একটি split মডেলের নয়: '%(key)s' নিয়ে এদের মধ্যে মিল নেই, এরা %(values)s ঘোষণা করে"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "একটি মডেলের shard দিন, কয়েকটি মডেলের নয়।"
+
+msgid "no GGUF header to read facts from"
+msgstr "তথ্য পড়ার মতো কোনো GGUF হেডার নেই"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "মডেলের ফাইলটি দিন, অথবা split মডেলের প্রতিটি shard দিন।"
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(total)dটির মধ্যে %(count)dটি GGUF ফাইলে '%(key)s' কী নেই, তাই split মডেলে তাদের জায়গা ঠিক করা যাচ্ছে না"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "হয় একটি অ-split ফাইল একা দিন, নয়তো একটি split মডেলের প্রতিটি shard দিন।"
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "অসম্পূর্ণ shard সেট: মডেল %(declared)dটি shard ঘোষণা করে আর এসেছে %(arrived)dটি (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "split মডেলের প্রতিটি shard দিন।"
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "মডেলের মেটাডেটা রাখা shard-টি নেই: %(key)s %(numbers)s পাওয়া গেছে, এদের একটির 0 হওয়ার কথা ছিল"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "split মডেলের প্রতিটি shard দিন, প্রথমটিও।"
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "অসম্পূর্ণ shard সেট: %(key)s 0 থেকে %(last)d পর্যন্ত হওয়ার কথা ছিল, পাওয়া গেছে %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "split মডেলের প্রতিটি shard ঠিক একবার করে দিন।"
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "অসম্পূর্ণ shard সেট: মডেল %(declared)dটি টেনসর ঘোষণা করে আর তার %(shards)dটি shard মিলে %(held)dটি রাখে"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "%(path)s পড়া যায়নি: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "দেখে নিন যে ফাইলটি আছে এবং পড়া যায়।"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "%(url)s আনা যায়নি: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "আপনার নেটওয়ার্ক সংযোগ দেখে নিন এবং URL-এ পৌঁছোনো যায় কি না তাও দেখুন।"
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s 206 Partial Content-এর বদলে HTTP %(status)d ফেরত দিয়েছে; সার্ভারটি হয়তো range অনুরোধ সমর্থন করে না।"
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "নিশ্চিত করুন যে URL-টি ডাউনলোড করা যায় এমন একটি GGUF ফাইলের দিকে নির্দেশ করে।"
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "অজানা"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi কোনো GPU ফেরত দেয়নি"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi কোনো কার্ড ফেরত দেয়নি"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler কোনো ডিসপ্লে ফেরত দেয়নি"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI কোনো ভিডিও কন্ট্রোলার ফেরত দেয়নি"
+
+msgid "lspci found no display controllers"
+msgstr "lspci কোনো ডিসপ্লে কন্ট্রোলার পায়নি"
+
+msgid "no populated memory modules"
+msgstr "ভরা কোনো মেমরি মডিউল নেই"
+
+msgid "no SPMemoryDataType"
+msgstr "কোনো SPMemoryDataType নেই"
+
+msgid "empty command"
+msgstr "খালি কমান্ড"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: %(seconds)ss পরে সময় শেষ"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: পাওয়া যায়নি"
+
+msgid "no output"
+msgstr "কোনো আউটপুট নেই"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "exit code %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "llama.cpp পাওয়া যায়নি: PATH-এ, LLAMA_CPP_PATH-এ বা চেনা ডিরেক্টরিগুলিতে কোনো llama-server নেই"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "llama-server-এর পাশে কোনো ggml backend লাইব্রেরি পাওয়া যায়নি; বিল্ডটি static হতে পারে"
+
+msgid "no llama-server answering"
+msgstr "কোনো llama-server উত্তর দিচ্ছে না"
+
+msgid "unexpected response: %(error)s"
+msgstr "অপ্রত্যাশিত উত্তর: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "NVIDIA ড্রাইভার ইনস্টল করুন বা সারিয়ে নিন; nvidia-smi তার সঙ্গেই আসে এবং তা PATH-এ থাকা চাই।"
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "AMD-র VRAM-এর হিসাব দেখতে ROCm (Linux) ইনস্টল করুন; তা ছাড়া GPU শুধু নাম দিয়ে তালিকাভুক্ত হয়।"
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell ভিডিও কন্ট্রোলারের তালিকা করতে পারেনি; একটি সাধারণ ব্যবহারকারী সেশন থেকে চালান।"
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "কোনো ভেন্ডর টুল না থাকলে GPU নাম ধরে তালিকাভুক্ত করতে pciutils ইনস্টল করুন।"
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "DDR-এর ধরন ও গতি পড়া যায়নি; Linux-এ একবার sudo দিয়ে চালান (dmidecode) অথবা তার বদলে মাপা ব্যান্ডউইথ মেনে নিন।"
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo ব্যর্থ হয়েছে; CPU-র মডেল ও instruction set অজানা।"
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil CPU কোর গুনতে পারেনি; থ্রেড বাছাই একটি কোরে নেমে আসে। `pip install --force-reinstall psutil` দিয়ে psutil আবার ইনস্টল করুন।"
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil মেমরির মোট হিসাব পড়তে পারেনি; এটি কাজ না করা পর্যন্ত বাজেট হিসাব করা যাবে না। `pip install --force-reinstall psutil` দিয়ে psutil আবার ইনস্টল করুন।"
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "sysctl থেকে পারফরম্যান্স কোরের সংখ্যা পড়া যায়নি।"
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server আছে কিন্তু কোনো সংস্করণ জানায়নি; বাইনারিটি নষ্ট হতে পারে।"
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler ব্যর্থ হয়েছে; GPU-র তথ্য পাওয়া যাচ্ছে না।"
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "কোনো ভেন্ডর টুল GPU-র মেমরির আকার জানায়নি; এই মেশিনের জন্য বাজেট হিসাব করা যাতে যায়, তার জন্য আকারটি একটি hardware profile-এ লিখে রাখুন।"
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp ইনস্টল করা আছে"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "%(path)s-এ বিল্ড %(build)s, backends: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "অজানা"
+
+msgid "llama.cpp not found"
+msgstr "llama.cpp পাওয়া যায়নি"
+
+msgid "no llama-server binary was found"
+msgstr "কোনো llama-server বাইনারি পাওয়া যায়নি"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "llama.cpp ইনস্টল করুন (LlamaFit-এর দ্বিতীয় পর্যায় এটি করবে: `llamafit install llama.cpp`); ততদিন https://github.com/ggml-org/llama.cpp/releases থেকে একটি রিলিজ ডাউনলোড করুন এবং তার bin ডিরেক্টরিটি PATH-এ বা LLAMA_CPP_PATH-এ রাখুন।"
+
+msgid "Memory size unknown"
+msgstr "মেমরির আকার অজানা"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit এই মেশিনের মোট মেমরি পড়তে পারেনি, তাই কী আঁটবে তা সে বার করতে পারছে না।"
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: llama.cpp-এ কোনো %(backend)s backend নেই"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp এগুলি দিয়ে তৈরি: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "অজানা"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "%(gpu)s ব্যবহার করতে %(backend)s বা Vulkan backend আছে এমন একটি llama.cpp বিল্ড ইনস্টল করুন।"
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: VRAM-এর আকার অজানা"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "মেমরির খবর দেয় এমন ভেন্ডর টুলটি ছিল না"
+
+msgid "No GPU detected"
+msgstr "কোনো GPU পাওয়া যায়নি"
+
+msgid "models will run on the CPU only"
+msgstr "মডেল শুধু CPU-তে চলবে"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "GPU থাকলে দেখে নিন যে তার ড্রাইভার টুল ইনস্টল করা আছে।"
+
+msgid "RAM bandwidth assumed"
+msgstr "RAM ব্যান্ডউইথ ধরে নেওয়া হয়েছে"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "ডিফল্ট হিসেবে %(gbps)s GB/s ব্যবহার করা হচ্ছে"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "numpy ইনস্টল করুন (`pip install llamafit[fast]`) যাতে LlamaFit RAM ব্যান্ডউইথ মাপতে পারে।"
+
+msgid "Probe %(probe)s failed"
+msgstr "%(probe)s পরীক্ষা ব্যর্থ হয়েছে"
+
+msgid "unknown error"
+msgstr "অজানা ত্রুটি"
+
+msgid "llama-server running at %(url)s"
+msgstr "%(url)s-এ llama-server চলছে"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "মডেল %(model)s, context %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "অজানা"
+
+msgid "Low disk space on %(path)s"
+msgstr "%(path)s-এ ডিস্কে জায়গা কম"
+
+msgid "%(size)s free"
+msgstr "%(size)s খালি"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "বেশির ভাগ কাজের মডেলের 5 থেকে 120 GB দরকার; জায়গা খালি করুন বা ডাউনলোড ডিরেক্টরি বদলান।"
+
+msgctxt "thousands separator"
+msgid ","
+msgstr ","
+
+msgctxt "decimal separator"
+msgid "."
+msgstr "."
+
+# B is not the English word for a thousand million; it is how these models are named.
+# The file is Qwen3-27B and the identifier in this row already says 27B, so a localised
+# abbreviation would make one row disagree with itself. Change it only if your readers
+# genuinely would not recognise B, and say in a comment here why.
+msgctxt "parameter count"
+msgid "B"
+msgstr "B"
+
+msgctxt "size"
+msgid "unknown"
+msgstr "অজানা"

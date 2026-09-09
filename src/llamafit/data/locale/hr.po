@@ -1,0 +1,841 @@
+# Croatian translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. It was written from the English template in one
+# pass and it has had no second reader. By the standard docs/translations.md sets for
+# every language, that is not enough: please read it line by line and correct it in a
+# pull request.
+#
+# Croatian has three plural forms: 1, 21, 31 ... take the nominative singular; 2-4, 22-24
+# ... take the paucal; everything else, 0 and 5-20 included, takes the genitive plural.
+# The verb agrees too, which is why "Pronađen je 1 problem", "Pronađena su 2 problema"
+# and "Pronađeno je 5 problema" are three different sentences and not one with a suffix.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hr\n"
+"Language-Team: Croatian\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "Hugging Face vratio je %(status)d pri ispisu datoteka za %(repo)s."
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "Nije bilo moguće pročitati popis datoteka za %(repo)s s usluge Hugging Face."
+
+msgid "Check your network connection and try again."
+msgstr "Provjerite mrežnu vezu i pokušajte ponovno."
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "Odgovor usluge Hugging Face za %(repo)s nije sadržavao popis datoteka."
+
+msgid "Check that the repository id is correct and public."
+msgstr "Provjerite je li identifikator repozitorija ispravan i javan."
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "katalog ima %(count)d problem"
+msgstr[1] "katalog ima %(count)d problema"
+msgstr[2] "katalog ima %(count)d problema"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "Pokrenite `llamafit catalog validate` za pojedinosti."
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "nije bilo moguće zapisati %(path)s: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "Provjerite je li u direktorij moguće pisati i ima li u njemu mjesta."
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "%(path)s ima %(count)d problem i ne može se osvježiti"
+msgstr[1] "%(path)s ima %(count)d problema i ne može se osvježiti"
+msgstr[2] "%(path)s ima %(count)d problema i ne može se osvježiti"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "Pokrenite `llamafit catalog validate` i najprije ispravite datoteku."
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "%(path)s nije bilo moguće pročitati u cijelosti, pa bi osvježavanje samo modela %(model)s odbacilo podatke koje datoteka bilježi za modele koje ovo pokretanje ne dira: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "Pokrenite `llamafit catalog refresh` bez --model da biste ponovno izgradili cijelu datoteku."
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "Pronađite, izmjerite, instalirajte i provjerite jezične modele otvorenih težina za llama.cpp na vlastitom računalu."
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "Ispisuje strojno čitljiv JSON umjesto tablica."
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "Zapisuje pojedinosti u llamafit.log u direktoriju zapisa i prikazuje tragove pogrešaka."
+
+msgid "Disable colours."
+msgstr "Isključuje boje."
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "Govori ovim jezikom, primjerice pt_PT. Jezik koji LlamaFit nema vraća se na engleski, uz popis jezika koje ima."
+
+msgid "Print the version and exit."
+msgstr "Ispisuje inačicu i izlazi."
+
+msgid "Unexpected error: %(error)s"
+msgstr "Neočekivana pogreška: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "Pokrenite ponovno s --verbose za cijeli trag pogreške."
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "Održava katalog: provjerava njegove datoteke, osvježava promjenjiva polja."
+
+msgid "Keep only this use case."
+msgstr "Zadržava samo ovaj slučaj uporabe."
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "Zadržava samo modele s ovom mogućnošću (može se ponoviti)."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Zadržava samo ove identifikatore licenci (može se ponoviti)."
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "Provjerava samo ovu datoteku umjesto priloženog kataloga i prilagodbi."
+
+msgid "Did you mean: %(ids)s?"
+msgstr "Jeste li mislili: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Pokrenite `llamafit list` da biste vidjeli sve identifikatore modela."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "u katalogu nema modela pod nazivom %(id)s"
+
+# The verb agrees with the count as well as the noun, so all three forms differ.
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "Pronađen je %(count)d problem u katalogu; pokrenite `llamafit catalog validate` za pojedinosti."
+msgstr[1] "Pronađena su %(count)d problema u katalogu; pokrenite `llamafit catalog validate` za pojedinosti."
+msgstr[2] "Pronađeno je %(count)d problema u katalogu; pokrenite `llamafit catalog validate` za pojedinosti."
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "Nijedan model ne odgovara. Pokušajte sa širim --use-case, --capability, --license, --vendor ili --search."
+
+msgid "invalid --use-case %(value)s"
+msgstr "neispravna vrijednost za --use-case: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Ispravni slučajevi uporabe: %(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "neispravna vrijednost za --capability: %(values)s"
+msgstr[1] "neispravne vrijednosti za --capability: %(values)s"
+msgstr[2] "neispravne vrijednosti za --capability: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Ispravne mogućnosti: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"Ispisuje katalog modela, sužen zadanim filtrima.\n"
+"\n"
+"Tablica prikazuje najviše tri mogućnosti po modelu, uz oznaku +N za ostale, i poredana je prema prikazanom stupcu Kvaliteta; info ili --json prikazuju sve mogućnosti."
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "Zadržava samo ovog proizvođača, bez razlikovanja velikih i malih slova."
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "Podudaranje dijela teksta u identifikatoru, nazivu, proizvođaču ili obitelji, bez razlikovanja velikih i malih slova."
+
+msgid "Show at most this many."
+msgstr "Prikazuje najviše ovoliko."
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "Kratica za llamafit list --search TEXT."
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "Tekst za podudaranje s identifikatorom, nazivom, proizvođačem ili obitelji."
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "Prikazuje podatke jednog modela, njegove izvore i svaku kvantizaciju koju objavljuje."
+
+msgid "A catalog model id."
+msgstr "Identifikator modela iz kataloga."
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "Provjerava YAML datoteke kataloga prema shemi i ispisuje po jedan redak za svaki problem."
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "Provjerena je %(count)d datoteka, nije pronađen nijedan problem."
+msgstr[1] "Provjerene su %(count)d datoteke, nije pronađen nijedan problem."
+msgstr[2] "Provjereno je %(count)d datoteka, nije pronađen nijedan problem."
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "Osvježava nazive datoteka, veličine, kontrolne sume i GGUF podatke kataloga s usluge Hugging Face."
+
+msgid "Refresh only this model id."
+msgstr "Osvježava samo ovaj identifikator modela."
+
+msgid "Compute the refresh but write nothing."
+msgstr "Izračunava osvježavanje, ali ništa ne zapisuje."
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "Izlazi s 1 ako bi se išta promijenilo; ništa ne mijenja, za zakazani CI posao."
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: upozorenje: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "upozorenje: %(warning)s (%(count)d model: %(models)s)"
+msgstr[1] "upozorenje: %(warning)s (%(count)d modela: %(models)s)"
+msgstr[2] "upozorenje: %(warning)s (%(count)d modela: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: pogreška: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "Savjet: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "osvježavanje treba mrežni pristup usluzi Hugging Face; provjerite vezu i ispravnost identifikatora repozitorija."
+
+msgid "No changes."
+msgstr "Nema promjena."
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "Ispisuje sirovi kataloški zapis jednog modela, prema zadanome kao JSON ili kao YAML uz --yaml."
+
+msgid "Print YAML instead of JSON."
+msgstr "Ispisuje YAML umjesto JSON-a."
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "Objašnjava što je otkriveno, što nije uspjelo i što bi otključalo više."
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "U REDU"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "UPOZ."
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "POGREŠKA"
+
+# The four bandwidth labels describe propusnost, which is feminine, so they are all
+# feminine singular.
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "izmjerena"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "procijenjena"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "pretpostavljena"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "nepoznata"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s i %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "Računalo"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+# Not a counted message, so Croatian cannot agree with either number: the genitive
+# plural is what most counts want and it is what all of them get.
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d jezgri / %(logical)d dretvi"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d jezgra performansi"
+msgstr[1] "%(count)d jezgre performansi"
+msgstr[2] "%(count)d jezgri performansi"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "skup instrukcija nepoznat"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d memorijski modul"
+msgstr[1] "%(count)d memorijska modula"
+msgstr[2] "%(count)d memorijskih modula"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d kanal"
+msgstr[1] "%(count)d kanala"
+msgstr[2] "%(count)d kanala"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+# Each row that says "unknown" names its own noun, and Croatian follows that noun's
+# gender: propusnost, gradnja and veličina are feminine, model, kontekst and naziv
+# masculine, and pozadinski sustavi masculine plural.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "nepoznata"
+
+msgid "Memory"
+msgstr "Memorija"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "%(total)s ukupno, %(available)s dostupno; %(details)s; propusnost %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "vrsta nepoznata"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "nijedna nije otkrivena"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, %(free)s slobodno"
+
+msgid "VRAM unknown"
+msgstr "VRAM nepoznat"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (prema specifikaciji)"
+
+msgid "driver %(driver)s"
+msgstr "upravljački program %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "bez specifikacija"
+
+msgid "Memory pool"
+msgstr "Spremnik memorije"
+
+msgid "unified (GPU shares system memory)"
+msgstr "objedinjena (GPU dijeli memoriju sustava)"
+
+msgid "Disk"
+msgstr "Disk"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: %(free)s slobodno od %(total)s"
+
+msgid "Installed"
+msgstr "Instalirano"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "ne"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "nepoznata gradnja"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "da, %(build)s u %(path)s"
+
+msgid "Backends"
+msgstr "Pozadinski sustavi"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "nijedan nije otkriven"
+
+msgid "Local models"
+msgstr "Lokalni modeli"
+
+msgid "Running"
+msgstr "Radi"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, kontekst %(context)s"
+
+msgid "unknown model"
+msgstr "nepoznat model"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "nepoznat"
+
+msgid "Problem"
+msgstr "Problem"
+
+msgid "Probes"
+msgstr "Provjere"
+
+msgid "probe"
+msgstr "provjera"
+
+msgid "result"
+msgstr "rezultat"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "u redu"
+
+msgid "no server"
+msgstr "nema poslužitelja"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "neuspjelo"
+
+msgid "Findings"
+msgstr "Nalazi"
+
+msgid "level"
+msgstr "razina"
+
+msgid "finding"
+msgstr "nalaz"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "Kvaliteta*"
+
+msgid "Params"
+msgstr "Param."
+
+msgid "Context"
+msgstr "Kontekst"
+
+msgid "Capabilities"
+msgstr "Mogućnosti"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "Kvaliteta je uredničko polazište, prije ikakve kazne zbog kvantizacije; pokrenite `llamafit info <model>` za mjerila s izvorima koja stoje iza nje."
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "Param. je ukupan/aktivan broj parametara u milijardama za model mješavine stručnjaka, ili jedan broj kada su jednaki."
+
+msgid "Models"
+msgstr "Modeli"
+
+msgid "Vendor"
+msgstr "Proizvođač"
+
+msgid "Family"
+msgstr "Obitelj"
+
+msgid "Release date"
+msgstr "Datum izdanja"
+
+msgid "Licence"
+msgstr "Licenca"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "Parametri"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "%(total)sB ukupno, %(active)sB aktivno"
+
+msgid "%(tokens)s tokens native"
+msgstr "%(tokens)s tokena izvorno"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", %(tokens)s prošireno pomoću %(method)s"
+
+msgid "unspecified method"
+msgstr "metoda nije navedena"
+
+msgid "Architecture"
+msgstr "Arhitektura"
+
+msgid "Notes"
+msgstr "Napomene"
+
+msgid "Use cases"
+msgstr "Slučajevi uporabe"
+
+msgid "Quality baseline"
+msgstr "Polazište kvalitete"
+
+msgid "Benchmark"
+msgstr "Mjerilo"
+
+msgid "Source %(index)d"
+msgstr "Izvor %(index)d"
+
+msgid "not read yet"
+msgstr "još nije pročitano"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d sloj"
+msgstr[1] "%(count)d sloja"
+msgstr[2] "%(count)d slojeva"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d stručnjak"
+msgstr[1] "%(count)d/%(used)d stručnjaka"
+msgstr[2] "%(count)d/%(used)d stručnjaka"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d stručnjak"
+msgstr[1] "%(count)d stručnjaka"
+msgstr[2] "%(count)d stručnjaka"
+
+msgid "Quants"
+msgstr "Kvantizacije"
+
+msgid "Name"
+msgstr "Naziv"
+
+msgid "Size"
+msgstr "Veličina"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "Podaci"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "nepoznato"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "Prikazuje što ovo računalo ima: CPU, memoriju, grafičke kartice, diskove i llama.cpp."
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "Preskače mjerenje propusnosti RAM-a."
+
+msgid "Command: %(command)s"
+msgstr "Naredba: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "skraćeno GGUF zaglavlje: očekivano je %(wanted)d bajtova na odmaku %(offset)d, primljeno %(got)d"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "Datoteka se možda još preuzima ili URL možda ne upućuje na GGUF datoteku."
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "nepoznata vrsta GGUF vrijednosti %(type)d na odmaku %(offset)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "Ova datoteka možda koristi noviju vrstu GGUF metapodataka nego što LlamaFit podržava."
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "nije GGUF datoteka: neispravan potpis %(magic)s na odmaku 0"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "Provjerite je li ova datoteka doista .gguf model."
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "nepodržana GGUF inačica %(version)d na odmaku 4"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit podržava GGUF inačice %(versions)s."
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "ove GGUF datoteke nisu jedan podijeljeni model: ne slažu se oko '%(key)s' i navode %(values)s"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "Predajte dijelove jednog modela, a ne više njih."
+
+msgid "no GGUF header to read facts from"
+msgstr "nema GGUF zaglavlja iz kojeg bi se pročitali podaci"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "Predajte datoteku modela ili svaki dio podijeljenog modela."
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(count)d od %(total)d GGUF datoteka ne nosi ključ '%(key)s', pa se njihovo mjesto u podijeljenom modelu ne može utvrditi"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "Predajte jednu nepodijeljenu datoteku samu za sebe ili svaki dio jednog podijeljenog modela."
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "nepotpun skup dijelova: model navodi %(declared)d dijelova, a stiglo ih je %(arrived)d (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "Predajte svaki dio podijeljenog modela."
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "nedostaje dio koji nosi metapodatke modela: primljeno %(key)s %(numbers)s, a očekivalo se da jedan od njih bude 0"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "Predajte svaki dio podijeljenog modela, uključujući prvi."
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "nepotpun skup dijelova: očekivalo se %(key)s od 0 do %(last)d, primljeno %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "Predajte svaki dio podijeljenog modela točno jedanput."
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "nepotpun skup dijelova: model navodi %(declared)d tenzora, a njegovih %(shards)d dijelova zajedno drži %(held)d"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "nije bilo moguće pročitati %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Provjerite postoji li datoteka i je li čitljiva."
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "nije bilo moguće dohvatiti %(url)s: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "Provjerite mrežnu vezu i je li URL dostupan."
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s je vratio HTTP %(status)d umjesto 206 Partial Content; poslužitelj možda ne podržava zahtjeve za rasponom."
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "Potvrdite da URL upućuje na GGUF datoteku koja se može preuzeti."
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "nepoznat"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi nije vratio nijedan GPU"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi nije vratio nijednu karticu"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler nije vratio nijedan zaslon"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI nije vratio nijedan video kontroler"
+
+msgid "lspci found no display controllers"
+msgstr "lspci nije pronašao nijedan grafički kontroler"
+
+msgid "no populated memory modules"
+msgstr "nema popunjenih memorijskih modula"
+
+msgid "no SPMemoryDataType"
+msgstr "nema SPMemoryDataType"
+
+msgid "empty command"
+msgstr "prazna naredba"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: isteklo je vrijeme nakon %(seconds)s sekundi"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: nije pronađen"
+
+msgid "no output"
+msgstr "nema izlaza"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "izlazni kôd %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "llama.cpp nije pronađen: nema llama-server u PATH-u, u LLAMA_CPP_PATH ni u uobičajenim direktorijima"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "nisu pronađene ggml pozadinske biblioteke uz llama-server; gradnja je možda statična"
+
+msgid "no llama-server answering"
+msgstr "nijedan llama-server ne odgovara"
+
+msgid "unexpected response: %(error)s"
+msgstr "neočekivan odgovor: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "Instalirajte ili popravite NVIDIA upravljački program; nvidia-smi dolazi s njim i mora biti u PATH-u."
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "Instalirajte ROCm (Linux) da bi se prikazale vrijednosti AMD VRAM-a; bez njega se kartica navodi samo po nazivu."
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell nije mogao ispisati video kontrolere; pokrenite ga iz obične korisničke sesije."
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "Instalirajte pciutils da bi se grafičke kartice navodile po nazivu kada nema alata proizvođača."
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "Vrstu i brzinu DDR-a nije bilo moguće pročitati; na Linuxu pokrenite jednom sa sudo (dmidecode) ili umjesto toga prihvatite izmjerenu propusnost."
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo nije uspio; model CPU-a i skupovi instrukcija nisu poznati."
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil nije mogao prebrojiti jezgre CPU-a; odabir dretvi vraća se na jednu jezgru. Ponovno instalirajte psutil naredbom `pip install --force-reinstall psutil`."
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil nije mogao pročitati ukupnu memoriju; proračuni se ne mogu izračunati dok ovo ne proradi. Ponovno instalirajte psutil naredbom `pip install --force-reinstall psutil`."
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "Broj jezgri performansi nije bilo moguće pročitati iz sysctl."
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server postoji, ali nije prijavio inačicu; izvršna datoteka je možda oštećena."
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler nije uspio; podaci o grafičkoj kartici nisu dostupni."
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "Nijedan alat proizvođača nije prijavio veličinu memorije grafičke kartice; zabilježite veličinu u profilu hardvera kako bi se proračuni mogli izračunati za ovo računalo."
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp je instaliran"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "gradnja %(build)s u %(path)s, pozadinski sustavi: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "nepoznata"
+
+msgid "llama.cpp not found"
+msgstr "llama.cpp nije pronađen"
+
+msgid "no llama-server binary was found"
+msgstr "nije pronađena izvršna datoteka llama-server"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "Instalirajte llama.cpp (LlamaFit će to raditi u 2. fazi: `llamafit install llama.cpp`); do tada preuzmite izdanje s https://github.com/ggml-org/llama.cpp/releases i stavite njegov direktorij bin u PATH ili u LLAMA_CPP_PATH."
+
+msgid "Memory size unknown"
+msgstr "Veličina memorije nepoznata"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit nije mogao pročitati ukupnu memoriju ovog računala, pa ne može utvrditi što će stati."
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: nema pozadinskog sustava %(backend)s u llama.cpp"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp je izgrađen s: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "nepoznati"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "Instalirajte gradnju llama.cpp-a s pozadinskim sustavom %(backend)s ili Vulkan da biste koristili %(gpu)s."
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: veličina VRAM-a nepoznata"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "alat proizvođača koji prijavljuje memoriju nije bio dostupan"
+
+msgid "No GPU detected"
+msgstr "Nije otkriven nijedan GPU"
+
+msgid "models will run on the CPU only"
+msgstr "modeli će se izvoditi samo na CPU-u"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "Ako grafička kartica postoji, provjerite jesu li instalirani njezini upravljački alati."
+
+msgid "RAM bandwidth assumed"
+msgstr "Propusnost RAM-a je pretpostavljena"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "koristi se %(gbps)s GB/s kao zadana vrijednost"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "Instalirajte numpy (`pip install llamafit[fast]`) kako bi LlamaFit mogao izmjeriti propusnost RAM-a."
+
+msgid "Probe %(probe)s failed"
+msgstr "Provjera %(probe)s nije uspjela"
+
+msgid "unknown error"
+msgstr "nepoznata pogreška"
+
+msgid "llama-server running at %(url)s"
+msgstr "llama-server radi na %(url)s"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "model %(model)s, kontekst %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "nepoznat"
+
+msgid "Low disk space on %(path)s"
+msgstr "Malo prostora na disku na %(path)s"
+
+msgid "%(size)s free"
+msgstr "%(size)s slobodno"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "Većini korisnih modela treba od 5 do 120 GB; oslobodite prostor ili promijenite direktorij za preuzimanja."
+
+msgctxt "thousands separator"
+msgid ","
+msgstr "."
+
+msgctxt "decimal separator"
+msgid "."
+msgstr ","
+
+# B is not the English word for a thousand million; it is how these models are named.
+# The file is Qwen3-27B and the identifier in this row already says 27B, so a localised
+# abbreviation would make one row disagree with itself. Change it only if your readers
+# genuinely would not recognise B, and say in a comment here why.
+msgctxt "parameter count"
+msgid "B"
+msgstr "B"
+
+msgctxt "size"
+msgid "unknown"
+msgstr "nepoznata"

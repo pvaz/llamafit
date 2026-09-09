@@ -11,7 +11,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from llamafit.data import packaged_dir
-from llamafit.errors import ConfigError
+from llamafit.errors import ConfigError, PackagedDataError
 from llamafit.i18n.po import PoCatalog, read_po
 from llamafit.i18n.tags import SOURCE_LANGUAGE, normalise
 
@@ -69,10 +69,20 @@ def available_languages(*, directory: Path | None = None) -> tuple[str, ...]:
     :func:`catalog_path` looks for the same spellings, so everything listed here can be
     opened.
 
+    An installation with no packaged locale directory at all offers English alone rather
+    than failing. A directory that shipped empty already behaves that way, and the two
+    are the same situation for a reader: there is no translation to read, so every
+    message falls back to English, which is what a missing translation is supposed to
+    do. Making the absent case fatal would turn a cosmetic packaging gap into a tool
+    that cannot start, over data it does not need to do its job.
+
     Returns:
         The language tags, for example ``("en", "pt_PT")``.
     """
-    folder = catalog_dir() if directory is None else directory
+    try:
+        folder = catalog_dir() if directory is None else directory
+    except PackagedDataError:
+        return (SOURCE_LANGUAGE,)
     languages = {SOURCE_LANGUAGE}
     if folder.is_dir():
         for file in folder.glob(f"*{CATALOG_SUFFIX}"):

@@ -39,3 +39,109 @@ def test_format_bytes_binary_and_decimal() -> None:
 def test_gib() -> None:
     assert gib(1024**3) == 1.0
     assert gib(None) is None
+
+
+# --- numbers written the way a language writes them ---------------------------------
+
+
+def _speaking(group: str, decimal: str, billions: str = "B") -> None:
+    from llamafit.i18n import translator
+    from llamafit.i18n.po import parse_po
+
+    lines = [
+        'msgid ""',
+        'msgstr ""',
+        '"Plural-Forms: nplurals=2; plural=(n != 1);' + chr(92) + 'n"',
+        "",
+        'msgctxt "thousands separator"',
+        'msgid ","',
+        'msgstr "' + group + '"',
+        "",
+        'msgctxt "decimal separator"',
+        'msgid "."',
+        'msgstr "' + decimal + '"',
+        "",
+        'msgctxt "parameter count"',
+        'msgid "B"',
+        'msgstr "' + billions + '"',
+    ]
+    catalog = parse_po("\n".join(lines) + "\n")
+    assert catalog.problems == (), catalog.problems
+    translator.set_translator(translator.CatalogTranslator("xx", catalog))
+
+
+def test_english_numbers_are_left_exactly_as_they_were() -> None:
+    from llamafit.units import format_bytes, format_grouped, localise_number
+
+    assert localise_number("32,768") == "32,768"
+    assert format_grouped(32768) == "32,768"
+    assert format_bytes(137438953472) == "128.0 GiB"
+
+
+def test_a_language_that_swaps_both_separators_gets_both_swapped() -> None:
+    # The bug this exists for: 32,768 read by a Portuguese or German speaker is not a
+    # foreign-looking number, it is thirty-two tokens and a bit.
+    from llamafit.units import format_bytes, format_grouped, localise_number
+
+    _speaking(group=".", decimal=",")
+    assert format_grouped(32768) == "32.768"
+    assert format_bytes(137438953472) == "128,0 GiB"
+    assert localise_number("1,234.56") == "1.234,56"
+
+
+def test_the_two_separators_are_swapped_in_one_pass_not_one_after_the_other() -> None:
+    # Swapping "," then "." would turn 1,234.56 into 1.234.56: the group separator it had
+    # just written would be read again as a decimal point.
+    from llamafit.units import localise_number
+
+    _speaking(group=".", decimal=",")
+    assert localise_number("1,234.56").count(",") == 1
+
+
+def test_a_language_that_fills_in_nothing_falls_back_to_english_not_to_blank() -> None:
+    from llamafit.units import format_grouped
+
+    _speaking(group="", decimal="")
+    assert format_grouped(32768) == "32,768"
+
+
+def test_a_language_that_groups_with_a_space_says_so_and_is_heard() -> None:
+    # This test used to record the opposite, because a msgstr holding only whitespace
+    # counted as untranslated everywhere — a rule that is right for prose and wrong for
+    # punctuation, and one that silently handed French, Russian, Swedish, Polish and every
+    # other language that groups digits with a space the English comma. The three entries
+    # now go through pgettext_literal, which reads them as they stand.
+    from llamafit.units import format_grouped
+
+    _speaking(group=chr(160), decimal=",")
+    assert format_grouped(32768) == "32" + chr(160) + "768"
+
+
+def test_a_group_separator_that_is_an_ordinary_space_is_a_space_too() -> None:
+    # A no-break space is what the shipped catalogs write, but nothing here is special
+    # about that character: whatever a translator puts in the entry is what comes out.
+    from llamafit.units import format_grouped
+
+    _speaking(group=" ", decimal=",")
+    assert format_grouped(32768) == "32 768"
+
+
+def test_the_billions_suffix_is_taken_from_the_catalog() -> None:
+    from llamafit.cli.render import _fmt_params
+
+    assert _fmt_params(27, 27) == "27B"
+    _speaking(group=".", decimal=",", billions="MM")
+    assert _fmt_params(27, 27) == "27MM"
+    assert _fmt_params(80, 3) == "80/3MM"
+
+
+def test_the_packaged_french_catalog_really_groups_with_a_space() -> None:
+    # Through the shipped file rather than a catalog assembled here, because the bug this
+    # whole change exists for was in what the shipped file could say and not in what the
+    # formatter did with it: French asked for a space and was handed the English comma.
+    from llamafit.i18n import set_language
+    from llamafit.units import format_bytes, format_grouped
+
+    set_language("fr", env={})
+    assert format_grouped(32768) == "32" + chr(160) + "768"
+    assert format_bytes(137438953472) == "128,0 GiB"

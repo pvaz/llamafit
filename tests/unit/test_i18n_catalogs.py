@@ -70,8 +70,11 @@ def _template_messages() -> dict[MessageKey, str | None]:
 
 
 def test_at_least_one_language_ships() -> None:
+    # Only that some catalog is packaged, which is what makes every parametrised check
+    # below run at all. Which languages ship is not this test's business: the ones that do
+    # are each checked by name where something specific to them is being asserted, and
+    # nothing here should fail because somebody contributed a translation.
     assert LANGUAGES, "no .po catalogs are packaged"
-    assert "pt_PT" in LANGUAGES
 
 
 def test_every_catalog_file_is_named_for_its_language() -> None:
@@ -117,10 +120,39 @@ def test_every_plural_entry_matches_the_template_and_the_declared_form_count(
 
 
 @pytest.mark.parametrize("language", LANGUAGES)
+def test_every_catalog_says_how_its_readers_write_a_number(language: str) -> None:
+    """The three punctuation entries are filled, and what they hold can be read back.
+
+    A missing message is a warning everywhere else in this file, because a translation in
+    progress must not break the build. These three are not prose and are not optional: a
+    catalog that leaves them empty does not degrade into English wording, it prints a
+    German reader ``32,768`` and tells him the model holds thirty-two tokens.
+
+    They go through the literal lookup, because half of these languages group digits with
+    a space and the ordinary lookup reads a space as nothing.
+    """
+    catalog = load_language(language)
+    group = catalog.pgettext_literal("thousands separator", ",")
+    decimal = catalog.pgettext_literal("decimal separator", ".")
+    suffix = catalog.pgettext_literal("parameter count", "B")
+    assert len(group) == 1, f"{language}: the group separator is {group!r}, not one character"
+    assert len(decimal) == 1, f"{language}: the decimal separator is {decimal!r}"
+    assert group != decimal, f"{language}: both separators are {group!r}, so 1{group}234 is two"
+    assert not any(c.isdigit() for c in group + decimal + suffix), (
+        f"{language}: a digit in the punctuation would be read as part of the number"
+    )
+    assert suffix and not suffix.isspace(), f"{language}: the parameter suffix is {suffix!r}"
+
+
+@pytest.mark.parametrize("language", LANGUAGES)
 def test_a_message_missing_from_a_catalog_is_a_warning_not_a_failure(language: str) -> None:
     template = _template_messages()
     catalog = load_language(language)
-    missing = sorted(set(template) - set(catalog.messages)) + list(catalog.untranslated())
+    # Sorted through a key, not on the tuples themselves: a key is (context, msgid) and a
+    # context is None for a message that has none, so comparing two keys straight compares
+    # None with a str the moment both kinds are missing at once.
+    absent = sorted(set(template) - set(catalog.messages), key=lambda key: (key[0] or "", key[1]))
+    missing = absent + list(catalog.untranslated())
     if missing:
         warnings.warn(
             f"{language} still needs {len(missing)} message(s): {missing[0]!r}"

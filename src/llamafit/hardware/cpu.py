@@ -10,6 +10,7 @@ from typing import Any
 import psutil
 
 from llamafit.hardware.runner import Runner, probe
+from llamafit.i18n import pgettext
 from llamafit.models.host import Cpu, OsName, Probe
 
 _ISA_MAP: dict[str, str] = {
@@ -81,11 +82,15 @@ def detect_cpu(
     provider = cpuinfo_provider or _default_cpuinfo
     probes: list[Probe] = []
     start = time.perf_counter()
-    model = "unknown"
+    # A context, because "unknown" is also the answer three other rows give about
+    # something else, and Portuguese inflects the word for the noun it is about.
+    model = pgettext("CPU model", "unknown")
     flags: list[str] = []
     try:
         info = provider()
-        model = str(info.get("brand_raw") or info.get("brand") or "unknown").strip()
+        model = str(
+            info.get("brand_raw") or info.get("brand") or pgettext("CPU model", "unknown")
+        ).strip()
         flags = [str(f) for f in info.get("flags", [])]
         probes.append(Probe(name="cpuinfo", ok=True, duration_ms=_ms(start)))
     except Exception as exc:  # a broken cpuinfo must not stop the scan

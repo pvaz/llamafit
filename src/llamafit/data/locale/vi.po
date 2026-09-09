@@ -1,0 +1,809 @@
+# Vietnamese translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. It was written from the template in one pass and
+# has had no second reader. By the standard docs/translations.md sets for every language,
+# that is not enough: please read it line by line and correct it in a pull request.
+#
+# Vietnamese takes one plural form, so every plural message has a single msgstr[0] and
+# the count is carried by %(count)d, as it already is in the English.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: vi\n"
+"Language-Team: Vietnamese\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "Hugging Face trả về %(status)d khi liệt kê tệp của %(repo)s."
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "Không đọc được danh sách tệp của %(repo)s từ Hugging Face."
+
+msgid "Check your network connection and try again."
+msgstr "Hãy kiểm tra kết nối mạng rồi thử lại."
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "Phản hồi của Hugging Face cho %(repo)s không có danh sách tệp."
+
+msgid "Check that the repository id is correct and public."
+msgstr "Hãy kiểm tra xem id kho có đúng và có công khai không."
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "danh mục có %(count)d vấn đề"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "Chạy `llamafit catalog validate` để xem chi tiết."
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "không ghi được %(path)s: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "Hãy kiểm tra xem thư mục có ghi được và còn chỗ trống không."
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "%(path)s có %(count)d vấn đề nên không làm mới được"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "Hãy chạy `llamafit catalog validate` và sửa tệp trước đã."
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "không đọc được trọn vẹn %(path)s, nên nếu chỉ làm mới %(model)s thì sẽ mất những dữ kiện mà tệp ghi cho các mô hình mà lần chạy này không đụng tới: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "Chạy `llamafit catalog refresh` không kèm --model để dựng lại toàn bộ tệp."
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "Tìm, ước lượng kích thước, cài đặt và kiểm chứng các LLM trọng số mở cho llama.cpp ngay trên máy của bạn."
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "In ra JSON cho máy đọc thay vì bảng."
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "Ghi chi tiết vào llamafit.log trong thư mục nhật ký và hiển thị traceback."
+
+msgid "Disable colours."
+msgstr "Tắt màu."
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "Dùng ngôn ngữ này, ví dụ pt_PT. Ngôn ngữ mà LlamaFit không có sẽ quay về tiếng Anh, và nó cho biết những ngôn ngữ nào đang có."
+
+msgid "Print the version and exit."
+msgstr "In phiên bản rồi thoát."
+
+msgid "Unexpected error: %(error)s"
+msgstr "Lỗi ngoài dự kiến: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "Chạy lại với --verbose để xem traceback đầy đủ."
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "Bảo trì danh mục: kiểm tra các tệp, làm mới những trường hay thay đổi."
+
+msgid "Keep only this use case."
+msgstr "Chỉ giữ trường hợp sử dụng này."
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "Chỉ giữ các mô hình có khả năng này (dùng được nhiều lần)."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Chỉ giữ các mã giấy phép này (dùng được nhiều lần)."
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "Chỉ kiểm tra tệp này thay vì danh mục đi kèm và các tệp ghi đè riêng."
+
+msgid "Did you mean: %(ids)s?"
+msgstr "Có phải bạn muốn tìm: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Chạy `llamafit list` để xem mọi id mô hình."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "không có mô hình nào tên %(id)s trong danh mục"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "Tìm thấy %(count)d vấn đề trong danh mục; chạy `llamafit catalog validate` để xem chi tiết."
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "Không có mô hình nào khớp. Hãy nới rộng --use-case, --capability, --license, --vendor hoặc --search."
+
+msgid "invalid --use-case %(value)s"
+msgstr "--use-case không hợp lệ: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Các trường hợp sử dụng hợp lệ: %(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "giá trị --capability không hợp lệ: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Các khả năng hợp lệ: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"Liệt kê danh mục mô hình, thu hẹp theo các bộ lọc đã cho.\n"
+"\n"
+"Bảng hiển thị tối đa ba khả năng cho mỗi mô hình, kèm dấu +N cho phần còn lại, và được sắp theo cột Chất lượng đang hiển thị; info hoặc --json có đủ mọi khả năng."
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "Chỉ giữ nhà cung cấp này, không phân biệt hoa thường."
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "Khớp chuỗi con trong id, tên, nhà cung cấp hoặc dòng, không phân biệt hoa thường."
+
+msgid "Show at most this many."
+msgstr "Hiển thị nhiều nhất bấy nhiêu mục."
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "Cách viết tắt của llamafit list --search TEXT."
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "Chuỗi cần khớp với id, tên, nhà cung cấp hoặc dòng."
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "Hiện các dữ kiện, nguồn và mọi bản lượng tử hóa của một mô hình."
+
+msgid "A catalog model id."
+msgstr "Một id mô hình trong danh mục."
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "Kiểm tra các tệp YAML của danh mục theo lược đồ, in mỗi vấn đề một dòng."
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "Đã kiểm tra %(count)d tệp, không thấy vấn đề nào."
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "Làm mới tên tệp, kích thước, tổng kiểm tra và dữ kiện GGUF của danh mục từ Hugging Face."
+
+msgid "Refresh only this model id."
+msgstr "Chỉ làm mới id mô hình này."
+
+msgid "Compute the refresh but write nothing."
+msgstr "Tính toán việc làm mới nhưng không ghi gì cả."
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "Thoát với mã 1 nếu có gì đó thay đổi; không thay đổi gì, dành cho tác vụ CI chạy theo lịch."
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: cảnh báo: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "cảnh báo: %(warning)s (%(count)d mô hình: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: lỗi: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "Gợi ý: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "việc làm mới cần truy cập mạng tới Hugging Face; hãy kiểm tra kết nối và xem id kho có đúng không."
+
+msgid "No changes."
+msgstr "Không có thay đổi."
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "In mục danh mục thô của một mô hình, mặc định là JSON, hoặc YAML nếu có --yaml."
+
+msgid "Print YAML instead of JSON."
+msgstr "In YAML thay vì JSON."
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "Giải thích những gì phát hiện được, những gì thất bại, và làm gì thì mở ra thêm."
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "CẢNH BÁO"
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "LỖI"
+
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "đo được"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "ước tính"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "giả định"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "không rõ"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s và %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "Máy"
+
+msgid "OS"
+msgstr "HĐH"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d nhân / %(logical)d luồng"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d nhân hiệu năng"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "không rõ tập lệnh"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d thanh"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d kênh"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+# Vietnamese marks neither gender nor number on these words, so every row that
+# says "unknown" or "none detected" reads the same. Each context is still filled
+# in: leaving one empty would drop that row back to English on its own.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "không rõ"
+
+msgid "Memory"
+msgstr "Bộ nhớ"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "tổng %(total)s, còn trống %(available)s; %(details)s; băng thông %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "không rõ loại"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "không phát hiện"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, còn trống %(free)s"
+
+msgid "VRAM unknown"
+msgstr "không rõ VRAM"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (theo thông số)"
+
+msgid "driver %(driver)s"
+msgstr "trình điều khiển %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "không có thông số"
+
+msgid "Memory pool"
+msgstr "Vùng nhớ"
+
+msgid "unified (GPU shares system memory)"
+msgstr "hợp nhất (GPU dùng chung bộ nhớ hệ thống)"
+
+msgid "Disk"
+msgstr "Đĩa"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: còn trống %(free)s trên %(total)s"
+
+msgid "Installed"
+msgstr "Đã cài"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "chưa"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "không rõ bản dựng"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "rồi, %(build)s tại %(path)s"
+
+msgid "Backends"
+msgstr "Backend"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "không phát hiện"
+
+msgid "Local models"
+msgstr "Mô hình cục bộ"
+
+msgid "Running"
+msgstr "Đang chạy"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, ngữ cảnh %(context)s"
+
+msgid "unknown model"
+msgstr "không rõ mô hình"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "không rõ"
+
+msgid "Problem"
+msgstr "Vấn đề"
+
+msgid "Probes"
+msgstr "Phép dò"
+
+msgid "probe"
+msgstr "phép dò"
+
+msgid "result"
+msgstr "kết quả"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "ok"
+
+msgid "no server"
+msgstr "không có máy chủ"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "thất bại"
+
+msgid "Findings"
+msgstr "Kết quả chẩn đoán"
+
+msgid "level"
+msgstr "mức"
+
+msgid "finding"
+msgstr "nội dung"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "Chất lượng*"
+
+msgid "Params"
+msgstr "Tham số"
+
+msgid "Context"
+msgstr "Ngữ cảnh"
+
+msgid "Capabilities"
+msgstr "Khả năng"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "Chất lượng là mức nền do biên tập đặt ra, trước khi tính thiệt hại do lượng tử hóa; chạy `llamafit info <model>` để xem các phép đo chuẩn có dẫn nguồn đứng sau nó."
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "Với mô hình hỗn hợp chuyên gia, Tham số là tổng/đang hoạt động tính bằng tỉ, hoặc một con số khi hai giá trị bằng nhau."
+
+msgid "Models"
+msgstr "Mô hình"
+
+msgid "Vendor"
+msgstr "Nhà cung cấp"
+
+msgid "Family"
+msgstr "Dòng"
+
+msgid "Release date"
+msgstr "Ngày phát hành"
+
+msgid "Licence"
+msgstr "Giấy phép"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "Tham số"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "tổng %(total)sB, hoạt động %(active)sB"
+
+msgid "%(tokens)s tokens native"
+msgstr "%(tokens)s token gốc"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", mở rộng lên %(tokens)s bằng %(method)s"
+
+msgid "unspecified method"
+msgstr "không nêu phương pháp"
+
+msgid "Architecture"
+msgstr "Kiến trúc"
+
+msgid "Notes"
+msgstr "Ghi chú"
+
+msgid "Use cases"
+msgstr "Trường hợp sử dụng"
+
+msgid "Quality baseline"
+msgstr "Chất lượng nền"
+
+msgid "Benchmark"
+msgstr "Phép đo chuẩn"
+
+msgid "Source %(index)d"
+msgstr "Nguồn %(index)d"
+
+msgid "not read yet"
+msgstr "chưa đọc"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d lớp"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d chuyên gia"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d chuyên gia"
+
+msgid "Quants"
+msgstr "Bản lượng tử hóa"
+
+msgid "Name"
+msgstr "Tên"
+
+msgid "Size"
+msgstr "Kích thước"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "Dữ kiện"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "không rõ"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "Hiện những gì máy này có: CPU, bộ nhớ, GPU, đĩa và llama.cpp."
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "Bỏ qua bước đo băng thông RAM."
+
+msgid "Command: %(command)s"
+msgstr "Lệnh: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "phần đầu GGUF bị cắt cụt: cần %(wanted)d byte tại vị trí %(offset)d, chỉ có %(got)d"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "Tệp có thể vẫn đang tải về, hoặc URL không trỏ tới một tệp GGUF."
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "kiểu giá trị GGUF không rõ %(type)d tại vị trí %(offset)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "Tệp này có thể dùng kiểu siêu dữ liệu GGUF mới hơn những gì LlamaFit hỗ trợ."
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "không phải tệp GGUF: chuỗi nhận dạng %(magic)s tại vị trí 0 không hợp lệ"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "Hãy kiểm tra xem tệp này có đúng là mô hình .gguf không."
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "phiên bản GGUF %(version)d không được hỗ trợ, tại vị trí 4"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit hỗ trợ các phiên bản GGUF %(versions)s."
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "các tệp GGUF này không thuộc cùng một mô hình chia mảnh: chúng khai báo '%(key)s' khác nhau, là %(values)s"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "Hãy đưa vào các mảnh của một mô hình, không phải của nhiều mô hình."
+
+msgid "no GGUF header to read facts from"
+msgstr "không có phần đầu GGUF để đọc dữ kiện"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "Hãy đưa vào tệp của mô hình, hoặc mọi mảnh của một mô hình chia mảnh."
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(count)d trong %(total)d tệp GGUF không có khóa '%(key)s', nên không xác định được vị trí của chúng trong mô hình chia mảnh"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "Hãy đưa vào một tệp không chia mảnh riêng lẻ, hoặc mọi mảnh của một mô hình chia mảnh."
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "bộ mảnh chưa đủ: mô hình khai báo %(declared)d mảnh mà chỉ có %(arrived)d mảnh tới (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "Hãy đưa vào mọi mảnh của mô hình chia mảnh."
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "thiếu mảnh chứa siêu dữ liệu của mô hình: nhận được %(key)s %(numbers)s, trong đó phải có một mảnh mang số 0"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "Hãy đưa vào mọi mảnh của mô hình chia mảnh, kể cả mảnh đầu tiên."
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "bộ mảnh chưa đủ: cần %(key)s từ 0 đến %(last)d, nhận được %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "Hãy đưa mỗi mảnh của mô hình chia mảnh đúng một lần."
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "bộ mảnh chưa đủ: mô hình khai báo %(declared)d tensor mà %(shards)d mảnh của nó gộp lại chỉ có %(held)d"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "không đọc được %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Hãy kiểm tra xem tệp có tồn tại và đọc được không."
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "không tải được %(url)s: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "Hãy kiểm tra kết nối mạng và xem URL có truy cập được không."
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s trả về HTTP %(status)d thay vì 206 Partial Content; máy chủ có thể không hỗ trợ yêu cầu theo dải."
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "Hãy xác nhận URL trỏ tới một tệp GGUF tải về được."
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "không rõ"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi không trả về GPU nào"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi không trả về card nào"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler không trả về màn hình nào"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI không trả về bộ điều khiển video nào"
+
+msgid "lspci found no display controllers"
+msgstr "lspci không tìm thấy bộ điều khiển hiển thị nào"
+
+msgid "no populated memory modules"
+msgstr "không có thanh nhớ nào được gắn"
+
+msgid "no SPMemoryDataType"
+msgstr "không có SPMemoryDataType"
+
+msgid "empty command"
+msgstr "lệnh rỗng"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: quá hạn sau %(seconds)ss"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: không tìm thấy"
+
+msgid "no output"
+msgstr "không có kết xuất"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "mã thoát %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "không tìm thấy llama.cpp: không có llama-server trên PATH, trong LLAMA_CPP_PATH hay trong các thư mục thông thường"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "không tìm thấy thư viện backend ggml bên cạnh llama-server; bản dựng có thể là bản tĩnh"
+
+msgid "no llama-server answering"
+msgstr "không có llama-server nào trả lời"
+
+msgid "unexpected response: %(error)s"
+msgstr "phản hồi ngoài dự kiến: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "Hãy cài hoặc sửa trình điều khiển NVIDIA; nvidia-smi đi kèm với nó và phải nằm trên PATH."
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "Hãy cài ROCm (Linux) để lộ ra các con số VRAM của AMD; không có nó thì GPU chỉ được liệt kê bằng tên."
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell không liệt kê được bộ điều khiển video; hãy chạy từ một phiên người dùng bình thường."
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "Hãy cài pciutils để liệt kê GPU theo tên khi không có công cụ của nhà cung cấp."
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "Không đọc được loại và tốc độ DDR; trên Linux hãy chạy một lần với sudo (dmidecode), hoặc chấp nhận băng thông đo được."
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo thất bại; không rõ kiểu CPU và các tập lệnh."
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil không đếm được số nhân CPU; số luồng lùi về một nhân. Hãy cài lại psutil bằng `pip install --force-reinstall psutil`."
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil không đọc được tổng bộ nhớ; chưa thể tính mức phân bổ cho đến khi việc này chạy được. Hãy cài lại psutil bằng `pip install --force-reinstall psutil`."
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "Không đọc được số nhân hiệu năng từ sysctl."
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server có tồn tại nhưng không báo phiên bản; tệp thực thi có thể đã hỏng."
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler thất bại; không có thông tin về GPU."
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "Không công cụ nào của nhà cung cấp báo dung lượng bộ nhớ của GPU; hãy ghi dung lượng đó vào một hồ sơ phần cứng để tính được mức phân bổ cho máy này."
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp đã được cài"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "bản dựng %(build)s tại %(path)s, backend: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "không rõ"
+
+msgid "llama.cpp not found"
+msgstr "không tìm thấy llama.cpp"
+
+msgid "no llama-server binary was found"
+msgstr "không tìm thấy tệp thực thi llama-server"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "Hãy cài llama.cpp (giai đoạn 2 của LlamaFit sẽ làm việc này: `llamafit install llama.cpp`); từ giờ đến lúc đó, hãy tải một bản phát hành từ https://github.com/ggml-org/llama.cpp/releases và đưa thư mục bin của nó vào PATH hoặc LLAMA_CPP_PATH."
+
+msgid "Memory size unknown"
+msgstr "Không rõ dung lượng bộ nhớ"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit không đọc được tổng bộ nhớ của máy này, nên không tính được cái gì vừa."
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: llama.cpp không có backend %(backend)s"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp được dựng với: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "không rõ"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "Hãy cài một bản dựng llama.cpp có backend %(backend)s hoặc Vulkan để dùng %(gpu)s."
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: không rõ dung lượng VRAM"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "không có công cụ của nhà cung cấp để báo bộ nhớ"
+
+msgid "No GPU detected"
+msgstr "Không phát hiện GPU"
+
+msgid "models will run on the CPU only"
+msgstr "các mô hình sẽ chỉ chạy trên CPU"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "Nếu máy có GPU, hãy kiểm tra xem công cụ trình điều khiển của nó đã được cài chưa."
+
+msgid "RAM bandwidth assumed"
+msgstr "Băng thông RAM là giả định"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "đang dùng %(gbps)s GB/s làm mặc định"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "Hãy cài numpy (`pip install llamafit[fast]`) để LlamaFit đo được băng thông RAM."
+
+msgid "Probe %(probe)s failed"
+msgstr "Phép dò %(probe)s thất bại"
+
+msgid "unknown error"
+msgstr "lỗi không rõ"
+
+msgid "llama-server running at %(url)s"
+msgstr "llama-server đang chạy tại %(url)s"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "mô hình %(model)s, ngữ cảnh %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "không rõ"
+
+msgid "Low disk space on %(path)s"
+msgstr "Sắp hết dung lượng đĩa trên %(path)s"
+
+msgid "%(size)s free"
+msgstr "còn trống %(size)s"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "Phần lớn mô hình hữu dụng cần từ 5 đến 120 GB; hãy giải phóng dung lượng hoặc đổi thư mục tải về."
+
+msgctxt "thousands separator"
+msgid ","
+msgstr "."
+
+msgctxt "decimal separator"
+msgid "."
+msgstr ","
+
+# B is not the English word for a thousand million; it is how these models are named.
+# The file is Qwen3-27B and the identifier in this row already says 27B, so a localised
+# abbreviation would make one row disagree with itself. Change it only if your readers
+# genuinely would not recognise B, and say in a comment here why.
+msgctxt "parameter count"
+msgid "B"
+msgstr "B"
+
+msgctxt "size"
+msgid "unknown"
+msgstr "không rõ"

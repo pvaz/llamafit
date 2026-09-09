@@ -9,6 +9,7 @@ from typer.testing import CliRunner
 
 from llamafit.cli.app import app
 from llamafit.errors import NotInstalledError
+from llamafit.i18n import available_languages, current_language, load_language
 from llamafit.models import Cpu, Disk, Gpu, Host, LlamaCpp, Memory, SystemReport
 
 runner = CliRunner()
@@ -225,3 +226,95 @@ def test_get_logger_is_a_child_of_the_package_logger() -> None:
     from llamafit.logging import get_logger
 
     assert get_logger("hardware.gpu").name == "llamafit.hardware.gpu"
+
+
+# --- the language option ------------------------------------------------------------
+#
+# Nothing below names a shipped catalog or counts them. Every catalog that lands adds a
+# language to the set, and a test that hard-codes the set fails on somebody else's
+# contribution, which teaches the next contributor to edit the assertion instead of
+# reading it -- and the next real failure gets edited away with it.
+
+NO_SUCH_LANGUAGE = "zz"
+"""A request that can never be met: ``zz`` is not an ISO 639 language."""
+
+
+def _a_shipped_language() -> str:
+    """Any language that ships and is not the source language."""
+    return next(tag for tag in available_languages() if tag != "en")
+
+
+def _a_region_that_will_never_ship() -> str:
+    """A region of a shipped language that nobody can contribute.
+
+    ``ZZ`` is user-assigned in ISO 3166, so this stays a substitution however many
+    catalogs land; naming a real region would stop testing substitution the day that
+    region's catalog arrived and the request began to be met exactly.
+
+    The language has to be one whose own catalog names a region. A request with a region
+    served by a region-less catalog is the documented exact-enough match rather than a
+    substitution, and has nothing to announce.
+    """
+    regioned = next((tag for tag in available_languages() if "_" in tag), None)
+    if regioned is None:
+        pytest.skip("no shipped catalog names a region, so no substitution can happen")
+    return f"{regioned.split('_')[0]}_ZZ"
+
+
+def test_the_language_option_is_read_before_anything_is_rendered() -> None:
+    # --help never reaches the callback body, so a language chosen there could not reach
+    # the help screen. The option is eager for exactly that reason, and this says so.
+    language = _a_shipped_language()
+    result = runner.invoke(app, ["--language", language, "--help"])
+    assert result.exit_code == 0
+    assert current_language() == language
+
+
+def test_a_language_llamafit_does_not_have_lists_the_ones_it_does() -> None:
+    # What is worth pinning is that the refusal names the languages that exist and that
+    # English is one of them, not that there happen to be two of them today.
+    result = runner.invoke(app, ["--language", NO_SUCH_LANGUAGE, "--version"])
+    assert result.exit_code == 0, "an unknown language falls back, it does not fail bare"
+    assert current_language() == "en"
+    offered = available_languages()
+    assert "en" in offered, "English is always available, catalog or no catalog"
+    # Flattened, because the notice wraps to the console and a long list wraps with it.
+    flattened = " ".join(result.output.split())
+    assert f"LlamaFit does not speak {NO_SUCH_LANGUAGE}" in flattened
+    for language in offered:
+        assert language in flattened, f"{language} ships but the refusal does not name it"
+
+
+def test_another_regions_catalog_says_which_variety_the_reader_is_getting() -> None:
+    requested = _a_region_that_will_never_ship()
+    result = runner.invoke(app, ["--language", requested, "--version"])
+    assert result.exit_code == 0
+    assert current_language() != "en", "a region with no catalog is served by its language"
+    # The variety is named from the serving catalog's own Language-Team header, so this
+    # asks that catalog rather than knowing the name itself.
+    team = load_language(current_language()).headers["Language-Team"]
+    flattened = " ".join(result.output.split())
+    assert f"LlamaFit has no {requested} translation" in flattened
+    assert team in flattened
+    assert f"Contribute a {requested} catalog" in flattened
+
+
+def test_the_notice_never_lands_in_the_json_on_stdout(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr("llamafit.cli.system_cmd.scan_system", lambda **kwargs: fake_report())
+    requested = _a_region_that_will_never_ship()
+    result = runner.invoke(app, ["--language", requested, "--json", "system"])
+    assert result.exit_code == 0
+    # Whatever the runner merged into `output`, the JSON document itself has to parse.
+    assert json.loads(result.stdout)["version"]
+
+
+def test_a_language_the_environment_asks_for_is_honoured(monkeypatch: pytest.MonkeyPatch) -> None:
+    # No arguments at all, so nothing eager can exit before the language is chosen:
+    # Click runs the eager options the command line named first, and --version is one.
+    language = _a_shipped_language()
+    monkeypatch.setenv("LLAMAFIT_LANGUAGE", language)
+    result = runner.invoke(app, [])
+    assert result.exit_code == 0
+    assert current_language() == language
