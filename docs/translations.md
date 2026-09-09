@@ -120,8 +120,9 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
   placeholder raises when the message is formatted.
 - **Plurals are not a suffix.** Use `msgstr[0]`, `msgstr[1]`, and as many forms as your
   `Plural-Forms` header declares. Do not write `1 module(s)`.
-- **The file is UTF-8**, always, on every platform. Save it as UTF-8 without a byte order
-  mark.
+- **The file is UTF-8**, always, on every platform. A byte order mark at the start is
+  read and ignored, so a Windows editor that adds one has not broken anything;
+  without one is still the tidier file.
 - **Strings can be split over adjacent lines** for readability; the reader joins them with
   nothing in between, so keep the trailing spaces where they belong.
 - **Escapes** are the usual ones: `\\`, `\"`, `\n`, `\t`, `\r`, `\a`, `\b`, `\f`, `\v`.
