@@ -486,6 +486,7 @@ def test_catalog_refresh_json_is_the_result_list(monkeypatch: pytest.MonkeyPatch
             "changed": True,
             "fields": ["a"],
             "error": None,
+            "warnings": [],
         }
     ]
 
