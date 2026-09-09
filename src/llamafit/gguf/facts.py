@@ -29,15 +29,47 @@ def _int(header: GgufHeader, *keys: str) -> int | None:
     return None
 
 
+_F32_BYTES = 4
+
+
 def _recurrent_state_bytes(
     header: GgufHeader, arch: str, n_layer: int | None, attention_layers: int | None
 ) -> int | None:
-    """Bytes of fixed recurrent/SSM state, when the shape and layer split are known."""
+    """Bytes of fixed recurrent/SSM state, when the shape and layer split are known.
+
+    llama.cpp keeps recurrent state in F32 regardless of the model's own
+    quantisation, and its layout follows the Mamba2/gated-DeltaNet state cache: a
+    convolution state over the concatenated ``(x, B, C)`` vector, of width
+    ``inner_size + 2 * group_count * state_size``, held for ``conv_kernel - 1``
+    steps, plus an SSM state of ``state_size * inner_size`` elements, once per
+    recurrent (non-attention) layer. ``group_count`` defaults to 0 when the
+    architecture does not report one, which correctly drops the ``B``/``C`` term for
+    a plain Mamba1-style layer whose convolution only covers ``x``.
+
+    Calibrated against a real measurement recorded in
+    ``docs/calibration/2026-09-09-reference-machine.md``: llama.cpp reported a 112.57
+    MiB (118,036,480-byte) recurrent buffer for Qwen3.8-Flash-Next (48 layers, 12 of
+    them full-attention, so 36 recurrent), which this formula reproduces within 0.4
+    percent.
+    """
     state_size = _int(header, f"{arch}.ssm.state_size")
     inner_size = _int(header, f"{arch}.ssm.inner_size")
-    if state_size is None or inner_size is None or n_layer is None or attention_layers is None:
+    conv_kernel = _int(header, f"{arch}.ssm.conv_kernel")
+    if (
+        state_size is None
+        or inner_size is None
+        or conv_kernel is None
+        or n_layer is None
+        or attention_layers is None
+    ):
         return None
-    return state_size * inner_size * (n_layer - attention_layers)
+    group_count = _int(header, f"{arch}.ssm.group_count")
+    if group_count is None:
+        group_count = 0
+    recurrent_layers = n_layer - attention_layers
+    conv_state_elements = (conv_kernel - 1) * (inner_size + 2 * group_count * state_size)
+    ssm_state_elements = state_size * inner_size
+    return _F32_BYTES * recurrent_layers * (conv_state_elements + ssm_state_elements)
 
 
 def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -> GgufFacts:
