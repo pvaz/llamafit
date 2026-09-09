@@ -24,6 +24,7 @@ from llamafit.i18n.translator import (
     ngettext,
     npgettext,
     pgettext,
+    pgettext_literal,
     set_language,
     set_translator,
 )
@@ -150,6 +151,19 @@ def test_a_translator_can_be_installed_directly() -> None:
     set_translator(CatalogTranslator("pt_PT", parse_po(CATALOG)))
     assert current_language() == "pt_PT"
     assert gettext("No GPU detected") == "Nenhuma GPU detetada"
+
+
+def test_the_literal_lookup_goes_through_the_active_translator() -> None:
+    catalog = CATALOG + '\nmsgctxt "thousands separator"\nmsgid ","\nmsgstr "\u00a0"\n'
+    assert pgettext_literal("thousands separator", ",") == ","
+    set_translator(CatalogTranslator("xx", parse_po(catalog)))
+    assert pgettext_literal("thousands separator", ",") == "\u00a0"
+    # And the ordinary lookup is left exactly as it was: whitespace is still blank there.
+    assert pgettext("thousands separator", ",") == ","
+
+
+def test_english_answers_the_literal_lookup_with_the_message_it_was_given() -> None:
+    assert EnglishTranslator().pgettext_literal("thousands separator", ",") == ","
 
 
 def test_the_wrapped_messages_go_through_the_active_translator(tmp_path: Path) -> None:
