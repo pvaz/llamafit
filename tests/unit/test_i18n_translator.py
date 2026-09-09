@@ -16,6 +16,8 @@ from llamafit.i18n.translator import (
     get_translator,
     gettext,
     ngettext,
+    npgettext,
+    pgettext,
     set_language,
     set_translator,
 )
@@ -123,7 +125,9 @@ def test_a_missing_catalog_falls_back_to_english_and_says_so(tmp_path: Path) -> 
 
 
 def test_a_malformed_catalog_falls_back_to_english_and_says_so(tmp_path: Path) -> None:
-    directory = _catalog_dir(tmp_path, text='msgctxt "menu"\nmsgid "a"\nmsgstr "b"\n')
+    # msgctxt used to be the malformed example here; it is a supported keyword now, so
+    # this asks for something the reader will always refuse.
+    directory = _catalog_dir(tmp_path, text='msgid "a"\nmsgstr "b\\z"\n')
     choice = set_language("pt_PT", env={}, available=("en", "pt_PT"), directory=directory)
     assert choice.language == "en"
     assert choice.notice is not None
@@ -190,3 +194,35 @@ def test_a_catalog_with_no_language_team_keeps_the_tag_in_the_notice(tmp_path: P
     )
     assert choice.language == "pt_PT"
     assert choice.notice == "LlamaFit has no pt_BR translation, so it is using the pt_PT one."
+
+
+def test_a_context_gives_one_english_word_two_portuguese_genders() -> None:
+    set_language("pt_PT", env={})
+    assert messages.no_gpu_row() == "nenhuma detetada"
+    assert messages.no_backends_row() == "nenhum detetado"
+    assert messages.bandwidth_unknown() == "desconhecida"
+    assert messages.bits_per_weight_unknown() == "desconhecido"
+
+
+def test_english_answers_a_contextual_lookup_with_the_message_itself() -> None:
+    assert isinstance(get_translator(), EnglishTranslator)
+    assert pgettext("GPU", "none detected") == "none detected"
+    assert npgettext("GPU", "%(count)d device", "%(count)d devices", 1) == "%(count)d device"
+    assert npgettext("GPU", "%(count)d device", "%(count)d devices", 3) == "%(count)d devices"
+
+
+def test_a_contextual_lookup_goes_through_the_installed_catalog(tmp_path: Path) -> None:
+    text = CATALOG + '\nmsgctxt "GPU"\nmsgid "none detected"\nmsgstr "nenhuma detetada"\n'
+    set_language("pt_PT", env={}, available=("en", "pt_PT"), directory=_catalog_dir(tmp_path, text))
+    assert pgettext("GPU", "none detected") == "nenhuma detetada"
+    assert pgettext("backends", "none detected") == "none detected"
+
+
+def test_a_contextual_counting_message_goes_through_the_installed_catalog(tmp_path: Path) -> None:
+    text = CATALOG + (
+        '\nmsgctxt "GPU"\nmsgid "%(count)d device"\nmsgid_plural "%(count)d devices"\n'
+        'msgstr[0] "%(count)d placa"\nmsgstr[1] "%(count)d placas"\n'
+    )
+    set_language("pt_PT", env={}, available=("en", "pt_PT"), directory=_catalog_dir(tmp_path, text))
+    assert npgettext("GPU", "%(count)d device", "%(count)d devices", 1) == "%(count)d placa"
+    assert npgettext("GPU", "%(count)d device", "%(count)d devices", 9) == "%(count)d placas"

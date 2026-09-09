@@ -6,7 +6,13 @@ from pathlib import Path
 import pytest
 
 from llamafit.i18n import translator
-from llamafit.i18n.lazy import LazyString, lazy_gettext, lazy_ngettext
+from llamafit.i18n.lazy import (
+    LazyString,
+    lazy_gettext,
+    lazy_ngettext,
+    lazy_npgettext,
+    lazy_pgettext,
+)
 from llamafit.i18n.po import parse_po
 from llamafit.i18n.translator import CatalogTranslator, _, set_language
 from tests.fixtures import messages
@@ -28,6 +34,21 @@ msgid_plural "%(count)d modules"
 msgstr[0] "%(count)d modulo"
 msgstr[1] "%(count)d modulos"
 """
+
+CONTEXT_CATALOG = (
+    CATALOG
+    + """
+msgctxt "GPU"
+msgid "none detected"
+msgstr "nenhuma detetada"
+
+msgctxt "GPU"
+msgid "%(count)d device"
+msgid_plural "%(count)d devices"
+msgstr[0] "%(count)d placa"
+msgstr[1] "%(count)d placas"
+"""
+)
 
 
 @pytest.fixture(autouse=True)
@@ -189,3 +210,25 @@ def test_a_command_docstring_cannot_be_deferred_at_all() -> None:
     result = CliRunner().invoke(app, ["--help"])
     assert "No GPU detected" in result.output
     assert "Nenhuma GPU detetada" not in result.output
+
+
+def test_a_deferred_contextual_message_obeys_the_language_chosen_after_it() -> None:
+    row = lazy_pgettext("GPU", "none detected")
+    assert str(row) == "none detected"
+    translator.set_translator(CatalogTranslator("pt_PT", parse_po(CONTEXT_CATALOG)))
+    assert str(row) == "nenhuma detetada"
+    assert row.message == "none detected"
+
+
+def test_a_deferred_contextual_plural_picks_the_form_its_count_selects() -> None:
+    one = lazy_npgettext("GPU", "%(count)d device", "%(count)d devices", 1)
+    many = lazy_npgettext("GPU", "%(count)d device", "%(count)d devices", 5)
+    translator.set_translator(CatalogTranslator("pt_PT", parse_po(CONTEXT_CATALOG)))
+    assert str(one) == "%(count)d placa"
+    assert str(many) == "%(count)d placas"
+
+
+def test_a_deferred_table_built_at_import_time_keeps_its_context() -> None:
+    assert str(messages.GPU_ROW_EMPTY) == "none detected"
+    translator.set_translator(CatalogTranslator("pt_PT", parse_po(CONTEXT_CATALOG)))
+    assert str(messages.GPU_ROW_EMPTY) == "nenhuma detetada"
