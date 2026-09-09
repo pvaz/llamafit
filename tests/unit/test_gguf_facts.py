@@ -88,15 +88,18 @@ def test_the_sliding_window_is_recorded_when_the_architecture_declares_one() -> 
         b.uint32("gemma3.attention.head_count", 32),
         b.uint32("gemma3.attention.head_count_kv", 16),
         b.uint32("gemma3.attention.key_length", 128),
+        b.uint32("gemma3.context_length", 131072),
         b.uint32("gemma3.attention.sliding_window", 1024),
     ]
     facts = derive_facts(read_header(FakeSource(b.build(metadata, []))))
     assert facts.sliding_window == 1024
+    assert facts.context_length == 131072
 
 
-def test_no_sliding_window_is_recorded_when_the_architecture_declares_none() -> None:
+def test_neither_window_nor_context_is_invented_when_the_header_declares_none() -> None:
     facts = derive_facts(read_header(FakeSource(dense_header())))
     assert facts.sliding_window is None
+    assert facts.context_length is None
 
 
 def test_head_dimension_falls_back_to_embedding_over_heads() -> None:

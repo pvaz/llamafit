@@ -92,6 +92,10 @@ class GgufFacts(_Strict):
             full-length KV cache on only a fraction of its layers, and the header
             does not say which, so the pattern has to come from a per-architecture
             rule or the catalog.
+        context_length: The longest context the file itself declares, from
+            ``{arch}.context_length``, or ``None`` when the architecture declares
+            none. Recorded, not used: it is what the file permits, which is not
+            always what the vendor supports.
         n_expert: Number of experts, for mixture-of-experts architectures.
         n_expert_used: Number of experts activated per token.
         has_shared_experts: Whether the model has always-on shared experts
@@ -127,6 +131,7 @@ class GgufFacts(_Strict):
     attention_layers: int | None = None
     attention_layers_source: Literal["tensors", "all-layers", "unknown"] = "unknown"
     sliding_window: int | None = None
+    context_length: int | None = None
     n_expert: int | None = None
     n_expert_used: int | None = None
     has_shared_experts: bool = False

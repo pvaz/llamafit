@@ -81,6 +81,7 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
     n_head = _int(header, f"{arch}.attention.head_count")
     n_head_kv = _int(header, f"{arch}.attention.head_count_kv", f"{arch}.attention.head_count")
     sliding_window = _int(header, f"{arch}.attention.sliding_window")
+    context_length = _int(header, f"{arch}.context_length")
     n_expert = _int(header, f"{arch}.expert_count")
     n_expert_used = _int(header, f"{arch}.expert_used_count")
 
@@ -146,6 +147,7 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
         attention_layers=attention_layers,
         attention_layers_source=attention_layers_source,
         sliding_window=sliding_window,
+        context_length=context_length,
         n_expert=n_expert,
         n_expert_used=n_expert_used,
         has_shared_experts=has_shared_experts,
