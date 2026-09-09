@@ -11,10 +11,12 @@ the real speed, and uses those measurements to sharpen its own estimates.
 It works on Windows, macOS and Linux, installs with `pip`, and never uses a language model to
 do any of this: every number is computed, labelled with how it was obtained, and explainable.
 
-> **Status: design complete, implementation starting (September 2026).** The design is in
-> [`docs/specs/`](docs/specs/2026-09-09-llamafit-design.md) and the
-> work is planned in [`docs/plans/`](docs/plans/). Nothing is published
-> on PyPI yet. Watch the repository or read the [roadmap](ROADMAP.md) to see what lands when.
+> **Status: phase 1A (host scan and diagnostics) is done.** `llamafit system` and
+> `llamafit doctor` work on Windows, macOS and Linux. The catalog, scoring, the terminal
+> dashboard and the web dashboard follow. The design is in
+> [`docs/specs/`](docs/specs/2026-09-09-llamafit-design.md) and the implementation plan is in
+> [`docs/plans/2026-09-09-phase1a-foundation-and-host-scan.md`](docs/plans/2026-09-09-phase1a-foundation-and-host-scan.md).
+> Watch the repository or read the [roadmap](ROADMAP.md) to see what lands when.
 
 ## Why
 
@@ -61,8 +63,8 @@ Every command has a `--json` form for scripts. The Textual terminal dashboard op
 
 | Command | What it does | Phase |
 |---|---|---|
-| `llamafit system` | show the host scan and the llama.cpp installation | 1A |
-| `llamafit doctor` | every probe, what failed, what would unlock more | 1A |
+| `llamafit system` | show the host scan and the llama.cpp installation | 1A (done) |
+| `llamafit doctor` | every probe, what failed, what would unlock more | 1A (done) |
 | `llamafit list`, `search`, `info` | browse the catalog; `info` shows the budget of every quant on this host | 1B |
 | `llamafit catalog validate`, `refresh` | maintain the catalog | 1B |
 | `llamafit fit` | every model ranked by fit on this machine | 1C |
@@ -89,16 +91,20 @@ The original hand-written launcher asked for 128K, started without complaint, an
 
 ## Install
 
-Not yet on PyPI. When phase 1A lands:
-
 ```
 pip install llamafit            # add [fast] for the NumPy bandwidth measurement
-llamafit system
-llamafit doctor
 ```
 
 Requirements: Python 3.10 or newer. No compiler, no Node, no account. The optional
 `llamafit[fast]` extra adds NumPy for a more accurate memory-bandwidth measurement.
+
+## Use
+
+```
+llamafit system                 # CPU, memory, GPUs, disks, llama.cpp installation
+llamafit doctor                 # what was detected, what failed, what would help
+llamafit --json system          # the same as JSON for scripts
+```
 
 ## Documentation
 
