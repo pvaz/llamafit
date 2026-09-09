@@ -862,6 +862,24 @@ msgstr "%(size)s حرة"
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr "تحتاج أغلب النماذج المفيدة من 5 إلى 120 GB؛ حرّر مساحة أو غيّر مجلد التنزيلات."
 
+msgctxt "thousands separator"
+msgid ","
+msgstr ","
+
+msgctxt "decimal separator"
+msgid "."
+msgstr "."
+
+# Left as B on purpose. The digits LlamaFit prints are Western, so the Arabic
+# thousands and decimal marks (U+066C, U+066B), which belong with Arabic-Indic
+# digits, would be wrong beside them; the comma and the point above are CLDR's
+# Latin-digit symbols for Arabic. Arabic says مليار for a thousand million but has
+# no settled abbreviation for it, and an Arabic word against Latin digits in a
+# terminal column reorders under bidi, so B stays.
+msgctxt "parameter count"
+msgid "B"
+msgstr "B"
+
 msgctxt "size"
 msgid "unknown"
 msgstr "غير معروف"
