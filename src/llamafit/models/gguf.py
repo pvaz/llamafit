@@ -86,6 +86,12 @@ class GgufFacts(_Strict):
         head_dim: Dimension of one attention head.
         attention_layers: Number of layers with full (non-linear) attention.
         attention_layers_source: How ``attention_layers`` was determined.
+        sliding_window: Length of the sliding attention window in tokens, from
+            ``{arch}.attention.sliding_window``, or ``None`` when the architecture
+            declares none. Recorded, not used: a model that slides holds a
+            full-length KV cache on only a fraction of its layers, and the header
+            does not say which, so the pattern has to come from a per-architecture
+            rule or the catalog.
         n_expert: Number of experts, for mixture-of-experts architectures.
         n_expert_used: Number of experts activated per token.
         has_shared_experts: Whether the model has always-on shared experts
@@ -120,6 +126,7 @@ class GgufFacts(_Strict):
     head_dim: int | None = None
     attention_layers: int | None = None
     attention_layers_source: Literal["tensors", "all-layers", "unknown"] = "unknown"
+    sliding_window: int | None = None
     n_expert: int | None = None
     n_expert_used: int | None = None
     has_shared_experts: bool = False
