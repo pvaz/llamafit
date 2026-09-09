@@ -337,7 +337,23 @@ def _fmt_capabilities(capabilities: Sequence[str], *, width: int, limit: int = 3
     return f"+{total}" if total else ""
 
 
+# Every width in this section is a count of terminal cells, never of characters, and
+# `cell_len` is the only thing that may measure one. The id column is where getting that
+# wrong shows up, because it is the only column allowed to fold: measure a heading in
+# characters and the budget hands the capabilities column a leftover that is too generous,
+# Rich re-measures for real when it draws, finds the row too wide, and takes the shortfall
+# out of the id -- the one column that has to stay typable. Measured with `len`, four of
+# the five shipped ids fold onto a second line at eighty columns under Japanese headings,
+# and Chinese does it too although its headings are genuinely narrower than the English
+# ones, which is what says the mis-measurement alone is the cause.
+#
+# `cell_len` is right and still not the whole story for every script. Thai vowel and tone
+# marks are zero width by Unicode, so a Thai heading measures narrower than it looks and
+# the box only lines up in a terminal that also gives those marks no advance. Terminals
+# disagree about that, and nothing this code can measure would settle it.
 _ID_COLUMN_MAX_WIDTH = 28
+"""How wide the id column may grow, in terminal cells."""
+
 # What one more column costs beyond its own content: a border and the padding on
 # each side of it. The table's own leading border is the one extra "+1" charged
 # once, before any column, in the budget below.
@@ -351,6 +367,14 @@ def _list_headings() -> dict[str, str]:
     :func:`_column_budget` measures these and :func:`render_catalog_list` prints them,
     and the two have to agree: a heading measured in English and printed in Portuguese
     would give a column a width its own title does not fit into.
+
+    Two of these share a message with a row label in :func:`render_model_facts`:
+    ``Context`` and ``Capabilities``. A heading has a width budget and a row label has
+    none, so one translation has to serve both, and a language whose full word is long is
+    forced to choose between a heading that crowds the table and a label that reads
+    clipped. Each wants its own ``pgettext`` context so a translator can answer twice.
+    That changes two message ids, which orphans work already under way in other catalogs,
+    so it waits for the consolidated English round rather than being fixed here.
     """
     return {
         "id": _("ID"),
@@ -559,6 +583,11 @@ def render_model_facts(model: CatalogModel) -> Table:
             "tokens": format_grouped(model.context.extended),
             "method": model.context.extended_method or _("unspecified method"),
         }
+    # This label and the Capabilities one below are the same messages as two of the list
+    # table's column headings, where they have a width budget that this table does not.
+    # See _list_headings: each wants its own context so a translator can give a short
+    # heading and a full label, and that waits for the consolidated English round because
+    # it moves two message ids.
     table.add_row(_("Context"), Text(context))
     table.add_row(
         _("Architecture"),
