@@ -1,0 +1,36 @@
+# Keep the pinned action commits in `.github/workflows/` from rotting.
+#
+# `release.yml` pins every action to a commit rather than to a moving tag, because those
+# actions handle the token that publishes under this project's name on PyPI and the bytes
+# that go with it. An exact pin buys that safety by giving up automatic updates, which is
+# only half a trade: a pin nobody revisits quietly becomes an old version with known holes
+# in it. This is the other half. Dependabot watches the pinned commits, opens a pull
+# request when one moves, and writes the new version into the trailing comment, so the
+# update arrives with release notes to read and the checks run on it like any other change.
+#
+# It covers the moving tags in `ci.yml` and `catalog.yml` too, which is harmless: those
+# jobs cannot publish anything, and a pull request saying an action has a new major
+# version is worth seeing either way.
+#
+# Python dependencies are deliberately not watched. This is a library with open version
+# ranges rather than an application with a lock file, so the useful signal — does LlamaFit
+# still work against what people actually install? — comes from CI resolving those ranges
+# afresh on every run, not from a pull request per release of a dependency.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Etc/UTC
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: ci
+    groups:
+      # One pull request a week rather than one per action: these move together often
+      # enough that separate ones are noise, and each still lists what changed.
+      actions:
+        patterns:
+          - "*"
