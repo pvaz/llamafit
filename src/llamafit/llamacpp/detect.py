@@ -97,7 +97,10 @@ def detect_backends(bin_dir: Path) -> list[str]:
 
 
 def find_local_models(dirs: Iterable[Path], *, max_depth: int = 3) -> list[LocalModel]:
-    """List GGUF files; split models appear once, under their first shard, with total bytes."""
+    """List GGUF files; split models appear once, under their first shard, with total bytes.
+
+    An incomplete split model, one whose first shard is missing, is not listed.
+    """
     models: dict[Path, int] = {}
     for root in dirs:
         root = Path(root)
@@ -113,7 +116,7 @@ def find_local_models(dirs: Iterable[Path], *, max_depth: int = 3) -> list[Local
                 models[first] = models.get(first, 0) + path.stat().st_size
                 continue
             models[path] = models.get(path, 0) + path.stat().st_size
-    return [LocalModel(path=str(p), bytes=b) for p, b in sorted(models.items())]
+    return [LocalModel(path=str(p), bytes=b) for p, b in sorted(models.items()) if p.exists()]
 
 
 def detect_install(

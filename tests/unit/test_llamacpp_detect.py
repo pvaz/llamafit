@@ -81,6 +81,14 @@ def test_find_local_models_groups_shards(tmp_path: Path) -> None:
     }
 
 
+def test_find_local_models_skips_split_models_without_their_first_shard(tmp_path: Path) -> None:
+    models = tmp_path / "models"
+    models.mkdir()
+    (models / "Partial-Q4_K_M-00002-of-00003.gguf").write_bytes(b"x" * 7)
+    (models / "Whole-Q4_K_M.gguf").write_bytes(b"x" * 4)
+    assert [Path(m.path).name for m in find_local_models([models])] == ["Whole-Q4_K_M.gguf"]
+
+
 def test_detect_install_reads_version_and_backends(tmp_path: Path) -> None:
     bin_dir = make_install(tmp_path)
     server = str(bin_dir / "llama-server.exe")
