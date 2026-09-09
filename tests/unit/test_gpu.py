@@ -74,3 +74,34 @@ def test_no_tools_means_no_gpus_but_probes_explain() -> None:
     gpus, probes = detect_gpus(FakeRunner({}), "linux")
     assert gpus == []
     assert probes and all(not p.ok for p in probes)
+
+
+def test_parse_lspci_prefers_the_marketing_name_and_skips_pci_ids() -> None:
+    from llamafit.hardware.gpu import parse_lspci
+
+    two = (
+        "00:02.0 VGA compatible controller [0300]: Intel Corporation UHD Graphics 770 [8086:4680]\n"
+    )
+    assert [g.name for g in parse_lspci(LSPCI)] == ["GeForce RTX 4060"]
+    assert [g.name for g in parse_lspci(two)] == ["Intel Corporation UHD Graphics 770"]
+    assert parse_lspci(two)[0].vendor == "intel"
+
+
+def test_generic_listing_keeps_a_distinct_model_with_a_shared_prefix() -> None:
+    wmi = json.dumps([{"Name": "NVIDIA GeForce RTX 4060"}, {"Name": "NVIDIA GeForce RTX 4060 Ti"}])
+    gpus, _ = detect_gpus(FakeRunner({"nvidia-smi": NVIDIA, "powershell": wmi}), "windows")
+    assert [g.name for g in gpus] == ["NVIDIA GeForce RTX 4060", "NVIDIA GeForce RTX 4060 Ti"]
+
+
+def test_lspci_name_without_vendor_prefix_is_deduplicated() -> None:
+    gpus, _ = detect_gpus(FakeRunner({"nvidia-smi": NVIDIA, "lspci": LSPCI}), "linux")
+    assert [g.name for g in gpus] == ["NVIDIA GeForce RTX 4060"]
+
+
+def test_parse_nvidia_smi_tolerates_na_fields() -> None:
+    out = (
+        "0, NVIDIA GeForce RTX 4060, 8188, 550, 610.88\n1, NVIDIA Tesla K80, [N/A], [N/A], 470.00\n"
+    )
+    gpus = parse_nvidia_smi(out)
+    assert len(gpus) == 2
+    assert gpus[1].vram_total_bytes is None and gpus[1].vram_used_bytes is None
