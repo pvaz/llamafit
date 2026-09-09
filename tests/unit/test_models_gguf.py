@@ -60,6 +60,7 @@ def test_facts_built_with_only_arch_has_documented_defaults() -> None:
     assert facts.attention_layers is None
     assert facts.attention_layers_source == "unknown"
     assert facts.sliding_window is None
+    assert facts.context_length is None
     assert facts.n_expert is None
     assert facts.n_expert_used is None
     assert facts.has_shared_experts is False
