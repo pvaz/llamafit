@@ -1,12 +1,12 @@
+import json
 from pathlib import Path
 
 import pytest
-import yaml
 
 from llamafit.catalog.hf import FakeHfClient, RepoFile
 from llamafit.catalog.loader import load_models_from_file
-from llamafit.catalog.refresh import dump_models, refresh_file
-from llamafit.errors import LlamaFitError, NetworkError
+from llamafit.catalog.refresh import refresh_file
+from llamafit.errors import CatalogError, NetworkError
 from llamafit.models.gguf import GgufFacts
 from tests.unit.test_catalog_loader import ENTRY, write
 
@@ -16,6 +16,28 @@ FILES = {
         RepoFile(path="README.md", size=10, sha256=None),
     ]
 }
+
+# Carries a comment, so a refresh that touches the YAML at all would show up as a
+# diff even where the data itself did not change.
+ENTRY_WITH_COMMENT = """# Sourced from the vendor's own model card; see the license URL below.
+- id: tiny-1b
+  name: Tiny 1B
+  vendor: Example
+  family: tiny
+  release_date: 2026-01-01
+  license: {spdx: MIT, url: "https://example.invalid/l"}
+  params: {total_b: 1.0, active_b: 1.0}
+  architecture: {class: dense, gguf_arch: llama}
+  context: {native: 8192}
+  capabilities: [coding]
+  use_cases: [coding]
+  quality: {baseline: 60}
+  sources:
+    - repo: example/tiny-1b-GGUF
+      trust: community
+      quants:
+        - {name: Q4_K_M}  # the only quant this repo publishes
+"""
 
 MULTI_ENTRY = """
 - id: tiny-1b
@@ -40,7 +62,7 @@ MULTI_ENTRY = """
     - kind: local
       path: D:/models/tiny.gguf
       quants:
-        - {name: Q4_K_M}
+        - {name: Q4_K_M-local}
 - id: other-2b
   name: Other 2B
   vendor: Example
@@ -127,10 +149,17 @@ def facts_stub(*args: object, **kwargs: object) -> GgufFacts:
     )
 
 
-def test_refresh_fills_sizes_checksums_and_facts(tmp_path: Path) -> None:
+def facts_path_of(path: Path) -> Path:
+    return path.with_name(f"{path.stem}.facts.json")
+
+
+def test_refresh_fills_the_facts_file(tmp_path: Path) -> None:
     path = write(tmp_path, "tiny.yaml", ENTRY)
     results = refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
     assert [r.changed for r in results] == [True]
+    assert results[0].warnings == []
+
+    assert facts_path_of(path).is_file()
     models, problems = load_models_from_file(path)
     assert problems == []
     quant = models[0].sources[0].quants[0]
@@ -141,46 +170,50 @@ def test_refresh_fills_sizes_checksums_and_facts(tmp_path: Path) -> None:
     assert quant.gguf_facts is not None and quant.gguf_facts.n_layer == 16
 
 
-def test_a_dry_run_changes_nothing_on_disk(tmp_path: Path) -> None:
+def test_a_refresh_never_touches_the_curated_yaml_bytes(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY_WITH_COMMENT)
+    before = path.read_bytes()
+    results = refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
+    assert results[0].changed is True
+    assert path.read_bytes() == before
+
+
+def test_a_dry_run_writes_no_facts_file(tmp_path: Path) -> None:
     path = write(tmp_path, "tiny.yaml", ENTRY)
-    before = path.read_text(encoding="utf-8")
     results = refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub, dry_run=True)
     assert results[0].changed is True
-    assert path.read_text(encoding="utf-8") == before
+    assert not facts_path_of(path).exists()
 
 
-def test_refreshing_twice_is_a_no_op(tmp_path: Path) -> None:
+def test_two_refreshes_over_unchanged_data_produce_a_byte_identical_facts_file(
+    tmp_path: Path,
+) -> None:
     path = write(tmp_path, "tiny.yaml", ENTRY)
     refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
-    first = path.read_text(encoding="utf-8")
+    first = facts_path_of(path).read_bytes()
+
     results = refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
+
     assert [r.changed for r in results] == [False]
-    assert path.read_text(encoding="utf-8") == first
+    assert facts_path_of(path).read_bytes() == first
 
 
-def test_a_failing_repository_leaves_the_file_untouched(tmp_path: Path) -> None:
+def test_a_failing_repository_leaves_everything_untouched(tmp_path: Path) -> None:
     path = write(tmp_path, "tiny.yaml", ENTRY)
-    before = path.read_text(encoding="utf-8")
+    before = path.read_bytes()
     results = refresh_file(path, hf=FakeHfClient({}), read_facts_fn=facts_stub)
     assert results[0].error is not None
-    assert path.read_text(encoding="utf-8") == before
-
-
-def test_the_dump_keeps_curated_fields_and_their_order(tmp_path: Path) -> None:
-    models, _ = load_models_from_file(write(tmp_path, "tiny.yaml", ENTRY))
-    text = dump_models(models)
-    data = yaml.safe_load(text)
-    assert list(data[0])[:4] == ["id", "name", "vendor", "family"]
-    assert data[0]["architecture"]["class"] == "dense"
-    assert "gguf_facts" not in data[0]["sources"][0]["quants"][0]
+    assert path.read_bytes() == before
+    assert not facts_path_of(path).exists()
 
 
 def test_a_listing_exception_leaves_the_model_untouched(tmp_path: Path) -> None:
     path = write(tmp_path, "tiny.yaml", ENTRY)
-    before = path.read_text(encoding="utf-8")
+    before = path.read_bytes()
     results = refresh_file(path, hf=RaisingHfClient(), read_facts_fn=facts_stub)
     assert results[0].error is not None and "could not reach" in results[0].error
-    assert path.read_text(encoding="utf-8") == before
+    assert path.read_bytes() == before
+    assert not facts_path_of(path).exists()
 
 
 def test_only_limits_the_refresh_to_one_model(tmp_path: Path) -> None:
@@ -193,6 +226,9 @@ def test_only_limits_the_refresh_to_one_model(tmp_path: Path) -> None:
     by_id = {m.id: m for m in models}
     assert by_id["tiny-1b"].sources[0].quants[0].files == ["tiny-1b-Q4_K_M.gguf"]
     assert by_id["other-2b"].sources[0].quants[0].files == []
+
+    facts = json.loads(facts_path_of(path).read_text(encoding="utf-8"))
+    assert "other-2b" not in facts["models"]
 
 
 def test_a_local_source_is_left_alone(tmp_path: Path) -> None:
@@ -215,14 +251,23 @@ def test_an_extra_is_filled_by_exact_file_name(tmp_path: Path) -> None:
 
 def test_a_second_failing_source_aborts_the_whole_model(tmp_path: Path) -> None:
     path = write(tmp_path, "two.yaml", TWO_SOURCE_ENTRY)
-    before = path.read_text(encoding="utf-8")
+    before = path.read_bytes()
     results = refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
     assert results[0].error is not None
     assert results[0].changed is False
-    assert path.read_text(encoding="utf-8") == before
+    assert path.read_bytes() == before
+    assert not facts_path_of(path).exists()
 
 
-def test_a_file_with_load_problems_raises_instead_of_being_rewritten(tmp_path: Path) -> None:
+def test_a_quant_with_no_matching_files_is_a_warning_not_a_no_op(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY.replace("name: Q4_K_M", "name: Q9_TYPO"))
+    results = refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
+    assert results[0].error is None
+    assert results[0].changed is False
+    assert any("Q9_TYPO" in warning for warning in results[0].warnings)
+
+
+def test_a_file_with_load_problems_raises_a_catalog_error(tmp_path: Path) -> None:
     path = write(tmp_path, "bad.yaml", "- id: [unclosed")
-    with pytest.raises(LlamaFitError):
+    with pytest.raises(CatalogError):
         refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
