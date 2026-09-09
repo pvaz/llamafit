@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import sys
 from dataclasses import dataclass
 
@@ -33,11 +34,6 @@ class CliState:
         """A console for normal output, respecting ``--no-color``."""
         return Console(no_color=self.no_color, highlight=False)
 
-    @property
-    def err_console(self) -> Console:
-        """A console for errors, on stderr."""
-        return Console(stderr=True, no_color=self.no_color, highlight=False)
-
 
 def _version_callback(value: bool) -> None:
     if value:
@@ -68,13 +64,21 @@ def _root(
 
 
 def main() -> None:
-    """Entry point: run the app and turn LlamaFit errors into messages and exit codes."""
+    """Run the app, turning known errors into messages and unexpected ones into a short report."""
+    verbose = "--verbose" in sys.argv or "-v" in sys.argv
+    no_color = "--no-color" in sys.argv or bool(os.environ.get("NO_COLOR"))
+    console = Console(stderr=True, no_color=no_color, highlight=False)
     try:
         app(standalone_mode=True)
-    except LlamaFitError as exc:  # raised inside commands before Typer's own handling
-        Console(stderr=True).print(f"[red]{exc.render()}[/red]")
-        code = 2 if isinstance(exc, (NotInstalledError, ProbeError)) else 1
-        sys.exit(code)
+    except LlamaFitError as exc:
+        console.print(f"[red]{exc.render()}[/red]")
+        sys.exit(2 if isinstance(exc, (NotInstalledError, ProbeError)) else 1)
+    except Exception as exc:  # an unexpected failure is a bug, not a user error
+        if verbose:
+            raise
+        console.print(f"[red]Unexpected error: {exc}[/red]")
+        console.print("[dim]Run again with --verbose for the full traceback.[/dim]")
+        sys.exit(1)
 
 
 from llamafit.cli import doctor_cmd, system_cmd  # noqa: E402  (registers commands on import)

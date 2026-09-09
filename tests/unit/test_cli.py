@@ -1,11 +1,13 @@
 import json
+import sys
 from datetime import datetime, timezone
 
 import pytest
 from typer.testing import CliRunner
 
 from llamafit.cli.app import app
-from llamafit.models import Cpu, Gpu, Host, LlamaCpp, Memory, SystemReport
+from llamafit.errors import NotInstalledError
+from llamafit.models import Cpu, Disk, Gpu, Host, LlamaCpp, Memory, SystemReport
 
 runner = CliRunner()
 
@@ -44,6 +46,7 @@ def fake_report() -> SystemReport:
                 driver="610.88",
             )
         ],
+        disks=[Disk(path="D:\\", free_bytes=355 * 1024**3, total_bytes=1024**4)],
         scanned_at=datetime(2026, 9, 9, tzinfo=timezone.utc),
     )
     llamacpp = LlamaCpp(
@@ -69,6 +72,8 @@ def test_system_table_mentions_gpu_and_memory() -> None:
     assert "DDR5" in result.output
     assert "67.2" in result.output
     assert "b10867" in result.output
+    assert "D:\\" in result.output
+    assert "free of" in result.output
 
 
 def test_system_json_is_the_report() -> None:
@@ -97,3 +102,36 @@ def test_version_flag() -> None:
     result = runner.invoke(app, ["--version"])
     assert result.exit_code == 0
     assert "llamafit" in result.output
+
+
+def test_main_maps_known_errors_to_exit_codes(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    import llamafit.cli.app as app_module
+
+    def boom(**kwargs: object) -> None:
+        raise NotInstalledError("llama.cpp not found", hint="Install it")
+
+    monkeypatch.setattr(app_module, "app", boom)
+    monkeypatch.setattr(sys, "argv", ["llamafit", "system"])
+    with pytest.raises(SystemExit) as exit_info:
+        app_module.main()
+    assert exit_info.value.code == 2
+    err = capsys.readouterr().err
+    assert "llama.cpp not found" in err and "Install it" in err
+
+
+def test_main_reports_unexpected_errors_without_a_traceback(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    import llamafit.cli.app as app_module
+
+    def boom(**kwargs: object) -> None:
+        raise ValueError("kaboom")
+
+    monkeypatch.setattr(app_module, "app", boom)
+    monkeypatch.setattr(sys, "argv", ["llamafit", "system"])
+    with pytest.raises(SystemExit) as exit_info:
+        app_module.main()
+    assert exit_info.value.code == 1
+    assert "kaboom" in capsys.readouterr().err

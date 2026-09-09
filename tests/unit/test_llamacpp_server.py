@@ -1,6 +1,11 @@
 from llamafit.hardware.runner import FakeRunner
 from llamafit.llamacpp import detect_llamacpp
-from llamafit.llamacpp.server import FakeHttp, candidate_ports, discover_servers
+from llamafit.llamacpp.server import (
+    HEALTH_TIMEOUT_S,
+    FakeHttp,
+    candidate_ports,
+    discover_servers,
+)
 
 HEALTH = {"status": "ok"}
 MODELS = {"data": [{"id": "qwen3-coder-next", "object": "model"}]}
@@ -66,6 +71,12 @@ def test_discover_reads_string_and_zero_context_sizes() -> None:
 def test_candidate_ports_ignores_non_numeric_and_duplicates() -> None:
     assert candidate_ports({"LLAMA_SERVER_PORT": "abc"}) == [8080, 8081, 8098]
     assert candidate_ports({"LLAMA_SERVER_PORT": "8081"}) == [8081, 8080, 8098]
+
+
+def test_health_checks_use_a_short_timeout() -> None:
+    http = FakeHttp({"http://127.0.0.1:8080/health": HEALTH})
+    discover_servers(http, [8080])
+    assert http.calls[0] == ("http://127.0.0.1:8080/health", HEALTH_TIMEOUT_S)
 
 
 def test_detect_llamacpp_composes() -> None:
