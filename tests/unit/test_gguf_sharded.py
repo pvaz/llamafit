@@ -407,11 +407,12 @@ def test_the_real_split_model_reads_as_one_model() -> None:
         assert facts.attention_layers_source == "tensors"
 
         # The header declares attention.key_length and attention.value_length equal
-        # (256 each), so sizing the two caches separately and adding them returns the
-        # same figure doubling one of them did. That equality is a property of this
-        # file, not of every file, which is why the derivation no longer assumes it.
+        # (256 each), so sizing and rounding the two caches separately returns the same
+        # figure doubling one of them did. That equality is a property of this file, not
+        # of every file, which is why the derivation no longer assumes it. Each cache is
+        # 12 attention layers * 2 kv heads * 256 = 6,144 elements per token.
         assert (facts.head_dim, facts.value_head_dim) == (256, 256)
-        assert facts.kv_bytes_per_token_f16 == 12 * 2 * (256 + 256) * 2
+        assert facts.kv_bytes_per_token_f16 == 6_144 * 2 + 6_144 * 2
 
         entry_point = read_facts(_REAL_SHARDS, client=client)
         assert entry_point == facts

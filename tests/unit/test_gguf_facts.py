@@ -1,6 +1,9 @@
-from llamafit.gguf.facts import derive_facts, kv_bytes_per_token
+import pytest
+
+from llamafit.gguf.facts import _KV_TYPE_BYTES, derive_facts, kv_bytes_per_token
 from llamafit.gguf.reader import read_header
 from llamafit.gguf.source import FakeSource
+from llamafit.models.gguf import GgufFacts
 from tests.fixtures import gguf_builder as b
 
 
@@ -116,10 +119,10 @@ def test_head_dimension_falls_back_to_embedding_over_heads() -> None:
 
 def test_kv_bytes_per_token_by_cache_type() -> None:
     facts = derive_facts(read_header(FakeSource(dense_header())))
-    # 2 attention layers * 8 kv heads * (128 key + 128 value) = 4096 elements per token
-    assert kv_bytes_per_token(facts, "f16") == 4096 * 2
-    assert kv_bytes_per_token(facts, "q8_0") == 4096 * 34 // 32
-    assert facts.kv_bytes_per_token_f16 == 4096 * 2
+    # Each cache is 2 attention layers * 8 kv heads * 128 = 2048 elements per token.
+    assert kv_bytes_per_token(facts, "f16") == 2048 * 2 + 2048 * 2
+    assert kv_bytes_per_token(facts, "q8_0") == (2048 // 32 * 34) * 2
+    assert facts.kv_bytes_per_token_f16 == 2048 * 2 + 2048 * 2
 
 
 def test_the_value_length_falls_back_to_the_key_length_when_undeclared() -> None:
@@ -147,9 +150,9 @@ def test_a_value_length_that_differs_from_the_key_length_is_recorded_and_used() 
     facts = derive_facts(read_header(FakeSource(b.build(metadata, tensors))))
 
     assert (facts.head_dim, facts.value_head_dim) == (256, 128)
-    # 2 attention layers * 8 kv heads * (256 key + 128 value) = 6144 elements per token,
-    # not the 8192 that doubling the key length would give.
-    assert kv_bytes_per_token(facts, "f16") == 6144 * 2
+    # Key cache 2 * 8 * 256 = 4096 elements, value cache 2 * 8 * 128 = 2048: 6144 in
+    # total, not the 8192 that doubling the key length would give.
+    assert kv_bytes_per_token(facts, "f16") == 4096 * 2 + 2048 * 2
     assert facts.kv_bytes_per_token_f16 == 6144 * 2
 
 
@@ -200,3 +203,61 @@ def test_a_header_without_the_architecture_key_still_returns_facts() -> None:
     assert facts.arch == "unknown"
     assert facts.n_layer is None
     assert facts.attention_layers_source == "unknown"
+
+
+def test_each_cache_is_rounded_to_its_own_block_boundary() -> None:
+    """llama.cpp allocates two tensors, so each is rounded on its own, not together.
+
+    48 elements per cache at q8_0: each rounds down to one 32-element block, so the
+    pair is two blocks. Rounding once over the combined 96 elements would claim three.
+    """
+    metadata = [
+        b.string("general.architecture", "acme"),
+        b.uint32("acme.block_count", 1),
+        b.uint32("acme.attention.head_count", 1),
+        b.uint32("acme.attention.head_count_kv", 1),
+        b.uint32("acme.attention.key_length", 48),
+        b.uint32("acme.attention.value_length", 48),
+    ]
+    tensors = [b.tensor("blk.0.attn_k.weight", [10], 0, 0)]
+    facts = derive_facts(read_header(FakeSource(b.build(metadata, tensors))))
+
+    assert kv_bytes_per_token(facts, "q8_0") == 2 * (48 // 32 * 34)
+    assert kv_bytes_per_token(facts, "q8_0") != (48 + 48) // 32 * 34
+
+
+# Attention layers, key/value heads, key length and value length as the five seeded
+# models really declare them, with the f16 figure each produces. Llama 3.1 declares
+# neither length and derives both from embedding length over head count.
+_REAL_KV_SHAPES = [
+    ("gemma3", 62, 16, 128, 128, 507_904),
+    ("llama", 32, 8, 128, 128, 131_072),
+    ("qwen3", 28, 8, 128, 128, 114_688),
+    ("qwen3next", 12, 2, 256, 256, 24_576),
+    ("qwen4exp", 12, 2, 256, 256, 24_576),
+]
+
+
+@pytest.mark.parametrize(
+    ("arch", "layers", "heads_kv", "key", "value", "expected_f16"),
+    _REAL_KV_SHAPES,
+    ids=[shape[0] for shape in _REAL_KV_SHAPES],
+)
+def test_per_cache_rounding_changes_nothing_on_the_shapes_real_models_have(
+    arch: str, layers: int, heads_kv: int, key: int, value: int, expected_f16: int
+) -> None:
+    facts = GgufFacts(
+        arch=arch,
+        attention_layers=layers,
+        n_head_kv=heads_kv,
+        head_dim=key,
+        value_head_dim=value,
+    )
+    assert kv_bytes_per_token(facts, "f16") == expected_f16
+
+    for kv_type in ("f16", "q8_0", "q4_0"):
+        block_elements, block_bytes = _KV_TYPE_BYTES[kv_type]
+        combined = layers * heads_kv * (key + value) // block_elements * block_bytes
+        assert kv_bytes_per_token(facts, kv_type) == combined, (
+            f"{arch} at {kv_type}: per-cache rounding must be a no-op on this shape"
+        )

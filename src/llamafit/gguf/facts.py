@@ -172,11 +172,14 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
 def kv_bytes_per_token(facts: GgufFacts, kv_type: str) -> int | None:
     """Bytes both KV caches grow by per token, or ``None`` when the shape is unknown.
 
-    The two caches are sized from their own head dimensions and added, rather than one
-    of them being doubled. An architecture is free to declare a value length different
-    from its key length, and doubling the key length would then be wrong in proportion
-    on the single number a memory budget leans on hardest. Every file in the catalog
-    today declares the two equal, so this returns exactly what doubling returned.
+    Each cache is sized from its own head dimension and rounded to its own block
+    boundary, and the two are then added. Neither shortcut is taken: doubling the key
+    cache would be wrong in proportion for an architecture that declares a value
+    length different from its key length, and rounding once over a combined element
+    count would model a single tensor that does not exist — llama.cpp allocates the
+    key cache and the value cache separately. Every file in the catalog today declares
+    the two lengths equal, and at the head counts real models use both shortcuts give
+    the same number, so this is a no-op on today's data and correct on tomorrow's.
 
     Args:
         facts: The file's facts, which must carry an attention-layer count, a
@@ -191,8 +194,10 @@ def kv_bytes_per_token(facts: GgufFacts, kv_type: str) -> int | None:
         return None
     value_head_dim = facts.head_dim if facts.value_head_dim is None else facts.value_head_dim
     block_elements, block_bytes = _KV_TYPE_BYTES[kv_type]
-    elements = facts.attention_layers * facts.n_head_kv * (facts.head_dim + value_head_dim)
-    return elements // block_elements * block_bytes
+    per_cache_heads = facts.attention_layers * facts.n_head_kv
+    key_bytes = per_cache_heads * facts.head_dim // block_elements * block_bytes
+    value_bytes = per_cache_heads * value_head_dim // block_elements * block_bytes
+    return key_bytes + value_bytes
 
 
 def bits_per_weight(file_bytes: int, lazy_table_bytes: int, total_b: float) -> float:

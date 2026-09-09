@@ -312,7 +312,7 @@ From the header LlamaFit derives, per quant:
 | `bytes_dense_block_weights` | sum of all other block tensors: attention projections, feed-forward weights and norms. Nearly the whole file on a dense model, so it is not an attention-only figure |
 | `bytes_output_head`, `bytes_token_embd` | `output.weight`, `token_embd.weight` |
 | `bytes_lazy_tables` | tensors the catalog marks as streamable (for example `per_layer_token_embd`) |
-| `kv_bytes_per_token` | `attention_layers × n_head_kv × (head_dim + value_head_dim) × bytes(kv_type)`. The two caches are sized from their own head dimensions and added rather than one being doubled: an architecture may declare a value length different from its key length, and doubling the key length would then be wrong in proportion. Every file in the catalog today declares them equal, so the figure is unchanged |
+| `kv_bytes_per_token` | `bytes(attention_layers × n_head_kv × head_dim, kv_type) + bytes(attention_layers × n_head_kv × value_head_dim, kv_type)`. Each cache is sized from its own head dimension and rounded to its own block boundary, then the two are added: llama.cpp allocates the key cache and the value cache as separate tensors, so neither doubling the key cache nor rounding once over a combined element count models what it actually does. Every file in the catalog today declares the two lengths equal and, at the head counts real models use, both shortcuts give the same number, so the figure is unchanged |
 | `recurrent_state_bytes` | from the architecture's state dimensions, else the catalog's measured value |
 
 Tensor sizes come from the tensor info table (dimensions and type), so they are exact for the file, not estimates.
