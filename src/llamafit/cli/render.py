@@ -207,60 +207,128 @@ def _fmt_capabilities(capabilities: Sequence[str], *, width: int, limit: int = 3
     return f"+{total}" if total else ""
 
 
+_ID_COLUMN_MAX_WIDTH = 28
+# What one more column costs beyond its own content: a border and the padding on
+# each side of it. The table's own leading border is the one extra "+1" charged
+# once, before any column, in the budget below.
+_COLUMN_OVERHEAD = 3
+_TABLE_OVERHEAD = 1
+_QUALITY_CAPTION = (
+    "Quality is the editorial baseline, before any quantisation penalty; "
+    "run `llamafit info <model>` for the sourced benchmarks behind it."
+)
+
+
+def _column_budget(
+    summaries: Sequence[ModelSummary], console_width: int
+) -> tuple[int, list[str], int]:
+    """Decide the id column's width and which optional columns fit, in priority order.
+
+    The identifier is never dropped, only capped and allowed to wrap onto a second
+    line: a truncated id cannot be typed back into ``info`` or ``search``, so
+    folding it is the only acceptable way to shrink it. Quality, params, context
+    and capabilities are tried in that order, each added only while there is
+    room for its whole content plus its own border and padding; the first one
+    that does not fit, and everything after it, is dropped rather than shrunk,
+    because a blank column or a number missing a digit is worse than one column
+    fewer.
+
+    Returns:
+        The id column's width, the list of optional column names to include (a
+        subset, in priority order, of ``["quality", "params", "context"]``), and
+        the width left over for capabilities (which may be too small to use).
+    """
+    id_width = min(_ID_COLUMN_MAX_WIDTH, max((len(s.id) for s in summaries), default=len("ID")))
+    # Each width starts from its header's own length, so the list is never empty
+    # even when there are no rows, and a short header never lets a column shrink
+    # smaller than its own name.
+    quality_width = max([len("Quality*"), *(len(str(s.quality_baseline)) for s in summaries)])
+    params_width = max(
+        [
+            len("Params"),
+            *(
+                len(f"{_fmt_billions(s.params_total_b)}/{_fmt_billions(s.params_active_b)}B")
+                for s in summaries
+            ),
+        ]
+    )
+    context_width = max(
+        [len("Context"), *(len(_fmt_context_compact(s.context_native)) for s in summaries)]
+    )
+
+    remaining = console_width - _TABLE_OVERHEAD - (id_width + _COLUMN_OVERHEAD)
+    included: list[str] = []
+    columns = (("quality", quality_width), ("params", params_width), ("context", context_width))
+    for name, width in columns:
+        cost = width + _COLUMN_OVERHEAD
+        if cost > remaining:
+            break
+        included.append(name)
+        remaining -= cost
+    return id_width, included, remaining - _COLUMN_OVERHEAD
+
+
 def render_catalog_list(summaries: Sequence[ModelSummary], *, console_width: int = 80) -> Table:
     """A table listing models: enough to tell them apart, not everything about them.
 
-    Columns are id, parameters, native context, quality and capabilities (as many
-    complete names, up to three, as fit, plus a ``+N`` marker for the rest;
+    Columns are id, quality, parameters, native context and capabilities (as many
+    complete names as fit, up to three, plus a ``+N`` marker for the rest;
     ``info`` or ``--json`` has every one): what separates one candidate from
     another at a glance, and, for quality, *why* they are ordered the way they are
     (``filter_models`` sorts by it, so a reader should not have to take the order
-    on faith). Vendor, licence and quant count are left out to keep every row on
-    one line at 80 columns; an id already carries the family
-    (``qwen3-coder-next``), so vendor is the one of the three that costs least to
-    drop.
+    on faith — see the caption for what that number is and is not). Vendor,
+    licence and quant count are left out entirely; an id already carries the
+    family (``qwen3-coder-next``), so vendor is the cheapest of the three to drop.
 
-    Every column is ``no_wrap``: an id is one hyphenated word with no space to wrap
-    on, and a wrapped row anywhere turns a table meant to be scanned down a column
-    back into the staircase this whole layout exists to avoid. The other four
-    columns are content-sized and fully rigid (id, a number or a short code), so
-    the capabilities column is the one built to fit whatever is left: its text is
-    computed by :func:`_fmt_capabilities` from ``console_width`` minus what those
-    four need, one complete capability at a time, rather than handed a longer
-    string for Rich to crop. A wide terminal shows all three capabilities plus a
-    marker for the rest; a narrow one shows fewer, never a partial one. Every cell
+    Fitting the rest to ``console_width`` is :func:`_column_budget`'s job, in a
+    fixed priority: id first, then quality, params, context, and capabilities
+    last, each included only whole. A column that cannot fit its content in
+    full is dropped rather than shrunk: Rich's own width negotiation, left to
+    itself across several ``no_wrap`` columns, can render one of them completely
+    blank or as a single ellipsis once an unusually long id crowds the rest, and
+    a blank column is a worse failure than a missing one. The id column alone is
+    allowed to grow past one line (capped, folding onto a second) rather than
+    ellipsize, because a truncated id cannot be typed back into ``info`` or
+    ``search``, so nothing else is preserved by cutting it short. Every cell
     built from catalog text goes through ``Text``, not an f-string handed to
     ``console.print``, since a model name or id is never guaranteed free of
     characters Rich would try to parse as markup.
 
     Args:
         summaries: The rows to render, already filtered and sorted.
-        console_width: The console's width, used only to size the capabilities
-            column; defaults to 80, the narrowest width this table is designed for.
+        console_width: The console's width; defaults to 80, the narrowest width
+            this table is designed for.
     """
-    # 59 is what the other four columns need for the catalog as it stands today
-    # (an id up to "llama-3.1-8b-instruct" long, plus three short numeric columns)
-    # and every border and padding character around all five columns; it will
-    # drift a little as ids grow, which only ever costs capabilities a character
-    # or two of headroom, never a wrapped or cropped row.
-    capabilities_width = max(15, console_width - 59)
-    table = Table(title="Models")
-    table.add_column("ID", style="bold", no_wrap=True)
-    table.add_column("Params", justify="right", no_wrap=True)
-    table.add_column("Context", justify="right", no_wrap=True)
-    table.add_column("Quality", justify="right", no_wrap=True)
-    table.add_column("Capabilities", no_wrap=True)
+    id_width, included, capabilities_width = _column_budget(summaries, console_width)
+    include_capabilities = capabilities_width >= 3  # room for at least a bare "+N" marker
+
+    table = Table(
+        title="Models",
+        caption=_QUALITY_CAPTION if "quality" in included else None,
+    )
+    table.add_column("ID", style="bold", max_width=id_width, overflow="fold")
+    if "quality" in included:
+        table.add_column("Quality*", justify="right", no_wrap=True)
+    if "params" in included:
+        table.add_column("Params", justify="right", no_wrap=True)
+    if "context" in included:
+        table.add_column("Context", justify="right", no_wrap=True)
+    if include_capabilities:
+        table.add_column("Capabilities", no_wrap=True)
+
     for summary in summaries:
-        total = _fmt_billions(summary.params_total_b)
-        active = _fmt_billions(summary.params_active_b)
-        capabilities = _fmt_capabilities(summary.capabilities, width=capabilities_width)
-        table.add_row(
-            Text(summary.id),
-            f"{total}/{active}B",
-            _fmt_context_compact(summary.context_native),
-            str(summary.quality_baseline),
-            Text(capabilities),
-        )
+        row: list[Text | str] = [Text(summary.id)]
+        if "quality" in included:
+            row.append(str(summary.quality_baseline))
+        if "params" in included:
+            total = _fmt_billions(summary.params_total_b)
+            active = _fmt_billions(summary.params_active_b)
+            row.append(f"{total}/{active}B")
+        if "context" in included:
+            row.append(_fmt_context_compact(summary.context_native))
+        if include_capabilities:
+            row.append(Text(_fmt_capabilities(summary.capabilities, width=capabilities_width)))
+        table.add_row(*row)
     return table
 
 
