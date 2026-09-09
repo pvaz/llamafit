@@ -107,3 +107,11 @@ def test_a_quant_needs_one_checksum_per_file() -> None:
     assert Quant(name="Q4_K_M", files=["a.gguf", "b.gguf"]).sha256 == []
     with pytest.raises(ValidationError, match="one checksum"):
         Quant(name="Q4_K_M", files=["a.gguf", "b.gguf"], sha256=["x"])
+
+
+def test_a_parameter_count_must_be_above_zero() -> None:
+    assert Params(total_b=0.5, active_b=0.5).total_b == 0.5
+    with pytest.raises(ValidationError):
+        Params(total_b=0, active_b=0)
+    with pytest.raises(ValidationError):
+        Params(total_b=-1, active_b=-1)
