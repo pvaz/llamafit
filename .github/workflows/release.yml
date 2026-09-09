@@ -1,0 +1,250 @@
+# Build, verify and publish a release.
+#
+# Pushing a tag that looks like a version publishes that version to PyPI and opens a
+# GitHub release whose notes are the changelog section for it. Running the workflow by
+# hand from the Actions tab publishes to TestPyPI instead and makes no GitHub release,
+# so the whole path can be rehearsed before it is used for real.
+#
+# Neither route holds a credential. PyPI verifies this workflow's identity through
+# GitHub with OpenID Connect — trusted publishing — which is why the publishing jobs ask
+# for the `id-token: write` permission and name an environment: PyPI's side of the
+# configuration names the same repository, workflow file and environment, and refuses a
+# token minted for anything else. There is no API token and no secret to leak.
+#
+# Everything that can refuse a release does so before the first upload: a version on
+# PyPI can never be reused, not even after deleting it.
+name: Release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  checks:
+    # The pull-request checks, called rather than copied: lint, types and the test suite
+    # on Ubuntu, macOS and Windows with Python 3.10 and 3.13.
+    name: Checks
+    uses: ./.github/workflows/ci.yml
+
+  build:
+    name: Build and verify
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install the build tools
+        run: python -m pip install --upgrade pip build twine packaging
+
+      - name: Read the version from pyproject.toml
+        id: version
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import tomllib
+          from pathlib import Path
+
+          from packaging.version import Version
+
+          document = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+          version = document["project"]["version"]
+          print(f"version={version}")
+          print(f"prerelease={str(Version(version).is_prerelease).lower()}")
+          PY
+
+      - name: The tag must match that version
+        if: github.event_name == 'push'
+        env:
+          TAG: ${{ github.ref_name }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          python - <<'PY'
+          import os
+          import sys
+
+          from packaging.version import InvalidVersion, Version
+
+          tag, version = os.environ["TAG"], os.environ["VERSION"]
+          try:
+              tagged = Version(tag.removeprefix("v"))
+          except InvalidVersion:
+              sys.exit(f"tag {tag} is not a version number")
+          if tagged != Version(version):
+              sys.exit(
+                  f"tag {tag} would publish {version}, the version in pyproject.toml. "
+                  "Correct one of the two and tag again: a version number on PyPI can "
+                  "never be reused, even after deleting the file."
+              )
+          print(f"tag {tag} matches the pyproject.toml version {version}")
+          PY
+
+      - name: Build the wheel and the source distribution
+        run: python -m build
+
+      - name: Check the metadata of both
+        run: python -m twine check --strict dist/*
+
+      - name: The wheel must carry its data and nothing else
+        run: |
+          python - <<'PY'
+          import sys
+          import zipfile
+          from pathlib import Path
+
+          wheel = next(Path("dist").glob("*.whl"))
+          names = zipfile.ZipFile(wheel).namelist()
+          # Every one of these is read through importlib.resources at run time, so a
+          # wheel missing one installs perfectly and fails only when a user reaches the
+          # command that needs it.
+          required = [
+              "llamafit/data/catalog/",
+              "llamafit/data/schema/catalog.schema.json",
+              "llamafit/data/locale/",
+              "llamafit/data/gpus.json",
+          ]
+          missing = [need for need in required if not any(n.startswith(need) for n in names)]
+          unwanted = [n for n in names if n.startswith(("tests/", "scripts/", "docs/"))]
+          for problem in missing:
+              print(f"::error::{wheel.name} is missing {problem}")
+          for problem in unwanted:
+              print(f"::error::{wheel.name} ships {problem}, which has no business in it")
+          if missing or unwanted:
+              sys.exit(1)
+          print(f"{wheel.name}: {len(names)} files, data directories all present")
+          PY
+
+      - name: Install the wheel somewhere clean and use it
+        # The suite runs against the source tree, so it cannot see a packaging mistake.
+        # This installs the built wheel with no extras, in a directory that is not the
+        # checkout, and runs the commands that read each packaged data directory.
+        run: |
+          set -euo pipefail
+          python -m venv "$RUNNER_TEMP/smoke"
+          "$RUNNER_TEMP/smoke/bin/python" -m pip install --quiet --upgrade pip
+          "$RUNNER_TEMP/smoke/bin/python" -m pip install --quiet dist/*.whl
+          cd "$RUNNER_TEMP"
+          export PATH="$RUNNER_TEMP/smoke/bin:$PATH"
+          llamafit --version
+          llamafit list                       # the catalog YAML
+          llamafit catalog validate           # the catalog files parse and check out
+          model=$(llamafit --json list | python -c 'import json,sys; print(json.load(sys.stdin)[0]["id"])')
+          llamafit info "$model"              # the generated facts file
+          python - <<'PY'
+          from importlib import resources
+
+          from llamafit.i18n import available_languages, resolve_language
+
+          schema = resources.files("llamafit.data.schema").joinpath("catalog.schema.json")
+          assert schema.read_text(encoding="utf-8").strip(), "the JSON schema did not ship"
+          languages = [tag for tag in available_languages() if tag != "en"]
+          assert languages, "no translation catalog shipped"
+          choice = resolve_language(languages[0], env={})
+          assert choice.language == languages[0] and choice.honoured, choice
+          print(f"schema and translations present; {choice.language} resolves")
+          PY
+
+      - name: Release notes from the changelog
+        if: github.event_name == 'push'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: python scripts/changelog_section.py "$VERSION" > release-notes.md
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'push'
+        with:
+          name: release-notes
+          path: release-notes.md
+          if-no-files-found: error
+
+  publish-testpypi:
+    # The rehearsal: run this workflow by hand from the Actions tab and it lands here.
+    name: Publish to TestPyPI
+    if: github.event_name == 'workflow_dispatch'
+    needs: [checks, build]
+    runs-on: ubuntu-latest
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/llamafit
+    permissions:
+      id-token: write # mint the OpenID Connect token PyPI verifies; nothing else
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          # TestPyPI refuses a version it already has, and a rehearsal repeats the same
+          # version by design. The first rehearsal of a version is the one that proves
+          # the upload; later ones prove the build and the checks.
+          skip-existing: true
+
+  publish-pypi:
+    name: Publish to PyPI
+    if: github.event_name == 'push'
+    needs: [checks, build]
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/llamafit
+    permissions:
+      id-token: write # mint the OpenID Connect token PyPI verifies; nothing else
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    name: GitHub release
+    if: github.event_name == 'push'
+    needs: [build, publish-pypi]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the release and attach the files to it
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-notes
+      - name: Create the release from the tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+          VERSION: ${{ needs.build.outputs.version }}
+          PRERELEASE: ${{ needs.build.outputs.prerelease }}
+        run: |
+          set -euo pipefail
+          flags=()
+          if [ "$PRERELEASE" = "true" ]; then flags+=(--prerelease); fi
+          gh release create "$TAG" \
+            --verify-tag \
+            --title "llamafit $VERSION" \
+            --notes-file release-notes.md \
+            "${flags[@]}" \
+            dist/*
