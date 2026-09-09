@@ -7,14 +7,29 @@ architecture-aware summary derived from a header — the numbers sizing and
 placement decisions actually need.
 
 All three models forbid unknown fields, so a typo in test or catalog data is
-caught immediately instead of being silently ignored.
+caught immediately instead of being silently ignored, and ``GgufFacts`` carries the
+bounds real headers actually satisfy: every count and every byte figure is a
+non-negative whole number, and the byte buckets add up to the total. Nothing narrower
+is asserted, because this module also backs the reader, and a bound argued from
+reasoning alone would reject a model that runs.
 """
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+ByteSize = Annotated[int, Field(ge=0)]
+"""A size in bytes. Never negative, whoever supplied it."""
+
+Count = Annotated[int, Field(ge=0)]
+"""A count read from a file's metadata: layers, heads, experts, tokens.
+
+Never negative. No upper bound and no positive minimum: a header that reports zero
+heads is a badly converted file rather than an impossible one, and refusing to read
+it would cost a user a model that llama.cpp may well still load.
+"""
 
 
 class _Strict(BaseModel):
@@ -122,25 +137,51 @@ class GgufFacts(_Strict):
     """
 
     arch: str
-    n_layer: int | None = None
-    n_embd: int | None = None
-    n_vocab: int | None = None
-    n_head: int | None = None
-    n_head_kv: int | None = None
-    head_dim: int | None = None
-    attention_layers: int | None = None
+    n_layer: Count | None = None
+    n_embd: Count | None = None
+    n_vocab: Count | None = None
+    n_head: Count | None = None
+    n_head_kv: Count | None = None
+    head_dim: Count | None = None
+    attention_layers: Count | None = None
     attention_layers_source: Literal["tensors", "all-layers", "unknown"] = "unknown"
-    sliding_window: int | None = None
-    context_length: int | None = None
-    n_expert: int | None = None
-    n_expert_used: int | None = None
+    sliding_window: Count | None = None
+    context_length: Count | None = None
+    n_expert: Count | None = None
+    n_expert_used: Count | None = None
     has_shared_experts: bool = False
-    bytes_expert_weights: int = 0
-    bytes_dense_block_weights: int = 0
-    bytes_output_head: int = 0
-    bytes_token_embd: int = 0
-    bytes_lazy_tables: int = 0
-    bytes_global_weights: int = 0
-    bytes_total: int = 0
-    kv_bytes_per_token_f16: int | None = None
-    recurrent_state_bytes: int | None = None
+    bytes_expert_weights: ByteSize = 0
+    bytes_dense_block_weights: ByteSize = 0
+    bytes_output_head: ByteSize = 0
+    bytes_token_embd: ByteSize = 0
+    bytes_lazy_tables: ByteSize = 0
+    bytes_global_weights: ByteSize = 0
+    bytes_total: ByteSize = 0
+    kv_bytes_per_token_f16: ByteSize | None = None
+    recurrent_state_bytes: ByteSize | None = None
+
+    @model_validator(mode="after")
+    def _buckets_account_for_the_whole_file(self) -> GgufFacts:
+        """Reject facts whose byte buckets do not add up to ``bytes_total``.
+
+        Every tensor in a header lands in exactly one bucket, so the sum is the
+        total for any facts the reader derives — checked against five real files
+        spanning llama, gemma3, qwen3, qwen3next and qwen4exp, one of them a
+        four-shard split model with a streamed lookup table. Only a corrupted or
+        hand-edited facts file can break it, and a set of buckets that does not add
+        up is precisely what would silently mis-size a graphics card. A refresh
+        rewrites the file this rejects.
+        """
+        buckets = (
+            self.bytes_expert_weights
+            + self.bytes_dense_block_weights
+            + self.bytes_output_head
+            + self.bytes_token_embd
+            + self.bytes_lazy_tables
+            + self.bytes_global_weights
+        )
+        if buckets != self.bytes_total:
+            raise ValueError(
+                f"the byte buckets sum to {buckets} but bytes_total is {self.bytes_total}"
+            )
+        return self
