@@ -8,9 +8,9 @@ and no binary is committed.
 
 from __future__ import annotations
 
-from importlib import resources
 from pathlib import Path
 
+from llamafit.data import packaged_dir
 from llamafit.errors import ConfigError
 from llamafit.i18n.po import PoCatalog, read_po
 from llamafit.i18n.tags import SOURCE_LANGUAGE, normalise
@@ -21,8 +21,14 @@ TEMPLATE_NAME = "messages.pot"
 
 
 def catalog_dir() -> Path:
-    """The packaged directory holding the ``.po`` catalogs and the template."""
-    return Path(str(resources.files("llamafit.data.locale")))
+    """The packaged directory holding the ``.po`` catalogs and the template.
+
+    Raises:
+        PackagedDataError: The directory did not ship in this installation. A directory
+            that shipped empty is not an error: with no catalog to read, every message
+            falls back to English, which is what a missing translation should do.
+    """
+    return packaged_dir("llamafit.data.locale", what="its translation catalogs")
 
 
 def catalog_path(language: str, *, directory: Path | None = None) -> Path:

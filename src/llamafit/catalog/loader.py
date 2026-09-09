@@ -28,7 +28,6 @@ import json
 import os
 from collections.abc import Mapping
 from dataclasses import dataclass
-from importlib import resources
 from math import isfinite
 from pathlib import Path
 from typing import Any, TypeGuard
@@ -36,6 +35,7 @@ from typing import Any, TypeGuard
 import yaml
 from pydantic import ValidationError
 
+from llamafit.data import packaged_dir
 from llamafit.errors import CatalogError
 from llamafit.models.catalog import (
     MAX_BPW,
@@ -609,8 +609,15 @@ def _apply_extra_facts(
 
 
 def bundled_catalog_dir() -> Path:
-    """The packaged directory holding the curated catalog YAML files."""
-    return Path(str(resources.files("llamafit.data.catalog")))
+    """The packaged directory holding the curated catalog YAML files.
+
+    Raises:
+        PackagedDataError: The directory did not ship in this installation, or shipped
+            empty. An empty one is checked for because the loader would read it as a
+            catalog with no models in it and report nothing wrong, which is the worst
+            way for a tool whose job is reading a catalog to be broken.
+    """
+    return packaged_dir("llamafit.data.catalog", what="its model catalog", contains="*.yaml")
 
 
 def custom_models_path(env: Mapping[str, str] | None = None) -> Path:
