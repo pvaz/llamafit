@@ -113,6 +113,28 @@ def _find_extra_file(files: Sequence[RepoFile], name: str) -> RepoFile | None:
     return None
 
 
+def _under_directory(files: Sequence[RepoFile], directory: str) -> list[RepoFile]:
+    """The files inside ``directory``, which is a path prefix within the repository.
+
+    The boundary is a directory boundary, not a string prefix: ``UD-Q4_K_XL`` selects
+    ``UD-Q4_K_XL/model.gguf`` and never ``UD-Q4_K_XL-imat/model.gguf``, which is a
+    different build of the same quant and the very thing a curator sets this field to
+    tell apart. Leading and trailing slashes are ignored, so ``/UD-Q4_K_XL/`` and
+    ``UD-Q4_K_XL`` name the same directory.
+
+    Args:
+        files: Every file in the repository.
+        directory: The directory prefix to keep, from the source's ``path``.
+
+    Returns:
+        The files under ``directory``, in the order they were listed.
+    """
+    prefix = directory.strip("/")
+    if not prefix:
+        return list(files)
+    return [file for file in files if file.path.startswith(f"{prefix}/")]
+
+
 def _refresh_quant(
     quant: Quant,
     files: Sequence[RepoFile],
@@ -209,12 +231,20 @@ def _refresh_source(
 ) -> str | None:
     """Refresh one source's quants and extras in place.
 
+    A source's ``path``, when it has one, narrows the listing to one directory inside
+    the repository before anything is matched, so both quants and extras see only the
+    files under it. A ``path`` that holds nothing is a curated mistake rather than a
+    fetch that went wrong, and it abandons the model with everything already recorded
+    left alone, which is better than matching nothing and reporting it once per quant.
+
     A quant name that matched no whole set of files is not an error: the repository
     listing was read successfully, and the files simply do not add up to one quant —
     the name is not published there, or is published twice over, or the set is missing
     shards. It is recorded in ``warnings`` instead, so a curator can find out which
     rather than have it silently do nothing. The warning does not claim to know which
-    of the three it is, because the matcher deliberately declines to guess.
+    of the three it is, because the matcher deliberately declines to guess; it does now
+    name the ``path`` field, which is the answer when the repository publishes the same
+    quant name in two directories.
 
     A quant whose facts cannot be read is an error, and it belongs to the model
     rather than to the run: one unreadable quant abandons its own model, with what
@@ -237,6 +267,10 @@ def _refresh_source(
         return f"{repo}: {exc}"
     if not files:
         return f"{repo}: the repository listing returned no files"
+    if source.path:
+        files = _under_directory(files, source.path)
+        if not files:
+            return f"{repo}: the repository has no files under {source.path!r}"
 
     def file_url(path: str) -> str:
         return hf.file_url(repo, path)
@@ -253,7 +287,8 @@ def _refresh_source(
                 f"sources[{index}].quants[{qi}] ({quant.name!r}): no whole set of files in "
                 f"{repo} matched this quant name; it may be published there more than once, "
                 "may be missing shards, or may not be published at all. Check the repository "
-                "listing."
+                "listing. If it publishes this quant under more than one directory, set the "
+                "source's path to the directory holding the build you want."
             )
             continue
         try:

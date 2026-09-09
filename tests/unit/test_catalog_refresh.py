@@ -621,3 +621,87 @@ def test_a_model_that_streams_nothing_passes_no_lazy_tensors(tmp_path: Path) -> 
     refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=reader)
 
     assert reader.lazy_tensor_names == [[]]
+
+
+PATHED_ENTRY = ENTRY.replace(
+    "    - repo: example/tiny-1b-GGUF",
+    "    - repo: example/tiny-1b-GGUF\n      path: main",
+)
+
+TWO_BUILDS = {
+    "example/tiny-1b-GGUF": [
+        RepoFile(path="main/tiny-1b-Q4_K_M.gguf", size=700_000_000, sha256="main1"),
+        RepoFile(path="imat/tiny-1b-Q4_K_M.gguf", size=690_000_000, sha256="imat1"),
+    ]
+}
+
+
+def test_a_quant_published_twice_is_still_refused_without_a_path(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+
+    results = refresh_file(path, hf=FakeHfClient(TWO_BUILDS), read_facts_fn=facts_stub)
+
+    assert results[0].changed is False
+    assert "set the source's path" in results[0].warnings[0]
+
+
+def test_a_path_picks_the_build_the_curator_meant(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", PATHED_ENTRY)
+
+    results = refresh_file(path, hf=FakeHfClient(TWO_BUILDS), read_facts_fn=facts_stub)
+
+    assert results[0].error is None
+    assert results[0].warnings == []
+    models, problems = load_models_from_file(path)
+    assert problems == []
+    quant = models[0].sources[0].quants[0]
+    assert quant.files == ["main/tiny-1b-Q4_K_M.gguf"]
+    assert quant.sha256 == ["main1"]
+
+
+def test_a_path_stops_at_a_directory_boundary(tmp_path: Path) -> None:
+    # "main" must not swallow "main-imat": they are two builds, not one.
+    files = {
+        "example/tiny-1b-GGUF": [
+            RepoFile(path="main-imat/tiny-1b-Q4_K_M.gguf", size=690_000_000, sha256="imat1"),
+            RepoFile(path="main/tiny-1b-Q4_K_M.gguf", size=700_000_000, sha256="main1"),
+        ]
+    }
+    path = write(tmp_path, "tiny.yaml", PATHED_ENTRY)
+
+    refresh_file(path, hf=FakeHfClient(files), read_facts_fn=facts_stub)
+
+    models, _ = load_models_from_file(path)
+    assert models[0].sources[0].quants[0].files == ["main/tiny-1b-Q4_K_M.gguf"]
+
+
+def test_a_path_that_holds_nothing_is_an_error_naming_it(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", PATHED_ENTRY)
+
+    results = refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
+
+    assert results[0].error is not None
+    assert "'main'" in results[0].error
+    assert results[0].changed is False
+
+
+def test_a_path_narrows_the_extras_too(tmp_path: Path) -> None:
+    entry = PATHED_ENTRY.replace(
+        "        - {name: Q4_K_M}",
+        "        - {name: Q4_K_M}\n      extras:\n        - {role: mmproj, file: mmproj-F16.gguf}",
+    )
+    files = {
+        "example/tiny-1b-GGUF": [
+            RepoFile(path="main/tiny-1b-Q4_K_M.gguf", size=700_000_000, sha256="main1"),
+            RepoFile(path="main/mmproj-F16.gguf", size=900_000, sha256="mmproj-main"),
+            RepoFile(path="imat/mmproj-F16.gguf", size=800_000, sha256="mmproj-imat"),
+        ]
+    }
+    path = write(tmp_path, "tiny.yaml", entry)
+
+    refresh_file(path, hf=FakeHfClient(files), read_facts_fn=facts_stub)
+
+    models, problems = load_models_from_file(path)
+    assert problems == []
+    extra = models[0].sources[0].extras[0]
+    assert extra.bytes_ == 900_000 and extra.sha256 == "mmproj-main"
