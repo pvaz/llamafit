@@ -79,7 +79,7 @@ packages = ["llamafit"]
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
-module = ["cpuinfo", "cpuinfo.*"]
+module = ["cpuinfo", "cpuinfo.*", "numpy", "numpy.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
