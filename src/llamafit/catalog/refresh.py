@@ -48,6 +48,7 @@ from llamafit.catalog.hf import HfClient, RepoFile, assign_files_to_quants
 from llamafit.catalog.loader import (
     FACTS_SCHEMA_VERSION,
     Problem,
+    discards_recorded_facts,
     facts_path_for,
     load_models_from_file,
 )
@@ -363,6 +364,13 @@ def _write_facts_atomically(path: Path, text: str) -> None:
         ) from exc
 
 
+def _lost_facts_detail(problem: Problem) -> str:
+    """One discarded part of the facts file, named by the model whose facts it held."""
+    if problem.model_id is None:
+        return f"{problem.location}: {problem.message}"
+    return f"{problem.model_id} at {problem.location}: {problem.message}"
+
+
 def _stale_facts_warning(problem: Problem) -> str:
     """One problem with the facts file, said as a warning about the data being replaced."""
     named = "" if problem.model_id is None else f" for {problem.model_id}"
@@ -420,10 +428,12 @@ def refresh_file(
     rather than broken against sound. A full refresh rebuilds every model in the
     document, so it loses nothing and stays the way back from a corrupt file. A
     refresh limited by ``only`` must preserve the models it was not asked to touch,
-    and it cannot preserve what it could not read, so a document that could not be
-    read at all stops it, with a hint pointing at the full refresh that will rebuild
-    the file. One unusable field elsewhere does not: everything else about that
-    model still merges and is written back.
+    and it cannot preserve what it could not read, so it stops when the document, or
+    any other model's entry or section of one, could not be read, with a hint
+    pointing at the full refresh that will rebuild the file. Two things do not stop
+    it: one unusable field elsewhere, since everything else about that model still
+    merges and is written back, and an unreadable entry belonging to the model being
+    refreshed, since that entry is about to be replaced anyway.
 
     The curated YAML file named by ``path`` is only ever read, never written. The
     facts file, named by :func:`~llamafit.catalog.loader.facts_path_for`, is
@@ -459,12 +469,12 @@ def refresh_file(
             hint="Run `llamafit catalog validate` and fix the file first.",
         )
 
-    unreadable = [problem for problem in stale if problem.model_id is None]
-    if only is not None and unreadable:
-        details = "; ".join(f"{p.location}: {p.message}" for p in unreadable)
+    lost = [p for p in stale if p.model_id != only and discards_recorded_facts(p)]
+    if only is not None and lost:
+        details = "; ".join(_lost_facts_detail(p) for p in lost)
         raise CatalogError(
-            f"{facts_path} could not be read, so refreshing only {only!r} would drop what it "
-            f"records for every other model: {details}",
+            f"{facts_path} could not be read in full, so refreshing only {only!r} would drop "
+            f"facts it records for models this run leaves alone: {details}",
             hint="Run `llamafit catalog refresh` without --model to rebuild the whole file.",
         )
 

@@ -397,7 +397,7 @@ TINY_PARAMS_ENTRY = ENTRY.replace(
 def failing_facts(url: object = "", *args: object, **kwargs: object) -> GgufFacts:
     """Read facts as usual, unless the URL is tiny-1b's, which cannot be read at all."""
     if "tiny-1b" in str(url):
-        raise NetworkError("the file set is incomplete")
+        raise CatalogError("the file set is incomplete")
     return facts_stub()
 
 
@@ -473,3 +473,34 @@ def test_a_quant_whose_facts_cannot_be_read_leaves_that_model_alone(tmp_path: Pa
     after = json.loads(facts_path_of(path).read_text(encoding="utf-8"))
     assert after["models"]["tiny-1b"] == before["models"]["tiny-1b"]
     assert after["models"]["other-2b"]["quants"]["Q4_K_M"]["bytes"] == 1_500_000_000
+
+
+@pytest.mark.parametrize("entry", ["junk", {"quants": ["nope"]}])
+def test_a_partial_refresh_over_another_models_unreadable_facts_refuses(
+    tmp_path: Path, entry: object
+) -> None:
+    path = write(tmp_path, "multi.yaml", MULTI_ENTRY)
+    write_facts(tmp_path, {"other-2b": entry}, 1, "multi")
+
+    with pytest.raises(CatalogError) as info:
+        refresh_file(path, hf=FakeHfClient(MULTI_FILES), read_facts_fn=facts_stub, only="tiny-1b")
+
+    assert "other-2b" in str(info.value)
+    assert info.value.hint is not None and "--model" in info.value.hint
+    assert not facts_path_of(path).with_suffix(".tmp").exists()
+
+
+def test_a_partial_refresh_over_its_own_unreadable_entry_runs(tmp_path: Path) -> None:
+    path = write(tmp_path, "multi.yaml", MULTI_ENTRY)
+    write_facts(tmp_path, {"tiny-1b": "junk"}, 1, "multi")
+
+    results = refresh_file(
+        path, hf=FakeHfClient(MULTI_FILES), read_facts_fn=facts_stub, only="tiny-1b"
+    )
+
+    assert [r.model_id for r in results] == ["tiny-1b"]
+    assert results[0].error is None
+    assert any("the previous facts file was ignored" in w for w in results[0].warnings)
+
+    document = json.loads(facts_path_of(path).read_text(encoding="utf-8"))
+    assert document["models"]["tiny-1b"]["quants"]["Q4_K_M"]["bytes"] == 700_000_000
