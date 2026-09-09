@@ -22,7 +22,8 @@ def test_scan_reference_machine() -> None:
     assert host.cpu.physical_cores == 24
     assert host.cpu.performance_cores == 8
     assert host.memory.total_bytes == 128 * 1024**3
-    assert host.memory.bandwidth_gbps == 67.2 and host.memory.bandwidth_source == "estimated"
+    assert host.memory.modules == 2 and host.memory.channels is None
+    assert host.memory.bandwidth_source == "assumed", "no source reports the channel count"
     gpu = host.primary_gpu
     assert gpu is not None and gpu.name == "NVIDIA GeForce RTX 4060"
     assert gpu.bandwidth_gbps == 272 and gpu.compute_tflops_fp16 == 15

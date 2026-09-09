@@ -32,11 +32,13 @@ def render_host(host: Host) -> Table:
         "CPU", Text(f"{host.cpu.model}; {cores}; {' '.join(host.cpu.isa) or 'isa unknown'}")
     )
     mem = host.memory
-    details = " ".join(
+    details = ", ".join(
         x
         for x in (
-            mem.type,
-            f"{mem.speed_mts} MT/s" if mem.speed_mts else None,
+            " ".join(
+                y for y in (mem.type, f"{mem.speed_mts} MT/s" if mem.speed_mts else None) if y
+            ),
+            f"{mem.modules} module{'' if mem.modules == 1 else 's'}" if mem.modules else None,
             f"{mem.channels}-channel" if mem.channels else None,
         )
         if x

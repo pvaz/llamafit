@@ -13,9 +13,9 @@ it, so a `doctor` warning can always be traced here.
 | `cpuinfo` | all | the `py-cpuinfo` library | CPU model, instruction sets (AVX2, AVX-512, AMX, NEON, SVE) | model "unknown", no instruction sets; core counts still come from `psutil` |
 | `cpu-cores` | all | `psutil.cpu_count(logical=False)` and `psutil.cpu_count(logical=True)` | physical and logical core counts | counts fall back to one core (physical and logical); thread choice degrades |
 | `sysctl-perflevel` | macOS | `sysctl -n hw.perflevel0.physicalcpu` | performance-core count | all physical cores are treated as performance cores |
-| `memory-modules` | Windows | PowerShell `Get-CimInstance Win32_PhysicalMemory` | DDR type, speed, channel count, bandwidth estimate | totals only; bandwidth is measured or assumed |
-| `memory-modules` | macOS | `system_profiler SPMemoryDataType -json` | memory type | same |
-| `memory-modules` | Linux | `dmidecode -t memory` (needs root) | DDR type, speed, channels | same; run `sudo llamafit system` once if you want the facts recorded |
+| `memory-modules` | Windows | PowerShell `Get-CimInstance Win32_PhysicalMemory` | DDR type, speed, number of populated modules | totals only; bandwidth is measured or assumed |
+| `memory-modules` | macOS | `system_profiler SPMemoryDataType -json` | memory type, number of modules listed | same |
+| `memory-modules` | Linux | `dmidecode -t memory` (needs root) | DDR type, speed, number of populated modules | same; run `sudo llamafit system` once if you want the facts recorded |
 | `memory-totals` | all | `psutil.virtual_memory()` | total and available memory | memory budgets cannot be computed until this works |
 | `paths` | all | `platformdirs` and the home directory | the downloads directory, whose free space is reported | only the working directory's volume is reported; set `LLAMAFIT_HOME` if there is no home directory |
 | `nvidia-smi` | Windows, Linux | `nvidia-smi --query-gpu=index,name,memory.total,memory.used,driver_version --format=csv,noheader,nounits` | NVIDIA name, VRAM total and used, driver | the GPU is listed by name only (from WMI or lspci), VRAM unknown |
@@ -26,9 +26,15 @@ it, so a `doctor` warning can always be traced here.
 | `llama-server --version` | all | `llama-server --version` | llama.cpp build number and commit | `bin/VERSION.txt` is read when present |
 | `server:<port>` | all | HTTP `GET /health` (0.3 s timeout), then `/v1/models`, `/props` (1.5 s timeout each) on 8080, 8081, 8098 and `LLAMA_SERVER_PORT` | running servers, their model and context | none listed |
 
+The module count is not the channel count: a dual-channel board with four modules reports four
+modules and says nothing about channels. No source above reports a channel count, so LlamaFit
+leaves it unknown and does not compute the theoretical `speed x 8 bytes x channels` estimate
+from it; the estimate returns when a probe genuinely reads the channel count.
+
 The RAM bandwidth measurement is not a probe: it runs in-process and reports `measured` when
 it can allocate its buffer (more accurate with NumPy: `pip install llamafit[fast]`),
-`estimated` from DDR facts otherwise, and `assumed` (40 GB/s) when nothing better is known.
+`estimated` when the channel count is known (no current source reports it), and `assumed`
+(40 GB/s) when nothing better is known.
 
 A failed vendor GPU probe (`nvidia-smi`, `rocm-smi`, `system-profiler`) is hidden by `doctor`
 when the machine has GPUs but none from that vendor: a host with only an NVIDIA card is never

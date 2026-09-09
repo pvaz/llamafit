@@ -49,7 +49,13 @@ def detect_memory(
     *,
     vm_provider: Callable[[], tuple[int, int]] | None = None,
 ) -> tuple[Memory, list[Probe]]:
-    """Detect memory totals and, when the OS tells us, type, speed and channel count."""
+    """Detect memory totals and, when the OS tells us, type, speed and module count.
+
+    The theoretical bandwidth estimate needs the channel count, which is not the module
+    count and which no source read here reports, so it is computed only if something has
+    genuinely set ``channels``; otherwise the bandwidth comes from the measurement or
+    the assumed default.
+    """
     probes: list[Probe] = []
     start = time.perf_counter()
     try:
@@ -68,7 +74,7 @@ def detect_memory(
         facts, rec = probe("memory-modules", runner, _LINUX_MEMORY_CMD, _parse_dmidecode)
     probes.append(rec)
     if facts:
-        memory.type, memory.speed_mts, memory.channels = facts
+        memory.type, memory.speed_mts, memory.modules = facts
         if memory.speed_mts and memory.channels:
             memory.bandwidth_gbps = theoretical_bandwidth_gbps(memory.speed_mts, memory.channels)
             memory.bandwidth_source = "estimated"
@@ -80,6 +86,7 @@ def _ms(start: float) -> int:
 
 
 def _parse_windows_modules(out: str) -> tuple[str | None, int | None, int | None]:
+    """Return the DDR type, configured speed and the number of populated modules."""
     data: Any = json.loads(out)
     modules = data if isinstance(data, list) else [data]
     populated = [m for m in modules if m.get("Capacity")]
@@ -88,19 +95,21 @@ def _parse_windows_modules(out: str) -> tuple[str | None, int | None, int | None
     first = populated[0]
     mem_type = _SMBIOS_TYPES.get(int(first.get("SMBIOSMemoryType") or 0))
     speed = first.get("ConfiguredClockSpeed") or first.get("Speed")
-    return mem_type, int(speed) if speed else None, min(len(populated), 8)
+    return mem_type, int(speed) if speed else None, len(populated)
 
 
 def _parse_macos_memory(out: str) -> tuple[str | None, int | None, int | None]:
+    """Return the memory type and the number of modules listed; speed is not reported."""
     data = json.loads(out)
     items = data.get("SPMemoryDataType", [])
     if not items:
         raise ValueError("no SPMemoryDataType")
     mem_type = items[0].get("dimm_type")
-    return (str(mem_type) if mem_type else None), None, None
+    return (str(mem_type) if mem_type else None), None, len(items)
 
 
 def _parse_dmidecode(out: str) -> tuple[str | None, int | None, int | None]:
+    """Return the DDR type, configured speed and the number of populated modules."""
     mem_type: str | None = None
     speed: int | None = None
     populated = 0
@@ -121,4 +130,4 @@ def _parse_dmidecode(out: str) -> tuple[str | None, int | None, int | None]:
             speed = int(digits) if digits else None
     if populated == 0:
         raise ValueError("no populated memory modules")
-    return mem_type, speed, min(populated, 8)
+    return mem_type, speed, populated

@@ -40,7 +40,15 @@ class Memory(BaseModel):
     available_bytes: int
     type: str | None = None
     speed_mts: int | None = None
+    modules: int | None = None
+    """Number of populated memory modules, which is not the channel count."""
     channels: int | None = None
+    """Memory channels in use, set only when a source genuinely reports one.
+
+    No source LlamaFit reads today does: a dual-channel board with four modules reports
+    four modules and no channel count, so this stays ``None`` and the theoretical
+    bandwidth estimate is not computed.
+    """
     bandwidth_gbps: float | None = None
     bandwidth_source: Source = "unknown"
 
