@@ -98,7 +98,17 @@ class GgufFacts(_Strict):
         n_vocab: Vocabulary size.
         n_head: Number of attention heads.
         n_head_kv: Number of key/value heads (for grouped-query attention).
-        head_dim: Dimension of one attention head.
+        head_dim: Dimension of one attention head's key vector, from
+            ``{arch}.attention.key_length``, or ``embedding_length`` over
+            ``head_count`` when the architecture declares no key length. This is
+            the head dimension for everything that legitimately means one; the
+            KV cache is the exception and needs ``value_head_dim`` too.
+        value_head_dim: Dimension of one attention head's value vector, from
+            ``{arch}.attention.value_length``, falling back to ``head_dim`` when
+            the architecture declares only a key length. Every model in the
+            catalog today declares the two equal, but an architecture is free to
+            separate them, and a cache sized from twice the key length would then
+            be wrong in proportion.
         attention_layers: Number of layers with full (non-linear) attention.
         attention_layers_source: How ``attention_layers`` was determined.
         sliding_window: Length of the sliding attention window in tokens, from
@@ -143,6 +153,7 @@ class GgufFacts(_Strict):
     n_head: Count | None = None
     n_head_kv: Count | None = None
     head_dim: Count | None = None
+    value_head_dim: Count | None = None
     attention_layers: Count | None = None
     attention_layers_source: Literal["tensors", "all-layers", "unknown"] = "unknown"
     sliding_window: Count | None = None
