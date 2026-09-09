@@ -47,12 +47,12 @@ CONTEXT_SINGULAR_NAMES = frozenset({"pgettext", "lazy_pgettext"})
 CONTEXT_PLURAL_NAMES = frozenset({"npgettext", "lazy_npgettext"})
 """Names that translate a counting message under a context; the context comes first."""
 
-SOURCE_ROOTS: tuple[Path, ...] = (
-    ROOT / "src" / "llamafit",
-    # The message sweep has not landed yet, so the only calls in the tree are the ones
-    # the translation tests make. Drop this root once the sweep wraps the real messages.
-    ROOT / "tests" / "fixtures" / "messages.py",
-)
+SOURCE_ROOTS: tuple[Path, ...] = (ROOT / "src" / "llamafit",)
+"""What the template is built from: the shipped package, and nothing else.
+
+The test fixtures wrap the same messages a second time, to exercise the machinery
+without freezing a real call site into a test, but they are not what LlamaFit ships and
+a message that only a fixture asks for has no business reaching a translator."""
 
 EXCLUDED: tuple[Path, ...] = (ROOT / "src" / "llamafit" / "i18n",)
 """The translation machinery itself: it defines ``gettext``, it does not call it.
