@@ -1,0 +1,16 @@
+LlamaFit
+Copyright (c) 2026 Paulo Vaz
+Licensed under the MIT License (see LICENSE).
+
+llama.cpp (https://github.com/ggml-org/llama.cpp), MIT License, is the
+runtime LlamaFit detects, installs and configures. LlamaFit does not
+bundle it; the installer downloads official release builds and verifies
+their published checksums.
+
+Model weights are downloaded from the repositories named in the catalog
+and remain under their own licenses. The catalog records the license of
+every model so that LlamaFit can filter by it; LlamaFit itself does not
+redistribute any weights.
+
+GPU specifications in src/llamafit/data/gpus.json are vendor-published
+figures collected from public product pages and are reproduced as facts.
