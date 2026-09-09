@@ -83,8 +83,15 @@ def parse_version(out: str) -> tuple[int | None, str | None]:
 
 
 def detect_backends(bin_dir: Path) -> list[str]:
-    """Infer compiled backends from the ``ggml-*`` shared libraries next to the binaries."""
-    names = {p.name.lower() for p in bin_dir.iterdir() if p.is_file()}
+    """Infer compiled backends from the ``ggml-*`` shared libraries next to the binaries.
+
+    A directory that cannot be listed (it vanished, or the user may not read it) yields an
+    empty list, which the caller reports as the usual "no ggml backend libraries" problem.
+    """
+    try:
+        names = {p.name.lower() for p in bin_dir.iterdir() if p.is_file()}
+    except OSError:  # unlistable directory: no backends is the honest answer
+        return []
     found: set[str] = set()
     for name in names:
         if not name.startswith(("ggml-", "libggml-")):
@@ -100,22 +107,33 @@ def find_local_models(dirs: Iterable[Path], *, max_depth: int = 3) -> list[Local
     """List GGUF files; split models appear once, under their first shard, with total bytes.
 
     An incomplete split model, one whose first shard is missing, is not listed.
+
+    A model directory is exactly where files appear and disappear while it is being read,
+    so a file whose size cannot be read is skipped and a directory walk that fails part
+    way through keeps whatever it found.
     """
     models: dict[Path, int] = {}
     for root in dirs:
         root = Path(root)
         if not root.is_dir():
             continue
-        for path in root.rglob("*.gguf"):
-            if len(path.relative_to(root).parts) > max_depth:
-                continue
-            match = _SHARD_RE.match(path.name)
-            if match and match.group("index") != "00001":
-                stem, total = match.group("stem"), match.group("total")
-                first = path.with_name(f"{stem}-00001-of-{total}.gguf")
-                models[first] = models.get(first, 0) + path.stat().st_size
-                continue
-            models[path] = models.get(path, 0) + path.stat().st_size
+        try:
+            for path in root.rglob("*.gguf"):
+                if len(path.relative_to(root).parts) > max_depth:
+                    continue
+                try:
+                    size = path.stat().st_size
+                except OSError:  # the file went away or cannot be read; skip it
+                    continue
+                match = _SHARD_RE.match(path.name)
+                if match and match.group("index") != "00001":
+                    stem, total = match.group("stem"), match.group("total")
+                    first = path.with_name(f"{stem}-00001-of-{total}.gguf")
+                    models[first] = models.get(first, 0) + size
+                    continue
+                models[path] = models.get(path, 0) + size
+        except OSError:  # the directory walk itself failed; keep what was found
+            continue
     return [LocalModel(path=str(p), bytes=b) for p, b in sorted(models.items()) if p.exists()]
 
 
@@ -169,8 +187,10 @@ def detect_install(
     probes.append(rec)
     build, commit = version if version else (None, None)
     if build is None:
-        version_file = bin_dir / "VERSION.txt"
-        text = version_file.read_text(encoding="utf-8") if version_file.exists() else ""
+        try:
+            text = (bin_dir / "VERSION.txt").read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):  # absent, unreadable or not text: build unknown
+            text = ""
         build, _ = parse_version(text)
 
     backends = detect_backends(bin_dir)

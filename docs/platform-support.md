@@ -17,6 +17,7 @@ it, so a `doctor` warning can always be traced here.
 | `memory-modules` | macOS | `system_profiler SPMemoryDataType -json` | memory type | same |
 | `memory-modules` | Linux | `dmidecode -t memory` (needs root) | DDR type, speed, channels | same; run `sudo llamafit system` once if you want the facts recorded |
 | `memory-totals` | all | `psutil.virtual_memory()` | total and available memory | memory budgets cannot be computed until this works |
+| `paths` | all | `platformdirs` and the home directory | the downloads directory, whose free space is reported | only the working directory's volume is reported; set `LLAMAFIT_HOME` if there is no home directory |
 | `nvidia-smi` | Windows, Linux | `nvidia-smi --query-gpu=index,name,memory.total,memory.used,driver_version --format=csv,noheader,nounits` | NVIDIA name, VRAM total and used, driver | the GPU is listed by name only (from WMI or lspci), VRAM unknown |
 | `rocm-smi` | Linux | `rocm-smi --showmeminfo vram --showproductname --json` | AMD name, VRAM total and used | name only |
 | `system-profiler` | macOS | `system_profiler SPDisplaysDataType -json` | Apple GPU name and core count | no GPU listed |

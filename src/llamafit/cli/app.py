@@ -8,6 +8,7 @@ from dataclasses import dataclass
 
 import typer
 from rich.console import Console
+from rich.text import Text
 
 from llamafit import __version__
 from llamafit.errors import LlamaFitError, NotInstalledError, ProbeError
@@ -71,7 +72,11 @@ def _root(
 
 
 def main() -> None:
-    """Run the app, turning known errors into messages and unexpected ones into a short report."""
+    """Run the app, turning known errors into messages and unexpected ones into a short report.
+
+    Error text can contain anything, including square brackets from a path, so it is printed
+    as ``Text`` and never parsed as Rich markup.
+    """
     verbose = "--verbose" in sys.argv or "-v" in sys.argv
     no_color = "--no-color" in sys.argv or bool(os.environ.get("NO_COLOR"))
     if verbose:
@@ -80,13 +85,13 @@ def main() -> None:
     try:
         app(standalone_mode=True)
     except LlamaFitError as exc:
-        console.print(f"[red]{exc.render()}[/red]")
+        console.print(Text(exc.render(), style="red"))
         sys.exit(2 if isinstance(exc, (NotInstalledError, ProbeError)) else 1)
     except Exception as exc:  # an unexpected failure is a bug, not a user error
         if verbose:
             raise
-        console.print(f"[red]Unexpected error: {exc}[/red]")
-        console.print("[dim]Run again with --verbose for the full traceback.[/dim]")
+        console.print(Text(f"Unexpected error: {exc}", style="red"))
+        console.print(Text("Run again with --verbose for the full traceback.", style="dim"))
         sys.exit(1)
 
 

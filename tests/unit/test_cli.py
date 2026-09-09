@@ -100,6 +100,41 @@ def test_doctor_json_has_findings() -> None:
     assert data["findings"][0]["level"] in {"ok", "warn", "error"}
 
 
+def test_external_text_with_square_brackets_is_not_parsed_as_markup() -> None:
+    from rich.console import Console
+
+    from llamafit.cli.render import render_findings, render_probes
+    from llamafit.models import Probe
+    from llamafit.services.doctor import Finding
+
+    hostile = "bad path C:/x[/y]/z"
+    console = Console(width=200, no_color=True)
+    with console.capture() as capture:
+        console.print(
+            render_probes([Probe(name="wmi-video", ok=False, duration_ms=3, error=hostile)])
+        )
+        console.print(
+            render_findings([Finding(level="warn", title=hostile, detail=hostile, hint=hostile)])
+        )
+    output = capture.get()
+    assert output.count(hostile) == 4
+
+
+def test_main_prints_an_unexpected_error_containing_markup_verbatim(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    import llamafit.cli.app as app_module
+
+    def boom(**kwargs: object) -> None:
+        raise ValueError("bad path C:/x[/y]/z")
+
+    monkeypatch.setattr(app_module, "app", boom)
+    monkeypatch.setattr(sys, "argv", ["llamafit", "system"])
+    with pytest.raises(SystemExit):
+        app_module.main()
+    assert "bad path C:/x[/y]/z" in capsys.readouterr().err
+
+
 def test_version_flag() -> None:
     result = runner.invoke(app, ["--version"])
     assert result.exit_code == 0
