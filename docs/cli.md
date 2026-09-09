@@ -70,10 +70,12 @@ With `--json` the output is a `Diagnosis`: the report plus `findings`, each with
 ### `llamafit list` — phase 1B
 
 List the catalog. Filters: `--use-case`, `--capability` (repeatable), `--license` (repeatable),
-`--vendor`, `--search TEXT`, `--limit N`. Table columns: id, vendor, parameters (total and
-active), native context and capabilities — enough to tell a handful of candidates apart at 80
-columns. Licence and quant count are left out of the table; both are one `info` or `--json`
-away.
+`--vendor`, `--search TEXT`, `--limit N`. Table columns: id, quality, parameters (one number
+for a dense model, total/active for a mixture-of-experts one), native context and capabilities
+(as many complete names as fit, plus a `+N` marker for the rest) — sorted by quality, the
+column that says why. Vendor, licence and quant count are left out of the table; all three are
+one `info` or `--json` away. At narrow widths, context and then capabilities give way first so
+the id and quality never get cut or blanked.
 
 ### `llamafit search` `<text>` — phase 1B
 
