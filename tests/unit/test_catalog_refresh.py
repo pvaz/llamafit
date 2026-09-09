@@ -9,7 +9,7 @@ from llamafit.catalog.loader import load_models_from_file
 from llamafit.catalog.refresh import refresh_file
 from llamafit.errors import CatalogError, NetworkError
 from llamafit.models.gguf import GgufFacts
-from tests.unit.test_catalog_loader import ENTRY, write
+from tests.unit.test_catalog_loader import DUPLICATE_QUANT_ENTRY, ENTRY, write, write_facts
 
 FILES = {
     "example/tiny-1b-GGUF": [
@@ -314,3 +314,76 @@ def test_a_failed_write_leaves_no_temporary_file_behind(
     facts_path = facts_path_of(path)
     assert not facts_path.with_name(f"{facts_path.name}.tmp").exists()
     assert list(tmp_path.glob("*.tmp")) == []
+
+
+def test_a_corrupt_facts_file_is_a_warning_and_the_refresh_repairs_it(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    write_facts(tmp_path, {"tiny-1b": {"quants": {"Q4_K_M": {"bytes": "seven hundred million"}}}})
+
+    results = refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
+
+    assert results[0].error is None
+    assert results[0].changed is True
+    assert any("the previous facts file was ignored" in w for w in results[0].warnings)
+    assert any("quants.Q4_K_M.bytes" in w for w in results[0].warnings)
+
+    document = json.loads(facts_path_of(path).read_text(encoding="utf-8"))
+    assert document["schema_version"] == refresh_module.FACTS_SCHEMA_VERSION
+    assert document["models"]["tiny-1b"]["quants"]["Q4_K_M"]["bytes"] == 700_000_000
+
+    models, problems = load_models_from_file(path)
+    assert problems == []
+    assert models[0].sources[0].quants[0].bytes_ == 700_000_000
+
+
+def test_a_facts_file_that_is_not_json_at_all_is_a_warning_not_a_failure(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    write(tmp_path, "tiny.facts.json", "{not json")
+
+    results = refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
+
+    assert results[0].error is None
+    assert any(w.startswith("the previous facts file was ignored: ") for w in results[0].warnings)
+
+    _, problems = load_models_from_file(path)
+    assert problems == []
+
+
+def test_a_facts_file_from_another_build_is_a_warning_and_is_rewritten(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    write_facts(
+        tmp_path,
+        {"tiny-1b": {"quants": {"Q4_K_M": {"bytes": 1}}}},
+        refresh_module.FACTS_SCHEMA_VERSION + 998,
+    )
+
+    results = refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
+
+    assert results[0].error is None
+    assert any("schema_version" in w for w in results[0].warnings)
+
+    document = json.loads(facts_path_of(path).read_text(encoding="utf-8"))
+    assert document["schema_version"] == refresh_module.FACTS_SCHEMA_VERSION
+    assert document["models"]["tiny-1b"]["quants"]["Q4_K_M"]["bytes"] == 700_000_000
+
+
+def test_a_problem_in_the_curated_yaml_still_aborts_the_refresh(tmp_path: Path) -> None:
+    path = write(tmp_path, "dup.yaml", DUPLICATE_QUANT_ENTRY)
+
+    with pytest.raises(CatalogError) as info:
+        refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
+
+    assert "more than one source" in str(info.value)
+    assert not facts_path_of(path).exists()
+
+
+def test_a_facts_problem_for_another_model_is_still_reported(tmp_path: Path) -> None:
+    path = write(tmp_path, "multi.yaml", MULTI_ENTRY)
+    write_facts(tmp_path, {"other-2b": {"quants": {"Q4_K_M": {"bytes": "nonsense"}}}}, 1, "multi")
+
+    results = refresh_file(
+        path, hf=FakeHfClient(MULTI_FILES), read_facts_fn=facts_stub, only="tiny-1b"
+    )
+
+    assert [r.model_id for r in results] == ["tiny-1b"]
+    assert any("other-2b" in w for w in results[0].warnings)

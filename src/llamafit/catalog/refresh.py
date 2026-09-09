@@ -15,6 +15,13 @@ own file makes that failure impossible rather than merely tested. See
 :mod:`llamafit.catalog.loader` for how the two files are merged back together when
 the catalog is read.
 
+Because this module is what regenerates the facts file, it is also what repairs one.
+A problem in the hand-written YAML stops a refresh, since nothing here may guess at a
+curated field; a problem in the generated facts file does not, because the run is
+about to replace that file wholesale. Those become warnings on the result and the
+affected fields are refreshed as though they had never been filled, so a corrupt
+facts file is never something a user has to delete by hand to get their tool back.
+
 Nothing here touches a curated field, and nothing here writes a truncated file: the
 facts file is written to a sibling temporary path and moved into place with
 ``os.replace``, so a crash or a full disk leaves either the previous file or the new
@@ -35,7 +42,12 @@ from pathlib import Path
 from typing import Any
 
 from llamafit.catalog.hf import HfClient, RepoFile, assign_files_to_quants
-from llamafit.catalog.loader import FACTS_SCHEMA_VERSION, facts_path_for, load_models_from_file
+from llamafit.catalog.loader import (
+    FACTS_SCHEMA_VERSION,
+    Problem,
+    facts_path_for,
+    load_models_from_file,
+)
 from llamafit.errors import CatalogError, LlamaFitError
 from llamafit.models.catalog import CatalogModel, Extra, ModelSource, Quant
 from llamafit.models.gguf import GgufFacts
@@ -321,6 +333,32 @@ def _write_facts_atomically(path: Path, text: str) -> None:
         ) from exc
 
 
+def _stale_facts_warning(problem: Problem) -> str:
+    """One problem with the facts file, said as a warning about the data being replaced."""
+    named = "" if problem.model_id is None else f" for {problem.model_id}"
+    where = "" if problem.location == "file" else f" at {problem.location}"
+    return f"the previous facts file was ignored{named}{where}: {problem.message}"
+
+
+def _split_by_file(
+    problems: Sequence[Problem], facts_path: Path
+) -> tuple[list[Problem], list[Problem]]:
+    """Separate problems with the curated YAML from problems with the generated facts file.
+
+    Returns:
+        The problems that come from the hand-written file, which must stop a refresh,
+        and those that come from the generated one, which must not.
+    """
+    curated: list[Problem] = []
+    stale: list[Problem] = []
+    for problem in problems:
+        if Path(problem.file) == facts_path:
+            stale.append(problem)
+        else:
+            curated.append(problem)
+    return curated, stale
+
+
 def refresh_file(
     path: Path,
     *,
@@ -338,12 +376,21 @@ def refresh_file(
     A model whose repository listing fails is left exactly as it was and reported
     with ``error`` set; it never blanks out fields that were already filled in.
 
+    A problem loading the file is judged by which file it came from. The curated
+    YAML is hand-written and nothing here may guess at it, so a problem there stops
+    the refresh. The facts file is generated, and this command is what regenerates
+    it, so a problem there is a warning on the result: the unusable fields are
+    refreshed as though they had never been filled, and the rewritten file is
+    correct again. Refusing to run would leave a user with a file only a manual
+    deletion could clear.
+
     The curated YAML file named by ``path`` is only ever read, never written. The
     facts file, named by :func:`~llamafit.catalog.loader.facts_path_for`, is
     rewritten, atomically, only when at least one model actually changed and
-    ``dry_run`` is ``False``; it always reflects every model currently in the YAML,
+    ``dry_run`` is ``False``; it reflects every model currently in the YAML,
     including those left untouched by an ``only`` filter or a failed source, so a
-    partial refresh never drops facts a previous run already recorded.
+    partial refresh never drops facts a previous run recorded *and this run could
+    read*. Facts that could not be read are gone either way; the warnings say so.
 
     Args:
         path: The curated catalog YAML file to refresh.
@@ -353,27 +400,36 @@ def refresh_file(
         only: When set, refresh only the model with this id.
 
     Returns:
-        One :class:`RefreshResult` per model that was considered, in file order.
+        One :class:`RefreshResult` per model that was considered, in file order,
+        each carrying any warning about the facts file it is replacing.
 
     Raises:
-        CatalogError: The YAML file, or its sibling facts file, could not be parsed
-            or failed validation, so refreshing it could not be done safely; or the
-            facts file could not be written.
+        CatalogError: The curated YAML file could not be parsed or failed
+            validation, so refreshing it could not be done safely; or the facts
+            file could not be written.
     """
     models, problems = load_models_from_file(path)
-    if problems:
-        details = "; ".join(f"{p.location}: {p.message}" for p in problems)
+    curated, stale = _split_by_file(problems, facts_path_for(path))
+    if curated:
+        details = "; ".join(f"{p.location}: {p.message}" for p in curated)
         raise CatalogError(
-            f"{path} has {len(problems)} problem(s) and cannot be refreshed: {details}",
+            f"{path} has {len(curated)} problem(s) and cannot be refreshed: {details}",
             hint="Run `llamafit catalog validate` and fix the file first.",
         )
+
+    considered = {model.id for model in models if only is None or model.id == only}
+    shared_warnings = [_stale_facts_warning(p) for p in stale if p.model_id not in considered]
+    warnings_for: dict[str, list[str]] = {}
+    for problem in stale:
+        if problem.model_id is not None and problem.model_id in considered:
+            warnings_for.setdefault(problem.model_id, []).append(_stale_facts_warning(problem))
 
     results: list[RefreshResult] = []
     final_models: list[CatalogModel] = []
     any_changed = False
 
     for model in models:
-        if only is not None and model.id != only:
+        if model.id not in considered:
             final_models.append(model)
             continue
 
@@ -388,7 +444,7 @@ def refresh_file(
                 changed=changed,
                 fields=changed_fields,
                 error=error,
-                warnings=warnings,
+                warnings=shared_warnings + warnings_for.get(model.id, []) + warnings,
             )
         )
 
