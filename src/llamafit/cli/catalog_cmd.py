@@ -284,6 +284,21 @@ def validate_command(
         raise typer.Exit(code=1)
 
 
+def _dedupe_repeated_prefix(message: str) -> str:
+    """Collapse "X: ...X..." into "...X..." when the leading label reappears verbatim.
+
+    A failed source's error is built elsewhere as "<repo>: <what went wrong>", and
+    what went wrong already names the repository in every case that matters here,
+    so the plain concatenation says it twice in the same line. This does not
+    change what was raised, only whether its own repeated leading label is shown
+    once or twice.
+    """
+    prefix, separator, rest = message.partition(": ")
+    if separator and prefix and prefix in rest:
+        return rest
+    return message
+
+
 @catalog_app.command("refresh")
 def refresh_command(
     ctx: typer.Context,
@@ -322,23 +337,47 @@ def refresh_command(
     else:
         console = state.console
         printed = False
+
+        # Grouped by text rather than printed once per model: a facts file that
+        # fails to parse loses the same recorded facts for every model that reads
+        # it, and five identical lines tell a reader less than one line and a
+        # count. ``warnings`` is read defensively: it is not yet a field of the
+        # ``RefreshResult`` this branch was built against, but is landing in a
+        # sibling change and should start printing the moment it exists, without
+        # another edit here.
+        warned_by_text: dict[str, list[str]] = {}
         for result in results:
-            # ``warnings`` is read defensively: it is not yet a field of the
-            # ``RefreshResult`` this branch was built against, but is landing in a
-            # sibling change and should start printing the moment it exists,
-            # without another edit here. A quant that matched no files in its
-            # repository looks exactly like a quant needing no update unless this
-            # says otherwise.
-            warnings: list[str] = getattr(result, "warnings", [])
-            for warning in warnings:
-                console.print(Text(f"{result.model_id}: warning: {warning}", style="yellow"))
-                printed = True
+            for warning in getattr(result, "warnings", []):
+                warned_by_text.setdefault(warning, []).append(result.model_id)
+        for warning, model_ids in warned_by_text.items():
+            if len(model_ids) == 1:
+                console.print(Text(f"{model_ids[0]}: warning: {warning}", style="yellow"))
+            else:
+                affected = ", ".join(model_ids)
+                console.print(
+                    Text(
+                        f"warning: {warning} ({len(model_ids)} models: {affected})",
+                        style="yellow",
+                    )
+                )
+            printed = True
+
+        for result in results:
             if result.error:
-                console.print(Text(f"{result.model_id}: error: {result.error}", style="red"))
+                message = _dedupe_repeated_prefix(result.error)
+                console.print(Text(f"{result.model_id}: error: {message}", style="red"))
                 printed = True
             elif result.changed:
                 console.print(Text(f"{result.model_id}: {', '.join(result.fields)}"))
                 printed = True
+        if any(r.error for r in results):
+            console.print(
+                Text(
+                    "Hint: refresh needs network access to Hugging Face; check your "
+                    "connection and that the repository id is correct.",
+                    style="dim",
+                )
+            )
         if not printed:
             console.print("No changes.")
 
