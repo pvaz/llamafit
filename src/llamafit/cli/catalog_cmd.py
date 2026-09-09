@@ -90,11 +90,19 @@ def _closest_ids(
 
 
 def _find_model(catalog: Catalog, model_id: str) -> CatalogModel:
-    """The model with ``model_id``, or a :class:`CatalogError` naming close ids instead."""
-    model = catalog.by_id.get(model_id)
+    """The model with ``model_id``, or a :class:`CatalogError` naming close ids instead.
+
+    An id is a name, not a password: matching strips surrounding whitespace (from
+    a pasted value) and folds case, so ``" QWEN3-CODER-NEXT"`` finds
+    ``qwen3-coder-next`` the same way the closest-id suggestion already would.
+    Every catalog id is lowercase by construction, so folding the input is enough;
+    no separate case-insensitive index is needed.
+    """
+    normalized = model_id.strip().casefold()
+    model = catalog.by_id.get(normalized)
     if model is not None:
         return model
-    suggestions = _closest_ids(sorted(catalog.by_id), model_id)
+    suggestions = _closest_ids(sorted(catalog.by_id), normalized)
     hint = (
         f"Did you mean: {', '.join(suggestions)}?"
         if suggestions

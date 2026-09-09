@@ -208,6 +208,24 @@ def test_info_shows_vendor_licence_and_quant_details() -> None:
     assert "4.50" in result.output  # bits per weight
 
 
+def test_info_matches_an_id_regardless_of_case() -> None:
+    result = runner.invoke(app, ["info", "CODER-WITH-TOOLS"])
+    assert result.exit_code == 0, result.output
+    assert "Acme Robotics" in result.output
+
+
+def test_info_matches_an_id_with_surrounding_whitespace() -> None:
+    result = runner.invoke(app, ["info", " coder-with-tools \t"])
+    assert result.exit_code == 0, result.output
+    assert "Acme Robotics" in result.output
+
+
+def test_info_matches_an_id_with_mixed_case_and_whitespace() -> None:
+    result = runner.invoke(app, ["info", "  Coder-With-Tools  "])
+    assert result.exit_code == 0, result.output
+    assert "Acme Robotics" in result.output
+
+
 def test_info_shows_extended_context_notes_benchmarks_and_facts(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
