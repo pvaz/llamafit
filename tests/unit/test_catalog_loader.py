@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import pytest
@@ -110,3 +111,75 @@ def test_custom_models_path_honours_the_environment_override(tmp_path: Path) -> 
 def test_custom_models_path_defaults_to_the_data_directory() -> None:
     path = custom_models_path({})
     assert path.name == "custom_models.yaml"
+
+
+def test_a_missing_facts_file_is_not_a_problem_and_leaves_fields_empty(tmp_path: Path) -> None:
+    models, problems = load_models_from_file(write(tmp_path, "tiny.yaml", ENTRY))
+    assert problems == []
+    quant = models[0].sources[0].quants[0]
+    assert quant.files == []
+    assert quant.bytes_ is None
+    assert quant.sha256 == []
+    assert quant.bpw is None
+    assert quant.gguf_facts is None
+
+
+def test_the_loader_merges_a_facts_file_into_the_quants(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    facts = {
+        "schema_version": 1,
+        "refreshed_at": "2026-09-09T00:00:00+00:00",
+        "models": {
+            "tiny-1b": {
+                "quants": {
+                    "Q4_K_M": {
+                        "files": ["tiny-1b-Q4_K_M.gguf"],
+                        "bytes": 700_000_000,
+                        "sha256": ["abc123"],
+                        "bpw": 5.6,
+                        "gguf_facts": {"arch": "llama", "n_layer": 16},
+                    }
+                }
+            }
+        },
+    }
+    write(tmp_path, "tiny.facts.json", json.dumps(facts))
+
+    models, problems = load_models_from_file(path)
+
+    assert problems == []
+    quant = models[0].sources[0].quants[0]
+    assert quant.files == ["tiny-1b-Q4_K_M.gguf"]
+    assert quant.bytes_ == 700_000_000
+    assert quant.sha256 == ["abc123"]
+    assert quant.bpw == 5.6
+    assert quant.gguf_facts is not None and quant.gguf_facts.n_layer == 16
+
+
+def test_a_facts_file_naming_an_unknown_quant_is_a_problem_naming_both(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    facts = {
+        "schema_version": 1,
+        "refreshed_at": "2026-09-09T00:00:00+00:00",
+        "models": {"tiny-1b": {"quants": {"Q9_TYPO": {"bytes": 1}}}},
+    }
+    write(tmp_path, "tiny.facts.json", json.dumps(facts))
+
+    models, problems = load_models_from_file(path)
+
+    assert [m.id for m in models] == ["tiny-1b"]
+    assert any(p.model_id == "tiny-1b" and "Q9_TYPO" in p.message for p in problems)
+
+
+def test_a_facts_file_naming_an_unknown_model_is_a_problem_naming_both(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    facts = {
+        "schema_version": 1,
+        "refreshed_at": "2026-09-09T00:00:00+00:00",
+        "models": {"no-such-model": {}},
+    }
+    write(tmp_path, "tiny.facts.json", json.dumps(facts))
+
+    _, problems = load_models_from_file(path)
+
+    assert any(p.model_id == "no-such-model" and "no-such-model" in p.message for p in problems)
