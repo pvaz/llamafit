@@ -1,0 +1,814 @@
+# Tamil translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. இந்த மொழிபெயர்ப்பு ஆங்கிலத் தொகுப்பிலிருந்து ஒரே
+# முறையில் எழுதப்பட்டது; இரண்டாவது ஒருவர் இதைப் படிக்கவில்லை. ஒவ்வொரு மொழிக்கும்
+# docs/translations.md வைக்கும் தரத்தின்படி இது போதாது: தயவுசெய்து வரி வரியாகப் படித்து,
+# ஒரு pull request இல் திருத்தவும்.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ta\n"
+"Language-Team: Tamil\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# Tamil counts one apart from everything else, zero included, so the rule is the same
+# shape as English's: CLDR puts ta in the group whose singular is exactly n = 1.
+#
+# Tamil computing has real words of its own and they are used here: கோப்பு, கோப்பகம்,
+# நினைவகம், வட்டு, சேவையகம், பிழை, எச்சரிக்கை, இயக்கி, களஞ்சியம், அளவுரு. What stays in
+# Latin is what a Tamil developer only ever writes in English: LlamaFit, llama.cpp,
+# Hugging Face, GGUF, JSON, YAML, CUDA, Vulkan, Metal, flags, paths, tool names, and the
+# jargon backend, quant, shard, offset, header, key, schema, build, binary, traceback,
+# checksum, benchmark, bandwidth, tensor, expert, Params, context.
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "%(repo)s-க்கான கோப்புகளைப் பட்டியலிடும்போது Hugging Face %(status)d என்பதைத் திருப்பியது."
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "Hugging Face-இலிருந்து %(repo)s-க்கான கோப்புப் பட்டியலைப் படிக்க முடியவில்லை."
+
+msgid "Check your network connection and try again."
+msgstr "உங்கள் பிணைய இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்."
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "%(repo)s-க்கான Hugging Face-இன் பதிலில் கோப்புப் பட்டியல் இல்லை."
+
+msgid "Check that the repository id is correct and public."
+msgstr "களஞ்சிய id சரியானது என்பதையும் பொதுவானது என்பதையும் சரிபார்க்கவும்."
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "காட்டலாக்கில் %(count)d சிக்கல் உள்ளது"
+msgstr[1] "காட்டலாக்கில் %(count)d சிக்கல்கள் உள்ளன"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "விவரங்களுக்கு `llamafit catalog validate` ஐ இயக்கவும்."
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "%(path)s ஐ எழுத முடியவில்லை: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "அந்தக் கோப்பகத்தில் எழுத முடியும் என்பதையும் இடம் உள்ளது என்பதையும் சரிபார்க்கவும்."
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "%(path)s இல் %(count)d சிக்கல் உள்ளது, எனவே அதைப் புதுப்பிக்க முடியாது"
+msgstr[1] "%(path)s இல் %(count)d சிக்கல்கள் உள்ளன, எனவே அதைப் புதுப்பிக்க முடியாது"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "முதலில் `llamafit catalog validate` ஐ இயக்கி, கோப்பைச் சரிசெய்யவும்."
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "%(path)s ஐ முழுமையாகப் படிக்க முடியவில்லை; எனவே %(model)s ஐ மட்டும் புதுப்பித்தால், இந்த இயக்கம் தொடாத மாடல்களுக்காக அதில் பதிவாகியுள்ள தகவல்கள் அழிந்துவிடும்: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "முழுக் கோப்பையும் மீண்டும் உருவாக்க `llamafit catalog refresh` ஐ --model இல்லாமல் இயக்கவும்."
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "உங்கள் சொந்த இயந்திரத்தில் llama.cpp-க்கான open-weight LLM-களைக் கண்டறியவும், அளவிடவும், நிறுவவும், சரிபார்க்கவும்."
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "அட்டவணைகளுக்குப் பதிலாக இயந்திரம் படிக்கக்கூடிய JSON ஐ அச்சிடும்."
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "பதிவுக் கோப்பகத்தில் உள்ள llamafit.log இல் விவரங்களை எழுதி traceback ஐக் காட்டும்."
+
+msgid "Disable colours."
+msgstr "வண்ணங்களை முடக்கும்."
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "இந்த மொழியில் பேசும், எடுத்துக்காட்டாக pt_PT. LlamaFit-இடம் இல்லாத மொழிக்கு அது ஆங்கிலத்துக்குத் திரும்பும், மேலும் தன்னிடம் எந்தெந்த மொழிகள் உள்ளன என்பதைச் சொல்லும்."
+
+msgid "Print the version and exit."
+msgstr "பதிப்பை அச்சிட்டு வெளியேறும்."
+
+msgid "Unexpected error: %(error)s"
+msgstr "எதிர்பாராத பிழை: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "முழு traceback-க்காக --verbose உடன் மீண்டும் இயக்கவும்."
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "காட்டலாக்கைப் பராமரிக்கும்: அதன் கோப்புகளைச் சரிபார்க்கும், மாறிக்கொண்டே இருக்கும் புலங்களைப் புதுப்பிக்கும்."
+
+msgid "Keep only this use case."
+msgstr "இந்தப் பயன்பாட்டு வகையை மட்டும் வைத்திருக்கும்."
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "இந்தத் திறன் உள்ள மாடல்களை மட்டும் வைத்திருக்கும் (மீண்டும் தரலாம்)."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "இந்த உரிம அடையாளங்களை மட்டும் வைத்திருக்கும் (மீண்டும் தரலாம்)."
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "உடன் வரும் காட்டலாக் மற்றும் உங்கள் சொந்த மாற்றங்களுக்குப் பதிலாக இந்தக் கோப்பை மட்டும் சரிபார்க்கும்."
+
+msgid "Did you mean: %(ids)s?"
+msgstr "நீங்கள் சொல்ல வந்தது: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "ஒவ்வொரு மாடல் id ஐயும் பார்க்க `llamafit list` ஐ இயக்கவும்."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "காட்டலாக்கில் %(id)s என்ற பெயரில் மாடல் எதுவும் இல்லை"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "காட்டலாக்கில் %(count)d சிக்கல் கண்டறியப்பட்டது; விவரங்களுக்கு `llamafit catalog validate` ஐ இயக்கவும்."
+msgstr[1] "காட்டலாக்கில் %(count)d சிக்கல்கள் கண்டறியப்பட்டன; விவரங்களுக்கு `llamafit catalog validate` ஐ இயக்கவும்."
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "எந்த மாடலும் பொருந்தவில்லை. --use-case, --capability, --license, --vendor அல்லது --search ஐ இன்னும் விரிவாக முயற்சிக்கவும்."
+
+msgid "invalid --use-case %(value)s"
+msgstr "செல்லாத --use-case %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "செல்லுபடியாகும் பயன்பாட்டு வகைகள்: %(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "செல்லாத --capability மதிப்பு: %(values)s"
+msgstr[1] "செல்லாத --capability மதிப்புகள்: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "செல்லுபடியாகும் திறன்கள்: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"தரப்பட்ட வடிகட்டிகளால் சுருக்கப்பட்ட மாடல் காட்டலாக்கைப் பட்டியலிடும்.\n"
+"\n"
+"அட்டவணை ஒரு மாடலுக்கு அதிகபட்சம் மூன்று திறன்களையும், மீதியவற்றுக்கு ஒரு +N குறியீட்டையும் காட்டும்; அது காட்டப்படும் தரம் நெடுவரிசையின்படி வரிசைப்படுத்தப்பட்டுள்ளது; ஒவ்வொரு திறனும் info அல்லது --json இல் உள்ளது."
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "இந்த வழங்குநரை மட்டும் வைத்திருக்கும், பெரிய-சிறிய எழுத்து வேறுபாடு இல்லாமல்."
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "id, பெயர், வழங்குநர் அல்லது குடும்பத்தில் துணைச்சரப் பொருத்தம், பெரிய-சிறிய எழுத்து வேறுபாடு இல்லாமல்."
+
+msgid "Show at most this many."
+msgstr "அதிகபட்சம் இத்தனையை மட்டும் காட்டும்."
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "llamafit list --search TEXT-இன் சுருக்க வடிவம்."
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "id, பெயர், வழங்குநர் அல்லது குடும்பத்துடன் பொருத்த வேண்டிய உரை."
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "ஒரு மாடலின் தகவல்கள், அதன் மூலங்கள், அது வெளியிடும் ஒவ்வொரு quant ஆகியவற்றைக் காட்டும்."
+
+msgid "A catalog model id."
+msgstr "ஒரு காட்டலாக் மாடல் id."
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "காட்டலாக்கின் YAML கோப்புகளை schema-வுக்கு எதிராகச் சரிபார்த்து, ஒவ்வொரு சிக்கலுக்கும் ஒரு வரியை அச்சிடும்."
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "%(count)d கோப்பு சரிபார்க்கப்பட்டது, சிக்கல் எதுவும் இல்லை."
+msgstr[1] "%(count)d கோப்புகள் சரிபார்க்கப்பட்டன, சிக்கல் எதுவும் இல்லை."
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "காட்டலாக்கிற்கான கோப்புப் பெயர்கள், அளவுகள், checksum-கள், GGUF தகவல்களை Hugging Face-இலிருந்து புதுப்பிக்கும்."
+
+msgid "Refresh only this model id."
+msgstr "இந்த மாடல் id ஐ மட்டும் புதுப்பிக்கும்."
+
+msgid "Compute the refresh but write nothing."
+msgstr "புதுப்பிப்பைக் கணக்கிடும், ஆனால் எதையும் எழுதாது."
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "ஏதேனும் மாறும் நிலையில் 1 உடன் வெளியேறும்; எதையும் மாற்றாது, திட்டமிட்ட CI job-க்காக."
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: எச்சரிக்கை: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "எச்சரிக்கை: %(warning)s (%(count)d மாடல்: %(models)s)"
+msgstr[1] "எச்சரிக்கை: %(warning)s (%(count)d மாடல்கள்: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: பிழை: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "குறிப்பு: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "refresh-க்கு Hugging Face வரை பிணைய அணுகல் தேவை; உங்கள் இணைப்பையும், களஞ்சிய id சரியானது என்பதையும் சரிபார்க்கவும்."
+
+msgid "No changes."
+msgstr "மாற்றங்கள் இல்லை."
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "ஒரு மாடலின் மூலக் காட்டலாக் உள்ளீட்டை அச்சிடும், இயல்பாக JSON ஆக அல்லது --yaml உடன் YAML ஆக."
+
+msgid "Print YAML instead of JSON."
+msgstr "JSON-க்குப் பதிலாக YAML ஐ அச்சிடும்."
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "எது கண்டறியப்பட்டது, எது தோல்வியடைந்தது, எது மேலும் திறக்கும் என்பதை விளக்கும்."
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "சரி"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "எச்சரிக்கை"
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "பிழை"
+
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "அளக்கப்பட்டது"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "மதிப்பிடப்பட்டது"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "கருதப்பட்டது"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "தெரியவில்லை"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s மற்றும் %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "இயந்திரம்"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d கோர் / %(logical)d இழை"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d செயல்திறன் கோர்"
+msgstr[1] "%(count)d செயல்திறன் கோர்கள்"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "isa தெரியவில்லை"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d தொகுதி"
+msgstr[1] "%(count)d தொகுதிகள்"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d சேனல்"
+msgstr[1] "%(count)d சேனல்கள்"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+# Tamil does not inflect these row values for the gender of the noun in the row, so
+# every row that says unknown or none detected says the same words. Each context is
+# still answered on its own: an empty one would send that row back to English while the
+# others stayed Tamil.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "தெரியவில்லை"
+
+msgid "Memory"
+msgstr "நினைவகம்"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "மொத்தம் %(total)s, கிடைப்பது %(available)s; %(details)s; bandwidth %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "வகை தெரியவில்லை"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "எதுவும் கண்டறியப்படவில்லை"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, %(free)s காலி"
+
+msgid "VRAM unknown"
+msgstr "VRAM தெரியவில்லை"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (விவரக்குறிப்பு)"
+
+msgid "driver %(driver)s"
+msgstr "இயக்கி %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "விவரக்குறிப்பு இல்லை"
+
+msgid "Memory pool"
+msgstr "நினைவகத் தொகுப்பு"
+
+msgid "unified (GPU shares system memory)"
+msgstr "ஒருங்கிணைந்தது (GPU கணினி நினைவகத்தைப் பகிர்ந்துகொள்கிறது)"
+
+msgid "Disk"
+msgstr "வட்டு"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: %(total)s இல் %(free)s காலி"
+
+msgid "Installed"
+msgstr "நிறுவப்பட்டது"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "இல்லை"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "build தெரியவில்லை"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "ஆம், %(build)s, %(path)s இல்"
+
+msgid "Backends"
+msgstr "Backends"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "எதுவும் கண்டறியப்படவில்லை"
+
+msgid "Local models"
+msgstr "உள்ளூர் மாடல்கள்"
+
+msgid "Running"
+msgstr "இயங்குகிறது"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, context %(context)s"
+
+msgid "unknown model"
+msgstr "மாடல் தெரியவில்லை"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "தெரியவில்லை"
+
+msgid "Problem"
+msgstr "சிக்கல்"
+
+msgid "Probes"
+msgstr "சோதனைகள்"
+
+msgid "probe"
+msgstr "சோதனை"
+
+msgid "result"
+msgstr "முடிவு"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "சரி"
+
+msgid "no server"
+msgstr "சேவையகம் இல்லை"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "தோல்வி"
+
+msgid "Findings"
+msgstr "கண்டறிதல்கள்"
+
+msgid "level"
+msgstr "நிலை"
+
+msgid "finding"
+msgstr "கண்டறிதல்"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "தரம்*"
+
+msgid "Params"
+msgstr "Params"
+
+msgid "Context"
+msgstr "Context"
+
+msgid "Capabilities"
+msgstr "திறன்கள்"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "தரம் என்பது ஆசிரியக் குழுவின் அடிப்படை மதிப்பீடு, எந்த quantisation இழப்பும் கணக்கில் வருவதற்கு முன்; அதற்குப் பின்னால் உள்ள, மூலம் குறிப்பிடப்பட்ட benchmark-களைப் பார்க்க `llamafit info <model>` ஐ இயக்கவும்."
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "Params என்பது mixture-of-experts மாடலுக்கான மொத்த/செயலிலுள்ள பில்லியன்கள், இரண்டும் சமமாக இருக்கும்போது ஒரே எண்."
+
+msgid "Models"
+msgstr "மாடல்கள்"
+
+msgid "Vendor"
+msgstr "வழங்குநர்"
+
+msgid "Family"
+msgstr "குடும்பம்"
+
+msgid "Release date"
+msgstr "வெளியீட்டு தேதி"
+
+msgid "Licence"
+msgstr "உரிமம்"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "அளவுருக்கள்"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "மொத்தம் %(total)sB, செயலில் %(active)sB"
+
+msgid "%(tokens)s tokens native"
+msgstr "இயல்பாக %(tokens)s டோக்கன்கள்"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", %(method)s மூலம் %(tokens)s ஆக நீட்டிக்கப்பட்டது"
+
+msgid "unspecified method"
+msgstr "முறை குறிப்பிடப்படவில்லை"
+
+msgid "Architecture"
+msgstr "கட்டமைப்பு"
+
+msgid "Notes"
+msgstr "குறிப்புகள்"
+
+msgid "Use cases"
+msgstr "பயன்பாட்டு வகைகள்"
+
+msgid "Quality baseline"
+msgstr "தர அடிப்படை"
+
+msgid "Benchmark"
+msgstr "Benchmark"
+
+msgid "Source %(index)d"
+msgstr "மூலம் %(index)d"
+
+msgid "not read yet"
+msgstr "இன்னும் படிக்கப்படவில்லை"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d அடுக்கு"
+msgstr[1] "%(count)d அடுக்குகள்"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d expert"
+msgstr[1] "%(count)d/%(used)d expert-கள்"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d expert"
+msgstr[1] "%(count)d expert-கள்"
+
+msgid "Quants"
+msgstr "Quants"
+
+msgid "Name"
+msgstr "பெயர்"
+
+msgid "Size"
+msgstr "அளவு"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "தகவல்கள்"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "தெரியவில்லை"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "இந்த இயந்திரத்தில் என்ன உள்ளது என்பதைக் காட்டும்: CPU, நினைவகம், GPU-கள், வட்டுகள், llama.cpp."
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "RAM bandwidth அளவீட்டைத் தவிர்க்கும்."
+
+msgid "Command: %(command)s"
+msgstr "கட்டளை: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "துண்டிக்கப்பட்ட GGUF header: offset %(offset)d இல் %(wanted)d bytes தேவைப்பட்டன, கிடைத்தது %(got)d"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "கோப்பு இன்னும் பதிவிறங்கிக்கொண்டிருக்கலாம், அல்லது அந்த URL ஒரு GGUF கோப்பாக இல்லாமல் இருக்கலாம்."
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "offset %(offset)d இல் தெரியாத GGUF மதிப்பு வகை %(type)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "இந்தக் கோப்பு LlamaFit ஆதரிக்கும் அளவை விடப் புதிய GGUF metadata வகையைப் பயன்படுத்தலாம்."
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "இது GGUF கோப்பு அல்ல: offset 0 இல் தவறான magic %(magic)s"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "இந்தக் கோப்பு உண்மையிலேயே ஒரு .gguf மாடலா என்பதைச் சரிபார்க்கவும்."
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "offset 4 இல் ஆதரிக்கப்படாத GGUF பதிப்பு %(version)d"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit GGUF-இன் %(versions)s பதிப்புகளை ஆதரிக்கிறது."
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "இந்த GGUF கோப்புகள் ஒரே split மாடலைச் சேர்ந்தவை அல்ல: '%(key)s' குறித்து அவை ஒத்துப்போகவில்லை, %(values)s என அறிவிக்கின்றன"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "ஒரே மாடலின் shard-களைக் கொடுக்கவும், பல மாடல்களுடையவை அல்ல."
+
+msgid "no GGUF header to read facts from"
+msgstr "தகவல்களைப் படிக்க GGUF header எதுவும் இல்லை"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "மாடலின் கோப்பைக் கொடுக்கவும், அல்லது ஒரு split மாடலின் ஒவ்வொரு shard ஐயும் கொடுக்கவும்."
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(total)d GGUF கோப்புகளில் %(count)d கோப்புகளில் '%(key)s' key இல்லை, எனவே split மாடலில் அவற்றின் இடத்தை நிர்ணயிக்க முடியவில்லை"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "பிரிக்கப்படாத ஒரே கோப்பைத் தனியாகக் கொடுக்கவும், அல்லது ஒரே split மாடலின் ஒவ்வொரு shard ஐயும் கொடுக்கவும்."
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "முழுமையற்ற shard தொகுப்பு: மாடல் %(declared)d shard-களை அறிவிக்கிறது, வந்தவை %(arrived)d (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "split மாடலின் ஒவ்வொரு shard ஐயும் கொடுக்கவும்."
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "மாடலின் metadata ஐக் கொண்டிருக்கும் shard காணவில்லை: %(key)s %(numbers)s கிடைத்தன, அவற்றில் ஒன்று 0 ஆக இருக்க வேண்டும்"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "split மாடலின் ஒவ்வொரு shard ஐயும் கொடுக்கவும், முதலாவதையும் சேர்த்து."
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "முழுமையற்ற shard தொகுப்பு: %(key)s 0 முதல் %(last)d வரை எதிர்பார்க்கப்பட்டது, கிடைத்தவை %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "split மாடலின் ஒவ்வொரு shard ஐயும் சரியாக ஒரு முறை கொடுக்கவும்."
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "முழுமையற்ற shard தொகுப்பு: மாடல் %(declared)d tensor-களை அறிவிக்கிறது, அதன் %(shards)d shard-கள் சேர்ந்து %(held)d ஐக் கொண்டுள்ளன"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "%(path)s ஐப் படிக்க முடியவில்லை: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "கோப்பு உள்ளது என்பதையும் படிக்கக்கூடியது என்பதையும் சரிபார்க்கவும்."
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "%(url)s ஐப் பெற முடியவில்லை: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "உங்கள் பிணைய இணைப்பையும், அந்த URL ஐ அடைய முடியும் என்பதையும் சரிபார்க்கவும்."
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s 206 Partial Content-க்குப் பதிலாக HTTP %(status)d ஐத் திருப்பியது; அந்தச் சேவையகம் range கோரிக்கைகளை ஆதரிக்காமல் இருக்கலாம்."
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "அந்த URL பதிவிறக்கக்கூடிய GGUF கோப்பைச் சுட்டுகிறது என்பதை உறுதிப்படுத்தவும்."
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "தெரியவில்லை"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi எந்த GPU ஐயும் திருப்பவில்லை"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi எந்த கார்டையும் திருப்பவில்லை"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler எந்த காட்சித் திரையையும் திருப்பவில்லை"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI எந்த வீடியோ கன்ட்ரோலரையும் திருப்பவில்லை"
+
+msgid "lspci found no display controllers"
+msgstr "lspci எந்த காட்சி கன்ட்ரோலரையும் கண்டுபிடிக்கவில்லை"
+
+msgid "no populated memory modules"
+msgstr "நிரப்பப்பட்ட நினைவகத் தொகுதிகள் இல்லை"
+
+msgid "no SPMemoryDataType"
+msgstr "SPMemoryDataType இல்லை"
+
+msgid "empty command"
+msgstr "காலியான கட்டளை"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: %(seconds)ss க்குப் பிறகு நேரம் முடிந்தது"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: கிடைக்கவில்லை"
+
+msgid "no output"
+msgstr "வெளியீடு இல்லை"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "exit code %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "llama.cpp கிடைக்கவில்லை: PATH இலோ, LLAMA_CPP_PATH இலோ, வழக்கமான கோப்பகங்களிலோ llama-server இல்லை"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "llama-server-க்கு அருகில் ggml backend நூலகங்கள் எதுவும் இல்லை; அந்த build static ஆக இருக்கலாம்"
+
+msgid "no llama-server answering"
+msgstr "எந்த llama-server-உம் பதிலளிக்கவில்லை"
+
+msgid "unexpected response: %(error)s"
+msgstr "எதிர்பாராத பதில்: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "NVIDIA இயக்கியை நிறுவவும் அல்லது சரிசெய்யவும்; nvidia-smi அதனுடனேயே வருகிறது, அது PATH இல் இருக்க வேண்டும்."
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "AMD VRAM எண்களைக் காண ROCm (Linux) ஐ நிறுவவும்; அது இல்லாமல் GPU பெயரால் மட்டுமே பட்டியலிடப்படும்."
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell ஆல் வீடியோ கன்ட்ரோலர்களைப் பட்டியலிட முடியவில்லை; வழக்கமான பயனர் அமர்விலிருந்து இயக்கவும்."
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "வழங்குநர் கருவி எதுவும் இல்லாதபோது GPU-களைப் பெயரால் பட்டியலிட pciutils ஐ நிறுவவும்."
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "DDR வகையையும் வேகத்தையும் படிக்க முடியவில்லை; Linux இல் ஒருமுறை sudo உடன் இயக்கவும் (dmidecode), அல்லது அதற்குப் பதிலாக அளக்கப்பட்ட bandwidth ஐ ஏற்றுக்கொள்ளவும்."
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo தோல்வியடைந்தது; CPU மாடலும் instruction set-களும் தெரியவில்லை."
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil ஆல் CPU கோர்களை எண்ண முடியவில்லை; இழைத் தேர்வு ஒரே கோருக்குத் திரும்புகிறது. `pip install --force-reinstall psutil` மூலம் psutil ஐ மீண்டும் நிறுவவும்."
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil ஆல் நினைவகத்தின் மொத்த அளவைப் படிக்க முடியவில்லை; இது வேலை செய்யும் வரை ஒதுக்கீடுகளைக் கணக்கிட முடியாது. `pip install --force-reinstall psutil` மூலம் psutil ஐ மீண்டும் நிறுவவும்."
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "sysctl இலிருந்து செயல்திறன் கோர்களின் எண்ணிக்கையைப் படிக்க முடியவில்லை."
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server உள்ளது, ஆனால் பதிப்பைத் தெரிவிக்கவில்லை; அந்த binary சிதைந்திருக்கலாம்."
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler தோல்வியடைந்தது; GPU தகவல் கிடைக்கவில்லை."
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "GPU-இன் நினைவக அளவை எந்த வழங்குநர் கருவியும் தெரிவிக்கவில்லை; இந்த இயந்திரத்துக்கு ஒதுக்கீடுகளைக் கணக்கிட முடியும் வகையில் அந்த அளவை ஒரு hardware profile இல் பதிவு செய்யவும்."
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp நிறுவப்பட்டுள்ளது"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "%(path)s இல் build %(build)s, backends: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "தெரியவில்லை"
+
+msgid "llama.cpp not found"
+msgstr "llama.cpp கிடைக்கவில்லை"
+
+msgid "no llama-server binary was found"
+msgstr "llama-server binary எதுவும் கிடைக்கவில்லை"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "llama.cpp ஐ நிறுவவும் (LlamaFit-இன் இரண்டாம் கட்டம் இதைச் செய்யும்: `llamafit install llama.cpp`); அதுவரை https://github.com/ggml-org/llama.cpp/releases இலிருந்து ஒரு வெளியீட்டைப் பதிவிறக்கி, அதன் bin கோப்பகத்தை PATH இல் அல்லது LLAMA_CPP_PATH இல் வைக்கவும்."
+
+msgid "Memory size unknown"
+msgstr "நினைவக அளவு தெரியவில்லை"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "இந்த இயந்திரத்தின் மொத்த நினைவகத்தை LlamaFit ஆல் படிக்க முடியவில்லை, எனவே எது பொருந்தும் என்பதை அது கண்டறிய முடியாது."
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: llama.cpp இல் %(backend)s backend இல்லை"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp இவற்றுடன் கட்டப்பட்டது: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "தெரியவில்லை"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "%(gpu)s ஐப் பயன்படுத்த %(backend)s அல்லது Vulkan backend உள்ள llama.cpp build ஐ நிறுவவும்."
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: VRAM அளவு தெரியவில்லை"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "நினைவகத்தைத் தெரிவிக்கும் வழங்குநர் கருவி கிடைக்கவில்லை"
+
+msgid "No GPU detected"
+msgstr "GPU எதுவும் கண்டறியப்படவில்லை"
+
+msgid "models will run on the CPU only"
+msgstr "மாடல்கள் CPU இல் மட்டுமே இயங்கும்"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "GPU இருந்தால், அதன் இயக்கிக் கருவிகள் நிறுவப்பட்டுள்ளதா என்பதைச் சரிபார்க்கவும்."
+
+msgid "RAM bandwidth assumed"
+msgstr "RAM bandwidth கருதப்பட்டது"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "இயல்பு மதிப்பாக %(gbps)s GB/s பயன்படுத்தப்படுகிறது"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "LlamaFit ஆல் RAM bandwidth ஐ அளக்க முடியும் வகையில் numpy ஐ நிறுவவும் (`pip install llamafit[fast]`)."
+
+msgid "Probe %(probe)s failed"
+msgstr "%(probe)s சோதனை தோல்வியடைந்தது"
+
+msgid "unknown error"
+msgstr "தெரியாத பிழை"
+
+msgid "llama-server running at %(url)s"
+msgstr "%(url)s இல் llama-server இயங்குகிறது"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "மாடல் %(model)s, context %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "தெரியவில்லை"
+
+msgid "Low disk space on %(path)s"
+msgstr "%(path)s இல் வட்டு இடம் குறைவு"
+
+msgid "%(size)s free"
+msgstr "%(size)s காலி"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "பயனுள்ள பெரும்பாலான மாடல்களுக்கு 5 முதல் 120 GB வரை தேவை; இடத்தைக் காலி செய்யவும் அல்லது பதிவிறக்கக் கோப்பகத்தை மாற்றவும்."
+
+msgctxt "size"
+msgid "unknown"
+msgstr "தெரியவில்லை"
