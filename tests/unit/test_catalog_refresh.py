@@ -535,3 +535,52 @@ def test_a_quant_published_under_two_paths_is_a_warning_not_a_doubled_size(
     models, problems = load_models_from_file(path)
     assert problems == []
     assert models[0].sources[0].quants[0].bytes_ is None
+
+
+TWICE_PUBLISHED_UNSHARDED = {
+    "example/tiny-1b-GGUF": [
+        RepoFile(path="imat/tiny-1b-Q4_K_M.gguf", size=690_000_000, sha256="a1"),
+        RepoFile(path="main/tiny-1b-Q4_K_M.gguf", size=700_000_000, sha256="b1"),
+    ]
+}
+
+WITH_A_PROJECTOR = {
+    "example/tiny-1b-GGUF": [
+        RepoFile(path="tiny-1b-Q4_K_M.gguf", size=700_000_000, sha256="abc123"),
+        RepoFile(path="mmproj-Q4_K_M.gguf", size=400_000_000, sha256="def456"),
+    ]
+}
+
+
+def test_an_unsharded_quant_published_twice_is_a_warning_not_a_doubled_size(
+    tmp_path: Path,
+) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+
+    results = refresh_file(
+        path, hf=FakeHfClient(TWICE_PUBLISHED_UNSHARDED), read_facts_fn=facts_stub
+    )
+
+    assert results[0].error is None
+    assert results[0].changed is False
+    assert len(results[0].warnings) == 1
+    warning = results[0].warnings[0]
+    assert "Q4_K_M" in warning
+    assert "no whole set" in warning
+    assert "more than once" in warning
+    assert not facts_path_of(path).exists()
+
+
+def test_a_projector_named_for_the_quant_does_not_inflate_it(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+
+    results = refresh_file(path, hf=FakeHfClient(WITH_A_PROJECTOR), read_facts_fn=facts_stub)
+
+    assert results[0].error is None
+    assert results[0].warnings == []
+
+    models, problems = load_models_from_file(path)
+    assert problems == []
+    quant = models[0].sources[0].quants[0]
+    assert quant.files == ["tiny-1b-Q4_K_M.gguf"]
+    assert quant.bytes_ == 700_000_000
