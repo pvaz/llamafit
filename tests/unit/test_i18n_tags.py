@@ -2,7 +2,7 @@
 
 import pytest
 
-from llamafit.i18n.tags import SOURCE_LANGUAGE, match, normalise
+from llamafit.i18n.tags import SOURCE_LANGUAGE, is_substitution, match, normalise
 
 
 @pytest.mark.parametrize(
@@ -46,10 +46,22 @@ def test_a_request_with_a_region_takes_the_region_less_catalog() -> None:
     assert match("pt_PT", ["en", "pt"]) == "pt"
 
 
-def test_one_region_is_never_served_by_another() -> None:
-    # European and Brazilian Portuguese are different translations, so pt_BR gets
-    # English rather than a catalog written for Portugal.
-    assert match("pt_BR", ["en", "pt_PT"]) is None
+def test_one_region_is_served_by_another_when_that_is_all_there_is() -> None:
+    # European Portuguese is worth far more to a Brazilian reader than English is;
+    # resolve_language is what says out loud that a substitution happened.
+    assert match("pt_BR", ["en", "pt_PT"]) == "pt_PT"
+    assert match("pt_BR", ["en", "pt", "pt_PT"]) == "pt"
+
+
+def test_a_substitution_is_one_region_standing_in_for_another_and_nothing_else() -> None:
+    assert is_substitution("pt_BR", "pt_PT")
+    assert is_substitution("pt-br.UTF-8", "pt_PT")
+    assert not is_substitution("pt_PT", "pt_PT")
+    assert not is_substitution("pt", "pt_PT")
+    assert not is_substitution("pt_PT", "pt")
+    assert not is_substitution("de", "pt_PT")
+    assert not is_substitution("not a locale", "pt_PT")
+    assert not is_substitution("pt_BR", "not a locale")
 
 
 def test_a_language_with_no_catalog_matches_nothing() -> None:

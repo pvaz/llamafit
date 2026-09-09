@@ -110,3 +110,30 @@ def test_the_real_environment_is_read_when_none_is_given(monkeypatch: pytest.Mon
 def test_the_system_locale_is_read_from_the_machine_when_no_provider_is_given() -> None:
     choice = resolve_language(env={}, available=AVAILABLE)
     assert choice.language in AVAILABLE
+
+
+def test_a_region_with_no_catalog_gets_another_region_and_is_told() -> None:
+    choice = resolve_language("pt_BR", env={}, locale_provider=FixedLocale([]), available=AVAILABLE)
+    assert choice.language == "pt_PT"
+    assert choice.requested == "pt_BR"
+    assert not choice.honoured
+    assert choice.notice == "LlamaFit has no pt_BR translation, so it is using the pt_PT one."
+    assert choice.hint == "Contribute a pt_BR catalog: docs/translations.md says how."
+
+
+def test_a_substitution_is_announced_even_when_the_system_locale_asked() -> None:
+    # A Brazilian machine is the common case, and the reader deserves to know why some
+    # of the wording looks foreign. This is the one thing the system locale does report.
+    choice = resolve_language(
+        env={}, locale_provider=FixedLocale(["pt_BR.UTF-8"]), available=AVAILABLE
+    )
+    assert (choice.language, choice.source) == ("pt_PT", "system")
+    assert choice.notice == "LlamaFit has no pt_BR translation, so it is using the pt_PT one."
+
+
+def test_a_region_less_match_is_not_a_substitution_and_says_nothing() -> None:
+    for asked in ("pt", "pt_PT"):
+        choice = resolve_language(
+            asked, env={}, locale_provider=FixedLocale([]), available=AVAILABLE
+        )
+        assert (choice.language, choice.notice, choice.honoured) == ("pt_PT", None, True)

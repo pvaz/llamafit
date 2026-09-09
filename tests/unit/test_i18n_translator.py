@@ -161,3 +161,32 @@ def test_the_packaged_portuguese_catalog_is_what_ships() -> None:
     assert messages.catalog_problems(2) == "o catálogo tem 2 problemas"
     assert messages.a_message_split_over_lines().startswith("O LlamaFit não conseguiu")
     assert messages.skip_measurement() == "Skip the RAM bandwidth measurement."
+
+
+def test_a_substitution_notice_calls_the_catalog_what_the_catalog_calls_itself() -> None:
+    choice = set_language("pt_BR", env={})
+    assert choice.language == "pt_PT"
+    assert choice.notice == (
+        "LlamaFit has no pt_BR translation, so it is using the Portuguese (Portugal) one."
+    )
+    assert choice.hint == "Contribute a pt_BR catalog: docs/translations.md says how."
+    assert messages.no_gpu_detected() == "Nenhuma GPU detetada"
+
+
+def test_a_substitution_is_announced_once_like_any_other_notice() -> None:
+    first = set_language("pt_BR", env={})
+    again = set_language("pt_BR", env={})
+    assert first.notice is not None
+    assert again.language == "pt_PT"
+    assert again.notice is None
+    assert again.hint is None
+
+
+def test_a_catalog_with_no_language_team_keeps_the_tag_in_the_notice(tmp_path: Path) -> None:
+    # CATALOG declares Language but no Language-Team, so there is no name to fall back on.
+    assert "Language-Team" not in CATALOG
+    choice = set_language(
+        "pt_BR", env={}, available=("en", "pt_PT"), directory=_catalog_dir(tmp_path)
+    )
+    assert choice.language == "pt_PT"
+    assert choice.notice == "LlamaFit has no pt_BR translation, so it is using the pt_PT one."

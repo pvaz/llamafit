@@ -46,14 +46,18 @@ def normalise(tag: str) -> str | None:
 def match(requested: str, available: Iterable[str]) -> str | None:
     """Choose the catalog that best serves a requested tag.
 
-    An exact match wins. Otherwise a request without a region takes the most specific
-    catalog for that language (``pt`` takes ``pt_PT``), and a request with a region
-    takes the region-less catalog for the same language (``pt_PT`` takes ``pt``). A
-    request for one region is never served by another: ``pt_BR`` does not take
-    ``pt_PT``, because European and Brazilian Portuguese are not the same translation.
+    An exact match wins. Failing that, any catalog for the same language will do, in
+    this order: the region-less one when a region was asked for (``pt_PT`` takes
+    ``pt``), then whichever region exists (``pt`` and ``pt_BR`` both take ``pt_PT``).
+
+    Serving one region's catalog to another is a substitution, not a match: European and
+    Brazilian Portuguese are not the same translation. It is still worth far more to a
+    Brazilian reader than English, so it is offered and then said out loud rather than
+    withheld; :func:`llamafit.i18n.select.resolve_language` is what says it.
 
     Returns:
-        The matching tag as it appears in ``available``, or ``None``.
+        The matching tag as it appears in ``available``, or ``None`` when no catalog is
+        written in that language at all.
     """
     wanted = normalise(requested)
     if wanted is None:
@@ -61,11 +65,26 @@ def match(requested: str, available: Iterable[str]) -> str | None:
     catalogs = {normalised: tag for tag in available if (normalised := normalise(tag)) is not None}
     if wanted in catalogs:
         return catalogs[wanted]
-    language, separator, _region = wanted.partition("_")
-    if not separator:
-        wider = sorted(tag for tag in catalogs if tag.split("_", 1)[0] == language)
-        return catalogs[wider[0]] if wider else None
-    return catalogs.get(language)
+    language = wanted.split("_", 1)[0]
+    same = sorted(tag for tag in catalogs if tag.split("_", 1)[0] == language)
+    if not same:
+        return None
+    if "_" in wanted and language in same:
+        return catalogs[language]
+    return catalogs[same[0]]
+
+
+def is_substitution(requested: str, found: str) -> bool:
+    """True when ``found`` is a different region of the language that was asked for.
+
+    ``pt_BR`` served by ``pt_PT`` is a substitution; ``pt`` served by ``pt_PT``, or
+    ``pt_PT`` served by ``pt``, is not, because only one of the two names a region.
+    """
+    wanted, chosen = normalise(requested), normalise(found)
+    if wanted is None or chosen is None:
+        return False
+    asked_region, given_region = wanted.partition("_")[2], chosen.partition("_")[2]
+    return bool(asked_region) and bool(given_region) and asked_region != given_region
 
 
 def _format(base: str) -> str | None:
