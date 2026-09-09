@@ -100,6 +100,12 @@ measured:
 | `quants[].bytes`, `sha256`, `gguf_facts` | yes after refresh | never hand-typed |
 | `measured[]` | no | measurements with the profile and flags they were taken with |
 
+`license.spdx` carries the SPDX identifier when the licence is registered with SPDX (for
+example `Apache-2.0`); when it is not, it carries the vendor's own licence slug instead (for
+example `qwen-community-1.0` for a custom Qwen licence), so the field is not guaranteed to
+resolve against the SPDX registry. `license.url` always points at the actual licence text
+regardless of which form `spdx` takes.
+
 ## The quality rubric
 
 `quality.baseline` is 0 to 100 on the model's primary use case:

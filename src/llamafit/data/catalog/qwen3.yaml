@@ -1,0 +1,112 @@
+# Sourced from the vendor's Hugging Face model cards, the Qwen3 technical report and the
+# GGUF-publishing repositories.
+# Primary sources used for this file:
+#   - qwen3-0.6b model card: https://huggingface.co/Qwen/Qwen3-0.6B
+#   - qwen3-0.6b GGUF repository: https://huggingface.co/Qwen/Qwen3-0.6B-GGUF
+#   - Qwen3 technical report: https://arxiv.org/abs/2505.09388
+#   - qwen3.8-flash-next model card: https://huggingface.co/Qwen/Qwen3.8-Flash-Next
+#   - qwen3.8-flash-next GGUF repository: https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF
+#   - Measured block: docs/calibration/2026-09-09-reference-machine.md (this repository)
+- id: qwen3-0.6b
+  name: Qwen3-0.6B
+  vendor: Alibaba Qwen
+  family: qwen3
+  release_date: 2025-04-28
+  license:
+    spdx: Apache-2.0
+    url: "https://huggingface.co/Qwen/Qwen3-0.6B/blob/main/LICENSE"
+  params: { total_b: 0.6, active_b: 0.6 }
+  architecture:
+    class: dense
+    gguf_arch: qwen3
+    notes: >-
+      28 layers, 16 query heads, 8 key/value heads (GQA). The smallest dense model in
+      the Qwen3 family; kept in the catalog as a fast, low-memory smoke test.
+  context: { native: 32768 }
+  capabilities: [coding, tools, multilingual]
+  use_cases: [general, coding]
+  quality:
+    baseline: 35
+    benchmarks:
+      # Table 8 of the technical report reports these for the pretrained Qwen3-0.6B-Base
+      # checkpoint, not the released chat model; labelled accordingly.
+      - name: MMLU (base model)
+        score: 52.81
+        source: "https://arxiv.org/abs/2505.09388"
+      - name: GSM8K (base model)
+        score: 59.59
+        source: "https://arxiv.org/abs/2505.09388"
+  sampling: { temp: 0.6, top_p: 0.95, top_k: 20 }
+  chat_template: { reasoning_format: deepseek, thinking_toggle: enable_thinking }
+  sources:
+    - repo: Qwen/Qwen3-0.6B-GGUF
+      kind: gguf
+      trust: official
+      quants:
+        - { name: Q8_0 }
+
+- id: qwen3.8-flash-next
+  name: Qwen3.8-Flash-Next
+  vendor: Alibaba Qwen
+  family: qwen3
+  release_date: 2026-08-27
+  license:
+    spdx: qwen-community-1.0
+    url: "https://huggingface.co/Qwen/Qwen3.8-Flash-Next/blob/main/LICENSE"
+  params: { total_b: 125, active_b: 6, ngram_table_b: 51 }
+  architecture:
+    class: moe-hybrid
+    gguf_arch: qwen4exp
+    notes: >-
+      48 layers pairing Gated DeltaNet linear attention with Qwen Sparse Attention
+      (QSA); 512 routed experts, 10 used per token, 1 shared expert, plus a 51B-entry
+      n-gram lookup table and a 4B multi-token-prediction head. Vision input through
+      an image/video encoder.
+  context: { native: 262144, extended: 1048576, extended_method: yarn }
+  capabilities: [coding, thinking, vision, tools, multilingual, long-context]
+  use_cases: [coding, reasoning, multimodal]
+  quality:
+    baseline: 84
+    benchmarks:
+      - name: SWE-bench Pro
+        score: 62.5
+        source: "https://huggingface.co/Qwen/Qwen3.8-Flash-Next"
+      - name: LiveCodeBench v6
+        score: 91.9
+        source: "https://huggingface.co/Qwen/Qwen3.8-Flash-Next"
+      - name: GPQA Diamond
+        score: 91.7
+        source: "https://huggingface.co/Qwen/Qwen3.8-Flash-Next"
+      - name: RealWorldQA
+        score: 88.5
+        source: "https://huggingface.co/Qwen/Qwen3.8-Flash-Next"
+  sampling: { temp: 1.0, top_p: 0.95, top_k: 20, min_p: 0.0, presence_penalty: 0.0, repeat_penalty: 1.0 }
+  chat_template: { reasoning_format: deepseek, thinking_toggle: enable_thinking }
+  llama_cpp:
+    kv_types_allowed: [f16]
+  sources:
+    - repo: unsloth/Qwen3.8-Flash-Next-GGUF
+      kind: gguf
+      trust: unsloth
+      quants:
+        - { name: UD-Q4_K_XL }
+  measured:
+    - profile: "Gen 1K / Prompt 1K, -ub 2048, vision and shared experts on GPU"
+      quant: UD-Q4_K_XL
+      gen_tps: 14.5
+      pp_tps: 50
+      context: 16384
+      flags: "-ngl 99 --n-cpu-moe 48 --fit off -fa on -t 16 -tb 16 -b 4096 -ub 2048"
+      llama_cpp_build: 10867
+      date: 2026-09-09
+      source: docs/calibration/2026-09-09-reference-machine.md
+    - profile: "winning configuration: Gen 1K / Prompt 1K, shared experts and vision on CPU"
+      quant: UD-Q4_K_XL
+      gen_tps: 13.9
+      pp_tps: 49.4
+      context: 40960
+      flags: "-ub 1024 --no-mmproj-offload -ot ffn_.*_shexp=CPU"
+      llama_cpp_build: 10867
+      peak_vram_gb: 7.3
+      date: 2026-09-09
+      source: docs/calibration/2026-09-09-reference-machine.md
