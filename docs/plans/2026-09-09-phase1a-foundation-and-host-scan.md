@@ -1,6 +1,6 @@
 # LlamaFit Phase 1A — Foundation and Host Scan Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Implementation plan: one task per section, each with its files, interfaces, tests, steps and commit. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** A pip-installable `llamafit` package that scans the host (OS, CPU, memory, GPUs, bandwidth, disks) and detects llama.cpp (binaries, build, backends, running servers, local GGUF files), exposed as `llamafit system` and `llamafit doctor` with Rich tables and `--json`, tested on Windows, macOS and Linux without hardware.
 
@@ -8,7 +8,7 @@
 
 **Tech Stack:** Python 3.10+, hatchling, pydantic 2, typer, rich, psutil, py-cpuinfo, platformdirs, httpx, pytest, ruff, mypy (strict), GitHub Actions.
 
-**Spec:** `docs/superpowers/specs/2026-09-09-llamafit-design.md` (sections 3, 4, 5.1, 13.1 for `system` and `doctor`, 14, 17, 18, 19).
+**Spec:** `docs/specs/2026-09-09-llamafit-design.md` (sections 3, 4, 5.1, 13.1 for `system` and `doctor`, 14, 17, 18, 19).
 
 ## Global Constraints
 
@@ -19,12 +19,7 @@
 - Probes never abort a scan; a failed probe becomes a `Probe` record with `ok=False` and an error string.
 - Every assumed number carries a source label (`measured`, `estimated`, `assumed`, `unknown`).
 - Package layout is `src/llamafit/...` exactly as in spec section 3.2.
-- Commit after every task with a conventional-commit message ending in the attribution trailer:
-
-```
-Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01TstXuTB3ugCW29MycZGwbz
-```
+- Commit after every task with a conventional-commit message.
 
 - Repository root is `C:\Dev\Projectos Pessoais\2026\llamaconfigurator` (the folder name is not the project name; the package and PyPI name are `llamafit`). Run all commands from the repository root. On Windows use PowerShell or Git Bash; the commands below are shell-neutral unless noted.
 
@@ -299,7 +294,6 @@ git add -A
 git commit -m "chore: project scaffold, packaging, CI and project documents"
 ```
 
-(Append the attribution trailer from Global Constraints to every commit message in this plan.)
 
 ---
 

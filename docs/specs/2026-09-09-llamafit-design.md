@@ -2,7 +2,7 @@
 
 **Status:** approved design, 2026-09-09
 **Scope of this document:** the whole system (phases 1 to 3), with phase 1 specified to implementation depth.
-**Companion documents:** phase plans under `docs/superpowers/plans/`.
+**Companion documents:** phase plans under `docs/plans/`.
 
 ## 1. Purpose
 
@@ -586,7 +586,7 @@ llamafit/
   MODELS.md                 generated from the catalog by scripts/gen_models_md.py
   .github/workflows/ci.yml  release.yml (PyPI trusted publishing)  ISSUE_TEMPLATE/  PULL_REQUEST_TEMPLATE.md
   docs/                     how-it-works.md, cli.md, tui.md, web.md, platform-support.md, catalog.md,
-                            custom-models.md, benchmarking.md, development.md, calibration/, superpowers/
+                            custom-models.md, benchmarking.md, development.md, calibration/, specs/, plans/
   src/llamafit/             section 3.2
   tests/
   scripts/                  gen_models_md.py, record_fixtures.py
