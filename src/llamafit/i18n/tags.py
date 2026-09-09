@@ -25,6 +25,14 @@ def normalise(tag: str) -> str | None:
     (``C``, ``POSIX``) mean the source language. A Windows-style name such as
     ``German_Germany`` is looked up in the standard library's alias table.
 
+    That table has holes, and this project's own language is in one of them:
+    ``Portuguese_Portugal`` does not resolve, because the table carries
+    ``portuguese_brazil`` and no ``portuguese_portugal``. It is very nearly unreachable —
+    on Windows, where ``locale.getlocale()`` answers with such a name,
+    :func:`llamafit.i18n.detect.windows_ui_language` runs first and answers ``pt_PT``
+    from the interface language — so it is recorded here rather than worked around. A
+    machine that somehow reached it would get English, not a wrong language.
+
     Returns:
         The normalised tag, or ``None`` when the text names no language.
     """
