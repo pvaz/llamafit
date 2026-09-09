@@ -8,8 +8,14 @@ A curated ``<family>.yaml`` file never carries the volatile fields ``llamafit ca
 refresh`` fills in: those live beside it, in ``<family>.facts.json``, written only by
 that command. This module merges the sibling facts file into the models it loads, so
 the rest of LlamaFit never has to know the two files exist. A facts file that is
-missing simply means nothing has been refreshed yet, not a problem; one that names a
-model or a quant the YAML does not have is a :class:`Problem` naming both.
+missing simply means nothing has been refreshed yet, not a problem.
+
+Everything else about that file is checked before any of it is believed. A document
+whose schema version this build does not know is refused whole; a model, a quant or
+an extra the YAML does not have, an entry that is not an object, and a field that is
+not the shape it claims to be each become a :class:`Problem` naming exactly where the
+trouble is. No field is ever quietly dropped, because a field that failed to merge
+would then look exactly like a field that was never refreshed.
 """
 
 from __future__ import annotations
@@ -17,11 +23,10 @@ from __future__ import annotations
 import json
 import os
 from collections.abc import Mapping
-from contextlib import suppress
 from dataclasses import dataclass
 from importlib import resources
 from pathlib import Path
-from typing import Any
+from typing import Any, TypeGuard
 
 import yaml
 from pydantic import ValidationError
@@ -31,7 +36,29 @@ from llamafit.models.catalog import Catalog, CatalogModel, Extra, ModelSource, Q
 from llamafit.models.gguf import GgufFacts
 from llamafit.paths import get_paths
 
+FACTS_SCHEMA_VERSION = 1
+"""The layout of the facts document this build writes and reads.
+
+It lives with the reader, since the reader is what has to refuse a document it
+cannot read; :mod:`llamafit.catalog.refresh` imports it and stamps it into every
+file it writes.
+"""
+
 _CUSTOM_MODELS_FILENAME = "custom_models.yaml"
+
+_REWRITE_HINT = "delete the facts file and re-run `llamafit catalog refresh`"
+
+_EXPECTED_SHAPE = "expected an object with a 'models' mapping"
+
+_JSON_TYPE_NAMES: dict[type[object], str] = {
+    type(None): "null",
+    bool: "a boolean",
+    int: "a number",
+    float: "a number",
+    str: "a string",
+    list: "a list",
+    dict: "an object",
+}
 
 
 @dataclass(frozen=True)
@@ -53,11 +80,19 @@ class Problem:
 
 
 def load_models_from_file(path: Path) -> tuple[list[CatalogModel], list[Problem]]:
-    """Parse and validate every entry in one catalog YAML file.
+    """Parse and validate every entry in one catalog YAML file, facts file merged in.
 
     The file must hold a list of entries at its top level. A syntax error, a
     top-level shape that is not a list, or an entry that fails validation each
     becomes a :class:`Problem`; this function never raises for malformed input.
+
+    A model whose sources reuse a quant name or an extra file name is returned with
+    its curated fields and no facts at all: the facts file keys on those names, so it
+    cannot say which source a fact belongs to, and merging it would fabricate data.
+
+    Returns:
+        Every model the file declares, and every problem found in it or in its
+        sibling facts file.
     """
     try:
         text = path.read_text(encoding="utf-8")
@@ -85,6 +120,7 @@ def load_models_from_file(path: Path) -> tuple[list[CatalogModel], list[Problem]
 
     models: list[CatalogModel] = []
     problems: list[Problem] = []
+    unmergeable_ids: set[str] = set()
     for entry in raw:
         model_id = entry.get("id") if isinstance(entry, dict) else None
         try:
@@ -102,8 +138,11 @@ def load_models_from_file(path: Path) -> tuple[list[CatalogModel], list[Problem]
                 )
             continue
         models.append(model)
-        problems.extend(_duplicate_quant_name_problems(model, str(path)))
-    problems.extend(_merge_facts(models, facts_path_for(path)))
+        reused_names = _duplicate_name_problems(model, str(path))
+        if reused_names:
+            unmergeable_ids.add(model.id)
+        problems.extend(reused_names)
+    problems.extend(_merge_facts(models, facts_path_for(path), unmergeable_ids))
     return models, problems
 
 
@@ -119,66 +158,122 @@ def _source_identifier(source: ModelSource) -> str:
     return source.path if source.path is not None else source.kind
 
 
-def _duplicate_quant_name_problems(model: CatalogModel, file: str) -> list[Problem]:
-    """Report a quant name defined by more than one of a model's sources.
+def _duplicate_name_problems(model: CatalogModel, file: str) -> list[Problem]:
+    """Report a quant name or an extra file name defined by more than one of a model's sources.
 
-    The facts file keys a quant's volatile fields by the model id and the quant
-    name alone; it has no notion of which source published it. A name reused
-    across sources (an official repository and a community one often carry the
-    same quant names) would have both sources silently merged under that one key,
-    so this is checked rather than merely assumed.
+    The facts file keys volatile fields by the model id and the quant name or extra
+    file name alone; it has no notion of which source published them. A name reused
+    across sources (an official repository and a community one often carry the same
+    quant names, and ``mmproj-F16.gguf`` is a common vendor default) would have both
+    sources merged from that one key, so this is checked rather than merely assumed.
+
+    Returns:
+        One :class:`Problem` per reused name; empty when every name is unique.
     """
-    first_source: dict[str, str] = {}
-    problems: list[Problem] = []
-    reported: set[str] = set()
-    for source in model.sources:
-        identifier = _source_identifier(source)
-        for quant in source.quants:
-            earlier = first_source.get(quant.name)
-            if earlier is None:
-                first_source[quant.name] = identifier
-            elif quant.name not in reported:
-                reported.add(quant.name)
-                problems.append(
-                    Problem(
-                        file=file,
-                        model_id=model.id,
-                        location=f"quants.{quant.name}",
-                        message=(
-                            f"quant name {quant.name!r} is defined by more than one "
-                            f"source ({earlier!r} and {identifier!r}); quant names must "
-                            "be unique within a model because the facts file keys on them"
-                        ),
-                    )
-                )
+    quants = [
+        (_source_identifier(source), quant.name)
+        for source in model.sources
+        for quant in source.quants
+    ]
+    extras = [
+        (_source_identifier(source), extra.file)
+        for source in model.sources
+        for extra in source.extras
+    ]
+    problems = _reused_name_problems(model, file, "quants", "quant name", quants)
+    problems.extend(_reused_name_problems(model, file, "extras", "extra file name", extras))
     return problems
 
 
-def _merge_facts(models: list[CatalogModel], facts_path: Path) -> list[Problem]:
-    """Fill each model's volatile fields from its sibling facts file, when there is one."""
+def _reused_name_problems(
+    model: CatalogModel,
+    file: str,
+    section: str,
+    label: str,
+    named_by: list[tuple[str, str]],
+) -> list[Problem]:
+    """Report every name in ``named_by`` claimed by a second source, once each."""
+    first_source: dict[str, str] = {}
+    reported: set[str] = set()
+    problems: list[Problem] = []
+    for identifier, name in named_by:
+        earlier = first_source.get(name)
+        if earlier is None:
+            first_source[name] = identifier
+        elif name not in reported:
+            reported.add(name)
+            problems.append(
+                Problem(
+                    file=file,
+                    model_id=model.id,
+                    location=f"{section}.{name}",
+                    message=(
+                        f"{label} {name!r} is defined by more than one source "
+                        f"({earlier!r} and {identifier!r}); {label}s must be unique "
+                        "within a model because the facts file keys on them"
+                    ),
+                )
+            )
+    return problems
+
+
+def _describe(value: object) -> str:
+    """Name a JSON value's type the way a sentence can read it, for example ``a string``."""
+    return _JSON_TYPE_NAMES.get(type(value), "a value of an unexpected type")
+
+
+def _wrong_shape(subject: str, found: object, expected: str) -> str:
+    """The message for a facts file entry or field that is not the shape it must be."""
+    return f"the facts file gives {subject} as {_describe(found)}, not {expected}; {_REWRITE_HINT}"
+
+
+def _facts_file_problem(facts_path: Path, location: str, message: str) -> list[Problem]:
+    """One problem with the facts file as a whole, ready to be returned on its own."""
+    return [Problem(file=str(facts_path), model_id=None, location=location, message=message)]
+
+
+def _merge_facts(
+    models: list[CatalogModel], facts_path: Path, unmergeable_ids: set[str]
+) -> list[Problem]:
+    """Fill each model's volatile fields from its sibling facts file, when there is one.
+
+    Args:
+        models: The models just read from the curated YAML file, filled in place.
+        facts_path: The sibling facts file, which need not exist.
+        unmergeable_ids: Models the facts file structurally cannot describe, because
+            their sources reuse a quant name or an extra file name. They are left
+            with their curated fields alone; the reused name is already a problem of
+            its own, so nothing more is reported here.
+
+    Returns:
+        One :class:`Problem` per thing the facts file gets wrong; empty when it
+        merged cleanly, or when there is no facts file at all.
+    """
     if not facts_path.is_file():
         return []
     try:
         raw = json.loads(facts_path.read_text(encoding="utf-8"))
     except OSError as exc:
-        return [Problem(file=str(facts_path), model_id=None, location="file", message=str(exc))]
+        return _facts_file_problem(facts_path, "file", str(exc))
     except json.JSONDecodeError as exc:
-        return [
-            Problem(
-                file=str(facts_path), model_id=None, location="file", message=f"invalid JSON: {exc}"
-            )
-        ]
+        return _facts_file_problem(facts_path, "file", f"invalid JSON: {exc}")
 
-    by_model = raw.get("models") if isinstance(raw, dict) else None
+    if not isinstance(raw, dict):
+        return _facts_file_problem(facts_path, "file", _EXPECTED_SHAPE)
+
+    version = raw.get("schema_version")
+    if isinstance(version, bool) or version != FACTS_SCHEMA_VERSION:
+        found = "no schema version" if version is None else f"schema version {version!r}"
+        return _facts_file_problem(
+            facts_path,
+            "schema_version",
+            f"the facts file declares {found}, but this build reads version "
+            f"{FACTS_SCHEMA_VERSION}; {_REWRITE_HINT}",
+        )
+
+    by_model = raw.get("models")
     if not isinstance(by_model, dict):
-        return [
-            Problem(
-                file=str(facts_path),
-                model_id=None,
-                location="file",
-                message="expected an object with a 'models' mapping",
-            )
-        ]
+        return _facts_file_problem(facts_path, "file", _EXPECTED_SHAPE)
 
     by_id = {model.id: model for model in models}
     problems: list[Problem] = []
@@ -194,7 +289,17 @@ def _merge_facts(models: list[CatalogModel], facts_path: Path) -> list[Problem]:
                 )
             )
             continue
+        if model_id in unmergeable_ids:
+            continue
         if not isinstance(model_facts, dict):
+            problems.append(
+                Problem(
+                    file=str(facts_path),
+                    model_id=model_id,
+                    location="(root)",
+                    message=_wrong_shape(f"model {model_id!r}", model_facts, "an object"),
+                )
+            )
             continue
         problems.extend(_merge_model_facts(model, model_id, model_facts, facts_path))
     return problems
@@ -203,86 +308,221 @@ def _merge_facts(models: list[CatalogModel], facts_path: Path) -> list[Problem]:
 def _merge_model_facts(
     model: CatalogModel, model_id: str, model_facts: Mapping[str, Any], facts_path: Path
 ) -> list[Problem]:
-    """Merge one model's quant and extra facts, reporting names the model does not have."""
+    """Merge one model's quant and extra facts, reporting everything the file gets wrong.
+
+    The model's sources are known to use each quant name and extra file name once,
+    so every name here names at most one quant or extra.
+
+    Returns:
+        One :class:`Problem` per unknown name, malformed entry or malformed field.
+    """
+    quants_by_name = {quant.name: quant for source in model.sources for quant in source.quants}
+    extras_by_name = {extra.file: extra for source in model.sources for extra in source.extras}
+
     problems: list[Problem] = []
 
-    quants_by_name: dict[str, list[Quant]] = {}
-    extras_by_name: dict[str, list[Extra]] = {}
-    for source in model.sources:
-        for quant in source.quants:
-            quants_by_name.setdefault(quant.name, []).append(quant)
-        for extra in source.extras:
-            extras_by_name.setdefault(extra.file, []).append(extra)
-
-    quants_facts = model_facts.get("quants")
-    if isinstance(quants_facts, dict):
-        for quant_name, quant_facts in quants_facts.items():
-            matches = quants_by_name.get(quant_name)
-            if not matches:
-                problems.append(
-                    Problem(
-                        file=str(facts_path),
-                        model_id=model_id,
-                        location=f"quants.{quant_name}",
-                        message=f"the facts file names an unknown quant {quant_name!r}",
-                    )
+    quants_facts, quants_problems = _facts_section(model_facts, "quants", model_id, facts_path)
+    problems.extend(quants_problems)
+    for quant_name, quant_facts in quants_facts.items():
+        quant = quants_by_name.get(quant_name)
+        if quant is None:
+            problems.append(
+                Problem(
+                    file=str(facts_path),
+                    model_id=model_id,
+                    location=f"quants.{quant_name}",
+                    message=f"the facts file names an unknown quant {quant_name!r}",
                 )
-                continue
-            for quant in matches:
-                _apply_quant_facts(quant, quant_facts)
+            )
+            continue
+        problems.extend(_apply_quant_facts(quant, quant_facts, facts_path, model_id, quant_name))
 
-    extras_facts = model_facts.get("extras")
-    if isinstance(extras_facts, dict):
-        for extra_name, extra_facts in extras_facts.items():
-            extra_matches = extras_by_name.get(extra_name)
-            if not extra_matches:
-                problems.append(
-                    Problem(
-                        file=str(facts_path),
-                        model_id=model_id,
-                        location=f"extras.{extra_name}",
-                        message=f"the facts file names an unknown extra {extra_name!r}",
-                    )
+    extras_facts, extras_problems = _facts_section(model_facts, "extras", model_id, facts_path)
+    problems.extend(extras_problems)
+    for extra_name, extra_facts in extras_facts.items():
+        extra = extras_by_name.get(extra_name)
+        if extra is None:
+            problems.append(
+                Problem(
+                    file=str(facts_path),
+                    model_id=model_id,
+                    location=f"extras.{extra_name}",
+                    message=f"the facts file names an unknown extra {extra_name!r}",
                 )
-                continue
-            for extra in extra_matches:
-                _apply_extra_facts(extra, extra_facts)
+            )
+            continue
+        problems.extend(_apply_extra_facts(extra, extra_facts, facts_path, model_id, extra_name))
 
     return problems
 
 
-def _apply_quant_facts(quant: Quant, facts: object) -> None:
-    """Copy the fields a facts file may carry for one quant onto it, ignoring the rest."""
+def _facts_section(
+    model_facts: Mapping[str, Any], key: str, model_id: str, facts_path: Path
+) -> tuple[Mapping[str, Any], list[Problem]]:
+    """Read one model entry's ``quants`` or ``extras`` sub-mapping.
+
+    Returns:
+        The sub-mapping, empty when the entry has none or when it is not an object,
+        and one :class:`Problem` when it is there but is not an object.
+    """
+    section = model_facts.get(key)
+    if section is None:
+        return {}, []
+    if not isinstance(section, dict):
+        return {}, [
+            Problem(
+                file=str(facts_path),
+                model_id=model_id,
+                location=key,
+                message=_wrong_shape(f"{key!r}", section, f"an object keyed by {key[:-1]} name"),
+            )
+        ]
+    return section, []
+
+
+def _is_string_list(value: object) -> TypeGuard[list[str]]:
+    """Whether a value is a list of strings, the shape ``files`` and ``sha256`` need."""
+    return isinstance(value, list) and all(isinstance(item, str) for item in value)
+
+
+def _is_whole_number(value: object) -> TypeGuard[int]:
+    """Whether a value is an integer, excluding the booleans JSON also decodes as one."""
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+def _is_number(value: object) -> TypeGuard[float]:
+    """Whether a value is a number, excluding the booleans JSON also decodes as one."""
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
+def _validation_detail(exc: ValidationError) -> str:
+    """The first validation error, as ``field: message``, short enough for one line."""
+    error = exc.errors()[0]
+    location = ".".join(str(part) for part in error["loc"]) or "(root)"
+    return f"{location}: {error['msg']}"
+
+
+def _apply_quant_facts(
+    quant: Quant, facts: object, facts_path: Path, model_id: str, quant_name: str
+) -> list[Problem]:
+    """Copy the fields a facts file carries for one quant onto it, reporting the bad ones.
+
+    A field that is absent, or ``null`` because nothing was ever refreshed for it, is
+    left alone. A field that is present but malformed is left unset and reported, so
+    one bad field neither poisons its neighbours nor passes for an unrefreshed one.
+
+    Returns:
+        One :class:`Problem` per malformed field; empty when everything applied.
+    """
+
+    def problem(field: str, found: object, expected: str) -> Problem:
+        return Problem(
+            file=str(facts_path),
+            model_id=model_id,
+            location=f"quants.{quant_name}.{field}",
+            message=_wrong_shape(f"{field!r} for quant {quant_name!r}", found, expected),
+        )
+
     if not isinstance(facts, dict):
-        return
+        return [
+            Problem(
+                file=str(facts_path),
+                model_id=model_id,
+                location=f"quants.{quant_name}",
+                message=_wrong_shape(f"quant {quant_name!r}", facts, "an object"),
+            )
+        ]
+
+    problems: list[Problem] = []
+
     files = facts.get("files")
-    if isinstance(files, list) and all(isinstance(item, str) for item in files):
+    if _is_string_list(files):
         quant.files = files
+    elif files is not None:
+        problems.append(problem("files", files, "a list of file names"))
+
     size = facts.get("bytes")
-    if isinstance(size, int) and not isinstance(size, bool):
+    if _is_whole_number(size):
         quant.bytes_ = size
+    elif size is not None:
+        problems.append(problem("bytes", size, "a whole number of bytes"))
+
     sha256 = facts.get("sha256")
-    if isinstance(sha256, list) and all(isinstance(item, str) for item in sha256):
+    if _is_string_list(sha256):
         quant.sha256 = sha256
+    elif sha256 is not None:
+        problems.append(problem("sha256", sha256, "a list of checksums"))
+
     bpw = facts.get("bpw")
-    if isinstance(bpw, (int, float)) and not isinstance(bpw, bool):
+    if _is_number(bpw):
         quant.bpw = float(bpw)
+    elif bpw is not None:
+        problems.append(problem("bpw", bpw, "a number"))
+
     gguf_facts = facts.get("gguf_facts")
     if isinstance(gguf_facts, dict):
-        with suppress(ValidationError):
+        try:
             quant.gguf_facts = GgufFacts.model_validate(gguf_facts)
+        except ValidationError as exc:
+            problems.append(
+                Problem(
+                    file=str(facts_path),
+                    model_id=model_id,
+                    location=f"quants.{quant_name}.gguf_facts",
+                    message=(
+                        f"the facts file's GGUF facts for quant {quant_name!r} are not "
+                        f"valid ({_validation_detail(exc)}); {_REWRITE_HINT}"
+                    ),
+                )
+            )
+    elif gguf_facts is not None:
+        problems.append(problem("gguf_facts", gguf_facts, "an object"))
+
+    return problems
 
 
-def _apply_extra_facts(extra: Extra, facts: object) -> None:
-    """Copy the fields a facts file may carry for one extra onto it, ignoring the rest."""
+def _apply_extra_facts(
+    extra: Extra, facts: object, facts_path: Path, model_id: str, extra_name: str
+) -> list[Problem]:
+    """Copy the fields a facts file carries for one extra onto it, reporting the bad ones.
+
+    Returns:
+        One :class:`Problem` per malformed field; empty when everything applied.
+    """
+
+    def problem(field: str, found: object, expected: str) -> Problem:
+        return Problem(
+            file=str(facts_path),
+            model_id=model_id,
+            location=f"extras.{extra_name}.{field}",
+            message=_wrong_shape(f"{field!r} for extra {extra_name!r}", found, expected),
+        )
+
     if not isinstance(facts, dict):
-        return
+        return [
+            Problem(
+                file=str(facts_path),
+                model_id=model_id,
+                location=f"extras.{extra_name}",
+                message=_wrong_shape(f"extra {extra_name!r}", facts, "an object"),
+            )
+        ]
+
+    problems: list[Problem] = []
+
     size = facts.get("bytes")
-    if isinstance(size, int) and not isinstance(size, bool):
+    if _is_whole_number(size):
         extra.bytes_ = size
+    elif size is not None:
+        problems.append(problem("bytes", size, "a whole number of bytes"))
+
     sha256 = facts.get("sha256")
     if isinstance(sha256, str):
         extra.sha256 = sha256
+    elif sha256 is not None:
+        problems.append(problem("sha256", sha256, "a checksum string"))
+
+    return problems
 
 
 def bundled_catalog_dir() -> Path:
