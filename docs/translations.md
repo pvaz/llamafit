@@ -116,21 +116,25 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
    the completeness check still lists it as a message your language needs.
 
 5. Run the tests. `tests/unit/test_i18n_catalogs.py` checks every catalog: it must parse,
-   it must declare its plural rule, it must not translate a message the template does not
-   have, and every translation must carry exactly the placeholders its message does. A
-   message it is *missing* is a warning, not a failure, so you can land a translation that
-   is still in progress.
+   it must declare its plural rule and the right language, it must not translate a message
+   the template does not have, and nothing in it may be a translation the reader had to
+   drop. A message it is *missing* is a warning, not a failure, so you can land a
+   translation that is still in progress.
+
+   Your own catalog, in your own copy, is held to the same rules without the build: the
+   reader drops what it cannot use, shows the English there, and tells you how many and
+   where. Running the tests is how you turn that into a failure instead.
 
 ## What a translator needs to know
 
 - **Placeholders keep their names.** `%(count)d module` may become
   `%(count)d módulo`, and the pieces may be reordered, but `%(count)d` itself must survive
-  exactly. A placeholder that is renamed or added is a crash; one that is *dropped* raises
-  nothing and silently loses the number from the sentence, which is worse. The test suite
-  compares every translation's placeholders against its message's and fails when they
-  differ, so you will hear about all three before a user does.
-- **A literal percent sign is written `%%`.** A single `%` that is not part of a
-  placeholder raises when the message is formatted.
+  exactly. A translation whose placeholders do not match its message's is **not used** —
+  LlamaFit shows the English instead and says so once at start-up, and `--verbose` names
+  each one in the log. For a catalog that ships, the same mismatch fails the build.
+- **A literal percent sign is written `%%`**, and **placeholders are named, never
+  positional**. A bare `%s` looks like it works and does not: filled from a dictionary it
+  puts the dictionary itself into the sentence rather than the number.
 - **Plurals are not a suffix.** Use `msgstr[0]`, `msgstr[1]`, and as many forms as your
   `Plural-Forms` header declares. Do not write `1 module(s)`.
 - **The file is UTF-8**, always, on every platform. A byte order mark at the start is

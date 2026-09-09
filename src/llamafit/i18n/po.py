@@ -17,6 +17,14 @@ the difference between the two is invisible in the file. Lookup then returns the
 English original, so a half-finished translation degrades to English and never to a
 blank line on someone's screen.
 
+A translation whose placeholders do not match its message is dropped, and the English
+is used in its place. Every counted message is formatted with a dictionary the English
+message decided the shape of, so a renamed or an added placeholder raises ``KeyError``, an
+undoubled literal percent raises ``ValueError``, and a positional ``%s`` raises nothing at
+all and substitutes the dictionary's ``repr`` into the sentence. A catalog somebody wrote
+themselves never goes near the test suite, and none of those belongs in front of a user
+halfway through a command. Each one is recorded in ``problems``.
+
 A catalog must declare ``Plural-Forms``. Inheriting English's rule from silence was
 the one way this reader could hand back quietly wrong text instead of raising: a
 three-form language would pick the wrong form, and its reader would meet real words
@@ -27,7 +35,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Mapping
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 from llamafit.errors import ConfigError
@@ -52,6 +60,10 @@ _PLURAL_FORMS = "Plural-Forms"
 _LANGUAGE = "Language"
 _MAX_PLURAL_INDEX = 9
 _BOM = "\ufeff"
+# A named %-placeholder: the name in brackets, then the flags, width, precision and
+# length modifier %-formatting allows, then the conversion character.
+_PLACEHOLDER_RE = re.compile(r"\((?P<name>[^)]*)\)[#0\- +]*(?:\d+)?(?:\.\d+)?[hlL]?(?P<kind>.)")
+_CONVERSIONS = "diouxXeEfFgGcrsa%"
 
 MessageKey = tuple[str | None, str]
 """What identifies an entry: its context, ``None`` when it has none, and its ``msgid``."""
@@ -114,6 +126,8 @@ class PoCatalog:
         plural_forms: The raw ``Plural-Forms`` header, which every catalog declares.
         plural_rule: The rule that header declares.
         source: Where the catalog was read from, for error messages.
+        problems: One line per translation that could not be used, already dropped from
+            ``messages``. Empty for a catalog with nothing wrong with it.
     """
 
     language: str
@@ -122,6 +136,7 @@ class PoCatalog:
     plural_forms: str
     plural_rule: PluralRule
     source: str = "<string>"
+    problems: tuple[str, ...] = ()
 
     def gettext(self, message: str) -> str:
         """Translate one message that carries no context.
@@ -214,7 +229,9 @@ def parse_po(text: str, *, source: str = "<string>") -> PoCatalog:
 
     Raises:
         PoSyntaxError: If a line cannot be read, a message is defined twice, or the
-            ``Plural-Forms`` header is missing or malformed.
+            ``Plural-Forms`` header is missing or malformed. A translation whose
+            placeholders are wrong is not a syntax error: it is dropped, and the
+            catalog's ``problems`` says so.
     """
     entries: list[_Entry] = []
     current = _Entry(line=1)
@@ -279,6 +296,37 @@ def _usable(translations: tuple[str, ...], index: int) -> str:
         return ""
     translation = translations[index]
     return translation if translation.strip() else ""
+
+
+def placeholders(text: str) -> tuple[frozenset[str], tuple[str, ...]]:
+    """Return the named placeholders in ``text``, and every ``%`` that is not one.
+
+    Only the named form counts. A positional ``%s`` cannot be moved by a translator whose
+    language wants the words in another order, and filled from a dictionary it does not
+    even raise — it substitutes the dictionary's ``repr`` into the sentence. A lone ``%``
+    is a literal percent sign somebody forgot to double. Both are reported, not counted.
+
+    Returns:
+        The names, and one sentence per ``%`` that begins no placeholder.
+    """
+    names: set[str] = set()
+    problems: list[str] = []
+    position = 0
+    while (start := text.find("%", position)) != -1:
+        if text.startswith("%%", start):
+            position = start + 2
+            continue
+        found = _PLACEHOLDER_RE.match(text, start + 1)
+        if found is None or found.group("kind") not in _CONVERSIONS:
+            problems.append(
+                f"{text[start : start + 12]!r} is not a named placeholder; "
+                "write %% for a literal percent sign"
+            )
+            position = start + 1
+            continue
+        names.add(found.group("name"))
+        position = found.end()
+    return frozenset(names), tuple(problems)
 
 
 def _split(line: str, source: str, number: int) -> tuple[str, int, str]:
@@ -384,6 +432,60 @@ def _describe(key: MessageKey) -> str:
     return f"{msgid!r}" if context is None else f"{msgid!r} in context {context!r}"
 
 
+def _english_placeholders(message: Message, where: str, problems: list[str]) -> frozenset[str]:
+    """The placeholders a translation of this entry has to carry, reporting the English.
+
+    A plural entry's two English forms must name the same placeholders. Without that
+    there is no answer to which English form ``msgstr[2]`` stands in for: a language
+    draws its form boundaries somewhere else, and a pair carrying the count in only one
+    form could not be translated into such a language at all.
+    """
+    names, bad = placeholders(message.msgid)
+    problems += [f"{where}: msgid: {problem}" for problem in bad]
+    if message.plural is None:
+        return names
+    plural, bad = placeholders(message.plural)
+    problems += [f"{where}: msgid_plural: {problem}" for problem in bad]
+    if plural != names:
+        problems.append(
+            f"{where}: the English singular names {sorted(names)} but the plural names "
+            f"{sorted(plural)}; both forms must name the same placeholders"
+        )
+    return names | plural
+
+
+def _checked(
+    messages: dict[MessageKey, Message], source: str
+) -> tuple[dict[MessageKey, Message], tuple[str, ...]]:
+    """Drop every translation whose placeholders its message would not fill.
+
+    A dropped form is left empty, which every other part of this module already knows
+    what to do with: the lookup falls back to the English, and the completeness check
+    lists the message as one the language still needs.
+    """
+    problems: list[str] = []
+    checked: dict[MessageKey, Message] = {}
+    for key, message in messages.items():
+        where = f"{source}: line {message.line}: {_describe(key)}"
+        english = _english_placeholders(message, where, problems)
+        forms = list(message.translations)
+        for index, translation in enumerate(forms):
+            if not translation.strip():
+                continue
+            names, bad = placeholders(translation)
+            if not bad and names == english:
+                continue
+            reason = (
+                bad[0]
+                if bad
+                else f"it fills {sorted(names)} but the message names {sorted(english)}"
+            )
+            problems.append(f"{where}: msgstr[{index}] was not used: {reason}")
+            forms[index] = ""
+        checked[key] = replace(message, translations=tuple(forms))
+    return checked, tuple(problems)
+
+
 def _build(entries: list[_Entry], source: str) -> PoCatalog:
     """Turn the accumulated entries into a catalog, validating as it goes."""
     headers: dict[str, str] = {}
@@ -425,11 +527,13 @@ def _build(entries: list[_Entry], source: str) -> PoCatalog:
         rule = parse_plural_forms(plural_forms)
     except PluralFormsError as exc:
         raise PoSyntaxError(source, header_line, str(exc)) from exc
+    usable, problems = _checked(messages, source)
     return PoCatalog(
         language=headers.get(_LANGUAGE, ""),
         headers=headers,
-        messages=messages,
+        messages=usable,
         plural_forms=plural_forms,
         plural_rule=rule,
         source=source,
+        problems=problems,
     )
