@@ -141,3 +141,19 @@ def test_assigns_each_file_to_the_longest_matching_quant() -> None:
 
     assigned = [f.path for bucket in groups.values() for f in bucket]
     assert len(assigned) == len(set(assigned))
+
+
+def test_two_files_sharing_a_shard_index_are_ordered_not_compared() -> None:
+    files = [
+        RepoFile(path="b/M-Q4_K_M-00001-of-00002.gguf", size=2, sha256=None),
+        RepoFile(path="a/M-Q4_K_M-00002-of-00002.gguf", size=3, sha256=None),
+        RepoFile(path="a/M-Q4_K_M-00001-of-00002.gguf", size=1, sha256=None),
+    ]
+
+    matched = match_quant_files(files, "Q4_K_M")
+
+    assert [file.path for file in matched] == [
+        "a/M-Q4_K_M-00001-of-00002.gguf",
+        "b/M-Q4_K_M-00001-of-00002.gguf",
+        "a/M-Q4_K_M-00002-of-00002.gguf",
+    ]
