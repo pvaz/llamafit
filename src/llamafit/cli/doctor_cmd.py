@@ -1,0 +1,27 @@
+"""``llamafit doctor``: probe-by-probe report and actionable findings."""
+
+from __future__ import annotations
+
+import typer
+
+from llamafit.cli.app import CliState, app
+from llamafit.cli.render import render_findings, render_probes
+from llamafit.services.doctor import diagnose
+from llamafit.services.scan import scan_system
+
+
+@app.command("doctor")
+def doctor_command(ctx: typer.Context) -> None:
+    """Explain what was detected, what failed, and what would unlock more."""
+    state: CliState = ctx.obj
+    report = scan_system()
+    diagnosis = diagnose(report)
+    if state.json_output:
+        typer.echo(diagnosis.model_dump_json(indent=2))
+    else:
+        console = state.console
+        console.print(render_probes([*report.host.probes, *report.llamacpp.probes]))
+        console.print()
+        console.print(render_findings(diagnosis.findings))
+    if diagnosis.worst_level == "error":
+        raise typer.Exit(code=2)
