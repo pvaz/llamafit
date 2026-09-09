@@ -75,6 +75,12 @@ def type_name(type_id: int) -> str:
 def tensor_bytes(dims: Sequence[int], type_id: int) -> int:
     """Bytes a tensor of these dimensions occupies in this type.
 
+    Rounds up to a whole number of quantisation blocks: a tensor whose element
+    count is not an exact multiple of its type's block size still occupies a
+    full trailing block on disk, and an undercount is the dangerous direction
+    for a memory budget. Callers that need to know whether a tensor was
+    misaligned should call :func:`is_misaligned`.
+
     Raises:
         KeyError: If the type id is not in the table.
     """
@@ -82,4 +88,18 @@ def tensor_bytes(dims: Sequence[int], type_id: int) -> int:
     elements = 1
     for dim in dims:
         elements *= dim
-    return elements // block_elements * block_bytes
+    blocks = (elements + block_elements - 1) // block_elements
+    return blocks * block_bytes
+
+
+def is_misaligned(dims: Sequence[int], type_id: int) -> bool:
+    """True when a tensor's element count is not an exact multiple of its block size.
+
+    Raises:
+        KeyError: If the type id is not in the table.
+    """
+    _, block_elements, _ = GGML_TYPES[type_id]
+    elements = 1
+    for dim in dims:
+        elements *= dim
+    return elements % block_elements != 0

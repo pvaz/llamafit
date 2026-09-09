@@ -75,3 +75,12 @@ def test_an_unknown_value_type_is_a_catalog_error() -> None:
     bad = b.build([b._kv("weird", 99, b"\x00" * 4)], [])
     with pytest.raises(CatalogError, match="value type 99"):
         read_header(FakeSource(bad))
+
+
+def test_a_misaligned_tensor_rounds_up_and_is_recorded() -> None:
+    # Q8_0: 32 elements per 34-byte block. 33 elements is one full block plus one
+    # leftover element, which must round up to two whole blocks, not silently drop it.
+    tensors = [b.tensor("blk.0.weird.weight", [33], 8, 0)]
+    header = read_header(FakeSource(b.build([], tensors)))
+    assert header.tensors[0].bytes_ == 2 * 34
+    assert header.metadata["_misaligned_tensors"] == ["blk.0.weird.weight:Q8_0"]
