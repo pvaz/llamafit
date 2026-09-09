@@ -11,8 +11,10 @@ masculine, and no single Portuguese string is right in both. An entry is therefo
 by its context and its message together. A message written without a context is keyed
 under a context of ``None``, which is not the same thing as a context of ``""``.
 
-An empty ``msgstr`` means untranslated. Lookup then returns the English original,
-never the empty string: a half-finished translation degrades to English, never to a
+An empty ``msgstr`` means untranslated, and so does one that holds nothing but
+whitespace: three spaces reach a screen as a blank line, not as a translation, and
+the difference between the two is invisible in the file. Lookup then returns the
+English original, so a half-finished translation degrades to English and never to a
 blank line on someone's screen.
 """
 
@@ -78,7 +80,7 @@ class Message:
     Attributes:
         msgid: The English message, which with the context is the lookup key.
         plural: The English plural message, or ``None`` for a singular-only entry.
-        translations: One string per plural form; an empty string means untranslated.
+        translations: One string per plural form; empty or blank means untranslated.
         line: The line the entry starts on, for error messages.
         context: What the ``msgctxt`` said, or ``None`` for an entry that has none.
     """
@@ -96,8 +98,8 @@ class Message:
 
     @property
     def translated(self) -> bool:
-        """True when at least one form carries a non-empty translation."""
-        return any(self.translations)
+        """True when a form carries a translation that is not all whitespace."""
+        return any(text.strip() for text in self.translations)
 
 
 @dataclass(frozen=True)
@@ -261,10 +263,16 @@ def read_po(path: Path) -> PoCatalog:
 
 
 def _usable(translations: tuple[str, ...], index: int) -> str:
-    """Return the form at ``index``, or the empty string when there is no such form."""
+    """Return the form at ``index`` when it says something, otherwise the empty string.
+
+    Emptiness is judged on the stripped text, but the text itself comes back
+    untouched: a translation may legitimately end in a space, and only one that is
+    *nothing but* whitespace counts as absent.
+    """
     if index >= len(translations):
         return ""
-    return translations[index]
+    translation = translations[index]
+    return translation if translation.strip() else ""
 
 
 def _split(line: str, source: str, number: int) -> tuple[str, int, str]:
