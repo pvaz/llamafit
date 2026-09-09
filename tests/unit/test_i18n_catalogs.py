@@ -120,7 +120,11 @@ def test_every_plural_entry_matches_the_template_and_the_declared_form_count(
 def test_a_message_missing_from_a_catalog_is_a_warning_not_a_failure(language: str) -> None:
     template = _template_messages()
     catalog = load_language(language)
-    missing = sorted(set(template) - set(catalog.messages)) + list(catalog.untranslated())
+    # Sorted through a key, not on the tuples themselves: a key is (context, msgid) and a
+    # context is None for a message that has none, so comparing two keys straight compares
+    # None with a str the moment both kinds are missing at once.
+    absent = sorted(set(template) - set(catalog.messages), key=lambda key: (key[0] or "", key[1]))
+    missing = absent + list(catalog.untranslated())
     if missing:
         warnings.warn(
             f"{language} still needs {len(missing)} message(s): {missing[0]!r}"
