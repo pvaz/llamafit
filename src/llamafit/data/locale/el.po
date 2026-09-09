@@ -1,0 +1,808 @@
+# Greek translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. It was written from the English template in one
+# pass and it has had no second reader. By the standard docs/translations.md sets for
+# every language, that is not enough: please read it line by line and correct it in a
+# pull request.
+#
+# "directory" is φάκελος here, never κατάλογος, because κατάλογος is already the model
+# catalog and the two appear in the same messages.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el\n"
+"Language-Team: Greek\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "Το Hugging Face επέστρεψε %(status)d κατά την παράθεση των αρχείων του %(repo)s."
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "Δεν ήταν δυνατή η ανάγνωση της λίστας αρχείων του %(repo)s από το Hugging Face."
+
+msgid "Check your network connection and try again."
+msgstr "Ελέγξτε τη σύνδεσή σας στο δίκτυο και δοκιμάστε ξανά."
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "Η απάντηση του Hugging Face για το %(repo)s δεν περιλάμβανε λίστα αρχείων."
+
+msgid "Check that the repository id is correct and public."
+msgstr "Ελέγξτε ότι το αναγνωριστικό του αποθετηρίου είναι σωστό και δημόσιο."
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "ο κατάλογος έχει %(count)d πρόβλημα"
+msgstr[1] "ο κατάλογος έχει %(count)d προβλήματα"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "Εκτελέστε `llamafit catalog validate` για λεπτομέρειες."
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "δεν ήταν δυνατή η εγγραφή του %(path)s: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "Ελέγξτε ότι ο φάκελος είναι εγγράψιμος και έχει χώρο."
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "το %(path)s έχει %(count)d πρόβλημα και δεν μπορεί να ανανεωθεί"
+msgstr[1] "το %(path)s έχει %(count)d προβλήματα και δεν μπορεί να ανανεωθεί"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "Εκτελέστε `llamafit catalog validate` και διορθώστε πρώτα το αρχείο."
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "Το %(path)s δεν ήταν δυνατό να διαβαστεί ολόκληρο, οπότε η ανανέωση μόνο του %(model)s θα πετούσε στοιχεία που καταγράφει για μοντέλα τα οποία αυτή η εκτέλεση δεν αγγίζει: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "Εκτελέστε `llamafit catalog refresh` χωρίς --model για να ξαναχτιστεί ολόκληρο το αρχείο."
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "Βρείτε, μετρήστε, εγκαταστήστε και επαληθεύστε γλωσσικά μοντέλα ανοικτών βαρών για το llama.cpp στο δικό σας μηχάνημα."
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "Εκτυπώνει JSON αναγνώσιμο από μηχανή αντί για πίνακες."
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "Γράφει λεπτομέρειες στο llamafit.log μέσα στον φάκελο καταγραφής και εμφανίζει τα ίχνη κλήσεων."
+
+msgid "Disable colours."
+msgstr "Απενεργοποιεί τα χρώματα."
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "Μιλά αυτή τη γλώσσα, για παράδειγμα pt_PT. Μια γλώσσα που δεν έχει το LlamaFit επιστρέφει στα αγγλικά, και αναφέρει ποιες γλώσσες έχει."
+
+msgid "Print the version and exit."
+msgstr "Εκτυπώνει την έκδοση και τερματίζει."
+
+msgid "Unexpected error: %(error)s"
+msgstr "Απροσδόκητο σφάλμα: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "Εκτελέστε ξανά με --verbose για το πλήρες ίχνος κλήσεων."
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "Συντηρεί τον κατάλογο: επικυρώνει τα αρχεία του, ανανεώνει τα μεταβλητά πεδία."
+
+msgid "Keep only this use case."
+msgstr "Κρατά μόνο αυτή την περίπτωση χρήσης."
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "Κρατά μόνο τα μοντέλα με αυτή τη δυνατότητα (επαναλαμβανόμενο)."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Κρατά μόνο αυτά τα αναγνωριστικά αδειών (επαναλαμβανόμενο)."
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "Επικυρώνει μόνο αυτό το αρχείο αντί για τον ενσωματωμένο κατάλογο και τις προσαρμογές."
+
+msgid "Did you mean: %(ids)s?"
+msgstr "Μήπως εννοούσατε: %(ids)s;"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Εκτελέστε `llamafit list` για να δείτε όλα τα αναγνωριστικά μοντέλων."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "δεν υπάρχει μοντέλο με όνομα %(id)s στον κατάλογο"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "Βρέθηκε %(count)d πρόβλημα στον κατάλογο· εκτελέστε `llamafit catalog validate` για λεπτομέρειες."
+msgstr[1] "Βρέθηκαν %(count)d προβλήματα στον κατάλογο· εκτελέστε `llamafit catalog validate` για λεπτομέρειες."
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "Κανένα μοντέλο δεν ταιριάζει. Δοκιμάστε ευρύτερο --use-case, --capability, --license, --vendor ή --search."
+
+msgid "invalid --use-case %(value)s"
+msgstr "μη έγκυρη τιμή --use-case: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Έγκυρες περιπτώσεις χρήσης: %(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "μη έγκυρη τιμή --capability: %(values)s"
+msgstr[1] "μη έγκυρες τιμές --capability: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Έγκυρες δυνατότητες: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"Παραθέτει τον κατάλογο μοντέλων, περιορισμένο από τα φίλτρα που δόθηκαν.\n"
+"\n"
+"Ο πίνακας δείχνει το πολύ τρεις δυνατότητες ανά μοντέλο, συν έναν δείκτη +N για τις υπόλοιπες, και ταξινομείται κατά τη στήλη Ποιότητα που εμφανίζεται· το info ή το --json έχουν όλες τις δυνατότητες."
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "Κρατά μόνο αυτόν τον κατασκευαστή, χωρίς διάκριση πεζών-κεφαλαίων."
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "Ταίριασμα υποσυμβολοσειράς σε αναγνωριστικό, όνομα, κατασκευαστή ή οικογένεια, χωρίς διάκριση πεζών-κεφαλαίων."
+
+msgid "Show at most this many."
+msgstr "Δείχνει το πολύ τόσα."
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "Συντομογραφία για llamafit list --search TEXT."
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "Κείμενο προς αντιστοίχιση με αναγνωριστικό, όνομα, κατασκευαστή ή οικογένεια."
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "Δείχνει τα στοιχεία ενός μοντέλου, τις πηγές του και κάθε κβαντισμό που δημοσιεύει."
+
+msgid "A catalog model id."
+msgstr "Ένα αναγνωριστικό μοντέλου του καταλόγου."
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "Επικυρώνει τα αρχεία YAML του καταλόγου ως προς το σχήμα, εκτυπώνοντας μία γραμμή ανά πρόβλημα."
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "Ελέγχθηκε %(count)d αρχείο, δεν βρέθηκαν προβλήματα."
+msgstr[1] "Ελέγχθηκαν %(count)d αρχεία, δεν βρέθηκαν προβλήματα."
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "Ανανεώνει ονόματα αρχείων, μεγέθη, αθροίσματα ελέγχου και στοιχεία GGUF του καταλόγου από το Hugging Face."
+
+msgid "Refresh only this model id."
+msgstr "Ανανεώνει μόνο αυτό το αναγνωριστικό μοντέλου."
+
+msgid "Compute the refresh but write nothing."
+msgstr "Υπολογίζει την ανανέωση χωρίς να γράψει τίποτα."
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "Τερματίζει με 1 αν κάτι επρόκειτο να αλλάξει· δεν αλλάζει τίποτα, για προγραμματισμένη εργασία CI."
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: προειδοποίηση: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "προειδοποίηση: %(warning)s (%(count)d μοντέλο: %(models)s)"
+msgstr[1] "προειδοποίηση: %(warning)s (%(count)d μοντέλα: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: σφάλμα: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "Υπόδειξη: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "η ανανέωση χρειάζεται πρόσβαση δικτύου στο Hugging Face· ελέγξτε τη σύνδεσή σας και ότι το αναγνωριστικό του αποθετηρίου είναι σωστό."
+
+msgid "No changes."
+msgstr "Καμία αλλαγή."
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "Εκτυπώνει την ακατέργαστη εγγραφή καταλόγου ενός μοντέλου, ως JSON από προεπιλογή ή ως YAML με --yaml."
+
+msgid "Print YAML instead of JSON."
+msgstr "Εκτυπώνει YAML αντί για JSON."
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "Εξηγεί τι εντοπίστηκε, τι απέτυχε και τι θα ξεκλείδωνε περισσότερα."
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "ΕΝΤΑΞΕΙ"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "ΠΡΟΕΙΔ."
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "ΣΦΑΛΜΑ"
+
+# The four bandwidth labels describe το εύρος ζώνης, which is neuter, so they are all
+# neuter singular.
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "μετρημένο"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "εκτιμώμενο"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "υποτιθέμενο"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "άγνωστο"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s και %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "Μηχάνημα"
+
+msgid "OS"
+msgstr "Λειτουργικό"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d πυρήνες / %(logical)d νήματα"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d πυρήνας απόδοσης"
+msgstr[1] "%(count)d πυρήνες απόδοσης"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s· %(cores)s· %(isa)s"
+
+msgid "isa unknown"
+msgstr "άγνωστο σύνολο εντολών"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d μονάδα μνήμης"
+msgstr[1] "%(count)d μονάδες μνήμης"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d κανάλι"
+msgstr[1] "%(count)d κανάλια"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+# Each row that says "unknown" names its own noun, and Greek follows that noun's gender:
+# το εύρος ζώνης, το μοντέλο, το πλαίσιο and το μέγεθος are neuter, η δόμηση feminine,
+# and τα υποσυστήματα neuter plural.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "άγνωστο"
+
+msgid "Memory"
+msgstr "Μνήμη"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "%(total)s συνολικά, %(available)s διαθέσιμα· %(details)s· εύρος ζώνης %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "άγνωστος τύπος"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "δεν εντοπίστηκε καμία"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, %(free)s ελεύθερα"
+
+msgid "VRAM unknown"
+msgstr "άγνωστη VRAM"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (κατά τις προδιαγραφές)"
+
+msgid "driver %(driver)s"
+msgstr "πρόγραμμα οδήγησης %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s)· %(vram)s· %(specs)s"
+
+msgid "no specs"
+msgstr "χωρίς προδιαγραφές"
+
+msgid "Memory pool"
+msgstr "Δεξαμενή μνήμης"
+
+msgid "unified (GPU shares system memory)"
+msgstr "ενοποιημένη (η GPU μοιράζεται τη μνήμη του συστήματος)"
+
+msgid "Disk"
+msgstr "Δίσκος"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: %(free)s ελεύθερα από %(total)s"
+
+msgid "Installed"
+msgstr "Εγκατεστημένο"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "όχι"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "άγνωστη δόμηση"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "ναι, %(build)s στο %(path)s"
+
+msgid "Backends"
+msgstr "Υποσυστήματα"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "δεν εντοπίστηκε κανένα"
+
+msgid "Local models"
+msgstr "Τοπικά μοντέλα"
+
+msgid "Running"
+msgstr "Εκτελείται"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, πλαίσιο %(context)s"
+
+msgid "unknown model"
+msgstr "άγνωστο μοντέλο"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "άγνωστο"
+
+msgid "Problem"
+msgstr "Πρόβλημα"
+
+msgid "Probes"
+msgstr "Ανιχνεύσεις"
+
+msgid "probe"
+msgstr "ανίχνευση"
+
+msgid "result"
+msgstr "αποτέλεσμα"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "εντάξει"
+
+msgid "no server"
+msgstr "χωρίς διακομιστή"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "απέτυχε"
+
+msgid "Findings"
+msgstr "Ευρήματα"
+
+msgid "level"
+msgstr "επίπεδο"
+
+msgid "finding"
+msgstr "εύρημα"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "Ποιότητα*"
+
+msgid "Params"
+msgstr "Παράμ."
+
+msgid "Context"
+msgstr "Πλαίσιο"
+
+msgid "Capabilities"
+msgstr "Δυνατότητες"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "Η ποιότητα είναι η συντακτική βάση, πριν από οποιαδήποτε ποινή κβαντισμού· εκτελέστε `llamafit info <model>` για τις τεκμηριωμένες δοκιμές αναφοράς που τη στηρίζουν."
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "Το Παράμ. είναι οι συνολικές/ενεργές παράμετροι σε δισεκατομμύρια για μοντέλο μείγματος ειδικών, ή ένας αριθμός όταν είναι ίσες."
+
+msgid "Models"
+msgstr "Μοντέλα"
+
+msgid "Vendor"
+msgstr "Κατασκευαστής"
+
+msgid "Family"
+msgstr "Οικογένεια"
+
+msgid "Release date"
+msgstr "Ημερομηνία κυκλοφορίας"
+
+msgid "Licence"
+msgstr "Άδεια"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "Παράμετροι"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "%(total)sB συνολικά, %(active)sB ενεργά"
+
+msgid "%(tokens)s tokens native"
+msgstr "%(tokens)s tokens εγγενώς"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", %(tokens)s με επέκταση μέσω %(method)s"
+
+msgid "unspecified method"
+msgstr "μη καθορισμένη μέθοδος"
+
+msgid "Architecture"
+msgstr "Αρχιτεκτονική"
+
+msgid "Notes"
+msgstr "Σημειώσεις"
+
+msgid "Use cases"
+msgstr "Περιπτώσεις χρήσης"
+
+msgid "Quality baseline"
+msgstr "Βάση ποιότητας"
+
+msgid "Benchmark"
+msgstr "Δοκιμή αναφοράς"
+
+msgid "Source %(index)d"
+msgstr "Πηγή %(index)d"
+
+msgid "not read yet"
+msgstr "δεν έχει διαβαστεί ακόμη"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d επίπεδο"
+msgstr[1] "%(count)d επίπεδα"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d ειδικός"
+msgstr[1] "%(count)d/%(used)d ειδικοί"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d ειδικός"
+msgstr[1] "%(count)d ειδικοί"
+
+msgid "Quants"
+msgstr "Κβαντισμοί"
+
+msgid "Name"
+msgstr "Όνομα"
+
+msgid "Size"
+msgstr "Μέγεθος"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "Στοιχεία"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "άγνωστο"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "Δείχνει τι έχει αυτό το μηχάνημα: CPU, μνήμη, GPU, δίσκους και llama.cpp."
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "Παραλείπει τη μέτρηση του εύρους ζώνης της RAM."
+
+msgid "Command: %(command)s"
+msgstr "Εντολή: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "περικομμένη κεφαλίδα GGUF: αναμένονταν %(wanted)d bytes στη θέση %(offset)d, ελήφθησαν %(got)d"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "Το αρχείο μπορεί να κατεβαίνει ακόμη, ή το URL μπορεί να μην είναι αρχείο GGUF."
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "άγνωστος τύπος τιμής GGUF %(type)d στη θέση %(offset)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "Αυτό το αρχείο μπορεί να χρησιμοποιεί νεότερο τύπο μεταδεδομένων GGUF από όσους υποστηρίζει το LlamaFit."
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "δεν είναι αρχείο GGUF: εσφαλμένη υπογραφή %(magic)s στη θέση 0"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "Ελέγξτε ότι αυτό το αρχείο είναι όντως μοντέλο .gguf."
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "μη υποστηριζόμενη έκδοση GGUF %(version)d στη θέση 4"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "Το LlamaFit υποστηρίζει τις εκδόσεις GGUF %(versions)s."
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "αυτά τα αρχεία GGUF δεν είναι ένα διαιρεμένο μοντέλο: διαφωνούν ως προς το '%(key)s', δηλώνοντας %(values)s"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "Δώστε τα τμήματα ενός μοντέλου, όχι πολλών."
+
+msgid "no GGUF header to read facts from"
+msgstr "δεν υπάρχει κεφαλίδα GGUF από την οποία να διαβαστούν στοιχεία"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "Δώστε το αρχείο του μοντέλου, ή κάθε τμήμα ενός διαιρεμένου μοντέλου."
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(count)d από %(total)d αρχεία GGUF δεν φέρουν το κλειδί '%(key)s', οπότε δεν μπορεί να προσδιοριστεί η θέση τους σε ένα διαιρεμένο μοντέλο"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "Δώστε ένα μόνο αδιαίρετο αρχείο, ή κάθε τμήμα ενός διαιρεμένου μοντέλου."
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "ελλιπές σύνολο τμημάτων: το μοντέλο δηλώνει %(declared)d τμήματα και έφτασαν %(arrived)d (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "Δώστε κάθε τμήμα του διαιρεμένου μοντέλου."
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "λείπει το τμήμα που φέρει τα μεταδεδομένα του μοντέλου: ελήφθη %(key)s %(numbers)s, ενώ αναμενόταν ένα από αυτά να είναι 0"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "Δώστε κάθε τμήμα του διαιρεμένου μοντέλου, μαζί με το πρώτο."
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "ελλιπές σύνολο τμημάτων: αναμενόταν %(key)s από 0 έως %(last)d, ελήφθη %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "Δώστε κάθε τμήμα του διαιρεμένου μοντέλου ακριβώς μία φορά."
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "ελλιπές σύνολο τμημάτων: το μοντέλο δηλώνει %(declared)d τανυστές και τα %(shards)d τμήματά του κρατούν συνολικά %(held)d"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "δεν ήταν δυνατή η ανάγνωση του %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Ελέγξτε ότι το αρχείο υπάρχει και είναι αναγνώσιμο."
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "δεν ήταν δυνατή η λήψη του %(url)s: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "Ελέγξτε τη σύνδεσή σας στο δίκτυο και ότι το URL είναι προσβάσιμο."
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "Το %(url)s επέστρεψε HTTP %(status)d αντί για 206 Partial Content· ο διακομιστής μπορεί να μην υποστηρίζει αιτήματα εύρους."
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "Επιβεβαιώστε ότι το URL δείχνει σε αρχείο GGUF που μπορεί να ληφθεί."
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "άγνωστο"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "το nvidia-smi δεν επέστρεψε καμία GPU"
+
+msgid "rocm-smi returned no cards"
+msgstr "το rocm-smi δεν επέστρεψε καμία κάρτα"
+
+msgid "system_profiler returned no displays"
+msgstr "το system_profiler δεν επέστρεψε καμία οθόνη"
+
+msgid "WMI returned no video controllers"
+msgstr "το WMI δεν επέστρεψε ελεγκτές βίντεο"
+
+msgid "lspci found no display controllers"
+msgstr "το lspci δεν βρήκε ελεγκτές οθόνης"
+
+msgid "no populated memory modules"
+msgstr "καμία κατειλημμένη μονάδα μνήμης"
+
+msgid "no SPMemoryDataType"
+msgstr "χωρίς SPMemoryDataType"
+
+msgid "empty command"
+msgstr "κενή εντολή"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: έληξε το χρονικό όριο μετά από %(seconds)s δευτερόλεπτα"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: δεν βρέθηκε"
+
+msgid "no output"
+msgstr "χωρίς έξοδο"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "κωδικός εξόδου %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "το llama.cpp δεν βρέθηκε: δεν υπάρχει llama-server στο PATH, στο LLAMA_CPP_PATH ή στους συνήθεις φακέλους"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "δεν βρέθηκαν βιβλιοθήκες υποσυστημάτων ggml δίπλα στο llama-server· η δόμηση μπορεί να είναι στατική"
+
+msgid "no llama-server answering"
+msgstr "κανένας llama-server δεν απαντά"
+
+msgid "unexpected response: %(error)s"
+msgstr "απροσδόκητη απόκριση: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "Εγκαταστήστε ή επιδιορθώστε το πρόγραμμα οδήγησης NVIDIA· το nvidia-smi το συνοδεύει και πρέπει να βρίσκεται στο PATH."
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "Εγκαταστήστε το ROCm (Linux) για να εμφανιστούν τα μεγέθη VRAM της AMD· χωρίς αυτό η GPU παρατίθεται μόνο με το όνομά της."
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "Το PowerShell δεν μπόρεσε να παραθέσει τους ελεγκτές βίντεο· εκτελέστε το από κανονική συνεδρία χρήστη."
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "Εγκαταστήστε το pciutils ώστε οι GPU να παρατίθενται με το όνομά τους όταν δεν υπάρχει εργαλείο κατασκευαστή."
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "Ο τύπος και η ταχύτητα της DDR δεν ήταν αναγνώσιμα· στο Linux εκτελέστε μία φορά με sudo (dmidecode) ή δεχτείτε το μετρημένο εύρος ζώνης."
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "Το py-cpuinfo απέτυχε· το μοντέλο της CPU και τα σύνολα εντολών είναι άγνωστα."
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "Το psutil δεν μπόρεσε να μετρήσει τους πυρήνες της CPU· η επιλογή νημάτων επιστρέφει σε έναν πυρήνα. Επανεγκαταστήστε το psutil με `pip install --force-reinstall psutil`."
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "Το psutil δεν μπόρεσε να διαβάσει τα σύνολα μνήμης· δεν μπορούν να υπολογιστούν προϋπολογισμοί μέχρι να δουλέψει αυτό. Επανεγκαταστήστε το psutil με `pip install --force-reinstall psutil`."
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "Δεν ήταν δυνατή η ανάγνωση του πλήθους πυρήνων απόδοσης από το sysctl."
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "Το llama-server υπάρχει αλλά δεν ανέφερε έκδοση· το εκτελέσιμο μπορεί να είναι χαλασμένο."
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "Το system_profiler απέτυχε· δεν υπάρχουν πληροφορίες για τη GPU."
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "Κανένα εργαλείο κατασκευαστή δεν ανέφερε το μέγεθος μνήμης της GPU· καταγράψτε το μέγεθος σε ένα προφίλ υλικού ώστε να μπορούν να υπολογιστούν προϋπολογισμοί για αυτό το μηχάνημα."
+
+msgid "llama.cpp installed"
+msgstr "το llama.cpp είναι εγκατεστημένο"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "δόμηση %(build)s στο %(path)s, υποσυστήματα: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "άγνωστη"
+
+msgid "llama.cpp not found"
+msgstr "το llama.cpp δεν βρέθηκε"
+
+msgid "no llama-server binary was found"
+msgstr "δεν βρέθηκε εκτελέσιμο llama-server"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "Εγκαταστήστε το llama.cpp (η φάση 2 του LlamaFit θα το κάνει αυτό: `llamafit install llama.cpp`)· μέχρι τότε κατεβάστε μια έκδοση από το https://github.com/ggml-org/llama.cpp/releases και βάλτε τον φάκελο bin της στο PATH ή στο LLAMA_CPP_PATH."
+
+msgid "Memory size unknown"
+msgstr "Άγνωστο μέγεθος μνήμης"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "Το LlamaFit δεν μπόρεσε να διαβάσει τα σύνολα μνήμης αυτού του μηχανήματος, οπότε δεν μπορεί να υπολογίσει τι χωράει."
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: δεν υπάρχει υποσύστημα %(backend)s στο llama.cpp"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "το llama.cpp δομήθηκε με: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "άγνωστα"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "Εγκαταστήστε μια δόμηση του llama.cpp με το υποσύστημα %(backend)s ή Vulkan για να χρησιμοποιήσετε τη %(gpu)s."
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: άγνωστο μέγεθος VRAM"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "το εργαλείο του κατασκευαστή που αναφέρει τη μνήμη δεν ήταν διαθέσιμο"
+
+msgid "No GPU detected"
+msgstr "Δεν εντοπίστηκε GPU"
+
+msgid "models will run on the CPU only"
+msgstr "τα μοντέλα θα εκτελούνται μόνο στη CPU"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "Αν υπάρχει GPU, ελέγξτε ότι τα εργαλεία του προγράμματος οδήγησής της είναι εγκατεστημένα."
+
+msgid "RAM bandwidth assumed"
+msgstr "Το εύρος ζώνης της RAM θεωρήθηκε δεδομένο"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "χρησιμοποιείται %(gbps)s GB/s ως προεπιλογή"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "Εγκαταστήστε το numpy (`pip install llamafit[fast]`) ώστε το LlamaFit να μπορεί να μετρήσει το εύρος ζώνης της RAM."
+
+msgid "Probe %(probe)s failed"
+msgstr "Η ανίχνευση %(probe)s απέτυχε"
+
+msgid "unknown error"
+msgstr "άγνωστο σφάλμα"
+
+msgid "llama-server running at %(url)s"
+msgstr "ο llama-server εκτελείται στο %(url)s"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "μοντέλο %(model)s, πλαίσιο %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "άγνωστο"
+
+msgid "Low disk space on %(path)s"
+msgstr "Λίγος ελεύθερος χώρος στον δίσκο στο %(path)s"
+
+msgid "%(size)s free"
+msgstr "%(size)s ελεύθερα"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "Τα περισσότερα χρήσιμα μοντέλα χρειάζονται 5 έως 120 GB· ελευθερώστε χώρο ή αλλάξτε τον φάκελο λήψεων."
+
+msgctxt "size"
+msgid "unknown"
+msgstr "άγνωστο"
