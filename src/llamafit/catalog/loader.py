@@ -37,6 +37,7 @@ import yaml
 from pydantic import ValidationError
 
 from llamafit.errors import CatalogError
+from llamafit.i18n import _, ngettext
 from llamafit.models.catalog import (
     MAX_BPW,
     Catalog,
@@ -673,10 +674,18 @@ def load_catalog(
             by_id[model.id] = model
 
     if strict and problems:
+        # The count is a sentence and goes through ngettext; the colon that joins it to
+        # the detail is punctuation, and the details themselves name YAML fields, which
+        # is a catalog author's language rather than a reader's. See docs/translations.md.
         details = "; ".join(f"{p.file}: {p.location}: {p.message}" for p in problems)
+        counted = ngettext(
+            "the catalog has %(count)d problem",
+            "the catalog has %(count)d problems",
+            len(problems),
+        ) % {"count": len(problems)}
         raise CatalogError(
-            f"the catalog has {len(problems)} problem(s): {details}",
-            hint="Run `llamafit catalog validate` for details.",
+            f"{counted}: {details}",
+            hint=_("Run `llamafit catalog validate` for details."),
         )
 
     return Catalog(models=[by_id[model_id] for model_id in order]), problems

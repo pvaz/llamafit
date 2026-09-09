@@ -11,6 +11,64 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: src/llamafit/catalog/hf.py:193
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr ""
+
+#: src/llamafit/catalog/hf.py:200
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr ""
+
+#: src/llamafit/catalog/hf.py:202
+msgid "Check your network connection and try again."
+msgstr ""
+
+#: src/llamafit/catalog/hf.py:208
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr ""
+
+#: src/llamafit/catalog/hf.py:210
+#: src/llamafit/catalog/hf.py:195
+msgid "Check that the repository id is correct and public."
+msgstr ""
+
+#: src/llamafit/catalog/loader.py:681
+#: tests/fixtures/messages.py:109
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/catalog/loader.py:688
+msgid "Run `llamafit catalog validate` for details."
+msgstr ""
+
+#: src/llamafit/catalog/refresh.py:434
+msgid "could not write %(path)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/catalog/refresh.py:435
+msgid "Check that the directory is writable and has room."
+msgstr ""
+
+#: src/llamafit/catalog/refresh.py:539
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/catalog/refresh.py:546
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr ""
+
+#: src/llamafit/catalog/refresh.py:553
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr ""
+
+#: src/llamafit/catalog/refresh.py:558
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr ""
+
 #: src/llamafit/cli/app.py:36
 msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
 msgstr ""
@@ -1015,9 +1073,3 @@ msgstr ""
 msgctxt "size"
 msgid "unknown"
 msgstr ""
-
-#: tests/fixtures/messages.py:109
-msgid "the catalog has %(count)d problem"
-msgid_plural "the catalog has %(count)d problems"
-msgstr[0] ""
-msgstr[1] ""
