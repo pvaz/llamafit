@@ -130,6 +130,46 @@ class HttpRangeSource:
         """
         return self._etag
 
+    def head(self) -> tuple[str | None, int | None]:
+        """Learn the ``ETag`` and ``Content-Length`` with a ``HEAD`` request, no body.
+
+        A cache keyed by :func:`llamafit.gguf.cache.cache_key_for_url` can check for a
+        hit before paying for a range request, as long as it knows the current ETag;
+        this is how it learns it for a fraction of the cost of fetching a header.
+        Redirects (for example to a content-delivery network) are followed, and the
+        ``ETag`` is read from the final response.
+
+        Never raises: a network failure, a non-2xx status (some servers reject
+        ``HEAD`` outright), or a response with no ``ETag`` header are all reported as
+        ``None`` so the caller can fall back to a range request, which is the correct
+        response either way. A server that never sends an ``ETag`` at all means this
+        never returns one, so a cache built on it can key only by URL and will not
+        detect a file replaced at the same URL — the honest trade for a host that
+        gives us nothing better.
+
+        Returns:
+            The ``ETag`` and ``Content-Length``, each ``None`` when not learned.
+        """
+        try:
+            if self.client is not None:
+                response = self.client.head(self.url, follow_redirects=True)
+            else:
+                response = httpx.head(self.url, follow_redirects=True)
+        except httpx.HTTPError:
+            return None, None
+        if response.status_code >= 400:
+            return None, None
+        etag = response.headers.get("etag")
+        if etag and self._etag is None:
+            self._etag = etag
+        content_length = response.headers.get("content-length")
+        size = (
+            int(content_length) if content_length is not None and content_length.isdigit() else None
+        )
+        if size is not None and self._total_size is None:
+            self._total_size = size
+        return etag, size
+
     def _fetch(self, offset: int, length: int) -> None:
         headers = {"Range": f"bytes={offset}-{offset + length - 1}"}
         try:

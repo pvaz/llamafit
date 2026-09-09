@@ -12,8 +12,24 @@ from tests.fixtures import gguf_builder as b
 from tests.unit.test_gguf_facts import dense_header
 
 
-def _handler_for(data: bytes, etag: str | None) -> httpx.MockTransport:
+def _handler_for(
+    data: bytes,
+    etag: str | None,
+    requests: list[httpx.Request] | None = None,
+    refuse_head: bool = False,
+) -> httpx.MockTransport:
+    """A mock transport answering both ``HEAD`` and ranged ``GET`` for ``data``."""
+
     def handler(request: httpx.Request) -> httpx.Response:
+        if requests is not None:
+            requests.append(request)
+        if request.method == "HEAD":
+            if refuse_head:
+                return httpx.Response(405)
+            headers = {"content-length": str(len(data))}
+            if etag is not None:
+                headers["etag"] = etag
+            return httpx.Response(200, headers=headers)
         match = re.match(r"bytes=(\d+)-(\d+)", request.headers["range"])
         assert match is not None
         start, end = int(match.group(1)), min(int(match.group(2)), len(data) - 1)
@@ -98,3 +114,54 @@ def test_read_facts_over_http_still_works_when_the_server_sends_no_etag(tmp_path
     client = httpx.Client(transport=_handler_for(dense_header(), None))
     facts = read_facts("https://x/model.gguf", cache=cache, client=client)
     assert facts.n_layer == 2
+
+
+def test_a_cache_hit_costs_one_head_and_no_range_request(tmp_path: Path) -> None:
+    cache = HeaderCache(tmp_path)
+    url = "https://x/model.gguf"
+
+    warm_requests: list[httpx.Request] = []
+    warm_client = httpx.Client(transport=_handler_for(dense_header(), "etag-a", warm_requests))
+    first = read_facts(url, cache=cache, client=warm_client)
+    assert first.n_layer == 2
+    assert [r.method for r in warm_requests] == ["HEAD", "GET"]
+
+    hit_requests: list[httpx.Request] = []
+    hit_client = httpx.Client(transport=_handler_for(dense_header(), "etag-a", hit_requests))
+    second = read_facts(url, cache=cache, client=hit_client)
+    assert second.n_layer == first.n_layer
+    assert [r.method for r in hit_requests] == ["HEAD"], "a cache hit must not fetch a range"
+
+
+def test_a_changed_etag_invalidates_the_cache_and_costs_a_head_and_a_range_request(
+    tmp_path: Path,
+) -> None:
+    cache = HeaderCache(tmp_path)
+    url = "https://x/model.gguf"
+    second_data = b.build(
+        [b.string("general.architecture", "llama"), b.uint32("llama.block_count", 99)], []
+    )
+
+    first_requests: list[httpx.Request] = []
+    first_client = httpx.Client(transport=_handler_for(dense_header(), "etag-a", first_requests))
+    first = read_facts(url, cache=cache, client=first_client)
+    assert first.n_layer == 2
+
+    second_requests: list[httpx.Request] = []
+    second_client = httpx.Client(transport=_handler_for(second_data, "etag-b", second_requests))
+    second = read_facts(url, cache=cache, client=second_client)
+    assert second.n_layer == 99
+    assert [r.method for r in second_requests] == ["HEAD", "GET"], (
+        "a changed ETag must miss the cache and fetch the new file"
+    )
+
+
+def test_read_facts_over_http_still_works_when_the_server_refuses_head(tmp_path: Path) -> None:
+    cache = HeaderCache(tmp_path)
+    requests: list[httpx.Request] = []
+    client = httpx.Client(
+        transport=_handler_for(dense_header(), "etag-a", requests, refuse_head=True)
+    )
+    facts = read_facts("https://x/model.gguf", cache=cache, client=client)
+    assert facts.n_layer == 2
+    assert [r.method for r in requests] == ["HEAD", "GET"]

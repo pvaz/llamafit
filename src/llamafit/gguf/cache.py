@@ -89,16 +89,28 @@ def read_facts(
 
     A local file's cache key is known before any read (its path, size and modification
     time), so an unchanged file can skip re-parsing entirely. A remote file's identity
-    is only known from a response header, so its header is always fetched and parsed;
-    what caching still buys here is a correct key to store it under, keyed by the
-    ``ETag`` :class:`~llamafit.gguf.source.HttpRangeSource` captured, so a file that
-    changes at the same URL is never confused with the version cached before it.
+    is normally only known from a response header, which would force a fetch before a
+    cache lookup could mean anything; a cheap ``HEAD`` request (see
+    :meth:`~llamafit.gguf.source.HttpRangeSource.head`) learns the ``ETag`` first, at a
+    fraction of the cost of a range request, so a cache hit needs only that one small
+    request and never fetches a range at all. When ``HEAD`` fails or the server sends
+    no ``ETag``, this falls back to fetching and keying by URL alone: an honest cache
+    that cannot detect a file replaced at that URL, rather than one that silently
+    pretends it can.
     """
     if isinstance(target, str) and target.startswith(("http://", "https://")):
         http_source = HttpRangeSource(target, client=client)
+        head_etag: str | None = None
+        if cache is not None:
+            head_etag, _ = http_source.head()
+            if head_etag is not None:
+                cached = cache.get(cache_key_for_url(target, head_etag))
+                if cached is not None:
+                    return derive_facts(cached, lazy_tensor_names=lazy_tensor_names)
         header = read_header(http_source)
         if cache is not None:
-            cache.put(cache_key_for_url(target, http_source.etag), header)
+            etag = http_source.etag if http_source.etag is not None else head_etag
+            cache.put(cache_key_for_url(target, etag), header)
     else:
         path = Path(target)
         header = read_header_cached(LocalSource(path), cache_key_for_path(path), cache)
