@@ -57,6 +57,24 @@ def test_search_matches_id_name_vendor_and_family_case_insensitively(
     assert [m.id for m in result] == [target.id]
 
 
+def test_search_with_no_match_returns_an_empty_list() -> None:
+    catalog = _catalog(minimal(id="a-model"), minimal(id="b-model"))
+
+    result = filter_models(catalog, ModelFilters(search="nothing-matches-this"))
+
+    assert result == []
+
+
+def test_vendor_filter_matches_case_insensitively() -> None:
+    model = minimal(id="target-model", vendor="Acme Robotics")
+    other = minimal(id="other-model", vendor="Other Corp")
+    catalog = _catalog(model, other)
+
+    result = filter_models(catalog, ModelFilters(vendor="acme ROBOTICS"))
+
+    assert [m.id for m in result] == ["target-model"]
+
+
 def test_license_filter_keeps_only_models_with_that_licence() -> None:
     apache = minimal(id="apache-model")
     mit = minimal(id="mit-model", license=License(spdx="MIT", url="https://example.invalid/mit"))
@@ -143,6 +161,18 @@ def test_summarise_does_not_mark_a_model_local_without_a_matching_file() -> None
 
     assert summarise(model, local).is_local is False
     assert summarise(model).is_local is False
+
+
+def test_summarise_marks_a_model_local_when_the_match_is_in_a_later_source() -> None:
+    model = minimal(
+        sources=[
+            ModelSource(repo="acme/model-a-gguf", quants=[Quant(name="Q4_K_M", files=["a.gguf"])]),
+            ModelSource(repo="acme/model-b-gguf", quants=[Quant(name="Q8_0", files=["b.gguf"])]),
+        ]
+    )
+    local = [LocalModel(path="D:/models/b.gguf", bytes=123)]
+
+    assert summarise(model, local).is_local is True
 
 
 def test_summarise_reports_quant_names_and_the_largest_known_size() -> None:

@@ -11,7 +11,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from pathlib import PurePath
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from llamafit.models.catalog import Capability, Catalog, CatalogModel, UseCase
 from llamafit.models.gguf import GgufFacts
@@ -151,7 +151,9 @@ class QuantDetail(BaseModel):
 
     Attributes:
         name: The quant's name.
-        bytes_: Total size of its files, in bytes, when known.
+        bytes_: Total size of its files, in bytes, when known. Serialized as
+            ``bytes``, its alias, since ``bytes`` is a Python builtin, matching
+            ``Quant.bytes_``, ``Extra.bytes_`` and ``TensorInfo.bytes_``.
         bpw: Bits per weight, when known.
         facts: Architecture facts read from this quant's GGUF header, filled in by
             the refresh command; ``None`` until then.
@@ -160,8 +162,10 @@ class QuantDetail(BaseModel):
             on disk.
     """
 
+    model_config = ConfigDict(populate_by_name=True)
+
     name: str
-    bytes_: int | None
+    bytes_: int | None = Field(alias="bytes")
     bpw: float | None
     facts: GgufFacts | None
     files: list[str]
