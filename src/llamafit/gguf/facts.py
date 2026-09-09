@@ -64,6 +64,7 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
     bytes_lazy_tables = 0
     bytes_expert_weights = 0
     bytes_attention_weights = 0
+    bytes_global_weights = 0
     has_shared_experts = False
     full_attention_blocks: set[int] = set()
 
@@ -79,6 +80,8 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
             bytes_expert_weights += tensor.bytes_
         elif _BLOCK_RE.match(tensor.name):
             bytes_attention_weights += tensor.bytes_
+        else:
+            bytes_global_weights += tensor.bytes_
 
         if "_shexp" in tensor.name:
             has_shared_experts = True
@@ -117,6 +120,7 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
         bytes_output_head=bytes_output_head,
         bytes_token_embd=bytes_token_embd,
         bytes_lazy_tables=bytes_lazy_tables,
+        bytes_global_weights=bytes_global_weights,
         bytes_total=bytes_total,
         recurrent_state_bytes=_recurrent_state_bytes(header, arch, n_layer, attention_layers),
     )

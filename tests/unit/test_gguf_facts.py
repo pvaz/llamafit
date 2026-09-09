@@ -99,6 +99,37 @@ def test_kv_bytes_per_token_by_cache_type() -> None:
     assert facts.kv_bytes_per_token_f16 == 4096 * 2
 
 
+def test_a_global_tensor_is_bucketed_and_not_lost() -> None:
+    metadata = [
+        b.string("general.architecture", "llama"),
+        b.uint32("llama.block_count", 1),
+    ]
+    tensors = [
+        b.tensor("token_embd.weight", [10], 0, 0),
+        b.tensor("output_norm.weight", [10], 0, 1),
+        b.tensor("blk.0.attn_k.weight", [10], 0, 2),
+    ]
+    facts = derive_facts(read_header(FakeSource(b.build(metadata, tensors))))
+    assert facts.bytes_global_weights > 0
+    assert facts.bytes_global_weights == facts.bytes_total - (
+        facts.bytes_token_embd + facts.bytes_attention_weights
+    )
+
+
+def test_the_byte_buckets_sum_exactly_to_the_total() -> None:
+    for built in (dense_header(), hybrid_moe_header()):
+        facts = derive_facts(read_header(FakeSource(built)))
+        buckets = (
+            facts.bytes_token_embd
+            + facts.bytes_output_head
+            + facts.bytes_expert_weights
+            + facts.bytes_attention_weights
+            + facts.bytes_lazy_tables
+            + facts.bytes_global_weights
+        )
+        assert buckets == facts.bytes_total
+
+
 def test_a_header_without_the_architecture_key_still_returns_facts() -> None:
     facts = derive_facts(read_header(FakeSource(b.build([], []))))
     assert facts.arch == "unknown"

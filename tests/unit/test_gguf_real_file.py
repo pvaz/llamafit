@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 
+from llamafit.gguf.facts import derive_facts
 from llamafit.gguf.reader import read_header
 from llamafit.gguf.source import LocalSource
 
@@ -40,9 +41,24 @@ def test_a_split_model_reports_its_own_shard_only() -> None:
 
 
 @pytest.mark.hardware
-def test_facts_from_the_reference_machines_coder_model() -> None:
-    from llamafit.gguf.facts import derive_facts
+@pytest.mark.parametrize("path", CANDIDATES, ids=lambda p: p.name)
+def test_the_byte_buckets_sum_exactly_to_the_total(path: Path) -> None:
+    if not path.exists():
+        pytest.skip(f"{path} is not on this machine")
+    facts = derive_facts(read_header(LocalSource(path)))
+    buckets = (
+        facts.bytes_token_embd
+        + facts.bytes_output_head
+        + facts.bytes_expert_weights
+        + facts.bytes_attention_weights
+        + facts.bytes_lazy_tables
+        + facts.bytes_global_weights
+    )
+    assert buckets == facts.bytes_total
 
+
+@pytest.mark.hardware
+def test_facts_from_the_reference_machines_coder_model() -> None:
     path = CANDIDATES[1]
     if not path.exists():
         pytest.skip(f"{path} is not on this machine")
