@@ -3,7 +3,15 @@ from datetime import date
 import pytest
 from pydantic import ValidationError
 
-from llamafit.models.catalog import Architecture, CatalogModel, License, ModelSource, Params, Quant
+from llamafit.models.catalog import (
+    Architecture,
+    CatalogModel,
+    Extra,
+    License,
+    ModelSource,
+    Params,
+    Quant,
+)
 
 
 def minimal(**overrides: object) -> CatalogModel:
@@ -77,3 +85,41 @@ def test_a_model_needs_at_least_one_source_and_one_use_case() -> None:
         minimal(sources=[])
     with pytest.raises(ValidationError):
         minimal(use_cases=[])
+
+
+def test_a_size_in_bytes_cannot_be_negative() -> None:
+    assert Quant(**{"name": "Q4_K_M", "bytes": 0}).bytes_ == 0
+    with pytest.raises(ValidationError):
+        Quant(**{"name": "Q4_K_M", "bytes": -1})
+    with pytest.raises(ValidationError):
+        Extra(**{"role": "mmproj", "file": "mmproj-F16.gguf", "bytes": -1})
+
+
+def test_bits_per_weight_must_be_finite_and_within_the_possible_range() -> None:
+    assert Quant(name="Q4_K_M", bpw=32).bpw == 32
+    for impossible in (0, -1, 32.5, float("inf"), float("-inf"), float("nan")):
+        with pytest.raises(ValidationError):
+            Quant(name="Q4_K_M", bpw=impossible)
+
+
+def test_a_quant_needs_one_checksum_per_file() -> None:
+    assert Quant(name="Q4_K_M", files=["a.gguf", "b.gguf"], sha256=["x", "y"]).sha256 == ["x", "y"]
+    assert Quant(name="Q4_K_M", files=["a.gguf", "b.gguf"]).sha256 == []
+    with pytest.raises(ValidationError, match="one checksum"):
+        Quant(name="Q4_K_M", files=["a.gguf", "b.gguf"], sha256=["x"])
+
+
+def test_a_parameter_count_must_be_above_zero() -> None:
+    assert Params(total_b=0.5, active_b=0.5).total_b == 0.5
+    with pytest.raises(ValidationError):
+        Params(total_b=0, active_b=0)
+    with pytest.raises(ValidationError):
+        Params(total_b=-1, active_b=-1)
+
+
+def test_active_parameters_must_be_above_zero() -> None:
+    assert Params(total_b=8, active_b=8).active_b == 8
+    with pytest.raises(ValidationError):
+        Params(total_b=8, active_b=0)
+    with pytest.raises(ValidationError):
+        Params(total_b=8, active_b=-1)
