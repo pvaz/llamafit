@@ -45,9 +45,12 @@ class Memory(BaseModel):
     channels: int | None = None
     """Memory channels in use, set only when a source genuinely reports one.
 
-    No source LlamaFit reads today does: a dual-channel board with four modules reports
-    four modules and no channel count, so this stays ``None`` and the theoretical
-    bandwidth estimate is not computed.
+    Parsed from slot labels on Windows (``BankLabel``/``DeviceLocator``) and Linux
+    (``dmidecode``'s ``Bank Locator``/``Locator``) when they encode a channel letter or a
+    per-controller locator such as ``ControllerN-DIMMx``; macOS's ``system_profiler``
+    reports no such labels, and a label that does not encode a channel leaves this
+    ``None`` rather than guessing. Only then does the theoretical bandwidth estimate get
+    computed from it.
     """
     bandwidth_gbps: float | None = None
     bandwidth_source: Source = "unknown"
