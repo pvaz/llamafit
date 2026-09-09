@@ -23,6 +23,12 @@ def test_every_entry_has_at_least_one_quant_from_a_named_repository() -> None:
         assert model.sources[0].quants, model.id
 
 
+def test_the_two_next_generation_qwen_entries_carry_a_licence_identifier() -> None:
+    catalog, _ = load_catalog(custom_path=None)
+    for model_id in ("qwen3-coder-next", "qwen3.8-flash-next"):
+        assert catalog.by_id[model_id].license.spdx, model_id
+
+
 def test_the_measured_models_carry_their_reference_measurements() -> None:
     catalog, _ = load_catalog(custom_path=None)
     for model_id in ("qwen3-coder-next", "qwen3.8-flash-next"):

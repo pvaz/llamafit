@@ -14,17 +14,27 @@ from llamafit.models.catalog import (
     License,
     LlamaCppNeeds,
     Measured,
+    ModelSource,
     Params,
     Quality,
     Quant,
     Sampling,
-    Source,
     Trust,
     UseCase,
 )
 from llamafit.models.gguf import GgufFacts, GgufHeader, TensorInfo
-from llamafit.models.host import Arch, Backend, Cpu, Disk, Gpu, Host, Memory, OsName, Probe
-from llamafit.models.host import Source as HostSource
+from llamafit.models.host import (
+    Arch,
+    Backend,
+    Cpu,
+    Disk,
+    Gpu,
+    Host,
+    Memory,
+    OsName,
+    Probe,
+    Source,
+)
 from llamafit.models.llamacpp import LlamaCpp, LocalModel, RunningServer
 from llamafit.models.report import SystemReport
 
@@ -47,13 +57,13 @@ __all__ = [
     "GgufHeader",
     "Gpu",
     "Host",
-    "HostSource",
     "License",
     "LlamaCpp",
     "LlamaCppNeeds",
     "LocalModel",
     "Measured",
     "Memory",
+    "ModelSource",
     "OsName",
     "Params",
     "Probe",
