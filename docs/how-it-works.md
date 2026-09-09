@@ -29,7 +29,7 @@ The scan collects what the estimator needs and labels how it got each number:
 
 | Fact | How | Label |
 |---|---|---|
-| RAM bandwidth | a short in-process copy of a buffer larger than the CPU cache | `measured`; falls back to `estimated` from DDR type, speed and channel count, else `assumed` |
+| RAM bandwidth | a short in-process copy of a buffer larger than the CPU cache | `measured`; falls back to `estimated` from speed and channel count, which no current source reports, so in practice to `assumed` |
 | VRAM total and free | the vendor tool (`nvidia-smi`, `rocm-smi`) | `measured`, or `unknown` |
 | VRAM bandwidth and FP16 compute | a bundled table of vendor specifications matched by name | `estimated` |
 | PCIe bandwidth | the same table, from the card's slot generation and lanes | `assumed` until a benchmark measures it |

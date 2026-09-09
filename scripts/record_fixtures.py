@@ -3,13 +3,14 @@
 Usage:
     python scripts/record_fixtures.py my-machine > tests/fixtures/my_machine.py
 
-The generated module exposes ``runner()``, ``cpuinfo()`` and ``vm()`` in the same shape as
-``tests/fixtures/reference_machine.py`` so a scan test can reproduce the machine without it.
+The generated module exposes ``runner()``, ``cpuinfo()``, ``vm()`` and ``cores()`` in the same
+shape as ``tests/fixtures/reference_machine.py`` so a scan test can reproduce the machine
+without it. ``cores()`` matters: a test that leaves it out reads the core count of whatever
+machine runs the test, and then asserts values that only hold on the recorder's machine.
 """
 
 from __future__ import annotations
 
-import json
 import pprint
 import sys
 from collections.abc import Mapping, Sequence
@@ -63,6 +64,7 @@ def build_module(
     cpuinfo: Mapping[str, object],
     vm: tuple[int, int],
     os_name: str,
+    cores: tuple[int, int],
 ) -> str:
     """Render the fixture module source for the recorded data."""
     docstring = (
@@ -82,6 +84,8 @@ def build_module(
         "",
         f"VM = {vm!r}",
         "",
+        f"CORES = {cores!r}",
+        "",
         "",
         "def runner() -> FakeRunner:",
         "    return FakeRunner(RESPONSES)",
@@ -93,6 +97,10 @@ def build_module(
         "",
         "def vm() -> tuple[int, int]:",
         "    return VM",
+        "",
+        "",
+        "def cores() -> tuple[int, int]:",
+        "    return CORES",
         "",
     ]
     return chr(10).join(lines)
@@ -111,8 +119,8 @@ def main(argv: Sequence[str]) -> int:
     memory = psutil.virtual_memory()
     responses = collect(SubprocessRunner(), os_name)
     vm = (int(memory.total), int(memory.available))
-    sys.stdout.write(build_module(argv[1], responses, cpu, vm, os_name))
-    json.dumps(responses)  # fail early if anything recorded is not plain text
+    cores = (int(psutil.cpu_count(logical=False) or 0), int(psutil.cpu_count(logical=True) or 0))
+    sys.stdout.write(build_module(argv[1], responses, cpu, vm, os_name, cores))
     return 0
 
 

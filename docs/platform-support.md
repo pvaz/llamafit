@@ -20,7 +20,7 @@ it, so a `doctor` warning can always be traced here.
 | `paths` | all | `platformdirs` and the home directory | the downloads directory, whose free space is reported | only the working directory's volume is reported; set `LLAMAFIT_HOME` if there is no home directory |
 | `nvidia-smi` | Windows, Linux | `nvidia-smi --query-gpu=index,name,memory.total,memory.used,driver_version --format=csv,noheader,nounits` | NVIDIA name, VRAM total and used, driver | the GPU is listed by name only (from WMI or lspci), VRAM unknown |
 | `rocm-smi` | Linux | `rocm-smi --showmeminfo vram --showproductname --json` | AMD name, VRAM total and used | name only |
-| `system-profiler` | macOS | `system_profiler SPDisplaysDataType -json` | Apple GPU name and core count | no GPU listed |
+| `system-profiler` | macOS | `system_profiler SPDisplaysDataType -json` | Apple GPU name (the core count is not read) | no GPU listed |
 | `wmi-video` | Windows | PowerShell `Get-CimInstance Win32_VideoController` | names of all display adapters | vendor tools only |
 | `lspci` | Linux | `lspci -nn` | names of all display controllers | vendor tools only |
 | `llama-server --version` | all | `llama-server --version` | llama.cpp build number and commit | `bin/VERSION.txt` is read when present |
@@ -51,7 +51,7 @@ next to the "No GPU detected" warning, because one of them is usually the reason
 |---|---|
 | Windows 10 and 11 | PowerShell 5 or 7 must be on `PATH` (it is by default). NVIDIA figures need the driver's `nvidia-smi`, installed with every driver. AMD VRAM is not readable without ROCm, so AMD cards are listed by name; llama.cpp's Vulkan backend still uses them and the budget treats the VRAM size as unknown until you set it in a hardware profile. Long paths and spaces in paths are supported. |
 | macOS 12 and later | Apple Silicon reports unified memory: there is no VRAM figure, the whole RAM pool is the budget, and the GPU table supplies bandwidth per chip. Intel Macs with discrete GPUs are listed by name. `system_profiler` can take a few seconds on first use. |
-| Linux | `dmidecode` needs root; everything else runs as a user. `pciutils` provides `lspci`. NVIDIA needs the proprietary driver for `nvidia-smi`; AMD needs ROCm for VRAM figures; Intel Arc VRAM is read from sysfs when present. |
+| Linux | `dmidecode` needs root; everything else runs as a user. `pciutils` provides `lspci`. NVIDIA needs the proprietary driver for `nvidia-smi`; AMD needs ROCm for VRAM figures; Intel cards are listed by name only, since no tool LlamaFit runs reports their VRAM. |
 
 ## Architectures
 
