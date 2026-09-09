@@ -11,6 +11,7 @@ merged quickly.
 | A model that is missing from the catalog, or a wrong number | `src/llamafit/data/catalog/` | a primary source for every fact; `llamafit catalog validate` passes |
 | Your machine's probe outputs, so the scan is tested on hardware the maintainers do not own | `tests/fixtures/` | recorded exactly as `docs/platform-support.md` lists the commands |
 | A GPU that the specification table does not know | `src/llamafit/data/gpus.json` | vendor-published bandwidth and FP16 figures with a link in the pull request |
+| A translation of LlamaFit's messages, or a review of one | `src/llamafit/data/locale/` | read line by line by somebody who speaks the language; [docs/translations.md](docs/translations.md) has the rules |
 | A benchmark on your hardware (phase 3) | `llamafit bench --share` when it exists | run with the preset LlamaFit generated, not hand-edited flags |
 | Bug reports | issues | the output of `llamafit --json doctor` |
 | Documentation | `docs/` | matches the code; the docs tests enforce command and probe names |

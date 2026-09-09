@@ -3,6 +3,12 @@
 LlamaFit's messages are written in English. Any of them can be translated, and the
 translation is read at runtime from a plain text file in this repository.
 
+> **Status: the machinery is in place and no message goes through it yet.** Every string
+> `llamafit` prints today is an untranslated literal, and no command offers a `--language`
+> option, so LlamaFit comes out in English whatever the operating system says. This page is
+> the contract messages move to, and it already applies to any new one. It is not a claim that
+> the interface is translated.
+
 The format is GNU gettext, the one every translation tool already speaks. There is no new
 dependency and no compiled `.mo` file: the `.po` file a translator edits is the exact file
 the program reads.
@@ -30,7 +36,8 @@ you can make here.
 
 ## How the language is chosen
 
-Most explicit first:
+This is what `set_language` does when an interface calls it — which none does yet. Most
+explicit first:
 
 1. the `--language` option;
 2. the `LLAMAFIT_LANGUAGE` environment variable;

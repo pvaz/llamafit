@@ -3,9 +3,9 @@
 A curated catalog entry never carries the exact file names, sizes, checksums, bits
 per weight or architecture facts of the quants it lists: those numbers change every
 time a repository is re-uploaded, and nobody should type a SHA-256 by hand. This
-module reads them from the Hugging Face Hub and from the first file of each quant's
-GGUF header, then writes them to ``<family>.facts.json``, a sibling of the curated
-``<family>.yaml`` file.
+module reads them from the Hugging Face Hub and from each quant's GGUF header —
+every shard of it, not only the first — then writes them to ``<family>.facts.json``,
+a sibling of the curated ``<family>.yaml`` file.
 
 The curated YAML is never written by this module, or by anything else: a machine
 that can rewrite hand-written YAML can also silently discard a hand-written comment,
