@@ -24,7 +24,8 @@ WMI_MEMORY = json.dumps(
 )
 POWERSHELL_MEMORY_CMD = (
     "powershell -NoProfile -Command Get-CimInstance Win32_PhysicalMemory | Select-Object "
-    "SMBIOSMemoryType,Speed,ConfiguredClockSpeed,Capacity | ConvertTo-Json"
+    "SMBIOSMemoryType,Speed,ConfiguredClockSpeed,Capacity,BankLabel,DeviceLocator | "
+    "ConvertTo-Json"
 )
 POWERSHELL_VIDEO_CMD = (
     "powershell -NoProfile -Command Get-CimInstance Win32_VideoController | Select-Object "
