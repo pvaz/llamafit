@@ -30,21 +30,32 @@ def _quant_pattern(quant_name: str) -> re.Pattern[str]:
     return re.compile(rf"(?:^|[-_./]){name}(?:\.gguf$|{_SHARD_SUFFIX})", re.IGNORECASE)
 
 
-def _select_shard_set(files: Sequence[RepoFile]) -> list[RepoFile]:
-    """Pick the shards of the largest shard set among ``files``, or all of them sorted.
+def _is_complete(group: Sequence[tuple[int, RepoFile]], total: int) -> bool:
+    """Whether a shard group holds every index its file names declare, ``1`` through ``total``."""
+    return {index for index, _ in group} == set(range(1, total + 1))
 
-    Args:
-        files: Files already known to belong to one quant.
+
+def _select_shard_set(files: Sequence[RepoFile]) -> list[RepoFile]:
+    """Pick the shards of the largest complete shard set among ``files``, or all of them sorted.
+
+    A split file's name declares how many shards there are, ``-00001-of-00004``, so a
+    set that is short — a repository mid-upload, a partial mirror — is recognised here
+    without asking the network anything, and left out rather than handed on as if it
+    were whole. The caller then sees no files for that quant, which it already treats
+    as a warning, instead of fetching headers only to reject what they describe.
 
     Two files can carry the same shard index, which happens as soon as a repository
     publishes one split under two directories, so the sort is keyed on the index and
     the path rather than on the pair: :class:`RepoFile` has no ordering, and a plain
     tuple sort would fall through to comparing the dataclasses and raise.
 
+    Args:
+        files: Files already known to belong to one quant.
+
     Returns:
         When any file is part of a ``-NNNNN-of-MMMMM.gguf`` shard set, only the shards
-        of the largest such set, sorted by shard index and then by path; otherwise
-        every file, sorted by path.
+        of the largest *complete* such set, sorted by shard index and then by path, and
+        nothing at all when no set is complete; otherwise every file, sorted by path.
     """
     shard_groups: dict[int, list[tuple[int, RepoFile]]] = {}
     for file in files:
@@ -55,8 +66,10 @@ def _select_shard_set(files: Sequence[RepoFile]) -> list[RepoFile]:
             shard_groups.setdefault(total, []).append((index, file))
 
     if shard_groups:
-        largest_total = max(shard_groups)
-        ordered = sorted(shard_groups[largest_total], key=lambda pair: (pair[0], pair[1].path))
+        complete = [total for total, group in shard_groups.items() if _is_complete(group, total)]
+        if not complete:
+            return []
+        ordered = sorted(shard_groups[max(complete)], key=lambda pair: (pair[0], pair[1].path))
         return [file for _, file in ordered]
 
     return sorted(files, key=lambda file: file.path)
@@ -206,8 +219,9 @@ def match_quant_files(files: Sequence[RepoFile], quant_name: str) -> list[RepoFi
 
     Returns:
         The matching files. When any of them is part of a shard set, only the shards
-        of the largest such set are returned, sorted by shard index; otherwise every
-        matching file is returned, sorted by path.
+        of the largest complete such set are returned, sorted by shard index, and
+        nothing at all when every set is missing shards; otherwise every matching file
+        is returned, sorted by path.
     """
     pattern = _quant_pattern(quant_name)
     candidates = [

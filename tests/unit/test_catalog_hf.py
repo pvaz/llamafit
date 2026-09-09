@@ -157,3 +157,37 @@ def test_two_files_sharing_a_shard_index_are_ordered_not_compared() -> None:
         "b/M-Q4_K_M-00001-of-00002.gguf",
         "a/M-Q4_K_M-00002-of-00002.gguf",
     ]
+
+
+def test_a_short_shard_set_is_left_out_rather_than_passed_on() -> None:
+    files = [
+        RepoFile(path="M-Q4_K_M-00001-of-00004.gguf", size=1, sha256=None),
+        RepoFile(path="M-Q4_K_M-00002-of-00004.gguf", size=1, sha256=None),
+    ]
+
+    assert match_quant_files(files, "Q4_K_M") == []
+
+
+def test_a_complete_set_is_preferred_to_a_larger_short_one() -> None:
+    files = [
+        RepoFile(path="M-Q4_K_M-00001-of-00004.gguf", size=1, sha256=None),
+        RepoFile(path="M-Q4_K_M-00001-of-00002.gguf", size=1, sha256=None),
+        RepoFile(path="M-Q4_K_M-00002-of-00002.gguf", size=1, sha256=None),
+    ]
+
+    assert [file.path for file in match_quant_files(files, "Q4_K_M")] == [
+        "M-Q4_K_M-00001-of-00002.gguf",
+        "M-Q4_K_M-00002-of-00002.gguf",
+    ]
+
+
+def test_a_short_shard_set_is_left_out_of_every_quant_it_belongs_to() -> None:
+    files = [
+        RepoFile(path="M-Q4_K_M-00001-of-00003.gguf", size=1, sha256=None),
+        RepoFile(path="M-Q8_0.gguf", size=1, sha256=None),
+    ]
+
+    assigned = assign_files_to_quants(files, ["Q4_K_M", "Q8_0"])
+
+    assert assigned["Q4_K_M"] == []
+    assert [file.path for file in assigned["Q8_0"]] == ["M-Q8_0.gguf"]
