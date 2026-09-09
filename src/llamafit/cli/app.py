@@ -95,6 +95,10 @@ def main() -> None:
         sys.exit(1)
 
 
-from llamafit.cli import doctor_cmd, system_cmd  # noqa: E402  (registers commands on import)
+from llamafit.cli import (  # noqa: E402  (registers commands on import)
+    catalog_cmd,
+    doctor_cmd,
+    system_cmd,
+)
 
-__all__ = ["CliState", "app", "doctor_cmd", "main", "system_cmd"]
+__all__ = ["CliState", "app", "catalog_cmd", "doctor_cmd", "main", "system_cmd"]
