@@ -11,6 +11,8 @@ from rich.console import Console
 
 from llamafit import __version__
 from llamafit.errors import LlamaFitError, NotInstalledError, ProbeError
+from llamafit.logging import setup_logging
+from llamafit.paths import get_paths
 
 app = typer.Typer(
     name="llamafit",
@@ -47,7 +49,12 @@ def _root(
     json_output: bool = typer.Option(
         False, "--json", help="Print machine-readable JSON instead of tables."
     ),
-    verbose: bool = typer.Option(False, "--verbose", "-v", help="Log details and show tracebacks."),
+    verbose: bool = typer.Option(
+        False,
+        "--verbose",
+        "-v",
+        help="Write details to llamafit.log in the log directory and show tracebacks.",
+    ),
     no_color: bool = typer.Option(False, "--no-color", help="Disable colours."),
     version: bool = typer.Option(
         False,
@@ -67,6 +74,8 @@ def main() -> None:
     """Run the app, turning known errors into messages and unexpected ones into a short report."""
     verbose = "--verbose" in sys.argv or "-v" in sys.argv
     no_color = "--no-color" in sys.argv or bool(os.environ.get("NO_COLOR"))
+    if verbose:
+        setup_logging(get_paths().log_dir, verbose=True)
     console = Console(stderr=True, no_color=no_color, highlight=False)
     try:
         app(standalone_mode=True)
