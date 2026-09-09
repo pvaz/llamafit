@@ -53,6 +53,7 @@ from llamafit.catalog.loader import (
     load_models_from_file,
 )
 from llamafit.errors import CatalogError, LlamaFitError
+from llamafit.gguf import bits_per_weight
 from llamafit.models.catalog import MAX_BPW, CatalogModel, Extra, ModelSource, Quant
 from llamafit.models.gguf import GgufFacts
 
@@ -149,9 +150,22 @@ def _refresh_quant(
         quant.sha256 = sha256
         changed_fields.append(f"{prefix}.sha256")
 
+    # The facts come first because bits per weight needs them: a quant's own lazy
+    # tables have to come out of the numerator before the ratio describes the
+    # quantization. Every file is passed, not the first: a split model's opening
+    # shard can carry the whole metadata block and no tensors at all.
+    facts = read_facts_fn([file_url(repo_file.path) for repo_file in files])
+    if facts != quant.gguf_facts:
+        quant.gguf_facts = facts
+        changed_fields.append(f"{prefix}.gguf_facts")
+
     if total_bytes is not None:
         # A total_b of zero yields no figure at all, and takes the same warning.
-        bpw = round(total_bytes * 8 / (total_b * 1e9), 2) if total_b > 0 else 0.0
+        bpw = (
+            round(bits_per_weight(total_bytes, facts.bytes_lazy_tables, total_b), 2)
+            if total_b > 0
+            else 0.0
+        )
         if not 0 < bpw <= MAX_BPW:
             warnings.append(
                 f"{prefix} ({quant.name!r}): {bpw:g} bits per weight is not a figure a quant "
@@ -161,11 +175,6 @@ def _refresh_quant(
         elif bpw != quant.bpw:
             quant.bpw = bpw
             changed_fields.append(f"{prefix}.bpw")
-
-    facts = read_facts_fn(file_url(files[0].path))
-    if facts != quant.gguf_facts:
-        quant.gguf_facts = facts
-        changed_fields.append(f"{prefix}.gguf_facts")
 
 
 def _refresh_extra(
