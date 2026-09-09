@@ -283,7 +283,16 @@ class ModelSource(_Strict):
         repo: The Hugging Face repository, for a ``gguf`` source.
         kind: Whether this source is a Hugging Face repository or a local file.
         trust: Who publishes this source's files.
-        path: A local file path, for a ``local`` source.
+        path: Where inside the source the files are. For a ``local`` source, the
+            file path itself. For a ``gguf`` source it is optional and names a
+            directory inside the repository: only files under it are matched
+            against this source's quants and extras. A repository routinely
+            publishes the same quant name twice, a plain build and an
+            importance-matrix build side by side in two directories, and the
+            matcher refuses to guess between them; naming the directory is how a
+            curator says which one they meant. Left unset, every file in the
+            repository is considered, which is the behaviour of a source that
+            does not need to choose.
         quants: The quantisations this source publishes.
         extras: Auxiliary files this source publishes.
     """
