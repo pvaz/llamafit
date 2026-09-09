@@ -16,6 +16,10 @@ an extra the YAML does not have, an entry that is not an object, and a field tha
 not the shape or the value it claims to be each become a :class:`Problem` naming
 exactly where the trouble is. No field is ever quietly dropped, because a field that
 failed to merge would then look exactly like a field that was never refreshed.
+
+None of it is fatal to the caller. ``llamafit catalog refresh`` rewrites the whole
+facts document, so it treats these as warnings and refreshes as though the fields had
+never been filled; only a problem in the hand-written YAML stops it.
 """
 
 from __future__ import annotations
@@ -54,7 +58,7 @@ file it writes.
 
 _CUSTOM_MODELS_FILENAME = "custom_models.yaml"
 
-_REWRITE_HINT = "delete the facts file and re-run `llamafit catalog refresh`"
+_REWRITE_HINT = "`llamafit catalog refresh` rewrites it"
 
 _EXPECTED_SHAPE = "expected an object with a 'models' mapping"
 
