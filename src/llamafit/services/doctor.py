@@ -22,9 +22,10 @@ PROBE_HINTS: dict[str, str] = {
     "memory-modules": "DDR type and speed were not readable; on Linux run once with sudo "
     "(dmidecode) or accept the measured bandwidth instead.",
     "cpuinfo": "py-cpuinfo failed; the CPU model and instruction sets are unknown.",
-    "cpu-cores": "psutil could not count the CPU cores; thread choice falls back to one core.",
+    "cpu-cores": "psutil could not count the CPU cores; thread choice falls back to one core. "
+    "Reinstall psutil with `pip install --force-reinstall psutil`.",
     "memory-totals": "psutil could not read the memory totals; budgets cannot be computed "
-    "until this works.",
+    "until this works. Reinstall psutil with `pip install --force-reinstall psutil`.",
     "sysctl-perflevel": "Could not read performance-core count from sysctl.",
     "llama-server --version": "llama-server exists but did not report a version; the binary "
     "may be broken.",
@@ -35,7 +36,13 @@ _BACKEND_FOR_VENDOR = {
     "nvidia": ("cuda", "CUDA"),
     "amd": ("hip", "ROCm/HIP"),
     "apple": ("metal", "Metal"),
+    "intel": ("sycl", "SYCL"),
 }
+_VRAM_HINT_PROBE = {"nvidia": "nvidia-smi", "amd": "rocm-smi"}
+_GENERIC_VRAM_HINT = (
+    "No vendor tool reported this GPU's memory size; record it in a hardware profile "
+    "so budgets can be computed for this machine."
+)
 _LOW_DISK_BYTES = 20 * 1024**3
 
 
@@ -111,9 +118,7 @@ def diagnose(report: SystemReport) -> Diagnosis:
                     level="warn",
                     title=f"{gpu.name}: VRAM size unknown",
                     detail="the vendor tool that reports memory was not available",
-                    hint=PROBE_HINTS["nvidia-smi"]
-                    if gpu.vendor == "nvidia"
-                    else PROBE_HINTS["rocm-smi"],
+                    hint=PROBE_HINTS.get(_VRAM_HINT_PROBE.get(gpu.vendor, ""), _GENERIC_VRAM_HINT),
                 )
             )
     if not host.gpus:
