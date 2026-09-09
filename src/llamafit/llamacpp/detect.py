@@ -11,7 +11,6 @@ from llamafit.hardware.runner import Runner, probe
 from llamafit.models.host import OsName, Probe
 from llamafit.models.llamacpp import LlamaCpp, LocalModel
 
-BINARIES = ("llama-server", "llama-cli", "llama-bench", "llama-gguf")
 _SHARD_RE = re.compile(r"^(?P<stem>.+)-(?P<index>\d{5})-of-(?P<total>\d{5})\.gguf$", re.IGNORECASE)
 _BACKEND_ORDER = ["cuda", "hip", "metal", "vulkan", "sycl", "rpc", "cpu"]
 _VERSION_PATTERNS = [

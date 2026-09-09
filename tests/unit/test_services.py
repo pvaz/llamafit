@@ -1,4 +1,7 @@
 from datetime import datetime, timezone
+from pathlib import Path
+
+import pytest
 
 from llamafit.llamacpp.server import FakeHttp
 from llamafit.models import (
@@ -37,6 +40,36 @@ def test_scan_system_returns_report_with_version() -> None:
     assert report.version
     assert report.host.primary_gpu is not None
     assert report.llamacpp.installed is False
+
+
+def test_scan_system_reports_the_disk_llamacpp_lives_on(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import llamafit.hardware.disks as disks_module
+
+    bin_dir = tmp_path / "llama.cpp" / "bin"
+    bin_dir.mkdir(parents=True)
+    (bin_dir / "llama-server.exe").write_bytes(b"")
+    monkeypatch.setattr(
+        disks_module,
+        "_mount_key",
+        lambda path: "llama-volume" if str(path).startswith(str(tmp_path)) else "other-volume",
+    )
+    report = scan_system(
+        runner=reference_runner(),
+        http=FakeHttp({}),
+        os_name="windows",
+        env={"PATH": "", "LLAMA_CPP_PATH": str(bin_dir)},
+        measure_bandwidth=False,
+        cpuinfo_provider=reference_cpuinfo,
+        vm_provider=reference_vm,
+        cores_provider=reference_cores,
+        well_known=[],
+    )
+    assert report.llamacpp.path == str(bin_dir)
+    paths = [d.path for d in report.host.disks]
+    assert str(bin_dir) in paths, "the volume llama.cpp lives on must be reported"
+    assert len(paths) > 1, "the working directory's volume is still reported too"
 
 
 def report_with(

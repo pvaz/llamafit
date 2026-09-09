@@ -1,8 +1,9 @@
 """Find ``llama-server`` instances already running on this machine.
 
-The initial ``/health`` check on each candidate port uses ``HEALTH_TIMEOUT_S``: a
-real ``llama-server`` on loopback answers in milliseconds, and most candidate
-ports have nothing listening, so a short timeout keeps probing all of them fast.
+The initial ``/health`` check on each candidate port uses ``HEALTH_TIMEOUT_S``. A port
+with nothing listening refuses the connection immediately rather than waiting for the
+timeout, so probing every candidate stays fast; the timeout only has to be long enough
+that a real server busy generating tokens is not reported as absent.
 The follow-up ``/v1/models`` and ``/props`` calls, made only after a port has
 already answered ``/health``, use the longer ``DETAIL_TIMEOUT_S`` so a slow but
 real server is not mistaken for a dead one.
@@ -21,7 +22,7 @@ from llamafit.models.host import Probe
 from llamafit.models.llamacpp import RunningServer
 
 DEFAULT_PORTS = [8080, 8081, 8098]
-HEALTH_TIMEOUT_S = 0.3
+HEALTH_TIMEOUT_S = 1.0
 DETAIL_TIMEOUT_S = 1.5
 
 

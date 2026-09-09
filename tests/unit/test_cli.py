@@ -123,6 +123,28 @@ def test_external_text_with_square_brackets_is_not_parsed_as_markup() -> None:
     assert output.count(hostile) == 4
 
 
+def test_a_port_with_no_server_is_not_shown_as_a_failure() -> None:
+    from rich.console import Console
+
+    from llamafit.cli.render import render_probes
+    from llamafit.models import Probe
+
+    console = Console(width=200, no_color=True)
+    with console.capture() as capture:
+        console.print(
+            render_probes(
+                [
+                    Probe(name="server:8080", ok=False, duration_ms=1, error="no llama-server"),
+                    Probe(name="lspci", ok=False, duration_ms=1, error="lspci: not found"),
+                ]
+            )
+        )
+    output = capture.get()
+    assert "no server" in output
+    assert "failed lspci: not found" in output
+    assert output.count("failed") == 1
+
+
 def test_main_prints_an_unexpected_error_containing_markup_verbatim(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
