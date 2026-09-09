@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pytest
 
+from llamafit.catalog import refresh as refresh_module
 from llamafit.catalog.hf import FakeHfClient, RepoFile
 from llamafit.catalog.loader import load_models_from_file
 from llamafit.catalog.refresh import refresh_file
@@ -271,3 +272,27 @@ def test_a_file_with_load_problems_raises_a_catalog_error(tmp_path: Path) -> Non
     path = write(tmp_path, "bad.yaml", "- id: [unclosed")
     with pytest.raises(CatalogError):
         refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
+
+
+def test_an_interrupted_write_leaves_the_previous_facts_file_intact(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
+    before = facts_path_of(path).read_bytes()
+
+    changed_files = {
+        "example/tiny-1b-GGUF": [
+            RepoFile(path="tiny-1b-Q4_K_M.gguf", size=800_000_000, sha256="def456"),
+        ]
+    }
+
+    def raising_replace(*args: object, **kwargs: object) -> None:
+        raise OSError("disk full")
+
+    monkeypatch.setattr(refresh_module.os, "replace", raising_replace)
+
+    with pytest.raises(CatalogError):
+        refresh_file(path, hf=FakeHfClient(changed_files), read_facts_fn=facts_stub)
+
+    assert facts_path_of(path).read_bytes() == before
