@@ -206,6 +206,14 @@ Checks: schema, unique ids, enum values, well-formed URLs, every quant with byte
 refresh, `active_b ≤ total_b`, and that files named in `quants[].files` follow the split-file
 pattern when there is more than one. CI runs it on every pull request.
 
+Once a model has been refreshed, `context.native` is checked against the model's own files
+too: a curated value longer than the context the GGUF header declares is reported, because
+the file contradicts it. A curated value *shorter* than the header's is not reported. Vendors
+routinely document less context than the file permits — Qwen3-0.6B is documented at 32,768
+tokens and its GGUF header declares 40,960 — and a check that flagged every conservative
+entry would only teach curators to ignore it. The `context` inside a `measured[]` entry is
+the context that measurement ran at, not a claim about the model, and is never compared.
+
 ## Adding a model
 
 1. Open a *Model request* issue or go straight to a pull request with the YAML.
