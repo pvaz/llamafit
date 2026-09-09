@@ -318,11 +318,13 @@ GOOD_QUANT_FACTS = {
 }
 
 
-def write_document(directory: Path, document: object) -> Path:
-    return write(directory, "tiny.facts.json", json.dumps(document))
+def write_document(directory: Path, document: object, stem: str = "tiny") -> Path:
+    return write(directory, f"{stem}.facts.json", json.dumps(document))
 
 
-def write_facts(directory: Path, models: object, schema_version: object = 1) -> Path:
+def write_facts(
+    directory: Path, models: object, schema_version: object = 1, stem: str = "tiny"
+) -> Path:
     return write_document(
         directory,
         {
@@ -330,6 +332,7 @@ def write_facts(directory: Path, models: object, schema_version: object = 1) -> 
             "refreshed_at": "2026-09-09T00:00:00+00:00",
             "models": models,
         },
+        stem,
     )
 
 
@@ -408,7 +411,7 @@ def test_a_quant_entry_that_is_not_an_object_is_a_problem(tmp_path: Path) -> Non
 
     assert len(problems) == 1
     assert problems[0].location == "quants.Q4_K_M"
-    assert "a number" in problems[0].message
+    assert "700" in problems[0].message
     assert models[0].sources[0].quants[0].bytes_ is None
 
 
@@ -640,3 +643,62 @@ def test_a_quant_name_reused_by_a_third_source_is_reported_once(tmp_path: Path) 
     _, problems = load_models_from_file(write(tmp_path, "dup3.yaml", text))
 
     assert [p.location for p in problems] == ["quants.Q4_K_M"]
+
+
+def test_a_negative_size_in_the_facts_file_is_a_problem_and_stays_unset(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY_WITH_EXTRA)
+    write_facts(
+        tmp_path,
+        {
+            "tiny-1b": {
+                "quants": {"Q4_K_M": {"bytes": -5}},
+                "extras": {"mmproj-F16.gguf": {"bytes": -1}},
+            }
+        },
+    )
+
+    models, problems = load_models_from_file(path)
+
+    assert {p.location for p in problems} == {
+        "quants.Q4_K_M.bytes",
+        "extras.mmproj-F16.gguf.bytes",
+    }
+    assert all("-5" in p.message or "-1" in p.message for p in problems)
+    assert models[0].sources[0].quants[0].bytes_ is None
+    assert models[0].sources[0].extras[0].bytes_ is None
+
+
+@pytest.mark.parametrize("impossible", [0, -1, 32.5, float("inf"), float("nan")])
+def test_a_bits_per_weight_no_model_could_have_is_a_problem(
+    tmp_path: Path, impossible: float
+) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    write_facts(tmp_path, {"tiny-1b": {"quants": {"Q4_K_M": {"bpw": impossible}}}})
+
+    models, problems = load_models_from_file(path)
+
+    assert [p.location for p in problems] == ["quants.Q4_K_M.bpw"]
+    assert models[0].sources[0].quants[0].bpw is None
+
+
+def test_checksums_that_do_not_pair_with_the_files_are_a_problem(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    write_facts(
+        tmp_path,
+        {
+            "tiny-1b": {
+                "quants": {
+                    "Q4_K_M": {"files": ["a.gguf", "b.gguf"], "sha256": ["only-one"], "bytes": 700}
+                }
+            }
+        },
+    )
+
+    models, problems = load_models_from_file(path)
+
+    assert [p.location for p in problems] == ["quants.Q4_K_M.sha256"]
+    assert "2 files" in problems[0].message and "1 checksum" in problems[0].message
+    quant = models[0].sources[0].quants[0]
+    assert quant.files == ["a.gguf", "b.gguf"]
+    assert quant.sha256 == []
+    assert quant.bytes_ == 700
