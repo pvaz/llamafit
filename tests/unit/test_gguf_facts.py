@@ -112,7 +112,7 @@ def test_a_global_tensor_is_bucketed_and_not_lost() -> None:
     facts = derive_facts(read_header(FakeSource(b.build(metadata, tensors))))
     assert facts.bytes_global_weights > 0
     assert facts.bytes_global_weights == facts.bytes_total - (
-        facts.bytes_token_embd + facts.bytes_attention_weights
+        facts.bytes_token_embd + facts.bytes_dense_block_weights
     )
 
 
@@ -123,7 +123,7 @@ def test_the_byte_buckets_sum_exactly_to_the_total() -> None:
             facts.bytes_token_embd
             + facts.bytes_output_head
             + facts.bytes_expert_weights
-            + facts.bytes_attention_weights
+            + facts.bytes_dense_block_weights
             + facts.bytes_lazy_tables
             + facts.bytes_global_weights
         )

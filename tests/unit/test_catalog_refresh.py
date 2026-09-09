@@ -141,7 +141,7 @@ def facts_stub(*args: object, **kwargs: object) -> GgufFacts:
         attention_layers=16,
         attention_layers_source="tensors",
         bytes_expert_weights=0,
-        bytes_attention_weights=1,
+        bytes_dense_block_weights=1,
         bytes_output_head=1,
         bytes_token_embd=1,
         bytes_lazy_tables=0,

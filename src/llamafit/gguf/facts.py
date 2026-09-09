@@ -95,7 +95,7 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
     bytes_output_head = 0
     bytes_lazy_tables = 0
     bytes_expert_weights = 0
-    bytes_attention_weights = 0
+    bytes_dense_block_weights = 0
     bytes_global_weights = 0
     has_shared_experts = False
     full_attention_blocks: set[int] = set()
@@ -111,7 +111,7 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
         elif "_exps" in tensor.name:
             bytes_expert_weights += tensor.bytes_
         elif _BLOCK_RE.match(tensor.name):
-            bytes_attention_weights += tensor.bytes_
+            bytes_dense_block_weights += tensor.bytes_
         else:
             bytes_global_weights += tensor.bytes_
 
@@ -148,7 +148,7 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
         n_expert_used=n_expert_used,
         has_shared_experts=has_shared_experts,
         bytes_expert_weights=bytes_expert_weights,
-        bytes_attention_weights=bytes_attention_weights,
+        bytes_dense_block_weights=bytes_dense_block_weights,
         bytes_output_head=bytes_output_head,
         bytes_token_embd=bytes_token_embd,
         bytes_lazy_tables=bytes_lazy_tables,

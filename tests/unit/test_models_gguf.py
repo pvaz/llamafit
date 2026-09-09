@@ -63,7 +63,7 @@ def test_facts_built_with_only_arch_has_documented_defaults() -> None:
     assert facts.n_expert_used is None
     assert facts.has_shared_experts is False
     assert facts.bytes_expert_weights == 0
-    assert facts.bytes_attention_weights == 0
+    assert facts.bytes_dense_block_weights == 0
     assert facts.bytes_output_head == 0
     assert facts.bytes_token_embd == 0
     assert facts.bytes_lazy_tables == 0
