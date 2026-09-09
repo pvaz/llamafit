@@ -1,0 +1,827 @@
+# Romanian translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. It was written against the template and the
+# European Portuguese catalog, and it has had no second reader. By the standard
+# docs/translations.md sets for every language, that is not enough: please read it line
+# by line and correct it in a pull request.
+#
+# Romanian has three plural forms, not two: the singular for 1, a "few" form for 0 and
+# for 2 to 19 by the last two digits, and a third form from 20 upwards that inserts "de"
+# before the noun ("2 probleme" but "21 de probleme"). Every msgstr[2] below that shows a
+# number carries that "de"; the ones that show no number repeat the second form, which is
+# correct rather than lazy.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ro\n"
+"Language-Team: Romanian\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2);\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "Hugging Face a returnat %(status)d la listarea fișierelor pentru %(repo)s."
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "Nu s-a putut citi lista de fișiere pentru %(repo)s de la Hugging Face."
+
+msgid "Check your network connection and try again."
+msgstr "Verificați conexiunea la rețea și încercați din nou."
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "Răspunsul Hugging Face pentru %(repo)s nu conținea o listă de fișiere."
+
+msgid "Check that the repository id is correct and public."
+msgstr "Verificați dacă identificatorul depozitului este corect și public."
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "catalogul are %(count)d problemă"
+msgstr[1] "catalogul are %(count)d probleme"
+msgstr[2] "catalogul are %(count)d de probleme"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "Rulați `llamafit catalog validate` pentru detalii."
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "nu s-a putut scrie %(path)s: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "Verificați dacă directorul permite scrierea și are spațiu."
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "%(path)s are %(count)d problemă și nu poate fi actualizat"
+msgstr[1] "%(path)s are %(count)d probleme și nu poate fi actualizat"
+msgstr[2] "%(path)s are %(count)d de probleme și nu poate fi actualizat"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "Rulați `llamafit catalog validate` și corectați mai întâi fișierul."
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "%(path)s nu a putut fi citit în întregime, așa că actualizarea doar a %(model)s ar pierde caracteristicile pe care le păstrează pentru modelele neatinse de această execuție: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "Rulați `llamafit catalog refresh` fără --model pentru a reconstrui întregul fișier."
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "Găsiți, dimensionați, instalați și verificați modele LLM cu greutăți deschise pentru llama.cpp pe propriul calculator."
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "Afișează JSON citibil de mașini în loc de tabele."
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "Scrie detaliile în llamafit.log, în directorul de jurnale, și afișează urmele de execuție."
+
+msgid "Disable colours."
+msgstr "Dezactivează culorile."
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "Vorbește această limbă, de exemplu pt_PT. O limbă pe care LlamaFit nu o are revine la engleză, iar el spune pe care le are."
+
+msgid "Print the version and exit."
+msgstr "Afișează versiunea și iese."
+
+msgid "Unexpected error: %(error)s"
+msgstr "Eroare neașteptată: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "Rulați din nou cu --verbose pentru urma completă de execuție."
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "Întreține catalogul: validează fișierele lui, actualizează câmpurile volatile."
+
+msgid "Keep only this use case."
+msgstr "Păstrează doar acest caz de utilizare."
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "Păstrează doar modelele cu această capabilitate (repetabil)."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Păstrează doar acești identificatori de licență (repetabil)."
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "Validează doar acest fișier, în loc de catalogul inclus și personalizările."
+
+msgid "Did you mean: %(ids)s?"
+msgstr "Ați vrut să spuneți: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Rulați `llamafit list` pentru a vedea toți identificatorii de model."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "niciun model numit %(id)s în catalog"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "S-a găsit %(count)d problemă în catalog; rulați `llamafit catalog validate` pentru detalii."
+msgstr[1] "S-au găsit %(count)d probleme în catalog; rulați `llamafit catalog validate` pentru detalii."
+msgstr[2] "S-au găsit %(count)d de probleme în catalog; rulați `llamafit catalog validate` pentru detalii."
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "Niciun model nu corespunde. Încercați un --use-case, --capability, --license, --vendor sau --search mai larg."
+
+msgid "invalid --use-case %(value)s"
+msgstr "--use-case nevalid: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Cazuri de utilizare valide: %(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "valoare nevalidă pentru --capability: %(values)s"
+msgstr[1] "valori nevalide pentru --capability: %(values)s"
+msgstr[2] "valori nevalide pentru --capability: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Capabilități valide: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"Listează catalogul de modele, restrâns de filtrele date.\n"
+"\n"
+"Tabelul arată cel mult trei capabilități pentru fiecare model, plus un marcaj +N pentru restul, și este sortat după coloana Calitate afișată; info sau --json au toate capabilitățile."
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "Păstrează doar acest producător, fără a distinge majusculele de minuscule."
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "Potrivire parțială pe identificator, nume, producător sau familie, fără a distinge majusculele de minuscule."
+
+msgid "Show at most this many."
+msgstr "Afișează cel mult atâtea."
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "Prescurtare pentru llamafit list --search TEXT."
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "Text de căutat în identificator, nume, producător sau familie."
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "Afișează caracteristicile unui model, sursele lui și fiecare cuantizare pe care o publică."
+
+msgid "A catalog model id."
+msgstr "Un identificator de model din catalog."
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "Validează fișierele YAML ale catalogului față de schemă, scriind câte o linie pentru fiecare problemă."
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "%(count)d fișier verificat, nicio problemă găsită."
+msgstr[1] "%(count)d fișiere verificate, nicio problemă găsită."
+msgstr[2] "%(count)d de fișiere verificate, nicio problemă găsită."
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "Actualizează de la Hugging Face numele fișierelor, dimensiunile, sumele de control și caracteristicile GGUF ale catalogului."
+
+msgid "Refresh only this model id."
+msgstr "Actualizează doar acest identificator de model."
+
+msgid "Compute the refresh but write nothing."
+msgstr "Calculează actualizarea, dar nu scrie nimic."
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "Iese cu 1 dacă s-ar schimba ceva; nu modifică nimic, pentru o sarcină CI programată."
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: avertisment: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "avertisment: %(warning)s (%(count)d model: %(models)s)"
+msgstr[1] "avertisment: %(warning)s (%(count)d modele: %(models)s)"
+msgstr[2] "avertisment: %(warning)s (%(count)d de modele: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: eroare: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "Sugestie: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "actualizarea are nevoie de acces la rețea către Hugging Face; verificați conexiunea și dacă identificatorul depozitului este corect."
+
+msgid "No changes."
+msgstr "Nicio schimbare."
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "Afișează intrarea brută din catalog a unui model, în JSON implicit sau în YAML cu --yaml."
+
+msgid "Print YAML instead of JSON."
+msgstr "Afișează YAML în loc de JSON."
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "Explică ce s-a detectat, ce a eșuat și ce ar debloca mai mult."
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "ATENȚIE"
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "EROARE"
+
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "măsurată"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "estimată"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "presupusă"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "necunoscută"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s și %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "Sistem"
+
+msgid "OS"
+msgstr "SO"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d nuclee / %(logical)d fire de execuție"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d nucleu de performanță"
+msgstr[1] "%(count)d nuclee de performanță"
+msgstr[2] "%(count)d de nuclee de performanță"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "isa necunoscut"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d modul"
+msgstr[1] "%(count)d module"
+msgstr[2] "%(count)d de module"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d canal"
+msgstr[1] "%(count)d canale"
+msgstr[2] "%(count)d de canale"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+# Romanian does not agree with itself about "unknown" or about "none detected", so every
+# row that says one of them names the row it is read in. The gender follows the row's own
+# noun: "lățimea de bandă", "compilarea" and "dimensiunea" are feminine, "modelul",
+# "contextul" and "bitul" masculine; "GPU" is neuter and takes the masculine singular,
+# and "backend-urile" is a neuter plural, so it takes the feminine plural form.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "necunoscută"
+
+msgid "Memory"
+msgstr "Memorie"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "%(total)s în total, %(available)s disponibili; %(details)s; lățime de bandă %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "tip necunoscut"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "niciunul detectat"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, %(free)s liberi"
+
+msgid "VRAM unknown"
+msgstr "VRAM necunoscută"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (din specificații)"
+
+msgid "driver %(driver)s"
+msgstr "driver %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "fără specificații"
+
+msgid "Memory pool"
+msgstr "Pool de memorie"
+
+msgid "unified (GPU shares system memory)"
+msgstr "unificat (GPU-ul partajează memoria sistemului)"
+
+msgid "Disk"
+msgstr "Disc"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: %(free)s liberi din %(total)s"
+
+msgid "Installed"
+msgstr "Instalat"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "nu"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "compilare necunoscută"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "da, %(build)s în %(path)s"
+
+msgid "Backends"
+msgstr "Backend-uri"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "niciunul detectat"
+
+msgid "Local models"
+msgstr "Modele locale"
+
+msgid "Running"
+msgstr "În execuție"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, context %(context)s"
+
+msgid "unknown model"
+msgstr "model necunoscut"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "necunoscut"
+
+msgid "Problem"
+msgstr "Problemă"
+
+msgid "Probes"
+msgstr "Verificări"
+
+msgid "probe"
+msgstr "verificare"
+
+msgid "result"
+msgstr "rezultat"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "ok"
+
+msgid "no server"
+msgstr "niciun server"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "eșuat"
+
+msgid "Findings"
+msgstr "Constatări"
+
+msgid "level"
+msgstr "nivel"
+
+msgid "finding"
+msgstr "constatare"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "Calitate*"
+
+# The list table is narrow, so this heading is abbreviated, and the footnote below has to
+# use the same abbreviation the column shows.
+msgid "Params"
+msgstr "Param."
+
+msgid "Context"
+msgstr "Context"
+
+msgid "Capabilities"
+msgstr "Capabilități"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "Calitatea este reperul editorial, înainte de orice penalizare de cuantizare; rulați `llamafit info <model>` pentru testele de referință, cu sursă, care o susțin."
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "Param. este totalul/activul în miliarde pentru un model cu amestec de experți, sau un singur număr când sunt egale."
+
+msgid "Models"
+msgstr "Modele"
+
+msgid "Vendor"
+msgstr "Producător"
+
+msgid "Family"
+msgstr "Familie"
+
+msgid "Release date"
+msgstr "Data lansării"
+
+msgid "Licence"
+msgstr "Licență"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "Parametri"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "%(total)sB în total, %(active)sB activi"
+
+msgid "%(tokens)s tokens native"
+msgstr "%(tokens)s token-uri native"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", %(tokens)s extins prin %(method)s"
+
+msgid "unspecified method"
+msgstr "metodă nespecificată"
+
+msgid "Architecture"
+msgstr "Arhitectură"
+
+msgid "Notes"
+msgstr "Note"
+
+msgid "Use cases"
+msgstr "Cazuri de utilizare"
+
+msgid "Quality baseline"
+msgstr "Calitate de referință"
+
+msgid "Benchmark"
+msgstr "Test de referință"
+
+msgid "Source %(index)d"
+msgstr "Sursa %(index)d"
+
+msgid "not read yet"
+msgstr "încă necitite"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d strat"
+msgstr[1] "%(count)d straturi"
+msgstr[2] "%(count)d de straturi"
+
+# The compact "total/used" notation does not take "de" in Romanian, so the third form
+# repeats the second here.
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d expert"
+msgstr[1] "%(count)d/%(used)d experți"
+msgstr[2] "%(count)d/%(used)d experți"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d expert"
+msgstr[1] "%(count)d experți"
+msgstr[2] "%(count)d de experți"
+
+msgid "Quants"
+msgstr "Cuantizări"
+
+msgid "Name"
+msgstr "Nume"
+
+msgid "Size"
+msgstr "Dimensiune"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "Caracteristici"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "necunoscut"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "Arată ce are acest calculator: CPU, memorie, GPU-uri, discuri și llama.cpp."
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "Sare peste măsurarea lățimii de bandă a memoriei RAM."
+
+msgid "Command: %(command)s"
+msgstr "Comandă: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "antet GGUF trunchiat: se așteptau %(wanted)d octeți la poziția %(offset)d, s-au primit %(got)d"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "Fișierul poate fi încă în curs de descărcare sau URL-ul poate să nu fie un fișier GGUF."
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "tip de valoare GGUF necunoscut %(type)d la poziția %(offset)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "Acest fișier poate folosi un tip de metadate GGUF mai nou decât cele acceptate de LlamaFit."
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "nu este un fișier GGUF: semnătură nevalidă %(magic)s la poziția 0"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "Verificați dacă acest fișier este într-adevăr un model .gguf."
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "versiune GGUF neacceptată %(version)d la poziția 4"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit acceptă versiunile GGUF %(versions)s."
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "aceste fișiere GGUF nu formează un singur model împărțit: nu sunt de acord asupra '%(key)s' și declară %(values)s"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "Dați fragmentele unui singur model, nu ale mai multora."
+
+msgid "no GGUF header to read facts from"
+msgstr "niciun antet GGUF din care să se citească caracteristicile"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "Dați fișierul modelului sau fiecare fragment al unui model împărțit."
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(count)d din %(total)d fișiere GGUF nu au cheia '%(key)s', așa că locul lor într-un model împărțit nu poate fi stabilit"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "Dați un singur fișier neîmpărțit de unul singur sau fiecare fragment al unui singur model împărțit."
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "set de fragmente incomplet: modelul declară %(declared)d fragmente și au sosit %(arrived)d (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "Dați fiecare fragment al modelului împărțit."
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "lipsește fragmentul care conține metadatele modelului: s-au primit %(key)s %(numbers)s, unul dintre ele trebuia să fie 0"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "Dați fiecare fragment al modelului împărțit, inclusiv primul."
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "set de fragmente incomplet: se așteptau %(key)s de la 0 la %(last)d, s-au primit %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "Dați fiecare fragment al modelului împărțit exact o dată."
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "set de fragmente incomplet: modelul declară %(declared)d tensori, iar cele %(shards)d fragmente ale lui conțin %(held)d în total"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "nu s-a putut citi %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Verificați dacă fișierul există și poate fi citit."
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "nu s-a putut obține %(url)s: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "Verificați conexiunea la rețea și dacă URL-ul este accesibil."
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s a returnat HTTP %(status)d în loc de 206 Partial Content; serverul poate să nu accepte cereri pe intervale."
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "Confirmați că URL-ul indică un fișier GGUF care poate fi descărcat."
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "necunoscut"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi nu a returnat niciun GPU"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi nu a returnat nicio placă"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler nu a returnat niciun ecran"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI nu a returnat niciun controler video"
+
+msgid "lspci found no display controllers"
+msgstr "lspci nu a găsit niciun controler video"
+
+msgid "no populated memory modules"
+msgstr "niciun modul de memorie ocupat"
+
+msgid "no SPMemoryDataType"
+msgstr "fără SPMemoryDataType"
+
+msgid "empty command"
+msgstr "comandă goală"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: timpul a expirat după %(seconds)ss"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: nu a fost găsit"
+
+msgid "no output"
+msgstr "fără ieșire"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "cod de ieșire %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "llama.cpp nu a fost găsit: niciun llama-server în PATH, în LLAMA_CPP_PATH sau în directoarele obișnuite"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "nu s-au găsit biblioteci de backend ggml lângă llama-server; compilarea poate fi statică"
+
+msgid "no llama-server answering"
+msgstr "niciun llama-server nu răspunde"
+
+msgid "unexpected response: %(error)s"
+msgstr "răspuns neașteptat: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "Instalați sau reparați driverul NVIDIA; nvidia-smi vine împreună cu el și trebuie să fie în PATH."
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "Instalați ROCm (Linux) pentru a expune valorile VRAM de la AMD; fără el, GPU-ul este listat doar după nume."
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell nu a putut lista controlerele video; rulați dintr-o sesiune de utilizator normală."
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "Instalați pciutils pentru a lista GPU-urile după nume când nu există niciun instrument al producătorului."
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "Tipul și viteza DDR nu au putut fi citite; pe Linux rulați o dată cu sudo (dmidecode) sau acceptați în schimb lățimea de bandă măsurată."
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo a eșuat; modelul procesorului și seturile de instrucțiuni sunt necunoscute."
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil nu a putut număra nucleele procesorului; alegerea firelor de execuție revine la un singur nucleu. Reinstalați psutil cu `pip install --force-reinstall psutil`."
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil nu a putut citi totalurile de memorie; bugetele nu pot fi calculate până când acest lucru nu funcționează. Reinstalați psutil cu `pip install --force-reinstall psutil`."
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "Nu s-a putut citi din sysctl numărul de nuclee de performanță."
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server există, dar nu a raportat o versiune; binarul poate fi deteriorat."
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler a eșuat; informațiile despre GPU nu sunt disponibile."
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "Niciun instrument al producătorului nu a raportat dimensiunea memoriei GPU-ului; notați dimensiunea într-un profil hardware pentru ca bugetele să poată fi calculate pentru acest calculator."
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp instalat"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "compilarea %(build)s în %(path)s, backend-uri: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "necunoscută"
+
+msgid "llama.cpp not found"
+msgstr "llama.cpp nu a fost găsit"
+
+msgid "no llama-server binary was found"
+msgstr "nu a fost găsit niciun binar llama-server"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "Instalați llama.cpp (faza 2 a LlamaFit va face asta: `llamafit install llama.cpp`); până atunci descărcați o versiune de la https://github.com/ggml-org/llama.cpp/releases și puneți directorul ei bin în PATH sau în LLAMA_CPP_PATH."
+
+msgid "Memory size unknown"
+msgstr "Dimensiune de memorie necunoscută"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit nu a putut citi totalurile de memorie ale acestui calculator, așa că nu poate calcula ce încape."
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: niciun backend %(backend)s în llama.cpp"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp a fost compilat cu: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "necunoscute"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "Instalați o compilare de llama.cpp cu backendul %(backend)s sau Vulkan pentru a folosi %(gpu)s."
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: dimensiunea VRAM necunoscută"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "instrumentul producătorului care raportează memoria nu era disponibil"
+
+msgid "No GPU detected"
+msgstr "Niciun GPU detectat"
+
+msgid "models will run on the CPU only"
+msgstr "modelele vor rula doar pe procesor"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "Dacă există un GPU, verificați dacă instrumentele driverului lui sunt instalate."
+
+msgid "RAM bandwidth assumed"
+msgstr "Lățime de bandă a RAM presupusă"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "se folosesc %(gbps)s GB/s ca valoare implicită"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "Instalați numpy (`pip install llamafit[fast]`) pentru ca LlamaFit să poată măsura lățimea de bandă a memoriei RAM."
+
+msgid "Probe %(probe)s failed"
+msgstr "Verificarea %(probe)s a eșuat"
+
+msgid "unknown error"
+msgstr "eroare necunoscută"
+
+msgid "llama-server running at %(url)s"
+msgstr "llama-server rulează la %(url)s"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "model %(model)s, context %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "necunoscut"
+
+msgid "Low disk space on %(path)s"
+msgstr "Spațiu redus pe disc la %(path)s"
+
+msgid "%(size)s free"
+msgstr "%(size)s liberi"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "Majoritatea modelelor utile au nevoie de 5 până la 120 GB; eliberați spațiu sau schimbați directorul de descărcări."
+
+msgctxt "size"
+msgid "unknown"
+msgstr "necunoscută"
