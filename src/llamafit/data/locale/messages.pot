@@ -1046,21 +1046,23 @@ msgid "Most useful models need 5 to 120 GB; free space or change the downloads d
 msgstr ""
 
 #. Translators: this is punctuation, not prose. It is what your language puts between
-#. a number's groups of three digits: English writes 32,768 and German 32.768. Write
-#. the character your readers expect. An empty translation does not mean "no
-#. separator"; it means untranslated, and falls back to the English comma. A
-#. translation that is only a space counts as empty too, so a language that groups
-#. with a space (French, Russian, Swedish and others) cannot say so here yet: please
-#. open an issue rather than working around it, because the fix belongs in the reader.
-#: src/llamafit/units.py:35
+#. a number's groups of three digits: English writes 32,768, German 32.768 and French
+#. 32 768. Write the character your readers expect. A space is a character like any
+#. other here and is read as one, so a language that groups with a space says so by
+#. writing that space, and a no-break space if that is what it wants. Only a
+#. translation with nothing in it at all means untranslated, and that falls back to
+#. the English comma rather than to no separator.
+#: src/llamafit/units.py:41
 msgctxt "thousands separator"
 msgid ","
 msgstr ""
 
 #. Translators: this is punctuation, not prose. It is what your language puts before
-#. the fractional part of a number: English writes 127.8 and Portuguese 127,8. An empty
-#. translation means untranslated, and falls back to the English point.
-#: src/llamafit/units.py:43
+#. the fractional part of a number: English writes 127.8 and Portuguese 127,8. Write
+#. the character your readers expect; a space counts as a character here, the same as
+#. in the group separator above. Only a translation with nothing in it at all means
+#. untranslated, and that falls back to the English point.
+#: src/llamafit/units.py:51
 msgctxt "decimal separator"
 msgid "."
 msgstr ""
@@ -1068,13 +1070,16 @@ msgstr ""
 #. Translators: this is an abbreviation, not a word. It marks a parameter count of a
 #. thousand million, as in 27B. Do not translate the English word "billion": the long
 #. and short scales disagree about what a billion is, so write the abbreviation your
-#. own readers expect for a thousand million.
-#: src/llamafit/units.py:52
+#. own readers expect for a thousand million. Whitespace is read as written here too,
+#. for a form your language separates from the digits. If your readers have no short
+#. form of their own and know these models as 27B, write B and say why in a comment:
+#. that is an answer, and it is a better one than an abbreviation nobody uses.
+#: src/llamafit/units.py:63
 msgctxt "parameter count"
 msgid "B"
 msgstr ""
 
-#: src/llamafit/units.py:105
+#: src/llamafit/units.py:116
 msgctxt "size"
 msgid "unknown"
 msgstr ""
