@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Sequence
 
+from rich.cells import cell_len
 from rich.table import Table
 from rich.text import Text
 
@@ -317,6 +318,9 @@ def _fmt_capabilities(capabilities: Sequence[str], *, width: int, limit: int = 3
 
     A capability name is a catalog identifier, the same word ``--capability`` is typed
     with, so it is never translated.
+
+    ``width`` is a count of terminal cells, so the fit is measured with ``cell_len`` and
+    not with ``len``: a Japanese character is one of those and two of these.
     """
     eligible = list(capabilities[:limit])
     total = len(capabilities)
@@ -325,7 +329,7 @@ def _fmt_capabilities(capabilities: Sequence[str], *, width: int, limit: int = 3
         dropped = total - shown_count
         text = ", ".join(shown)
         candidate = f"{text} +{dropped}" if dropped else text
-        if len(candidate) <= width:
+        if cell_len(candidate) <= width:
             return candidate
     return f"+{total}" if total else ""
 
@@ -398,6 +402,12 @@ def _column_budget(
     because a blank column or a number missing a digit is worse than one column
     fewer.
 
+    Every width here is a count of terminal cells, measured with ``cell_len`` rather than
+    with ``len``: a Japanese heading is two characters and four columns wide, and a
+    Devanagari one counts combining marks as characters that occupy no column at all. A
+    budget that measures the wrong thing is not a budget, and the whole point of this
+    function is that a column is admitted only when its content fits whole.
+
     Returns:
         The id column's width, the list of optional column names to include (a
         subset, in priority order, of ``["quality", "params", "context"]``), and
@@ -405,24 +415,25 @@ def _column_budget(
     """
     headings = _list_headings()
     id_width = min(
-        _ID_COLUMN_MAX_WIDTH, max((len(s.id) for s in summaries), default=len(headings["id"]))
+        _ID_COLUMN_MAX_WIDTH,
+        max((cell_len(s.id) for s in summaries), default=cell_len(headings["id"])),
     )
-    # Each width starts from its heading's own length, so the list is never empty
+    # Each width starts from its heading's own width, so the list is never empty
     # even when there are no rows, and a short heading never lets a column shrink
     # smaller than its own name.
     quality_width = max(
-        [len(headings["quality"]), *(len(str(s.quality_baseline)) for s in summaries)]
+        [cell_len(headings["quality"]), *(cell_len(str(s.quality_baseline)) for s in summaries)]
     )
     params_width = max(
         [
-            len(headings["params"]),
-            *(len(_fmt_params(s.params_total_b, s.params_active_b)) for s in summaries),
+            cell_len(headings["params"]),
+            *(cell_len(_fmt_params(s.params_total_b, s.params_active_b)) for s in summaries),
         ]
     )
     context_width = max(
         [
-            len(headings["context"]),
-            *(len(_fmt_context_compact(s.context_native)) for s in summaries),
+            cell_len(headings["context"]),
+            *(cell_len(_fmt_context_compact(s.context_native)) for s in summaries),
         ]
     )
 
