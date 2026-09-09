@@ -18,7 +18,13 @@ def main() -> int:
     """Regenerate the schema file and report where it went."""
     DEST.parent.mkdir(parents=True, exist_ok=True)
     schema = CatalogModel.model_json_schema(by_alias=True)
-    DEST.write_text(json.dumps(schema, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    # newline="\n" so the file is byte-identical on every platform. Without it Python
+    # writes the host's line ending, and the staleness check in CI compares a file a
+    # Windows contributor regenerated against one Linux wrote: same content, every line
+    # different, and a failure that says nothing about what is actually stale.
+    DEST.write_text(
+        json.dumps(schema, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n"
+    )
     print(f"wrote {DEST}")
     return 0
 

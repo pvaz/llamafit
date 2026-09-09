@@ -165,7 +165,10 @@ def main() -> int:
             file=sys.stderr,
         )
         return 1
-    DEST.write_text(render_markdown(catalog), encoding="utf-8")
+    # newline="\n" for the same reason gen_schema.py gives: a generated file has to be
+    # byte-identical on every platform or the staleness check reports the line ending
+    # rather than the staleness.
+    DEST.write_text(render_markdown(catalog), encoding="utf-8", newline="\n")
     print(f"wrote {DEST}")
     return 0
 
