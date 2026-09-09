@@ -16,9 +16,19 @@ def _kv(key: str, value_type: int, payload: bytes) -> bytes:
     return _string(key) + struct.pack("<I", value_type) + payload
 
 
+def uint16(key: str, value: int) -> bytes:
+    """A UINT16 metadata entry, the type gguf-split writes split.no and split.count in."""
+    return _kv(key, 2, struct.pack("<H", value))
+
+
 def uint32(key: str, value: int) -> bytes:
     """A UINT32 metadata entry."""
     return _kv(key, 4, struct.pack("<I", value))
+
+
+def int32(key: str, value: int) -> bytes:
+    """An INT32 metadata entry, the type gguf-split writes split.tensors.count in."""
+    return _kv(key, 5, struct.pack("<i", value))
 
 
 def string(key: str, value: str) -> bytes:
