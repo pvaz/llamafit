@@ -30,10 +30,18 @@ than as markup, because it carries a name read from a file::
     if choice.notice:
         console.print(Text(choice.notice))
 
+A fifth for the few entries that hold punctuation rather than prose, where a translation
+of nothing but whitespace is the answer and not the absence of one -- the space French
+puts between a number's groups of three digits::
+
+    from llamafit.i18n import pgettext_literal
+
+    pgettext_literal("thousands separator", ",")
+
 The catalogs are GNU gettext ``.po`` files under ``llamafit/data/locale/``, read as text.
 Nothing is compiled and no binary is committed, so a translator edits the same file the
-program reads. Every message that is missing, or left empty or blank, falls back to
-English.
+program reads. Every message that is missing, or left empty, falls back to English, and
+so does a blank one for every lookup but ``pgettext_literal``.
 """
 
 from __future__ import annotations
@@ -87,6 +95,7 @@ from llamafit.i18n.translator import (
     ngettext,
     npgettext,
     pgettext,
+    pgettext_literal,
     reset,
     set_language,
     set_translator,
@@ -132,6 +141,7 @@ __all__ = [
     "parse_plural_forms",
     "parse_po",
     "pgettext",
+    "pgettext_literal",
     "placeholders",
     "read_po",
     "reset",

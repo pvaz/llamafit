@@ -8,13 +8,19 @@ and an extra dependency for two characters is not a trade worth making.
 
 It is not cosmetic. English writes a model's context as ``32,768``; Portuguese and German
 read that as a fraction, and would be told the model holds thirty-two tokens and a bit.
+
+The three entries are read with :func:`llamafit.i18n.pgettext_literal` rather than with
+``pgettext``, because a separator can be a space. Half the languages here group digits
+with one, and the ordinary rule that a blank translation means untranslated -- the right
+rule for a sentence, which must never degrade to a blank line -- would have handed every
+one of them the English comma with nothing anywhere to say so.
 """
 
 from __future__ import annotations
 
 import re
 
-from llamafit.i18n import pgettext
+from llamafit.i18n import pgettext, pgettext_literal
 
 _SIZE_RE = re.compile(r"^\s*(\d+(?:\.\d+)?)\s*([kmgt]?)(i?)b?\s*$", re.IGNORECASE)
 _DECIMAL = {"": 1, "k": 10**3, "m": 10**6, "g": 10**9, "t": 10**12}
@@ -26,30 +32,38 @@ _DECIMAL_UNITS = ["B", "KB", "MB", "GB", "TB"]
 def group_separator() -> str:
     """What this language puts between a number's groups of three digits."""
     # Translators: this is punctuation, not prose. It is what your language puts between
-    # a number's groups of three digits: English writes 32,768 and German 32.768. Write
-    # the character your readers expect. An empty translation does not mean "no
-    # separator"; it means untranslated, and falls back to the English comma. A
-    # translation that is only a space counts as empty too, so a language that groups
-    # with a space (French, Russian, Swedish and others) cannot say so here yet: please
-    # open an issue rather than working around it, because the fix belongs in the reader.
-    return pgettext("thousands separator", ",")
+    # a number's groups of three digits: English writes 32,768, German 32.768 and French
+    # 32 768. Write the character your readers expect. A space is a character like any
+    # other here and is read as one, so a language that groups with a space says so by
+    # writing that space, and a no-break space if that is what it wants. Only a
+    # translation with nothing in it at all means untranslated, and that falls back to
+    # the English comma rather than to no separator.
+    return pgettext_literal("thousands separator", ",")
 
 
 def decimal_separator() -> str:
     """What this language puts between a number's whole and fractional parts."""
     # Translators: this is punctuation, not prose. It is what your language puts before
-    # the fractional part of a number: English writes 127.8 and Portuguese 127,8. An empty
-    # translation means untranslated, and falls back to the English point.
-    return pgettext("decimal separator", ".")
+    # the fractional part of a number: English writes 127.8 and Portuguese 127,8. Write
+    # the character your readers expect; a space counts as a character here, the same as
+    # in the group separator above. Only a translation with nothing in it at all means
+    # untranslated, and that falls back to the English point.
+    return pgettext_literal("decimal separator", ".")
 
 
 def billions_suffix() -> str:
-    """The abbreviation this language uses for a thousand million, as in ``27B``."""
-    # Translators: this is an abbreviation, not a word. It marks a parameter count of a
-    # thousand million, as in 27B. Do not translate the English word "billion": the long
-    # and short scales disagree about what a billion is, so write the abbreviation your
-    # own readers expect for a thousand million.
-    return pgettext("parameter count", "B")
+    """The mark a parameter count of a thousand million carries, as in ``27B``."""
+    # Translators: leave this as B. It is not the English word "billion" — the long and
+    # short scales disagree about what one of those is — and it is not a number word at
+    # all. It is how these models are named: the file is Qwen3-27B, the vendor announces
+    # a 27B model, and this cell sits in the same row as that identifier, so a localised
+    # abbreviation would make one row disagree with itself. Readers of every language
+    # meet the B in the model's own name before they meet this table.
+    # The entry is here for the language whose readers genuinely would not recognise it.
+    # If yours is one, write what they do use; whitespace is read as written, for a form
+    # your language separates from the digits. Otherwise leave it, and leave it filled in
+    # rather than empty, so the next reader can see the question was asked.
+    return pgettext_literal("parameter count", "B")
 
 
 def localise_number(text: str) -> str:
