@@ -28,5 +28,9 @@ the changelog says so when they do.
   pool (physical core count, capped at 8), because a single thread cannot saturate a
   multi-channel memory controller; the pure-Python fallback, which cannot parallelise
   because it holds the GIL, is now labelled `estimated` rather than `measured`.
+- Memory channel count is parsed from Windows (`BankLabel`/`DeviceLocator`) and Linux
+  (`dmidecode`'s `Bank Locator`/`Locator`) slot labels when they encode a channel
+  identifier, so the theoretical bandwidth estimate runs again on boards that report one;
+  `llamafit system` shows the channel count next to the module count when it is known.
 
 [Unreleased]: https://github.com/pvaz/llamafit/commits/main

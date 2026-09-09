@@ -39,7 +39,7 @@ def render_host(host: Host) -> Table:
                 y for y in (mem.type, f"{mem.speed_mts} MT/s" if mem.speed_mts else None) if y
             ),
             f"{mem.modules} module{'' if mem.modules == 1 else 's'}" if mem.modules else None,
-            f"{mem.channels}-channel" if mem.channels else None,
+            f"{mem.channels} channel{'' if mem.channels == 1 else 's'}" if mem.channels else None,
         )
         if x
     )
