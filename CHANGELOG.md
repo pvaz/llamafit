@@ -53,7 +53,12 @@ the changelog says so when they do.
   language sets its own without a locale database or a dependency, and one that has not
   filled them in falls back to English rather than to nothing. English writes a model's
   context as `32,768`, which a reader who groups with a point would otherwise read as a
-  fraction.
+  fraction. A language that groups with a space says so by writing that space: those three
+  entries are read with `pgettext_literal`, which takes a translation of nothing but
+  whitespace at its word, while every other message still falls back to English rather than
+  reach a screen as a blank line. The `B` of `27B` is the one that does not vary: it is how
+  these models are named, so localising it would make one table row disagree with the model
+  identifier beside it.
 - `scripts/gen_messages.py` copies a `# Translators:` comment block above a call into the
   template as `#.` lines, for what a message cannot say about itself.
 

@@ -804,6 +804,25 @@ msgstr "%(size)s ledigt"
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr "De flesta användbara modeller behöver 5 till 120 GB; frigör utrymme eller byt katalog för hämtningar."
 
+# The thousands separator below is a no-break space (U+00A0), not an ordinary space
+# and not an empty translation. Swedish groups digits with a space, and the entry is
+# read literally, so the space is the answer. Do not "tidy" it away.
+msgctxt "thousands separator"
+msgid ","
+msgstr " "
+
+msgctxt "decimal separator"
+msgid "."
+msgstr ","
+
+# B is not the English word for a thousand million; it is how these models are named.
+# The file is Qwen3-27B and the identifier in this row already says 27B, so a localised
+# abbreviation would make one row disagree with itself. Change it only if your readers
+# genuinely would not recognise B, and say in a comment here why.
+msgctxt "parameter count"
+msgid "B"
+msgstr "B"
+
 msgctxt "size"
 msgid "unknown"
 msgstr "okänd"
