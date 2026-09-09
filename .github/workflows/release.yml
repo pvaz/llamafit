@@ -108,14 +108,19 @@ jobs:
           names = zipfile.ZipFile(wheel).namelist()
           # Every one of these is read through importlib.resources at run time, so a
           # wheel missing one installs perfectly and fails only when a user reaches the
-          # command that needs it.
-          required = [
-              "llamafit/data/catalog/",
-              "llamafit/data/schema/catalog.schema.json",
-              "llamafit/data/locale/",
-              "llamafit/data/gpus.json",
-          ]
-          missing = [need for need in required if not any(n.startswith(need) for n in names)]
+          # command that needs it. Each is matched by its actual files rather than by
+          # its directory: a data directory can lose everything but its __init__.py and
+          # still look present in a file list.
+          required = {
+              "the model catalog": lambda n: n.startswith("llamafit/data/catalog/")
+              and n.endswith(".yaml"),
+              "the generated facts": lambda n: n.endswith(".facts.json"),
+              "the JSON schema": lambda n: n == "llamafit/data/schema/catalog.schema.json",
+              "the translations": lambda n: n.startswith("llamafit/data/locale/")
+              and n.endswith(".po"),
+              "the GPU table": lambda n: n == "llamafit/data/gpus.json",
+          }
+          missing = [what for what, matches in required.items() if not any(map(matches, names))]
           unwanted = [n for n in names if n.startswith(("tests/", "scripts/", "docs/"))]
           for problem in missing:
               print(f"::error::{wheel.name} is missing {problem}")
