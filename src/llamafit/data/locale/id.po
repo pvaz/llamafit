@@ -1,0 +1,804 @@
+# Indonesian translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# BELUM DIPERIKSA OLEH PENUTUR ASLI. Terjemahan ini ditulis sekali jalan dari templat
+# bahasa Inggris dan belum dibaca oleh pembaca kedua. Menurut standar yang ditetapkan
+# docs/translations.md untuk setiap bahasa, itu belum cukup: mohon baca baris demi baris
+# dan perbaiki lewat pull request.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: id\n"
+"Language-Team: Indonesian\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+# Indonesian has no grammatical plural: a counted noun keeps one shape whatever the
+# number, so this catalog declares one form and every plural entry has a single
+# msgstr[0]. (The GNU gettext manual's old table lists Bahasa Indonesia among the
+# two-form languages; CLDR, which is the newer and correct source, gives it only
+# "other".)
+#
+# Names that are not language are left alone: LlamaFit, llama.cpp, Hugging Face, GGUF,
+# JSON, YAML, CUDA, Vulkan, Metal, flags, paths and tool names. So are the words
+# Indonesian developers write in English anyway: file, backend, quant, shard, offset,
+# traceback, checksum, thread, build. Where Indonesian has a term that is genuinely in
+# use it is used: kesalahan, peringatan, memori, jaringan, konteks, keluaran.
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "Hugging Face mengembalikan %(status)d saat mendaftar file untuk %(repo)s."
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "Tidak dapat membaca daftar file %(repo)s dari Hugging Face."
+
+msgid "Check your network connection and try again."
+msgstr "Periksa koneksi jaringan Anda lalu coba lagi."
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "Respons Hugging Face untuk %(repo)s tidak memuat daftar file."
+
+msgid "Check that the repository id is correct and public."
+msgstr "Pastikan id repositori benar dan bersifat publik."
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "katalog memiliki %(count)d masalah"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "Jalankan `llamafit catalog validate` untuk rinciannya."
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "tidak dapat menulis %(path)s: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "Pastikan direktori itu dapat ditulisi dan masih punya ruang."
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "%(path)s memiliki %(count)d masalah sehingga tidak dapat diperbarui"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "Jalankan `llamafit catalog validate` dan perbaiki file itu lebih dulu."
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "%(path)s tidak dapat dibaca seluruhnya, sehingga memperbarui %(model)s saja akan membuang fakta yang dicatatnya untuk model yang tidak disentuh proses ini: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "Jalankan `llamafit catalog refresh` tanpa --model untuk membangun ulang seluruh file."
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "Temukan, ukur, pasang dan verifikasi LLM open-weight untuk llama.cpp di mesin Anda sendiri."
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "Mencetak JSON yang terbaca mesin, bukan tabel."
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "Menulis rincian ke llamafit.log di direktori log dan menampilkan traceback."
+
+msgid "Disable colours."
+msgstr "Mematikan warna."
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "Berbicara dalam bahasa ini, misalnya pt_PT. Bahasa yang tidak dimiliki LlamaFit akan jatuh kembali ke bahasa Inggris, dan LlamaFit menyebutkan bahasa apa saja yang dimilikinya."
+
+msgid "Print the version and exit."
+msgstr "Mencetak versi lalu keluar."
+
+msgid "Unexpected error: %(error)s"
+msgstr "Kesalahan tak terduga: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "Jalankan lagi dengan --verbose untuk traceback lengkapnya."
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "Merawat katalog: memvalidasi file-nya, memperbarui bidang yang berubah-ubah."
+
+msgid "Keep only this use case."
+msgstr "Hanya mempertahankan kasus penggunaan ini."
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "Hanya mempertahankan model dengan kemampuan ini (dapat diulang)."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Hanya mempertahankan pengenal lisensi ini (dapat diulang)."
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "Hanya memvalidasi file ini, bukan katalog bawaan dan penyesuaian Anda sendiri."
+
+msgid "Did you mean: %(ids)s?"
+msgstr "Apakah maksud Anda: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Jalankan `llamafit list` untuk melihat setiap id model."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "tidak ada model bernama %(id)s di katalog"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "Ditemukan %(count)d masalah katalog; jalankan `llamafit catalog validate` untuk rinciannya."
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "Tidak ada model yang cocok. Coba --use-case, --capability, --license, --vendor atau --search yang lebih luas."
+
+msgid "invalid --use-case %(value)s"
+msgstr "--use-case tidak sah: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Kasus penggunaan yang sah: %(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "nilai --capability tidak sah: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Kemampuan yang sah: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"Menampilkan katalog model, dipersempit oleh filter apa pun yang diberikan.\n"
+"\n"
+"Tabel menampilkan paling banyak tiga kemampuan per model, ditambah penanda +N untuk sisanya, dan diurutkan menurut kolom Kualitas yang ditampilkan; info atau --json memuat setiap kemampuan."
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "Hanya mempertahankan vendor ini, tanpa membedakan huruf besar dan kecil."
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "Pencocokan substring pada id, nama, vendor atau keluarga, tanpa membedakan huruf besar dan kecil."
+
+msgid "Show at most this many."
+msgstr "Menampilkan paling banyak sekian."
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "Bentuk singkat untuk llamafit list --search TEXT."
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "Teks yang dicocokkan dengan id, nama, vendor atau keluarga."
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "Menampilkan fakta satu model, sumbernya dan setiap quant yang diterbitkannya."
+
+msgid "A catalog model id."
+msgstr "Sebuah id model katalog."
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "Memvalidasi file YAML katalog terhadap skema, mencetak satu baris per masalah."
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "%(count)d file diperiksa, tidak ada masalah ditemukan."
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "Memperbarui nama file, ukuran, checksum dan fakta GGUF katalog dari Hugging Face."
+
+msgid "Refresh only this model id."
+msgstr "Hanya memperbarui id model ini."
+
+msgid "Compute the refresh but write nothing."
+msgstr "Menghitung pembaruan tetapi tidak menulis apa pun."
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "Keluar dengan 1 jika ada yang akan berubah; tidak mengubah apa pun, untuk tugas CI terjadwal."
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: peringatan: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "peringatan: %(warning)s (%(count)d model: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: kesalahan: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "Petunjuk: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "refresh memerlukan akses jaringan ke Hugging Face; periksa koneksi Anda dan pastikan id repositori benar."
+
+msgid "No changes."
+msgstr "Tidak ada perubahan."
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "Mencetak entri katalog mentah satu model, sebagai JSON secara bawaan atau sebagai YAML dengan --yaml."
+
+msgid "Print YAML instead of JSON."
+msgstr "Mencetak YAML, bukan JSON."
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "Menjelaskan apa yang terdeteksi, apa yang gagal, dan apa yang akan membuka lebih banyak."
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "PERINGATAN"
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "KESALAHAN"
+
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "diukur"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "diperkirakan"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "diasumsikan"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "tidak diketahui"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s dan %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "Mesin"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d inti / %(logical)d thread"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d inti performa"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "isa tidak diketahui"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d modul"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d kanal"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+# Indonesian does not inflect an adjective for the gender or number of the noun in the
+# row, so every row that says unknown or none detected says the same words. Each context
+# is still answered on its own: an empty one would send that row back to English while
+# the others stayed Indonesian.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "tidak diketahui"
+
+msgid "Memory"
+msgstr "Memori"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "%(total)s total, %(available)s tersedia; %(details)s; bandwidth %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "tipe tidak diketahui"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "tidak ada yang terdeteksi"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, %(free)s bebas"
+
+msgid "VRAM unknown"
+msgstr "VRAM tidak diketahui"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (spesifikasi)"
+
+msgid "driver %(driver)s"
+msgstr "driver %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "tanpa spesifikasi"
+
+msgid "Memory pool"
+msgstr "Kumpulan memori"
+
+msgid "unified (GPU shares system memory)"
+msgstr "terpadu (GPU berbagi memori sistem)"
+
+msgid "Disk"
+msgstr "Disk"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: %(free)s bebas dari %(total)s"
+
+msgid "Installed"
+msgstr "Terpasang"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "tidak"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "build tidak diketahui"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "ya, %(build)s di %(path)s"
+
+msgid "Backends"
+msgstr "Backend"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "tidak ada yang terdeteksi"
+
+msgid "Local models"
+msgstr "Model lokal"
+
+msgid "Running"
+msgstr "Berjalan"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, konteks %(context)s"
+
+msgid "unknown model"
+msgstr "model tidak diketahui"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "tidak diketahui"
+
+msgid "Problem"
+msgstr "Masalah"
+
+msgid "Probes"
+msgstr "Pemeriksaan"
+
+msgid "probe"
+msgstr "pemeriksaan"
+
+msgid "result"
+msgstr "hasil"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "ok"
+
+msgid "no server"
+msgstr "tidak ada server"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "gagal"
+
+msgid "Findings"
+msgstr "Temuan"
+
+msgid "level"
+msgstr "tingkat"
+
+msgid "finding"
+msgstr "temuan"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "Kualitas*"
+
+msgid "Params"
+msgstr "Param"
+
+msgid "Context"
+msgstr "Konteks"
+
+msgid "Capabilities"
+msgstr "Kemampuan"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "Kualitas adalah dasar editorial, sebelum penalti kuantisasi apa pun; jalankan `llamafit info <model>` untuk melihat benchmark bersumber yang mendasarinya."
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "Param adalah miliaran total/aktif untuk model mixture-of-experts, atau satu angka saja bila keduanya sama."
+
+msgid "Models"
+msgstr "Model"
+
+msgid "Vendor"
+msgstr "Vendor"
+
+msgid "Family"
+msgstr "Keluarga"
+
+msgid "Release date"
+msgstr "Tanggal rilis"
+
+msgid "Licence"
+msgstr "Lisensi"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "Parameter"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "%(total)sB total, %(active)sB aktif"
+
+msgid "%(tokens)s tokens native"
+msgstr "%(tokens)s token secara native"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", %(tokens)s diperluas lewat %(method)s"
+
+msgid "unspecified method"
+msgstr "metode tidak disebutkan"
+
+msgid "Architecture"
+msgstr "Arsitektur"
+
+msgid "Notes"
+msgstr "Catatan"
+
+msgid "Use cases"
+msgstr "Kasus penggunaan"
+
+msgid "Quality baseline"
+msgstr "Dasar kualitas"
+
+msgid "Benchmark"
+msgstr "Benchmark"
+
+msgid "Source %(index)d"
+msgstr "Sumber %(index)d"
+
+msgid "not read yet"
+msgstr "belum dibaca"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d lapisan"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d expert"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d expert"
+
+msgid "Quants"
+msgstr "Quant"
+
+msgid "Name"
+msgstr "Nama"
+
+msgid "Size"
+msgstr "Ukuran"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "Fakta"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "tidak diketahui"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "Menampilkan apa yang dimiliki mesin ini: CPU, memori, GPU, disk dan llama.cpp."
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "Melewati pengukuran bandwidth RAM."
+
+msgid "Command: %(command)s"
+msgstr "Perintah: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "header GGUF terpotong: butuh %(wanted)d byte pada offset %(offset)d, dapat %(got)d"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "File itu mungkin masih diunduh, atau URL-nya mungkin bukan file GGUF."
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "tipe nilai GGUF %(type)d tidak dikenal pada offset %(offset)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "File ini mungkin memakai tipe metadata GGUF yang lebih baru daripada yang didukung LlamaFit."
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "bukan file GGUF: magic %(magic)s salah pada offset 0"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "Pastikan file ini memang model .gguf."
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "versi GGUF %(version)d tidak didukung, pada offset 4"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit mendukung GGUF versi %(versions)s."
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "file GGUF ini bukan satu model split: semuanya tidak sepakat soal '%(key)s', dan menyatakan %(values)s"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "Berikan shard dari satu model, bukan dari beberapa model."
+
+msgid "no GGUF header to read facts from"
+msgstr "tidak ada header GGUF untuk membaca fakta"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "Berikan file model itu, atau setiap shard dari sebuah model split."
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(count)d dari %(total)d file GGUF tidak memuat kunci '%(key)s', sehingga tempatnya dalam sebuah model split tidak dapat ditentukan"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "Berikan satu file utuh tanpa split, atau setiap shard dari satu model split."
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "kumpulan shard tidak lengkap: model menyatakan %(declared)d shard dan yang tiba %(arrived)d (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "Berikan setiap shard dari model split itu."
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "shard yang memuat metadata model tidak ada: dapat %(key)s %(numbers)s, salah satunya seharusnya 0"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "Berikan setiap shard dari model split itu, termasuk yang pertama."
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "kumpulan shard tidak lengkap: diharapkan %(key)s 0 sampai %(last)d, dapat %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "Berikan setiap shard dari model split itu tepat sekali."
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "kumpulan shard tidak lengkap: model menyatakan %(declared)d tensor sedangkan %(shards)d shard-nya bersama-sama memuat %(held)d"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "tidak dapat membaca %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Pastikan file itu ada dan dapat dibaca."
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "tidak dapat mengambil %(url)s: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "Periksa koneksi jaringan Anda dan pastikan URL itu dapat dijangkau."
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s mengembalikan HTTP %(status)d, bukan 206 Partial Content; server itu mungkin tidak mendukung permintaan range."
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "Pastikan URL itu menunjuk ke file GGUF yang dapat diunduh."
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "tidak diketahui"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi tidak mengembalikan GPU apa pun"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi tidak mengembalikan kartu apa pun"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler tidak mengembalikan display apa pun"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI tidak mengembalikan pengendali video apa pun"
+
+msgid "lspci found no display controllers"
+msgstr "lspci tidak menemukan pengendali display"
+
+msgid "no populated memory modules"
+msgstr "tidak ada modul memori yang terisi"
+
+msgid "no SPMemoryDataType"
+msgstr "tidak ada SPMemoryDataType"
+
+msgid "empty command"
+msgstr "perintah kosong"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: waktu habis setelah %(seconds)ss"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: tidak ditemukan"
+
+msgid "no output"
+msgstr "tidak ada keluaran"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "exit code %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "llama.cpp tidak ditemukan: tidak ada llama-server di PATH, di LLAMA_CPP_PATH atau di direktori yang biasa"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "tidak ada pustaka backend ggml di samping llama-server; build-nya mungkin static"
+
+msgid "no llama-server answering"
+msgstr "tidak ada llama-server yang menjawab"
+
+msgid "unexpected response: %(error)s"
+msgstr "respons tak terduga: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "Pasang atau perbaiki driver NVIDIA; nvidia-smi ikut bersamanya dan harus ada di PATH."
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "Pasang ROCm (Linux) agar angka VRAM AMD terlihat; tanpa itu GPU hanya terdaftar berdasarkan namanya."
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell tidak dapat mendaftar pengendali video; jalankan dari sesi pengguna biasa."
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "Pasang pciutils untuk mendaftar GPU berdasarkan nama bila tidak ada perkakas vendor yang tersedia."
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "Tipe dan kecepatan DDR tidak terbaca; di Linux jalankan sekali dengan sudo (dmidecode) atau terima saja bandwidth hasil pengukuran."
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo gagal; model CPU dan set instruksinya tidak diketahui."
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil tidak dapat menghitung inti CPU; pemilihan thread jatuh kembali ke satu inti. Pasang ulang psutil dengan `pip install --force-reinstall psutil`."
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil tidak dapat membaca total memori; anggaran tidak dapat dihitung sampai ini berhasil. Pasang ulang psutil dengan `pip install --force-reinstall psutil`."
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "Tidak dapat membaca jumlah inti performa dari sysctl."
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server ada tetapi tidak melaporkan versi; binernya mungkin rusak."
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler gagal; informasi GPU tidak tersedia."
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "Tidak ada perkakas vendor yang melaporkan ukuran memori GPU; catat ukurannya dalam sebuah hardware profile agar anggaran dapat dihitung untuk mesin ini."
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp terpasang"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "build %(build)s di %(path)s, backend: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "tidak diketahui"
+
+msgid "llama.cpp not found"
+msgstr "llama.cpp tidak ditemukan"
+
+msgid "no llama-server binary was found"
+msgstr "tidak ditemukan biner llama-server"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "Pasang llama.cpp (fase 2 LlamaFit akan melakukannya: `llamafit install llama.cpp`); sampai saat itu unduh rilis dari https://github.com/ggml-org/llama.cpp/releases lalu letakkan direktori bin-nya di PATH atau di LLAMA_CPP_PATH."
+
+msgid "Memory size unknown"
+msgstr "Ukuran memori tidak diketahui"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit tidak dapat membaca total memori mesin ini, jadi ia tidak dapat menentukan apa yang muat."
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: tidak ada backend %(backend)s di llama.cpp"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp dibangun dengan: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "tidak diketahui"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "Pasang build llama.cpp dengan backend %(backend)s atau Vulkan untuk memakai %(gpu)s."
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: ukuran VRAM tidak diketahui"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "perkakas vendor yang melaporkan memori tidak tersedia"
+
+msgid "No GPU detected"
+msgstr "Tidak ada GPU terdeteksi"
+
+msgid "models will run on the CPU only"
+msgstr "model hanya akan berjalan di CPU"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "Jika ada GPU, pastikan perkakas drivernya terpasang."
+
+msgid "RAM bandwidth assumed"
+msgstr "Bandwidth RAM diasumsikan"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "memakai %(gbps)s GB/s sebagai bawaan"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "Pasang numpy (`pip install llamafit[fast]`) agar LlamaFit dapat mengukur bandwidth RAM."
+
+msgid "Probe %(probe)s failed"
+msgstr "Pemeriksaan %(probe)s gagal"
+
+msgid "unknown error"
+msgstr "kesalahan tidak diketahui"
+
+msgid "llama-server running at %(url)s"
+msgstr "llama-server berjalan di %(url)s"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "model %(model)s, konteks %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "tidak diketahui"
+
+msgid "Low disk space on %(path)s"
+msgstr "Ruang disk menipis di %(path)s"
+
+msgid "%(size)s free"
+msgstr "%(size)s bebas"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "Sebagian besar model yang berguna butuh 5 sampai 120 GB; bebaskan ruang atau ganti direktori unduhan."
+
+msgctxt "size"
+msgid "unknown"
+msgstr "tidak diketahui"
