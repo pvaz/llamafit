@@ -92,11 +92,12 @@ def patch_catalog(monkeypatch: pytest.MonkeyPatch) -> None:
 # --- list / search -----------------------------------------------------------
 
 
-def test_list_table_contains_a_models_id_and_vendor() -> None:
+def test_list_table_contains_a_models_id_and_quality() -> None:
     result = runner.invoke(app, ["list"])
     assert result.exit_code == 0, result.output
     assert "coder-with-tools" in result.output
-    assert "Acme Robotics" in result.output
+    assert "90" in result.output  # coder-with-tools' quality baseline
+    assert "Vendor" not in result.output  # dropped to keep rows to one line at 80 cols
 
 
 def test_list_json_carries_every_id() -> None:
@@ -235,9 +236,12 @@ def test_a_bracket_in_catalog_text_does_not_crash_list_or_info(
         "llamafit.cli.catalog_cmd.load_catalog", lambda: (Catalog(models=[hostile]), [])
     )
 
+    # The list table no longer shows vendor or name (dropped to keep rows to one
+    # line), so it carries no free-text field a bracket could break; this just
+    # proves a hostile catalog entry still renders without crashing it.
     list_result = runner.invoke(app, ["list"])
     assert list_result.exit_code == 0, list_result.output
-    assert "Hostile [Name]" in list_result.output or "Vendor [Co]" in list_result.output
+    assert "hostile-model" in list_result.output
 
     info_result = runner.invoke(app, ["info", "hostile-model"])
     assert info_result.exit_code == 0, info_result.output

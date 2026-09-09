@@ -114,7 +114,8 @@ def _print_list(ctx: typer.Context, filters: ModelFilters, limit: int | None) ->
         payload = [s.model_dump(mode="json", by_alias=True) for s in summaries]
         typer.echo(json.dumps(payload, indent=2))
         return
-    state.console.print(render_catalog_list(summaries))
+    console = state.console
+    console.print(render_catalog_list(summaries, console_width=console.width))
 
 
 def _build_filters(
@@ -162,7 +163,12 @@ def list_command(
     ),
     limit: int | None = typer.Option(None, "--limit", min=1, help="Show at most this many."),
 ) -> None:
-    """List the model catalog, narrowed by any filters given."""
+    """List the model catalog, narrowed by any filters given.
+
+    The table shows at most three capabilities per model, plus a ``+N`` marker for
+    the rest, and is sorted by the Quality column shown; ``info`` or ``--json`` has
+    every capability.
+    """
     filters = _build_filters(
         use_case=use_case, capability=capability, license_=license_, vendor=vendor, search=search
     )
