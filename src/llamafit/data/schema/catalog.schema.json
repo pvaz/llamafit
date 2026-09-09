@@ -613,7 +613,7 @@
     },
     "ModelSource": {
       "additionalProperties": false,
-      "description": "Where a model's files come from: a Hugging Face repository or a local path.\n\nAttributes:\n    repo: The Hugging Face repository, for a ``gguf`` source.\n    kind: Whether this source is a Hugging Face repository or a local file.\n    trust: Who publishes this source's files.\n    path: Where inside the source the files are. For a ``local`` source, the\n        file path itself. For a ``gguf`` source it is optional and names a\n        directory inside the repository: only files under it are matched\n        against this source's quants and extras. A repository routinely\n        publishes the same quant name twice, a plain build and an\n        importance-matrix build side by side in two directories, and the\n        matcher refuses to guess between them; naming the directory is how a\n        curator says which one they meant. Left unset, every file in the\n        repository is considered, which is the behaviour of a source that\n        does not need to choose.\n    quants: The quantisations this source publishes.\n    extras: Auxiliary files this source publishes.",
+      "description": "Where a model's files come from: a Hugging Face repository or a local path.\n\nAttributes:\n    repo: The Hugging Face repository, for a ``gguf`` source.\n    kind: Whether this source is a Hugging Face repository or a local file.\n    trust: Who publishes this source's files.\n    path: A local file path, for a ``local`` source. It says nothing about a\n        ``gguf`` source and must be left unset on one; the directory inside a\n        repository is ``repo_path``, which is a different thing with a\n        different name so nobody has to hold the source kind in their head to\n        know which definition applies.\n    repo_path: A directory inside the repository, for a ``gguf`` source, or\n        ``None`` for the whole repository. When set, only files under it are\n        matched against this source's quants and extras. A repository\n        routinely publishes the same quant name twice, a plain build and an\n        importance-matrix build side by side in two directories, and the\n        matcher refuses to guess between them; naming the directory is how a\n        curator says which one they meant. Left unset, every file in the\n        repository is considered.\n    quants: The quantisations this source publishes.\n    extras: Auxiliary files this source publishes.",
       "properties": {
         "extras": {
           "items": {
@@ -661,6 +661,18 @@
           ],
           "default": null,
           "title": "Repo"
+        },
+        "repo_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repo Path"
         },
         "trust": {
           "default": "community",

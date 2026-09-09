@@ -280,16 +280,19 @@ class ModelSource(_Strict):
         repo: The Hugging Face repository, for a ``gguf`` source.
         kind: Whether this source is a Hugging Face repository or a local file.
         trust: Who publishes this source's files.
-        path: Where inside the source the files are. For a ``local`` source, the
-            file path itself. For a ``gguf`` source it is optional and names a
-            directory inside the repository: only files under it are matched
-            against this source's quants and extras. A repository routinely
-            publishes the same quant name twice, a plain build and an
+        path: A local file path, for a ``local`` source. It says nothing about a
+            ``gguf`` source and must be left unset on one; the directory inside a
+            repository is ``repo_path``, which is a different thing with a
+            different name so nobody has to hold the source kind in their head to
+            know which definition applies.
+        repo_path: A directory inside the repository, for a ``gguf`` source, or
+            ``None`` for the whole repository. When set, only files under it are
+            matched against this source's quants and extras. A repository
+            routinely publishes the same quant name twice, a plain build and an
             importance-matrix build side by side in two directories, and the
             matcher refuses to guess between them; naming the directory is how a
             curator says which one they meant. Left unset, every file in the
-            repository is considered, which is the behaviour of a source that
-            does not need to choose.
+            repository is considered.
         quants: The quantisations this source publishes.
         extras: Auxiliary files this source publishes.
     """
@@ -298,16 +301,28 @@ class ModelSource(_Strict):
     kind: Literal["gguf", "local"] = "gguf"
     trust: Trust = "community"
     path: str | None = None
+    repo_path: str | None = None
     quants: list[Quant] = Field(default_factory=list)
     extras: list[Extra] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def _repo_or_path_matches_kind(self) -> ModelSource:
-        """Reject a ``gguf`` source with no repository or a ``local`` source with no path."""
+        """Reject a source whose location fields do not match the kind it declares.
+
+        A ``gguf`` source needs a repository and may narrow it with ``repo_path``; a
+        ``local`` source needs a file path and can narrow nothing. Each field is
+        refused on the kind it means nothing to, so a curator who reaches for the
+        wrong one is told at load time rather than left wondering why it had no
+        effect.
+        """
         if self.kind == "gguf" and not self.repo:
             raise ValueError("a gguf source needs a repo")
+        if self.kind == "gguf" and self.path:
+            raise ValueError("a gguf source has no local path; use repo_path for a directory")
         if self.kind == "local" and not self.path:
             raise ValueError("a local source needs a path")
+        if self.kind == "local" and self.repo_path:
+            raise ValueError("a local source has no repo_path")
         return self
 
 
