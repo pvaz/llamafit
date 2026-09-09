@@ -23,6 +23,17 @@ _WMI_CMD = [
     "Get-CimInstance Win32_VideoController | Select-Object Name,AdapterRAM | ConvertTo-Json",
 ]
 _LSPCI_CMD = ["lspci", "-nn"]
+_PCI_CLASS_CODE_RE = re.compile(r"^[0-9a-f]{4}$", re.IGNORECASE)
+_PCI_VENDOR_DEVICE_RE = re.compile(r"^[0-9a-f]{4}:[0-9a-f]{4}$", re.IGNORECASE)
+_NORMALISE_TOKENS = [
+    "nvidia",
+    "amd",
+    "intel",
+    "corporation",
+    "advanced micro devices",
+    "(r)",
+    "(tm)",
+]
 
 
 def vendor_from_name(name: str) -> Vendor:
@@ -51,12 +62,23 @@ def _backend_for(vendor: Vendor, os_name: OsName) -> Backend:
     return "cpu"
 
 
+def _mib_to_bytes(text: str) -> int | None:
+    """Convert an ``nvidia-smi`` MiB figure to bytes, or ``None`` for a non-numeric value.
+
+    ``nvidia-smi`` reports unsupported fields (e.g. on some Tesla cards) as ``[N/A]``.
+    """
+    try:
+        return int(float(text)) * 1024**2
+    except ValueError:
+        return None
+
+
 def parse_nvidia_smi(out: str) -> list[Gpu]:
-    """Parse the CSV produced by ``_NVIDIA_CMD`` (memory figures are MiB)."""
+    """Parse the CSV produced by ``_NVIDIA_CMD`` (memory figures are MiB, sometimes ``[N/A]``)."""
     gpus: list[Gpu] = []
     for line in out.splitlines():
         parts = [p.strip() for p in line.split(",")]
-        if len(parts) < 5:
+        if len(parts) < 5 or not parts[1]:
             continue
         index, name, total, used, driver = parts[:5]
         gpus.append(
@@ -64,8 +86,8 @@ def parse_nvidia_smi(out: str) -> list[Gpu]:
                 index=int(index),
                 vendor="nvidia",
                 name=name,
-                vram_total_bytes=int(float(total)) * 1024**2,
-                vram_used_bytes=int(float(used)) * 1024**2,
+                vram_total_bytes=_mib_to_bytes(total),
+                vram_used_bytes=_mib_to_bytes(used),
                 backend_hint="cuda",
                 driver=driver,
             )
@@ -132,17 +154,35 @@ def parse_wmi_video(out: str) -> list[Gpu]:
     return gpus
 
 
+def _lspci_name(line: str) -> str:
+    """Pick the marketing name from an ``lspci -nn`` line, skipping PCI class/id brackets."""
+    brackets: list[str] = re.findall(r"\[([^\]]+)\]", line)
+    names = [
+        b
+        for b in brackets
+        if not _PCI_CLASS_CODE_RE.match(b) and not _PCI_VENDOR_DEVICE_RE.match(b)
+    ]
+    if names:
+        return names[0]
+    return line.rsplit(": ", 1)[-1].split("[", 1)[0].strip()
+
+
 def parse_lspci(out: str) -> list[Gpu]:
     """Parse ``lspci -nn`` for VGA and 3D controllers: names only."""
     gpus: list[Gpu] = []
     for i, line in enumerate(ln for ln in out.splitlines() if re.search(r"VGA|3D controller", ln)):
-        name = line.split(":", 2)[-1].split("[", 1)[0].strip()
-        bracket = re.findall(r"\[([^\]]+)\]", line)
-        pretty = bracket[1] if len(bracket) > 1 else name
-        gpus.append(Gpu(index=i, vendor=vendor_from_name(line), name=pretty))
+        gpus.append(Gpu(index=i, vendor=vendor_from_name(line), name=_lspci_name(line)))
     if not gpus:
         raise ValueError("lspci found no display controllers")
     return gpus
+
+
+def _normalise(name: str) -> str:
+    """Reduce a GPU name to a vendor-agnostic form so it can be matched across sources."""
+    lowered = name.lower()
+    for token in _NORMALISE_TOKENS:
+        lowered = lowered.replace(token, " ")
+    return " ".join(lowered.split())
 
 
 def detect_gpus(runner: Runner, os_name: OsName) -> tuple[list[Gpu], list[Probe]]:
@@ -175,16 +215,13 @@ def detect_gpus(runner: Runner, os_name: OsName) -> tuple[list[Gpu], list[Probe]
         generic, rec = probe("lspci", runner, _LSPCI_CMD, parse_lspci)
     probes.append(rec)
 
-    known = {g.name.lower() for g in found}
+    known = {_normalise(g.name) for g in found}
     for gpu in generic or []:
-        lname = gpu.name.lower()
-        if lname in known or any(lname in k or k in lname for k in known):
+        if _normalise(gpu.name) in known:
             continue
         gpu.backend_hint = _backend_for(gpu.vendor, os_name)
         found.append(gpu)
 
     for i, gpu in enumerate(found):
         gpu.index = i
-        if gpu.backend_hint == "cpu":
-            gpu.backend_hint = _backend_for(gpu.vendor, os_name)
     return found, probes
