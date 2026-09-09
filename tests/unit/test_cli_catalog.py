@@ -155,6 +155,16 @@ def test_an_invalid_capability_is_a_clean_error_not_a_traceback() -> None:
     assert "nonsense" in result.exception.render()
 
 
+def test_an_invalid_use_case_fails_the_same_way_as_an_invalid_capability() -> None:
+    """--use-case and --capability are the same kind of mistake and must fail alike."""
+    result = runner.invoke(app, ["list", "--use-case", "nonsense"])
+    assert result.exit_code == 1
+    assert isinstance(result.exception, CatalogError)
+    rendered = result.exception.render()
+    assert "nonsense" in rendered
+    assert "coding" in rendered  # a valid use case, named in the hint
+
+
 def test_search_is_list_search() -> None:
     result = runner.invoke(app, ["search", "chat"])
     assert result.exit_code == 0, result.output

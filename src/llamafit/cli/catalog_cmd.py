@@ -19,7 +19,6 @@ from typing import cast, get_args
 import httpx
 import typer
 import yaml
-from pydantic import ValidationError
 from rich.console import Console
 from rich.text import Text
 
@@ -36,6 +35,7 @@ from llamafit.paths import get_paths
 from llamafit.services.catalog import ModelFilters, describe, filter_models, summarise
 
 _VALID_CAPABILITIES = get_args(Capability)
+_VALID_USE_CASES = get_args(UseCase)
 
 catalog_app = typer.Typer(
     name="catalog", help="Maintain the catalog: validate its files, refresh volatile fields."
@@ -47,7 +47,7 @@ app.add_typer(catalog_app, name="catalog")
 # ``Path``) as safe to call in a default position, even though Typer only ever reads these
 # once, at import time, the same as any other default. A singleton sidesteps the warning
 # without arguing with it.
-_USE_CASE_OPTION: UseCase | None = typer.Option(None, "--use-case", help="Keep only this use case.")
+_USE_CASE_OPTION: str | None = typer.Option(None, "--use-case", help="Keep only this use case.")
 _CAPABILITY_OPTION: list[str] = typer.Option(
     [], "--capability", help="Keep only models with this capability (repeatable)."
 )
@@ -152,39 +152,48 @@ def _print_list(ctx: typer.Context, filters: ModelFilters, limit: int | None) ->
 
 def _build_filters(
     *,
-    use_case: UseCase | None,
+    use_case: str | None,
     capability: list[str],
     license_: list[str],
     vendor: str | None,
     search: str | None,
 ) -> ModelFilters:
-    """Build filters from raw CLI values, rejecting an unknown capability by name.
+    """Build filters from raw CLI values, rejecting an unknown use case or capability by name.
 
-    Typer cannot enumerate a ``list[Literal[...]]`` option itself (a list of a
-    "complex" sub-type is one of the few shapes it refuses outright), so
-    ``--capability`` is collected as plain strings here and validated by
-    constructing :class:`ModelFilters`, which is where the definition of a valid
-    capability actually lives.
+    Typer can enumerate a single ``Literal`` option's choices itself, but doing
+    that for ``--use-case`` would make an unknown value a bare Click usage error:
+    a different exit code and no list of what would have worked, for the same
+    kind of mistake ``--capability`` already reports as a clean, listed
+    :class:`CatalogError`. Typer also cannot enumerate a ``list[Literal[...]]``
+    option at all (a list of a "complex" sub-type is one of the few shapes it
+    refuses outright), so ``--capability`` has to be validated by hand regardless;
+    checking ``--use-case`` the same way here, instead of leaning on Typer for it,
+    means the two now fail alike.
     """
-    try:
-        return ModelFilters(
-            use_case=use_case,
-            capabilities=cast("list[Capability]", capability),
-            licenses=license_,
-            vendor=vendor,
-            search=search,
-        )
-    except ValidationError as exc:
-        valid = ", ".join(_VALID_CAPABILITIES)
+    if use_case is not None and use_case not in _VALID_USE_CASES:
         raise CatalogError(
-            f"invalid --capability value in {capability}", hint=f"Valid capabilities: {valid}"
-        ) from exc
+            f"invalid --use-case {use_case!r}",
+            hint=f"Valid use cases: {', '.join(_VALID_USE_CASES)}",
+        )
+    invalid_capabilities = [value for value in capability if value not in _VALID_CAPABILITIES]
+    if invalid_capabilities:
+        raise CatalogError(
+            f"invalid --capability value(s): {', '.join(invalid_capabilities)}",
+            hint=f"Valid capabilities: {', '.join(_VALID_CAPABILITIES)}",
+        )
+    return ModelFilters(
+        use_case=cast("UseCase | None", use_case),
+        capabilities=cast("list[Capability]", capability),
+        licenses=license_,
+        vendor=vendor,
+        search=search,
+    )
 
 
 @app.command(name="list")
 def list_command(
     ctx: typer.Context,
-    use_case: UseCase | None = _USE_CASE_OPTION,
+    use_case: str | None = _USE_CASE_OPTION,
     capability: list[str] = _CAPABILITY_OPTION,
     license_: list[str] = _LICENSE_OPTION,
     vendor: str | None = typer.Option(
