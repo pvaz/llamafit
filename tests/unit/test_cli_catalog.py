@@ -566,6 +566,21 @@ def test_default_catalog_paths_lists_the_real_bundled_files(
     assert all(path.suffix == ".yaml" for path in paths)
 
 
+# --- _fmt_params: one number when dense, a pair when it is not ----------------
+
+
+def test_dense_params_collapse_to_one_number() -> None:
+    from llamafit.cli.render import _fmt_params
+
+    assert _fmt_params(27.0, 27.0) == "27B"
+
+
+def test_mixture_of_experts_params_keep_the_pair() -> None:
+    from llamafit.cli.render import _fmt_params
+
+    assert _fmt_params(80.0, 3.0) == "80/3B"
+
+
 # --- _fmt_capabilities: whole items only, marker always survives --------------
 
 
@@ -670,17 +685,17 @@ def _summary(
 def test_a_53_character_id_never_blanks_or_cuts_another_column_at_80_or_50() -> None:
     from llamafit.cli.render import (
         _column_budget,
-        _fmt_billions,
         _fmt_capabilities,
         _fmt_context_compact,
+        _fmt_params,
     )
 
     # Built rather than hand-counted, to match the reviewer's 53-character report exactly.
     long_id = "custom-model-" + "a" * 37 + "-53"
     assert len(long_id) == 53
     summaries = [
-        _summary("short-id", 61, 8, 8, 131072),
-        _summary(long_id, 74, 27, 27, 131072),
+        _summary("short-id", 61, 8, 8, 131072),  # dense: one number
+        _summary(long_id, 74, 27, 6, 131072),  # mixture-of-experts: a pair
     ]
 
     for width in (50, 80):
@@ -696,10 +711,7 @@ def test_a_53_character_id_never_blanks_or_cuts_another_column_at_80_or_50() -> 
                     f"quality {summary.quality_baseline} missing or cut at width {width}"
                 )
             if "params" in included:
-                expected = (
-                    f"{_fmt_billions(summary.params_total_b)}/"
-                    f"{_fmt_billions(summary.params_active_b)}B"
-                )
+                expected = _fmt_params(summary.params_total_b, summary.params_active_b)
                 assert expected in output, f"params {expected!r} missing or cut at width {width}"
             if "context" in included:
                 expected_ctx = _fmt_context_compact(summary.context_native)
