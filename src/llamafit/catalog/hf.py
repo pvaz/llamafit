@@ -10,24 +10,49 @@ from __future__ import annotations
 
 import os
 import re
-from collections.abc import Mapping, Sequence
+from collections.abc import Collection, Mapping, Sequence
 from dataclasses import dataclass
 from types import TracebackType
-from typing import Any, Protocol
+from typing import Any, Protocol, get_args
 
 import httpx
 
 from llamafit import __version__
 from llamafit.errors import NetworkError
+from llamafit.models.catalog import ExtraRole
 
 _SHARD_RE = re.compile(r"-(\d+)-of-(\d+)\.gguf$")
 _SHARD_SUFFIX = r"-\d{5}-of-\d{5}\.gguf$"
+
+_EXTRA_ROLE_RE = re.compile(rf"^(?:{'|'.join(get_args(ExtraRole))})[-_.]", re.IGNORECASE)
+"""A file name that opens with an auxiliary role, for example ``mmproj-Q8_0.gguf``.
+
+The roles are read from :data:`~llamafit.models.catalog.ExtraRole` rather than listed
+again here, so a role added to the catalog model is known here on the same day.
+"""
 
 
 def _quant_pattern(quant_name: str) -> re.Pattern[str]:
     """Match a quant name only where a GGUF filename can actually carry one."""
     name = re.escape(quant_name)
     return re.compile(rf"(?:^|[-_./]){name}(?:\.gguf$|{_SHARD_SUFFIX})", re.IGNORECASE)
+
+
+def _could_be_a_quant(file: RepoFile, extra_files: Collection[str]) -> bool:
+    """Whether a repository file could belong to a quant at all, before any name is matched.
+
+    Three kinds never can, and each would otherwise be counted into a quant's size: a
+    file that is not a GGUF; one the catalog already declares as an extra, claimed
+    outright by its name; and one whose name opens with an auxiliary role, since
+    ``mmproj-Q8_0.gguf`` names a quantisation without being one, and a projector
+    counted as a quant inflates that model by the projector's whole size.
+    """
+    if not file.path.endswith(".gguf"):
+        return False
+    _, _, name = file.path.rpartition("/")
+    if file.path in extra_files or name in extra_files:
+        return False
+    return _EXTRA_ROLE_RE.match(name) is None
 
 
 def _is_whole_set(ordered: Sequence[tuple[int, RepoFile]], total: int) -> bool:
@@ -60,10 +85,17 @@ def _select_shard_set(files: Sequence[RepoFile]) -> list[RepoFile]:
     Args:
         files: Files already known to belong to one quant.
 
+    Unsplit files are held to the same standard. One is a quant; two are two
+    publications of one quant name, an ``imat`` copy and a ``main`` copy, and picking
+    between them would be guessing which a curator meant while adding them together
+    would record about twice the real size. Two is therefore nothing, the same as a
+    doubled shard set.
+
     Returns:
         When any file is part of a ``-NNNNN-of-MMMMM.gguf`` shard set, the largest such
         set that is whole, sorted by shard index, and nothing at all when none is;
-        otherwise every file, sorted by path.
+        otherwise the single file that matched, and nothing at all when more than one
+        did.
     """
     shard_groups: dict[int, list[tuple[int, RepoFile]]] = {}
     for file in files:
@@ -80,7 +112,9 @@ def _select_shard_set(files: Sequence[RepoFile]) -> list[RepoFile]:
                 return [file for _, file in ordered]
         return []
 
-    return sorted(files, key=lambda file: file.path)
+    if len(files) > 1:
+        return []
+    return list(files)
 
 
 @dataclass(frozen=True)
@@ -217,6 +251,11 @@ def match_quant_files(files: Sequence[RepoFile], quant_name: str) -> list[RepoFi
     ``-_./``, and followed by ``.gguf`` or a shard suffix, so a longer quant name that
     merely starts with ``quant_name`` (or a directory of one) never matches.
 
+    A file whose name opens with an auxiliary role is never a candidate, because
+    ``mmproj-Q8_0.gguf`` carries a quantisation in its name without being that quant's
+    weights. Pass a repository's declared extras to `assign_files_to_quants` to claim
+    the ones that are named some other way.
+
     Note that this alone cannot tell apart a shorter quant name that is a suffix of a
     longer one (``Q4_K_XL`` inside ``UD-Q4_K_XL``); use `assign_files_to_quants` when a
     repository's full set of quant names is known.
@@ -226,21 +265,22 @@ def match_quant_files(files: Sequence[RepoFile], quant_name: str) -> list[RepoFi
         quant_name: The quantization to match, for example ``Q4_K_M`` or ``UD-Q4_K_XL``.
 
     Returns:
-        The matching files. When any of them is part of a shard set, only the largest
-        such set that is whole is returned, sorted by shard index, and nothing at all
-        when no set is whole — one missing a shard, or one published twice over, is
-        left out rather than guessed at; otherwise every matching file is returned,
-        sorted by path.
+        The matching files, reduced to one whole quant: the largest complete shard set,
+        or the single file that matched. Nothing at all when no set is whole or when
+        more than one file matched, since a quant published twice over is left out
+        rather than guessed at or added up.
     """
     pattern = _quant_pattern(quant_name)
     candidates = [
-        file for file in files if file.path.endswith(".gguf") and pattern.search(file.path)
+        file for file in files if _could_be_a_quant(file, ()) and pattern.search(file.path)
     ]
     return _select_shard_set(candidates)
 
 
 def assign_files_to_quants(
-    files: Sequence[RepoFile], quant_names: Sequence[str]
+    files: Sequence[RepoFile],
+    quant_names: Sequence[str],
+    extra_files: Collection[str] = (),
 ) -> dict[str, list[RepoFile]]:
     """Group a repository's files by quant, giving each file to the longest name that matches.
 
@@ -249,9 +289,15 @@ def assign_files_to_quants(
     Trying the longest quant names first, and stopping at the first match, guarantees each
     file is assigned to at most one quant.
 
+    A file the catalog declares as an extra is claimed outright and offered to no quant,
+    however it happens to be named, and so is any file whose name opens with an auxiliary
+    role. Without that, a projector named for a quantisation is counted as part of that
+    quant, and the size recorded for the model is the projector's larger too.
+
     Args:
         files: Every file in the repository.
         quant_names: Every quant name published by the repository.
+        extra_files: The file names this source declares as extras, by path or basename.
 
     Returns:
         One list per name in ``quant_names`` (in that order), each reduced the same way
@@ -261,7 +307,7 @@ def assign_files_to_quants(
     ordered_names = sorted(quant_names, key=len, reverse=True)
     buckets: dict[str, list[RepoFile]] = {name: [] for name in quant_names}
     for file in files:
-        if not file.path.endswith(".gguf"):
+        if not _could_be_a_quant(file, extra_files):
             continue
         for name in ordered_names:
             if patterns[name].search(file.path):

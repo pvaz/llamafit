@@ -226,7 +226,11 @@ def _refresh_source(
     def file_url(path: str) -> str:
         return hf.file_url(repo, path)
 
-    assigned = assign_files_to_quants(files, [quant.name for quant in source.quants])
+    assigned = assign_files_to_quants(
+        files,
+        [quant.name for quant in source.quants],
+        [extra.file for extra in source.extras],
+    )
     for qi, quant in enumerate(source.quants):
         matched = assigned.get(quant.name, [])
         if not matched:

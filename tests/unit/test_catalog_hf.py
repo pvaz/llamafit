@@ -115,13 +115,14 @@ def test_does_not_match_a_longer_quant_name_that_starts_with_the_one_asked_for()
     assert match_quant_files(files, "Q4_K_M") == []
 
 
-def test_matches_a_plain_file_at_top_level_and_in_a_subdirectory() -> None:
-    files = [
-        RepoFile(path="model-Q4_K_M.gguf", size=1, sha256=None),
-        RepoFile(path="Q4_K_M/model-Q4_K_M.gguf", size=2, sha256=None),
+def test_matches_a_plain_file_at_top_level_or_in_a_subdirectory() -> None:
+    at_top_level = [RepoFile(path="model-Q4_K_M.gguf", size=1, sha256=None)]
+    in_a_directory = [RepoFile(path="Q4_K_M/model-Q4_K_M.gguf", size=2, sha256=None)]
+
+    assert [f.path for f in match_quant_files(at_top_level, "Q4_K_M")] == ["model-Q4_K_M.gguf"]
+    assert [f.path for f in match_quant_files(in_a_directory, "Q4_K_M")] == [
+        "Q4_K_M/model-Q4_K_M.gguf"
     ]
-    matched = match_quant_files(files, "Q4_K_M")
-    assert {f.path for f in matched} == {"model-Q4_K_M.gguf", "Q4_K_M/model-Q4_K_M.gguf"}
 
 
 def test_assigns_each_file_to_the_longest_matching_quant() -> None:
@@ -186,3 +187,32 @@ def test_a_short_shard_set_is_left_out_of_every_quant_it_belongs_to() -> None:
 
     assert assigned["Q4_K_M"] == []
     assert [file.path for file in assigned["Q8_0"]] == ["M-Q8_0.gguf"]
+
+
+def test_a_projector_named_for_a_quantisation_is_not_one() -> None:
+    files = [
+        RepoFile(path="M-Q8_0.gguf", size=700, sha256=None),
+        RepoFile(path="mmproj-Q8_0.gguf", size=400, sha256=None),
+    ]
+
+    assert [file.path for file in match_quant_files(files, "Q8_0")] == ["M-Q8_0.gguf"]
+
+
+def test_a_file_the_catalog_declares_as_an_extra_is_never_a_quant() -> None:
+    files = [
+        RepoFile(path="M-Q8_0.gguf", size=700, sha256=None),
+        RepoFile(path="vision/projector-Q8_0.gguf", size=400, sha256=None),
+    ]
+
+    assigned = assign_files_to_quants(files, ["Q8_0"], extra_files=["projector-Q8_0.gguf"])
+
+    assert [file.path for file in assigned["Q8_0"]] == ["M-Q8_0.gguf"]
+
+
+def test_an_unsharded_quant_published_under_two_paths_is_left_out() -> None:
+    files = [
+        RepoFile(path="main/M-Q4_K_M.gguf", size=700, sha256=None),
+        RepoFile(path="imat/M-Q4_K_M.gguf", size=800, sha256=None),
+    ]
+
+    assert match_quant_files(files, "Q4_K_M") == []
