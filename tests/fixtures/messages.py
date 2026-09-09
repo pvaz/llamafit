@@ -10,7 +10,15 @@ When the sweep does land, these functions go away and `scripts.gen_messages.SOUR
 stops naming this file.
 """
 
-from llamafit.i18n import LazyString, _, lazy_gettext, lazy_ngettext, ngettext
+from llamafit.i18n import (
+    LazyString,
+    _,
+    lazy_gettext,
+    lazy_ngettext,
+    lazy_pgettext,
+    ngettext,
+    pgettext,
+)
 
 # Built while this module is imported, which is before any test has chosen a language:
 # exactly the shape of llamafit.services.doctor.PROBE_HINTS and of a Typer help= string.
@@ -21,6 +29,7 @@ PROBE_HINTS: dict[str, LazyString] = {
 }
 GPU_SUMMARY: LazyString = lazy_gettext("No GPU detected")
 MODULE_COUNT: LazyString = lazy_ngettext("%(count)d module", "%(count)d modules", 3)
+GPU_ROW_EMPTY: LazyString = lazy_pgettext("GPU", "none detected")
 
 
 def llamacpp_installed() -> str:
@@ -59,12 +68,24 @@ def free_disk_space() -> str:
     return _("Most useful models need 5 to 120 GB; free space or change the downloads directory.")
 
 
-def unknown() -> str:
-    return _("unknown")
+# "unknown" and "none detected" are each the value of two different rows, and Portuguese
+# does not agree with itself about them: the memory bandwidth is feminine and a quant's
+# bits per weight masculine, the GPU is feminine and a backend masculine. One msgid could
+# only ever be right in one of each pair, so each row names the context it reads in.
+def bandwidth_unknown() -> str:
+    return pgettext("memory bandwidth", "unknown")
 
 
-def none_detected() -> str:
-    return _("none detected")
+def bits_per_weight_unknown() -> str:
+    return pgettext("bits per weight", "unknown")
+
+
+def no_gpu_row() -> str:
+    return pgettext("GPU", "none detected")
+
+
+def no_backends_row() -> str:
+    return pgettext("backends", "none detected")
 
 
 def no_server() -> str:

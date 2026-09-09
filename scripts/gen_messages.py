@@ -9,7 +9,13 @@ regular expression: a regular expression finds matches inside comments and strin
 misses real calls that span several lines.
 
 A call whose argument is not a literal string cannot be extracted and cannot be
-translated, so it is reported with its file and line and the script exits non-zero.
+translated, so it is reported with its file and line and the script exits non-zero. So is
+a contextual call whose context is empty: a message with no context is written with
+``_()``, and ``pgettext("", ...)`` would file it under a third thing that is neither.
+
+A context is part of what identifies a message, so ``pgettext("GPU", "none detected")``
+and ``pgettext("backends", "none detected")`` are two entries, written into the template
+with a ``msgctxt`` line each, and a translator sees two strings to translate differently.
 """
 
 from __future__ import annotations
@@ -34,6 +40,12 @@ PLURAL_NAMES = frozenset({"ngettext", "lazy_ngettext"})
 The ``lazy_`` pair defers the lookup to render time but holds the same literals, so a
 message wrapped for a module-level constant is extracted like any other.
 """
+
+CONTEXT_SINGULAR_NAMES = frozenset({"pgettext", "lazy_pgettext"})
+"""Names that translate one message under a context; the context comes first."""
+
+CONTEXT_PLURAL_NAMES = frozenset({"npgettext", "lazy_npgettext"})
+"""Names that translate a counting message under a context; the context comes first."""
 
 SOURCE_ROOTS: tuple[Path, ...] = (
     ROOT / "src" / "llamafit",
@@ -73,12 +85,16 @@ class Entry:
     Attributes:
         msgid: The English message.
         plural: The English plural form, for a counting message.
+        context: What the call said the message is used for, or ``None`` for a call that
+            said nothing. A message with no context is not the same entry as the same
+            message with one, and neither is the same as a context of ``""``.
         references: ``file:line`` for every call site, in the order they were found.
         first: The file and line the message was first seen at, which orders the file.
     """
 
     msgid: str
     plural: str | None = None
+    context: str | None = None
     references: list[str] = field(default_factory=list)
     first: tuple[str, int] = ("", 0)
 
@@ -117,9 +133,9 @@ def extract(roots: Iterable[Path] = SOURCE_ROOTS) -> Extraction:
         whose argument is not a literal string.
     """
     found = Extraction()
-    by_id: dict[str, Entry] = {}
+    by_key: dict[tuple[str | None, str], Entry] = {}
     for path in python_files(roots):
-        _extract_file(path, found, by_id)
+        _extract_file(path, found, by_key)
     found.entries.sort(key=lambda entry: entry.first)
     return found
 
@@ -139,6 +155,8 @@ def render_template(found: Extraction, *, version: str) -> str:
         lines.append("")
         for reference in entry.references:
             lines.append(f"#: {reference}")
+        if entry.context is not None:
+            lines.append(f"msgctxt {_quote(entry.context)}")
         lines.append(f"msgid {_quote(entry.msgid)}")
         if entry.plural is None:
             lines.append('msgstr ""')
@@ -178,7 +196,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     return 0
 
 
-def _extract_file(path: Path, found: Extraction, by_id: dict[str, Entry]) -> None:
+def _extract_file(
+    path: Path, found: Extraction, by_key: dict[tuple[str | None, str], Entry]
+) -> None:
     """Parse one file and add everything it asks to translate."""
     text = path.read_text(encoding="utf-8")
     try:
@@ -191,21 +211,32 @@ def _extract_file(path: Path, found: Extraction, by_id: dict[str, Entry]) -> Non
             continue
         name = _called_name(node.func)
         if name in SINGULAR_NAMES:
-            _collect(path, node, found, by_id, arity=1)
+            _collect(path, node, found, by_key, arity=1, contextual=False)
         elif name in PLURAL_NAMES:
-            _collect(path, node, found, by_id, arity=2)
+            _collect(path, node, found, by_key, arity=2, contextual=False)
+        elif name in CONTEXT_SINGULAR_NAMES:
+            _collect(path, node, found, by_key, arity=1, contextual=True)
+        elif name in CONTEXT_PLURAL_NAMES:
+            _collect(path, node, found, by_key, arity=2, contextual=True)
 
 
 def _collect(
-    path: Path, node: ast.Call, found: Extraction, by_id: dict[str, Entry], *, arity: int
+    path: Path,
+    node: ast.Call,
+    found: Extraction,
+    by_key: dict[tuple[str | None, str], Entry],
+    *,
+    arity: int,
+    contextual: bool,
 ) -> None:
-    """Record one call, or report it when its message arguments are not literals."""
+    """Record one call, or report it when its literal arguments are not literals."""
     reference = _where(path, node.lineno)
-    if len(node.args) < arity:
+    wanted = arity + 1 if contextual else arity
+    if len(node.args) < wanted:
         found.problems.append(f"{reference}: the call is missing its message argument")
         return
     literals: list[str] = []
-    for position in range(arity):
+    for position in range(wanted):
         value = _literal(node.args[position])
         if value is None:
             found.problems.append(
@@ -214,12 +245,21 @@ def _collect(
             )
             return
         literals.append(value)
+    context = literals.pop(0) if contextual else None
+    if context == "":
+        found.problems.append(
+            f"{reference}: the context is empty; a message with no context is written "
+            "with _() or ngettext(), not with an empty one"
+        )
+        return
     msgid = literals[0]
     plural = literals[1] if arity > 1 else None
-    entry = by_id.get(msgid)
+    entry = by_key.get((context, msgid))
     if entry is None:
-        entry = Entry(msgid=msgid, plural=plural, first=(_relative(path), node.lineno))
-        by_id[msgid] = entry
+        entry = Entry(
+            msgid=msgid, plural=plural, context=context, first=(_relative(path), node.lineno)
+        )
+        by_key[(context, msgid)] = entry
         found.entries.append(entry)
     elif entry.plural != plural and plural is not None:
         found.problems.append(f"{reference}: {msgid!r} already has a different plural form")

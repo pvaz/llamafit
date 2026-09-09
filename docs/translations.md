@@ -82,6 +82,10 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
    cp src/llamafit/data/locale/messages.pot src/llamafit/data/locale/fr_FR.po
    ```
 
+   Spell it another way — `fr-FR.po`, `FR_fr.po` — and LlamaFit still finds it, because it
+   offers a language and then opens it by the same rule. Use the canonical name anyway: a
+   catalog that ships has to be named for its tag exactly, and the test suite says so.
+
 3. Fill in the header. `Language`, `Language-Team` and `Plural-Forms` are all required,
    and `Content-Type` must say UTF-8:
 
@@ -97,35 +101,94 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
    rule is wrong for most languages: French puts zero in the singular, Polish has three
    forms, Japanese has one.
 
+   `Plural-Forms` is required in the strong sense: a catalog without one is **refused**
+   with the line number, rather than quietly given English's rule. Inheriting English's
+   rule is the one mistake that produces no error at all — a three-form language would
+   simply pick the wrong form, and its reader would meet real words in the wrong grammar
+   with nothing anywhere to say why.
+
+   `Language` has to agree with the file's name, and a `fr_FR.po` whose header says
+   `Language: de` is **refused** too. Nothing downstream would notice otherwise: the tag
+   comes from the file's name, so the catalog would be installed as French and would then
+   answer in German with no error anywhere. Spelling is forgiven — `fr-FR`, `FR_fr` and
+   `fr_FR.UTF-8` all mean `fr_FR` — and a catalog that has not filled the header in yet is
+   still read, because saying nothing is not the same as saying something false.
+
 4. Translate. Leave a `msgstr` empty rather than guessing: an empty translation falls back
    to the English message, so an unfinished catalog degrades to English and never shows a
-   blank line.
+   blank line. A `msgstr` holding only spaces, tabs or newlines counts as empty too, and
+   the completeness check still lists it as a message your language needs.
 
 5. Run the tests. `tests/unit/test_i18n_catalogs.py` checks every catalog: it must parse,
-   it must declare its plural rule, and it must not translate a message the template does
-   not have. A message it is *missing* is a warning, not a failure, so you can land a
+   it must declare its plural rule and the right language, it must not translate a message
+   the template does not have, and nothing in it may be a translation the reader had to
+   drop. A message it is *missing* is a warning, not a failure, so you can land a
    translation that is still in progress.
+
+   Your own catalog, in your own copy, is held to the same rules without the build: the
+   reader drops what it cannot use, shows the English there, and tells you how many and
+   where. Running the tests is how you turn that into a failure instead.
 
 ## What a translator needs to know
 
 - **Placeholders keep their names.** `%(count)d module` may become
   `%(count)d módulo`, and the pieces may be reordered, but `%(count)d` itself must survive
-  exactly. A placeholder that is dropped or renamed is a crash, not a typo.
+  exactly. A translation whose placeholders do not match its message's is **not used** —
+  LlamaFit shows the English instead and says so once at start-up, and `--verbose` names
+  each one in the log. For a catalog that ships, the same mismatch fails the build.
+- **A literal percent sign is written `%%`**, and **placeholders are named, never
+  positional**. A bare `%s` looks like it works and does not: filled from a dictionary it
+  puts the dictionary itself into the sentence rather than the number.
 - **Plurals are not a suffix.** Use `msgstr[0]`, `msgstr[1]`, and as many forms as your
   `Plural-Forms` header declares. Do not write `1 module(s)`.
-- **The file is UTF-8**, always, on every platform. Save it as UTF-8 without a byte order
-  mark.
+- **The file is UTF-8**, always, on every platform. A byte order mark at the start is
+  read and ignored, so a Windows editor that adds one has not broken anything;
+  without one is still the tidier file.
 - **Strings can be split over adjacent lines** for readability; the reader joins them with
   nothing in between, so keep the trailing spaces where they belong.
 - **Escapes** are the usual ones: `\\`, `\"`, `\n`, `\t`, `\r`, `\a`, `\b`, `\f`, `\v`.
   Anything else is refused with the line number.
-- **`msgctxt` is not supported.** Nothing here writes one, so a catalog with one is
-  reported rather than half-read.
+- **A `msgctxt` says where the message is used**, and it changes what you translate. See
+  below.
 - **Style follows the English.** A message is a short sentence with a subject and a verb; a
   hint is an action the reader can take. Command names, flags, file paths, `llama.cpp`,
   `numpy` and the like are not translated.
 - **Keep the meaning, not the word order.** If your language wants the number at the end of
   the sentence, put it at the end.
+
+### When a message has a context
+
+Some entries carry a `msgctxt` line above the `msgid`:
+
+```
+msgctxt "GPU"
+msgid "none detected"
+msgstr "nenhuma detetada"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "nenhum detetado"
+```
+
+A context appears when the same English words are used in two places that your language
+may not translate the same way. Here `none detected` is the value of the GPU row, where
+the Portuguese noun is feminine, and of the Backends row, where it is masculine. One
+`msgstr` could only ever be right in one of the two, so each row asks its own question.
+
+What the context tells you is **where the message is read**, nothing more. It is never
+shown to the user, it is never translated, and you must never change it: the context and
+the `msgid` together are what the program looks the entry up by, so an edited context
+means the program finds nothing and shows English.
+
+Two entries with the same `msgid` and different contexts are two different entries, and
+so are an entry with a context and an entry without one. If your language uses the same
+words in both, write the same words in both — that is a fine answer, and English does
+exactly that. Leave one empty and that row falls back to English while the other does not,
+which is the one outcome to avoid.
+
+The extractor writes the context; you never add one. If you find a message where a
+context would help and there is none, say so in an issue: the fix belongs in the code
+that asks for the message, and it needs to be made once for every language.
 
 ## The rule about machine translation
 
@@ -147,8 +210,8 @@ python scripts/gen_messages.py
 ```
 
 It reads the syntax tree of every source, finds each call to `_()`, `ngettext()`,
-`lazy_gettext()` and `lazy_ngettext()`, and rewrites `messages.pot`. Give it paths to read
-something else.
+`pgettext()`, `npgettext()` and their four `lazy_` counterparts, and rewrites
+`messages.pot`. Give it paths to read something else.
 
 It refuses to write anything when a call passes something that is not a literal string:
 
@@ -186,6 +249,37 @@ ngettext("%(count)d module", "%(count)d modules", count) % {"count": count}
 
 All of them take literal strings so the extractor can find them. Use named placeholders
 (`%(count)d`) rather than positional ones, so a translator can move them.
+
+### A word two rows share needs a context
+
+Wrapping the same English word in two places gives a translator one entry to answer for
+both. That is fine when the two really are the same sentence, and wrong the moment a
+language inflects: `none detected` is the GPU row's value, where the Portuguese noun is
+feminine, and the Backends row's, where it is masculine, and one `msgstr` cannot be right
+in both.
+
+`pgettext` and `npgettext` take a context first — a short word naming where the message is
+read, written for the translator and never shown to a user:
+
+```python
+from llamafit.i18n import npgettext, pgettext
+
+pgettext("GPU", "none detected")
+pgettext("backends", "none detected")
+npgettext("GPU", "%(count)d device", "%(count)d devices", count) % {"count": count}
+```
+
+`lazy_pgettext` and `lazy_npgettext` are the deferred pair, for anything built at import
+time.
+
+The context is part of what identifies the message, so the two calls above are two
+entries in the template and two questions to the translator. Name the row, the column or
+the screen, not the grammar: a translator needs to know *where the words are read*, and
+which languages inflect for what is their business, not ours.
+
+Reach for a context whenever an English word is short enough that two places could share
+it — a value in a table, a status, a unit. Do not wrap the same bare word twice without
+one and hope.
 
 ### Anything built at import time needs the deferred pair
 
@@ -252,11 +346,20 @@ An interface chooses the language once, at start-up, and says so when the reques
 not be met:
 
 ```python
+from rich.text import Text
+
 from llamafit.i18n import set_language
 
 choice = set_language(language_option)
 if choice.notice:
-    console.print(choice.notice)
+    console.print(Text(choice.notice))
     if choice.hint:
-        console.print(choice.hint)
+        console.print(Text(choice.hint))
 ```
+
+`Text(...)`, not the bare string. A substitution notice quotes the catalog's own
+`Language-Team` header, which is data read from a file, and `console.print` parses square
+brackets as Rich markup: a catalog whose team read `Portuguese [Brazil]` would raise at
+start-up, before the program had done anything. Wrapping the sentence in `Text` says it is
+text and not markup, which is the rule everywhere in this project that prints a value it
+did not write itself.

@@ -7,22 +7,33 @@ Call sites use two functions::
     _("No GPU detected")
     ngettext("%(count)d module", "%(count)d modules", n) % {"count": n}
 
-and a deferred pair for anything built while a module is imported, which happens before a
+the same two with a context, for an English word that two places translate differently —
+*none detected* is feminine in the GPU row and masculine in the Backends row, so one
+Portuguese string cannot be right in both::
+
+    from llamafit.i18n import npgettext, pgettext
+
+    pgettext("GPU", "none detected")
+    npgettext("GPU", "%(count)d device", "%(count)d devices", n) % {"count": n}
+
+and a deferred set for anything built while a module is imported, which happens before a
 language has been chosen::
 
     from llamafit.i18n import lazy_gettext
 
     PROBE_HINTS = {"nvidia-smi": lazy_gettext("Install or repair the NVIDIA driver.")}
 
-An interface chooses the language once at start-up::
+An interface chooses the language once at start-up, and prints the notice as text rather
+than as markup, because it carries a name read from a file::
 
     choice = set_language(language_option)
     if choice.notice:
-        console.print(choice.notice)
+        console.print(Text(choice.notice))
 
 The catalogs are GNU gettext ``.po`` files under ``llamafit/data/locale/``, read as text.
 Nothing is compiled and no binary is committed, so a translator edits the same file the
-program reads. Every message that is missing or left empty falls back to English.
+program reads. Every message that is missing, or left empty or blank, falls back to
+English.
 """
 
 from __future__ import annotations
@@ -36,14 +47,28 @@ from llamafit.i18n.catalogs import (
     load_language,
 )
 from llamafit.i18n.detect import FixedLocale, LocaleProvider, SystemLocale, windows_ui_language
-from llamafit.i18n.lazy import LazyString, lazy_gettext, lazy_ngettext
+from llamafit.i18n.lazy import (
+    LazyString,
+    lazy_gettext,
+    lazy_ngettext,
+    lazy_npgettext,
+    lazy_pgettext,
+)
 from llamafit.i18n.plurals import (
     DEFAULT_PLURAL_FORMS,
     PluralFormsError,
     PluralRule,
     parse_plural_forms,
 )
-from llamafit.i18n.po import Message, PoCatalog, PoSyntaxError, parse_po, read_po
+from llamafit.i18n.po import (
+    Message,
+    MessageKey,
+    PoCatalog,
+    PoSyntaxError,
+    parse_po,
+    placeholders,
+    read_po,
+)
 from llamafit.i18n.select import (
     LANGUAGE_ENV_VAR,
     LanguageChoice,
@@ -60,6 +85,8 @@ from llamafit.i18n.translator import (
     get_translator,
     gettext,
     ngettext,
+    npgettext,
+    pgettext,
     reset,
     set_language,
     set_translator,
@@ -78,6 +105,7 @@ __all__ = [
     "LazyString",
     "LocaleProvider",
     "Message",
+    "MessageKey",
     "PluralFormsError",
     "PluralRule",
     "PoCatalog",
@@ -94,12 +122,17 @@ __all__ = [
     "is_substitution",
     "lazy_gettext",
     "lazy_ngettext",
+    "lazy_npgettext",
+    "lazy_pgettext",
     "load_language",
     "match",
     "ngettext",
     "normalise",
+    "npgettext",
     "parse_plural_forms",
     "parse_po",
+    "pgettext",
+    "placeholders",
     "read_po",
     "reset",
     "resolve_language",

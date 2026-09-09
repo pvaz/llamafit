@@ -23,7 +23,7 @@ from __future__ import annotations
 from collections.abc import Callable, Iterator
 from typing import Any
 
-from llamafit.i18n.translator import gettext, ngettext
+from llamafit.i18n.translator import gettext, ngettext, npgettext, pgettext
 
 
 class LazyString:
@@ -121,7 +121,18 @@ class LazyString:
         return self._render() % values
 
     def __getattr__(self, name: str) -> Any:
-        """Forward every string method to the text it resolves to right now."""
+        """Forward every string method to the text it currently resolves to.
+
+        A dunder and a slot are refused before anything is rendered. This method runs
+        only when ordinary lookup has already failed, and on an instance built without
+        going through the constructor — ``copy.copy``, ``copy.deepcopy`` and unpickling
+        each build one — that is every slot. Rendering an answer would read ``_render``,
+        which would fail, which would arrive back here, which would read it again, until
+        the stack ran out. Raising turns that into the plain attribute error those
+        protocols already know how to read.
+        """
+        if name.startswith("__") or name in LazyString.__slots__:
+            raise AttributeError(f"{type(self).__name__!r} object has no attribute {name!r}")
         return getattr(self._render(), name)
 
 
@@ -137,6 +148,15 @@ def lazy_gettext(message: str) -> LazyString:
     return LazyString(message, lambda: gettext(message))
 
 
+def lazy_pgettext(context: str, message: str) -> LazyString:
+    """Translate ``message`` under ``context`` every time it is rendered, rather than now.
+
+    Returns:
+        A :class:`LazyString` standing in for the message in that context.
+    """
+    return LazyString(message, lambda: pgettext(context, message))
+
+
 def lazy_ngettext(singular: str, plural: str, n: int) -> LazyString:
     """Translate a counting message every time it is rendered, rather than now.
 
@@ -144,3 +164,12 @@ def lazy_ngettext(singular: str, plural: str, n: int) -> LazyString:
         A :class:`LazyString` standing in for the form ``n`` selects.
     """
     return LazyString(singular, lambda: ngettext(singular, plural, n))
+
+
+def lazy_npgettext(context: str, singular: str, plural: str, n: int) -> LazyString:
+    """Translate a counting message under ``context`` when it is rendered, not now.
+
+    Returns:
+        A :class:`LazyString` standing in for the form ``n`` selects in that context.
+    """
+    return LazyString(singular, lambda: npgettext(context, singular, plural, n))
