@@ -73,6 +73,7 @@ llama_cpp:
   kv_types_allowed: [f16]
   requires: {mmproj: optional, mtp: optional, lazy_mode: recommended}
   quirks: ["--lazy-mode on streams the n-gram table from disk instead of holding it in RAM"]
+  lazy_tensors: [per_layer_token_embd]      # tensor prefixes llama.cpp streams from disk
 sources:
   - repo: unsloth/Qwen3.8-Flash-Next-GGUF
     kind: gguf
@@ -142,6 +143,7 @@ simply never been refreshed.
 | `sampling` | no | vendor-recommended sampling, passed to `llama-server` by `plan` |
 | `chat_template` | no | reasoning format and the template flag that toggles thinking |
 | `llama_cpp.*` | no | minimum build, allowed KV types, required extras, quirks shown by `plan` |
+| `llama_cpp.lazy_tensors` | no | tensor-name prefixes llama.cpp streams from disk; see below |
 | `sources[]` | yes | at least one GGUF repository with at least one quant |
 | `quants[].name`, `extras[].file` | yes | the only fields a quant or extra needs in the YAML |
 | `measured[]` | no | measurements with the profile and flags they were taken with |
@@ -154,6 +156,16 @@ the facts file keys a quant's volatile fields by the model id and the quant name
 notion of which source published it, so a name reused by two sources (an official repository and
 a community one often carry the same names) would have both silently merged under the same key.
 The loader rejects this as a `Problem` naming the model, the quant name, and both sources.
+
+`llama_cpp.lazy_tensors` is the one curated field the GGUF header cannot supply. A model may
+ship a very large lookup table — Qwen3.8-Flash-Next's `per_layer_token_embd.weight` is 28.8 GB,
+a quarter of its download — that llama.cpp streams from disk rather than holding in memory, and
+nothing in the header marks it as such. Naming its prefix here moves those bytes into
+`gguf_facts.bytes_lazy_tables` instead of the resident weights, and takes them out of `bpw`:
+that model reads as 7.13 bits per weight over the whole download and 5.28 over its weights,
+and only the second describes a four-bit quant. It is a property of the architecture, the same
+for every quant of the model, which is why it sits under `llama_cpp` and not under a quant.
+Leave it out for the models that stream nothing, which is nearly all of them.
 
 `license.spdx` carries the SPDX identifier when the licence is registered with SPDX (for
 example `Apache-2.0`); when it is not, it carries the vendor's own licence slug instead (for

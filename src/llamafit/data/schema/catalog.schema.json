@@ -428,13 +428,20 @@
     },
     "LlamaCppNeeds": {
       "additionalProperties": false,
-      "description": "Requirements this model places on the llama.cpp build that serves it.\n\nAttributes:\n    min_build: The minimum llama.cpp build number known to support this model.\n    kv_types_allowed: KV cache quantisation types known to work with this model.\n    requires: Other requirements, keyed by name, for example a minimum CUDA\n        version.\n    quirks: Free-text notes about anything else llama.cpp needs to run this\n        model correctly.",
+      "description": "Requirements this model places on the llama.cpp build that serves it.\n\nAttributes:\n    min_build: The minimum llama.cpp build number known to support this model.\n    kv_types_allowed: KV cache quantisation types known to work with this model.\n    requires: Other requirements, keyed by name, for example a minimum CUDA\n        version.\n    quirks: Free-text notes about anything else llama.cpp needs to run this\n        model correctly.\n    lazy_tensors: Name prefixes of tensors llama.cpp can stream from disk\n        rather than hold in memory, for example ``per_layer_token_embd``.\n        Curated, and a property of the architecture rather than of a file:\n        every quant of a model streams the same tables. The refresh passes\n        these to the GGUF reader, which sums their bytes into\n        :attr:`~llamafit.models.gguf.GgufFacts.bytes_lazy_tables` instead of\n        counting them as resident weights. Empty for a model that streams\n        nothing, which is most of them.",
       "properties": {
         "kv_types_allowed": {
           "items": {
             "type": "string"
           },
           "title": "Kv Types Allowed",
+          "type": "array"
+        },
+        "lazy_tensors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Lazy Tensors",
           "type": "array"
         },
         "min_build": {
