@@ -8,6 +8,7 @@ from collections.abc import Iterable, Mapping
 from pathlib import Path
 
 from llamafit.hardware.runner import Runner, probe
+from llamafit.i18n import _
 from llamafit.models.host import OsName, Probe
 from llamafit.models.llamacpp import LlamaCpp, LocalModel
 
@@ -174,8 +175,10 @@ def detect_install(
         return LlamaCpp(
             installed=False,
             problems=[
-                "llama.cpp not found: no llama-server on PATH, "
-                "in LLAMA_CPP_PATH or in the usual directories"
+                _(
+                    "llama.cpp not found: no llama-server on PATH, "
+                    "in LLAMA_CPP_PATH or in the usual directories"
+                )
             ],
         ), probes
 
@@ -190,13 +193,16 @@ def detect_install(
             text = (bin_dir / "VERSION.txt").read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):  # absent, unreadable or not text: build unknown
             text = ""
-        build, _ = parse_version(text)
+        # Named rather than thrown away as `_`: this module imports the translator
+        # under that name, and rebinding it inside a function is a string that is not
+        # callable at the next translated call, with nothing to warn you first.
+        build, _commit = parse_version(text)
 
     backends = detect_backends(bin_dir)
     problems: list[str] = []
     if not backends:
         problems.append(
-            "no ggml backend libraries found next to llama-server; the build may be static"
+            _("no ggml backend libraries found next to llama-server; the build may be static")
         )
     cache_dir = Path(env.get("LLAMA_CACHE", "")) if env.get("LLAMA_CACHE") else None
     model_dirs = [bin_dir.parent / "models", cache_dir]

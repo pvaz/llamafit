@@ -731,3 +731,89 @@ def test_a_53_character_id_never_blanks_or_cuts_another_column_at_80_or_50() -> 
         # capabilities cell on the same physical line would otherwise interleave
         # into a naive strip-everything-and-concatenate reading of the output.
         assert long_id in "".join(_id_column_cells(output))
+
+
+# --- widths are terminal cells, never characters ------------------------------
+
+
+# Headings whose characters take two terminal cells each. Chinese is here because it is
+# the case that proves the diagnosis: its headings are genuinely narrower than the English
+# ones, so nothing about the translation can be blamed for what the mis-measurement did.
+_WIDE_HEADINGS = {
+    "japanese": {
+        "id": "ID",
+        "quality": "品質",
+        "params": "パラメータ",
+        "context": "コンテキスト",
+        "capabilities": "機能",
+    },
+    "chinese": {
+        "id": "ID",
+        "quality": "品質",
+        "params": "參數",
+        "context": "脈絡",
+        "capabilities": "能力",
+    },
+    "korean": {
+        "id": "ID",
+        "quality": "품질",
+        "params": "매개변수",
+        "context": "컨텍스트",
+        "capabilities": "기능",
+    },
+}
+
+
+def _five_models() -> list[ModelSummary]:
+    return [
+        _summary("qwen3-coder-next", 85, 80, 3, 262144),
+        _summary("qwen3.8-flash-next", 84, 125, 6, 262144),
+        _summary("gemma-3-27b-it", 74, 27, 27, 131072),
+        _summary("llama-3.1-8b-instruct", 62, 8, 8, 131072),
+        _summary("qwen3-0.6b", 35, 0.6, 0.6, 32768),
+    ]
+
+
+@pytest.mark.parametrize("script", sorted(_WIDE_HEADINGS))
+def test_a_wide_heading_never_pushes_an_identifier_into_folding(
+    script: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # The reported chain, in order: the budget measures a heading, hands capabilities a
+    # leftover that is too generous, Rich re-measures for real when it draws, and takes
+    # the shortfall out of the only column allowed to fold -- the id, which is the one
+    # column that has to stay typable. Measured in characters, four of these five ids
+    # fold at eighty columns.
+    from llamafit.cli import render
+
+    monkeypatch.setattr(render, "_list_headings", lambda: _WIDE_HEADINGS[script])
+    rows = _five_models()
+    output = _rendered(rows, 80)
+    for summary in rows:
+        assert any(summary.id in line for line in output.splitlines()), (
+            f"{summary.id} folded under {script} headings"
+        )
+
+
+def test_the_column_budget_counts_cells_for_an_identifier_too() -> None:
+    # A budget that thinks a two-cell character costs one cell reserves half the room the
+    # id needs, and the id is where every other column's error lands.
+    from rich.cells import cell_len
+
+    from llamafit.cli.render import _ID_COLUMN_MAX_WIDTH, _column_budget
+
+    wide = "通義千問編碼"  # six characters, twelve cells
+    assert len(wide) == 6
+    assert cell_len(wide) == 12
+    id_width, _included, _capabilities = _column_budget([_summary(wide, 61, 8, 8, 131072)], 80)
+    assert id_width == 12, "the id column is measured in cells"
+    assert id_width <= _ID_COLUMN_MAX_WIDTH, "and the cap is a cell count as well"
+
+
+def test_the_capabilities_budget_counts_cells_too() -> None:
+    from llamafit.cli.render import _fmt_capabilities
+
+    # Eight characters, sixteen cells: a budget of ten fits neither, and one that counted
+    # characters would have let the first through and overflowed the column.
+    wide = ["能力測試機能表示用語"[:8]]
+    assert _fmt_capabilities(wide, width=10) == "+1"
+    assert _fmt_capabilities(wide, width=20) == wide[0]

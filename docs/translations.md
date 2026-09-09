@@ -3,11 +3,17 @@
 LlamaFit's messages are written in English. Any of them can be translated, and the
 translation is read at runtime from a plain text file in this repository.
 
-> **Status: the machinery is in place and no message goes through it yet.** Every string
-> `llamafit` prints today is an untranslated literal, and no command offers a `--language`
-> option, so LlamaFit comes out in English whatever the operating system says. This page is
-> the contract messages move to, and it already applies to any new one. It is not a claim that
-> the interface is translated.
+> **Status: the interface goes through the layer.** Every string `llamafit` prints is
+> wrapped, `--language` is a global option, and the language is chosen once at start-up from
+> the option, the environment, the operating system's locale, then English. What is *not* a
+> claim is that any given language is finished or reviewed: the table below says which
+> catalogs exist and which have had a second reader.
+>
+> Three kinds of text stay English on purpose, and each says why where it lives: the
+> translation layer's own messages (`src/llamafit/i18n/`, below), the per-field diagnostics
+> `catalog validate` and `catalog refresh` print about a YAML file, and identifiers — command
+> names, flags, paths, backend names, capability and use-case ids, and the catalog's own
+> data.
 
 The format is GNU gettext, the one every translation tool already speaks. There is no new
 dependency and no compiled `.mo` file: the `.po` file a translator edits is the exact file
@@ -27,8 +33,8 @@ the program reads.
 | English | none needed; the messages are written in it | — |
 | Portuguese (Portugal) | `pt_PT.po` | **not yet** |
 
-`pt_PT.po` was written alongside the machinery that reads it, to prove that machinery
-works on a real catalog, and it has had no second reader. By the standard this page sets
+`pt_PT.po` was written alongside the machinery that reads it and grew with the sweep that
+wrapped the interface, and it has had no second reader. By the standard this page sets
 below, that is not enough, and the file says so at the top. It ships because a first
 catalog is what makes everything else testable, not because it has met the bar. If you
 read European Portuguese, going through it line by line is the most useful contribution
@@ -36,8 +42,10 @@ you can make here.
 
 ## How the language is chosen
 
-This is what `set_language` does when an interface calls it — which none does yet. Most
-explicit first:
+This is what `set_language` does, and the command-line interface calls it once at
+start-up, from the `--language` callback. The option is eager, so it is read before Click
+renders anything and `--language pt_PT --help` comes out in Portuguese too. Most explicit
+first:
 
 1. the `--language` option;
 2. the `LLAMAFIT_LANGUAGE` environment variable;
@@ -157,11 +165,39 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
   Anything else is refused with the line number.
 - **A `msgctxt` says where the message is used**, and it changes what you translate. See
   below.
+- **A `#.` line above an entry is a note from the code**, written for you by whoever wrote
+  the call. It says what the message alone cannot: that an entry is punctuation rather than
+  prose, say. Read those first; there are not many.
 - **Style follows the English.** A message is a short sentence with a subject and a verb; a
   hint is an action the reader can take. Command names, flags, file paths, `llama.cpp`,
   `numpy` and the like are not translated.
 - **Keep the meaning, not the word order.** If your language wants the number at the end of
   the sentence, put it at the end.
+
+### Three entries are punctuation, not words
+
+Numbers are written the English way and then repunctuated from the catalog, so a language
+says how it writes a number by translating three entries rather than by anyone shipping a
+locale database:
+
+| Context | English | What to write |
+|---|---|---|
+| `thousands separator` | `,` | What goes between groups of three digits: `32,768`, `32.768` |
+| `decimal separator` | `.` | What goes before the fraction: `127.8`, `127,8` |
+| `parameter count` | `B` | The abbreviation for a thousand million, as in `27B` |
+
+This is not cosmetic. English writes a model's context as `32,768`; a reader whose language
+groups with a point reads that as a fraction and is told the model holds thirty-two tokens.
+
+Two warnings the `#.` notes repeat. **Do not translate the word *billion*:** the long and
+short scales disagree about what one is, so write the abbreviation your readers expect for
+a thousand million. And **an empty translation means untranslated**, so it falls back to the
+English character rather than to nothing.
+
+There is a limitation here, and it is ours rather than yours: a translation holding only a
+space counts as empty, so a language that groups digits with a space — French, Russian,
+Swedish, Polish and others — cannot say so yet and silently gets the English comma. Please
+open an issue rather than working around it; the fix belongs in the reader.
 
 ### When a message has a context
 
@@ -219,6 +255,21 @@ python scripts/gen_messages.py
 It reads the syntax tree of every source, finds each call to `_()`, `ngettext()`,
 `pgettext()`, `npgettext()` and their four `lazy_` counterparts, and rewrites
 `messages.pot`. Give it paths to read something else.
+
+### Leaving a note for the translator
+
+A comment block touching a call, whose first line opens with `Translators:`, is copied into
+the template as `#.` lines:
+
+```python
+# Translators: this is punctuation, not prose. It is what your language puts
+# between a number's groups of three digits: English writes 32,768.
+return pgettext("thousands separator", ",")
+```
+
+Only a marked block is copied, so a comment written for whoever maintains the code stays in
+the code. A blank line, or any code, ends the block. Use it when the message alone cannot
+tell a translator what to do — and prefer fixing the message when it can.
 
 It refuses to write anything when a call passes something that is not a literal string:
 

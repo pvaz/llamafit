@@ -2,15 +2,26 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import typer
 
 from llamafit.cli.app import CliState, app
 from llamafit.cli.render import render_findings, render_probes
+from llamafit.i18n import lazy_gettext
 from llamafit.services.doctor import diagnose
 from llamafit.services.scan import scan_system
 
 
-@app.command("doctor")
+@app.command(
+    "doctor",
+    # An explicit help=, deferred: Typer would otherwise take this command's help from
+    # its docstring, which is a literal no wrapper can reach.
+    help=cast(
+        str,
+        lazy_gettext("Explain what was detected, what failed, and what would unlock more."),
+    ),
+)
 def doctor_command(ctx: typer.Context) -> None:
     """Explain what was detected, what failed, and what would unlock more."""
     state: CliState = ctx.obj

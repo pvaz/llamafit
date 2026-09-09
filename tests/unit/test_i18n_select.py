@@ -2,10 +2,18 @@
 
 import pytest
 
+from llamafit.i18n.catalogs import available_languages
 from llamafit.i18n.detect import FixedLocale
 from llamafit.i18n.select import LANGUAGE_ENV_VAR, resolve_language
+from llamafit.i18n.tags import SOURCE_LANGUAGE
 
 AVAILABLE = ("en", "pt_PT")
+"""The set every test here injects.
+
+Made up on purpose, and not read from the packaged catalogs: what this file is about is
+the order a language is chosen in, which must not change when somebody contributes a
+translation. Only the one test that is about the packaged set asks what actually ships.
+"""
 
 
 def test_the_option_beats_everything() -> None:
@@ -96,9 +104,17 @@ def test_asking_for_english_is_honoured_without_a_catalog() -> None:
 
 
 def test_the_packaged_languages_are_used_when_none_are_given() -> None:
-    choice = resolve_language("pt", env={}, locale_provider=FixedLocale([]))
-    assert choice.language == "pt_PT"
-    assert "pt_PT" in choice.available
+    # What this guards is that the packaged catalogs are consulted when a caller names
+    # none, not which of them a particular request lands on. That second thing changes
+    # every time somebody contributes a translation -- ask for "pt" once pt_BR ships and
+    # the answer is no longer pt_PT -- and a test that pinned it would fail on their work.
+    packaged = available_languages()
+    assert resolve_language(env={}, locale_provider=FixedLocale([])).available == packaged
+    asked = next(tag for tag in packaged if tag != SOURCE_LANGUAGE)
+    choice = resolve_language(asked, env={}, locale_provider=FixedLocale([]))
+    assert choice.language == asked
+    assert choice.honoured
+    assert choice.available == packaged
 
 
 def test_the_real_environment_is_read_when_none_is_given(monkeypatch: pytest.MonkeyPatch) -> None:
