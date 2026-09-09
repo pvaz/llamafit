@@ -169,17 +169,30 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
     return facts
 
 
+def _cache_bytes(elements: int, block_elements: int, block_bytes: int) -> int:
+    """Bytes one block-quantised cache of ``elements`` values occupies.
+
+    Rounded up. Holding a count that does not divide evenly takes the next whole
+    block, so rounding down reports a cache smaller than the one that gets allocated,
+    and undersized is the dangerous direction to be wrong in: it tells somebody a
+    model fits when it does not. Every cache width in the catalog today is a power of
+    two that every block size divides, so the division is exact and the figure does
+    not move; that is luck about those shapes, not a property of the arithmetic.
+    """
+    return (elements + block_elements - 1) // block_elements * block_bytes
+
+
 def kv_bytes_per_token(facts: GgufFacts, kv_type: str) -> int | None:
     """Bytes both KV caches grow by per token, or ``None`` when the shape is unknown.
 
-    Each cache is sized from its own head dimension and rounded to its own block
-    boundary, and the two are then added. Neither shortcut is taken: doubling the key
-    cache would be wrong in proportion for an architecture that declares a value
-    length different from its key length, and rounding once over a combined element
-    count would model a single tensor that does not exist — llama.cpp allocates the
-    key cache and the value cache separately. Every file in the catalog today declares
-    the two lengths equal, and at the head counts real models use both shortcuts give
-    the same number, so this is a no-op on today's data and correct on tomorrow's.
+    Each cache is sized from its own head dimension and rounded up to a whole number
+    of blocks on its own, and the two are then added. No shortcut is taken: doubling
+    the key cache would be wrong in proportion for an architecture that declares a
+    value length different from its key length, and rounding once over a combined
+    element count would model a single tensor that does not exist — llama.cpp
+    allocates the key cache and the value cache separately. Every file in the catalog
+    today declares the two lengths equal and divides every block size exactly, so this
+    is a no-op on today's data and correct on tomorrow's.
 
     Args:
         facts: The file's facts, which must carry an attention-layer count, a
@@ -195,8 +208,8 @@ def kv_bytes_per_token(facts: GgufFacts, kv_type: str) -> int | None:
     value_head_dim = facts.head_dim if facts.value_head_dim is None else facts.value_head_dim
     block_elements, block_bytes = _KV_TYPE_BYTES[kv_type]
     per_cache_heads = facts.attention_layers * facts.n_head_kv
-    key_bytes = per_cache_heads * facts.head_dim // block_elements * block_bytes
-    value_bytes = per_cache_heads * value_head_dim // block_elements * block_bytes
+    key_bytes = _cache_bytes(per_cache_heads * facts.head_dim, block_elements, block_bytes)
+    value_bytes = _cache_bytes(per_cache_heads * value_head_dim, block_elements, block_bytes)
     return key_bytes + value_bytes
 
 

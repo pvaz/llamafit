@@ -205,25 +205,44 @@ def test_a_header_without_the_architecture_key_still_returns_facts() -> None:
     assert facts.attention_layers_source == "unknown"
 
 
-def test_each_cache_is_rounded_to_its_own_block_boundary() -> None:
-    """llama.cpp allocates two tensors, so each is rounded on its own, not together.
-
-    48 elements per cache at q8_0: each rounds down to one 32-element block, so the
-    pair is two blocks. Rounding once over the combined 96 elements would claim three.
-    """
+def _one_head_facts(key: int, value: int) -> GgufFacts:
+    """Facts for a one-layer, one-KV-head model, so a cache is exactly ``key`` wide."""
     metadata = [
         b.string("general.architecture", "acme"),
         b.uint32("acme.block_count", 1),
         b.uint32("acme.attention.head_count", 1),
         b.uint32("acme.attention.head_count_kv", 1),
-        b.uint32("acme.attention.key_length", 48),
-        b.uint32("acme.attention.value_length", 48),
+        b.uint32("acme.attention.key_length", key),
+        b.uint32("acme.attention.value_length", value),
     ]
     tensors = [b.tensor("blk.0.attn_k.weight", [10], 0, 0)]
-    facts = derive_facts(read_header(FakeSource(b.build(metadata, tensors))))
+    return derive_facts(read_header(FakeSource(b.build(metadata, tensors))))
 
-    assert kv_bytes_per_token(facts, "q8_0") == 2 * (48 // 32 * 34)
+
+def test_each_cache_is_rounded_up_on_its_own_not_the_pair_together() -> None:
+    """llama.cpp allocates two tensors, so each takes its own whole blocks.
+
+    48 elements per cache at q8_0 needs two 32-element blocks, four for the pair.
+    Rounding once over the combined 96 elements would claim three, and rounding each
+    cache down would claim two.
+    """
+    facts = _one_head_facts(48, 48)
+
+    assert kv_bytes_per_token(facts, "q8_0") == 2 * (2 * 34)
     assert kv_bytes_per_token(facts, "q8_0") != (48 + 48) // 32 * 34
+    assert kv_bytes_per_token(facts, "q8_0") != 2 * (48 // 32 * 34)
+
+
+def test_a_cache_that_does_not_fill_a_whole_block_still_takes_one() -> None:
+    """Rounding down would report a cache smaller than the one that gets allocated.
+
+    Undersized is the dangerous direction: it says a model fits when it does not. 40
+    elements at q8_0 take two 32-element blocks, not the one flooring would give.
+    """
+    facts = _one_head_facts(40, 40)
+
+    assert kv_bytes_per_token(facts, "q8_0") == 2 * (2 * 34)
+    assert kv_bytes_per_token(facts, "q8_0") > 2 * (40 // 32 * 34)
 
 
 # Attention layers, key/value heads, key length and value length as the five seeded
@@ -243,9 +262,15 @@ _REAL_KV_SHAPES = [
     _REAL_KV_SHAPES,
     ids=[shape[0] for shape in _REAL_KV_SHAPES],
 )
-def test_per_cache_rounding_changes_nothing_on_the_shapes_real_models_have(
+def test_the_kv_rules_change_nothing_on_the_shapes_real_models_have(
     arch: str, layers: int, heads_kv: int, key: int, value: int, expected_f16: int
 ) -> None:
+    """Per-cache sizing and rounding up are both no-ops on every seeded shape.
+
+    Every real cache width is a power of two that each block size divides, so no
+    division leaves a remainder and rounding up cannot differ from rounding down. That
+    is luck about these five models, which is why it is asserted rather than assumed.
+    """
     facts = GgufFacts(
         arch=arch,
         attention_layers=layers,
@@ -257,7 +282,14 @@ def test_per_cache_rounding_changes_nothing_on_the_shapes_real_models_have(
 
     for kv_type in ("f16", "q8_0", "q4_0"):
         block_elements, block_bytes = _KV_TYPE_BYTES[kv_type]
-        combined = layers * heads_kv * (key + value) // block_elements * block_bytes
-        assert kv_bytes_per_token(facts, kv_type) == combined, (
-            f"{arch} at {kv_type}: per-cache rounding must be a no-op on this shape"
+        for name, dimension in (("key", key), ("value", value)):
+            elements = layers * heads_kv * dimension
+            assert elements % block_elements == 0, (
+                f"{arch} at {kv_type}: the {name} cache is {elements} elements, which does "
+                f"not fill whole {block_elements}-element blocks, so rounding up is not a "
+                "no-op on this shape"
+            )
+        combined_rounded_down = layers * heads_kv * (key + value) // block_elements * block_bytes
+        assert kv_bytes_per_token(facts, kv_type) == combined_rounded_down, (
+            f"{arch} at {kv_type}: the per-cache rules must be a no-op on this shape"
         )
