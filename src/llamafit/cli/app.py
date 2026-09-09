@@ -11,7 +11,7 @@ from rich.console import Console
 from rich.text import Text
 
 from llamafit import __version__
-from llamafit.errors import LlamaFitError, NotInstalledError, ProbeError
+from llamafit.errors import LlamaFitError, NotInstalledError, PackagedDataError, ProbeError
 from llamafit.logging import setup_logging
 from llamafit.paths import get_paths
 
@@ -86,7 +86,12 @@ def main() -> None:
         app(standalone_mode=True)
     except LlamaFitError as exc:
         console.print(Text(exc.render(), style="red"))
-        sys.exit(2 if isinstance(exc, (NotInstalledError, ProbeError)) else 1)
+        # 1 is a user or configuration error, 2 an environment problem: llama.cpp or a
+        # tool missing, a probe that could not run, or an installation missing the data
+        # that shipped inside it. A script has to be able to tell "fix your file" from
+        # "fix your machine"; docs/cli.md documents both.
+        environment = (NotInstalledError, PackagedDataError, ProbeError)
+        sys.exit(2 if isinstance(exc, environment) else 1)
     except Exception as exc:  # an unexpected failure is a bug, not a user error
         if verbose:
             raise
