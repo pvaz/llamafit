@@ -105,17 +105,25 @@ def test_a_language_that_fills_in_nothing_falls_back_to_english_not_to_blank() -
     assert format_grouped(32768) == "32,768"
 
 
-def test_a_language_that_groups_with_a_space_cannot_say_so_yet() -> None:
-    # Recorded, not accepted. A msgstr holding only whitespace counts as untranslated, by
-    # a rule that is right for prose and wrong for punctuation, so French, Russian,
-    # Swedish, Polish and every other language that groups digits with a space silently
-    # gets the English comma. The fix belongs in llamafit.i18n.po, which is what decides a
-    # translation is blank; this test is here so the limitation is in the suite rather
-    # than only in a report, and it should be inverted when that lands.
+def test_a_language_that_groups_with_a_space_says_so_and_is_heard() -> None:
+    # This test used to record the opposite, because a msgstr holding only whitespace
+    # counted as untranslated everywhere — a rule that is right for prose and wrong for
+    # punctuation, and one that silently handed French, Russian, Swedish, Polish and every
+    # other language that groups digits with a space the English comma. The three entries
+    # now go through pgettext_literal, which reads them as they stand.
     from llamafit.units import format_grouped
 
     _speaking(group=chr(160), decimal=",")
-    assert format_grouped(32768) == "32,768", "if this now says 32 768, invert the test"
+    assert format_grouped(32768) == "32" + chr(160) + "768"
+
+
+def test_a_group_separator_that_is_an_ordinary_space_is_a_space_too() -> None:
+    # A no-break space is what the shipped catalogs write, but nothing here is special
+    # about that character: whatever a translator puts in the entry is what comes out.
+    from llamafit.units import format_grouped
+
+    _speaking(group=" ", decimal=",")
+    assert format_grouped(32768) == "32 768"
 
 
 def test_the_billions_suffix_is_taken_from_the_catalog() -> None:

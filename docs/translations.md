@@ -131,8 +131,10 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
 
 4. Translate. Leave a `msgstr` empty rather than guessing: an empty translation falls back
    to the English message, so an unfinished catalog degrades to English and never shows a
-   blank line. A `msgstr` holding only spaces, tabs or newlines counts as empty too, and
-   the completeness check still lists it as a message your language needs.
+   blank line. A `msgstr` holding only spaces, tabs or newlines falls back the same way,
+   because three spaces reach a screen as a blank line and not as a sentence. The three
+   punctuation entries below are the exception, and the only one: for those a space is
+   the translation.
 
 5. Run the tests. `tests/unit/test_i18n_catalogs.py` checks every catalog: it must parse,
    it must declare its plural rule and the right language, it must not translate a message
@@ -182,22 +184,36 @@ locale database:
 
 | Context | English | What to write |
 |---|---|---|
-| `thousands separator` | `,` | What goes between groups of three digits: `32,768`, `32.768` |
+| `thousands separator` | `,` | What goes between groups of three digits: `32,768`, `32.768`, `32 768` |
 | `decimal separator` | `.` | What goes before the fraction: `127.8`, `127,8` |
 | `parameter count` | `B` | The abbreviation for a thousand million, as in `27B` |
 
 This is not cosmetic. English writes a model's context as `32,768`; a reader whose language
 groups with a point reads that as a fraction and is told the model holds thirty-two tokens.
 
-Two warnings the `#.` notes repeat. **Do not translate the word *billion*:** the long and
-short scales disagree about what one is, so write the abbreviation your readers expect for
-a thousand million. And **an empty translation means untranslated**, so it falls back to the
-English character rather than to nothing.
+**A space is an answer here.** These three entries are read with `pgettext_literal`, which
+takes the `msgstr` exactly as you wrote it, so a language that groups digits with a space —
+French, Russian, Swedish, Polish, Czech, Finnish, Hungarian, Bulgarian, Ukrainian,
+Norwegian — says so by writing that space. Everywhere else in the catalog a translation of
+nothing but whitespace still counts as untranslated, because a half-finished sentence must
+degrade to English and never to a blank line; that rule is off for these three and for
+nothing else.
 
-There is a limitation here, and it is ours rather than yours: a translation holding only a
-space counts as empty, so a language that groups digits with a space — French, Russian,
-Swedish, Polish and others — cannot say so yet and silently gets the English comma. Please
-open an issue rather than working around it; the fix belongs in the reader.
+Write a **no-break space** (U+00A0) rather than an ordinary one, and say so in a `#` comment
+above the entry — an invisible character with no note beside it is the next reader's bug.
+The shipped catalogs use U+00A0 even where CLDR asks for the narrow no-break space U+202F,
+French included, because many terminal fonts have no glyph for U+202F and would drop it or
+draw a box.
+
+**An empty translation still means untranslated**, and falls back to the English character
+rather than to nothing. That is the one way to say nothing here.
+
+**Do not translate the word *billion*:** the long and short scales disagree about what one
+is, so write the abbreviation your readers expect for a thousand million. If your language
+has no short form of its own — Japanese, Korean and Chinese count in hundreds of millions,
+Spanish and Catalan write `1000 M`, Bengali counts in tens of millions — write `B`, which
+is what readers of these model names already use, and say in a `#` comment that it was a
+decision and not an oversight.
 
 ### When a message has a context
 
@@ -253,8 +269,8 @@ python scripts/gen_messages.py
 ```
 
 It reads the syntax tree of every source, finds each call to `_()`, `ngettext()`,
-`pgettext()`, `npgettext()` and their four `lazy_` counterparts, and rewrites
-`messages.pot`. Give it paths to read something else.
+`pgettext()`, `pgettext_literal()`, `npgettext()` and the four `lazy_` counterparts, and
+rewrites `messages.pot`. Give it paths to read something else.
 
 ### Leaving a note for the translator
 
@@ -326,6 +342,10 @@ pgettext("GPU", "none detected")
 pgettext("backends", "none detected")
 npgettext("GPU", "%(count)d device", "%(count)d devices", count) % {"count": count}
 ```
+
+`pgettext_literal` is `pgettext` for the three entries above that hold punctuation rather
+than prose: same lookup, except that a translation of nothing but whitespace is a
+translation. Nothing else in the catalog is read that way.
 
 `lazy_pgettext` and `lazy_npgettext` are the deferred pair, for anything built at import
 time.
