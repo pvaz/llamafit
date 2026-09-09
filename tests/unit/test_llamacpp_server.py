@@ -73,7 +73,8 @@ def test_candidate_ports_ignores_non_numeric_and_duplicates() -> None:
     assert candidate_ports({"LLAMA_SERVER_PORT": "8081"}) == [8081, 8080, 8098]
 
 
-def test_health_checks_use_a_short_timeout() -> None:
+def test_health_checks_use_the_health_timeout() -> None:
+    assert HEALTH_TIMEOUT_S == 1.0, "long enough for a busy server, and refusals return at once"
     http = FakeHttp({"http://127.0.0.1:8080/health": HEALTH})
     discover_servers(http, [8080])
     assert http.calls[0] == ("http://127.0.0.1:8080/health", HEALTH_TIMEOUT_S)

@@ -24,7 +24,7 @@ it, so a `doctor` warning can always be traced here.
 | `wmi-video` | Windows | PowerShell `Get-CimInstance Win32_VideoController` | names of all display adapters | vendor tools only |
 | `lspci` | Linux | `lspci -nn` | names of all display controllers | vendor tools only |
 | `llama-server --version` | all | `llama-server --version` | llama.cpp build number and commit | `bin/VERSION.txt` is read when present |
-| `server:<port>` | all | HTTP `GET /health` (0.3 s timeout), then `/v1/models`, `/props` (1.5 s timeout each) on 8080, 8081, 8098 and `LLAMA_SERVER_PORT` | running servers, their model and context | none listed |
+| `server:<port>` | all | HTTP `GET /health` (1 s timeout), then `/v1/models`, `/props` (1.5 s timeout each) on 8080, 8081, 8098 and `LLAMA_SERVER_PORT` | running servers, their model and context | none listed |
 
 The module count is not the channel count: a dual-channel board with four modules reports four
 modules and says nothing about channels. No source above reports a channel count, so LlamaFit
@@ -35,6 +35,10 @@ The RAM bandwidth measurement is not a probe: it runs in-process and reports `me
 it can allocate its buffer (more accurate with NumPy: `pip install llamafit[fast]`),
 `estimated` when the channel count is known (no current source reports it), and `assumed`
 (40 GB/s) when nothing better is known.
+
+A GPU's memory bandwidth and fp16 compute are not measured: they come from a bundled table of
+vendor specifications matched by device name, which is why the tables label them `spec`. Only
+the VRAM figures next to them are read from this machine.
 
 A failed vendor GPU probe (`nvidia-smi`, `rocm-smi`, `system-profiler`) is hidden by `doctor`
 when the machine has GPUs but none from that vendor: a host with only an NVIDIA card is never

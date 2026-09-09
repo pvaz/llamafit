@@ -62,11 +62,20 @@ def render_host(host: Host) -> Table:
             if gpu.vram_total_bytes
             else "VRAM unknown"
         )
-        specs = ", ".join(
+        # Bandwidth and compute come from the bundled specification table, not from this
+        # machine, so they are labelled: no number reaches the user without its source.
+        from_table = " and ".join(
             x
             for x in (
                 f"{gpu.bandwidth_gbps} GB/s" if gpu.bandwidth_gbps else None,
                 f"{gpu.compute_tflops_fp16} TFLOPS fp16" if gpu.compute_tflops_fp16 else None,
+            )
+            if x
+        )
+        specs = ", ".join(
+            x
+            for x in (
+                f"{from_table} (spec)" if from_table else None,
                 f"driver {gpu.driver}" if gpu.driver else None,
             )
             if x
@@ -115,7 +124,11 @@ def render_llamacpp(llamacpp: LlamaCpp) -> Table:
 
 
 def render_probes(probes: Iterable[Probe]) -> Table:
-    """Probe-by-probe outcome; the error text is never parsed as markup."""
+    """Probe-by-probe outcome; the error text is never parsed as markup.
+
+    A ``server:<port>`` probe that found nothing is the ordinary case on a machine with no
+    llama-server running, so it is shown dim rather than as a failure.
+    """
     table = Table(title="Probes", box=None, pad_edge=False)
     table.add_column("probe", style="bold")
     table.add_column("result")
@@ -123,6 +136,8 @@ def render_probes(probes: Iterable[Probe]) -> Table:
     for probe in probes:
         if probe.ok:
             status = Text("ok", style="green")
+        elif probe.name.startswith("server:"):
+            status = Text("no server", style="dim")
         else:
             status = Text("failed", style="yellow")
             if probe.error:

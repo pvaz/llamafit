@@ -44,8 +44,9 @@ def reference_runner() -> FakeRunner:
 
 def reference_cpuinfo() -> dict[str, object]:
     return {
+        # AVX-512 is fused off on this part, so the live run reports avx2 only.
         "brand_raw": "Intel(R) Core(TM) i9-14900KF",
-        "flags": ["avx2", "avx512f", "avx512_vnni"],
+        "flags": ["avx2"],
     }
 
 
