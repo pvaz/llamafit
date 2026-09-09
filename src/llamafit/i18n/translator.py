@@ -195,7 +195,37 @@ def set_language(
         )
     set_translator(CatalogTranslator(choice.language, catalog))
     _log.debug("speaking %s, chosen by %s", choice.language, choice.source)
-    return _once(_named(choice, catalog))
+    return _once(_unusable(_named(choice, catalog), catalog))
+
+
+def _unusable(choice: LanguageChoice, catalog: PoCatalog) -> LanguageChoice:
+    """Say out loud that part of the catalog could not be used, and log each reason.
+
+    A translation whose placeholders would not fill is dropped when the catalog is read,
+    so those messages are already showing in English and nothing is going to crash. That
+    is the fallback, not the whole answer: whoever wrote the catalog has to be told, and a
+    catalog somebody writes themselves never goes near the test suite that would have told
+    them. The reasons go to the log, which is where this layer puts detail, and one
+    sentence goes to the interface, which is what a user actually reads.
+
+    A notice the choice already carries is left alone. A substitution notice says the
+    reader is getting another region's translation, which they need more than this.
+    """
+    if not catalog.problems:
+        return choice
+    for problem in catalog.problems:
+        _log.debug("%s", problem)
+    if choice.notice is not None:
+        return choice
+    count = len(catalog.problems)
+    messages = "message" if count == 1 else "messages"
+    return replace(
+        choice,
+        notice=f"LlamaFit could not use {count} {messages} in its {choice.language} "
+        "translation, so those are in English.",
+        hint="Run again with --verbose; the log names each one. "
+        "docs/translations.md explains placeholders.",
+    )
 
 
 def _named(choice: LanguageChoice, catalog: PoCatalog) -> LanguageChoice:

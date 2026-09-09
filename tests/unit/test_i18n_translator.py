@@ -286,3 +286,45 @@ def test_a_catalog_that_holds_another_language_falls_back_to_english(tmp_path: P
     assert current_language() == "en"
     assert choice.notice == "LlamaFit could not read its pt_PT translation, so it is using English."
     assert _("No GPU detected") == "No GPU detected"
+
+
+BROKEN = CATALOG + '\nmsgid "%(count)d file"\nmsgstr "%s ficheiros"\n'
+
+
+def test_a_translation_the_reader_had_to_drop_is_english_and_is_said_out_loud(
+    tmp_path: Path,
+) -> None:
+    # Before this the sentence reached the user as "{'count': 3} ficheiros"; %-formatting
+    # a positional conversion with a dictionary substitutes the dictionary itself.
+    choice = set_language(
+        "pt_PT", env={}, available=("en", "pt_PT"), directory=_catalog_dir(tmp_path, BROKEN)
+    )
+    assert choice.language == "pt_PT"
+    assert _("%(count)d file") % {"count": 3} == "3 file"
+    assert choice.notice == (
+        "LlamaFit could not use 1 message in its pt_PT translation, so those are in English."
+    )
+    assert choice.hint is not None
+    assert "--verbose" in choice.hint
+
+
+def test_a_catalog_with_nothing_wrong_says_nothing(tmp_path: Path) -> None:
+    choice = set_language(
+        "pt_PT", env={}, available=("en", "pt_PT"), directory=_catalog_dir(tmp_path)
+    )
+    assert choice.notice is None
+    assert choice.hint is None
+
+
+def test_a_substitution_notice_is_not_replaced_by_the_unusable_one(tmp_path: Path) -> None:
+    # A reader being served another region's translation needs to hear that first; the
+    # dropped messages are in the log either way.
+    text = BROKEN.replace(
+        '"Language: pt_PT\\n"', '"Language: pt_PT\\n"\n"Language-Team: Portuguese (Portugal)\\n"'
+    )
+    choice = set_language(
+        "pt_BR", env={}, available=("en", "pt_PT"), directory=_catalog_dir(tmp_path, text)
+    )
+    assert choice.notice == (
+        "LlamaFit has no pt_BR translation, so it is using the Portuguese (Portugal) one."
+    )

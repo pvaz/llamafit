@@ -66,6 +66,7 @@ from llamafit.i18n.po import (
     PoCatalog,
     PoSyntaxError,
     parse_po,
+    placeholders,
     read_po,
 )
 from llamafit.i18n.select import (
@@ -131,6 +132,7 @@ __all__ = [
     "parse_plural_forms",
     "parse_po",
     "pgettext",
+    "placeholders",
     "read_po",
     "reset",
     "resolve_language",

@@ -46,7 +46,8 @@ class LanguageChoice:
         source: Which step of the order decided it.
         requested: What was asked for, when it was not what was given; ``None`` otherwise.
         available: Every language that does have a catalog, English included.
-        notice: One sentence for the user when the request was not met exactly.
+        notice: One sentence for the user when the request was not met exactly, or when
+            what was loaded to meet it turned out not to be wholly usable.
         hint: The action that would fix it, when there is one.
     """
 
