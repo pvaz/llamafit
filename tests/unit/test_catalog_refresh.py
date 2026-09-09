@@ -296,3 +296,21 @@ def test_an_interrupted_write_leaves_the_previous_facts_file_intact(
         refresh_file(path, hf=FakeHfClient(changed_files), read_facts_fn=facts_stub)
 
     assert facts_path_of(path).read_bytes() == before
+
+
+def test_a_failed_write_leaves_no_temporary_file_behind(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+
+    def raising_replace(*args: object, **kwargs: object) -> None:
+        raise OSError("disk full")
+
+    monkeypatch.setattr(refresh_module.os, "replace", raising_replace)
+
+    with pytest.raises(CatalogError):
+        refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
+
+    facts_path = facts_path_of(path)
+    assert not facts_path.with_name(f"{facts_path.name}.tmp").exists()
+    assert list(tmp_path.glob("*.tmp")) == []

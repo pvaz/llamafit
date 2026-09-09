@@ -28,18 +28,19 @@ from __future__ import annotations
 import json
 import os
 from collections.abc import Callable, Sequence
+from contextlib import suppress
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from llamafit.catalog.hf import HfClient, RepoFile, assign_files_to_quants
-from llamafit.catalog.loader import facts_path_for, load_models_from_file
+from llamafit.catalog.loader import FACTS_SCHEMA_VERSION, facts_path_for, load_models_from_file
 from llamafit.errors import CatalogError, LlamaFitError
 from llamafit.models.catalog import CatalogModel, Extra, ModelSource, Quant
 from llamafit.models.gguf import GgufFacts
 
-FACTS_SCHEMA_VERSION = 1
+__all__ = ["FACTS_SCHEMA_VERSION", "RefreshResult", "refresh_file"]
 
 
 @dataclass(frozen=True)
@@ -300,7 +301,8 @@ def _write_facts_atomically(path: Path, text: str) -> None:
 
     A crash or a full disk between writing the temporary file and replacing the
     target leaves either the previous file or the new one in place, never a
-    truncated one.
+    truncated one. A failure also takes the temporary file with it, so no debris
+    is left beside the curated data for a contributor to commit by accident.
 
     Raises:
         CatalogError: The temporary file could not be written, or could not be
@@ -311,6 +313,8 @@ def _write_facts_atomically(path: Path, text: str) -> None:
         tmp_path.write_text(text, encoding="utf-8")
         os.replace(tmp_path, path)
     except OSError as exc:
+        with suppress(OSError):
+            tmp_path.unlink()
         raise CatalogError(
             f"could not write {path}: {exc}",
             hint="Check that the directory is writable and has room.",
