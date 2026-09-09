@@ -145,7 +145,7 @@ simply never been refreshed.
 | `llama_cpp.*` | no | minimum build, allowed KV types, required extras, quirks shown by `plan` |
 | `llama_cpp.lazy_tensors` | no | tensor-name prefixes llama.cpp streams from disk; see below |
 | `sources[]` | yes | at least one GGUF repository with at least one quant |
-| `sources[].path` | no | a directory inside the repository; only files under it are matched |
+| `sources[].repo_path` | no | a directory inside the repository; only files under it are matched |
 | `quants[].name`, `extras[].file` | yes | the only fields a quant or extra needs in the YAML |
 | `measured[]` | no | measurements with the profile and flags they were taken with |
 
@@ -158,13 +158,15 @@ notion of which source published it, so a name reused by two sources (an officia
 a community one often carry the same names) would have both silently merged under the same key.
 The loader rejects this as a `Problem` naming the model, the quant name, and both sources.
 
-`sources[].path` is how a curator disambiguates a repository that publishes the same quant
+`sources[].repo_path` is how a curator disambiguates a repository that publishes the same quant
 twice — a plain build and an importance-matrix build, side by side in two directories, which
 happens routinely. The matcher refuses to guess between two files claiming one quant name,
-and without a `path` the only answers are to drop the quant or drop the source. Set `path` to
+and without a `repo_path` the only answers are to drop the quant or drop the source. Set it to
 the directory holding the build you want and only files under it are considered, for extras
 as well as quants. Leave it out and the whole repository is considered, exactly as before. A
-`path` that holds no files stops that model's refresh and leaves its recorded facts alone.
+`repo_path` that holds no files stops that model's refresh and leaves its recorded facts alone. It
+is a different field from `sources[].path`, which is the local file path of a `local` source; each
+kind refuses the other's field rather than leaving one name with two meanings.
 
 `llama_cpp.lazy_tensors` is the one curated field the GGUF header cannot supply. A model may
 ship a very large lookup table — Qwen3.8-Flash-Next's `per_layer_token_embd.weight` is 28.8 GB,

@@ -124,7 +124,7 @@ def _under_directory(files: Sequence[RepoFile], directory: str) -> list[RepoFile
 
     Args:
         files: Every file in the repository.
-        directory: The directory prefix to keep, from the source's ``path``.
+        directory: The directory prefix to keep, from the source's ``repo_path``.
 
     Returns:
         The files under ``directory``, in the order they were listed.
@@ -231,11 +231,12 @@ def _refresh_source(
 ) -> str | None:
     """Refresh one source's quants and extras in place.
 
-    A source's ``path``, when it has one, narrows the listing to one directory inside
-    the repository before anything is matched, so both quants and extras see only the
-    files under it. A ``path`` that holds nothing is a curated mistake rather than a
-    fetch that went wrong, and it abandons the model with everything already recorded
-    left alone, which is better than matching nothing and reporting it once per quant.
+    A source's ``repo_path``, when it has one, narrows the listing to one directory
+    inside the repository before anything is matched, so both quants and extras see
+    only the files under it. A ``repo_path`` that holds nothing is a curated mistake
+    rather than a fetch that went wrong, and it abandons the model with everything
+    already recorded left alone, which is better than matching nothing and reporting it
+    once per quant.
 
     A quant name that matched no whole set of files is not an error: the repository
     listing was read successfully, and the files simply do not add up to one quant —
@@ -243,8 +244,8 @@ def _refresh_source(
     shards. It is recorded in ``warnings`` instead, so a curator can find out which
     rather than have it silently do nothing. The warning does not claim to know which
     of the three it is, because the matcher deliberately declines to guess; it does now
-    name the ``path`` field, which is the answer when the repository publishes the same
-    quant name in two directories.
+    name the ``repo_path`` field, which is the answer when the repository publishes the
+    same quant name in two directories.
 
     A quant whose facts cannot be read is an error, and it belongs to the model
     rather than to the run: one unreadable quant abandons its own model, with what
@@ -267,10 +268,10 @@ def _refresh_source(
         return f"{repo}: {exc}"
     if not files:
         return f"{repo}: the repository listing returned no files"
-    if source.path:
-        files = _under_directory(files, source.path)
+    if source.repo_path:
+        files = _under_directory(files, source.repo_path)
         if not files:
-            return f"{repo}: the repository has no files under {source.path!r}"
+            return f"{repo}: the repository has no files under {source.repo_path!r}"
 
     def file_url(path: str) -> str:
         return hf.file_url(repo, path)
@@ -288,7 +289,7 @@ def _refresh_source(
                 f"{repo} matched this quant name; it may be published there more than once, "
                 "may be missing shards, or may not be published at all. Check the repository "
                 "listing. If it publishes this quant under more than one directory, set the "
-                "source's path to the directory holding the build you want."
+                "source's repo_path to the directory holding the build you want."
             )
             continue
         try:

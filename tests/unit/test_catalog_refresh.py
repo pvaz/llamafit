@@ -625,7 +625,7 @@ def test_a_model_that_streams_nothing_passes_no_lazy_tensors(tmp_path: Path) -> 
 
 PATHED_ENTRY = ENTRY.replace(
     "    - repo: example/tiny-1b-GGUF",
-    "    - repo: example/tiny-1b-GGUF\n      path: main",
+    "    - repo: example/tiny-1b-GGUF\n      repo_path: main",
 )
 
 TWO_BUILDS = {
@@ -636,16 +636,16 @@ TWO_BUILDS = {
 }
 
 
-def test_a_quant_published_twice_is_still_refused_without_a_path(tmp_path: Path) -> None:
+def test_a_quant_published_twice_is_still_refused_without_a_repo_path(tmp_path: Path) -> None:
     path = write(tmp_path, "tiny.yaml", ENTRY)
 
     results = refresh_file(path, hf=FakeHfClient(TWO_BUILDS), read_facts_fn=facts_stub)
 
     assert results[0].changed is False
-    assert "set the source's path" in results[0].warnings[0]
+    assert "set the source's repo_path" in results[0].warnings[0]
 
 
-def test_a_path_picks_the_build_the_curator_meant(tmp_path: Path) -> None:
+def test_a_repo_path_picks_the_build_the_curator_meant(tmp_path: Path) -> None:
     path = write(tmp_path, "tiny.yaml", PATHED_ENTRY)
 
     results = refresh_file(path, hf=FakeHfClient(TWO_BUILDS), read_facts_fn=facts_stub)
@@ -659,7 +659,7 @@ def test_a_path_picks_the_build_the_curator_meant(tmp_path: Path) -> None:
     assert quant.sha256 == ["main1"]
 
 
-def test_a_path_stops_at_a_directory_boundary(tmp_path: Path) -> None:
+def test_a_repo_path_stops_at_a_directory_boundary(tmp_path: Path) -> None:
     # "main" must not swallow "main-imat": they are two builds, not one.
     files = {
         "example/tiny-1b-GGUF": [
@@ -675,7 +675,7 @@ def test_a_path_stops_at_a_directory_boundary(tmp_path: Path) -> None:
     assert models[0].sources[0].quants[0].files == ["main/tiny-1b-Q4_K_M.gguf"]
 
 
-def test_a_path_that_holds_nothing_is_an_error_naming_it(tmp_path: Path) -> None:
+def test_a_repo_path_that_holds_nothing_is_an_error_naming_it(tmp_path: Path) -> None:
     path = write(tmp_path, "tiny.yaml", PATHED_ENTRY)
 
     results = refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
@@ -685,7 +685,7 @@ def test_a_path_that_holds_nothing_is_an_error_naming_it(tmp_path: Path) -> None
     assert results[0].changed is False
 
 
-def test_a_path_narrows_the_extras_too(tmp_path: Path) -> None:
+def test_a_repo_path_narrows_the_extras_too(tmp_path: Path) -> None:
     entry = PATHED_ENTRY.replace(
         "        - {name: Q4_K_M}",
         "        - {name: Q4_K_M}\n      extras:\n        - {role: mmproj, file: mmproj-F16.gguf}",
