@@ -20,6 +20,7 @@ import pytest
 from scripts.gen_messages import extract, render_template
 
 from llamafit import __version__
+from llamafit.errors import ConfigError
 from llamafit.i18n import SOURCE_LANGUAGE, TEMPLATE_NAME
 from llamafit.i18n.catalogs import available_languages, catalog_dir, catalog_path, load_language
 from llamafit.i18n.po import MessageKey, PoCatalog, parse_po, read_po
@@ -378,3 +379,50 @@ def test_every_shipped_translation_actually_formats() -> None:
             for translation in message.translations:
                 if translation.strip():
                     assert isinstance(translation % values, str), key
+
+
+def _catalog(tmp_path: Path, header: str, name: str = "pt_PT.po") -> Path:
+    (tmp_path / name).write_text(
+        'msgid ""\nmsgstr ""\n' + header + '"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n\n'
+        'msgid "No GPU detected"\nmsgstr "Keine GPU erkannt"\n',
+        encoding="utf-8",
+    )
+    return tmp_path
+
+
+def test_a_catalog_whose_header_names_another_language_is_refused(tmp_path: Path) -> None:
+    # Nothing downstream would notice: the tag comes from the file name, so this catalog
+    # would be installed as pt_PT and would answer in German, and nothing would say so.
+    directory = _catalog(tmp_path, '"Language: de\\n"\n')
+    with pytest.raises(ConfigError) as caught:
+        load_language("pt_PT", directory=directory)
+    rendered = caught.value.render()
+    assert "read as pt_PT" in rendered
+    assert "'de'" in rendered
+    assert "Rename the file to de.po" in rendered
+    assert "set the header to pt_PT" in rendered
+
+
+def test_a_catalog_that_declares_no_language_at_all_is_still_read(tmp_path: Path) -> None:
+    # A translation in progress may not have filled the header in; saying nothing is not
+    # the same as saying something false.
+    directory = _catalog(tmp_path, "")
+    assert load_language("pt_PT", directory=directory).gettext("No GPU detected") == (
+        "Keine GPU erkannt"
+    )
+
+
+@pytest.mark.parametrize("header", ["pt-PT", "PT_pt", "pt_PT.UTF-8"])
+def test_the_same_language_spelt_another_way_is_the_same_language(
+    tmp_path: Path, header: str
+) -> None:
+    directory = _catalog(tmp_path, '"Language: ' + header + '\\n"\n')
+    assert load_language("pt_PT", directory=directory).messages
+
+
+def test_a_language_header_that_names_no_language_is_refused(tmp_path: Path) -> None:
+    # Portuguese_Portugal is the name Windows reports and the alias table cannot resolve;
+    # a header holding it declares nothing this can check against, so it is refused too.
+    directory = _catalog(tmp_path, '"Language: Portuguese_Portugal\\n"\n')
+    with pytest.raises(ConfigError, match="Portuguese_Portugal"):
+        load_language("pt_PT", directory=directory)

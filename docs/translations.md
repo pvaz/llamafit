@@ -103,6 +103,13 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
    simply pick the wrong form, and its reader would meet real words in the wrong grammar
    with nothing anywhere to say why.
 
+   `Language` has to agree with the file's name, and a `fr_FR.po` whose header says
+   `Language: de` is **refused** too. Nothing downstream would notice otherwise: the tag
+   comes from the file's name, so the catalog would be installed as French and would then
+   answer in German with no error anywhere. Spelling is forgiven — `fr-FR`, `FR_fr` and
+   `fr_FR.UTF-8` all mean `fr_FR` — and a catalog that has not filled the header in yet is
+   still read, because saying nothing is not the same as saying something false.
+
 4. Translate. Leave a `msgstr` empty rather than guessing: an empty translation falls back
    to the English message, so an unfinished catalog degrades to English and never shows a
    blank line. A `msgstr` holding only spaces, tabs or newlines counts as empty too, and
