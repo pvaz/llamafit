@@ -1,8 +1,16 @@
-"""Parse a GGUF header: magic, version, counts, metadata and tensor infos."""
+"""Parse a GGUF header: magic, version, counts, metadata and tensor infos.
+
+A model too large for one file is published as a *split*: several ``.gguf`` shards,
+each a valid GGUF file in its own right. Only the shard numbered 0 carries the
+model's metadata; the others carry three bookkeeping keys and their share of the
+tensors. :func:`merge_shard_headers` turns a set of shard headers back into the one
+header that describes the whole model, so everything downstream stays shard-unaware.
+"""
 
 from __future__ import annotations
 
 import struct
+from collections.abc import Sequence
 
 from llamafit.errors import CatalogError
 from llamafit.gguf.source import ByteSource
@@ -12,6 +20,10 @@ from llamafit.models.gguf import GgufHeader, TensorInfo
 _MAGIC = b"GGUF"
 _SUPPORTED_VERSIONS = (2, 3)
 _DEFAULT_ALIGNMENT = 32
+_SPLIT_NO = "split.no"
+_SPLIT_COUNT = "split.count"
+_SPLIT_TENSORS_COUNT = "split.tensors.count"
+_DIAGNOSTIC_KEYS = ("_unknown_tensor_types", "_misaligned_tensors")
 _SCALARS: dict[int, tuple[str, int]] = {
     ValueType.UINT8: ("<B", 1),
     ValueType.INT8: ("<b", 1),
@@ -165,4 +177,125 @@ def read_header(source: ByteSource) -> GgufHeader:
         metadata=metadata,
         tensors=tensors,
         header_bytes=cursor.offset,
+    )
+
+
+def _metadata_int(header: GgufHeader, key: str) -> int | None:
+    """The integer value of ``key`` in ``header``'s metadata, or ``None``."""
+    value = header.metadata.get(key)
+    if isinstance(value, int) and not isinstance(value, bool):
+        return value
+    return None
+
+
+def _merged_diagnostics(shards: Sequence[GgufHeader], key: str) -> list[str]:
+    """Every shard's entries for one of the reader's diagnostic metadata keys."""
+    collected: list[str] = []
+    for shard in shards:
+        value = shard.metadata.get(key)
+        if isinstance(value, list):
+            collected.extend(str(item) for item in value)
+    return collected
+
+
+def merge_shard_headers(headers: Sequence[GgufHeader]) -> GgufHeader:
+    """Merge one split model's shard headers into a single header for the whole model.
+
+    A single header is returned unchanged, so a model published as one file costs
+    nothing here. For a set, the metadata comes from the shard whose ``split.no`` is
+    0 — the only shard that carries the architecture — and the tensor table is every
+    shard's tensors concatenated in shard order, which is what the byte buckets are
+    summed from. Only tensor sizes are summed and never offsets, so a shard's own
+    offsets do not matter and the order the shards arrive in does not either.
+
+    An incomplete set is refused rather than merged. Facts derived from a set with a
+    shard missing are quietly too small: a memory budget built on them would claim a
+    model fits when it does not, which is the whole reason this function exists.
+
+    Args:
+        headers: One header per shard, in any order.
+
+    Returns:
+        A header whose metadata describes the model and whose tensors are the union
+        of every shard's, with ``tensor_count`` and the reader's diagnostic metadata
+        keys covering that union. ``header_bytes`` and ``alignment`` stay those of
+        the metadata shard, since they describe one file's layout rather than the
+        model's.
+
+    Raises:
+        CatalogError: If no headers are given, if any of several is not a shard of a
+            split model, if the metadata shard is absent, if a shard is duplicated
+            or missing, or if the union does not hold the number of tensors the
+            model declares.
+    """
+    if not headers:
+        raise CatalogError(
+            "no GGUF header to read facts from",
+            hint="Pass the model's file, or every shard of a split model.",
+        )
+    if len(headers) == 1:
+        return headers[0]
+
+    numbered: list[tuple[int, GgufHeader]] = []
+    unnumbered = 0
+    for header in headers:
+        shard_no = _metadata_int(header, _SPLIT_NO)
+        if shard_no is None:
+            unnumbered += 1
+        else:
+            numbered.append((shard_no, header))
+    if unnumbered:
+        raise CatalogError(
+            f"{unnumbered} of {len(headers)} GGUF files carry no '{_SPLIT_NO}' key, so they "
+            "are not shards of one split model",
+            hint="Pass a single file on its own, or every shard of one split model.",
+        )
+
+    numbered.sort(key=lambda pair: pair[0])
+    shard_numbers = [shard_no for shard_no, _ in numbered]
+    base = next((header for shard_no, header in numbered if shard_no == 0), None)
+    if base is None:
+        raise CatalogError(
+            f"the shard holding the model's metadata is missing: got {_SPLIT_NO} "
+            f"{shard_numbers}, expected one of them to be 0",
+            hint="Pass every shard of the split model, including the first.",
+        )
+
+    declared_shards = _metadata_int(base, _SPLIT_COUNT)
+    if declared_shards is not None and declared_shards != len(numbered):
+        raise CatalogError(
+            f"incomplete shard set: the model declares {declared_shards} shards and "
+            f"{len(numbered)} arrived ({_SPLIT_NO} {shard_numbers})",
+            hint="Pass every shard of the split model.",
+        )
+    if shard_numbers != list(range(len(numbered))):
+        raise CatalogError(
+            f"incomplete shard set: expected {_SPLIT_NO} 0 to {len(numbered) - 1}, "
+            f"got {shard_numbers}",
+            hint="Pass each shard of the split model exactly once.",
+        )
+
+    tensors: list[TensorInfo] = []
+    for _, header in numbered:
+        tensors.extend(header.tensors)
+
+    declared_tensors = _metadata_int(base, _SPLIT_TENSORS_COUNT)
+    if declared_tensors is not None and declared_tensors != len(tensors):
+        raise CatalogError(
+            f"incomplete shard set: the model declares {declared_tensors} tensors and its "
+            f"{len(numbered)} shards hold {len(tensors)} between them",
+            hint="Pass every shard of the split model.",
+        )
+
+    metadata = dict(base.metadata)
+    shards = [header for _, header in numbered]
+    for key in _DIAGNOSTIC_KEYS:
+        collected = _merged_diagnostics(shards, key)
+        if collected:
+            metadata[key] = collected
+        else:
+            metadata.pop(key, None)
+
+    return base.model_copy(
+        update={"metadata": metadata, "tensors": tensors, "tensor_count": len(tensors)}
     )
