@@ -49,6 +49,8 @@ class SubprocessRunner:
     def run(self, argv: Sequence[str], *, timeout: float = 10.0) -> CommandResult:
         """Run ``argv``; a missing program or a timeout is reported, not raised."""
         args = list(argv)
+        if not args:
+            return CommandResult(args, None, "", "", 0, error="empty command")
         start = time.perf_counter()
         try:
             completed = subprocess.run(
@@ -95,6 +97,8 @@ class FakeRunner:
         """Look up the command by full line first, then by program name."""
         args = list(argv)
         self.calls.append(args)
+        if not args:
+            return CommandResult(args, None, "", "", 0, error="empty command")
         response = self.responses.get(" ".join(args))
         if response is None:
             response = self.responses.get(args[0])
@@ -122,7 +126,7 @@ def probe(
     if result.error is not None:
         return None, Probe(name=name, ok=False, duration_ms=result.duration_ms, error=result.error)
     if result.returncode != 0:
-        detail = result.stderr.strip() or result.stdout.strip()
+        detail = result.stderr.strip() or result.stdout.strip() or "no output"
         return None, Probe(
             name=name,
             ok=False,

@@ -63,3 +63,11 @@ def test_probe_reports_command_failure() -> None:
     value, rec = probe("tool", runner, ["tool"], int)
     assert value is None
     assert rec.error == "exit code 1: bad"
+
+
+def test_empty_argv_is_an_error_not_an_exception() -> None:
+    result = SubprocessRunner().run([])
+    assert not result.ok and result.error == "empty command"
+    fake = FakeRunner({})
+    assert fake.run([]).error == "empty command"
+    assert fake.calls == [[]]
