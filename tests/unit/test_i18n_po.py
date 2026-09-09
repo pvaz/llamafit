@@ -152,16 +152,21 @@ msgstr[0] "%(count)d plik"
     assert catalog.ngettext("%(count)d file", "%(count)d files", 5) == "%(count)d files"
 
 
-def test_a_catalog_without_plural_forms_still_works_on_english_rules() -> None:
-    catalog = parse_po('msgid ""\nmsgstr ""\n"Language: pt_PT\\n"\n')
-    assert catalog.plural_forms is None
-    assert catalog.plural_rule.nplurals == 2
-    assert catalog.plural_rule.index(1) == 0
-    assert catalog.plural_rule.index(2) == 1
+def test_a_header_that_declares_no_plural_rule_is_refused() -> None:
+    # The one input that used to come back quietly wrong instead of raising: a three-form
+    # language silently inherited English's rule, and its reader met real words in the
+    # wrong grammar with nothing anywhere to say so.
+    with pytest.raises(PoSyntaxError, match="declares no Plural-Forms"):
+        parse_po('msgid ""\nmsgstr ""\n"Language: pt_PT\\n"\n')
+
+
+def test_a_file_with_no_header_at_all_is_refused_and_says_which_part_is_missing() -> None:
+    with pytest.raises(PoSyntaxError, match="no header entry"):
+        parse_po('msgid "a"\nmsgstr "A"\n')
 
 
 def test_entries_do_not_need_a_blank_line_between_them() -> None:
-    catalog = parse_po('msgid "a"\nmsgstr "A"\nmsgid "b"\nmsgstr "B"\n')
+    catalog = parse_po(HEADER + 'msgid "a"\nmsgstr "A"\nmsgid "b"\nmsgstr "B"\n')
     assert (catalog.gettext("a"), catalog.gettext("b")) == ("A", "B")
 
 
@@ -221,7 +226,8 @@ def test_a_syntax_error_is_a_llamafit_error_the_cli_can_render() -> None:
 def test_reading_a_file_uses_utf8_whatever_the_platform_default_is(tmp_path: Path) -> None:
     path = tmp_path / "pt_PT.po"
     path.write_bytes(
-        b'msgid ""\nmsgstr ""\n"Language: pt_PT\\n"\n\n'
+        b'msgid ""\nmsgstr ""\n"Language: pt_PT\\n"\n'
+        b'"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n\n'
         b'msgid "No GPU detected"\nmsgstr "Nenhuma GPU detetada"\n'
     )
     assert read_po(path).gettext("No GPU detected") == "Nenhuma GPU detetada"
@@ -256,7 +262,10 @@ def test_an_entry_with_no_translation_at_all_is_untranslated() -> None:
 
 
 def test_a_header_line_without_a_colon_is_ignored() -> None:
-    catalog = parse_po('msgid ""\nmsgstr ""\n"not a header line\\n"\n"Language: pt_PT\\n"\n')
+    catalog = parse_po(
+        'msgid ""\nmsgstr ""\n"not a header line\\n"\n"Language: pt_PT\\n"\n'
+        '"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n'
+    )
     assert catalog.language == "pt_PT"
     assert "not a header line" not in catalog.headers
 
