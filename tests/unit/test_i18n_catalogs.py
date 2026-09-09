@@ -70,8 +70,11 @@ def _template_messages() -> dict[MessageKey, str | None]:
 
 
 def test_at_least_one_language_ships() -> None:
+    # Only that some catalog is packaged, which is what makes every parametrised check
+    # below run at all. Which languages ship is not this test's business: the ones that do
+    # are each checked by name where something specific to them is being asserted, and
+    # nothing here should fail because somebody contributed a translation.
     assert LANGUAGES, "no .po catalogs are packaged"
-    assert "pt_PT" in LANGUAGES
 
 
 def test_every_catalog_file_is_named_for_its_language() -> None:
