@@ -132,49 +132,6 @@ def test_results_sort_by_quality_descending_then_id_for_stable_ties() -> None:
     assert [m.id for m in result] == ["high", "tie-a", "tie-b", "low"]
 
 
-def test_summarise_marks_a_model_local_when_a_quant_file_is_on_disk() -> None:
-    model = minimal(
-        sources=[
-            ModelSource(
-                repo="acme/model-gguf",
-                quants=[Quant(name="Q4_K_M", files=["model-Q4_K_M.gguf"])],
-            )
-        ]
-    )
-    local = [LocalModel(path="D:/models/model-Q4_K_M.gguf", bytes=123)]
-
-    summary = summarise(model, local)
-
-    assert summary.is_local is True
-
-
-def test_summarise_does_not_mark_a_model_local_without_a_matching_file() -> None:
-    model = minimal(
-        sources=[
-            ModelSource(
-                repo="acme/model-gguf",
-                quants=[Quant(name="Q4_K_M", files=["model-Q4_K_M.gguf"])],
-            )
-        ]
-    )
-    local = [LocalModel(path="D:/models/some-other-model.gguf", bytes=123)]
-
-    assert summarise(model, local).is_local is False
-    assert summarise(model).is_local is False
-
-
-def test_summarise_marks_a_model_local_when_the_match_is_in_a_later_source() -> None:
-    model = minimal(
-        sources=[
-            ModelSource(repo="acme/model-a-gguf", quants=[Quant(name="Q4_K_M", files=["a.gguf"])]),
-            ModelSource(repo="acme/model-b-gguf", quants=[Quant(name="Q8_0", files=["b.gguf"])]),
-        ]
-    )
-    local = [LocalModel(path="D:/models/b.gguf", bytes=123)]
-
-    assert summarise(model, local).is_local is True
-
-
 def test_summarise_reports_quant_names_and_the_largest_known_size() -> None:
     model = minimal(
         sources=[
@@ -249,7 +206,7 @@ def test_describe_lists_quants_across_every_source() -> None:
     assert [q.name for q in detail.quants] == ["Q4_K_M", "Q8_0"]
 
 
-def test_describe_reports_the_local_path_of_a_downloaded_quant() -> None:
+def test_describe_reports_the_local_path_of_a_matching_quant() -> None:
     model = minimal(
         sources=[
             ModelSource(
@@ -262,11 +219,10 @@ def test_describe_reports_the_local_path_of_a_downloaded_quant() -> None:
 
     detail = describe(model, local)
 
-    assert detail.quants[0].downloaded is True
     assert detail.local_paths == ["D:/models/model-Q4_K_M.gguf"]
 
 
-def test_describe_marks_a_quant_not_downloaded_without_a_matching_file() -> None:
+def test_describe_reports_no_local_path_without_a_matching_file() -> None:
     model = minimal(
         sources=[
             ModelSource(
@@ -278,5 +234,4 @@ def test_describe_marks_a_quant_not_downloaded_without_a_matching_file() -> None
 
     detail = describe(model)
 
-    assert detail.quants[0].downloaded is False
     assert detail.local_paths == []

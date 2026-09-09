@@ -67,16 +67,6 @@ def filter_models(catalog: Catalog, filters: ModelFilters) -> list[CatalogModel]
     return matched
 
 
-def _quant_file_names(model: CatalogModel) -> list[str]:
-    """Every quant file name published by any of this model's sources."""
-    return [name for source in model.sources for quant in source.quants for name in quant.files]
-
-
-def _local_file_names(local_files: Sequence[LocalModel]) -> set[str]:
-    """The file name, not the full path, of every local GGUF file."""
-    return {PurePath(local.path).name for local in local_files}
-
-
 class ModelSummary(BaseModel):
     """One row of a model listing: what a table needs, nothing more.
 
@@ -92,7 +82,6 @@ class ModelSummary(BaseModel):
         quant_names: The names of every quant any source publishes.
         largest_quant_bytes: The size of the largest quant whose size is known, or
             ``None`` when no quant's size has been filled in yet.
-        is_local: Whether one of this model's quant files is already on disk.
         quality_baseline: The curator's editorial quality score, from
             ``model.quality.baseline``. This is the score before any
             quantisation penalty; phase 1C subtracts from it to reach the score
@@ -110,16 +99,18 @@ class ModelSummary(BaseModel):
     license_spdx: str
     quant_names: list[str]
     largest_quant_bytes: int | None
-    is_local: bool
     quality_baseline: int
 
 
-def summarise(model: CatalogModel, local_files: Sequence[LocalModel] = ()) -> ModelSummary:
+def summarise(model: CatalogModel) -> ModelSummary:
     """Summarise one model for a table row.
 
-    ``is_local`` is true when one of the model's quant file names matches the file
-    name of a GGUF file llama.cpp already has on disk (compared by file name, not
-    full path), and false otherwise, including when ``local_files`` is empty.
+    There is deliberately no "already on disk" field here. That would need
+    matching a quant's file names against the local files llama.cpp has, and every
+    quant's ``files`` list is empty until ``catalog refresh`` has filled it in from
+    Hugging Face; a field that can only ever read ``False`` today is worse than no
+    field, since ``False`` reads as a fact rather than as data nobody has yet. It
+    belongs here once refresh has run and a real match is possible.
     """
     quant_names = [quant.name for source in model.sources for quant in source.quants]
     sizes = [
@@ -128,8 +119,6 @@ def summarise(model: CatalogModel, local_files: Sequence[LocalModel] = ()) -> Mo
         for quant in source.quants
         if quant.bytes_ is not None
     ]
-    local_names = _local_file_names(local_files)
-    is_local = any(name in local_names for name in _quant_file_names(model))
     return ModelSummary(
         id=model.id,
         name=model.name,
@@ -141,13 +130,17 @@ def summarise(model: CatalogModel, local_files: Sequence[LocalModel] = ()) -> Mo
         license_spdx=model.license.spdx,
         quant_names=quant_names,
         largest_quant_bytes=max(sizes) if sizes else None,
-        is_local=is_local,
         quality_baseline=model.quality.baseline,
     )
 
 
 class QuantDetail(BaseModel):
     """Full facts about one quantisation of a model.
+
+    There is deliberately no "downloaded" field here, for the same reason
+    :func:`summarise` has no "already on disk" field: ``files`` is empty until
+    ``catalog refresh`` has filled it in, so a match against the local disk would
+    read ``False`` for every quant regardless of what is actually on disk.
 
     Attributes:
         name: The quant's name.
@@ -158,8 +151,6 @@ class QuantDetail(BaseModel):
         facts: Architecture facts read from this quant's GGUF header, filled in by
             the refresh command; ``None`` until then.
         files: The GGUF file names that make up this quant.
-        downloaded: Whether one of ``files`` matches a file llama.cpp already has
-            on disk.
     """
 
     model_config = ConfigDict(populate_by_name=True)
@@ -169,7 +160,6 @@ class QuantDetail(BaseModel):
     bpw: float | None
     facts: GgufFacts | None
     files: list[str]
-    downloaded: bool
 
 
 class ModelDetail(BaseModel):
@@ -210,7 +200,6 @@ def describe(model: CatalogModel, local_files: Sequence[LocalModel] = ()) -> Mod
                     bpw=quant.bpw,
                     facts=quant.gguf_facts,
                     files=list(quant.files),
-                    downloaded=bool(matched_paths),
                 )
             )
             local_paths.extend(matched_paths)

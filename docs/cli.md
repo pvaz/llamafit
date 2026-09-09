@@ -69,26 +69,34 @@ With `--json` the output is a `Diagnosis`: the report plus `findings`, each with
 
 ### `llamafit list` — phase 1B
 
-List the catalog. Filters: `--use-case`, `--capability` (repeatable), `--license`, `--vendor`,
-`--search TEXT`. Columns: id, vendor, parameters (total and active), capabilities, native
-context, license, number of quants.
+List the catalog. Filters: `--use-case`, `--capability` (repeatable), `--license` (repeatable),
+`--vendor`, `--search TEXT`, `--limit N`. Table columns: id, quality, parameters (one number
+for a dense model, total/active for a mixture-of-experts one), native context and capabilities
+(as many complete names as fit, plus a `+N` marker for the rest) — sorted by quality, the
+column that says why. Vendor, licence and quant count are left out of the table; all three are
+one `info` or `--json` away. At narrow widths, context and then capabilities give way first so
+the id and quality never get cut or blanked.
 
-### `llamafit search <text>` — phase 1B
+### `llamafit search` `<text>` — phase 1B
 
 `list --search` with the text as the argument.
 
-### `llamafit info <model>` — phase 1B
+### `llamafit info` `<model>` — phase 1B
 
-Everything about one model: facts and sources, quants with sizes, and, on this host, the
-budget of every quant at the default context. Options: `--quant NAME`, `--context N`.
+One model's curated facts (licence, parameters, context, architecture, capabilities, quality,
+sources) and every quant it publishes, with its size, bits per weight and, once `catalog
+refresh` has run, its GGUF architecture facts. An unknown id exits 1 naming the catalog id
+that shares the longest prefix with it, when one shares enough of it to be worth naming.
+Per-host budgets per quant (`--quant`, `--context`) are phase 1C.
 
-### `llamafit catalog validate|refresh|show` — phase 1B
+### `llamafit catalog` `validate|refresh|show` — phase 1B
 
-- `validate [FILE]`: check the bundled catalog and the custom models file against the schema;
-  exit 1 on any problem, listing each.
-- `refresh [--model ID] [--dry-run] [--check]`: update file sizes, checksums and GGUF facts
-  from Hugging Face; `--check` exits non-zero when the committed data is stale.
-- `show <model>`: print the raw catalog entry.
+- `validate [FILE]`: check the bundled catalog and the custom models file against the schema
+  (or just `FILE` when given); exit 1 on any problem, listing each.
+- `refresh [--model ID] [--dry-run] [--check]`: update file names, sizes, checksums and GGUF
+  facts from Hugging Face; `--dry-run` prints without writing; `--check` does the same and
+  exits 1 if anything would change, for a scheduled CI job.
+- `show <model> [--yaml]`: print the raw catalog entry, as JSON by default or as YAML.
 
 ### `llamafit fit` — phase 1C
 
