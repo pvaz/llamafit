@@ -8,6 +8,7 @@ the changelog says so when they do.
 ## [Unreleased]
 
 ### Added
+- Project scaffold: packaging, CI matrix, lint, type-check and test configuration.
 - Design specification covering host detection, llama.cpp integration, the model catalog,
   GGUF facts, memory budgets, placement planning, speed estimation, scoring, the CLI, TUI
   and web dashboard, the installer, and the verifier (`docs/specs/`).
@@ -16,5 +17,10 @@ the changelog says so when they do.
   policy, support guide, issue and pull request templates, and the `docs/` set.
 - Reference-machine calibration measurements from 2026-09-09
   (`docs/calibration/2026-09-09-reference-machine.md`).
+- Host scan: OS, CPU (cores, performance cores, instruction sets), memory (totals, DDR facts,
+  measured or estimated bandwidth), GPUs (NVIDIA, AMD, Apple, generic), disks.
+- llama.cpp detection: binaries, build, backends, local GGUF files, running servers.
+- `llamafit system` and `llamafit doctor` with Rich tables, `--json`, hints and exit codes.
+- Documentation: CLI reference, platform support, development guide, contributing guide.
 
 [Unreleased]: https://github.com/pvaz/llamafit/commits/main
