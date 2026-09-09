@@ -11,6 +11,7 @@ from __future__ import annotations
 from importlib import resources
 from pathlib import Path
 
+from llamafit.errors import ConfigError
 from llamafit.i18n.po import PoCatalog, read_po
 from llamafit.i18n.tags import SOURCE_LANGUAGE, normalise
 
@@ -51,16 +52,39 @@ def available_languages(*, directory: Path | None = None) -> tuple[str, ...]:
 
 
 def load_language(language: str, *, directory: Path | None = None) -> PoCatalog:
-    """Read one language's catalog from disk.
+    """Read one language's catalog from disk, refusing one that is not that language.
 
-    The file must be named for the language exactly as :func:`available_languages`
-    reports it, so ``pt_PT`` lives in ``pt_PT.po``.
+    The file is named for the language exactly as :func:`available_languages` reports it,
+    so ``pt_PT`` lives in ``pt_PT.po``.
+
+    A file whose ``Language`` header names some other language is refused. Nothing else
+    would notice: the tag comes from the file's name, so the catalog would be installed
+    as the language that was asked for and would then answer in the language it actually
+    holds, with no error anywhere. A reader who asked for Portuguese would be reading
+    German and be told nothing. The test suite checks this for every catalog LlamaFit
+    ships, and a catalog somebody writes themselves never goes near the test suite, which
+    is the whole reason the check belongs here as well.
+
+    A catalog that declares no ``Language`` at all is still read: a translation in
+    progress may not have filled the header in yet, and saying nothing is not the same as
+    saying something false.
 
     Returns:
         The parsed catalog.
 
     Raises:
-        PoSyntaxError: If the catalog is malformed or is not valid UTF-8.
+        ConfigError: If the catalog's ``Language`` header names another language, or if
+            the catalog is malformed or is not valid UTF-8.
         OSError: If the file is missing or cannot be read.
     """
-    return read_po(catalog_path(language, directory=directory))
+    path = catalog_path(language, directory=directory)
+    catalog = read_po(path)
+    declared = catalog.language.strip()
+    if declared and normalise(declared) != normalise(language):
+        raise ConfigError(
+            f"{path}: this file is read as {language}, but its Language header says "
+            f"{declared!r}, so it would answer in the wrong language",
+            hint=f"Rename the file to {declared}{CATALOG_SUFFIX} if the header is right, "
+            f"or set the header to {language} if the name is.",
+        )
+    return catalog

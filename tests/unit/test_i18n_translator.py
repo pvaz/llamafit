@@ -272,3 +272,17 @@ def test_a_team_name_with_no_brackets_is_untouched_either_way(tmp_path: Path) ->
     assert choice.notice == (
         "LlamaFit has no pt_BR translation, so it is using the Portuguese (Portugal) one."
     )
+
+
+def test_a_catalog_that_holds_another_language_falls_back_to_english(tmp_path: Path) -> None:
+    # The failure this branch exists to remove, in its last hiding place: before this,
+    # current_language() said pt_PT and every message came out in German.
+    directory = _catalog_dir(
+        tmp_path,
+        text=CATALOG.replace('"Language: pt_PT\\n"', '"Language: de\\n"'),
+    )
+    choice = set_language("pt_PT", env={}, available=("en", "pt_PT"), directory=directory)
+    assert choice.language == "en"
+    assert current_language() == "en"
+    assert choice.notice == "LlamaFit could not read its pt_PT translation, so it is using English."
+    assert _("No GPU detected") == "No GPU detected"
