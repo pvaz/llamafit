@@ -110,7 +110,7 @@ description = "Find, size, install and verify open-weight LLMs for llama.cpp on 
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
-authors = [{ name = "Pedro Vaz" }]
+authors = [{ name = "Paulo Vaz" }]
 keywords = ["llama.cpp", "gguf", "llm", "local-ai", "hardware", "benchmark"]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -249,53 +249,23 @@ htmlcov/
 Thumbs.db
 ```
 
-`LICENSE`: the MIT license text with `Copyright (c) 2026 Pedro Vaz`.
+`LICENSE`: the MIT license text with `Copyright (c) 2026 Paulo Vaz`.
 
 `NOTICE`:
 
 ```
 LlamaFit
-Copyright (c) 2026 Pedro Vaz
-
-This project adopts concepts, terminology and the command vocabulary of
-llmfit (https://github.com/AlexsJones/llmfit), MIT License,
-Copyright (c) the llmfit contributors. Its four-dimensional scoring,
-fit verdicts, bandwidth speed model and confidence ladder inspired the
-corresponding parts of LlamaFit, which re-implements them for llama.cpp.
-The initial model catalog is seeded from llmfit's hand-curated MODELS.md.
+Copyright (c) 2026 Paulo Vaz
 
 llama.cpp (https://github.com/ggml-org/llama.cpp), MIT License, is the
-runtime LlamaFit configures. LlamaFit does not bundle it.
+runtime LlamaFit detects, installs and configures. LlamaFit does not
+bundle it; the installer downloads official release builds.
+
+Model weights are downloaded from the repositories named in the catalog
+and remain under their own licenses, which the catalog records per model.
 ```
 
-`README.md` (initial; expanded in Task 13):
-
-```markdown
-# LlamaFit
-
-Find, size, install and verify open-weight LLMs for **llama.cpp** on your own machine.
-
-LlamaFit scans your computer, reads a curated catalog of GGUF models, computes exact memory
-budgets, ranks what fits for what you need (coding, thinking, vision, tools, long context),
-and turns the winner into a working `llama-server` configuration. Unlike
-[llmfit](https://github.com/AlexsJones/llmfit), which tells you what fits across many runtimes,
-LlamaFit goes all the way for llama.cpp: install it, download the model, write tuned launch
-presets, and measure the real speed.
-
-**Status:** alpha, phase 1 in progress. See `docs/superpowers/specs/` for the design.
-
-## Quick start
-
-```
-pip install llamafit
-llamafit system      # what this machine has
-llamafit doctor      # what was detected, what failed, what would help
-```
-
-## License
-
-MIT. See `LICENSE` and `NOTICE`.
-```
+`README.md`: the repository already carries a complete README written before implementation started. In this task only update its **Status** line to say that phase 1A (host scan and diagnostics) is in progress, and leave the rest; Task 13 brings it in line with what is implemented.
 
 `CHANGELOG.md`:
 
@@ -3516,9 +3486,9 @@ def test_platform_doc_mentions_every_probe_hint() -> None:
         assert probe in text, f"docs/platform-support.md lacks probe {probe}"
 
 
-def test_readme_states_the_llmfit_difference_early() -> None:
+def test_readme_shows_the_two_commands_that_exist() -> None:
     text = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert "llmfit" in text[:1500]
+    assert "llamafit system" in text and "llamafit doctor" in text
 ```
 
 - [ ] **Step 2: Run the test to verify it fails**
@@ -3783,35 +3753,13 @@ about: Something LlamaFit should do
 - [ ] docs and CHANGELOG updated
 ```
 
-- [ ] **Step 7: Expand `README.md`**
+- [ ] **Step 7: Bring `README.md` in line with what now exists**
 
-Replace the file with:
+The README was written before implementation and describes the whole roadmap. Edit, do not replace:
 
-```markdown
-# LlamaFit
-
-Find, size, install and verify open-weight LLMs for **llama.cpp** on your own machine.
-
-LlamaFit scans your computer, reads a curated catalog of GGUF models, computes exact memory
-budgets, ranks what fits for what you need (coding, thinking, vision, tools, long context),
-and turns the winner into a working `llama-server` configuration. It is inspired by
-[llmfit](https://github.com/AlexsJones/llmfit) and uses its scoring vocabulary, but where
-llmfit tells you what fits across many runtimes, LlamaFit goes all the way for llama.cpp:
-exact budgets from GGUF headers, a runnable command line, installation, tuned launch presets,
-and real measurements on your hardware. It never uses an LLM to do any of this.
-
-**Status:** alpha. Phase 1A (host scan and diagnostics) is done; catalog, scoring, TUI and
-web dashboard follow. See `docs/superpowers/specs/` for the design and `CHANGELOG.md`.
-
-## Install
-
-```
-pip install llamafit            # add [fast] for the NumPy bandwidth measurement
-```
-
-Python 3.10 or newer on Windows, macOS or Linux. No compiler, no Node.
-
-## Use
+1. Set the **Status** paragraph to: phase 1A done (`llamafit system`, `llamafit doctor` work on Windows, macOS and Linux); catalog, scoring, TUI and web dashboard follow.
+2. In the **Install** section replace "coming soon" wording with the real command `pip install llamafit` and the optional `[fast]` extra.
+3. In the **Use** section make sure the three lines below appear exactly, with their comments:
 
 ```
 llamafit system                 # CPU, memory, GPUs, disks, llama.cpp installation
@@ -3819,31 +3767,8 @@ llamafit doctor                 # what was detected, what failed, what would hel
 llamafit --json system          # the same as JSON for scripts
 ```
 
-Every number LlamaFit shows carries a label saying whether it was measured, estimated from
-facts, or assumed. `doctor` tells you which tool to install to turn an assumption into a
-measurement.
-
-## What is coming
-
-| Phase | Commands |
-|---|---|
-| 1B catalog | `list`, `search`, `info`, `catalog validate/refresh` |
-| 1C scoring | `fit`, `recommend`, `plan`, `hardware` profiles and simulation |
-| 1D interfaces | the Textual TUI (`llamafit`) and the web dashboard (`llamafit serve`) |
-| 2 installer | `install llama.cpp`, `install model`, `preset`, `launch` |
-| 3 verifier | `bench`, calibration, estimate versus measured |
-
-## Documentation
-
-- [Command-line reference](docs/cli.md)
-- [Platform support and probes](docs/platform-support.md)
-- [Development](docs/development.md)
-- [Contributing](CONTRIBUTING.md)
-
-## License
-
-MIT. See `LICENSE`; attributions in `NOTICE`.
-```
+4. In the roadmap table mark phase 1A as done and leave the other rows unchanged.
+5. Confirm the **Documentation** list links to `docs/cli.md`, `docs/platform-support.md`, `docs/development.md` and `CONTRIBUTING.md`, and that every linked file exists.
 
 - [ ] **Step 8: Update `CHANGELOG.md`**
 
