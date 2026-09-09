@@ -97,6 +97,12 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
    rule is wrong for most languages: French puts zero in the singular, Polish has three
    forms, Japanese has one.
 
+   `Plural-Forms` is required in the strong sense: a catalog without one is **refused**
+   with the line number, rather than quietly given English's rule. Inheriting English's
+   rule is the one mistake that produces no error at all — a three-form language would
+   simply pick the wrong form, and its reader would meet real words in the wrong grammar
+   with nothing anywhere to say why.
+
 4. Translate. Leave a `msgstr` empty rather than guessing: an empty translation falls back
    to the English message, so an unfinished catalog degrades to English and never shows a
    blank line. A `msgstr` holding only spaces, tabs or newlines counts as empty too, and

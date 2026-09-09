@@ -16,6 +16,11 @@ whitespace: three spaces reach a screen as a blank line, not as a translation, a
 the difference between the two is invisible in the file. Lookup then returns the
 English original, so a half-finished translation degrades to English and never to a
 blank line on someone's screen.
+
+A catalog must declare ``Plural-Forms``. Inheriting English's rule from silence was
+the one way this reader could hand back quietly wrong text instead of raising: a
+three-form language would pick the wrong form, and its reader would meet real words
+in the wrong grammar with nothing anywhere to say so.
 """
 
 from __future__ import annotations
@@ -26,12 +31,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from llamafit.errors import ConfigError
-from llamafit.i18n.plurals import (
-    PluralFormsError,
-    PluralRule,
-    default_plural_rule,
-    parse_plural_forms,
-)
+from llamafit.i18n.plurals import PluralFormsError, PluralRule, parse_plural_forms
 
 _ESCAPES = {
     "\\": "\\",
@@ -111,15 +111,15 @@ class PoCatalog:
         language: The tag the ``Language`` header names, or the empty string.
         headers: The header entry's fields, in the order they were written.
         messages: Every entry except the header, keyed by context and ``msgid``.
-        plural_forms: The raw ``Plural-Forms`` header, or ``None`` when it is absent.
-        plural_rule: The rule to apply; English's when the header is absent.
+        plural_forms: The raw ``Plural-Forms`` header, which every catalog declares.
+        plural_rule: The rule that header declares.
         source: Where the catalog was read from, for error messages.
     """
 
     language: str
     headers: Mapping[str, str]
     messages: Mapping[MessageKey, Message]
-    plural_forms: str | None
+    plural_forms: str
     plural_rule: PluralRule
     source: str = "<string>"
 
@@ -214,7 +214,7 @@ def parse_po(text: str, *, source: str = "<string>") -> PoCatalog:
 
     Raises:
         PoSyntaxError: If a line cannot be read, a message is defined twice, or the
-            ``Plural-Forms`` header is malformed.
+            ``Plural-Forms`` header is missing or malformed.
     """
     entries: list[_Entry] = []
     current = _Entry(line=1)
@@ -414,12 +414,17 @@ def _build(entries: list[_Entry], source: str) -> PoCatalog:
 
     plural_forms = headers.get(_PLURAL_FORMS)
     if plural_forms is None:
-        rule = default_plural_rule()
-    else:
-        try:
-            rule = parse_plural_forms(plural_forms)
-        except PluralFormsError as exc:
-            raise PoSyntaxError(source, header_line, str(exc)) from exc
+        raise PoSyntaxError(
+            source,
+            header_line,
+            "the header declares no Plural-Forms, so which form a count picks is unknown"
+            if seen_header
+            else "the file has no header entry, so it declares no Plural-Forms",
+        )
+    try:
+        rule = parse_plural_forms(plural_forms)
+    except PluralFormsError as exc:
+        raise PoSyntaxError(source, header_line, str(exc)) from exc
     return PoCatalog(
         language=headers.get(_LANGUAGE, ""),
         headers=headers,

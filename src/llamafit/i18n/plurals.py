@@ -14,7 +14,13 @@ from collections.abc import Callable
 from gettext import c2py
 
 DEFAULT_PLURAL_FORMS = "nplurals=2; plural=(n != 1);"
-"""English: one form for exactly one, another for every other count."""
+"""English: one form for exactly one, another for every other count.
+
+It is what the extracted template declares, for a translator to replace with their
+own language's rule. It is not a fallback: a catalog that declares no ``Plural-Forms``
+at all is refused rather than quietly given this one, because a three-form language
+given English's rule reads real words in the wrong grammar and nothing says so.
+"""
 
 _HEADER_RE = re.compile(r"nplurals\s*=\s*(\d+)\s*;\s*plural\s*=(.+)", re.DOTALL)
 _MAX_FORMS = 10
@@ -77,8 +83,3 @@ def parse_plural_forms(value: str) -> PluralRule:
     if not expression:
         raise PluralFormsError(f"no plural expression in {value.strip()!r}")
     return PluralRule(int(match.group(1)), expression)
-
-
-def default_plural_rule() -> PluralRule:
-    """Return the English rule, used when a catalog declares no ``Plural-Forms``."""
-    return parse_plural_forms(DEFAULT_PLURAL_FORMS)

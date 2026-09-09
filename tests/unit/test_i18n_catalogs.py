@@ -210,7 +210,11 @@ def test_a_file_that_is_not_a_language_tag_is_not_offered(tmp_path: Path) -> Non
 
 
 def test_loading_from_a_directory_a_test_chose(tmp_path: Path) -> None:
-    (tmp_path / "pt_PT.po").write_text('msgid "a"\nmsgstr "A"\n', encoding="utf-8")
+    (tmp_path / "pt_PT.po").write_text(
+        'msgid ""\nmsgstr ""\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n\n'
+        'msgid "a"\nmsgstr "A"\n',
+        encoding="utf-8",
+    )
     assert load_language("pt_PT", directory=tmp_path).gettext("a") == "A"
 
 

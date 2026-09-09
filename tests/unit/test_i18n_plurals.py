@@ -6,18 +6,19 @@ from llamafit.i18n.plurals import (
     DEFAULT_PLURAL_FORMS,
     PluralFormsError,
     PluralRule,
-    default_plural_rule,
     parse_plural_forms,
 )
 
 POLISH = "nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);"
 
 
-def test_the_english_rule_is_the_default() -> None:
-    rule = default_plural_rule()
+def test_the_rule_the_template_ships_is_english() -> None:
+    # It is what a translator starts from, not a fallback: a catalog declaring no
+    # Plural-Forms is refused by the reader rather than quietly given this one.
+    rule = parse_plural_forms(DEFAULT_PLURAL_FORMS)
     assert rule.nplurals == 2
     assert [rule.index(n) for n in (0, 1, 2, 100)] == [1, 0, 1, 1]
-    assert parse_plural_forms(DEFAULT_PLURAL_FORMS).expression == rule.expression
+    assert rule.expression == "(n != 1)"
 
 
 def test_a_language_with_three_forms_is_parsed_and_applied() -> None:
