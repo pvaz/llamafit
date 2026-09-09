@@ -59,7 +59,7 @@ def test_embedded_quotes_tabs_and_newlines_survive() -> None:
 def test_an_empty_translation_falls_back_to_english_not_to_a_blank_line() -> None:
     catalog = parse_po(HEADER + '\nmsgid "Skip the measurement."\nmsgstr ""\n')
     assert catalog.gettext("Skip the measurement.") == "Skip the measurement."
-    assert catalog.untranslated() == ("Skip the measurement.",)
+    assert catalog.untranslated() == ((None, "Skip the measurement."),)
 
 
 def test_a_message_the_catalog_never_heard_of_comes_back_unchanged() -> None:
@@ -167,7 +167,16 @@ def test_entries_do_not_need_a_blank_line_between_them() -> None:
     [
         ('msgid "a"\nmsgstr "b\n', "expected a double-quoted string"),
         ('"orphan"\n', "a string continues nothing"),
-        ('msgctxt "menu"\nmsgid "Open"\nmsgstr "Abrir"\n', "unknown keyword 'msgctxt'"),
+        ('msgctxt "menu"\nmsgctxt "file"\nmsgid "Open"\n', "already has a msgctxt"),
+        (
+            'msgid "Open"\nmsgctxt "menu"\nmsgstr "Abrir"\n',
+            "a msgctxt must come before its msgid",
+        ),
+        (
+            'msgctxt "menu"\nmsgid "Open"\nmsgstr "A"\n\n'
+            'msgctxt "menu"\nmsgid "Open"\nmsgstr "B"\n',
+            "duplicate message 'Open' in context 'menu'",
+        ),
         ('msgid\nmsgstr "b"\n', "expected a string after msgid"),
         ('msgid "a"\nmsgid "b"\nmsgstr "c"\n', "already has a msgid"),
         ('msgid "a"\nmsgstr "A"\n\nmsgid "a"\nmsgstr "B"\n', "duplicate message 'a'"),
@@ -236,7 +245,7 @@ def test_a_second_msgid_plural_in_one_entry_is_refused() -> None:
 
 def test_an_entry_with_no_translation_at_all_is_untranslated() -> None:
     catalog = parse_po(HEADER + '\nmsgid "%(count)d file"\nmsgid_plural "%(count)d files"\n')
-    entry = catalog.messages["%(count)d file"]
+    entry = catalog.messages[None, "%(count)d file"]
     assert entry.translations == ()
     assert not entry.translated
     assert catalog.gettext("%(count)d file") == "%(count)d file"
@@ -247,3 +256,104 @@ def test_a_header_line_without_a_colon_is_ignored() -> None:
     catalog = parse_po('msgid ""\nmsgstr ""\n"not a header line\\n"\n"Language: pt_PT\\n"\n')
     assert catalog.language == "pt_PT"
     assert "not a header line" not in catalog.headers
+
+
+def test_a_context_and_no_context_are_two_entries_translated_differently() -> None:
+    catalog = parse_po(
+        HEADER
+        + """
+msgid "none detected"
+msgstr "nenhum"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "nenhuma detetada"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "nenhum detetado"
+"""
+    )
+    assert catalog.pgettext("GPU", "none detected") == "nenhuma detetada"
+    assert catalog.pgettext("backends", "none detected") == "nenhum detetado"
+    assert catalog.gettext("none detected") == "nenhum"
+    assert len(catalog.messages) == 3
+
+
+def test_a_context_nobody_wrote_falls_back_to_english_rather_than_the_plain_entry() -> None:
+    # The plain entry is a different sentence, not a looser version of this one.
+    catalog = parse_po(HEADER + '\nmsgid "unknown"\nmsgstr "desconhecido"\n')
+    assert catalog.gettext("unknown") == "desconhecido"
+    assert catalog.pgettext("memory bandwidth", "unknown") == "unknown"
+
+
+def test_a_message_with_no_context_is_not_found_under_an_empty_one() -> None:
+    catalog = parse_po(HEADER + '\nmsgid "unknown"\nmsgstr "desconhecido"\n')
+    assert catalog.messages[None, "unknown"].context is None
+    assert catalog.pgettext("", "unknown") == "unknown"
+
+
+def test_an_empty_msgctxt_is_a_context_of_its_own_not_the_absence_of_one() -> None:
+    catalog = parse_po(
+        HEADER
+        + """
+msgid "unknown"
+msgstr "sem contexto"
+
+msgctxt ""
+msgid "unknown"
+msgstr "contexto vazio"
+"""
+    )
+    assert catalog.gettext("unknown") == "sem contexto"
+    assert catalog.pgettext("", "unknown") == "contexto vazio"
+
+
+def test_a_contextual_plural_picks_the_form_its_count_selects() -> None:
+    catalog = parse_po(
+        HEADER
+        + """
+msgctxt "GPU"
+msgid "%(count)d device"
+msgid_plural "%(count)d devices"
+msgstr[0] "%(count)d placa"
+msgstr[1] "%(count)d placas"
+"""
+    )
+    assert catalog.npgettext("GPU", "%(count)d device", "%(count)d devices", 1) == "%(count)d placa"
+    assert (
+        catalog.npgettext("GPU", "%(count)d device", "%(count)d devices", 4) == "%(count)d placas"
+    )
+    assert catalog.ngettext("%(count)d device", "%(count)d devices", 4) == "%(count)d devices"
+    assert (
+        catalog.npgettext("CPU", "%(count)d device", "%(count)d devices", 1) == "%(count)d device"
+    )
+
+
+def test_a_msgctxt_starts_a_new_entry_with_no_blank_line_before_it() -> None:
+    catalog = parse_po(
+        HEADER + '\nmsgctxt "a"\nmsgid "x"\nmsgstr "A"\nmsgctxt "b"\nmsgid "x"\nmsgstr "B"\n'
+    )
+    assert (catalog.pgettext("a", "x"), catalog.pgettext("b", "x")) == ("A", "B")
+
+
+def test_a_context_split_over_adjacent_lines_is_one_context() -> None:
+    catalog = parse_po(
+        HEADER + '\nmsgctxt ""\n"memory "\n"bandwidth"\nmsgid "unknown"\nmsgstr "desconhecida"\n'
+    )
+    assert catalog.pgettext("memory bandwidth", "unknown") == "desconhecida"
+
+
+def test_an_entry_carries_the_context_it_was_filed_under() -> None:
+    catalog = parse_po(HEADER + '\nmsgctxt "GPU"\nmsgid "none detected"\nmsgstr "nenhuma"\n')
+    entry = catalog.messages["GPU", "none detected"]
+    assert (entry.context, entry.msgid) == ("GPU", "none detected")
+    assert entry.key == ("GPU", "none detected")
+
+
+def test_an_empty_msgid_with_a_context_is_a_message_not_the_header() -> None:
+    # The header is the entry with an empty msgid and nothing else; a msgctxt makes it
+    # an ordinary entry, so a catalog whose header grew one has no header at all.
+    catalog = parse_po(HEADER + '\nmsgctxt "odd"\nmsgid ""\nmsgstr "x"\n')
+    assert catalog.language == "pt_PT"
+    assert catalog.pgettext("odd", "") == "x"

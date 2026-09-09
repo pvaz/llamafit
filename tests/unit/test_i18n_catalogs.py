@@ -15,16 +15,16 @@ from scripts.gen_messages import extract, render_template
 from llamafit import __version__
 from llamafit.i18n import SOURCE_LANGUAGE, TEMPLATE_NAME
 from llamafit.i18n.catalogs import available_languages, catalog_dir, catalog_path, load_language
-from llamafit.i18n.po import parse_po, read_po
+from llamafit.i18n.po import MessageKey, parse_po, read_po
 from llamafit.i18n.tags import normalise
 
 LANGUAGES = [tag for tag in available_languages() if tag != SOURCE_LANGUAGE]
 
 
-def _template_messages() -> dict[str, str | None]:
+def _template_messages() -> dict[MessageKey, str | None]:
     found = extract()
     assert found.problems == [], found.problems
-    return {entry.msgid: entry.plural for entry in found.entries}
+    return {(entry.context, entry.msgid): entry.plural for entry in found.entries}
 
 
 def test_at_least_one_language_ships() -> None:
@@ -66,11 +66,11 @@ def test_every_plural_entry_matches_the_template_and_the_declared_form_count(
 ) -> None:
     template = _template_messages()
     catalog = load_language(language)
-    for msgid, message in catalog.messages.items():
-        assert message.plural == template[msgid], f"{language}: {msgid!r} has the wrong plural"
+    for key, message in catalog.messages.items():
+        assert message.plural == template[key], f"{language}: {key} has the wrong plural"
         if message.plural is not None and message.translated:
             assert len(message.translations) == catalog.plural_rule.nplurals, (
-                f"{language}: {msgid!r} does not have {catalog.plural_rule.nplurals} forms"
+                f"{language}: {key} does not have {catalog.plural_rule.nplurals} forms"
             )
 
 
@@ -105,8 +105,9 @@ def test_the_template_parses_as_a_catalog_that_translates_nothing() -> None:
 
 def test_the_template_falls_back_to_english_for_every_message() -> None:
     catalog = read_po(catalog_dir() / TEMPLATE_NAME)
-    for msgid in catalog.messages:
-        assert catalog.gettext(msgid) == msgid
+    for context, msgid in catalog.messages:
+        rendered = catalog.gettext(msgid) if context is None else catalog.pgettext(context, msgid)
+        assert rendered == msgid
 
 
 def test_the_portuguese_catalog_is_european_not_brazilian() -> None:
@@ -146,3 +147,22 @@ def test_every_shipped_catalog_is_read_as_utf8_whatever_the_platform_default_is(
     for path in [*sorted(catalog_dir().glob("*.po")), catalog_dir() / TEMPLATE_NAME]:
         text = path.read_bytes().decode("utf-8")
         assert parse_po(text, source=str(path)).messages is not None
+
+
+def test_the_two_contextual_entries_read_differently_in_portuguese() -> None:
+    catalog = load_language("pt_PT")
+    assert catalog.pgettext("GPU", "none detected") == "nenhuma detetada"
+    assert catalog.pgettext("backends", "none detected") == "nenhum detetado"
+    assert catalog.pgettext("memory bandwidth", "unknown") == "desconhecida"
+    assert catalog.pgettext("bits per weight", "unknown") == "desconhecido"
+
+
+def test_no_shipped_catalog_translates_a_word_two_rows_share_without_a_context() -> None:
+    # These are the two the reviewer found: one msgid, two genders, and whichever
+    # gender the catalog picked was wrong in the other row.
+    for language in LANGUAGES:
+        catalog = load_language(language)
+        for msgid in ("none detected", "unknown"):
+            assert (None, msgid) not in catalog.messages, (
+                f"{language} translates {msgid!r} without saying which row it is for"
+            )

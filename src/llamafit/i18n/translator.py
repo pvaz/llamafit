@@ -1,7 +1,12 @@
-"""The active translation and the two functions every other module will call.
+"""The active translation and the functions every other module will call.
 
 ``_`` translates one message; ``ngettext`` translates a message that counts something.
-Both are plain module-level functions taking literal strings, so the extractor in
+``pgettext`` and ``npgettext`` are the same two with a context: a short word saying where
+the message is used, so one English word can be translated two ways. *none detected* is
+feminine in the GPU row and masculine in the Backends row, and no single Portuguese
+string is right in both.
+
+All four are plain module-level functions taking literal strings, so the extractor in
 ``scripts/gen_messages.py`` can find every call by reading the syntax tree.
 
 Choosing a language is a one-off at start-up: ``set_language`` installs the translator
@@ -40,8 +45,16 @@ class Translator(Protocol):
         """Translate one message, falling back to the English original."""
         ...
 
+    def pgettext(self, context: str, message: str) -> str:
+        """Translate one message as used in ``context``, falling back to English."""
+        ...
+
     def ngettext(self, singular: str, plural: str, n: int) -> str:
         """Translate a message that counts something, falling back to English."""
+        ...
+
+    def npgettext(self, context: str, singular: str, plural: str, n: int) -> str:
+        """Translate a counting message as used in ``context``, falling back to English."""
         ...
 
 
@@ -58,8 +71,16 @@ class EnglishTranslator:
         """Return the message unchanged."""
         return message
 
+    def pgettext(self, context: str, message: str) -> str:
+        """Return the message unchanged; the context only ever picks a translation."""
+        return message
+
     def ngettext(self, singular: str, plural: str, n: int) -> str:
         """Return the singular for one, the plural for every other count."""
+        return singular if n == 1 else plural
+
+    def npgettext(self, context: str, singular: str, plural: str, n: int) -> str:
+        """Return the English form the count selects, whatever the context."""
         return singular if n == 1 else plural
 
 
@@ -84,9 +105,17 @@ class CatalogTranslator:
         """Translate one message through the catalog."""
         return self.catalog.gettext(message)
 
+    def pgettext(self, context: str, message: str) -> str:
+        """Translate one message through the catalog, under its context."""
+        return self.catalog.pgettext(context, message)
+
     def ngettext(self, singular: str, plural: str, n: int) -> str:
         """Translate a counting message through the catalog."""
         return self.catalog.ngettext(singular, plural, n)
+
+    def npgettext(self, context: str, singular: str, plural: str, n: int) -> str:
+        """Translate a counting message through the catalog, under its context."""
+        return self.catalog.npgettext(context, singular, plural, n)
 
 
 _active: Translator = EnglishTranslator()
@@ -191,6 +220,23 @@ def gettext(message: str) -> str:
     return _active.gettext(message)
 
 
+def pgettext(context: str, message: str) -> str:
+    """Translate one message as it is used in ``context``.
+
+    Use this, not :func:`gettext`, wherever an English word has to be translated two
+    ways because two places use it differently. The context is a short note naming the
+    place, written for the translator: ``pgettext("GPU", "none detected")``.
+
+    Args:
+        context: Where the message is used, which is part of what identifies it.
+        message: The English message.
+
+    Returns:
+        The translation filed under that context, or the English original.
+    """
+    return _active.pgettext(context, message)
+
+
 def ngettext(singular: str, plural: str, n: int) -> str:
     """Translate a message that counts something, choosing the form ``n`` needs.
 
@@ -203,6 +249,21 @@ def ngettext(singular: str, plural: str, n: int) -> str:
         The translated form, or the matching English form when there is none.
     """
     return _active.ngettext(singular, plural, n)
+
+
+def npgettext(context: str, singular: str, plural: str, n: int) -> str:
+    """Translate a counting message as it is used in ``context``.
+
+    Args:
+        context: Where the message is used, which is part of what identifies it.
+        singular: The English message for one thing.
+        plural: The English message for several.
+        n: The count the sentence is about.
+
+    Returns:
+        The translated form filed under that context, or the matching English form.
+    """
+    return _active.npgettext(context, singular, plural, n)
 
 
 _ = gettext

@@ -11,78 +11,91 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: tests/fixtures/messages.py:19
-#: tests/fixtures/messages.py:43
+#: tests/fixtures/messages.py:27
+#: tests/fixtures/messages.py:52
 msgid "If a GPU is present, check that its driver tools are installed."
 msgstr ""
 
-#: tests/fixtures/messages.py:20
-#: tests/fixtures/messages.py:55
+#: tests/fixtures/messages.py:28
+#: tests/fixtures/messages.py:64
 msgid "the vendor tool that reports memory was not available"
 msgstr ""
 
-#: tests/fixtures/messages.py:22
-#: tests/fixtures/messages.py:35
+#: tests/fixtures/messages.py:30
+#: tests/fixtures/messages.py:44
 msgid "No GPU detected"
 msgstr ""
 
-#: tests/fixtures/messages.py:23
-#: tests/fixtures/messages.py:84
+#: tests/fixtures/messages.py:31
+#: tests/fixtures/messages.py:105
 msgid "%(count)d module"
 msgid_plural "%(count)d modules"
 msgstr[0] ""
 msgstr[1] ""
 
-#: tests/fixtures/messages.py:27
-msgid "llama.cpp installed"
-msgstr ""
-
-#: tests/fixtures/messages.py:31
-msgid "llama.cpp not found"
-msgstr ""
-
-#: tests/fixtures/messages.py:39
-msgid "models will run on the CPU only"
-msgstr ""
-
-#: tests/fixtures/messages.py:47
-msgid "RAM bandwidth assumed"
-msgstr ""
-
-#: tests/fixtures/messages.py:51
-msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure it."
-msgstr ""
-
-#: tests/fixtures/messages.py:59
-msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
-msgstr ""
-
-#: tests/fixtures/messages.py:63
-msgid "unknown"
-msgstr ""
-
-#: tests/fixtures/messages.py:67
+#: tests/fixtures/messages.py:32
+#: tests/fixtures/messages.py:84
+msgctxt "GPU"
 msgid "none detected"
 msgstr ""
 
-#: tests/fixtures/messages.py:71
-msgid "no server"
+#: tests/fixtures/messages.py:36
+msgid "llama.cpp installed"
 msgstr ""
 
-#: tests/fixtures/messages.py:75
-msgid "Run again with --verbose for the full traceback."
+#: tests/fixtures/messages.py:40
+msgid "llama.cpp not found"
+msgstr ""
+
+#: tests/fixtures/messages.py:48
+msgid "models will run on the CPU only"
+msgstr ""
+
+#: tests/fixtures/messages.py:56
+msgid "RAM bandwidth assumed"
+msgstr ""
+
+#: tests/fixtures/messages.py:60
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure it."
+msgstr ""
+
+#: tests/fixtures/messages.py:68
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr ""
+
+#: tests/fixtures/messages.py:76
+msgctxt "memory bandwidth"
+msgid "unknown"
 msgstr ""
 
 #: tests/fixtures/messages.py:80
-msgid "Skip the RAM bandwidth measurement."
+msgctxt "bits per weight"
+msgid "unknown"
 msgstr ""
 
 #: tests/fixtures/messages.py:88
+msgctxt "backends"
+msgid "none detected"
+msgstr ""
+
+#: tests/fixtures/messages.py:92
+msgid "no server"
+msgstr ""
+
+#: tests/fixtures/messages.py:96
+msgid "Run again with --verbose for the full traceback."
+msgstr ""
+
+#: tests/fixtures/messages.py:101
+msgid "Skip the RAM bandwidth measurement."
+msgstr ""
+
+#: tests/fixtures/messages.py:109
 msgid "the catalog has %(count)d problem"
 msgid_plural "the catalog has %(count)d problems"
 msgstr[0] ""
 msgstr[1] ""
 
-#: tests/fixtures/messages.py:96
+#: tests/fixtures/messages.py:117
 msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
 msgstr ""

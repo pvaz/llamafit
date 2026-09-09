@@ -134,9 +134,14 @@ def test_the_rendered_template_parses_and_translates_nothing(tmp_path: Path) -> 
     catalog = parse_po(template)
     assert catalog.plural_forms == "nplurals=2; plural=(n != 1);"
     assert catalog.headers["Project-Id-Version"] == "llamafit 9.9.9"
-    assert set(catalog.messages) == {"plain", "two\nlines", 'a "quoted" word', "%(count)d x"}
+    assert set(catalog.messages) == {
+        (None, "plain"),
+        (None, "two\nlines"),
+        (None, 'a "quoted" word'),
+        (None, "%(count)d x"),
+    }
     assert catalog.untranslated() == tuple(catalog.messages)
-    assert catalog.messages["%(count)d x"].translations == ("", "")
+    assert catalog.messages[None, "%(count)d x"].translations == ("", "")
 
 
 def test_a_multi_line_message_is_written_the_way_msgfmt_writes_it(tmp_path: Path) -> None:
@@ -174,3 +179,79 @@ def test_a_run_with_no_arguments_uses_the_source_roots() -> None:
     before = DEST.read_text(encoding="utf-8")
     assert main([]) == 0
     assert DEST.read_text(encoding="utf-8") == before
+
+
+def test_a_contextual_call_is_extracted_with_its_context(tmp_path: Path) -> None:
+    found = extract([_write(tmp_path, 'pgettext("GPU", "none detected")\n')])
+    assert found.problems == []
+    assert [(e.context, e.msgid) for e in found.entries] == [("GPU", "none detected")]
+
+
+def test_one_message_under_two_contexts_is_two_entries(tmp_path: Path) -> None:
+    source = (
+        'pgettext("GPU", "none detected")\n'
+        'pgettext("backends", "none detected")\n'
+        '_("none detected")\n'
+    )
+    found = extract([_write(tmp_path, source)])
+    assert [(e.context, e.msgid) for e in found.entries] == [
+        ("GPU", "none detected"),
+        ("backends", "none detected"),
+        (None, "none detected"),
+    ]
+
+
+def test_the_same_contextual_call_twice_is_one_entry_with_two_references(tmp_path: Path) -> None:
+    source = 'pgettext("GPU", "none detected")\nlazy_pgettext("GPU", "none detected")\n'
+    found = extract([_write(tmp_path, source)])
+    assert len(found.entries) == 1
+    assert len(found.entries[0].references) == 2
+
+
+def test_a_contextual_counting_call_is_extracted_with_both_forms(tmp_path: Path) -> None:
+    source = 'npgettext("GPU", "%(count)d device", "%(count)d devices", n)\n'
+    found = extract([_write(tmp_path, source)])
+    assert [(e.context, e.msgid, e.plural) for e in found.entries] == [
+        ("GPU", "%(count)d device", "%(count)d devices")
+    ]
+
+
+def test_a_deferred_contextual_counting_call_is_extracted_too(tmp_path: Path) -> None:
+    source = 'lazy_npgettext("GPU", "%(count)d device", "%(count)d devices", 3)\n'
+    found = extract([_write(tmp_path, source)])
+    assert [(e.context, e.msgid, e.plural) for e in found.entries] == [
+        ("GPU", "%(count)d device", "%(count)d devices")
+    ]
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        'pgettext(where, "none detected")\n',
+        'pgettext("GPU", name)\n',
+        'npgettext("GPU", "%(count)d device", plural, n)\n',
+    ],
+)
+def test_a_contextual_call_that_is_not_a_literal_is_reported(tmp_path: Path, source: str) -> None:
+    found = extract([_write(tmp_path, source)])
+    assert found.entries == []
+    assert "not a literal string" in found.problems[0]
+
+
+def test_a_contextual_call_missing_its_message_is_reported(tmp_path: Path) -> None:
+    found = extract([_write(tmp_path, 'pgettext("GPU")\n')])
+    assert "missing its message argument" in found.problems[0]
+
+
+def test_an_empty_context_is_refused_rather_than_filed_as_a_third_thing(tmp_path: Path) -> None:
+    found = extract([_write(tmp_path, 'pgettext("", "none detected")\n')])
+    assert found.entries == []
+    assert "the context is empty" in found.problems[0]
+
+
+def test_the_template_writes_a_msgctxt_line_above_the_msgid(tmp_path: Path) -> None:
+    source = 'pgettext("GPU", "none detected")\n_("none detected")\n'
+    template = render_template(extract([_write(tmp_path, source)]), version="1")
+    assert 'msgctxt "GPU"\nmsgid "none detected"' in template
+    catalog = parse_po(template)
+    assert set(catalog.messages) == {("GPU", "none detected"), (None, "none detected")}
