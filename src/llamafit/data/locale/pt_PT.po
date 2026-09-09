@@ -809,9 +809,14 @@ msgstr "A maioria dos modelos úteis precisa de 5 a 120 GB; liberte espaço ou m
 #. writing that space, and a no-break space if that is what it wants. Only a
 #. translation with nothing in it at all means untranslated, and that falls back to
 #. the English comma rather than to no separator.
+# The thousands separator below is a no-break space (U+00A0), not an ordinary space
+# and not an empty translation. CLDR gives European Portuguese a space here, as does
+# ISO 80000-1, and every other catalog in this directory follows the same source. A
+# native reader may well prefer the point that used to be here; that is what the
+# review of this file is for. Do not "tidy" the space away.
 msgctxt "thousands separator"
 msgid ","
-msgstr "."
+msgstr " "
 
 #. Translators: this is punctuation, not prose. It is what your language puts before
 #. the fractional part of a number: English writes 127.8 and Portuguese 127,8. Write
