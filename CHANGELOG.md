@@ -24,10 +24,13 @@ the changelog says so when they do.
 - Documentation: CLI reference, platform support, development guide, contributing guide.
 
 ### Fixed
-- RAM bandwidth is now measured with a multi-threaded NumPy copy split across a thread
-  pool (physical core count, capped at 8), because a single thread cannot saturate a
-  multi-channel memory controller; the pure-Python fallback, which cannot parallelise
-  because it holds the GIL, is now labelled `estimated` rather than `measured`.
+- RAM bandwidth now measures sequential read throughput, not a copy: a copy moves each
+  byte twice (read and write), which is not what llama.cpp's read-dominated weight
+  streaming does, and a single thread also cannot saturate a multi-channel memory
+  controller. With NumPy, a memory-bound reduction runs concurrently across a thread
+  pool (physical core count, capped at 8); the pure-Python fallback, which cannot
+  parallelise because it holds the GIL and still measures a copy, keeps its own
+  (re-derived) correction factor and is labelled `estimated` rather than `measured`.
 - Memory channel count is parsed from Windows (`BankLabel`/`DeviceLocator`) and Linux
   (`dmidecode`'s `Bank Locator`/`Locator`) slot labels when they encode a channel
   identifier, so the theoretical bandwidth estimate runs again on boards that report one;
