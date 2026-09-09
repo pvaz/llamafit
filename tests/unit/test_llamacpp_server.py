@@ -5,6 +5,7 @@ from llamafit.llamacpp.server import (
     FakeHttp,
     candidate_ports,
     discover_servers,
+    discover_with_probes,
 )
 
 HEALTH = {"status": "ok"}
@@ -78,6 +79,16 @@ def test_health_checks_use_the_health_timeout() -> None:
     http = FakeHttp({"http://127.0.0.1:8080/health": HEALTH})
     discover_servers(http, [8080])
     assert http.calls[0] == ("http://127.0.0.1:8080/health", HEALTH_TIMEOUT_S)
+
+
+def test_discovered_servers_follow_the_order_of_the_ports() -> None:
+    responses = {}
+    for port in (8080, 8081, 8098):
+        responses[f"http://127.0.0.1:{port}/health"] = HEALTH
+        responses[f"http://127.0.0.1:{port}/v1/models"] = {"data": [{"id": f"model-{port}"}]}
+    servers, probes = discover_with_probes(FakeHttp(responses), [8098, 8080, 8081])
+    assert [s.model for s in servers] == ["model-8098", "model-8080", "model-8081"]
+    assert [p.name for p in probes] == ["server:8098", "server:8080", "server:8081"]
 
 
 def test_detect_llamacpp_composes() -> None:
