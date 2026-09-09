@@ -1,5 +1,6 @@
 """Documentation must name every command and flag the CLI actually has."""
 
+import re
 from pathlib import Path
 
 from typer.main import get_command
@@ -24,6 +25,16 @@ def test_platform_doc_mentions_every_probe_hint() -> None:
     text = (ROOT / "docs" / "platform-support.md").read_text(encoding="utf-8")
     for probe in PROBE_HINTS:
         assert probe in text, f"docs/platform-support.md lacks probe {probe}"
+
+
+def test_development_doc_only_names_workflows_that_exist() -> None:
+    text = (ROOT / "docs" / "development.md").read_text(encoding="utf-8")
+    named = set(re.findall(r"\.github/workflows/([A-Za-z0-9_.-]+\.ya?ml)", text))
+    assert named, "docs/development.md should name the workflow that runs the checks"
+    for workflow in sorted(named):
+        assert (ROOT / ".github" / "workflows" / workflow).is_file(), (
+            f"docs/development.md names .github/workflows/{workflow}, which does not exist"
+        )
 
 
 def test_readme_shows_the_two_commands_that_exist() -> None:

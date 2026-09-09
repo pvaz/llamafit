@@ -24,7 +24,8 @@ pytest --cov -m "not hardware"
 llamafit catalog validate            # once the catalog exists (phase 1B)
 ```
 
-CI runs them on Ubuntu, macOS and Windows with Python 3.10 and 3.13. Tests marked
+`.github/workflows/ci.yml` runs them on Ubuntu, macOS and Windows with Python 3.10 and 3.13.
+It is the only workflow in the repository. Tests marked
 `hardware` need a real machine (they measure bandwidth or run vendor tools); run them locally
 with `pytest -m hardware`. Coverage must stay at or above 85 percent.
 
@@ -39,11 +40,14 @@ To add a machine:
 
 1. Run each command from the probe table in [platform-support.md](platform-support.md) and
    save its exact output.
-2. Add a fixture module with a `runner()` function returning a `FakeRunner`, plus the
-   `cpuinfo` and virtual-memory values.
-3. Add a test in `tests/unit/test_scan.py` asserting the `Host` LlamaFit builds from it.
+2. Add a fixture module with a `runner()` function returning a `FakeRunner`, plus `cpuinfo()`,
+   `vm()` and `cores()` returning the recorded values.
+3. Add a test in `tests/unit/test_scan.py` asserting the `Host` LlamaFit builds from it. Pass
+   every provider, `cores_provider=cores` included: a scan that reads the running machine's
+   core counts asserts numbers that hold only on the machine the fixture was recorded on.
 
-`scripts/record_fixtures.py` (phase 1A) runs the commands and writes the module for you.
+`scripts/record_fixtures.py` (phase 1A) runs the commands and writes the module for you,
+`cores()` included.
 
 ## Layout
 
@@ -61,15 +65,21 @@ Runtime dependencies, with the reason each earns its place:
 |---|---|
 | `typer` | the CLI, with completion and help for free |
 | `rich` | tables and colour in the terminal; Typer uses it too |
-| `textual` | the terminal dashboard (optional extra `tui`) |
-| `fastapi`, `uvicorn` | the JSON API and static dashboard (optional extra `web`) |
 | `pydantic` | every data model, validation, JSON in and out |
-| `pyyaml` | the catalog |
 | `platformdirs` | the right directories on each OS |
 | `psutil` | memory totals and core counts everywhere |
 | `py-cpuinfo` | CPU model and instruction sets everywhere |
 | `httpx` | Hugging Face metadata, running-server discovery, downloads |
-| `numpy` (optional) | a faster, more accurate memory-bandwidth measurement |
+| `numpy` | a faster, more accurate memory-bandwidth measurement; optional extra `fast`, and part of `dev` so CI exercises it |
+
+Planned, not installed and not yet declared in `pyproject.toml`; each arrives with the phase
+that needs it, together with the extra it belongs to:
+
+| Package | Why | Phase |
+|---|---|---|
+| `pyyaml` | the catalog | 1B |
+| `textual` | the terminal dashboard | 1D |
+| `fastapi`, `uvicorn` | the JSON API and static dashboard | 1D |
 
 Adding a dependency means adding a row here with a reason, in the same pull request.
 
@@ -93,11 +103,14 @@ CI is green. `main` is always releasable.
 
 ## Releasing
 
+Releasing is manual for now; there is no release workflow in `.github/workflows/`, and one
+that builds and publishes through PyPI trusted publishing is planned.
+
 1. Move the *Unreleased* section of `CHANGELOG.md` under the new version and date.
 2. Bump `version` in `pyproject.toml`.
-3. Tag `vX.Y.Z` and push the tag; the release workflow builds the wheel and source
-   distribution and publishes them to PyPI through trusted publishing.
-4. Create the GitHub release from the tag with the changelog section as its notes.
+3. Build with `python -m build` and upload with `twine upload dist/*`.
+4. Tag `vX.Y.Z` and push the tag.
+5. Create the GitHub release from the tag with the changelog section as its notes.
 
 Versions follow semantic versioning. Before 1.0, a minor version may change interfaces and the
 changelog says so.
