@@ -13,9 +13,11 @@ from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Protocol, TypeVar
 
+from llamafit.logging import get_logger
 from llamafit.models.host import Probe
 
 T = TypeVar("T")
+_log = get_logger("hardware.runner")
 
 
 @dataclass
@@ -52,6 +54,7 @@ class SubprocessRunner:
         if not args:
             return CommandResult(args, None, "", "", 0, error="empty command")
         start = time.perf_counter()
+        _log.debug("running %s", " ".join(args))
         try:
             completed = subprocess.run(
                 args,
@@ -124,19 +127,19 @@ def probe(
     """
     result = runner.run(argv, timeout=timeout)
     if result.error is not None:
+        _log.debug("probe %s failed: %s", name, result.error)
         return None, Probe(name=name, ok=False, duration_ms=result.duration_ms, error=result.error)
     if result.returncode != 0:
         detail = result.stderr.strip() or result.stdout.strip() or "no output"
-        return None, Probe(
-            name=name,
-            ok=False,
-            duration_ms=result.duration_ms,
-            error=f"exit code {result.returncode}: {detail}",
-        )
+        error = f"exit code {result.returncode}: {detail}"
+        _log.debug("probe %s failed: %s", name, error)
+        return None, Probe(name=name, ok=False, duration_ms=result.duration_ms, error=error)
     try:
         value = parse(result.stdout)
     except Exception as exc:  # any parse failure must become a probe record
+        _log.debug("probe %s failed: %s", name, exc)
         return None, Probe(name=name, ok=False, duration_ms=result.duration_ms, error=str(exc))
+    _log.debug("probe %s: ok in %d ms", name, result.duration_ms)
     return value, Probe(name=name, ok=True, duration_ms=result.duration_ms)
 
 

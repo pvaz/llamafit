@@ -15,8 +15,11 @@ from llamafit.hardware.gpu import detect_gpus
 from llamafit.hardware.gputable import enrich_gpu, lookup_gpu
 from llamafit.hardware.memory import detect_memory
 from llamafit.hardware.runner import Runner, SubprocessRunner
+from llamafit.logging import get_logger
 from llamafit.models.host import Arch, Host, OsName
 from llamafit.paths import get_paths
+
+_log = get_logger("hardware")
 
 
 def current_os() -> OsName:
@@ -71,6 +74,16 @@ def scan(
     )
     paths = get_paths()
     disks = detect_disks([Path.cwd(), paths.downloads_dir, *extra_paths])
+    probes = [*cpu_probes, *memory_probes, *gpu_probes]
+    failed = sum(1 for p in probes if not p.ok)
+    _log.debug(
+        "scanned %s: cpu %s, memory %d bytes, %d gpus, %d probes failed",
+        os_name,
+        cpu.model,
+        memory.total_bytes,
+        len(gpus),
+        failed,
+    )
     return Host(
         os=os_name,
         os_version=platform.platform(),
@@ -80,7 +93,7 @@ def scan(
         gpus=gpus,
         unified_memory=unified,
         disks=disks,
-        probes=[*cpu_probes, *memory_probes, *gpu_probes],
+        probes=probes,
         scanned_at=datetime.now(timezone.utc),
     )
 

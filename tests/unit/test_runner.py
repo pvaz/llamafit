@@ -1,4 +1,5 @@
 import sys
+from pathlib import Path
 
 from llamafit.hardware.runner import CommandResult, FakeRunner, SubprocessRunner, probe
 
@@ -71,3 +72,18 @@ def test_empty_argv_is_an_error_not_an_exception() -> None:
     fake = FakeRunner({})
     assert fake.run([]).error == "empty command"
     assert fake.calls == [[]]
+
+
+def test_probe_writes_to_the_log_when_logging_is_set_up(tmp_path: Path) -> None:
+    from llamafit.logging import setup_logging
+
+    logger = setup_logging(tmp_path, verbose=True)
+    try:
+        probe("tool", FakeRunner({}), ["tool"], int)
+        for handler in logger.handlers:
+            handler.flush()
+        assert "tool" in (tmp_path / "llamafit.log").read_text(encoding="utf-8")
+    finally:
+        for handler in list(logger.handlers):
+            logger.removeHandler(handler)
+            handler.close()
