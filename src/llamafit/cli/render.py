@@ -181,34 +181,71 @@ def _fmt_context_compact(tokens: int) -> str:
     return str(tokens)
 
 
-def render_catalog_list(summaries: Sequence[ModelSummary]) -> Table:
+def _fmt_capabilities(capabilities: Sequence[str], *, limit: int = 3) -> str:
+    """The first ``limit`` capabilities, joined, with a ``+N`` marker for the rest.
+
+    A model with many capabilities would otherwise wrap its row across several
+    lines, which makes five models harder to compare, not easier: the eye can scan
+    down a column of one-line rows but not across a staircase of wrapped ones. The
+    full list is one ``info`` or ``--json`` away.
+    """
+    shown = list(capabilities[:limit])
+    text = ", ".join(shown)
+    remaining = len(capabilities) - len(shown)
+    return f"{text} +{remaining}" if remaining > 0 else text
+
+
+def render_catalog_list(summaries: Sequence[ModelSummary], *, console_width: int = 80) -> Table:
     """A table listing models: enough to tell them apart, not everything about them.
 
-    Columns are id, vendor, parameters, native context and capabilities: what
-    separates one candidate from another at a glance. Licence and quant count are
-    left out to keep the table readable at 80 columns; both are one ``info`` or
-    ``--json`` away. The id column is ``no_wrap``: an id is one hyphenated word with
-    no space to wrap on, so without it Rich would silently truncate a long one with
-    an ellipsis instead of shrinking a column that can actually afford to wrap, such
-    as capabilities. Every cell built from catalog text goes through ``Text``, not
-    an f-string handed to ``console.print``, since a model name or id is never
-    guaranteed free of characters Rich would try to parse as markup.
+    Columns are id, parameters, native context, quality and capabilities (the first
+    three, with a ``+N`` marker for the rest; ``info`` or ``--json`` has every one):
+    what separates one candidate from another at a glance, and, for quality, *why*
+    they are ordered the way they are (``filter_models`` sorts by it, so a reader
+    should not have to take the order on faith). Vendor, licence and quant count are
+    left out to keep every row on one line at 80 columns; an id already carries the
+    family (``qwen3-coder-next``), so vendor is the one of the three that costs
+    least to drop.
+
+    Every column is ``no_wrap``: an id is one hyphenated word with no space to wrap
+    on, and a wrapped row anywhere turns a table meant to be scanned down a column
+    back into the staircase this whole layout exists to avoid. The other four
+    columns are content-sized and fully rigid (id, a number or a short code), so
+    capabilities is deliberately the one elastic column: its ``max_width`` is
+    computed from ``console_width`` minus what those four need, so a wide terminal
+    shows every one of the first three capabilities in full and only a genuinely
+    80-column terminal falls back to Rich's own ellipsis mid-list. That trade keeps
+    every row one line, which a fuller but wrapped cell would not. Every cell built
+    from catalog text goes through ``Text``, not an f-string handed to
+    ``console.print``, since a model name or id is never guaranteed free of
+    characters Rich would try to parse as markup.
+
+    Args:
+        summaries: The rows to render, already filtered and sorted.
+        console_width: The console's width, used only to size the capabilities
+            column; defaults to 80, the narrowest width this table is designed for.
     """
+    # 59 is what the other four columns need for the catalog as it stands today
+    # (an id up to "llama-3.1-8b-instruct" long, plus three short numeric columns)
+    # and every border and padding character around all five columns; it will
+    # drift a little as ids grow, which only ever costs capabilities a character
+    # or two of headroom, never a wrapped row.
+    capabilities_width = max(15, console_width - 59)
     table = Table(title="Models")
     table.add_column("ID", style="bold", no_wrap=True)
-    table.add_column("Vendor")
     table.add_column("Params", justify="right", no_wrap=True)
     table.add_column("Context", justify="right", no_wrap=True)
-    table.add_column("Capabilities")
+    table.add_column("Quality", justify="right", no_wrap=True)
+    table.add_column("Capabilities", no_wrap=True, max_width=capabilities_width)
     for summary in summaries:
         total = _fmt_billions(summary.params_total_b)
         active = _fmt_billions(summary.params_active_b)
         table.add_row(
             Text(summary.id),
-            Text(summary.vendor),
-            f"{total}B/{active}B",
+            f"{total}/{active}B",
             _fmt_context_compact(summary.context_native),
-            Text(", ".join(summary.capabilities)),
+            str(summary.quality_baseline),
+            Text(_fmt_capabilities(summary.capabilities)),
         )
     return table
 
