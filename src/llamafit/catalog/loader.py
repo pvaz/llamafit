@@ -13,9 +13,9 @@ missing simply means nothing has been refreshed yet, not a problem.
 Everything else about that file is checked before any of it is believed. A document
 whose schema version this build does not know is refused whole; a model, a quant or
 an extra the YAML does not have, an entry that is not an object, and a field that is
-not the shape it claims to be each become a :class:`Problem` naming exactly where the
-trouble is. No field is ever quietly dropped, because a field that failed to merge
-would then look exactly like a field that was never refreshed.
+not the shape or the value it claims to be each become a :class:`Problem` naming
+exactly where the trouble is. No field is ever quietly dropped, because a field that
+failed to merge would then look exactly like a field that was never refreshed.
 """
 
 from __future__ import annotations
@@ -25,6 +25,7 @@ import os
 from collections.abc import Mapping
 from dataclasses import dataclass
 from importlib import resources
+from math import isfinite
 from pathlib import Path
 from typing import Any, TypeGuard
 
@@ -32,7 +33,14 @@ import yaml
 from pydantic import ValidationError
 
 from llamafit.errors import CatalogError
-from llamafit.models.catalog import Catalog, CatalogModel, Extra, ModelSource, Quant
+from llamafit.models.catalog import (
+    MAX_BPW,
+    Catalog,
+    CatalogModel,
+    Extra,
+    ModelSource,
+    Quant,
+)
 from llamafit.models.gguf import GgufFacts
 from llamafit.paths import get_paths
 
@@ -218,8 +226,20 @@ def _reused_name_problems(
 
 
 def _describe(value: object) -> str:
-    """Name a JSON value's type the way a sentence can read it, for example ``a string``."""
+    """Say what a JSON value is, the way a sentence can read it.
+
+    A number is named by its value, since a number in the wrong range is wrong for
+    what it says rather than for what it is; everything else is named by its type,
+    for example ``a string``.
+    """
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return repr(value)
     return _JSON_TYPE_NAMES.get(type(value), "a value of an unexpected type")
+
+
+def _count(number: int, noun: str) -> str:
+    """A count with its noun in the right number: ``1 file``, ``3 files``."""
+    return f"{number} {noun}" if number == 1 else f"{number} {noun}s"
 
 
 def _wrong_shape(subject: str, found: object, expected: str) -> str:
@@ -385,14 +405,25 @@ def _is_string_list(value: object) -> TypeGuard[list[str]]:
     return isinstance(value, list) and all(isinstance(item, str) for item in value)
 
 
-def _is_whole_number(value: object) -> TypeGuard[int]:
-    """Whether a value is an integer, excluding the booleans JSON also decodes as one."""
-    return isinstance(value, int) and not isinstance(value, bool)
+def _is_size(value: object) -> TypeGuard[int]:
+    """Whether a value is a size a file could really have: a whole number, zero or more.
+
+    Booleans are excluded, since JSON's ``true`` decodes as the integer 1.
+    """
+    return isinstance(value, int) and not isinstance(value, bool) and value >= 0
 
 
-def _is_number(value: object) -> TypeGuard[float]:
-    """Whether a value is a number, excluding the booleans JSON also decodes as one."""
-    return isinstance(value, (int, float)) and not isinstance(value, bool)
+def _is_bits_per_weight(value: object) -> TypeGuard[float]:
+    """Whether a value is a bits-per-weight figure a real quant could have.
+
+    Finite, above zero and no wider than :data:`~llamafit.models.catalog.MAX_BPW`,
+    the same bounds :class:`~llamafit.models.catalog.Quant` enforces on curated
+    entries. ``json.loads`` decodes ``Infinity`` and ``NaN``, so both are excluded
+    here rather than assumed away.
+    """
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return False
+    return isfinite(value) and 0 < value <= MAX_BPW
 
 
 def _validation_detail(exc: ValidationError) -> str:
@@ -410,6 +441,11 @@ def _apply_quant_facts(
     A field that is absent, or ``null`` because nothing was ever refreshed for it, is
     left alone. A field that is present but malformed is left unset and reported, so
     one bad field neither poisons its neighbours nor passes for an unrefreshed one.
+    Malformed covers the value as well as the type: a negative size and a
+    bits-per-weight figure no real quant could have are refused here exactly as
+    :class:`~llamafit.models.catalog.Quant` refuses them in a curated entry. The
+    checksums are dropped, and reported, when they cannot be paired with the files
+    one to one, since then nobody can say which checksum covers which file.
 
     Returns:
         One :class:`Problem` per malformed field; empty when everything applied.
@@ -442,10 +478,10 @@ def _apply_quant_facts(
         problems.append(problem("files", files, "a list of file names"))
 
     size = facts.get("bytes")
-    if _is_whole_number(size):
+    if _is_size(size):
         quant.bytes_ = size
     elif size is not None:
-        problems.append(problem("bytes", size, "a whole number of bytes"))
+        problems.append(problem("bytes", size, "a whole number of bytes, zero or more"))
 
     sha256 = facts.get("sha256")
     if _is_string_list(sha256):
@@ -454,10 +490,14 @@ def _apply_quant_facts(
         problems.append(problem("sha256", sha256, "a list of checksums"))
 
     bpw = facts.get("bpw")
-    if _is_number(bpw):
+    if _is_bits_per_weight(bpw):
         quant.bpw = float(bpw)
     elif bpw is not None:
-        problems.append(problem("bpw", bpw, "a number"))
+        problems.append(
+            problem(
+                "bpw", bpw, f"a finite number of bits per weight, above 0 and at most {MAX_BPW:g}"
+            )
+        )
 
     gguf_facts = facts.get("gguf_facts")
     if isinstance(gguf_facts, dict):
@@ -477,6 +517,21 @@ def _apply_quant_facts(
             )
     elif gguf_facts is not None:
         problems.append(problem("gguf_facts", gguf_facts, "an object"))
+
+    if quant.files and quant.sha256 and len(quant.files) != len(quant.sha256):
+        problems.append(
+            Problem(
+                file=str(facts_path),
+                model_id=model_id,
+                location=f"quants.{quant_name}.sha256",
+                message=(
+                    f"the facts file gives {_count(len(quant.files), 'file')} but "
+                    f"{_count(len(quant.sha256), 'checksum')} for quant {quant_name!r}, so no "
+                    f"checksum can be paired with its file; {_REWRITE_HINT}"
+                ),
+            )
+        )
+        quant.sha256 = []
 
     return problems
 
@@ -511,10 +566,10 @@ def _apply_extra_facts(
     problems: list[Problem] = []
 
     size = facts.get("bytes")
-    if _is_whole_number(size):
+    if _is_size(size):
         extra.bytes_ = size
     elif size is not None:
-        problems.append(problem("bytes", size, "a whole number of bytes"))
+        problems.append(problem("bytes", size, "a whole number of bytes, zero or more"))
 
     sha256 = facts.get("sha256")
     if isinstance(sha256, str):

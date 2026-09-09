@@ -136,11 +136,12 @@
     },
     "Extra": {
       "additionalProperties": false,
-      "description": "An auxiliary file that accompanies a model, such as a vision projector.\n\nAttributes:\n    role: What this file is for.\n    file: The file name.\n    bytes_: Size in bytes. Serialized as ``bytes``, its alias. Filled by the\n        refresh command.\n    sha256: Checksum of the file. Filled by the refresh command.",
+      "description": "An auxiliary file that accompanies a model, such as a vision projector.\n\nAttributes:\n    role: What this file is for.\n    file: The file name.\n    bytes_: Size in bytes, never negative. Serialized as ``bytes``, its alias.\n        Filled by the refresh command.\n    sha256: Checksum of the file. Filled by the refresh command.",
       "properties": {
         "bytes": {
           "anyOf": [
             {
+              "minimum": 0,
               "type": "integer"
             },
             {
@@ -683,11 +684,13 @@
     },
     "Quant": {
       "additionalProperties": false,
-      "description": "One quantisation of a model, as a set of GGUF files.\n\nAttributes:\n    name: The quant's name, for example ``UD-Q4_K_XL``.\n    files: The GGUF file names that make up this quant, in shard order. Filled\n        by the refresh command.\n    bytes_: Total size of ``files``, in bytes. Serialized as ``bytes``, its\n        alias, since ``bytes`` is a Python builtin. Filled by the refresh\n        command.\n    bpw: Bits per weight. Filled by the refresh command.\n    sha256: One checksum per entry in ``files``, in the same order. Filled by\n        the refresh command.\n    gguf_facts: Architecture facts read from this quant's GGUF header. Filled\n        by the refresh command.",
+      "description": "One quantisation of a model, as a set of GGUF files.\n\nAttributes:\n    name: The quant's name, for example ``UD-Q4_K_XL``.\n    files: The GGUF file names that make up this quant, in shard order. Filled\n        by the refresh command.\n    bytes_: Total size of ``files``, in bytes, never negative. Serialized as\n        ``bytes``, its alias, since ``bytes`` is a Python builtin. Filled by\n        the refresh command.\n    bpw: Bits per weight: finite, above zero and at most :data:`MAX_BPW`.\n        Filled by the refresh command.\n    sha256: One checksum per entry in ``files``, in the same order. Filled by\n        the refresh command.\n    gguf_facts: Architecture facts read from this quant's GGUF header. Filled\n        by the refresh command.",
       "properties": {
         "bpw": {
           "anyOf": [
             {
+              "exclusiveMinimum": 0,
+              "maximum": 32.0,
               "type": "number"
             },
             {
@@ -700,6 +703,7 @@
         "bytes": {
           "anyOf": [
             {
+              "minimum": 0,
               "type": "integer"
             },
             {
