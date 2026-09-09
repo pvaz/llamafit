@@ -69,3 +69,39 @@ def test_facts_from_the_reference_machines_coder_model() -> None:
         "a hybrid model has fewer attention layers"
     )
     assert facts.bytes_expert_weights > facts.bytes_attention_weights
+
+
+@pytest.mark.hardware
+def test_recurrent_state_bytes_matches_the_calibrated_measurement() -> None:
+    """Qwen3.8-Flash-Next's recurrent (SSM) state buffer, measured on the reference machine.
+
+    ``docs/calibration/2026-09-09-reference-machine.md`` records llama.cpp reporting a
+    "Recurrent" buffer of 113 MiB in every configuration tested for this model
+    (constant across context length, as a fixed-size buffer should be); the source
+    measurement behind that rounded table entry is
+    ``llama_memory_recurrent: CUDA0 RS buffer size = 112.57 MiB``, i.e. 118,036,480
+    bytes.
+
+    A single shard's header does not carry every tensor (the first shard here carries
+    only metadata, ``tensor_count == 0``), so the full-attention layer count needs
+    every shard's tensors merged into one header before deriving facts.
+    """
+    base = Path("D:/llama.cpp/models/Qwen3.8-Flash-Next")
+    shards = sorted(base.glob("Qwen3.8-Flash-Next-UD-Q4_K_XL-*.gguf"))
+    if not shards or not all(shard.exists() for shard in shards):
+        pytest.skip("Qwen3.8-Flash-Next shards are not on this machine")
+
+    merged = read_header(LocalSource(shards[0]))
+    tensors = list(merged.tensors)
+    for shard in shards[1:]:
+        tensors.extend(read_header(LocalSource(shard)).tensors)
+    merged = merged.model_copy(update={"tensors": tensors, "tensor_count": len(tensors)})
+
+    facts = derive_facts(merged)
+    measured_bytes = 118_036_480
+    assert facts.recurrent_state_bytes is not None
+    relative_error = abs(facts.recurrent_state_bytes - measured_bytes) / measured_bytes
+    assert relative_error < 0.01, (
+        f"derived {facts.recurrent_state_bytes}, measured {measured_bytes}, "
+        f"{relative_error:.2%} off"
+    )
