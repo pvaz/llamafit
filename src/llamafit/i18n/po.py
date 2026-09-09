@@ -11,11 +11,24 @@ masculine, and no single Portuguese string is right in both. An entry is therefo
 by its context and its message together. A message written without a context is keyed
 under a context of ``None``, which is not the same thing as a context of ``""``.
 
-An empty ``msgstr`` means untranslated, and so does one that holds nothing but
-whitespace: three spaces reach a screen as a blank line, not as a translation, and
-the difference between the two is invisible in the file. Lookup then returns the
-English original, so a half-finished translation degrades to English and never to a
-blank line on someone's screen.
+An empty ``msgstr`` means untranslated, and for prose so does one that holds nothing but
+whitespace: three spaces reach a screen as a blank line, not as a translation, and the
+difference between the two is invisible in the file. :meth:`PoCatalog.gettext` and the
+three lookups beside it therefore return the English original, so a half-finished
+translation degrades to English and never to a blank line on someone's screen.
+
+That rule is right for a sentence and wrong for a character. A few entries are punctuation
+rather than prose, and for those a space is the answer: French, Russian, Swedish, Polish
+and a dozen more group a number's digits with one, and under the prose rule none of them
+could say so. :meth:`PoCatalog.pgettext_literal` is the lookup for those entries. It takes
+the ``msgstr`` at its word, so whitespace counts as a translation and only a ``msgstr``
+with no characters at all falls back to English. Nothing else changes: the literal reading
+is asked for by the call site, one entry at a time, and every other message is looked up
+the way it always was.
+
+Whether an entry is *filled in* and whether its value would read as prose are two
+different questions after that. :attr:`Message.translated` answers the first, which is
+what a completeness report is asking; the fallback inside each lookup answers the second.
 
 A translation whose placeholders do not match its message is dropped, and the English
 is used in its place. Every counted message is formatted with a dictionary the English
@@ -93,7 +106,7 @@ class Message:
     Attributes:
         msgid: The English message, which with the context is the lookup key.
         plural: The English plural message, or ``None`` for a singular-only entry.
-        translations: One string per plural form; empty or blank means untranslated.
+        translations: One string per plural form; an empty string means untranslated.
         line: The line the entry starts on, for error messages.
         context: What the ``msgctxt`` said, or ``None`` for an entry that has none.
     """
@@ -111,8 +124,14 @@ class Message:
 
     @property
     def translated(self) -> bool:
-        """True when a form carries a translation that is not all whitespace."""
-        return any(text.strip() for text in self.translations)
+        """True when a form carries anything at all.
+
+        This is the question a completeness report asks — has somebody filled this entry
+        in — and not the question a lookup asks. A space is an answer for an entry that
+        holds punctuation and no answer for one that holds a sentence, and only the call
+        site knows which of the two it is asking for; each lookup decides that for itself.
+        """
+        return any(self.translations)
 
 
 @dataclass(frozen=True)
@@ -157,6 +176,26 @@ class PoCatalog:
             The translation filed under that context, or the English original.
         """
         return self._one(context, message)
+
+    def pgettext_literal(self, context: str, message: str) -> str:
+        """Translate one message under ``context``, taking whitespace at its word.
+
+        For an entry whose value is punctuation rather than prose. The space French puts
+        between a number's groups of three digits *is* the translation, so here a
+        ``msgstr`` holding only whitespace is used as it stands, and only one with no
+        characters at all falls back to the English.
+
+        Use it where the code is asking for a character; :meth:`pgettext` stays the lookup
+        for everything a reader reads as words.
+
+        Returns:
+            The translation filed under that context, or the English original when the
+            catalog has no entry for it or its ``msgstr`` is empty.
+        """
+        entry = self.messages.get((context, message))
+        if entry is None or not entry.translations:
+            return message
+        return entry.translations[0] or message
 
     def ngettext(self, singular: str, plural: str, n: int) -> str:
         """Translate a message that counts something, picking the form ``n`` selects.

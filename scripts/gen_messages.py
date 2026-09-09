@@ -47,8 +47,13 @@ The ``lazy_`` pair defers the lookup to render time but holds the same literals,
 message wrapped for a module-level constant is extracted like any other.
 """
 
-CONTEXT_SINGULAR_NAMES = frozenset({"pgettext", "lazy_pgettext"})
-"""Names that translate one message under a context; the context comes first."""
+CONTEXT_SINGULAR_NAMES = frozenset({"pgettext", "lazy_pgettext", "pgettext_literal"})
+"""Names that translate one message under a context; the context comes first.
+
+``pgettext_literal`` reads its entry with whitespace counting as a value, for an entry
+holding punctuation rather than prose. That is a difference at lookup time and none at
+all here: it takes the same two literals and files the same entry.
+"""
 
 CONTEXT_PLURAL_NAMES = frozenset({"npgettext", "lazy_npgettext"})
 """Names that translate a counting message under a context; the context comes first."""

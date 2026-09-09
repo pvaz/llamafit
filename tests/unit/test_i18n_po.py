@@ -374,13 +374,40 @@ def test_an_empty_msgid_with_a_context_is_a_message_not_the_header() -> None:
     assert catalog.pgettext("odd", "") == "x"
 
 
-def test_a_translation_that_is_only_whitespace_counts_as_no_translation() -> None:
+def test_a_translation_that_is_only_whitespace_counts_as_no_translation_for_prose() -> None:
     # A space, a tab, a newline and a non-breaking space: all of them reach a screen as
-    # a blank line, and all of them look like a finished translation in the file.
+    # a blank line, and all of them look like a finished translation in the file. It is
+    # filled in, so a completeness report counts it; it is blank, so a sentence built out
+    # of it would be a blank line, and every lookup but the literal one refuses it.
     catalog = parse_po(HEADER + '\nmsgid "unknown"\nmsgstr " \\t\\n\u00a0"\n')
     assert catalog.gettext("unknown") == "unknown"
-    assert catalog.untranslated() == ((None, "unknown"),)
-    assert not catalog.messages[None, "unknown"].translated
+    assert catalog.untranslated() == ()
+    assert catalog.messages[None, "unknown"].translated
+
+
+def test_the_literal_lookup_hands_back_whitespace_as_the_translation() -> None:
+    # What a language that groups a number's digits with a space has to be able to say.
+    catalog = parse_po(HEADER + '\nmsgctxt "thousands separator"\nmsgid ","\nmsgstr "\u00a0"\n')
+    assert catalog.pgettext_literal("thousands separator", ",") == "\u00a0"
+    assert catalog.pgettext("thousands separator", ",") == ","
+
+
+def test_the_literal_lookup_still_falls_back_when_the_entry_is_empty() -> None:
+    # Empty is the one answer that is not an answer, and it means the same here as
+    # everywhere else: nobody has filled this in, so English stands.
+    catalog = parse_po(HEADER + '\nmsgctxt "thousands separator"\nmsgid ","\nmsgstr ""\n')
+    assert catalog.pgettext_literal("thousands separator", ",") == ","
+
+
+def test_the_literal_lookup_falls_back_for_a_message_the_catalog_has_never_heard_of() -> None:
+    catalog = parse_po(HEADER)
+    assert catalog.pgettext_literal("thousands separator", ",") == ","
+
+
+def test_the_literal_lookup_does_not_read_an_entry_filed_without_a_context() -> None:
+    # The same rule the other four follow: a context is half of what identifies an entry.
+    catalog = parse_po(HEADER + '\nmsgid ","\nmsgstr "."\n')
+    assert catalog.pgettext_literal("thousands separator", ",") == ","
 
 
 def test_a_blank_plural_form_falls_back_like_an_empty_one() -> None:
