@@ -10,18 +10,26 @@ from __future__ import annotations
 
 import os
 import re
-from collections.abc import Mapping, Sequence
+from collections.abc import Collection, Mapping, Sequence
 from dataclasses import dataclass
 from types import TracebackType
-from typing import Any, Protocol
+from typing import Any, Protocol, get_args
 
 import httpx
 
 from llamafit import __version__
 from llamafit.errors import NetworkError
+from llamafit.models.catalog import ExtraRole
 
 _SHARD_RE = re.compile(r"-(\d+)-of-(\d+)\.gguf$")
 _SHARD_SUFFIX = r"-\d{5}-of-\d{5}\.gguf$"
+
+_EXTRA_ROLE_RE = re.compile(rf"^(?:{'|'.join(get_args(ExtraRole))})[-_.]", re.IGNORECASE)
+"""A file name that opens with an auxiliary role, for example ``mmproj-Q8_0.gguf``.
+
+The roles are read from :data:`~llamafit.models.catalog.ExtraRole` rather than listed
+again here, so a role added to the catalog model is known here on the same day.
+"""
 
 
 def _quant_pattern(quant_name: str) -> re.Pattern[str]:
@@ -30,16 +38,64 @@ def _quant_pattern(quant_name: str) -> re.Pattern[str]:
     return re.compile(rf"(?:^|[-_./]){name}(?:\.gguf$|{_SHARD_SUFFIX})", re.IGNORECASE)
 
 
+def _could_be_a_quant(file: RepoFile, extra_files: Collection[str]) -> bool:
+    """Whether a repository file could belong to a quant at all, before any name is matched.
+
+    Three kinds never can, and each would otherwise be counted into a quant's size: a
+    file that is not a GGUF; one the catalog already declares as an extra, claimed
+    outright by its name; and one whose name opens with an auxiliary role, since
+    ``mmproj-Q8_0.gguf`` names a quantisation without being one, and a projector
+    counted as a quant inflates that model by the projector's whole size.
+    """
+    if not file.path.endswith(".gguf"):
+        return False
+    _, _, name = file.path.rpartition("/")
+    if file.path in extra_files or name in extra_files:
+        return False
+    return _EXTRA_ROLE_RE.match(name) is None
+
+
+def _is_whole_set(ordered: Sequence[tuple[int, RepoFile]], total: int) -> bool:
+    """Whether an ordered shard group holds exactly one file for each declared index.
+
+    Short and doubled are both refused, for the same reason: neither is one whole set.
+    A missing shard cannot be sized, and two files claiming one index are two
+    publications of the quant — an ``imat`` path and a ``main`` path, say — which are
+    usually genuinely different files. Summing them would record a size half again too
+    large; choosing between them would be guessing which one a curator meant.
+    """
+    return [index for index, _ in ordered] == list(range(1, total + 1))
+
+
 def _select_shard_set(files: Sequence[RepoFile]) -> list[RepoFile]:
-    """Pick the shards of the largest shard set among ``files``, or all of them sorted.
+    """Pick the largest whole shard set among ``files``, or all of them sorted.
+
+    A split file's name declares how many shards there are, ``-00001-of-00004``, so a
+    set that is short — a repository mid-upload, a partial mirror — or one published
+    twice over is recognised here from the listing alone, without asking the network
+    anything, and left out rather than handed on as if it were whole. The caller then
+    sees no files for that quant, which it already treats as a warning, instead of
+    fetching headers for a set that could never add up.
+
+    Each candidate group is ordered before it is judged, and the sort is keyed on the
+    index and then the path rather than on the pair: :class:`RepoFile` has no ordering,
+    so a plain tuple sort would fall through to comparing the dataclasses and raise the
+    moment two files shared an index — which is exactly the case being judged.
 
     Args:
         files: Files already known to belong to one quant.
 
+    Unsplit files are held to the same standard. One is a quant; two are two
+    publications of one quant name, an ``imat`` copy and a ``main`` copy, and picking
+    between them would be guessing which a curator meant while adding them together
+    would record about twice the real size. Two is therefore nothing, the same as a
+    doubled shard set.
+
     Returns:
-        When any file is part of a ``-NNNNN-of-MMMMM.gguf`` shard set, only the shards
-        of the largest such set, sorted by shard index; otherwise every file, sorted
-        by path.
+        When any file is part of a ``-NNNNN-of-MMMMM.gguf`` shard set, the largest such
+        set that is whole, sorted by shard index, and nothing at all when none is;
+        otherwise the single file that matched, and nothing at all when more than one
+        did.
     """
     shard_groups: dict[int, list[tuple[int, RepoFile]]] = {}
     for file in files:
@@ -50,10 +106,15 @@ def _select_shard_set(files: Sequence[RepoFile]) -> list[RepoFile]:
             shard_groups.setdefault(total, []).append((index, file))
 
     if shard_groups:
-        largest_total = max(shard_groups)
-        return [file for _, file in sorted(shard_groups[largest_total])]
+        for total in sorted(shard_groups, reverse=True):
+            ordered = sorted(shard_groups[total], key=lambda pair: (pair[0], pair[1].path))
+            if _is_whole_set(ordered, total):
+                return [file for _, file in ordered]
+        return []
 
-    return sorted(files, key=lambda file: file.path)
+    if len(files) > 1:
+        return []
+    return list(files)
 
 
 @dataclass(frozen=True)
@@ -88,7 +149,7 @@ class HttpHfClient:
 
     def __init__(self, client: httpx.Client | None = None, token: str | None = None) -> None:
         self._owns_client = client is None
-        self._client = client if client is not None else httpx.Client()
+        self._client = client if client is not None else httpx.Client(follow_redirects=True)
         self._token = token if token is not None else os.environ.get("HF_TOKEN")
 
     def close(self) -> None:
@@ -121,7 +182,8 @@ class HttpHfClient:
         if self._token:
             headers["Authorization"] = f"Bearer {self._token}"
         try:
-            response = self._client.get(url, headers=headers)
+            # An injected client is never assumed to redirect on its own.
+            response = self._client.get(url, headers=headers, follow_redirects=True)
             if response.status_code != 200:
                 raise NetworkError(
                     f"Hugging Face returned {response.status_code} while listing files for {repo}.",
@@ -189,6 +251,11 @@ def match_quant_files(files: Sequence[RepoFile], quant_name: str) -> list[RepoFi
     ``-_./``, and followed by ``.gguf`` or a shard suffix, so a longer quant name that
     merely starts with ``quant_name`` (or a directory of one) never matches.
 
+    A file whose name opens with an auxiliary role is never a candidate, because
+    ``mmproj-Q8_0.gguf`` carries a quantisation in its name without being that quant's
+    weights. Pass a repository's declared extras to `assign_files_to_quants` to claim
+    the ones that are named some other way.
+
     Note that this alone cannot tell apart a shorter quant name that is a suffix of a
     longer one (``Q4_K_XL`` inside ``UD-Q4_K_XL``); use `assign_files_to_quants` when a
     repository's full set of quant names is known.
@@ -198,19 +265,22 @@ def match_quant_files(files: Sequence[RepoFile], quant_name: str) -> list[RepoFi
         quant_name: The quantization to match, for example ``Q4_K_M`` or ``UD-Q4_K_XL``.
 
     Returns:
-        The matching files. When any of them is part of a shard set, only the shards
-        of the largest such set are returned, sorted by shard index; otherwise every
-        matching file is returned, sorted by path.
+        The matching files, reduced to one whole quant: the largest complete shard set,
+        or the single file that matched. Nothing at all when no set is whole or when
+        more than one file matched, since a quant published twice over is left out
+        rather than guessed at or added up.
     """
     pattern = _quant_pattern(quant_name)
     candidates = [
-        file for file in files if file.path.endswith(".gguf") and pattern.search(file.path)
+        file for file in files if _could_be_a_quant(file, ()) and pattern.search(file.path)
     ]
     return _select_shard_set(candidates)
 
 
 def assign_files_to_quants(
-    files: Sequence[RepoFile], quant_names: Sequence[str]
+    files: Sequence[RepoFile],
+    quant_names: Sequence[str],
+    extra_files: Collection[str] = (),
 ) -> dict[str, list[RepoFile]]:
     """Group a repository's files by quant, giving each file to the longest name that matches.
 
@@ -219,9 +289,15 @@ def assign_files_to_quants(
     Trying the longest quant names first, and stopping at the first match, guarantees each
     file is assigned to at most one quant.
 
+    A file the catalog declares as an extra is claimed outright and offered to no quant,
+    however it happens to be named, and so is any file whose name opens with an auxiliary
+    role. Without that, a projector named for a quantisation is counted as part of that
+    quant, and the size recorded for the model is the projector's larger too.
+
     Args:
         files: Every file in the repository.
         quant_names: Every quant name published by the repository.
+        extra_files: The file names this source declares as extras, by path or basename.
 
     Returns:
         One list per name in ``quant_names`` (in that order), each reduced the same way
@@ -231,7 +307,7 @@ def assign_files_to_quants(
     ordered_names = sorted(quant_names, key=len, reverse=True)
     buckets: dict[str, list[RepoFile]] = {name: [] for name in quant_names}
     for file in files:
-        if not file.path.endswith(".gguf"):
+        if not _could_be_a_quant(file, extra_files):
             continue
         for name in ordered_names:
             if patterns[name].search(file.path):

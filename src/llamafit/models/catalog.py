@@ -7,7 +7,11 @@ repositories that publish its GGUF files. ``bytes_``, ``sha256`` and ``gguf_fact
 Hugging Face API and the GGUF header itself, never guessed by hand.
 
 Every model in this module forbids unknown fields, so a typo in a hand-written YAML
-file is caught immediately instead of silently ignored.
+file is caught immediately instead of silently ignored, and the volatile fields carry
+the bounds a real file has to satisfy: a size is never negative, bits per weight is a
+finite number no wider than an unquantised weight, and a quant with checksums has one
+per file. A curator's typo is caught when the catalog loads rather than when a memory
+budget is computed from it.
 """
 
 from __future__ import annotations
@@ -15,13 +19,31 @@ from __future__ import annotations
 import datetime
 import re
 from functools import cached_property
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from llamafit.models.gguf import GgufFacts
 
 _ID_RE = re.compile(r"^[a-z0-9][a-z0-9.\-]*$")
+
+MAX_BPW = 32.0
+"""The widest a weight could possibly be: an unquantised 32-bit float.
+
+Anything above this is not a quantisation but a wrong number — a size that belongs to
+some other file, or a parameter count that is wrong.
+"""
+
+ByteSize = Annotated[int, Field(ge=0)]
+"""A size in bytes. Never negative, whoever supplied it."""
+
+BitsPerWeight = Annotated[float, Field(gt=0, le=MAX_BPW, allow_inf_nan=False)]
+"""Bits per weight: above zero, no wider than :data:`MAX_BPW`, and finite.
+
+``allow_inf_nan`` is set explicitly rather than left to the type: ``float`` accepts
+infinities and NaN by default, and ``json.loads`` decodes ``Infinity`` and ``NaN``
+without complaint, so the annotation alone would let one through.
+"""
 
 Capability = Literal[
     "coding", "thinking", "vision", "tools", "multilingual", "long-context", "embeddings", "audio"
@@ -59,15 +81,18 @@ class Params(_Strict):
     """Parameter counts, in billions.
 
     Attributes:
-        total_b: Total parameters, in billions.
-        active_b: Parameters active per token, in billions. Equal to ``total_b`` for a
-            dense model, smaller for a mixture-of-experts model.
+        total_b: Total parameters, in billions, always above zero. A model with no
+            parameters is not a model, and every figure derived from this one — bits
+            per weight above all — is nonsense or a division by zero without it.
+        active_b: Parameters active per token, in billions, always above zero. Equal to
+            ``total_b`` for a dense model, smaller for a mixture-of-experts model; a
+            model that activates nothing per token does not exist.
         ngram_table_b: Size of an auxiliary n-gram lookup table, in billions of entries,
             for models that stream one from disk instead of holding it in weights.
     """
 
-    total_b: float
-    active_b: float
+    total_b: float = Field(gt=0)
+    active_b: float = Field(gt=0)
     ngram_table_b: float | None = None
 
     @model_validator(mode="after")
@@ -194,10 +219,11 @@ class Quant(_Strict):
         name: The quant's name, for example ``UD-Q4_K_XL``.
         files: The GGUF file names that make up this quant, in shard order. Filled
             by the refresh command.
-        bytes_: Total size of ``files``, in bytes. Serialized as ``bytes``, its
-            alias, since ``bytes`` is a Python builtin. Filled by the refresh
-            command.
-        bpw: Bits per weight. Filled by the refresh command.
+        bytes_: Total size of ``files``, in bytes, never negative. Serialized as
+            ``bytes``, its alias, since ``bytes`` is a Python builtin. Filled by
+            the refresh command.
+        bpw: Bits per weight: finite, above zero and at most :data:`MAX_BPW`.
+            Filled by the refresh command.
         sha256: One checksum per entry in ``files``, in the same order. Filled by
             the refresh command.
         gguf_facts: Architecture facts read from this quant's GGUF header. Filled
@@ -206,10 +232,22 @@ class Quant(_Strict):
 
     name: str
     files: list[str] = Field(default_factory=list)
-    bytes_: int | None = Field(default=None, alias="bytes")
-    bpw: float | None = None
+    bytes_: ByteSize | None = Field(default=None, alias="bytes")
+    bpw: BitsPerWeight | None = None
     sha256: list[str] = Field(default_factory=list)
     gguf_facts: GgufFacts | None = None
+
+    @model_validator(mode="after")
+    def _one_checksum_per_file(self) -> Quant:
+        """Reject a quant whose checksums cannot be paired with its files one to one.
+
+        Each checksum belongs to exactly one file, in the same order, so a count
+        that does not match means nobody can tell which checksum covers which file.
+        Either list may be empty, since a quant is curated before it is refreshed.
+        """
+        if self.files and self.sha256 and len(self.files) != len(self.sha256):
+            raise ValueError("sha256 needs one checksum per entry in files")
+        return self
 
 
 class Extra(_Strict):
@@ -218,14 +256,14 @@ class Extra(_Strict):
     Attributes:
         role: What this file is for.
         file: The file name.
-        bytes_: Size in bytes. Serialized as ``bytes``, its alias. Filled by the
-            refresh command.
+        bytes_: Size in bytes, never negative. Serialized as ``bytes``, its alias.
+            Filled by the refresh command.
         sha256: Checksum of the file. Filled by the refresh command.
     """
 
     role: ExtraRole
     file: str
-    bytes_: int | None = Field(default=None, alias="bytes")
+    bytes_: ByteSize | None = Field(default=None, alias="bytes")
     sha256: str | None = None
 
 

@@ -3,10 +3,16 @@
 A GGUF file can be a hundred gigabytes; its header is a few hundred kilobytes at
 the front. Every reader here fetches only the ranges the parser asks for, so a
 remote header costs one or two requests rather than a download.
+
+A mock transport never redirects on its own, so a bug in how redirects are
+followed here can hide behind a fully green test suite; that is exactly why the
+remote path is checked against the real Hugging Face API before every release.
 """
 
 from __future__ import annotations
 
+from collections.abc import Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import BinaryIO, Protocol
@@ -107,6 +113,21 @@ class HttpRangeSource:
         self._total_size: int | None = None
         self._etag: str | None = None
 
+    @contextmanager
+    def _http_client(self) -> Iterator[httpx.Client]:
+        """Yield a client to send one request with.
+
+        The injected client is used as given, but never trusted to redirect on its
+        own: every caller of this passes ``follow_redirects=True`` on the request
+        itself. When no client was injected, a fresh one is created here with
+        ``follow_redirects=True`` and closed once the request completes.
+        """
+        if self.client is not None:
+            yield self.client
+        else:
+            with httpx.Client(follow_redirects=True) as client:
+                yield client
+
     def read(self, offset: int, length: int) -> bytes:
         """Return up to ``length`` bytes starting at ``offset``, fetching if needed."""
         end = offset + length
@@ -151,10 +172,8 @@ class HttpRangeSource:
             The ``ETag`` and ``Content-Length``, each ``None`` when not learned.
         """
         try:
-            if self.client is not None:
-                response = self.client.head(self.url, follow_redirects=True)
-            else:
-                response = httpx.head(self.url, follow_redirects=True)
+            with self._http_client() as client:
+                response = client.head(self.url, follow_redirects=True)
         except httpx.HTTPError:
             return None, None
         if response.status_code >= 400:
@@ -173,16 +192,17 @@ class HttpRangeSource:
     def _fetch(self, offset: int, length: int) -> None:
         headers = {"Range": f"bytes={offset}-{offset + length - 1}"}
         try:
-            if self.client is not None:
-                response = self.client.get(self.url, headers=headers)
-            else:
-                response = httpx.get(self.url, headers=headers)
+            with self._http_client() as client:
+                response = client.get(self.url, headers=headers, follow_redirects=True)
         except httpx.HTTPError as exc:
             raise NetworkError(
                 f"could not fetch {self.url}: {exc}",
                 hint="Check your network connection and that the URL is reachable.",
             ) from exc
         if response.status_code != 206:
+            # A redirect (for example to a content-delivery network) that ends in a
+            # full 200 response instead of an honoured range is not usable: reading
+            # it as if it were the header would silently pull in the whole file.
             raise NetworkError(
                 f"{self.url} returned HTTP {response.status_code} instead of 206 Partial "
                 "Content; the server may not support range requests.",
