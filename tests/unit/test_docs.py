@@ -40,3 +40,24 @@ def test_development_doc_only_names_workflows_that_exist() -> None:
 def test_readme_shows_the_two_commands_that_exist() -> None:
     text = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "llamafit system" in text and "llamafit doctor" in text
+
+
+def test_models_md_matches_the_catalog() -> None:
+    from scripts.gen_models_md import render_markdown
+
+    from llamafit.catalog import load_catalog
+
+    text = (ROOT / "MODELS.md").read_text(encoding="utf-8")
+    catalog, problems = load_catalog()
+    assert problems == [], problems
+    assert text == render_markdown(catalog), "regenerate with: python scripts/gen_models_md.py"
+
+
+def test_models_md_names_every_model() -> None:
+    from llamafit.catalog import load_catalog
+
+    text = (ROOT / "MODELS.md").read_text(encoding="utf-8")
+    catalog, problems = load_catalog()
+    assert problems == [], problems
+    for model in catalog.models:
+        assert f"`{model.id}`" in text, f"MODELS.md lacks {model.id}"
