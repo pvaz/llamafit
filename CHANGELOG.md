@@ -8,6 +8,7 @@ the changelog says so when they do.
 ## [Unreleased]
 
 ### Added
+- Project scaffold: packaging, CI matrix, lint, type-check and test configuration.
 - Design specification covering host detection, llama.cpp integration, the model catalog,
   GGUF facts, memory budgets, placement planning, speed estimation, scoring, the CLI, TUI
   and web dashboard, the installer, and the verifier (`docs/specs/`).
