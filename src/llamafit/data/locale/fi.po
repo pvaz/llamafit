@@ -1,0 +1,821 @@
+# Finnish translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. Kukaan suomea lukeva ei ole käynyt tiedostoa
+# läpi rivi riviltä, ja juuri sitä docs/translations.md vaatii jokaiselta luettelolta
+# ennen kuin se lasketaan tarkistetuksi. Lue se rivi riviltä ja korjaa se pull
+# requestissa.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fi\n"
+"Language-Team: Finnish\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "Hugging Face vastasi %(status)d haettaessa tiedostoluetteloa kohteelle %(repo)s."
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "Kohteen %(repo)s tiedostoluetteloa ei voitu lukea Hugging Facesta."
+
+msgid "Check your network connection and try again."
+msgstr "Tarkista verkkoyhteytesi ja yritä uudelleen."
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "Hugging Facen vastaus kohteelle %(repo)s ei sisältänyt tiedostoluetteloa."
+
+msgid "Check that the repository id is correct and public."
+msgstr "Tarkista, että repositorion tunnus on oikein ja että repositorio on julkinen."
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "luettelossa on %(count)d ongelma"
+msgstr[1] "luettelossa on %(count)d ongelmaa"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "Suorita `llamafit catalog validate` nähdäksesi tarkemmat tiedot."
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "tiedostoa %(path)s ei voitu kirjoittaa: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "Tarkista, että hakemistoon voi kirjoittaa ja että siinä on tilaa."
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "tiedostossa %(path)s on %(count)d ongelma, eikä sitä voi päivittää"
+msgstr[1] "tiedostossa %(path)s on %(count)d ongelmaa, eikä sitä voi päivittää"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "Suorita ensin `llamafit catalog validate` ja korjaa tiedosto."
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "Tiedostoa %(path)s ei voitu lukea kokonaan, joten pelkän mallin %(model)s päivittäminen hylkäisi tietoja, joita tiedosto pitää yllä malleista, joihin tämä ajo ei koske: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "Suorita `llamafit catalog refresh` ilman valitsinta --model rakentaaksesi koko tiedoston uudelleen."
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "Etsi, mitoita, asenna ja varmista avoimin painoin julkaistut LLM:t llama.cpp:lle omalla koneellasi."
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "Tulostaa koneluettavaa JSONia taulukoiden sijaan."
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "Kirjoittaa tarkemmat tiedot lokihakemiston tiedostoon llamafit.log ja näyttää virhepinot."
+
+msgid "Disable colours."
+msgstr "Poistaa värit käytöstä."
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "Puhuu tätä kieltä, esimerkiksi pt_PT. Kieli, jota LlamaFitillä ei ole, vaihtuu englantiin, ja silloin kerrotaan, mitkä kielet siltä löytyvät."
+
+msgid "Print the version and exit."
+msgstr "Tulostaa version ja lopettaa."
+
+msgid "Unexpected error: %(error)s"
+msgstr "Odottamaton virhe: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "Suorita uudelleen valitsimella --verbose nähdäksesi koko virhepinon."
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "Ylläpitää luetteloa: tarkistaa sen tiedostot, päivittää muuttuvat kentät."
+
+msgid "Keep only this use case."
+msgstr "Säilyttää vain tämän käyttötapauksen."
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "Säilyttää vain mallit, joilla on tämä ominaisuus (voidaan toistaa)."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Säilyttää vain nämä lisenssitunnukset (voidaan toistaa)."
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "Tarkistaa vain tämän tiedoston mukana tulevan luettelon ja omien mukautusten sijaan."
+
+msgid "Did you mean: %(ids)s?"
+msgstr "Tarkoititko: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Suorita `llamafit list` nähdäksesi kaikki mallitunnukset."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "luettelossa ei ole mallia nimeltä %(id)s"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "Luettelosta löytyi %(count)d ongelma; suorita `llamafit catalog validate` nähdäksesi tarkemmat tiedot."
+msgstr[1] "Luettelosta löytyi %(count)d ongelmaa; suorita `llamafit catalog validate` nähdäksesi tarkemmat tiedot."
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "Yksikään malli ei täsmännyt. Kokeile väljempää valitsinta --use-case, --capability, --license, --vendor tai --search."
+
+msgid "invalid --use-case %(value)s"
+msgstr "virheellinen --use-case: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Kelvolliset käyttötapaukset: %(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "virheellinen arvo valitsimelle --capability: %(values)s"
+msgstr[1] "virheelliset arvot valitsimelle --capability: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Kelvolliset ominaisuudet: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"Luettelee mallit, rajattuna annetuilla suodattimilla.\n"
+"\n"
+"Taulukko näyttää enintään kolme ominaisuutta mallia kohti ja lopuista merkinnän +N, ja se on järjestetty näkyvän Laatu-sarakkeen mukaan; info tai --json näyttää kaikki ominaisuudet."
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "Säilyttää vain tämän valmistajan, kirjainkoosta riippumatta."
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "Osuma mallitunnuksen, nimen, valmistajan tai perheen osajonoon, kirjainkoosta riippumatta."
+
+msgid "Show at most this many."
+msgstr "Näyttää enintään näin monta."
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "Lyhenne komennolle llamafit list --search TEKSTI."
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "Teksti, jota etsitään mallitunnuksesta, nimestä, valmistajasta tai perheestä."
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "Näyttää yhden mallin tiedot, sen lähteet ja jokaisen kvantisoinnin, jonka se julkaisee."
+
+msgid "A catalog model id."
+msgstr "Luettelossa olevan mallin tunnus."
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "Tarkistaa luettelon YAML-tiedostot skeemaa vasten ja tulostaa yhden rivin ongelmaa kohti."
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "%(count)d tiedosto tarkistettu, ongelmia ei löytynyt."
+msgstr[1] "%(count)d tiedostoa tarkistettu, ongelmia ei löytynyt."
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "Päivittää luettelon tiedostonimet, koot, tarkistussummat ja GGUF-tiedot Hugging Facesta."
+
+msgid "Refresh only this model id."
+msgstr "Päivittää vain tämän mallitunnuksen."
+
+msgid "Compute the refresh but write nothing."
+msgstr "Laskee päivityksen, mutta ei kirjoita mitään."
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "Lopettaa koodilla 1, jos jokin muuttuisi; ei muuta mitään, ajastettua CI-työtä varten."
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: varoitus: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "varoitus: %(warning)s (%(count)d malli: %(models)s)"
+msgstr[1] "varoitus: %(warning)s (%(count)d mallia: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: virhe: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "Vinkki: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "päivitys tarvitsee verkkoyhteyden Hugging Faceen; tarkista yhteytesi ja että repositorion tunnus on oikein."
+
+msgid "No changes."
+msgstr "Ei muutoksia."
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "Tulostaa yhden mallin raa'an luettelomerkinnän, oletuksena JSONina tai valitsimella --yaml YAMLina."
+
+msgid "Print YAML instead of JSON."
+msgstr "Tulostaa YAMLia JSONin sijaan."
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "Selittää, mitä havaittiin, mikä epäonnistui ja mikä avaisi lisää."
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "VAROITUS"
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "VIRHE"
+
+# These four are read as the parenthesis after a GB/s figure, so they are the plain
+# participles a figure takes, not full sentences.
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "mitattu"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "arvioitu"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "oletettu"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "tuntematon"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s ja %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "Tietokone"
+
+msgid "OS"
+msgstr "Käyttöjärjestelmä"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d ydintä / %(logical)d säiettä"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d tehoydin"
+msgstr[1] "%(count)d tehoydintä"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "isa tuntematon"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d moduuli"
+msgstr[1] "%(count)d moduulia"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d kanava"
+msgstr[1] "%(count)d kanavaa"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "tuntematon"
+
+msgid "Memory"
+msgstr "Muisti"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "%(total)s yhteensä, %(available)s käytettävissä; %(details)s; kaistanleveys %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "tyyppi tuntematon"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "ei havaittu"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM-muistia, %(free)s vapaana"
+
+msgid "VRAM unknown"
+msgstr "VRAM tuntematon"
+
+# "(spec)" marks a figure that comes from the bundled specification table rather than
+# from this machine; "datalehti" is what a Finnish reader calls that table, and it is
+# far shorter than the literal "teknisten tietojen taulukon mukaan".
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (datalehti)"
+
+msgid "driver %(driver)s"
+msgstr "ajuri %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "ei teknisiä tietoja"
+
+msgid "Memory pool"
+msgstr "Muistivaranto"
+
+msgid "unified (GPU shares system memory)"
+msgstr "yhtenäinen (GPU jakaa järjestelmämuistin)"
+
+msgid "Disk"
+msgstr "Levy"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: %(free)s vapaana, yhteensä %(total)s"
+
+msgid "Installed"
+msgstr "Asennettu"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "ei"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "tuntematon koontiversio"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "kyllä, %(build)s polussa %(path)s"
+
+# Finnish developers inflect the loanword rather than translating it; "taustaosa" is
+# not what anyone calls a llama.cpp backend.
+msgid "Backends"
+msgstr "Backendit"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "ei havaittu"
+
+msgid "Local models"
+msgstr "Paikalliset mallit"
+
+msgid "Running"
+msgstr "Käynnissä"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, konteksti %(context)s"
+
+msgid "unknown model"
+msgstr "tuntematon malli"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "tuntematon"
+
+msgid "Problem"
+msgstr "Ongelma"
+
+# A "probe" here is a check LlamaFit runs, not an instrument, so it is a "testi"; the
+# literal "luotain" or "koetin" would be an instrument and would read as nonsense in
+# this column.
+msgid "Probes"
+msgstr "Testit"
+
+msgid "probe"
+msgstr "testi"
+
+msgid "result"
+msgstr "tulos"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "ok"
+
+msgid "no server"
+msgstr "ei palvelinta"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "epäonnistui"
+
+msgid "Findings"
+msgstr "Havainnot"
+
+msgid "level"
+msgstr "taso"
+
+msgid "finding"
+msgstr "havainto"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "Laatu*"
+
+# "Params" is already an abbreviation in English and this is the narrowest column in
+# the list table, so it stays one here; the caption below uses the same short form.
+msgid "Params"
+msgstr "Param."
+
+msgid "Context"
+msgstr "Konteksti"
+
+msgid "Capabilities"
+msgstr "Ominaisuudet"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "Laatu on toimituksellinen perustaso ennen kvantisoinnin aiheuttamaa vähennystä; suorita `llamafit info <model>` nähdäksesi lähteistetyt vertailutestit sen takana."
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "Param. on mixture-of-experts-mallin parametrien määrä miljardeina muodossa yhteensä/aktiivisena, tai yksi luku, kun ne ovat samat."
+
+msgid "Models"
+msgstr "Mallit"
+
+msgid "Vendor"
+msgstr "Valmistaja"
+
+msgid "Family"
+msgstr "Perhe"
+
+# "Julkaisupäivä", not the literal "julkaisupäivämäärä": same meaning, five characters
+# shorter, and it is what a Finnish reader writes.
+msgid "Release date"
+msgstr "Julkaisupäivä"
+
+msgid "Licence"
+msgstr "Lisenssi"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "Parametrit"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "%(total)sB yhteensä, %(active)sB aktiivisena"
+
+msgid "%(tokens)s tokens native"
+msgstr "%(tokens)s tokenia natiivisti"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", laajennettuna %(tokens)s menetelmällä %(method)s"
+
+msgid "unspecified method"
+msgstr "menetelmää ei ole kerrottu"
+
+msgid "Architecture"
+msgstr "Arkkitehtuuri"
+
+# "Huomiot", not the literal "muistiinpanot": half the width, and it is the word a
+# Finnish reader expects over a short remark in a table.
+msgid "Notes"
+msgstr "Huomiot"
+
+msgid "Use cases"
+msgstr "Käyttötapaukset"
+
+msgid "Quality baseline"
+msgstr "Laadun perustaso"
+
+msgid "Benchmark"
+msgstr "Vertailutesti"
+
+msgid "Source %(index)d"
+msgstr "Lähde %(index)d"
+
+msgid "not read yet"
+msgstr "ei vielä luettu"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d kerros"
+msgstr[1] "%(count)d kerrosta"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d asiantuntija"
+msgstr[1] "%(count)d/%(used)d asiantuntijaa"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d asiantuntija"
+msgstr[1] "%(count)d asiantuntijaa"
+
+msgid "Quants"
+msgstr "Kvantisoinnit"
+
+msgid "Name"
+msgstr "Nimi"
+
+msgid "Size"
+msgstr "Koko"
+
+msgid "BPW"
+msgstr "BPW"
+
+# "Tiedot", not the literal "faktat": it is the ordinary Finnish word for what this
+# column holds, and it fits a narrow column.
+msgid "Facts"
+msgstr "Tiedot"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "tuntematon"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "Näyttää, mitä tässä koneessa on: CPU, muisti, GPU:t, levyt ja llama.cpp."
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "Ohittaa RAM-muistin kaistanleveyden mittauksen."
+
+msgid "Command: %(command)s"
+msgstr "Komento: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "katkennut GGUF-otsake: odotettiin %(wanted)d tavua kohdassa %(offset)d, saatiin %(got)d"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "Tiedosto saattaa olla vielä latautumassa, tai osoite ei osoita GGUF-tiedostoon."
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "tuntematon GGUF-arvotyyppi %(type)d kohdassa %(offset)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "Tiedosto saattaa käyttää uudempaa GGUF-metatietotyyppiä kuin mitä LlamaFit tukee."
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "ei GGUF-tiedosto: virheellinen tunniste %(magic)s kohdassa 0"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "Tarkista, että tiedosto on todella .gguf-malli."
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "GGUF-versiota %(version)d ei tueta, kohdassa 4"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit tukee GGUF-versioita %(versions)s."
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "nämä GGUF-tiedostot eivät ole yksi jaettu malli: ne ovat eri mieltä avaimesta '%(key)s' ja ilmoittavat %(values)s"
+
+# "shard" is one piece of a split model. Finnish has no established loan for it, and
+# the literal "sirpale" means a shard of glass, so these messages say "osa" — the part
+# of a "jaettu malli" — which is unambiguous once the model is called split.
+msgid "Pass the shards of one model, not of several."
+msgstr "Anna yhden mallin osat, ei usean."
+
+msgid "no GGUF header to read facts from"
+msgstr "ei GGUF-otsaketta, josta lukea tiedot"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "Anna mallin tiedosto tai jaetun mallin kaikki osat."
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(total)d GGUF-tiedostosta %(count)d ei sisällä avainta '%(key)s', joten niiden paikkaa jaetussa mallissa ei voi määrittää"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "Anna joko yksi jakamaton tiedosto yksinään tai yhden jaetun mallin kaikki osat."
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "epätäydellinen osajoukko: malli ilmoittaa %(declared)d osaa, ja niitä saapui %(arrived)d (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "Anna jaetun mallin kaikki osat."
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "mallin metatiedot sisältävä osa puuttuu: saatiin %(key)s %(numbers)s, yhden niistä olisi pitänyt olla 0"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "Anna jaetun mallin kaikki osat, myös ensimmäinen."
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "epätäydellinen osajoukko: odotettiin avaimen %(key)s arvoja 0-%(last)d, saatiin %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "Anna jaetun mallin jokainen osa täsmälleen kerran."
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "epätäydellinen osajoukko: malli ilmoittaa %(declared)d tensoria, ja sen %(shards)d osaa sisältävät yhteensä %(held)d"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "tiedostoa %(path)s ei voitu lukea: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Tarkista, että tiedosto on olemassa ja luettavissa."
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "osoitetta %(url)s ei voitu hakea: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "Tarkista verkkoyhteytesi ja että osoite on tavoitettavissa."
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s vastasi HTTP %(status)d eikä 206 Partial Content; palvelin ei ehkä tue osittaisia pyyntöjä."
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "Varmista, että osoite osoittaa ladattavaan GGUF-tiedostoon."
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "tuntematon"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi ei palauttanut yhtään GPU:ta"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi ei palauttanut yhtään korttia"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler ei palauttanut yhtään näyttöä"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI ei palauttanut yhtään näytönohjainta"
+
+msgid "lspci found no display controllers"
+msgstr "lspci ei löytänyt yhtään näytönohjainta"
+
+msgid "no populated memory modules"
+msgstr "ei käytössä olevia muistimoduuleja"
+
+msgid "no SPMemoryDataType"
+msgstr "ei SPMemoryDataType-tietoa"
+
+msgid "empty command"
+msgstr "tyhjä komento"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: aikakatkaisu %(seconds)ss kuluttua"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: ei löytynyt"
+
+msgid "no output"
+msgstr "ei tulostetta"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "paluukoodi %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "llama.cpp:tä ei löytynyt: llama-server ei ole PATHissa, LLAMA_CPP_PATHissa eikä tavanomaisissa hakemistoissa"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "llama-serverin vierestä ei löytynyt ggml-backend-kirjastoja; koontiversio voi olla staattinen"
+
+msgid "no llama-server answering"
+msgstr "yksikään llama-server ei vastaa"
+
+msgid "unexpected response: %(error)s"
+msgstr "odottamaton vastaus: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "Asenna tai korjaa NVIDIA-ajuri; nvidia-smi tulee sen mukana ja sen on oltava PATHissa."
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "Asenna ROCm (Linux), jotta AMD:n VRAM-luvut näkyvät; ilman sitä GPU näkyy vain nimellä."
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell ei pystynyt luettelemaan näytönohjaimia; suorita tavallisesta käyttäjäistunnosta."
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "Asenna pciutils, jotta GPU:t näkyvät nimellä silloinkin, kun valmistajan työkalua ei ole."
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "DDR-tyyppi ja -nopeus eivät olleet luettavissa; suorita Linuxissa kerran sudolla (dmidecode) tai tyydy sen sijaan mitattuun kaistanleveyteen."
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo epäonnistui; CPU:n malli ja käskykannat ovat tuntemattomia."
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil ei pystynyt laskemaan CPU:n ytimiä; säikeiden valinta putoaa yhteen ytimeen. Asenna psutil uudelleen komennolla `pip install --force-reinstall psutil`."
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil ei pystynyt lukemaan muistin kokonaismääriä; budjetteja ei voi laskea ennen kuin tämä toimii. Asenna psutil uudelleen komennolla `pip install --force-reinstall psutil`."
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "Tehoytimien määrää ei saatu luettua sysctlistä."
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server on olemassa, mutta se ei kertonut versiota; ohjelmatiedosto voi olla rikki."
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler epäonnistui; GPU:sta ei ole tietoja."
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "Yksikään valmistajan työkalu ei kertonut GPU:n muistin kokoa; kirjaa koko laitteistoprofiiliin, jotta budjetit voidaan laskea tälle koneelle."
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp asennettu"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "koontiversio %(build)s polussa %(path)s, backendit: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "tuntematon"
+
+msgid "llama.cpp not found"
+msgstr "llama.cpp:tä ei löytynyt"
+
+msgid "no llama-server binary was found"
+msgstr "llama-server-ohjelmatiedostoa ei löytynyt"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "Asenna llama.cpp (LlamaFitin vaihe 2 hoitaa tämän: `llamafit install llama.cpp`); lataa siihen asti julkaisu osoitteesta https://github.com/ggml-org/llama.cpp/releases ja lisää sen bin-hakemisto PATHiin tai LLAMA_CPP_PATHiin."
+
+msgid "Memory size unknown"
+msgstr "Muistin koko tuntematon"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit ei pystynyt lukemaan tämän koneen muistin kokonaismääriä, joten se ei voi päätellä, mikä mahtuu."
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: llama.cpp:ssä ei ole %(backend)s-backendiä"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp on käännetty backendeillä: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "tuntemattomat"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "Asenna llama.cpp:n koontiversio, jossa on %(backend)s- tai Vulkan-backend, jotta voit käyttää näytönohjainta %(gpu)s."
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: VRAM-muistin koko tuntematon"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "muistin kertova valmistajan työkalu ei ollut käytettävissä"
+
+msgid "No GPU detected"
+msgstr "GPU:ta ei havaittu"
+
+msgid "models will run on the CPU only"
+msgstr "mallit ajetaan vain CPU:lla"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "Jos koneessa on GPU, tarkista, että sen ajurityökalut on asennettu."
+
+msgid "RAM bandwidth assumed"
+msgstr "RAM-muistin kaistanleveys oletettu"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "oletusarvona käytetään %(gbps)s GB/s"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "Asenna numpy (`pip install llamafit[fast]`), jotta LlamaFit voi mitata RAM-muistin kaistanleveyden."
+
+msgid "Probe %(probe)s failed"
+msgstr "Testi %(probe)s epäonnistui"
+
+msgid "unknown error"
+msgstr "tuntematon virhe"
+
+msgid "llama-server running at %(url)s"
+msgstr "llama-server on käynnissä osoitteessa %(url)s"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "malli %(model)s, konteksti %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "tuntematon"
+
+msgid "Low disk space on %(path)s"
+msgstr "Levytila vähissä polussa %(path)s"
+
+msgid "%(size)s free"
+msgstr "%(size)s vapaana"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "Useimmat hyödylliset mallit tarvitsevat 5-120 GB; vapauta tilaa tai vaihda latauskansiota."
+
+msgctxt "size"
+msgid "unknown"
+msgstr "tuntematon"
