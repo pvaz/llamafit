@@ -1,0 +1,39 @@
+# Sourced from Meta's Hugging Face model card and the bartowski GGUF repository.
+# Primary sources used for this file:
+#   - Model card: https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct
+#   - Licence: https://github.com/meta-llama/llama-models/blob/main/models/llama3_1/LICENSE
+#   - GGUF repository: https://huggingface.co/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
+- id: llama-3.1-8b-instruct
+  name: Llama 3.1 8B Instruct
+  vendor: Meta
+  family: llama3
+  release_date: 2024-07-23
+  license:
+    spdx: llama3.1
+    url: "https://github.com/meta-llama/llama-models/blob/main/models/llama3_1/LICENSE"
+  params: { total_b: 8, active_b: 8 }
+  architecture:
+    class: dense
+    gguf_arch: llama
+    notes: "32 layers, 32 query heads, 8 key/value heads (GQA). The reference dense model most llama.cpp users already know."
+  context: { native: 131072 }
+  capabilities: [tools, multilingual, long-context]
+  use_cases: [general, chat, reasoning]
+  quality:
+    baseline: 62
+    benchmarks:
+      - name: MMLU (5-shot)
+        score: 69.4
+        source: "https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct"
+      - name: HumanEval (0-shot)
+        score: 72.6
+        source: "https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct"
+      - name: IFEval
+        score: 80.4
+        source: "https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct"
+  sources:
+    - repo: bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
+      kind: gguf
+      trust: bartowski
+      quants:
+        - { name: Q4_K_M }
