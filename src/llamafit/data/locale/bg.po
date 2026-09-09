@@ -1,0 +1,808 @@
+# Bulgarian translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. It was written from the template in one pass and
+# has had no second reader. By the standard docs/translations.md sets for every language,
+# that is not enough: please read it line by line and correct it in a pull request.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: bg\n"
+"Language-Team: Bulgarian\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "Hugging Face върна %(status)d при извеждането на списъка с файлове за %(repo)s."
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "Списъкът с файлове за %(repo)s не можа да бъде прочетен от Hugging Face."
+
+msgid "Check your network connection and try again."
+msgstr "Проверете мрежовата връзка и опитайте отново."
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "Отговорът на Hugging Face за %(repo)s не съдържаше списък с файлове."
+
+msgid "Check that the repository id is correct and public."
+msgstr "Проверете дали идентификаторът на хранилището е верен и дали хранилището е публично."
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "каталогът има %(count)d проблем"
+msgstr[1] "каталогът има %(count)d проблема"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "Изпълнете `llamafit catalog validate` за подробности."
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "не можа да се запише %(path)s: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "Проверете дали в директорията може да се пише и дали има място."
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "%(path)s има %(count)d проблем и не може да бъде обновен"
+msgstr[1] "%(path)s има %(count)d проблема и не може да бъде обновен"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "Първо изпълнете `llamafit catalog validate` и поправете файла."
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "Файлът %(path)s не можа да бъде прочетен изцяло, затова обновяването само на %(model)s би изгубило данните, които той пази за модели, незасегнати от това изпълнение: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "Изпълнете `llamafit catalog refresh` без --model, за да се построи наново целият файл."
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "Намерете, оразмерете, инсталирайте и проверете LLM с отворени тегла за llama.cpp на собствената си машина."
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "Извежда машинно четим JSON вместо таблици."
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "Записва подробности в llamafit.log в директорията за дневници и показва трасировки."
+
+msgid "Disable colours."
+msgstr "Изключва цветовете."
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "Говори на този език, например pt_PT. Език, който LlamaFit няма, се заменя с английски и програмата казва кои езици има."
+
+msgid "Print the version and exit."
+msgstr "Извежда версията и излиза."
+
+msgid "Unexpected error: %(error)s"
+msgstr "Неочаквана грешка: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "Изпълнете отново с --verbose за пълната трасировка."
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "Поддържа каталога: проверява файловете му, обновява променливите полета."
+
+msgid "Keep only this use case."
+msgstr "Запазва само този случай на употреба."
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "Запазва само моделите с тази възможност (може да се повтаря)."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Запазва само тези идентификатори на лицензи (може да се повтаря)."
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "Проверява само този файл вместо вградения каталог и потребителските замени."
+
+msgid "Did you mean: %(ids)s?"
+msgstr "Имахте предвид: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Изпълнете `llamafit list`, за да видите всички идентификатори на модели."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "в каталога няма модел с име %(id)s"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "Открит е %(count)d проблем в каталога; изпълнете `llamafit catalog validate` за подробности."
+msgstr[1] "Открити са %(count)d проблема в каталога; изпълнете `llamafit catalog validate` за подробности."
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "Няма съвпадащи модели. Опитайте с по-широк --use-case, --capability, --license, --vendor или --search."
+
+msgid "invalid --use-case %(value)s"
+msgstr "невалидна стойност на --use-case: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Валидни случаи на употреба: %(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "невалидна стойност на --capability: %(values)s"
+msgstr[1] "невалидни стойности на --capability: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Валидни възможности: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"Извежда каталога с модели, стеснен от подадените филтри.\n"
+"\n"
+"Таблицата показва най-много три възможности на модел плюс маркер +N за останалите и е подредена по показаната колона „Качество“; info или --json съдържа всички възможности."
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "Запазва само този доставчик, без значение на малки и главни букви."
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "Търсене на подниз в идентификатора, името, доставчика или фамилията, без значение на малки и главни букви."
+
+msgid "Show at most this many."
+msgstr "Показва най-много толкова."
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "Съкращение за llamafit list --search ТЕКСТ."
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "Текст за търсене в идентификатора, името, доставчика или фамилията."
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "Показва данните за един модел, източниците му и всяка квантизация, която публикува."
+
+msgid "A catalog model id."
+msgstr "Идентификатор на модел от каталога."
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "Проверява YAML файловете на каталога спрямо схемата, като извежда по един ред на проблем."
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "Проверен е %(count)d файл, не са открити проблеми."
+msgstr[1] "Проверени са %(count)d файла, не са открити проблеми."
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "Обновява имената на файловете, размерите, контролните суми и данните от GGUF за каталога от Hugging Face."
+
+msgid "Refresh only this model id."
+msgstr "Обновява само този идентификатор на модел."
+
+msgid "Compute the refresh but write nothing."
+msgstr "Изчислява обновяването, но не записва нищо."
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "Излиза с код 1, ако нещо би се променило; не променя нищо, за планирана задача в CI."
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: предупреждение: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "предупреждение: %(warning)s (%(count)d модел: %(models)s)"
+msgstr[1] "предупреждение: %(warning)s (%(count)d модела: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: грешка: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "Подсказка: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "обновяването изисква мрежов достъп до Hugging Face; проверете връзката си и дали идентификаторът на хранилището е верен."
+
+msgid "No changes."
+msgstr "Няма промени."
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "Извежда суровия запис от каталога за един модел – по подразбиране като JSON или като YAML с --yaml."
+
+msgid "Print YAML instead of JSON."
+msgstr "Извежда YAML вместо JSON."
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "Обяснява какво е открито, какво се е провалило и какво би отключило повече."
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "ОК"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "ПРЕДУПР."
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "ГРЕШКА"
+
+# The bandwidth source is read inside "%(gbps)s GB/s (%(source)s)", where the noun it
+# describes is "пропускателна способност", so all four labels are feminine.
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "измерена"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "оценена"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "предположена"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "неизвестна"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s и %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "Машина"
+
+msgid "OS"
+msgstr "ОС"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+# The English has no plural forms here, so a Bulgarian noun after the number could only
+# ever agree for some counts. The count is put after the noun instead: "ядра: 2 / нишки: 4".
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "ядра: %(physical)d / нишки: %(logical)d"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d производително ядро"
+msgstr[1] "%(count)d производителни ядра"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "isa неизвестна"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d модул"
+msgstr[1] "%(count)d модула"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d канал"
+msgstr[1] "%(count)d канала"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+# Bulgarian inflects "unknown" for the noun of the row it stands in: "пропускателна
+# способност", "компилация" and "isa" are feminine, "размер", "модел", "тип" and
+# "контекст" masculine, and the bits-per-weight cell takes the neuter.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "неизвестна"
+
+msgid "Memory"
+msgstr "Памет"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "общо %(total)s, налични %(available)s; %(details)s; пропускателна способност %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "неизвестен тип"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "не е открит"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, свободни %(free)s"
+
+msgid "VRAM unknown"
+msgstr "VRAM неизвестна"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (по спецификация)"
+
+msgid "driver %(driver)s"
+msgstr "драйвер %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "няма данни от спецификация"
+
+msgid "Memory pool"
+msgstr "Пул памет"
+
+msgid "unified (GPU shares system memory)"
+msgstr "унифициран (GPU споделя системната памет)"
+
+msgid "Disk"
+msgstr "Диск"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: свободни %(free)s от %(total)s"
+
+msgid "Installed"
+msgstr "Инсталиран"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "не"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "неизвестна компилация"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "да, %(build)s в %(path)s"
+
+msgid "Backends"
+msgstr "Бекендове"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "не са открити"
+
+msgid "Local models"
+msgstr "Локални модели"
+
+msgid "Running"
+msgstr "Работи"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, контекст %(context)s"
+
+msgid "unknown model"
+msgstr "неизвестен модел"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "неизвестен"
+
+msgid "Problem"
+msgstr "Проблем"
+
+msgid "Probes"
+msgstr "Проверки"
+
+msgid "probe"
+msgstr "проверка"
+
+msgid "result"
+msgstr "резултат"
+
+msgid "ms"
+msgstr "мс"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "успешно"
+
+msgid "no server"
+msgstr "няма сървър"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "неуспешно"
+
+msgid "Findings"
+msgstr "Констатации"
+
+msgid "level"
+msgstr "ниво"
+
+msgid "finding"
+msgstr "констатация"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "Качество*"
+
+msgid "Params"
+msgstr "Парам."
+
+msgid "Context"
+msgstr "Контекст"
+
+msgid "Capabilities"
+msgstr "Възможности"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "„Качество“ е редакционната базова оценка, преди каквато и да е загуба от квантизация; изпълнете `llamafit info <model>`, за да видите тестовете с посочени източници, които стоят зад нея."
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "„Парам.“ е общият/активният брой милиарди за модел със смес от експерти или едно число, когато двете съвпадат."
+
+msgid "Models"
+msgstr "Модели"
+
+msgid "Vendor"
+msgstr "Доставчик"
+
+msgid "Family"
+msgstr "Фамилия"
+
+msgid "Release date"
+msgstr "Дата на издаване"
+
+msgid "Licence"
+msgstr "Лиценз"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "Параметри"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "общо %(total)sB, активни %(active)sB"
+
+msgid "%(tokens)s tokens native"
+msgstr "нативно %(tokens)s токена"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", разширен до %(tokens)s чрез %(method)s"
+
+msgid "unspecified method"
+msgstr "неуточнен метод"
+
+msgid "Architecture"
+msgstr "Архитектура"
+
+msgid "Notes"
+msgstr "Бележки"
+
+msgid "Use cases"
+msgstr "Случаи на употреба"
+
+msgid "Quality baseline"
+msgstr "Базово качество"
+
+msgid "Benchmark"
+msgstr "Бенчмарк"
+
+msgid "Source %(index)d"
+msgstr "Източник %(index)d"
+
+msgid "not read yet"
+msgstr "още не е прочетено"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d слой"
+msgstr[1] "%(count)d слоя"
+
+# The form is chosen by %(count)d, the total number of experts, even though %(used)d is the
+# number the reader's eye lands on just before the noun.
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d експерт"
+msgstr[1] "%(count)d/%(used)d експерти"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d експерт"
+msgstr[1] "%(count)d експерти"
+
+msgid "Quants"
+msgstr "Квантизации"
+
+msgid "Name"
+msgstr "Име"
+
+msgid "Size"
+msgstr "Размер"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "Данни"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "неизвестно"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "Показва какво има тази машина: CPU, памет, GPU, дискове и llama.cpp."
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "Пропуска измерването на пропускателната способност на RAM."
+
+msgid "Command: %(command)s"
+msgstr "Команда: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "отрязана заглавна част на GGUF: очакваха се %(wanted)d байта при отместване %(offset)d, получени са %(got)d"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "Файлът може още да се изтегля или на този URL адрес да няма GGUF файл."
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "неизвестен тип стойност в GGUF %(type)d при отместване %(offset)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "Този файл може да използва по-нов тип метаданни на GGUF, отколкото LlamaFit поддържа."
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "това не е GGUF файл: невалидна сигнатура %(magic)s при отместване 0"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "Проверете дали този файл наистина е модел .gguf."
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "неподдържана версия на GGUF %(version)d при отместване 4"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit поддържа версии на GGUF %(versions)s."
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "тези GGUF файлове не са един разделен модел: те се разминават за '%(key)s' и обявяват %(values)s"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "Подайте частите на един модел, а не на няколко."
+
+msgid "no GGUF header to read facts from"
+msgstr "няма заглавна част на GGUF, от която да се прочетат данните"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "Подайте файла на модела или всички части на разделен модел."
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(count)d от %(total)d GGUF файла нямат ключ '%(key)s', затова мястото им в разделен модел не може да бъде установено"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "Подайте един неразделен файл самостоятелно или всички части на един разделен модел."
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "непълен набор от части: моделът обявява %(declared)d части, а са пристигнали %(arrived)d (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "Подайте всички части на разделения модел."
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "липсва частта с метаданните на модела: получено е %(key)s %(numbers)s, а се очакваше едно от тях да е 0"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "Подайте всички части на разделения модел, включително първата."
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "непълен набор от части: очакваше се %(key)s от 0 до %(last)d, получено е %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "Подайте всяка част на разделения модел точно веднъж."
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "непълен набор от части: моделът обявява %(declared)d тензора, а неговите %(shards)d части съдържат общо %(held)d"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "не можа да се прочете %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Проверете дали файлът съществува и може да бъде прочетен."
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "не можа да се изтегли %(url)s: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "Проверете мрежовата връзка и дали URL адресът е достъпен."
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s върна HTTP %(status)d вместо 206 Partial Content; сървърът може да не поддържа заявки за диапазон."
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "Уверете се, че URL адресът сочи към GGUF файл, който може да бъде изтеглен."
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "неизвестен"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi не върна нито един GPU"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi не върна нито една карта"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler не върна нито един дисплей"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI не върна нито един видеоконтролер"
+
+msgid "lspci found no display controllers"
+msgstr "lspci не намери нито един видеоконтролер"
+
+msgid "no populated memory modules"
+msgstr "няма запълнени модули памет"
+
+msgid "no SPMemoryDataType"
+msgstr "няма SPMemoryDataType"
+
+msgid "empty command"
+msgstr "празна команда"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: времето изтече след %(seconds)s с"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: не е намерен"
+
+msgid "no output"
+msgstr "няма изход"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "код на изход %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "llama.cpp не е намерен: няма llama-server в PATH, в LLAMA_CPP_PATH или в обичайните директории"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "до llama-server не са намерени библиотеки за бекендове на ggml; компилацията може да е статична"
+
+msgid "no llama-server answering"
+msgstr "нито един llama-server не отговаря"
+
+msgid "unexpected response: %(error)s"
+msgstr "неочакван отговор: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "Инсталирайте или поправете драйвера на NVIDIA; nvidia-smi се доставя с него и трябва да е в PATH."
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "Инсталирайте ROCm (Linux), за да се виждат стойностите за VRAM на AMD; без него GPU се показва само по име."
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell не можа да изброи видеоконтролерите; изпълнете от обикновена потребителска сесия."
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "Инсталирайте pciutils, за да се изброяват GPU по име, когато няма инструмент на производителя."
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "Типът и честотата на DDR не можаха да бъдат прочетени; в Linux изпълнете веднъж със sudo (dmidecode) или приемете вместо това измерената пропускателна способност."
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo се провали; моделът на CPU и наборите от инструкции са неизвестни."
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil не можа да преброи ядрата на CPU; изборът на нишки се връща към едно ядро. Преинсталирайте psutil с `pip install --force-reinstall psutil`."
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil не можа да прочете общата памет; докато това не заработи, бюджетите не могат да бъдат изчислени. Преинсталирайте psutil с `pip install --force-reinstall psutil`."
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "Броят на производителните ядра не можа да бъде прочетен от sysctl."
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server съществува, но не съобщи версия; изпълнимият файл може да е повреден."
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler се провали; информацията за GPU не е налична."
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "Нито един инструмент на производителя не съобщи размера на паметта на GPU; запишете размера в хардуерен профил, за да могат да се изчислят бюджетите за тази машина."
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp е инсталиран"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "компилация %(build)s в %(path)s, бекендове: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "неизвестна"
+
+msgid "llama.cpp not found"
+msgstr "llama.cpp не е намерен"
+
+msgid "no llama-server binary was found"
+msgstr "не беше намерен изпълним файл llama-server"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "Инсталирайте llama.cpp (във фаза 2 LlamaFit ще прави това сам: `llamafit install llama.cpp`); дотогава изтеглете издание от https://github.com/ggml-org/llama.cpp/releases и добавете директорията му bin в PATH или в LLAMA_CPP_PATH."
+
+msgid "Memory size unknown"
+msgstr "Размерът на паметта е неизвестен"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit не можа да прочете общата памет на тази машина, затова не може да прецени какво ще се побере."
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: в llama.cpp няма бекенд %(backend)s"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp е компилиран с бекендове: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "неизвестни"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "Инсталирайте компилация на llama.cpp с бекенд %(backend)s или Vulkan, за да използвате %(gpu)s."
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: размерът на VRAM е неизвестен"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "инструментът на производителя, който съобщава паметта, не беше наличен"
+
+msgid "No GPU detected"
+msgstr "Не е открит GPU"
+
+msgid "models will run on the CPU only"
+msgstr "моделите ще работят само на CPU"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "Ако има GPU, проверете дали са инсталирани инструментите на драйвера му."
+
+msgid "RAM bandwidth assumed"
+msgstr "Пропускателната способност на RAM е предположена"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "използва се %(gbps)s GB/s по подразбиране"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "Инсталирайте numpy (`pip install llamafit[fast]`), за да може LlamaFit да измери пропускателната способност на RAM."
+
+msgid "Probe %(probe)s failed"
+msgstr "Проверката %(probe)s се провали"
+
+msgid "unknown error"
+msgstr "неизвестна грешка"
+
+msgid "llama-server running at %(url)s"
+msgstr "llama-server работи на %(url)s"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "модел %(model)s, контекст %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "неизвестен"
+
+msgid "Low disk space on %(path)s"
+msgstr "Малко дисково пространство в %(path)s"
+
+msgid "%(size)s free"
+msgstr "свободни %(size)s"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "Повечето полезни модели изискват от 5 до 120 GB; освободете място или сменете директорията за изтегляния."
+
+msgctxt "size"
+msgid "unknown"
+msgstr "неизвестен"
