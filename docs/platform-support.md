@@ -11,21 +11,27 @@ it, so a `doctor` warning can always be traced here.
 | Probe | Platforms | Command | Provides | Without it |
 |---|---|---|---|---|
 | `cpuinfo` | all | the `py-cpuinfo` library | CPU model, instruction sets (AVX2, AVX-512, AMX, NEON, SVE) | model "unknown", no instruction sets; core counts still come from `psutil` |
+| `cpu-cores` | all | `psutil.cpu_count(logical=False)` and `psutil.cpu_count(logical=True)` | physical and logical core counts | counts fall back to one core (physical and logical); thread choice degrades |
 | `sysctl-perflevel` | macOS | `sysctl -n hw.perflevel0.physicalcpu` | performance-core count | all physical cores are treated as performance cores |
 | `memory-modules` | Windows | PowerShell `Get-CimInstance Win32_PhysicalMemory` | DDR type, speed, channel count, bandwidth estimate | totals only; bandwidth is measured or assumed |
 | `memory-modules` | macOS | `system_profiler SPMemoryDataType -json` | memory type | same |
 | `memory-modules` | Linux | `dmidecode -t memory` (needs root) | DDR type, speed, channels | same; run `sudo llamafit system` once if you want the facts recorded |
+| `memory-totals` | all | `psutil.virtual_memory()` | total and available memory | memory budgets cannot be computed until this works |
 | `nvidia-smi` | Windows, Linux | `nvidia-smi --query-gpu=index,name,memory.total,memory.used,driver_version --format=csv,noheader,nounits` | NVIDIA name, VRAM total and used, driver | the GPU is listed by name only (from WMI or lspci), VRAM unknown |
 | `rocm-smi` | Linux | `rocm-smi --showmeminfo vram --showproductname --json` | AMD name, VRAM total and used | name only |
 | `system-profiler` | macOS | `system_profiler SPDisplaysDataType -json` | Apple GPU name and core count | no GPU listed |
 | `wmi-video` | Windows | PowerShell `Get-CimInstance Win32_VideoController` | names of all display adapters | vendor tools only |
 | `lspci` | Linux | `lspci -nn` | names of all display controllers | vendor tools only |
 | `llama-server --version` | all | `llama-server --version` | llama.cpp build number and commit | `bin/VERSION.txt` is read when present |
-| `server:<port>` | all | HTTP `GET /health`, `/v1/models`, `/props` on 8080, 8081, 8098 and `LLAMA_SERVER_PORT` | running servers, their model and context | none listed |
+| `server:<port>` | all | HTTP `GET /health` (0.3 s timeout), then `/v1/models`, `/props` (1.5 s timeout each) on 8080, 8081, 8098 and `LLAMA_SERVER_PORT` | running servers, their model and context | none listed |
 
 The RAM bandwidth measurement is not a probe: it runs in-process and reports `measured` when
 it can allocate its buffer (more accurate with NumPy: `pip install llamafit[fast]`),
 `estimated` from DDR facts otherwise, and `assumed` (40 GB/s) when nothing better is known.
+
+A failed vendor GPU probe (`nvidia-smi`, `rocm-smi`, `system-profiler`) is only reported by
+`doctor` when the host actually has a GPU from that vendor: a machine with only an NVIDIA card
+is never warned that `rocm-smi` failed.
 
 ## Operating systems
 
@@ -46,6 +52,14 @@ one.
 LlamaFit reads which backends a llama.cpp build contains from its shipped `ggml-*` libraries:
 `cuda`, `hip`, `metal`, `vulkan`, `sycl`, `rpc`, `cpu`. A GPU without a matching backend is a
 `doctor` warning with the build to install.
+
+## Disks
+
+Disk usage is reported once per distinct volume: a path is identified by its drive letter on
+Windows and by its device id (`st_dev`) on macOS and Linux, since every absolute POSIX path
+shares the anchor `/` regardless of which filesystem it lives on. Each candidate path is made
+absolute first and, if it does not exist, walked up to the nearest existing ancestor before its
+usage is read.
 
 ## Terminals
 
