@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from llamafit.catalog.loader import load_catalog, load_models_from_file
+from llamafit.catalog.loader import custom_models_path, load_catalog, load_models_from_file
 from llamafit.errors import CatalogError
 
 ENTRY = """
@@ -89,3 +89,24 @@ def test_a_missing_custom_file_is_not_a_problem(tmp_path: Path) -> None:
     write(bundled, "tiny.yaml", ENTRY)
     catalog, problems = load_catalog(bundled_dir=bundled, custom_path=tmp_path / "absent.yaml")
     assert problems == [] and len(catalog.models) == 1
+
+
+def test_an_empty_file_has_no_entries_and_no_problems(tmp_path: Path) -> None:
+    models, problems = load_models_from_file(write(tmp_path, "empty.yaml", ""))
+    assert models == [] and problems == []
+
+
+def test_a_non_list_top_level_is_a_problem(tmp_path: Path) -> None:
+    models, problems = load_models_from_file(write(tmp_path, "mapping.yaml", "id: tiny-1b"))
+    assert models == []
+    assert len(problems) == 1 and "list" in problems[0].message
+
+
+def test_custom_models_path_honours_the_environment_override(tmp_path: Path) -> None:
+    target = tmp_path / "elsewhere.yaml"
+    assert custom_models_path({"LLAMAFIT_CUSTOM_MODELS": str(target)}) == target
+
+
+def test_custom_models_path_defaults_to_the_data_directory() -> None:
+    path = custom_models_path({})
+    assert path.name == "custom_models.yaml"

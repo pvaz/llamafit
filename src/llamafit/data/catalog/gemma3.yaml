@@ -1,0 +1,40 @@
+# Sourced from Google's Hugging Face model card, the Gemma Terms of Use and the bartowski
+# GGUF repository.
+# Primary sources used for this file:
+#   - Model card: https://huggingface.co/google/gemma-3-27b-it
+#   - Licence: https://ai.google.dev/gemma/terms
+#   - GGUF repository: https://huggingface.co/bartowski/google_gemma-3-27b-it-GGUF
+- id: gemma-3-27b-it
+  name: Gemma 3 27B IT
+  vendor: Google
+  family: gemma3
+  release_date: 2025-03-12
+  license:
+    spdx: gemma
+    url: "https://ai.google.dev/gemma/terms"
+  params: { total_b: 27, active_b: 27 }
+  architecture:
+    class: dense
+    gguf_arch: gemma3
+    notes: "Alternates local and global attention layers (5:1 ratio); a second vision entry alongside qwen3.8-flash-next so the multimodal path is exercised by more than one model."
+  context: { native: 131072 }
+  capabilities: [vision, multilingual, long-context, tools]
+  use_cases: [general, multimodal, chat]
+  quality:
+    baseline: 74
+    benchmarks:
+      - name: MMLU (5-shot)
+        score: 78.6
+        source: "https://huggingface.co/google/gemma-3-27b-it"
+      - name: HumanEval (0-shot)
+        score: 48.8
+        source: "https://huggingface.co/google/gemma-3-27b-it"
+      - name: DocVQA (val)
+        score: 85.6
+        source: "https://huggingface.co/google/gemma-3-27b-it"
+  sources:
+    - repo: bartowski/google_gemma-3-27b-it-GGUF
+      kind: gguf
+      trust: bartowski
+      quants:
+        - { name: Q4_K_M }
