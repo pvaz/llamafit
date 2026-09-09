@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import time
 from collections.abc import Callable
 from typing import Any
 
@@ -49,9 +50,15 @@ def detect_memory(
     vm_provider: Callable[[], tuple[int, int]] | None = None,
 ) -> tuple[Memory, list[Probe]]:
     """Detect memory totals and, when the OS tells us, type, speed and channel count."""
-    total, available = (vm_provider or _default_vm)()
-    memory = Memory(total_bytes=total, available_bytes=available)
     probes: list[Probe] = []
+    start = time.perf_counter()
+    try:
+        total, available = (vm_provider or _default_vm)()
+        probes.append(Probe(name="memory-totals", ok=True, duration_ms=_ms(start)))
+    except Exception as exc:  # a failing totals source must not stop the scan
+        total, available = 0, 0
+        probes.append(Probe(name="memory-totals", ok=False, duration_ms=_ms(start), error=str(exc)))
+    memory = Memory(total_bytes=total, available_bytes=available)
 
     if os_name == "windows":
         facts, rec = probe("memory-modules", runner, _WINDOWS_MODULES_CMD, _parse_windows_modules)
@@ -66,6 +73,10 @@ def detect_memory(
             memory.bandwidth_gbps = theoretical_bandwidth_gbps(memory.speed_mts, memory.channels)
             memory.bandwidth_source = "estimated"
     return memory, probes
+
+
+def _ms(start: float) -> int:
+    return int((time.perf_counter() - start) * 1000)
 
 
 def _parse_windows_modules(out: str) -> tuple[str | None, int | None, int | None]:

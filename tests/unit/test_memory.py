@@ -62,3 +62,12 @@ def test_failed_module_probe_keeps_totals() -> None:
     assert memory.total_bytes == 128 * 1024**3
     assert memory.type is None
     assert not probes[-1].ok
+
+
+def test_failed_totals_provider_is_a_probe_not_an_exception() -> None:
+    def broken() -> tuple[int, int]:
+        raise RuntimeError("no psutil")
+
+    memory, probes = detect_memory(FakeRunner({}), "linux", vm_provider=broken)
+    assert memory.total_bytes == 0 and memory.available_bytes == 0
+    assert probes[0].name == "memory-totals" and not probes[0].ok
