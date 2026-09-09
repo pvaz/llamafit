@@ -1,9 +1,13 @@
 """The active translator: choosing a language, and what the two functions then return."""
 
+import io
 from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
+from rich.console import Console
+from rich.errors import MarkupError
+from rich.text import Text
 
 from llamafit.i18n import translator
 from llamafit.i18n.detect import FixedLocale
@@ -226,3 +230,45 @@ def test_a_contextual_counting_message_goes_through_the_installed_catalog(tmp_pa
     set_language("pt_PT", env={}, available=("en", "pt_PT"), directory=_catalog_dir(tmp_path, text))
     assert npgettext("GPU", "%(count)d device", "%(count)d devices", 1) == "%(count)d placa"
     assert npgettext("GPU", "%(count)d device", "%(count)d devices", 9) == "%(count)d placas"
+
+
+def _with_team(team: str) -> str:
+    """CATALOG, plus a Language-Team header saying whatever a catalog's author wrote."""
+    return CATALOG.replace(
+        '"Language: pt_PT\\n"', '"Language: pt_PT\\n"\n"Language-Team: ' + team + '\\n"'
+    )
+
+
+@pytest.mark.parametrize("team", ["Portuguese [/PT]", "Portuguese [bold] (Portugal)"])
+def test_a_team_name_with_a_bracket_tag_survives_being_printed(tmp_path: Path, team: str) -> None:
+    # The notice quotes the catalog's own Language-Team header, which is data from a file.
+    # console.print reads square brackets as markup: the first of these raises MarkupError
+    # at start-up and the second silently eats the tag, so the notice loses words. Text()
+    # is what the documented example passes, and this is what says so.
+    directory = _catalog_dir(tmp_path, _with_team(team))
+    choice = set_language("pt_BR", env={}, available=("en", "pt_PT"), directory=directory)
+    assert choice.notice is not None
+    assert team in choice.notice
+
+    console = Console(file=io.StringIO(), no_color=True, width=200)
+    console.print(Text(choice.notice))
+    assert team in console.file.getvalue()  # type: ignore[union-attr]
+
+
+def test_printing_the_notice_as_markup_is_what_the_example_avoids(tmp_path: Path) -> None:
+    # Asserted rather than assumed: if Rich ever stopped treating a bracket as markup the
+    # advice above would be obsolete, and this test is what would say so.
+    directory = _catalog_dir(tmp_path, _with_team("Portuguese [/PT]"))
+    choice = set_language("pt_BR", env={}, available=("en", "pt_PT"), directory=directory)
+    assert choice.notice is not None
+    console = Console(file=io.StringIO(), no_color=True, width=200)
+    with pytest.raises(MarkupError):
+        console.print(choice.notice)
+
+
+def test_a_team_name_with_no_brackets_is_untouched_either_way(tmp_path: Path) -> None:
+    directory = _catalog_dir(tmp_path, _with_team("Portuguese (Portugal)"))
+    choice = set_language("pt_BR", env={}, available=("en", "pt_PT"), directory=directory)
+    assert choice.notice == (
+        "LlamaFit has no pt_BR translation, so it is using the Portuguese (Portugal) one."
+    )
