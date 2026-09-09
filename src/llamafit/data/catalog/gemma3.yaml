@@ -1,9 +1,17 @@
-# Sourced from Google's Hugging Face model card, the Gemma Terms of Use and the bartowski
-# GGUF repository.
+# Sourced from Google's Hugging Face model card, the Gemma 3 technical report, the Gemma Terms
+# of Use and the bartowski GGUF repository.
 # Primary sources used for this file:
 #   - Model card: https://huggingface.co/google/gemma-3-27b-it
+#   - Technical report: https://arxiv.org/abs/2503.19786
 #   - Licence: https://ai.google.dev/gemma/terms
 #   - GGUF repository: https://huggingface.co/bartowski/google_gemma-3-27b-it-GGUF
+#
+# The model card's own tables (and the numbers first recorded here) are for the PRETRAINED
+# (PT) 27B checkpoint, not this instruction-tuned (IT) one: MMLU 78.6, HumanEval 48.8 and
+# DocVQA 85.6 all come from the PT tables. The benchmarks below instead come from the
+# technical report's IT-specific tables: MMLU-Pro 67.5 (Table 6, "instruction fine-tuned (IT)
+# models ... zero-shot benchmarks"), HumanEval 87.8 (Table 18) and DocVQA 86.6 (Table 16).
+# The IT tables carry no plain MMLU row, hence MMLU-Pro instead of MMLU here.
 - id: gemma-3-27b-it
   name: Gemma 3 27B IT
   vendor: Google
@@ -23,15 +31,15 @@
   quality:
     baseline: 74
     benchmarks:
-      - name: MMLU (5-shot)
-        score: 78.6
-        source: "https://huggingface.co/google/gemma-3-27b-it"
-      - name: HumanEval (0-shot)
-        score: 48.8
-        source: "https://huggingface.co/google/gemma-3-27b-it"
+      - name: MMLU-Pro
+        score: 67.5
+        source: "https://arxiv.org/abs/2503.19786"
+      - name: HumanEval
+        score: 87.8
+        source: "https://arxiv.org/abs/2503.19786"
       - name: DocVQA (val)
-        score: 85.6
-        source: "https://huggingface.co/google/gemma-3-27b-it"
+        score: 86.6
+        source: "https://arxiv.org/abs/2503.19786"
   sources:
     - repo: bartowski/google_gemma-3-27b-it-GGUF
       kind: gguf

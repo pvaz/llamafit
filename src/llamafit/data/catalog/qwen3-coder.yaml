@@ -11,7 +11,10 @@
   release_date: 2026-02-03
   license:
     spdx: Apache-2.0
-    url: "https://huggingface.co/Qwen/Qwen3-Coder-Next/blob/main/LICENSE"
+    # The repository declares apache-2.0 in its metadata but has no LICENSE file
+    # (huggingface.co/Qwen/Qwen3-Coder-Next/blob/main/LICENSE returns 404); linking to the
+    # licence text itself instead.
+    url: "https://www.apache.org/licenses/LICENSE-2.0"
   params: { total_b: 80, active_b: 3 }
   architecture:
     class: moe-hybrid
@@ -55,7 +58,7 @@
     - profile: "llama-bench pp2048, -ub 2048"
       quant: UD-Q4_K_XL
       pp_tps: 323
-      flags: "-ngl 99 --n-cpu-moe 48 --fit off -fa on -t 16 -tb 16 -b 4096"
+      flags: "-ngl 99 --n-cpu-moe 48 --fit off -fa on -t 16 -tb 16 -b 4096 -ub 2048"
       llama_cpp_build: 10867
       date: 2026-09-09
       source: docs/calibration/2026-09-09-reference-machine.md
