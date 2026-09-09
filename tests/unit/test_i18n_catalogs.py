@@ -1,11 +1,18 @@
 """The completeness check every shipped catalog has to pass.
 
-A catalog must parse, must declare its plural rule, and must not carry a message the
-template does not have: such a message is dead weight a translator wasted time on. A
-message the catalog is *missing* is only a warning, because a translation in progress
-must not break the build.
+A catalog must parse, must declare its plural rule, must not carry a message the template
+does not have — such a message is dead weight a translator wasted time on — and must fill
+every placeholder its message does. A message the catalog is *missing* is only a warning,
+because a translation in progress must not break the build.
+
+The placeholder check is the one that stops a red build being a traceback in front of a
+user instead. Every counted message goes through ``%`` formatting with a dictionary the
+English message decided the shape of, so a renamed or an added placeholder is a
+``KeyError``, an undoubled literal percent is a ``ValueError`` or a ``TypeError``, and a
+dropped one raises nothing at all and silently loses the number from the sentence.
 """
 
+import re
 import warnings
 from pathlib import Path
 
@@ -15,10 +22,76 @@ from scripts.gen_messages import extract, render_template
 from llamafit import __version__
 from llamafit.i18n import SOURCE_LANGUAGE, TEMPLATE_NAME
 from llamafit.i18n.catalogs import available_languages, catalog_dir, catalog_path, load_language
-from llamafit.i18n.po import MessageKey, parse_po, read_po
+from llamafit.i18n.po import MessageKey, PoCatalog, parse_po, read_po
 from llamafit.i18n.tags import normalise
 
 LANGUAGES = [tag for tag in available_languages() if tag != SOURCE_LANGUAGE]
+
+# A named %-placeholder: the name in brackets, then the flags, width, precision and
+# length modifier %-formatting allows, then the conversion character.
+_PLACEHOLDER_RE = re.compile(r"\((?P<name>[^)]*)\)[#0\- +]*(?:\d+)?(?:\.\d+)?[hlL]?(?P<kind>.)")
+_CONVERSIONS = "diouxXeEfFgGcrsa%"
+
+
+def _placeholders(text: str) -> tuple[set[str], list[str]]:
+    """Return the placeholder names in ``text``, and every ``%`` that is not one.
+
+    Only the named form is a placeholder here. A positional ``%s`` cannot be moved by a
+    translator, and a lone ``%`` is a literal percent sign somebody forgot to double;
+    both raise when the message is formatted, so both are reported rather than counted.
+    """
+    names: set[str] = set()
+    problems: list[str] = []
+    position = 0
+    while (start := text.find("%", position)) != -1:
+        if text.startswith("%%", start):
+            position = start + 2
+            continue
+        found = _PLACEHOLDER_RE.match(text, start + 1)
+        if found is None or found.group("kind") not in _CONVERSIONS:
+            problems.append(
+                f"{text[start : start + 12]!r} is not a named placeholder; "
+                "write %% for a literal percent sign"
+            )
+            position = start + 1
+            continue
+        names.add(found.group("name"))
+        position = found.end()
+    return names, problems
+
+
+def placeholder_problems(catalog: PoCatalog) -> list[str]:
+    """Report every way a catalog's translations disagree with their messages.
+
+    A plural entry's two English forms must name the same placeholders, so that what a
+    translation has to carry does not depend on which form a count selects: a language
+    draws those boundaries somewhere else, and one that carried the count in only one
+    form could not be translated into it at all.
+    """
+    problems: list[str] = []
+    for key, message in catalog.messages.items():
+        english, bad = _placeholders(message.msgid)
+        problems += [f"{key}: msgid: {problem}" for problem in bad]
+        if message.plural is not None:
+            plural, bad = _placeholders(message.plural)
+            problems += [f"{key}: msgid_plural: {problem}" for problem in bad]
+            if plural != english:
+                problems.append(
+                    f"{key}: the English singular has {sorted(english)} but the plural "
+                    f"has {sorted(plural)}; both forms must name the same placeholders"
+                )
+                english |= plural
+        for index, translation in enumerate(message.translations):
+            if not translation.strip():
+                continue  # untranslated, so English is what the user sees
+            names, bad = _placeholders(translation)
+            problems += [f"{key}: msgstr[{index}]: {problem}" for problem in bad]
+            if names != english:
+                problems.append(
+                    f"{key}: msgstr[{index}] has {sorted(names)} but the message has "
+                    f"{sorted(english)}"
+                )
+    return problems
 
 
 def _template_messages() -> dict[MessageKey, str | None]:
@@ -166,3 +239,84 @@ def test_no_shipped_catalog_translates_a_word_two_rows_share_without_a_context()
             assert (None, msgid) not in catalog.messages, (
                 f"{language} translates {msgid!r} without saying which row it is for"
             )
+
+
+@pytest.mark.parametrize("language", LANGUAGES)
+def test_every_translation_fills_the_placeholders_its_message_does(language: str) -> None:
+    problems = placeholder_problems(load_language(language))
+    assert problems == [], f"{language}: {problems}"
+
+
+def test_the_english_messages_agree_with_themselves_about_placeholders() -> None:
+    # The template translates nothing, so this checks the messages, not a translation:
+    # a plural pair naming the count in only one form is caught before anyone translates
+    # it, and so is a literal percent sign somebody forgot to double.
+    assert placeholder_problems(read_po(catalog_dir() / TEMPLATE_NAME)) == []
+
+
+@pytest.mark.parametrize(
+    ("msgstr", "fragment"),
+    [
+        ('"%(total)d modulos"', "['total'] but the message has ['count']"),  # renamed
+        ('"%(count)d de %(all)d"', "['all', 'count'] but the message"),  # an extra one
+        ('"alguns modulos"', "[] but the message has ['count']"),  # dropped: silent
+        ('"%(count)d modulos a 100% de uso"', "is not a named placeholder"),  # undoubled
+    ],
+)
+def test_a_translation_that_breaks_a_placeholder_is_reported(msgstr: str, fragment: str) -> None:
+    catalog = parse_po(
+        'msgid ""\nmsgstr ""\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n\n'
+        'msgid "%(count)d module"\nmsgstr ' + msgstr + "\n"
+    )
+    problems = placeholder_problems(catalog)
+    assert len(problems) == 1, problems
+    assert fragment in problems[0]
+
+
+def test_a_placeholder_broken_in_one_plural_form_only_is_still_reported() -> None:
+    catalog = parse_po(
+        'msgid ""\nmsgstr ""\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n\n'
+        'msgid "%(count)d module"\nmsgid_plural "%(count)d modules"\n'
+        'msgstr[0] "%(count)d modulo"\nmsgstr[1] "varios modulos"\n'
+    )
+    problems = placeholder_problems(catalog)
+    assert len(problems) == 1, problems
+    assert "msgstr[1] has [] but the message has ['count']" in problems[0]
+
+
+def test_an_english_plural_that_names_the_count_in_one_form_only_is_reported() -> None:
+    catalog = parse_po(
+        'msgid ""\nmsgstr ""\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n\n'
+        'msgid "one module"\nmsgid_plural "%(count)d modules"\nmsgstr[0] "um modulo"\n'
+    )
+    assert "both forms must name the same placeholders" in placeholder_problems(catalog)[0]
+
+
+def test_a_doubled_percent_and_a_reordered_placeholder_are_both_fine() -> None:
+    catalog = parse_po(
+        'msgid ""\nmsgstr ""\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n\n'
+        'msgid "%(used)d%% of %(total)d"\nmsgstr "%(total)d, dos quais %(used)d%%"\n'
+    )
+    assert placeholder_problems(catalog) == []
+
+
+def test_an_untranslated_form_is_not_asked_about_its_placeholders() -> None:
+    # It falls back to English, so it has nothing to keep.
+    catalog = parse_po(
+        'msgid ""\nmsgstr ""\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n\n'
+        'msgid "%(count)d module"\nmsgstr "   "\n'
+    )
+    assert placeholder_problems(catalog) == []
+
+
+def test_every_shipped_translation_actually_formats() -> None:
+    # The check above compares names; this one runs the formatting it is standing in for,
+    # so a rule that passed the comparison but still raised would be caught here.
+    for language in LANGUAGES:
+        catalog = load_language(language)
+        for key, message in catalog.messages.items():
+            names, _ = _placeholders(message.msgid)
+            values = dict.fromkeys(names, 1)
+            for translation in message.translations:
+                if translation.strip():
+                    assert isinstance(translation % values, str), key

@@ -103,15 +103,21 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
    the completeness check still lists it as a message your language needs.
 
 5. Run the tests. `tests/unit/test_i18n_catalogs.py` checks every catalog: it must parse,
-   it must declare its plural rule, and it must not translate a message the template does
-   not have. A message it is *missing* is a warning, not a failure, so you can land a
-   translation that is still in progress.
+   it must declare its plural rule, it must not translate a message the template does not
+   have, and every translation must carry exactly the placeholders its message does. A
+   message it is *missing* is a warning, not a failure, so you can land a translation that
+   is still in progress.
 
 ## What a translator needs to know
 
 - **Placeholders keep their names.** `%(count)d module` may become
   `%(count)d módulo`, and the pieces may be reordered, but `%(count)d` itself must survive
-  exactly. A placeholder that is dropped or renamed is a crash, not a typo.
+  exactly. A placeholder that is renamed or added is a crash; one that is *dropped* raises
+  nothing and silently loses the number from the sentence, which is worse. The test suite
+  compares every translation's placeholders against its message's and fails when they
+  differ, so you will hear about all three before a user does.
+- **A literal percent sign is written `%%`.** A single `%` that is not part of a
+  placeholder raises when the message is formatted.
 - **Plurals are not a suffix.** Use `msgstr[0]`, `msgstr[1]`, and as many forms as your
   `Plural-Forms` header declares. Do not write `1 module(s)`.
 - **The file is UTF-8**, always, on every platform. Save it as UTF-8 without a byte order
