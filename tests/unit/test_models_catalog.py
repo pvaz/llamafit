@@ -115,3 +115,11 @@ def test_a_parameter_count_must_be_above_zero() -> None:
         Params(total_b=0, active_b=0)
     with pytest.raises(ValidationError):
         Params(total_b=-1, active_b=-1)
+
+
+def test_active_parameters_must_be_above_zero() -> None:
+    assert Params(total_b=8, active_b=8).active_b == 8
+    with pytest.raises(ValidationError):
+        Params(total_b=8, active_b=0)
+    with pytest.raises(ValidationError):
+        Params(total_b=8, active_b=-1)

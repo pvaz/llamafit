@@ -84,14 +84,15 @@ class Params(_Strict):
         total_b: Total parameters, in billions, always above zero. A model with no
             parameters is not a model, and every figure derived from this one — bits
             per weight above all — is nonsense or a division by zero without it.
-        active_b: Parameters active per token, in billions. Equal to ``total_b`` for a
-            dense model, smaller for a mixture-of-experts model.
+        active_b: Parameters active per token, in billions, always above zero. Equal to
+            ``total_b`` for a dense model, smaller for a mixture-of-experts model; a
+            model that activates nothing per token does not exist.
         ngram_table_b: Size of an auxiliary n-gram lookup table, in billions of entries,
             for models that stream one from disk instead of holding it in weights.
     """
 
     total_b: float = Field(gt=0)
-    active_b: float
+    active_b: float = Field(gt=0)
     ngram_table_b: float | None = None
 
     @model_validator(mode="after")
