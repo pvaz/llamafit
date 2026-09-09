@@ -20,7 +20,15 @@ PURE_PYTHON_CORRECTION = 1.6
 
 
 def measure_ram_bandwidth_gbps(*, duration_s: float = 0.05, buffer_mb: int = 256) -> float | None:
-    """Measure copy bandwidth in GB/s, or ``None`` when the buffer cannot be allocated."""
+    """Measure copy bandwidth in GB/s, or ``None`` when the buffer cannot be allocated.
+
+    Repeatedly copies a ``buffer_mb`` buffer for at least ``duration_s`` seconds and
+    reports bytes moved per second. Uses NumPy when importable; otherwise falls back
+    to a pure-Python ``bytearray`` slice copy scaled by ``PURE_PYTHON_CORRECTION``.
+    The caller (``resolve_memory_bandwidth``) treats a result outside
+    ``PLAUSIBLE_RANGE_GBPS`` (5 to 1000 GB/s) as implausible and falls back to an
+    estimate or the assumed constant instead of trusting it.
+    """
     size = buffer_mb * 1024 * 1024
     try:
         import numpy as np
@@ -59,7 +67,14 @@ def measure_ram_bandwidth_gbps(*, duration_s: float = 0.05, buffer_mb: int = 256
 
 
 def resolve_memory_bandwidth(memory: Memory, *, measure: bool = True) -> Memory:
-    """Set ``bandwidth_gbps`` with the best available source and label it."""
+    """Set ``bandwidth_gbps`` with the best available source and label it.
+
+    Precedence is measured -> estimated -> assumed: a live measurement is used only
+    when it falls within ``PLAUSIBLE_RANGE_GBPS`` (5 to 1000 GB/s); otherwise an
+    existing ``"estimated"`` value already on ``memory`` is kept; failing that,
+    ``bandwidth_gbps`` is set to ``ASSUMED_RAM_BANDWIDTH_GBPS`` and labelled
+    ``"assumed"``.
+    """
     if measure:
         measured = measure_ram_bandwidth_gbps()
         if measured is not None and PLAUSIBLE_RANGE_GBPS[0] <= measured <= PLAUSIBLE_RANGE_GBPS[1]:
