@@ -15,14 +15,18 @@ own file makes that failure impossible rather than merely tested. See
 :mod:`llamafit.catalog.loader` for how the two files are merged back together when
 the catalog is read.
 
-Nothing here touches a curated field. A repository whose file listing cannot be
-trusted leaves its whole model untouched, rather than risk blanking out fields that
-took a real read to fill in.
+Nothing here touches a curated field, and nothing here writes a truncated file: the
+facts file is written to a sibling temporary path and moved into place with
+``os.replace``, so a crash or a full disk leaves either the previous file or the new
+one, never a partial one. A repository whose file listing cannot be trusted leaves
+its whole model untouched, rather than risk blanking out fields that took a real
+read to fill in.
 """
 
 from __future__ import annotations
 
 import json
+import os
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -291,9 +295,26 @@ def _dump_facts_json(document: dict[str, Any]) -> str:
     return json.dumps(document, indent=2, sort_keys=True) + "\n"
 
 
-def _write_facts_json(path: Path, text: str) -> None:
-    """Write ``text`` to ``path``."""
-    path.write_text(text, encoding="utf-8")
+def _write_facts_atomically(path: Path, text: str) -> None:
+    """Write ``text`` to ``path`` through a sibling temporary file and an atomic replace.
+
+    A crash or a full disk between writing the temporary file and replacing the
+    target leaves either the previous file or the new one in place, never a
+    truncated one.
+
+    Raises:
+        CatalogError: The temporary file could not be written, or could not be
+            moved into place.
+    """
+    tmp_path = path.with_name(f"{path.name}.tmp")
+    try:
+        tmp_path.write_text(text, encoding="utf-8")
+        os.replace(tmp_path, path)
+    except OSError as exc:
+        raise CatalogError(
+            f"could not write {path}: {exc}",
+            hint="Check that the directory is writable and has room.",
+        ) from exc
 
 
 def refresh_file(
@@ -315,10 +336,10 @@ def refresh_file(
 
     The curated YAML file named by ``path`` is only ever read, never written. The
     facts file, named by :func:`~llamafit.catalog.loader.facts_path_for`, is
-    rewritten only when at least one model actually changed and ``dry_run`` is
-    ``False``; it always reflects every model currently in the YAML, including
-    those left untouched by an ``only`` filter or a failed source, so a partial
-    refresh never drops facts a previous run already recorded.
+    rewritten, atomically, only when at least one model actually changed and
+    ``dry_run`` is ``False``; it always reflects every model currently in the YAML,
+    including those left untouched by an ``only`` filter or a failed source, so a
+    partial refresh never drops facts a previous run already recorded.
 
     Args:
         path: The curated catalog YAML file to refresh.
@@ -332,7 +353,8 @@ def refresh_file(
 
     Raises:
         CatalogError: The YAML file, or its sibling facts file, could not be parsed
-            or failed validation, so refreshing it could not be done safely.
+            or failed validation, so refreshing it could not be done safely; or the
+            facts file could not be written.
     """
     models, problems = load_models_from_file(path)
     if problems:
@@ -368,6 +390,6 @@ def refresh_file(
 
     if any_changed and not dry_run:
         document = _build_facts_document(final_models)
-        _write_facts_json(facts_path_for(path), _dump_facts_json(document))
+        _write_facts_atomically(facts_path_for(path), _dump_facts_json(document))
 
     return results
