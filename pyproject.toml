@@ -91,7 +91,10 @@ follow_imports_for_stubs = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra --strict-markers"
-markers = ["hardware: needs the real machine, skipped in CI"]
+markers = [
+  "hardware: needs the real machine, skipped in CI",
+  "network: needs internet access, skipped in CI",
+]
 
 [tool.coverage.run]
 source = ["llamafit"]
