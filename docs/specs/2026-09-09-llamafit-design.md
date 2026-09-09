@@ -186,7 +186,7 @@ A hardware profile is a JSON document that describes a machine well enough to sc
 
 | Step | Method |
 |---|---|
-| Binaries | search `PATH` for `llama-server`, `llama-cli`, `llama-bench`, `llama-gguf`; then well-known directories (`~/.llamafit/llama.cpp`, `/usr/local/bin`, `/opt/homebrew/bin`, `C:\llama.cpp`, `D:\llama.cpp`, LM Studio and Ollama bundles are reported as *not usable directly*); then `LLAMA_CPP_PATH` |
+| Binaries | `LLAMA_CPP_PATH` first, so an explicit choice always wins; then `PATH` for `llama-server`, `llama-cli`, `llama-bench`, `llama-gguf`; then well-known directories (`~/.llamafit/llama.cpp`, `/usr/local/bin`, `/opt/homebrew/bin`, `C:\llama.cpp`, `D:\llama.cpp`, LM Studio and Ollama bundles are reported as *not usable directly*) |
 | Version | `llama-server --version` parsed for build number and commit; `bin/VERSION.txt` when present |
 | Backends | shipped `ggml-*` shared libraries (`ggml-cuda`, `ggml-hip`, `ggml-metal`, `ggml-vulkan`, `ggml-sycl`, `ggml-cpu-*`), and `llama-server --list-devices` when the build supports it |
 | Running server | `GET http://127.0.0.1:{port}/health`, `/v1/models`, `/props` on the default port 8080 and `LLAMA_SERVER_PORT`; records the loaded model and context size |
@@ -245,13 +245,12 @@ sources:
   - repo: unsloth/Qwen3.8-Flash-Next-GGUF
     kind: gguf
     trust: unsloth                          # official | unsloth | bartowski | community
-    quants:
-      - {name: UD-Q4_K_XL, files: [Qwen3.8-Flash-Next-UD-Q4_K_XL-0000{1..4}-of-00004.gguf],
-         bytes: 111323630080, bpw: 4.98, sha256: [...], gguf_facts: {...}}
-      - {name: UD-Q2_K_XL, bytes: ..., bpw: ...}
+    quants:                                 # curated: the name only; the rest is refreshed
+      - {name: UD-Q4_K_XL}
+      - {name: UD-Q2_K_XL}
     extras:
-      - {role: mmproj, file: mmproj-F16.gguf, bytes: 904004000}
-      - {role: mtp, file: mtp-Qwen3.8-Flash-Next-shared-Q8_0.gguf, bytes: 2786568256}
+      - {role: mmproj, file: mmproj-F16.gguf}
+      - {role: mtp, file: mtp-Qwen3.8-Flash-Next-shared-Q8_0.gguf}
 measured:                                   # optional, from the calibration set
   - {profile: rtx4060-8gb-ddr5-128gb, quant: UD-Q4_K_XL, gen_tps: 13.5, pp_tps: 52,
      flags: "-ub 1024 --no-mmproj-offload", source: docs/calibration/2026-09-09.md}
@@ -260,6 +259,7 @@ measured:                                   # optional, from the calibration set
 Field rules:
 
 - `params.active_b` drives speed; `params.total_b` and the quant `bytes` drive memory. Optional `ngram_table_b` and similar auxiliary tables are budgeted separately when `llama_cpp.requires.lazy_mode` allows streaming.
+- `quants[].bpw` is the quant's bits per weight, so it divides the weight bytes by `params.total_b`, not the whole download. A file may carry a large auxiliary table that `params.total_b` deliberately excludes, and counting it would report a four-bit quant as a seven-bit one. The weight bytes are the file bytes less whatever the facts report as streamable tables.
 - `quality.baseline` is the model's quality on its primary use case, 0 to 100, set by the curator from published benchmarks with the sources listed. The contribution guide defines the rubric (section 11.1).
 - `quants[].gguf_facts` is filled by `refresh` (section 7) and is what the budget uses; when absent, the budget falls back to family-level formulas and lowers confidence.
 
@@ -273,13 +273,25 @@ The initial catalog is written from primary sources only: model cards and techni
 
 ### 6.5 Refresh
 
-`llamafit catalog refresh [--model ID] [--dry-run]` queries `https://huggingface.co/api/models/{repo}?blobs=true` for file sizes and LFS SHA-256, fetches GGUF header facts for each quant (section 7), and rewrites the YAML. Network failures leave the file untouched and are reported per repository. A `--check` mode exits non-zero when the committed data is stale, for a scheduled CI job.
+`llamafit catalog refresh [--model ID] [--dry-run]` queries `https://huggingface.co/api/models/{repo}?blobs=true` for file sizes and LFS SHA-256, and fetches GGUF header facts for each quant (section 7). Network failures leave the data untouched and are reported per repository. A `--check` mode exits non-zero when the committed data is stale, for a scheduled CI job.
+
+The curated `<family>.yaml` is never written by a machine. It is hand-written prose and data with comments and sources in it, and a program that rewrites it destroys that on the first run. The volatile fields instead live in a sibling `<family>.facts.json`, keyed by model id and then by quant or extra name, written atomically through a temporary file in the same directory, and merged back onto the models by the loader. Two consequences follow and both are required: a refresh that changes nothing rewrites nothing, and a facts file that does not say what it appears to say produces a `Problem` naming the model, the quant and the field, never a quietly half-filled model. A model whose sources reuse a quant name cannot be represented in a name-keyed document at all, so it is reported and receives no merged facts rather than having its colliding quants filled from one shared entry.
 
 ## 7. GGUF facts
 
 ### 7.1 Reading headers
 
 `gguf.header` parses the GGUF binary header (magic, version, tensor count, key-value metadata, tensor infos) from a local file or from a URL using HTTP range requests, reading only as many bytes as the header needs (typically under 4 MB even for very large models). Results are cached under the cache directory keyed by URL and ETag, or by path, size and mtime for local files.
+
+A quant published as several shards is read as a set, never as its first file. The shard that
+declares `split.no = 0` carries the whole key-value metadata block and the others carry three keys
+each, so metadata comes from that shard alone; the tensor table is the union of every shard's, and
+every derived byte figure comes from that union. A first shard holding metadata and no tensors at
+all is a normal and observed layout, so reading only the first file yields complete architecture
+metadata beside an empty tensor table, and every byte figure silently becomes zero. Where the
+metadata declares `split.count` and `split.tensors.count`, both are checked against the set that
+arrived; an incomplete set is an error, because facts derived from it are quietly too small rather
+than visibly absent.
 
 ### 7.2 Derived facts
 
@@ -288,7 +300,8 @@ From the header LlamaFit derives, per quant:
 | Fact | Derivation |
 |---|---|
 | `n_layer`, `n_embd`, `n_vocab`, `n_head`, `n_head_kv`, `head_dim` | `{arch}.block_count`, `{arch}.embedding_length`, tokenizer vocab size, `{arch}.attention.head_count(_kv)`, key length |
-| `attention_layers` | `n_layer` for dense; for hybrid architectures the full-attention layer set from the architecture's interval or layer-type array, else the family rule in the catalog |
+| `attention_layers` | the number of blocks that own `attn_k.weight` and `attn_v.weight` tensors, which is exact for every architecture including hybrids, since a block without a KV projection cannot hold a KV cache; the architecture's interval or layer-type array, and then the family rule in the catalog, are fallbacks for a file whose tensor names do not follow the convention. Recorded alongside as `attention_layers_source` so a reader can tell a counted figure from an assumed one |
+| `sliding_window` | `{arch}.attention.sliding_window` when the architecture declares one, else null. Recorded but not yet used: a model with sliding-window attention holds a full-length KV cache on only a fraction of its layers, so treating every attention layer as full-context overstates the cache several-fold. Which layers slide is not in the header and comes from a per-architecture rule or the catalog |
 | `n_expert`, `n_expert_used`, `shared_experts` | `{arch}.expert_count`, `{arch}.expert_used_count`, presence of `_shexp` tensors |
 | `bytes_expert_weights` | sum of tensor sizes whose names contain `_exps` |
 | `bytes_attention_weights` | sum of all other block tensors |
