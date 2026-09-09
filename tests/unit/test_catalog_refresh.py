@@ -504,3 +504,34 @@ def test_a_partial_refresh_over_its_own_unreadable_entry_runs(tmp_path: Path) ->
 
     document = json.loads(facts_path_of(path).read_text(encoding="utf-8"))
     assert document["models"]["tiny-1b"]["quants"]["Q4_K_M"]["bytes"] == 700_000_000
+
+
+TWICE_PUBLISHED = {
+    "example/tiny-1b-GGUF": [
+        RepoFile(path="imat/tiny-1b-Q4_K_M-00001-of-00002.gguf", size=350_000_000, sha256="a1"),
+        RepoFile(path="imat/tiny-1b-Q4_K_M-00002-of-00002.gguf", size=350_000_000, sha256="a2"),
+        RepoFile(path="main/tiny-1b-Q4_K_M-00001-of-00002.gguf", size=360_000_000, sha256="b1"),
+        RepoFile(path="main/tiny-1b-Q4_K_M-00002-of-00002.gguf", size=360_000_000, sha256="b2"),
+    ]
+}
+
+
+def test_a_quant_published_under_two_paths_is_a_warning_not_a_doubled_size(
+    tmp_path: Path,
+) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+
+    results = refresh_file(path, hf=FakeHfClient(TWICE_PUBLISHED), read_facts_fn=facts_stub)
+
+    assert results[0].error is None
+    assert results[0].changed is False
+    assert len(results[0].warnings) == 1
+    warning = results[0].warnings[0]
+    assert "Q4_K_M" in warning
+    assert "no whole set" in warning
+    assert "more than once" in warning
+    assert not facts_path_of(path).exists()
+
+    models, problems = load_models_from_file(path)
+    assert problems == []
+    assert models[0].sources[0].quants[0].bytes_ is None
