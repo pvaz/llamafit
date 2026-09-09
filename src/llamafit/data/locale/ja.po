@@ -1,0 +1,796 @@
+# Japanese translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. It was written from the template in one pass and
+# has had no second reader. By the standard docs/translations.md sets for every language,
+# that is not enough: please read it line by line and correct it in a pull request.
+#
+# Japanese takes one plural form, so every plural message has a single msgstr[0] and the
+# count is carried by %(count)d, as it already is in the English.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Language-Team: Japanese\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "%(repo)s のファイル一覧を取得中に Hugging Face が %(status)d を返しました。"
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "Hugging Face から %(repo)s のファイル一覧を読み取れませんでした。"
+
+msgid "Check your network connection and try again."
+msgstr "ネットワーク接続を確認して、もう一度実行してください。"
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "%(repo)s に対する Hugging Face の応答にファイル一覧が含まれていませんでした。"
+
+msgid "Check that the repository id is correct and public."
+msgstr "リポジトリ id が正しく、公開されていることを確認してください。"
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "カタログに %(count)d 件の問題があります"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "詳細は `llamafit catalog validate` を実行してください。"
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "%(path)s を書き込めませんでした: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "そのディレクトリが書き込み可能で、空き容量があることを確認してください。"
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "%(path)s に %(count)d 件の問題があるため、更新できません"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "先に `llamafit catalog validate` を実行して、ファイルを修正してください。"
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "%(path)s を完全に読み取れなかったため、%(model)s だけを更新すると、今回の実行で扱わないモデルについて記録されている情報が失われます: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "ファイル全体を作り直すには、--model を付けずに `llamafit catalog refresh` を実行してください。"
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "自分のマシンで llama.cpp 用のオープンウェイト LLM を探し、サイズを見積もり、インストールして検証します。"
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "テーブルではなく、機械可読な JSON を出力します。"
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "詳細をログディレクトリの llamafit.log に書き出し、トレースバックを表示します。"
+
+msgid "Disable colours."
+msgstr "色を無効にします。"
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "この言語で表示します（例: pt_PT）。LlamaFit にない言語は英語に戻り、どの言語があるかを知らせます。"
+
+msgid "Print the version and exit."
+msgstr "バージョンを表示して終了します。"
+
+msgid "Unexpected error: %(error)s"
+msgstr "予期しないエラー: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "完全なトレースバックを見るには、--verbose を付けて実行し直してください。"
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "カタログを保守します: ファイルを検証し、変わりやすい項目を更新します。"
+
+msgid "Keep only this use case."
+msgstr "このユースケースだけを残します。"
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "この機能を持つモデルだけを残します（繰り返し指定できます）。"
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "これらのライセンス識別子だけを残します（繰り返し指定できます）。"
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "同梱のカタログとユーザー定義の上書きではなく、このファイルだけを検証します。"
+
+msgid "Did you mean: %(ids)s?"
+msgstr "もしかして: %(ids)s ですか？"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "すべてのモデル id を見るには `llamafit list` を実行してください。"
+
+msgid "no model named %(id)s in the catalog"
+msgstr "%(id)s という名前のモデルはカタログにありません"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "カタログの問題が %(count)d 件見つかりました。詳細は `llamafit catalog validate` を実行してください。"
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "該当するモデルがありません。--use-case、--capability、--license、--vendor、--search をもう少し広げてみてください。"
+
+msgid "invalid --use-case %(value)s"
+msgstr "--use-case の値が不正です: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "有効なユースケース: %(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "--capability の値が不正です: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "有効な機能: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"指定されたフィルタで絞り込んで、モデルカタログを一覧表示します。\n"
+"\n"
+"テーブルにはモデルごとに最大 3 つの機能と、残りを表す +N が表示され、表示中の品質列で並べ替えられます。すべての機能は info または --json で確認できます。"
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "このベンダーだけを残します（大文字と小文字は区別しません）。"
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "id、名前、ベンダー、ファミリーに対する部分一致（大文字と小文字は区別しません）。"
+
+msgid "Show at most this many."
+msgstr "表示する件数の上限。"
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "llamafit list --search TEXT の短縮形。"
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "id、名前、ベンダー、ファミリーと照合する文字列。"
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "1 つのモデルの情報、出典、公開されているすべての量子化版を表示します。"
+
+msgid "A catalog model id."
+msgstr "カタログのモデル id。"
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "カタログの YAML ファイルをスキーマに照らして検証し、問題を 1 行ずつ出力します。"
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "%(count)d 個のファイルを確認しました。問題はありません。"
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "カタログのファイル名、サイズ、チェックサム、GGUF 情報を Hugging Face から更新します。"
+
+msgid "Refresh only this model id."
+msgstr "このモデル id だけを更新します。"
+
+msgid "Compute the refresh but write nothing."
+msgstr "更新内容を計算するだけで、書き込みは行いません。"
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "変更が生じる場合は 1 で終了します。何も変更しないので、定期実行の CI ジョブ向けです。"
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: 警告: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "警告: %(warning)s（%(count)d 件のモデル: %(models)s）"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: エラー: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "ヒント: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "更新には Hugging Face へのネットワーク接続が必要です。接続と、リポジトリ id が正しいかを確認してください。"
+
+msgid "No changes."
+msgstr "変更はありません。"
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "1 つのモデルのカタログ項目をそのまま出力します（既定は JSON、--yaml を付けると YAML）。"
+
+msgid "Print YAML instead of JSON."
+msgstr "JSON ではなく YAML を出力します。"
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "何が検出され、何が失敗し、何をすればさらに使えるようになるかを説明します。"
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "警告"
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "エラー"
+
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "実測"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "推定"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "仮定"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "不明"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s、%(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "ホスト"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s（%(arch)s）"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d コア / %(logical)d スレッド"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d 個の高性能コア"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "命令セット不明"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d 枚のモジュール"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d チャネル"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s（%(source)s）"
+
+# Japanese inflects for neither gender nor number, so every row that says
+# "unknown" or "none detected" reads the same. Each context is still filled in:
+# leaving one empty would drop that row back to English on its own.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "不明"
+
+msgid "Memory"
+msgstr "メモリ"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "合計 %(total)s、空き %(available)s、%(details)s、帯域幅 %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "種類不明"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "検出なし"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "VRAM %(total)s、空き %(free)s"
+
+msgid "VRAM unknown"
+msgstr "VRAM 不明"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s（仕様値）"
+
+msgid "driver %(driver)s"
+msgstr "ドライバ %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s（%(backend)s）; %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "仕様値なし"
+
+msgid "Memory pool"
+msgstr "メモリプール"
+
+msgid "unified (GPU shares system memory)"
+msgstr "ユニファイド（GPU がシステムメモリを共有）"
+
+msgid "Disk"
+msgstr "ディスク"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: %(total)s 中 %(free)s が空き"
+
+msgid "Installed"
+msgstr "インストール済み"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "いいえ"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d（%(commit)s）"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "ビルド不明"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "はい、%(build)s（%(path)s）"
+
+msgid "Backends"
+msgstr "バックエンド"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "検出なし"
+
+msgid "Local models"
+msgstr "ローカルモデル"
+
+msgid "Running"
+msgstr "実行中"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s、コンテキスト %(context)s"
+
+msgid "unknown model"
+msgstr "モデル不明"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "不明"
+
+msgid "Problem"
+msgstr "問題"
+
+msgid "Probes"
+msgstr "プローブ"
+
+msgid "probe"
+msgstr "プローブ"
+
+msgid "result"
+msgstr "結果"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "成功"
+
+msgid "no server"
+msgstr "サーバーなし"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "失敗"
+
+msgid "Findings"
+msgstr "診断結果"
+
+msgid "level"
+msgstr "レベル"
+
+msgid "finding"
+msgstr "内容"
+
+# These five are the list table's column headings, and the table is laid out for
+# an 80-column terminal. A Japanese character takes two terminal columns, so the
+# headings are kept as short as the meaning allows.
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "品質*"
+
+msgid "Params"
+msgstr "パラメータ"
+
+msgid "Context"
+msgstr "コンテキスト"
+
+msgid "Capabilities"
+msgstr "機能"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "品質は、量子化による低下を考慮する前の、編集部による基準値です。根拠となる出典付きのベンチマークは `llamafit info <model>` で確認できます。"
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "パラメータは、Mixture-of-Experts モデルでは総数/アクティブ数（十億単位）、両者が同じ場合は 1 つの数値です。"
+
+msgid "Models"
+msgstr "モデル"
+
+msgid "Vendor"
+msgstr "ベンダー"
+
+msgid "Family"
+msgstr "ファミリー"
+
+msgid "Release date"
+msgstr "公開日"
+
+msgid "Licence"
+msgstr "ライセンス"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s（%(url)s）"
+
+msgid "Parameters"
+msgstr "パラメータ数"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "合計 %(total)sB、アクティブ %(active)sB"
+
+msgid "%(tokens)s tokens native"
+msgstr "ネイティブ %(tokens)s トークン"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr "、%(method)s により %(tokens)s まで拡張"
+
+msgid "unspecified method"
+msgstr "方式は未指定"
+
+msgid "Architecture"
+msgstr "アーキテクチャ"
+
+msgid "Notes"
+msgstr "備考"
+
+msgid "Use cases"
+msgstr "ユースケース"
+
+msgid "Quality baseline"
+msgstr "品質の基準値"
+
+msgid "Benchmark"
+msgstr "ベンチマーク"
+
+msgid "Source %(index)d"
+msgstr "出典 %(index)d"
+
+msgid "not read yet"
+msgstr "未読み込み"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d 層"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d エキスパート"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d エキスパート"
+
+msgid "Quants"
+msgstr "量子化"
+
+msgid "Name"
+msgstr "名前"
+
+msgid "Size"
+msgstr "サイズ"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "情報"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "不明"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "このマシンにあるものを表示します: CPU、メモリ、GPU、ディスク、llama.cpp。"
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "RAM 帯域幅の実測を省略します。"
+
+msgid "Command: %(command)s"
+msgstr "コマンド: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "GGUF ヘッダーが途中で切れています: オフセット %(offset)d で %(wanted)d バイト必要ですが、%(got)d バイトしかありません"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "ファイルがまだダウンロード中か、URL が GGUF ファイルではない可能性があります。"
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "オフセット %(offset)d に不明な GGUF 値型 %(type)d があります"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "このファイルは、LlamaFit が対応しているものより新しい GGUF メタデータ型を使っている可能性があります。"
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "GGUF ファイルではありません: オフセット 0 のマジックナンバー %(magic)s が不正です"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "このファイルが本当に .gguf モデルかどうか確認してください。"
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "対応していない GGUF バージョン %(version)d です（オフセット 4）"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit が対応している GGUF バージョンは %(versions)s です。"
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "これらの GGUF ファイルは 1 つの分割モデルではありません: '%(key)s' の値が一致せず、%(values)s と宣言されています"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "複数のモデルではなく、1 つのモデルのシャードを渡してください。"
+
+msgid "no GGUF header to read facts from"
+msgstr "情報を読み取る GGUF ヘッダーがありません"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "モデルのファイル、または分割モデルのすべてのシャードを渡してください。"
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(total)d 個の GGUF ファイルのうち %(count)d 個に '%(key)s' キーがないため、分割モデル内での位置を特定できません"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "分割されていないファイルを 1 つだけ渡すか、1 つの分割モデルのすべてのシャードを渡してください。"
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "シャードが揃っていません: モデルは %(declared)d 個のシャードを宣言していますが、届いたのは %(arrived)d 個です（%(key)s %(numbers)s）"
+
+msgid "Pass every shard of the split model."
+msgstr "分割モデルのすべてのシャードを渡してください。"
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "モデルのメタデータを持つシャードがありません: %(key)s %(numbers)s を受け取りましたが、いずれかが 0 である必要があります"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "最初のものを含めて、分割モデルのすべてのシャードを渡してください。"
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "シャードが揃っていません: %(key)s は 0 から %(last)d を想定していますが、%(numbers)s でした"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "分割モデルの各シャードは 1 回だけ渡してください。"
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "シャードが揃っていません: モデルは %(declared)d 個のテンソルを宣言していますが、%(shards)d 個のシャード全体で %(held)d 個しかありません"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "%(path)s を読み取れませんでした: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "ファイルが存在し、読み取れることを確認してください。"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "%(url)s を取得できませんでした: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "ネットワーク接続と、その URL に到達できることを確認してください。"
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s が 206 Partial Content ではなく HTTP %(status)d を返しました。サーバーが範囲リクエストに対応していない可能性があります。"
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "その URL がダウンロード可能な GGUF ファイルを指していることを確認してください。"
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "不明"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi が GPU を 1 つも返しませんでした"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi がカードを 1 枚も返しませんでした"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler がディスプレイを 1 つも返しませんでした"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI がビデオコントローラーを 1 つも返しませんでした"
+
+msgid "lspci found no display controllers"
+msgstr "lspci がディスプレイコントローラーを見つけられませんでした"
+
+msgid "no populated memory modules"
+msgstr "実装されているメモリモジュールがありません"
+
+msgid "no SPMemoryDataType"
+msgstr "SPMemoryDataType がありません"
+
+msgid "empty command"
+msgstr "コマンドが空です"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: %(seconds)s 秒でタイムアウトしました"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: 見つかりません"
+
+msgid "no output"
+msgstr "出力なし"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "終了コード %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "llama.cpp が見つかりません: PATH、LLAMA_CPP_PATH、通常のディレクトリのいずれにも llama-server がありません"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "llama-server の隣に ggml バックエンドのライブラリが見つかりません。静的ビルドの可能性があります"
+
+msgid "no llama-server answering"
+msgstr "応答する llama-server がありません"
+
+msgid "unexpected response: %(error)s"
+msgstr "予期しない応答: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "NVIDIA ドライバをインストールするか修復してください。nvidia-smi はドライバに同梱されており、PATH 上にある必要があります。"
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "AMD の VRAM 値を取得するには ROCm（Linux）をインストールしてください。ない場合、GPU は名前だけの表示になります。"
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell がビデオコントローラーを一覧できませんでした。通常のユーザーセッションから実行してください。"
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "ベンダー製ツールがない場合に GPU を名前で一覧できるよう、pciutils をインストールしてください。"
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "DDR の種類と速度を読み取れませんでした。Linux では sudo で一度実行する（dmidecode）か、実測した帯域幅を使ってください。"
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo が失敗しました。CPU のモデルと命令セットは不明です。"
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil が CPU のコア数を数えられませんでした。スレッド数は 1 コアとして扱われます。`pip install --force-reinstall psutil` で psutil を再インストールしてください。"
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil がメモリ総量を読み取れませんでした。これが直るまでメモリ配分を計算できません。`pip install --force-reinstall psutil` で psutil を再インストールしてください。"
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "sysctl から高性能コアの数を読み取れませんでした。"
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server はありますが、バージョンを報告しませんでした。バイナリが壊れている可能性があります。"
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler が失敗しました。GPU の情報は取得できません。"
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "GPU のメモリ容量を報告したベンダー製ツールがありません。このマシンのメモリ配分を計算できるよう、ハードウェアプロファイルに容量を記録してください。"
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp はインストール済み"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "ビルド %(build)s（%(path)s）、バックエンド: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "不明"
+
+msgid "llama.cpp not found"
+msgstr "llama.cpp が見つかりません"
+
+msgid "no llama-server binary was found"
+msgstr "llama-server のバイナリが見つかりませんでした"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "llama.cpp をインストールしてください（LlamaFit のフェーズ 2 で `llamafit install llama.cpp` が行います）。それまでは https://github.com/ggml-org/llama.cpp/releases からリリースをダウンロードし、その bin ディレクトリを PATH または LLAMA_CPP_PATH に追加してください。"
+
+msgid "Memory size unknown"
+msgstr "メモリ容量が不明"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit はこのマシンのメモリ総量を読み取れなかったため、何が収まるかを判断できません。"
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: llama.cpp に %(backend)s バックエンドがありません"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp のビルドに含まれるバックエンド: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "不明"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "%(gpu)s を使うには、%(backend)s または Vulkan バックエンド付きの llama.cpp ビルドをインストールしてください。"
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: VRAM 容量が不明"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "メモリ容量を報告するベンダー製ツールが利用できませんでした"
+
+msgid "No GPU detected"
+msgstr "GPU が検出されませんでした"
+
+msgid "models will run on the CPU only"
+msgstr "モデルは CPU のみで動作します"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "GPU があるなら、そのドライバのツールがインストールされているか確認してください。"
+
+msgid "RAM bandwidth assumed"
+msgstr "RAM 帯域幅は仮定値"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "既定値として %(gbps)s GB/s を使用しています"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "LlamaFit が RAM 帯域幅を実測できるよう、numpy をインストールしてください（`pip install llamafit[fast]`）。"
+
+msgid "Probe %(probe)s failed"
+msgstr "プローブ %(probe)s が失敗しました"
+
+msgid "unknown error"
+msgstr "不明なエラー"
+
+msgid "llama-server running at %(url)s"
+msgstr "llama-server が %(url)s で動作しています"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "モデル %(model)s、コンテキスト %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "不明"
+
+msgid "Low disk space on %(path)s"
+msgstr "%(path)s のディスク空き容量が少なくなっています"
+
+msgid "%(size)s free"
+msgstr "空き %(size)s"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "有用なモデルはたいてい 5〜120 GB 必要です。空き容量を作るか、ダウンロード先のディレクトリを変更してください。"
+
+msgctxt "size"
+msgid "unknown"
+msgstr "不明"
