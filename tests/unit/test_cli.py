@@ -9,6 +9,7 @@ from typer.testing import CliRunner
 
 from llamafit.cli.app import app
 from llamafit.errors import NotInstalledError
+from llamafit.i18n import current_language
 from llamafit.models import Cpu, Disk, Gpu, Host, LlamaCpp, Memory, SystemReport
 
 runner = CliRunner()
@@ -225,3 +226,49 @@ def test_get_logger_is_a_child_of_the_package_logger() -> None:
     from llamafit.logging import get_logger
 
     assert get_logger("hardware.gpu").name == "llamafit.hardware.gpu"
+
+
+# --- the language option ------------------------------------------------------------
+
+
+def test_the_language_option_is_read_before_anything_is_rendered() -> None:
+    # --help never reaches the callback body, so a language chosen there could not reach
+    # the help screen. The option is eager for exactly that reason, and this says so.
+    result = runner.invoke(app, ["--language", "pt_PT", "--help"])
+    assert result.exit_code == 0
+    assert current_language() == "pt_PT"
+
+
+def test_a_language_llamafit_does_not_have_lists_the_ones_it_does() -> None:
+    result = runner.invoke(app, ["--language", "xx", "--version"])
+    assert result.exit_code == 0, "an unknown language falls back, it does not fail bare"
+    assert current_language() == "en"
+    assert "LlamaFit does not speak xx" in result.output
+    assert "en, pt_PT" in result.output
+
+
+def test_another_regions_catalog_says_which_variety_the_reader_is_getting() -> None:
+    result = runner.invoke(app, ["--language", "pt_BR", "--version"])
+    assert result.exit_code == 0
+    assert current_language() == "pt_PT"
+    assert "Portuguese (Portugal)" in result.output
+    assert "Contribute a pt_BR catalog" in result.output
+
+
+def test_the_notice_never_lands_in_the_json_on_stdout(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr("llamafit.cli.system_cmd.scan_system", lambda **kwargs: fake_report())
+    result = runner.invoke(app, ["--language", "pt_BR", "--json", "system"])
+    assert result.exit_code == 0
+    # Whatever the runner merged into `output`, the JSON document itself has to parse.
+    assert json.loads(result.stdout)["version"]
+
+
+def test_a_language_the_environment_asks_for_is_honoured(monkeypatch: pytest.MonkeyPatch) -> None:
+    # No arguments at all, so nothing eager can exit before the language is chosen:
+    # Click runs the eager options the command line named first, and --version is one.
+    monkeypatch.setenv("LLAMAFIT_LANGUAGE", "pt_PT")
+    result = runner.invoke(app, [])
+    assert result.exit_code == 0
+    assert current_language() == "pt_PT"

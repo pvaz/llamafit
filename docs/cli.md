@@ -16,6 +16,7 @@ built, and their flags may still change. The [roadmap](../ROADMAP.md) says what 
 | `--json` | Print machine-readable JSON instead of tables. |
 | `--verbose`, `-v` | Log details to `llamafit.log` in the log directory (see [architecture.md](architecture.md)) at debug level and show tracebacks for unexpected errors. |
 | `--no-color` | Disable colours; useful when piping into files. |
+| `--language TAG` | Speak this language, for example `pt_PT`. It is read before anything is rendered, so `--language pt_PT --help` comes out in Portuguese too. Without it LlamaFit reads `LLAMAFIT_LANGUAGE`, then the operating system's locale, then falls back to English. A language it does not have falls back to English and names the ones it does have; a request served by another region's catalog says so. The notice goes to stderr, so `--json` stays machine-readable. See [translations.md](translations.md). |
 | `--version` | Print the version and exit. |
 | `--profile NAME\|FILE` | Score against a hardware profile instead of the live scan (phase 1C). |
 | `--memory SIZE`, `--ram SIZE`, `--cpu-cores N` | Override single values of the scan for a what-if (phase 1C). Sizes accept `8G`, `7.5GiB`, `512M`. |
