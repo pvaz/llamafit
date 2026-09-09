@@ -1,6 +1,8 @@
 import json
+import logging
 import sys
 from datetime import datetime, timezone
+from pathlib import Path
 
 import pytest
 from typer.testing import CliRunner
@@ -135,3 +137,28 @@ def test_main_reports_unexpected_errors_without_a_traceback(
         app_module.main()
     assert exit_info.value.code == 1
     assert "kaboom" in capsys.readouterr().err
+
+
+def test_verbose_enables_file_logging(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    import llamafit.cli.app as app_module
+
+    def quiet(**kwargs: object) -> None:
+        return None
+
+    monkeypatch.setenv("LLAMAFIT_HOME", str(tmp_path))
+    monkeypatch.setattr(app_module, "app", quiet)
+    monkeypatch.setattr(sys, "argv", ["llamafit", "--verbose", "system"])
+    logger = logging.getLogger("llamafit")
+    try:
+        app_module.main()
+        assert (tmp_path / "log" / "llamafit.log").exists()
+    finally:
+        for handler in list(logger.handlers):
+            logger.removeHandler(handler)
+            handler.close()
+
+
+def test_get_logger_is_a_child_of_the_package_logger() -> None:
+    from llamafit.logging import get_logger
+
+    assert get_logger("hardware.gpu").name == "llamafit.hardware.gpu"

@@ -13,7 +13,7 @@ are built; their flags may still change.
 | Option | Effect |
 |---|---|
 | `--json` | Print machine-readable JSON instead of tables. |
-| `--verbose`, `-v` | Show the full traceback for an unexpected error instead of a short message. |
+| `--verbose`, `-v` | Log details to `llamafit.log` in the log directory (see [architecture.md](architecture.md)) at debug level and show tracebacks for unexpected errors. |
 | `--no-color` | Disable colours; useful when piping into files. |
 | `--version` | Print the version and exit. |
 | `--profile NAME\|FILE` | Score against a hardware profile instead of the live scan (phase 1C). |
