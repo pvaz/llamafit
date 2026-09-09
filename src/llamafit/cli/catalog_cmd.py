@@ -214,8 +214,8 @@ def list_command(
 ) -> None:
     """List the model catalog, narrowed by any filters given.
 
-    The table shows at most three capabilities per model, plus a ``+N`` marker for
-    the rest, and is sorted by the Quality column shown; ``info`` or ``--json`` has
+    The table shows at most three capabilities per model, plus a +N marker for
+    the rest, and is sorted by the Quality column shown; info or --json has
     every capability.
     """
     filters = _build_filters(
@@ -229,7 +229,7 @@ def search_command(
     ctx: typer.Context,
     text: str = typer.Argument(..., help="Text to match against id, name, vendor or family."),
 ) -> None:
-    """Shorthand for ``llamafit list --search TEXT``."""
+    """Shorthand for llamafit list --search TEXT."""
     _print_list(ctx, ModelFilters(search=text), limit=None)
 
 
@@ -404,7 +404,7 @@ def show_command(
     model_id: str = typer.Argument(..., metavar="MODEL", help="A catalog model id."),
     yaml_output: bool = typer.Option(False, "--yaml", help="Print YAML instead of JSON."),
 ) -> None:
-    """Print one model's raw catalog entry, as JSON by default or as YAML with ``--yaml``."""
+    """Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."""
     catalog = _load_catalog(ctx.obj)
     model = _find_model(catalog, model_id)
     if yaml_output:

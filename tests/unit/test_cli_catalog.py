@@ -196,6 +196,17 @@ def test_the_list_table_labels_the_quality_score_with_its_caveat() -> None:
     assert "info" in output  # points at where the sourced benchmarks live
 
 
+@pytest.mark.parametrize(
+    "args",
+    [["list", "--help"], ["search", "--help"], ["catalog", "show", "--help"]],
+)
+def test_help_screens_have_no_backticks(args: list[str]) -> None:
+    """Typer prints a command's docstring verbatim in --help; it must be plain text."""
+    result = runner.invoke(app, args)
+    assert result.exit_code == 0, result.output
+    assert "`" not in result.output
+
+
 # --- info ----------------------------------------------------------------------
 
 
