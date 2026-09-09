@@ -226,61 +226,13 @@ if __name__ == "__main__":
 
 `tests/__init__.py` and `tests/unit/__init__.py`: empty files.
 
-- [ ] **Step 4: Create project documents**
+- [ ] **Step 4: Check the project documents that already exist**
 
-`.gitignore`:
+The repository already carries `.gitignore`, `LICENSE`, `NOTICE`, `README.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `SUPPORT.md`, `ROADMAP.md`, the `.github` templates and the `docs/` set, all written before implementation started. Do not replace them. In this step only:
 
-```
-__pycache__/
-*.py[cod]
-*.egg-info/
-.venv/
-venv/
-build/
-dist/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.coverage
-coverage.xml
-htmlcov/
-*.log
-.DS_Store
-Thumbs.db
-```
-
-`LICENSE`: the MIT license text with `Copyright (c) 2026 Paulo Vaz`.
-
-`NOTICE`:
-
-```
-LlamaFit
-Copyright (c) 2026 Paulo Vaz
-
-llama.cpp (https://github.com/ggml-org/llama.cpp), MIT License, is the
-runtime LlamaFit detects, installs and configures. LlamaFit does not
-bundle it; the installer downloads official release builds.
-
-Model weights are downloaded from the repositories named in the catalog
-and remain under their own licenses, which the catalog records per model.
-```
-
-`README.md`: the repository already carries a complete README written before implementation started. In this task only update its **Status** line to say that phase 1A (host scan and diagnostics) is in progress, and leave the rest; Task 13 brings it in line with what is implemented.
-
-`CHANGELOG.md`:
-
-```markdown
-# Changelog
-
-All notable changes to LlamaFit are recorded here. The format follows
-[Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
-[Semantic Versioning](https://semver.org/).
-
-## [Unreleased]
-
-### Added
-- Project scaffold, host scan (`llamafit system`) and diagnostics (`llamafit doctor`).
-```
+1. Confirm `.gitignore` ignores `.venv/`, `*.egg-info/`, `.pytest_cache/`, `.mypy_cache/`, `.ruff_cache/`, `.coverage`, `htmlcov/` and `*.log` (it does; add anything the tools below create that it misses).
+2. Change the **Status** blockquote in `README.md` to say that phase 1A (host scan and diagnostics) is in progress and link the plan file.
+3. Under `## [Unreleased]` → `### Added` in `CHANGELOG.md`, add the line `- Project scaffold: packaging, CI matrix, lint, type-check and test configuration.`
 
 - [ ] **Step 5: Create the CI workflow**
 
@@ -3446,12 +3398,12 @@ git commit -m "feat: llamafit system and doctor commands with Rich tables and --
 ### Task 13: Documentation, community files and release readiness
 
 **Files:**
-- Create: `docs/cli.md`, `docs/platform-support.md`, `docs/development.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `.github/ISSUE_TEMPLATE/bug_report.md`, `.github/ISSUE_TEMPLATE/feature_request.md`, `.github/PULL_REQUEST_TEMPLATE.md`
-- Modify: `README.md`, `CHANGELOG.md`
+- Modify: `docs/cli.md`, `docs/platform-support.md`, `docs/development.md`, `README.md`, `CHANGELOG.md` (all exist; this task brings them in line with the code)
+- Create: `tests/unit/test_docs.py`, `scripts/record_fixtures.py`
 
 **Interfaces:**
 - Consumes: the commands and flags delivered by Task 12; the probe names and hints from Task 11.
-- Produces: user-facing documentation that matches the code exactly (every flag and probe name in the docs must exist in the code; the test in Step 1 enforces the CLI part).
+- Produces: user-facing documentation that matches the code exactly (every flag and probe name in the docs must exist in the code; the test in Step 1 enforces it), and the fixture recorder that `docs/development.md` promises.
 
 - [ ] **Step 1: Write the failing documentation test**
 
@@ -3496,262 +3448,167 @@ def test_readme_shows_the_two_commands_that_exist() -> None:
 Run: `pytest tests/unit/test_docs.py -v`
 Expected: FAIL with `FileNotFoundError` for `docs/cli.md`.
 
-- [ ] **Step 3: Write `docs/cli.md`**
+- [ ] **Step 3: Bring `docs/cli.md` in line with the code**
 
-```markdown
-# Command-line reference
+The page already documents every planned command with a phase marker. For the two commands that now exist:
 
-LlamaFit is one executable, `llamafit`, with subcommands. Every command accepts the global
-options below, and every command can print JSON instead of tables so scripts can consume it.
+1. Replace the example block under `llamafit system` with the real output of `llamafit system` on the reference machine (trim the disk rows to two).
+2. Check that every option the code accepts appears in the tables: `--json`, `--verbose`/`-v`, `--no-color`, `--version` (global) and `--no-measure` (`system`). Remove nothing that is documented for later phases; the test only requires that what exists is documented.
+3. Confirm the exit codes match `cli/app.py` and `doctor_cmd.py` (0, 1, 2).
 
-## Global options
+- [ ] **Step 4: Bring `docs/platform-support.md` in line with the code**
 
-| Option | Effect |
-|---|---|
-| `--json` | Print the same data as machine-readable JSON (the pydantic model of the command's result). |
-| `--verbose`, `-v` | Log details to `llamafit.log` at debug level and show tracebacks for unexpected errors. |
-| `--no-color` | Disable colours; useful when piping into files. |
-| `--version` | Print the version and exit. |
+For each probe name in `PROBE_HINTS` (`services/doctor.py`) and each command constant in `hardware/cpu.py`, `hardware/memory.py`, `hardware/gpu.py` and `llamacpp/detect.py`, check the probe table: the probe name is exact, the command column shows the exact argument list, and the "Without it" column matches what the code does when the probe fails. Fix any difference in the documentation, not in the code, unless the code is wrong.
 
-## Exit codes
+- [ ] **Step 5: Write `scripts/record_fixtures.py`**
 
-| Code | Meaning |
-|---|---|
-| 0 | Success. |
-| 1 | A user or configuration error; the message says what to change. |
-| 2 | An environment problem: llama.cpp missing, a required tool missing, or `doctor` found an error. |
+`docs/development.md` promises this script. It runs every probe command on the current machine and prints a fixture module for `tests/fixtures/`.
 
-## `llamafit system`
+```python
+"""Record this machine's probe outputs as a test fixture module.
 
-Scan the machine and show CPU, memory, GPUs, disks and the llama.cpp installation.
+Usage:
+    python scripts/record_fixtures.py my-machine > tests/fixtures/my_machine.py
 
-| Option | Effect |
-|---|---|
-| `--no-measure` | Skip the RAM bandwidth measurement (about 50 ms of copying); the estimate from DDR facts or the assumed default is used instead. |
+The generated module exposes ``runner()``, ``cpuinfo()`` and ``vm()`` in the same shape as
+``tests/fixtures/reference_machine.py`` so a scan test can reproduce the machine without it.
+"""
 
-Example:
+from __future__ import annotations
 
-```
-$ llamafit system
-Host
-  OS         windows Windows-11-10.0.26200-SP0 (x86_64)
-  CPU        Intel(R) Core(TM) i9-14900KF; 24 cores / 32 threads, 8 performance cores; avx2 avx512 avx512_vnni
-  Memory     128.0 GiB total, 100.2 GiB available; DDR5 4200 MT/s 2-channel; bandwidth 58.4 GB/s (measured)
-  GPU 0      NVIDIA GeForce RTX 4060 (cuda); 8.0 GiB VRAM, 7.5 GiB free; 272 GB/s, 15 TFLOPS fp16, driver 610.88
-  Disk D:\   1.2 TiB free of 1.8 TiB
+import json
+import pprint
+import sys
+from collections.abc import Mapping, Sequence
 
-llama.cpp
-  Installed     yes, b10867 (f3f1a8f27) at D:\llama.cpp\bin
-  Backends      cuda, rpc, cpu
-  Local models  3
-```
+import psutil
 
-With `--json` the output is a `SystemReport`: `{"host": {...}, "llamacpp": {...}, "version": "..."}`.
-Every bandwidth figure carries its `bandwidth_source`: `measured`, `estimated`, `assumed` or `unknown`.
+from llamafit.hardware import current_os
+from llamafit.hardware import gpu as gpu_probes
+from llamafit.hardware import memory as memory_probes
+from llamafit.hardware.runner import SubprocessRunner
 
-## `llamafit doctor`
+# Private constants are imported on purpose: the recorder must run exactly what the probes run.
+_COMMON: dict[str, Sequence[str]] = {
+    "nvidia-smi": gpu_probes._NVIDIA_CMD,  # noqa: SLF001
+    "rocm-smi": gpu_probes._ROCM_CMD,  # noqa: SLF001
+}
+_BY_OS: dict[str, dict[str, Sequence[str]]] = {
+    "windows": {
+        "wmi-video": gpu_probes._WMI_CMD,  # noqa: SLF001
+        "memory-modules": memory_probes._WINDOWS_MODULES_CMD,  # noqa: SLF001
+    },
+    "macos": {
+        "system-profiler": gpu_probes._APPLE_CMD,  # noqa: SLF001
+        "memory-modules": memory_probes._MACOS_MEMORY_CMD,  # noqa: SLF001
+        "sysctl-perflevel": ["sysctl", "-n", "hw.perflevel0.physicalcpu"],
+    },
+    "linux": {
+        "lspci": gpu_probes._LSPCI_CMD,  # noqa: SLF001
+        "memory-modules": memory_probes._LINUX_MEMORY_CMD,  # noqa: SLF001
+    },
+}
 
-Show every probe that ran, whether it succeeded, and a list of findings ordered worst first:
-errors (llama.cpp missing), warnings (a GPU without a matching backend, an assumed bandwidth,
-a failed probe, low disk space) and confirmations (llama.cpp installed, servers running). Each
-warning carries a hint. Exit code 2 when there is an error, so `doctor` can gate scripts.
 
-With `--json` the output is a `Diagnosis`: the report plus `findings` with `level`, `title`,
-`detail` and `hint`.
+def collect(runner: SubprocessRunner, os_name: str) -> dict[str, str]:
+    """Run every probe command for this OS and keep the stdout of the ones that worked."""
+    commands = {**_COMMON, **_BY_OS[os_name]}
+    responses: dict[str, str] = {}
+    for name, argv in commands.items():
+        result = runner.run(argv, timeout=20.0)
+        if result.ok:
+            responses[" ".join(argv)] = result.stdout
+        else:
+            print(f"# {name}: skipped ({result.error or f'exit code {result.returncode}'})", file=sys.stderr)
+    return responses
 
-## Environment variables
 
-| Variable | Effect |
-|---|---|
-| `LLAMAFIT_HOME` | Put config, data, cache, logs and downloads under one directory. |
-| `LLAMA_CPP_PATH` | Directory (or install root) that holds `llama-server`; checked before `PATH`. |
-| `LLAMA_SERVER_PORT` | First port to probe for a running server (then 8080, 8081, 8098). |
-| `LLAMA_CACHE` | llama.cpp's model cache directory; its GGUF files are listed as local models. |
-```
+def build_module(name: str, responses: Mapping[str, str], cpuinfo: Mapping[str, object],
+                 vm: tuple[int, int], os_name: str) -> str:
+    """Render the fixture module source for the recorded data."""
+    lines = [
+        f'"""Recorded probe outputs from {name} ({os_name}). Generated by scripts/record_fixtures.py."""',
+        "",
+        "from llamafit.hardware.runner import FakeRunner",
+        "",
+        f"OS_NAME = {os_name!r}",
+        "",
+        "RESPONSES = " + pprint.pformat(dict(responses), width=100, sort_dicts=True),
+        "",
+        "CPUINFO = " + pprint.pformat(dict(cpuinfo), width=100, sort_dicts=True),
+        "",
+        f"VM = {vm!r}",
+        "",
+        "",
+        "def runner() -> FakeRunner:",
+        "    return FakeRunner(RESPONSES)",
+        "",
+        "",
+        "def cpuinfo() -> dict[str, object]:",
+        "    return dict(CPUINFO)",
+        "",
+        "",
+        "def vm() -> tuple[int, int]:",
+        "    return VM",
+        "",
+    ]
+    return chr(10).join(lines)
 
-- [ ] **Step 4: Write `docs/platform-support.md`**
 
-```markdown
-# Platform support
+def main(argv: Sequence[str]) -> int:
+    """Entry point."""
+    if len(argv) != 2:
+        print(__doc__, file=sys.stderr)
+        return 1
+    import cpuinfo as cpuinfo_lib
 
-LlamaFit runs wherever Python 3.10+ runs. Detection uses the tools each platform provides;
-when one is missing, the scan continues and `llamafit doctor` says what was lost and how to
-get it back. This page lists every probe, what it needs, and what happens without it.
+    os_name = current_os()
+    info = cpuinfo_lib.get_cpu_info()
+    cpu = {"brand_raw": info.get("brand_raw", ""), "flags": list(info.get("flags", []))}
+    memory = psutil.virtual_memory()
+    responses = collect(SubprocessRunner(), os_name)
+    sys.stdout.write(build_module(argv[1], responses, cpu, (int(memory.total), int(memory.available)), os_name))
+    json.dumps(responses)  # fail early if anything recorded is not plain text
+    return 0
 
-## Probes
 
-| Probe | Platforms | Command | Provides | Without it |
-|---|---|---|---|---|
-| `cpuinfo` | all | `py-cpuinfo` (library) | CPU model, instruction sets | model "unknown", no ISA; core counts still come from `psutil` |
-| `sysctl-perflevel` | macOS | `sysctl -n hw.perflevel0.physicalcpu` | performance-core count | all physical cores are treated as performance cores |
-| `memory-modules` | Windows | PowerShell `Get-CimInstance Win32_PhysicalMemory` | DDR type, speed, channel count, bandwidth estimate | totals only; bandwidth is measured or assumed |
-| `memory-modules` | macOS | `system_profiler SPMemoryDataType -json` | memory type | same |
-| `memory-modules` | Linux | `dmidecode -t memory` (needs root) | DDR type, speed, channels | same; run once with `sudo` if you want the facts recorded |
-| `nvidia-smi` | Windows, Linux | `nvidia-smi --query-gpu=...` | NVIDIA name, VRAM total and used, driver | the GPU is listed by name only (from WMI or lspci), VRAM unknown |
-| `rocm-smi` | Linux | `rocm-smi --showmeminfo vram --showproductname --json` | AMD name, VRAM | name only |
-| `system-profiler` | macOS | `system_profiler SPDisplaysDataType -json` | Apple GPU name and cores | no GPU listed |
-| `wmi-video` | Windows | PowerShell `Get-CimInstance Win32_VideoController` | names of all display adapters | vendor tools only |
-| `lspci` | Linux | `lspci -nn` | names of all display controllers | vendor tools only |
-| `llama-server --version` | all | `llama-server --version` | build number and commit | `bin/VERSION.txt` is read when present |
-| `server:<port>` | all | HTTP `GET /health`, `/v1/models`, `/props` | running servers and their models | none listed |
-
-The RAM bandwidth measurement is not a probe: it runs in-process and reports `measured` when
-NumPy is installed (`pip install llamafit[fast]`), `estimated` from DDR facts otherwise, and
-`assumed` (40 GB/s) when nothing better is known.
-
-## Operating systems
-
-| OS | Notes |
-|---|---|
-| Windows 10/11 | PowerShell 5 or 7 must be on `PATH` (it is by default). NVIDIA figures need the driver's `nvidia-smi`. AMD VRAM is not readable without ROCm, so AMD cards are listed by name; llama.cpp's Vulkan backend still uses them. |
-| macOS 12+ | Apple Silicon reports unified memory: there is no VRAM figure, the whole RAM pool is the budget. Intel Macs with discrete GPUs are listed by name. |
-| Linux | `dmidecode` needs root; everything else runs as a user. `pciutils` provides `lspci`. |
-
-## Architectures
-
-`x86_64` and `arm64` are first-class. Other architectures scan but llama.cpp release
-binaries may not exist for them.
-```
-
-- [ ] **Step 5: Write `docs/development.md`**
-
-```markdown
-# Development
-
-## Set up
-
-```
-git clone https://github.com/pvaz/llamafit.git
-cd llamafit
-python -m venv .venv && . .venv/bin/activate     # Windows: .venv\Scripts\Activate.ps1
-pip install -e ".[dev,fast]"
-pytest
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv))
 ```
 
-## Checks that CI runs
+Add to `tests/unit/test_record_fixtures.py`:
 
-```
-ruff check . && ruff format --check .
-mypy
-pytest --cov -m "not hardware"
-```
+```python
+import importlib.util
+from pathlib import Path
 
-Tests marked `hardware` need a real machine (they measure bandwidth or run vendor tools);
-run them locally with `pytest -m hardware`.
+ROOT = Path(__file__).resolve().parents[2]
 
-## How probes are tested
 
-Every external command runs through `llamafit.hardware.runner.Runner`. Tests pass a
-`FakeRunner` whose responses are recorded outputs; see `tests/fixtures/reference_machine.py`
-for the reference machine (RTX 4060 8 GB, 128 GB DDR5, Windows 11). To add a machine, capture
-the exact commands listed in `docs/platform-support.md` and add a fixture module.
+def load_script():  # type: ignore[no-untyped-def]
+    spec = importlib.util.spec_from_file_location("record_fixtures", ROOT / "scripts" / "record_fixtures.py")
+    module = importlib.util.module_from_spec(spec)  # type: ignore[arg-type]
+    assert spec and spec.loader
+    spec.loader.exec_module(module)
+    return module
 
-## Layout
 
-`src/llamafit/` follows the design in `docs/superpowers/specs/2026-09-09-llamafit-design.md`,
-section 3.2: core modules are pure and typed, services compose them, interfaces render.
-Anything that touches the OS goes behind a small protocol so it can be faked.
-
-## Dependencies
-
-Runtime dependencies are deliberately few and listed in `pyproject.toml`. Adding one needs a
-sentence here saying why it earns its place.
+def test_build_module_is_importable_python() -> None:
+    script = load_script()
+    source = script.build_module("box", {"nvidia-smi -L": "GPU 0"}, {"brand_raw": "x", "flags": ["avx2"]},
+                                 (16, 8), "linux")
+    namespace: dict[str, object] = {}
+    exec(compile(source, "fixture", "exec"), namespace)  # noqa: S102 - generated by our own code
+    assert namespace["runner"]().run(["nvidia-smi", "-L"]).stdout == "GPU 0"  # type: ignore[operator]
+    assert namespace["vm"]() == (16, 8)  # type: ignore[operator]
 ```
 
-- [ ] **Step 6: Write the community files**
+Run: `pytest tests/unit/test_record_fixtures.py -v && python scripts/record_fixtures.py reference-check > /dev/null`
+Expected: PASS; the script prints skipped probes to stderr for tools this machine lacks and a module to stdout.
 
-`CONTRIBUTING.md`:
+- [ ] **Step 6: Check the community files**
 
-```markdown
-# Contributing to LlamaFit
-
-Thank you for helping people run open models on their own machines.
-
-## Ways to help
-
-- **Catalog entries** (from phase 1B on): add or correct a model family in `src/llamafit/data/catalog/`
-  and run `llamafit catalog validate`. Cite sources for every number.
-- **Hardware fixtures**: record the probe outputs of your machine (see `docs/development.md`)
-  so the scan is tested on hardware the maintainers do not own.
-- **GPU table**: add rows to `src/llamafit/data/gpus.json` with vendor-published figures.
-- **Bugs and features**: open an issue with the template; include `llamafit --json doctor` output.
-
-## Pull requests
-
-1. Open an issue first for anything larger than a fix.
-2. Keep the checks green: `ruff check . && ruff format --check . && mypy && pytest`.
-3. Add tests for behaviour you change; recorded outputs instead of real hardware.
-4. Update `docs/` and `CHANGELOG.md` in the same pull request.
-5. One topic per pull request.
-
-## Style
-
-Ruff and mypy strict enforce most of it. Beyond that: docstrings on public functions
-(Google style), no bare `except`, no `print` outside the interfaces, and no number without a
-source label.
-```
-
-`CODE_OF_CONDUCT.md`: the Contributor Covenant 2.1 text with the contact set to the repository's issue tracker.
-
-`SECURITY.md`:
-
-```markdown
-# Security policy
-
-LlamaFit runs local commands (vendor tools, llama.cpp) and, in later phases, downloads files.
-If you find a way to make it run something it should not, or to serve the web dashboard beyond
-localhost without an explicit flag, please report it privately through GitHub's security
-advisory form on this repository rather than a public issue. Fixes are released as patch
-versions; supported: the latest minor release.
-```
-
-`.github/ISSUE_TEMPLATE/bug_report.md`:
-
-```markdown
----
-name: Bug report
-about: Something LlamaFit did wrong
----
-
-**What happened**
-
-**What you expected**
-
-**Output of `llamafit --json doctor`** (remove anything private)
-
-```json
-```
-
-**LlamaFit version, OS, Python version**
-```
-
-`.github/ISSUE_TEMPLATE/feature_request.md`:
-
-```markdown
----
-name: Feature request
-about: Something LlamaFit should do
----
-
-**The problem you are trying to solve**
-
-**How you imagine it working**
-
-**Anything else** (links, similar tools, measurements)
-```
-
-`.github/PULL_REQUEST_TEMPLATE.md`:
-
-```markdown
-## What this changes
-
-## Why
-
-## Checklist
-- [ ] `ruff check . && ruff format --check . && mypy && pytest` pass
-- [ ] tests added or updated
-- [ ] docs and CHANGELOG updated
-```
+`CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `SUPPORT.md` and the `.github` templates already exist. Read `CONTRIBUTING.md` and `docs/development.md` once against the real workflow you just used (commands, extras, markers) and correct anything that differs.
 
 - [ ] **Step 7: Bring `README.md` in line with what now exists**
 
