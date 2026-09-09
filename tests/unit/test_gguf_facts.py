@@ -79,6 +79,26 @@ def test_hybrid_moe_counts_only_the_full_attention_layers() -> None:
     assert facts.bytes_lazy_tables not in (facts.bytes_token_embd,)
 
 
+def test_the_sliding_window_is_recorded_when_the_architecture_declares_one() -> None:
+    # Gemma 3 27B IT really does declare gemma3.attention.sliding_window = 1024.
+    metadata = [
+        b.string("general.architecture", "gemma3"),
+        b.uint32("gemma3.block_count", 62),
+        b.uint32("gemma3.embedding_length", 5376),
+        b.uint32("gemma3.attention.head_count", 32),
+        b.uint32("gemma3.attention.head_count_kv", 16),
+        b.uint32("gemma3.attention.key_length", 128),
+        b.uint32("gemma3.attention.sliding_window", 1024),
+    ]
+    facts = derive_facts(read_header(FakeSource(b.build(metadata, []))))
+    assert facts.sliding_window == 1024
+
+
+def test_no_sliding_window_is_recorded_when_the_architecture_declares_none() -> None:
+    facts = derive_facts(read_header(FakeSource(dense_header())))
+    assert facts.sliding_window is None
+
+
 def test_head_dimension_falls_back_to_embedding_over_heads() -> None:
     metadata = [
         b.string("general.architecture", "llama"),
