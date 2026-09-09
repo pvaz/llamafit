@@ -326,19 +326,23 @@ def _facts_summary(facts: GgufFacts | None) -> str:
 
 
 def render_quants(quants: Sequence[QuantDetail]) -> Table:
-    """A table of every quant with its size, bits per weight and architecture facts."""
+    """A table of every quant with its size, bits per weight and architecture facts.
+
+    There is deliberately no "downloaded" column: see :class:`QuantDetail` for why
+    that field does not exist yet either. Every other cell here is honest about not
+    knowing something (``unknown``, ``not read yet``); a column that can only ever
+    say ``no`` would not be.
+    """
     table = Table(title="Quants")
     table.add_column("Name")
     table.add_column("Size", justify="right")
     table.add_column("BPW", justify="right")
-    table.add_column("Downloaded")
     table.add_column("Facts")
     for quant in quants:
         table.add_row(
             Text(quant.name),
             format_bytes(quant.bytes_),
             f"{quant.bpw:.2f}" if quant.bpw is not None else "unknown",
-            "yes" if quant.downloaded else "no",
             Text(_facts_summary(quant.facts)),
         )
     return table
