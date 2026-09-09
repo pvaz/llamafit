@@ -37,3 +37,19 @@ def test_a_split_model_reports_its_own_shard_only() -> None:
     header = read_header(LocalSource(path))
     assert header.tensor_count == len(header.tensors)
     assert header.metadata.get("general.architecture")
+
+
+@pytest.mark.hardware
+def test_facts_from_the_reference_machines_coder_model() -> None:
+    from llamafit.gguf.facts import derive_facts
+
+    path = CANDIDATES[1]
+    if not path.exists():
+        pytest.skip(f"{path} is not on this machine")
+    facts = derive_facts(read_header(LocalSource(path)))
+    assert facts.n_expert is not None and facts.n_expert > 1
+    assert facts.attention_layers is not None
+    assert facts.attention_layers < (facts.n_layer or 0), (
+        "a hybrid model has fewer attention layers"
+    )
+    assert facts.bytes_expert_weights > facts.bytes_attention_weights
