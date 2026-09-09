@@ -388,3 +388,42 @@ def test_a_language_header_that_names_no_language_is_refused(tmp_path: Path) -> 
     directory = _catalog(tmp_path, '"Language: Portuguese_Portugal\\n"\n')
     with pytest.raises(ConfigError, match="Portuguese_Portugal"):
         load_language("pt_PT", directory=directory)
+
+
+def _write(folder: Path, name: str, language: str = "pt_BR") -> None:
+    (folder / name).write_text(
+        'msgid ""\nmsgstr ""\n"Language: ' + language + '\\n"\n'
+        '"Plural-Forms: nplurals=2; plural=(n > 1);\\n"\n\n'
+        'msgid "No GPU detected"\nmsgstr "Nenhuma GPU detectada"\n',
+        encoding="utf-8",
+    )
+
+
+def test_a_language_that_is_offered_can_be_opened(tmp_path: Path) -> None:
+    # available_languages normalises a file name before offering it; catalog_path used to
+    # build the canonical name and nothing else, so pt-BR.po was offered as pt_BR and then
+    # refused for a missing pt_BR.po — which reads as though nothing were there at all.
+    _write(tmp_path, "pt-BR.po")
+    assert available_languages(directory=tmp_path) == ("en", "pt_BR")
+    for language in available_languages(directory=tmp_path):
+        if language != SOURCE_LANGUAGE:
+            assert catalog_path(language, directory=tmp_path).is_file()
+    assert load_language("pt_BR", directory=tmp_path).messages
+
+
+def test_the_canonical_name_wins_when_both_spellings_are_there(tmp_path: Path) -> None:
+    _write(tmp_path, "pt-BR.po")
+    _write(tmp_path, "pt_BR.po")
+    assert catalog_path("pt_BR", directory=tmp_path).name == "pt_BR.po"
+
+
+def test_a_language_with_no_file_at_all_names_the_file_it_wanted(tmp_path: Path) -> None:
+    # The canonical name comes back, so whoever is told the catalog is missing is told
+    # which name was expected rather than a name that happens to sort first.
+    _write(tmp_path, "pt-BR.po")
+    assert catalog_path("fr_FR", directory=tmp_path) == tmp_path / "fr_FR.po"
+    assert catalog_path("fr_FR", directory=tmp_path / "nowhere").name == "fr_FR.po"
+
+
+def test_text_that_names_no_language_still_gets_a_path_to_report(tmp_path: Path) -> None:
+    assert catalog_path("not a locale", directory=tmp_path).name == "not a locale.po"

@@ -26,9 +26,30 @@ def catalog_dir() -> Path:
 
 
 def catalog_path(language: str, *, directory: Path | None = None) -> Path:
-    """The file a language's catalog would live in, whether or not it exists."""
+    """The file a language's catalog is read from, whether or not it exists.
+
+    The name is the tag exactly as :func:`available_languages` reports it, so ``pt_PT``
+    lives in ``pt_PT.po``, and that name wins whenever such a file is there.
+
+    A file whose name spells the same tag another way — ``pt-PT.po``, ``PT_pt.po`` — is
+    found too, because :func:`available_languages` normalises a file's name before
+    offering it and a language that is offered has to be openable. Listing one spelling
+    and opening another is how a catalog got offered to a user and then refused with a
+    message about a missing file, which reads as though the file were not there at all.
+
+    Returns:
+        The file to read. When nothing matches, the canonical name, so a reader who has to
+        be told the catalog is missing is told which name was expected.
+    """
     folder = catalog_dir() if directory is None else directory
-    return folder / f"{language}{CATALOG_SUFFIX}"
+    canonical = folder / f"{language}{CATALOG_SUFFIX}"
+    wanted = normalise(language)
+    if canonical.is_file() or wanted is None or not folder.is_dir():
+        return canonical
+    spelt_otherwise = sorted(
+        file for file in folder.glob(f"*{CATALOG_SUFFIX}") if normalise(file.stem) == wanted
+    )
+    return spelt_otherwise[0] if spelt_otherwise else canonical
 
 
 def available_languages(*, directory: Path | None = None) -> tuple[str, ...]:
@@ -37,6 +58,10 @@ def available_languages(*, directory: Path | None = None) -> tuple[str, ...]:
     English is the source language and ships no catalog, so it is listed without one.
     A file whose name is not a language tag is ignored rather than reported: the
     completeness check in the test suite is what holds the catalogs to their shape.
+
+    A name is normalised before it is offered, so ``pt-BR.po`` is offered as ``pt_BR``.
+    :func:`catalog_path` looks for the same spellings, so everything listed here can be
+    opened.
 
     Returns:
         The language tags, for example ``("en", "pt_PT")``.

@@ -82,6 +82,10 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
    cp src/llamafit/data/locale/messages.pot src/llamafit/data/locale/fr_FR.po
    ```
 
+   Spell it another way — `fr-FR.po`, `FR_fr.po` — and LlamaFit still finds it, because it
+   offers a language and then opens it by the same rule. Use the canonical name anyway: a
+   catalog that ships has to be named for its tag exactly, and the test suite says so.
+
 3. Fill in the header. `Language`, `Language-Team` and `Plural-Forms` are all required,
    and `Content-Type` must say UTF-8:
 
