@@ -60,13 +60,24 @@ def _default_cpuinfo() -> Mapping[str, Any]:
     return info
 
 
+def _default_cores() -> tuple[int, int]:
+    physical = psutil.cpu_count(logical=False) or 1
+    logical = psutil.cpu_count(logical=True) or physical
+    return physical, logical
+
+
 def detect_cpu(
     runner: Runner,
     os_name: OsName,
     *,
     cpuinfo_provider: Callable[[], Mapping[str, Any]] | None = None,
+    cores_provider: Callable[[], tuple[int, int]] | None = None,
 ) -> tuple[Cpu, list[Probe]]:
-    """Detect the CPU. Never raises; failures are reported in the probes."""
+    """Detect the CPU. Never raises; failures are reported in the probes.
+
+    ``cpuinfo_provider`` and ``cores_provider`` let tests replace py-cpuinfo and psutil's
+    core counts; both default to the real thing.
+    """
     provider = cpuinfo_provider or _default_cpuinfo
     probes: list[Probe] = []
     start = time.perf_counter()
@@ -80,8 +91,14 @@ def detect_cpu(
     except Exception as exc:  # a broken cpuinfo must not stop the scan
         probes.append(Probe(name="cpuinfo", ok=False, duration_ms=_ms(start), error=str(exc)))
 
-    physical = psutil.cpu_count(logical=False) or 1
-    logical = psutil.cpu_count(logical=True) or physical
+    start = time.perf_counter()
+    try:
+        physical, logical = (cores_provider or _default_cores)()
+        probes.append(Probe(name="cpu-cores", ok=True, duration_ms=_ms(start)))
+    except Exception as exc:  # a failing core count must not stop the scan
+        physical, logical = 1, 1
+        probes.append(Probe(name="cpu-cores", ok=False, duration_ms=_ms(start), error=str(exc)))
+
     perf = performance_cores_for(model, physical)
     if os_name == "macos":
         value, rec = probe(
