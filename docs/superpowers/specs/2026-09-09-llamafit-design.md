@@ -10,20 +10,18 @@ LlamaFit answers one question for a person with a computer and llama.cpp: *which
 
 LlamaFit never uses a language model to do any of this. Every number is computed deterministically and carries a confidence label.
 
-### 1.1 Relationship to llmfit
+### 1.1 Positioning
 
-[llmfit](https://github.com/AlexsJones/llmfit) (MIT, Rust) established the shape of this category: a hardware scan, a model catalog, four scores, fit verdicts, a bandwidth speed model, a TUI and a JSON mode. LlamaFit adopts those ideas deliberately, credits llmfit in `NOTICE`, the README and the catalog seed files, and keeps a compatible command vocabulary so llmfit users feel at home.
+Tools that recommend local models usually stop at "this one fits": a coarse memory minimum per model, a use-case label, and a speed guess. LlamaFit is built around what happens after that sentence, because that is where people lose their evenings:
 
-LlamaFit differs where llmfit stops:
-
-| Topic | llmfit | LlamaFit |
+| Topic | The usual approach | LlamaFit |
 |---|---|---|
-| Memory model | one coarse RAM and VRAM minimum per model at one quant | per-component budget from GGUF header facts and real file sizes: weights by tensor class, KV per 1K tokens, compute buffer by micro-batch, projector |
+| Memory model | one RAM and VRAM minimum per model at one quant | per-component budget from GGUF header facts and real file sizes: weights by tensor class, KV per 1K tokens, compute buffer by micro-batch, projector |
 | Result of `plan` | required VRAM, RAM and cores | a runnable `llama-server` command line and preset files |
-| llama.cpp | one provider among five, detect and download only | the only runtime; detect, install, launch, tune, verify |
-| Verification | community benchmark sharing | local llama-bench and server runs, estimate-versus-measured, per-host calibration, detection of driver paging |
-| Needs | use-case label | use case plus capability requirements and a minimum context |
-| Language | Rust | Python, importable as a library |
+| Runtime | many runtimes, each detected and no more | llama.cpp only, and all the way: detect, install, launch, tune, verify |
+| Verification | none, or crowd-sourced numbers from other machines | local llama-bench and server runs, estimate-versus-measured, per-host calibration, detection of driver paging |
+| Needs | a use-case label | use case plus capability requirements and a minimum context |
+| Form | a binary | a Python package, importable as a library, with CLI, TUI and web dashboard |
 
 ### 1.2 Goals
 
@@ -161,7 +159,7 @@ Bandwidth dominates generation speed, so LlamaFit measures it rather than guessi
 
 ### 4.4 Hardware profiles and simulation
 
-A hardware profile is a JSON document that describes a machine well enough to score against it without being on it. The schema is a superset of llmfit's so its bundled profiles can be imported:
+A hardware profile is a JSON document that describes a machine well enough to score against it without being on it. The schema is small enough to write by hand:
 
 ```json
 {
@@ -230,7 +228,7 @@ architecture:
   notes: "Gated DeltaNet on 3 of 4 layers; F16 KV only"
 context: {native: 262144, extended: 1048576, extended_method: yarn}
 capabilities: [coding, thinking, vision, tools, multilingual, long-context]
-use_cases: [coding, reasoning, multimodal]  # llmfit vocabulary
+use_cases: [coding, reasoning, multimodal]  # general | coding | reasoning | chat | multimodal | embedding
 quality:
   baseline: 84                              # 0-100, section 11.1
   benchmarks:
@@ -265,9 +263,9 @@ Field rules:
 - `quality.baseline` is the model's quality on its primary use case, 0 to 100, set by the curator from published benchmarks with the sources listed. The contribution guide defines the rubric (section 11.1).
 - `quants[].gguf_facts` is filled by `refresh` (section 7) and is what the budget uses; when absent, the budget falls back to family-level formulas and lowers confidence.
 
-### 6.3 Seed and attribution
+### 6.3 Seed
 
-The initial catalog is seeded from llmfit's hand-curated `MODELS.md` (about 108 entries, MIT) plus the models measured on the reference machine. Each seeded file carries a header comment naming the source. The wider auto-scraped llmfit catalog is not imported; `refresh` reaches Hugging Face directly.
+The initial catalog is written from primary sources only: model cards and technical reports, vendor announcements, the Hugging Face repositories that publish the GGUF files, and the models measured on the reference machine. No third-party catalog is imported. Every file names its sources in the entries themselves, and `refresh` reaches Hugging Face directly for the volatile fields.
 
 ### 6.4 Custom models
 
@@ -336,16 +334,16 @@ Values are in `constants.py` with their provenance. Any measured budget from pha
 
 ### 8.3 Fit utilisation and verdicts
 
-`utilisation_pool = required_pool / available_pool` for VRAM and RAM. The verdict follows llmfit's thresholds on the worst pool:
+`utilisation_pool = required_pool / available_pool` for VRAM and RAM. The verdict is decided on the worst pool:
 
-| Utilisation | Verdict |
-|---|---|
-| ≤ 0.60 | Perfect |
-| ≤ 0.85 | Good |
-| ≤ 0.98 | Marginal |
-| > 0.98 | Too Tight |
+| Utilisation | Verdict | Meaning |
+|---|---|---|
+| ≤ 0.65 | Comfortable | room for a bigger context or a second model |
+| ≤ 0.85 | Fits | the intended configuration runs as planned |
+| ≤ 0.95 | Tight | runs, but a browser or a second process can push it over |
+| > 0.95 | Does not fit | the driver would page or the load would fail |
 
-Unlike llmfit, a MoE-offload placement is not capped at Good; a placement with all attention and KV on the GPU and experts in RAM can be Perfect. CPU-only placements are capped at Good because measured speeds there are rarely comfortable.
+A MoE-offload placement is not penalised for being MoE-offload: with all attention and KV on the GPU and experts in RAM it can be Comfortable, because measured speeds there are close to the GPU-only case for the same active parameters. CPU-only placements are capped at Fits because measured speeds there are rarely comfortable.
 
 ### 8.4 Driver paging
 
@@ -401,7 +399,7 @@ t_token    = bytes_vram / (vram_bw × eff_vram) + bytes_ram / (ram_bw × eff_ram
 gen_tps    = 1 / t_token
 ```
 
-`active_expert_bytes = bytes_expert_weights × n_expert_used / n_expert`. `working_context` defaults to 8K tokens for the board and to the user's requested context for `plan`. Initial constants (with provenance): `eff_vram 0.55` (llmfit), `eff_ram 0.70`, `layer_overhead 0.20 ms`, `sampling_overhead 1 ms` (fitted to the reference machine: 22 to 24 tokens per second for a 3B-active MoE at 4.5 bits per weight with experts in DDR5-4200, 13 to 14 for a 6B-active one). When a pool's bandwidth is unknown, llmfit's backend constants apply as a whole-model fallback: CUDA 220, Metal 160, ROCm 180, SYCL 100, CPU ARM 90, CPU x86 70 GB/s-equivalent.
+`active_expert_bytes = bytes_expert_weights × n_expert_used / n_expert`. `working_context` defaults to 8K tokens for the board and to the user's requested context for `plan`. Initial constants (with provenance): `eff_vram 0.60` (the fraction of peak bandwidth that decode kernels reach on consumer GPUs in published llama-bench results), `eff_ram 0.70`, `layer_overhead 0.20 ms`, `sampling_overhead 1 ms` (fitted to the reference machine: 22 to 24 tokens per second for a 3B-active MoE at 4.5 bits per weight with experts in DDR5-4200, 13 to 14 for a 6B-active one). When a pool's bandwidth is unknown, a per-backend fallback applies to the whole model, in GB/s-equivalent: CUDA 250, Metal 150, HIP 200, Vulkan 120, SYCL 100, CPU arm64 80, CPU x86_64 60. These fallbacks are deliberately conservative and always labelled `estimated`.
 
 ### 10.2 Prompt processing
 
@@ -416,7 +414,7 @@ pp_tps   = ub / t_ubatch
 
 ### 10.3 Confidence
 
-Every estimate carries one of llmfit's labels, in this precedence: `measured_local` (a stored benchmark on this host for this model and quant), `measured_community` (a bundled measurement on a matching profile), `calibrated` (formula with per-host calibration factors), `estimated` (formula with defaults), `unsupported` (no backend or no fit). The label travels with the number into every interface.
+Every estimate carries one label, in this precedence: `measured` (a stored benchmark on this host for this model, quant and flags), `calibrated` (formula with calibration factors derived from this host's measurements), `estimated` (formula with defaults), `unsupported` (no backend or no fit). The label travels with the number into every interface, and a measured number always shows the date it was taken.
 
 ## 11. Quality, context and the composite score
 
@@ -445,13 +443,13 @@ From the worst-pool utilisation `u`: 100 for `0.50 ≤ u ≤ 0.80`; linear down 
 | Use case | Quality | Speed | Fit | Context |
 |---|---|---|---|---|
 | general | 0.35 | 0.25 | 0.25 | 0.15 |
-| coding | 0.40 | 0.25 | 0.20 | 0.15 |
-| reasoning | 0.55 | 0.15 | 0.15 | 0.15 |
-| chat | 0.30 | 0.35 | 0.25 | 0.10 |
+| coding | 0.40 | 0.20 | 0.20 | 0.20 |
+| reasoning | 0.50 | 0.15 | 0.20 | 0.15 |
+| chat | 0.25 | 0.40 | 0.25 | 0.10 |
 | multimodal | 0.40 | 0.20 | 0.25 | 0.15 |
-| embedding | 0.30 | 0.40 | 0.25 | 0.05 |
+| embedding | 0.30 | 0.45 | 0.20 | 0.05 |
 
-The chat and reasoning rows follow llmfit; the others are LlamaFit's. Weights live in `scoring/weights.py` and can be overridden in the config file.
+The rationale: coding needs quality and room for real repositories in the context; reasoning is dominated by quality because thinking tokens are cheap to wait for but expensive to get wrong; chat is judged mostly by how fast it feels; embeddings are throughput jobs. Weights live in `scoring/weights.py` and can be overridden in the config file.
 
 ## 12. Recommendation and explanations
 
@@ -493,7 +491,7 @@ Every row can expand into an explanation composed from templates, never free tex
 | `llamafit plan <model>` | placement, flags and command line for one model | `--quant`, `--context`, `--ub`, `--target-tps`, `--no-vision`, `--json` |
 | `llamafit catalog validate|refresh|show` | catalog maintenance | `--check`, `--dry-run`, `--model` |
 | `llamafit hardware list|show|validate|path` | hardware profiles | |
-| `llamafit serve` | web dashboard and API | `--host 127.0.0.1`, `--port 8787`, `--open` |
+| `llamafit serve` | web dashboard and API | `--host 127.0.0.1`, `--port 8765`, `--open` |
 | `llamafit install llama.cpp|model <id>` | phase 2 | `--backend`, `--dir`, `--quant`, `--yes` |
 | `llamafit preset <model>` | phase 2, write launch scripts and `models.ini` | `--dir`, `--port` |
 | `llamafit bench [model]` | phase 3 | `--all`, `--json` |
@@ -518,7 +516,7 @@ Textual application with a header showing the host summary and a tab bar:
 
 ### 13.3 Web
 
-`llamafit serve` starts FastAPI on `127.0.0.1:8787` and serves a static single-page dashboard (plain HTML, CSS and JavaScript, no build step) with the same five panels. The API:
+`llamafit serve` starts FastAPI on `127.0.0.1:8765` and serves a static single-page dashboard (plain HTML, CSS and JavaScript, no build step) with the same five panels. The API:
 
 | Endpoint | Returns |
 |---|---|
@@ -582,8 +580,8 @@ Responses are the JSON of the same pydantic models the CLI prints, so `--json` a
 ```
 llamafit/
   pyproject.toml            hatchling build, entry point `llamafit`, dependency groups (tui, web, dev)
-  README.md                 what it is, one-minute quick start, the llmfit comparison, screenshots
-  LICENSE (MIT)  NOTICE     attribution to llmfit and data sources
+  README.md                 what it is, one-minute quick start, how it works in five lines, roadmap, screenshots
+  LICENSE (MIT)  NOTICE     llama.cpp and model-weight license notes
   CHANGELOG.md  CONTRIBUTING.md  CODE_OF_CONDUCT.md  SECURITY.md
   MODELS.md                 generated from the catalog by scripts/gen_models_md.py
   .github/workflows/ci.yml  release.yml (PyPI trusted publishing)  ISSUE_TEMPLATE/  PULL_REQUEST_TEMPLATE.md
@@ -591,7 +589,7 @@ llamafit/
                             custom-models.md, benchmarking.md, development.md, calibration/, superpowers/
   src/llamafit/             section 3.2
   tests/
-  scripts/                  gen_models_md.py, import_llmfit_models.py (one-time seed), record_fixtures.py
+  scripts/                  gen_models_md.py, record_fixtures.py
 ```
 
 Dependencies, kept deliberately short: `typer`, `rich`, `textual`, `fastapi`, `uvicorn`, `pydantic`, `pyyaml`, `platformdirs`, `psutil`, `py-cpuinfo`, `httpx`. `numpy` is optional (bandwidth probe). Nothing else without a reason recorded in `docs/development.md`.
@@ -610,12 +608,12 @@ Style: ruff (line length 100, isort rules), mypy strict, docstrings on every pub
 
 | Decision | Choice | Reason |
 |---|---|---|
-| Name | LlamaFit, CLI `llamafit`, PyPI `llamafit` | user's choice; README states the difference from llmfit in its first line |
+| Name | LlamaFit, CLI `llamafit`, PyPI `llamafit` | user's choice; free on PyPI, says what it does |
 | Web stack | FastAPI plus static HTML/JS | pip-only, one API shared with the TUI |
 | Console | Textual TUI plus `--json` CLI | dashboard parity with the web UI |
-| Positioning | advisor, installer, verifier for llama.cpp | the ground llmfit does not cover |
-| License | MIT | matches llmfit and llama.cpp ecosystems, simplest for contributors |
+| Positioning | advisor, installer, verifier for llama.cpp | nothing else takes a machine from scan to a verified running server |
+| License | MIT | the same license as llama.cpp, simplest for contributors |
 | Python floor | 3.10 | pattern matching and modern typing without excluding current distributions |
-| Catalog format | YAML per family with JSON schema | reviewable diffs, human editing |
-| Default port | 8787 | llmfit's, familiarity |
+| Catalog format | YAML per family with JSON schema, primary sources only | reviewable diffs, human editing, no inherited errors |
+| Default port | 8765 | unassigned locally, easy to remember |
 | LLM inside the tool | none | user requirement; everything must be deterministic and explainable |
