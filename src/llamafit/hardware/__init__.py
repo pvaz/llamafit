@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import platform
+import time
 from collections.abc import Callable, Iterable, Mapping
 from datetime import datetime, timezone
 from pathlib import Path
@@ -16,7 +17,7 @@ from llamafit.hardware.gputable import enrich_gpu, lookup_gpu
 from llamafit.hardware.memory import detect_memory
 from llamafit.hardware.runner import Runner, SubprocessRunner
 from llamafit.logging import get_logger
-from llamafit.models.host import Arch, Host, OsName
+from llamafit.models.host import Arch, Host, OsName, Probe
 from llamafit.paths import get_paths
 
 _log = get_logger("hardware")
@@ -72,9 +73,22 @@ def scan(
     unified = any(spec.unified for spec in (lookup_gpu(g.name) for g in gpus) if spec) or (
         os_name == "macos" and current_arch() == "arm64"
     )
-    paths = get_paths()
-    disks = detect_disks([Path.cwd(), paths.downloads_dir, *extra_paths])
-    probes = [*cpu_probes, *memory_probes, *gpu_probes]
+    paths_probes: list[Probe] = []
+    disk_paths = [Path.cwd()]
+    start = time.perf_counter()
+    try:
+        disk_paths.append(get_paths().downloads_dir)
+    except Exception as exc:  # no home directory: the downloads path is simply unknown
+        paths_probes.append(
+            Probe(
+                name="paths",
+                ok=False,
+                duration_ms=int((time.perf_counter() - start) * 1000),
+                error=str(exc),
+            )
+        )
+    disks = detect_disks([*disk_paths, *extra_paths])
+    probes = [*cpu_probes, *memory_probes, *gpu_probes, *paths_probes]
     failed = sum(1 for p in probes if not p.ok)
     _log.debug(
         "scanned %s: cpu %s, memory %d bytes, %d gpus, %d probes failed",

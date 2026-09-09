@@ -1,3 +1,5 @@
+import pytest
+
 from llamafit.hardware import scan
 from tests.fixtures.reference_machine import (
     reference_cores,
@@ -29,6 +31,28 @@ def test_scan_reference_machine() -> None:
     assert host.disks, "the current working directory's disk is always reported"
     names = [p.name for p in host.probes]
     assert "cpuinfo" in names and "nvidia-smi" in names and "memory-modules" in names
+
+
+def test_scan_survives_an_environment_without_a_home_directory(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import llamafit.hardware as hardware_module
+
+    def no_home() -> object:
+        raise RuntimeError("Could not determine home directory.")
+
+    monkeypatch.setattr(hardware_module, "get_paths", no_home)
+    host = scan(
+        reference_runner(),
+        os_name="windows",
+        measure_bandwidth=False,
+        cpuinfo_provider=reference_cpuinfo,
+        vm_provider=reference_vm,
+        cores_provider=reference_cores,
+    )
+    paths_probe = next(p for p in host.probes if p.name == "paths")
+    assert not paths_probe.ok and "home" in (paths_probe.error or "")
+    assert host.disks, "the working directory is still reported without a downloads directory"
 
 
 def test_scan_with_nothing_available_still_returns_a_host() -> None:

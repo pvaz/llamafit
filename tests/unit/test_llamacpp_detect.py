@@ -1,4 +1,8 @@
+import os
+from collections.abc import Iterator
 from pathlib import Path
+
+import pytest
 
 from llamafit.hardware.runner import FakeRunner
 from llamafit.llamacpp.detect import (
@@ -66,6 +70,39 @@ def test_detect_backends_from_libraries(tmp_path: Path) -> None:
     assert detect_backends(bin_dir) == ["cuda", "rpc", "cpu"]
 
 
+def test_detect_backends_survives_a_directory_it_cannot_list(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    bin_dir = make_install(tmp_path)
+    assert detect_backends(tmp_path / "does-not-exist") == []
+
+    def denied(self: Path) -> Iterator[Path]:
+        raise PermissionError("access is denied")
+
+    monkeypatch.setattr(Path, "iterdir", denied)
+    assert detect_backends(bin_dir) == []
+
+
+def test_find_local_models_skips_unreadable_files_and_missing_directories(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    models = tmp_path / "models"
+    models.mkdir()
+    (models / "Good-Q4_K_M.gguf").write_bytes(b"x" * 4)
+    unreadable = models / "Bad-Q4_K_M.gguf"
+    unreadable.write_bytes(b"x" * 4)
+    real_stat = Path.stat
+
+    def flaky_stat(self: Path, **kwargs: object) -> os.stat_result:
+        if self == unreadable:
+            raise PermissionError("access is denied")
+        return real_stat(self, **kwargs)  # type: ignore[arg-type]
+
+    monkeypatch.setattr(Path, "stat", flaky_stat)
+    found = find_local_models([models, tmp_path / "does-not-exist"])
+    assert [Path(m.path).name for m in found] == ["Good-Q4_K_M.gguf"]
+
+
 def test_find_local_models_groups_shards(tmp_path: Path) -> None:
     models = tmp_path / "models"
     (models / "a").mkdir(parents=True)
@@ -100,6 +137,15 @@ def test_detect_install_reads_version_and_backends(tmp_path: Path) -> None:
     assert llamacpp.build == 10867 and llamacpp.commit == "f3f1a8f27"
     assert llamacpp.backends == ["cuda", "rpc", "cpu"]
     assert [p.name for p in probes] == ["llama-server --version"]
+
+
+def test_detect_install_survives_a_version_file_that_is_not_utf8_text(tmp_path: Path) -> None:
+    bin_dir = make_install(tmp_path)
+    (bin_dir / "VERSION.txt").write_bytes(b"\xff\xfe b10867")
+    llamacpp, _probes = detect_install(
+        FakeRunner({}), "windows", env={"LLAMA_CPP_PATH": str(bin_dir)}, home=tmp_path, path_dirs=[]
+    )
+    assert llamacpp.installed and llamacpp.build is None
 
 
 def test_detect_install_absent(tmp_path: Path) -> None:

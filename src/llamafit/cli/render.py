@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 
 from rich.table import Table
+from rich.text import Text
 
 from llamafit.models.host import Host, Probe
 from llamafit.models.llamacpp import LlamaCpp
@@ -15,15 +16,21 @@ _LEVEL_STYLE = {"ok": "green", "warn": "yellow", "error": "red"}
 
 
 def render_host(host: Host) -> Table:
-    """A two-column table with everything the scan found."""
+    """A two-column table with everything the scan found.
+
+    Values are built as ``Text`` rather than markup strings: a device name or a path
+    may contain square brackets, which Rich would otherwise try to parse as a tag.
+    """
     table = Table(title="Host", show_header=False, box=None, pad_edge=False)
     table.add_column("key", style="bold")
     table.add_column("value")
-    table.add_row("OS", f"{host.os} {host.os_version} ({host.arch})")
+    table.add_row("OS", Text(f"{host.os} {host.os_version} ({host.arch})"))
     cores = f"{host.cpu.physical_cores} cores / {host.cpu.logical_cores} threads"
     if host.cpu.performance_cores:
         cores += f", {host.cpu.performance_cores} performance cores"
-    table.add_row("CPU", f"{host.cpu.model}; {cores}; {' '.join(host.cpu.isa) or 'isa unknown'}")
+    table.add_row(
+        "CPU", Text(f"{host.cpu.model}; {cores}; {' '.join(host.cpu.isa) or 'isa unknown'}")
+    )
     mem = host.memory
     details = " ".join(
         x
@@ -39,8 +46,11 @@ def render_host(host: Host) -> Table:
     )
     table.add_row(
         "Memory",
-        f"{format_bytes(mem.total_bytes)} total, {format_bytes(mem.available_bytes)} available; "
-        f"{details or 'type unknown'}; bandwidth {bandwidth}",
+        Text(
+            f"{format_bytes(mem.total_bytes)} total, "
+            f"{format_bytes(mem.available_bytes)} available; "
+            f"{details or 'type unknown'}; bandwidth {bandwidth}"
+        ),
     )
     if not host.gpus:
         table.add_row("GPU", "none detected")
@@ -61,21 +71,23 @@ def render_host(host: Host) -> Table:
         )
         table.add_row(
             f"GPU {gpu.index}",
-            f"{gpu.name} ({gpu.backend_hint}); {vram}; {specs or 'no specs'}",
+            Text(f"{gpu.name} ({gpu.backend_hint}); {vram}; {specs or 'no specs'}"),
         )
     if host.unified_memory:
         table.add_row("Memory pool", "unified (GPU shares system memory)")
     for disk in host.disks:
         table.add_row(
             "Disk",
-            f"{disk.path}: {format_bytes(disk.free_bytes)} free of "
-            f"{format_bytes(disk.total_bytes)}",
+            Text(
+                f"{disk.path}: {format_bytes(disk.free_bytes)} free of "
+                f"{format_bytes(disk.total_bytes)}"
+            ),
         )
     return table
 
 
 def render_llamacpp(llamacpp: LlamaCpp) -> Table:
-    """A two-column table describing the installation."""
+    """A two-column table describing the installation, with paths never read as markup."""
     table = Table(title="llama.cpp", show_header=False, box=None, pad_edge=False)
     table.add_column("key", style="bold")
     table.add_column("value")
@@ -84,40 +96,48 @@ def render_llamacpp(llamacpp: LlamaCpp) -> Table:
     else:
         build = f"b{llamacpp.build}" if llamacpp.build else "unknown build"
         commit = f" ({llamacpp.commit})" if llamacpp.commit else ""
-        table.add_row("Installed", f"yes, {build}{commit} at {llamacpp.path}")
-        table.add_row("Backends", ", ".join(llamacpp.backends) or "none detected")
+        table.add_row("Installed", Text(f"yes, {build}{commit} at {llamacpp.path}"))
+        table.add_row("Backends", Text(", ".join(llamacpp.backends) or "none detected"))
         table.add_row("Local models", str(len(llamacpp.local_models)))
     for server in llamacpp.running_servers:
         table.add_row(
             "Running",
-            f"{server.url}: {server.model or 'unknown model'}, context {server.n_ctx or 'unknown'}",
+            Text(
+                f"{server.url}: {server.model or 'unknown model'}, "
+                f"context {server.n_ctx or 'unknown'}"
+            ),
         )
     for problem in llamacpp.problems:
-        table.add_row("Problem", problem)
+        table.add_row("Problem", Text(problem))
     return table
 
 
 def render_probes(probes: Iterable[Probe]) -> Table:
-    """Probe-by-probe outcome."""
+    """Probe-by-probe outcome; the error text is never parsed as markup."""
     table = Table(title="Probes", box=None, pad_edge=False)
     table.add_column("probe", style="bold")
     table.add_column("result")
     table.add_column("ms", justify="right")
     for probe in probes:
-        status = "[green]ok[/green]" if probe.ok else f"[yellow]failed[/yellow] {probe.error or ''}"
+        if probe.ok:
+            status = Text("ok", style="green")
+        else:
+            status = Text("failed", style="yellow")
+            if probe.error:
+                status.append(f" {probe.error}")
         table.add_row(probe.name, status, str(probe.duration_ms))
     return table
 
 
 def render_findings(findings: Iterable[Finding]) -> Table:
-    """Findings with level colouring and hints."""
+    """Findings with level colouring and hints; the finding text is never parsed as markup."""
     table = Table(title="Findings", box=None, pad_edge=False)
     table.add_column("level")
     table.add_column("finding")
     for finding in findings:
-        style = _LEVEL_STYLE[finding.level]
-        text = f"[bold]{finding.title}[/bold]\n{finding.detail}"
+        text = Text.assemble((finding.title, "bold"), "\n", finding.detail)
         if finding.hint:
-            text += f"\n[dim]Hint: {finding.hint}[/dim]"
-        table.add_row(f"[{style}]{finding.level.upper()}[/{style}]", text)
+            text.append("\n")
+            text.append(f"Hint: {finding.hint}", style="dim")
+        table.add_row(Text(finding.level.upper(), style=_LEVEL_STYLE[finding.level]), text)
     return table
