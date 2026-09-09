@@ -3,8 +3,9 @@
 The shape here is the real one, measured against ``unsloth/Qwen3.8-Flash-Next-GGUF``
 path ``UD-Q4_K_XL/``: the first shard carries the whole metadata block and *no* tensors,
 and the remaining shards carry three metadata keys each and all the tensors between
-them. Reading only the first shard therefore yields complete-looking architecture facts
-and zero bytes of weights, which is the silent corruption these tests exist to pin down.
+them. Reading only the first shard used to yield complete-looking architecture facts and
+zero bytes of weights; it is now refused, because one shard of four is not a single-file
+model but the emptiest possible set, and it is the input that produced the bug.
 """
 
 from __future__ import annotations
@@ -62,12 +63,14 @@ def _model_metadata() -> list[bytes]:
     ]
 
 
-def _split_keys(shard_no: int, shard_count: int, tensors_total: int) -> list[bytes]:
-    return [
-        b.uint16("split.no", shard_no),
-        b.uint16("split.count", shard_count),
-        b.int32("split.tensors.count", tensors_total),
-    ]
+def _split_keys(shard_no: int, shard_count: int | None, tensors_total: int | None) -> list[bytes]:
+    """The bookkeeping trio; either declared count can be left out to test the guards."""
+    keys = [b.uint16("split.no", shard_no)]
+    if shard_count is not None:
+        keys.append(b.uint16("split.count", shard_count))
+    if tensors_total is not None:
+        keys.append(b.int32("split.tensors.count", tensors_total))
+    return keys
 
 
 def _encode(group: list[tuple[str, list[int]]], type_id: int = _Q8_0) -> list[bytes]:
@@ -78,8 +81,8 @@ def _encode(group: list[tuple[str, list[int]]], type_id: int = _Q8_0) -> list[by
 def shard(
     shard_no: int,
     *,
-    shard_count: int = len(_SHARD_TENSORS),
-    tensors_total: int = _TENSOR_TOTAL,
+    shard_count: int | None = len(_SHARD_TENSORS),
+    tensors_total: int | None = _TENSOR_TOTAL,
     tensors: list[bytes] | None = None,
 ) -> bytes:
     """One shard: the metadata block only when it is shard 0, plus the split keys."""
@@ -111,13 +114,27 @@ def write_shards(directory: Path, shards: list[bytes]) -> list[Path]:
     return paths
 
 
-def test_the_first_shard_alone_reports_no_weights_at_all(tmp_path: Path) -> None:
-    """The bug: complete-looking facts and zero bytes, from the metadata shard alone."""
+def test_the_first_shard_alone_is_refused_rather_than_read_as_a_whole_model(
+    tmp_path: Path,
+) -> None:
+    """The bug's own input. One shard of four is the emptiest set, not a single file.
+
+    File matching returns whatever files it found and never checks the group is
+    complete, so a repository mid-upload is enough to hand this in.
+    """
     paths = write_shards(tmp_path, split_model())
-    facts = read_facts(paths[0])
-    assert facts.arch == _ARCH and facts.n_layer == 4
-    assert facts.bytes_total == 0
-    assert facts.attention_layers_source == "all-layers"
+    with pytest.raises(CatalogError) as caught:
+        read_facts(paths[0])
+    assert caught.value.message == (
+        "incomplete shard set: the model declares 4 shards and 1 arrived (split.no [0])"
+    )
+    assert caught.value.hint == "Pass every shard of the split model."
+
+
+def test_a_lone_tail_shard_is_refused_and_says_which_one_it_is(tmp_path: Path) -> None:
+    paths = write_shards(tmp_path, split_model())
+    with pytest.raises(CatalogError, match=re.escape("1 arrived (split.no [2])")):
+        read_facts(paths[2])
 
 
 def test_the_union_of_the_shards_equals_the_same_model_in_one_file(tmp_path: Path) -> None:
@@ -162,9 +179,35 @@ def test_a_set_missing_a_shard_raises_instead_of_under_reporting(tmp_path: Path)
 
 
 def test_a_set_without_the_metadata_shard_raises(tmp_path: Path) -> None:
-    paths = write_shards(tmp_path, split_model())
+    """No shard declares a count here, so only the absent shard 0 can be complained about."""
+    tail = [shard(index, shard_count=None, tensors_total=None) for index in (1, 2, 3)]
     with pytest.raises(CatalogError, match="metadata is missing"):
-        read_facts(paths[1:])
+        read_facts(write_shards(tmp_path, tail))
+
+
+def test_the_declared_shard_count_is_read_from_a_tail_shard(tmp_path: Path) -> None:
+    """A metadata shard that omits the counts must not disarm the guard."""
+    shards = split_model()
+    shards[0] = shard(0, shard_count=None, tensors_total=None)
+    paths = write_shards(tmp_path, shards)
+    with pytest.raises(CatalogError, match=re.escape("declares 4 shards and 3 arrived")):
+        read_facts(paths[:-1])
+
+
+def test_the_declared_tensor_total_is_read_from_a_tail_shard(tmp_path: Path) -> None:
+    """A truncated tail loses bytes silently if only the metadata shard is consulted."""
+    shards = split_model()
+    shards[0] = shard(0, shard_count=None, tensors_total=None)
+    shards[3] = shard(3, tensors=_encode(_SHARD_TENSORS[3][:1]))
+    paths = write_shards(tmp_path, shards)
+    with pytest.raises(CatalogError, match=re.escape(f"declares {_TENSOR_TOTAL} tensors")):
+        read_facts(paths)
+
+
+def test_shards_that_disagree_about_the_split_are_refused(tmp_path: Path) -> None:
+    mismatched = [shard(0), shard(1), shard(2), shard(3, shard_count=5)]
+    with pytest.raises(CatalogError, match=re.escape("disagree about 'split.count'")):
+        read_facts(write_shards(tmp_path, mismatched))
 
 
 def test_a_repeated_shard_raises(tmp_path: Path) -> None:
@@ -189,7 +232,7 @@ def test_files_that_are_not_shards_of_one_model_are_refused(tmp_path: Path) -> N
     second = tmp_path / "b.gguf"
     first.write_bytes(one_file_model())
     second.write_bytes(one_file_model())
-    with pytest.raises(CatalogError, match="not shards of one split model"):
+    with pytest.raises(CatalogError, match=re.escape("carry no 'split.no' key")):
         read_facts([first, second])
 
 
@@ -199,8 +242,19 @@ def test_no_file_at_all_raises() -> None:
 
 
 def test_a_single_file_is_returned_unmerged() -> None:
+    """A model published as one file declares no split keys, and takes no merge path."""
     header = read_header(FakeSource(one_file_model()))
     assert merge_shard_headers([header]) is header
+
+
+def test_a_split_of_one_shard_is_a_complete_set_and_reads(tmp_path: Path) -> None:
+    """Declaring a split is not the same as being incomplete: one of one is all of them."""
+    flat = [entry for group in _SHARD_TENSORS for entry in group]
+    whole = tmp_path / "model-00001-of-00001.gguf"
+    whole.write_bytes(b.build(_model_metadata() + _split_keys(0, 1, len(flat)), _encode(flat)))
+    plain = tmp_path / "plain.gguf"
+    plain.write_bytes(one_file_model())
+    assert read_facts(whole) == read_facts(plain)
 
 
 def test_the_single_file_path_is_unchanged(tmp_path: Path) -> None:
