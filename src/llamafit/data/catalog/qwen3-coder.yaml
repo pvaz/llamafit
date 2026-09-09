@@ -1,0 +1,76 @@
+# Sourced from the vendor's Hugging Face model card and the GGUF-publishing repository.
+# Primary sources used for this file:
+#   - Model card: https://huggingface.co/Qwen/Qwen3-Coder-Next
+#   - Technical report: https://github.com/QwenLM/Qwen3-Coder/blob/main/qwen3_coder_next_tech_report.pdf
+#   - GGUF repository: https://huggingface.co/unsloth/Qwen3-Coder-Next-GGUF
+#   - Measured block: docs/calibration/2026-09-09-reference-machine.md (this repository)
+- id: qwen3-coder-next
+  name: Qwen3-Coder-Next
+  vendor: Alibaba Qwen
+  family: qwen3
+  release_date: 2026-02-03
+  license:
+    spdx: Apache-2.0
+    url: "https://huggingface.co/Qwen/Qwen3-Coder-Next/blob/main/LICENSE"
+  params: { total_b: 80, active_b: 3 }
+  architecture:
+    class: moe-hybrid
+    gguf_arch: qwen3next
+    notes: >-
+      48 layers combining Gated DeltaNet linear-attention blocks with Gated Attention
+      (full-attention) blocks; 512 routed experts, 10 used per token, plus 1 shared
+      expert. Hidden dimension 2,048.
+  context: { native: 262144 }
+  capabilities: [coding, tools, long-context]
+  use_cases: [coding]
+  quality:
+    baseline: 85
+    benchmarks:
+      - name: SWE-bench Verified
+        score: 70.6
+        source: "https://huggingface.co/Qwen/Qwen3-Coder-Next"
+      - name: SWE-bench Pro
+        score: 44.3
+        source: "https://huggingface.co/Qwen/Qwen3-Coder-Next"
+      - name: Terminal-Bench 2.0
+        score: 36.2
+        source: "https://huggingface.co/Qwen/Qwen3-Coder-Next"
+  sampling: { temp: 1.0, top_p: 0.95, top_k: 40 }
+  llama_cpp:
+    kv_types_allowed: [f16, q8_0]
+  sources:
+    - repo: unsloth/Qwen3-Coder-Next-GGUF
+      kind: gguf
+      trust: unsloth
+      quants:
+        - { name: UD-Q4_K_XL }
+  measured:
+    - profile: "llama-bench tg128, 16 threads"
+      quant: UD-Q4_K_XL
+      gen_tps: 24.7
+      flags: "-ngl 99 --n-cpu-moe 48 --fit off -fa on -t 16 -tb 16 -b 4096"
+      llama_cpp_build: 10867
+      date: 2026-09-09
+      source: docs/calibration/2026-09-09-reference-machine.md
+    - profile: "llama-bench pp2048, -ub 2048"
+      quant: UD-Q4_K_XL
+      pp_tps: 323
+      flags: "-ngl 99 --n-cpu-moe 48 --fit off -fa on -t 16 -tb 16 -b 4096"
+      llama_cpp_build: 10867
+      date: 2026-09-09
+      source: docs/calibration/2026-09-09-reference-machine.md
+    - profile: "real request, 11.5K-token prompt"
+      quant: UD-Q4_K_XL
+      pp_tps: 225
+      flags: "-ngl 99 --n-cpu-moe 48 --fit off -fa on -t 16 -tb 16 -b 4096"
+      llama_cpp_build: 10867
+      date: 2026-09-09
+      source: docs/calibration/2026-09-09-reference-machine.md
+    - profile: "262,144 context, q8_0 KV"
+      quant: UD-Q4_K_XL
+      context: 262144
+      peak_vram_gb: 7.8
+      flags: "-ngl 99 --n-cpu-moe 48 --fit off -fa on -t 16 -tb 16 -b 4096"
+      llama_cpp_build: 10867
+      date: 2026-09-09
+      source: docs/calibration/2026-09-09-reference-machine.md
