@@ -1,7 +1,12 @@
 import httpx
 import pytest
 
-from llamafit.catalog.hf import HttpHfClient, RepoFile, match_quant_files
+from llamafit.catalog.hf import (
+    HttpHfClient,
+    RepoFile,
+    assign_files_to_quants,
+    match_quant_files,
+)
 from llamafit.errors import NetworkError
 
 API = {
@@ -40,6 +45,26 @@ def test_a_failure_is_a_network_error_naming_the_repository() -> None:
         client_for(lambda request: httpx.Response(404, json={})).list_files("org/model")
 
 
+def test_a_transport_failure_is_a_network_error_naming_the_repository() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        raise httpx.ConnectError("connection refused", request=request)
+
+    with pytest.raises(NetworkError, match="org/model"):
+        client_for(handler).list_files("org/model")
+
+
+def test_a_non_json_body_is_a_network_error_naming_the_repository() -> None:
+    with pytest.raises(NetworkError, match="org/model"):
+        client_for(lambda request: httpx.Response(200, text="not json at all")).list_files(
+            "org/model"
+        )
+
+
+def test_a_body_without_a_siblings_list_is_a_network_error_naming_the_repository() -> None:
+    with pytest.raises(NetworkError, match="org/model"):
+        client_for(lambda request: httpx.Response(200, json={})).list_files("org/model")
+
+
 def test_builds_a_resolve_url() -> None:
     url = client_for(lambda request: httpx.Response(200, json=API)).file_url("org/m", "a/b.gguf")
     assert url == "https://huggingface.co/org/m/resolve/main/a/b.gguf"
@@ -69,3 +94,36 @@ def test_matches_a_single_file_quant_and_ignores_the_other_quant() -> None:
 def test_an_unknown_quant_matches_nothing() -> None:
     files = [RepoFile(path="a/b-Q4_K_M.gguf", size=1, sha256=None)]
     assert match_quant_files(files, "Q8_0") == []
+
+
+def test_does_not_match_a_longer_quant_name_that_starts_with_the_one_asked_for() -> None:
+    files = [RepoFile(path="model-Q4_K_M-XL.gguf", size=1, sha256=None)]
+    assert match_quant_files(files, "Q4_K_M") == []
+
+
+def test_matches_a_plain_file_at_top_level_and_in_a_subdirectory() -> None:
+    files = [
+        RepoFile(path="model-Q4_K_M.gguf", size=1, sha256=None),
+        RepoFile(path="Q4_K_M/model-Q4_K_M.gguf", size=2, sha256=None),
+    ]
+    matched = match_quant_files(files, "Q4_K_M")
+    assert {f.path for f in matched} == {"model-Q4_K_M.gguf", "Q4_K_M/model-Q4_K_M.gguf"}
+
+
+def test_assigns_each_file_to_the_longest_matching_quant() -> None:
+    files = [
+        RepoFile(path=s["rfilename"], size=s.get("size"), sha256=(s.get("lfs") or {}).get("sha256"))
+        for s in API["siblings"]
+    ] + [RepoFile(path="model-Q4_K_XL.gguf", size=1, sha256=None)]
+
+    groups = assign_files_to_quants(files, ["Q4_K_XL", "UD-Q4_K_XL", "UD-Q2_K_XL"])
+
+    assert [f.path for f in groups["Q4_K_XL"]] == ["model-Q4_K_XL.gguf"]
+    assert [f.path for f in groups["UD-Q4_K_XL"]] == [
+        "UD-Q4_K_XL/M-UD-Q4_K_XL-00001-of-00002.gguf",
+        "UD-Q4_K_XL/M-UD-Q4_K_XL-00002-of-00002.gguf",
+    ]
+    assert [f.path for f in groups["UD-Q2_K_XL"]] == ["UD-Q2_K_XL/M-UD-Q2_K_XL.gguf"]
+
+    assigned = [f.path for bucket in groups.values() for f in bucket]
+    assert len(assigned) == len(set(assigned))
