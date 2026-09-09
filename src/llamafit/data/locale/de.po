@@ -1,0 +1,815 @@
+# German translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. Nobody who reads German has been through it
+# line by line, which is what docs/translations.md asks of every catalog before it can
+# be called reviewed. Please read it line by line and correct it in a pull request.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Language-Team: German\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "Hugging Face hat beim Auflisten der Dateien für %(repo)s %(status)d zurückgegeben."
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "Die Dateiliste für %(repo)s konnte nicht von Hugging Face gelesen werden."
+
+msgid "Check your network connection and try again."
+msgstr "Prüfen Sie Ihre Netzwerkverbindung und versuchen Sie es erneut."
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "Die Antwort von Hugging Face für %(repo)s enthielt keine Dateiliste."
+
+msgid "Check that the repository id is correct and public."
+msgstr "Prüfen Sie, ob die Repository-ID richtig und das Repository öffentlich ist."
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "der Katalog hat %(count)d Problem"
+msgstr[1] "der Katalog hat %(count)d Probleme"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "Führen Sie `llamafit catalog validate` aus, um Einzelheiten zu sehen."
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "%(path)s konnte nicht geschrieben werden: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "Prüfen Sie, ob das Verzeichnis beschreibbar ist und noch Platz hat."
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "%(path)s hat %(count)d Problem und kann nicht aktualisiert werden"
+msgstr[1] "%(path)s hat %(count)d Probleme und kann nicht aktualisiert werden"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "Führen Sie zuerst `llamafit catalog validate` aus und korrigieren Sie die Datei."
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "%(path)s konnte nicht vollständig gelesen werden; nur %(model)s zu aktualisieren würde deshalb Angaben verwerfen, die die Datei für Modelle festhält, die dieser Lauf nicht anfasst: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "Führen Sie `llamafit catalog refresh` ohne --model aus, um die ganze Datei neu aufzubauen."
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "Open-Weight-LLMs für llama.cpp auf dem eigenen Rechner finden, dimensionieren, installieren und prüfen."
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "Gibt maschinenlesbares JSON statt Tabellen aus."
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "Schreibt Einzelheiten in llamafit.log im Log-Verzeichnis und zeigt Tracebacks."
+
+msgid "Disable colours."
+msgstr "Schaltet die Farben ab."
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "Spricht diese Sprache, zum Beispiel pt_PT. Eine Sprache, die LlamaFit nicht hat, fällt auf Englisch zurück, und es nennt die Sprachen, die es hat."
+
+msgid "Print the version and exit."
+msgstr "Gibt die Version aus und beendet sich."
+
+msgid "Unexpected error: %(error)s"
+msgstr "Unerwarteter Fehler: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "Führen Sie den Befehl mit --verbose erneut aus, um den vollständigen Traceback zu sehen."
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "Pflegt den Katalog: prüft seine Dateien, aktualisiert veränderliche Felder."
+
+msgid "Keep only this use case."
+msgstr "Behält nur diesen Anwendungsfall."
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "Behält nur Modelle mit dieser Fähigkeit (wiederholbar)."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Behält nur diese Lizenzkennungen (wiederholbar)."
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "Prüft nur diese Datei statt des mitgelieferten Katalogs und der eigenen Anpassungen."
+
+msgid "Did you mean: %(ids)s?"
+msgstr "Meinten Sie: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Führen Sie `llamafit list` aus, um alle Modell-IDs zu sehen."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "kein Modell namens %(id)s im Katalog"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "%(count)d Problem im Katalog gefunden; führen Sie `llamafit catalog validate` aus, um Einzelheiten zu sehen."
+msgstr[1] "%(count)d Probleme im Katalog gefunden; führen Sie `llamafit catalog validate` aus, um Einzelheiten zu sehen."
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "Kein Modell passt. Versuchen Sie ein weiter gefasstes --use-case, --capability, --license, --vendor oder --search."
+
+msgid "invalid --use-case %(value)s"
+msgstr "ungültiges --use-case: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Gültige Anwendungsfälle: %(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "ungültiger Wert für --capability: %(values)s"
+msgstr[1] "ungültige Werte für --capability: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Gültige Fähigkeiten: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"Listet den Modellkatalog auf, eingeschränkt durch die angegebenen Filter.\n"
+"\n"
+"Die Tabelle zeigt höchstens drei Fähigkeiten je Modell und für die übrigen eine Markierung +N; sie ist nach der angezeigten Spalte Qualität sortiert. info oder --json zeigt alle Fähigkeiten."
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "Behält nur diesen Anbieter, ohne Groß- und Kleinschreibung zu unterscheiden."
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "Teilstring-Suche in ID, Name, Anbieter oder Familie, ohne Groß- und Kleinschreibung zu unterscheiden."
+
+msgid "Show at most this many."
+msgstr "Zeigt höchstens so viele an."
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "Kurzform für llamafit list --search TEXT."
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "Text, der mit ID, Name, Anbieter oder Familie verglichen wird."
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "Zeigt die Angaben zu einem Modell, seine Quellen und jede Quantisierung, die es veröffentlicht."
+
+msgid "A catalog model id."
+msgstr "Eine Modell-ID aus dem Katalog."
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "Prüft die YAML-Dateien des Katalogs gegen das Schema und gibt eine Zeile je Problem aus."
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "%(count)d Datei geprüft, keine Probleme gefunden."
+msgstr[1] "%(count)d Dateien geprüft, keine Probleme gefunden."
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "Aktualisiert Dateinamen, Größen, Prüfsummen und GGUF-Angaben des Katalogs von Hugging Face."
+
+msgid "Refresh only this model id."
+msgstr "Aktualisiert nur diese Modell-ID."
+
+msgid "Compute the refresh but write nothing."
+msgstr "Berechnet die Aktualisierung, schreibt aber nichts."
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "Beendet sich mit 1, wenn sich etwas ändern würde; ändert nichts, für einen geplanten CI-Lauf."
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: Warnung: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "Warnung: %(warning)s (%(count)d Modell: %(models)s)"
+msgstr[1] "Warnung: %(warning)s (%(count)d Modelle: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: Fehler: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "Hinweis: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "die Aktualisierung braucht Netzwerkzugriff auf Hugging Face; prüfen Sie Ihre Verbindung und ob die Repository-ID richtig ist."
+
+msgid "No changes."
+msgstr "Keine Änderungen."
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "Gibt den rohen Katalogeintrag eines Modells aus, standardmäßig als JSON oder mit --yaml als YAML."
+
+msgid "Print YAML instead of JSON."
+msgstr "Gibt YAML statt JSON aus."
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "Erklärt, was erkannt wurde, was fehlgeschlagen ist und was mehr möglich machen würde."
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "WARNUNG"
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "FEHLER"
+
+# The four bandwidth sources are read as the parenthesis after a GB/s figure, so they
+# agree with "die Bandbreite": feminine, and here the adjectival forms that a figure
+# takes ("gemessen", not "gemessene").
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "gemessen"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "geschätzt"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "angenommen"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "unbekannt"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s und %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "Rechner"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d Kerne / %(logical)d Threads"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d Performance-Kern"
+msgstr[1] "%(count)d Performance-Kerne"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "ISA unbekannt"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d Modul"
+msgstr[1] "%(count)d Module"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d Kanal"
+msgstr[1] "%(count)d Kanäle"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "unbekannt"
+
+msgid "Memory"
+msgstr "Speicher"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "%(total)s gesamt, %(available)s verfügbar; %(details)s; Bandbreite %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "Typ unbekannt"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "keine erkannt"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, davon %(free)s frei"
+
+msgid "VRAM unknown"
+msgstr "VRAM unbekannt"
+
+# "(spec)" marks a figure that comes from the bundled specification table rather than
+# from this machine. "Datenblatt" is what a German reader calls that table, and it is
+# shorter than the literal "laut Spezifikation" in a line that is already long.
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (Datenblatt)"
+
+msgid "driver %(driver)s"
+msgstr "Treiber %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "keine Angaben"
+
+msgid "Memory pool"
+msgstr "Speicherpool"
+
+msgid "unified (GPU shares system memory)"
+msgstr "einheitlich (die GPU teilt sich den Systemspeicher)"
+
+msgid "Disk"
+msgstr "Datenträger"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: %(free)s von %(total)s frei"
+
+msgid "Installed"
+msgstr "Installiert"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "nein"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "unbekannter Build"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "ja, %(build)s in %(path)s"
+
+msgid "Backends"
+msgstr "Backends"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "keine erkannt"
+
+msgid "Local models"
+msgstr "Lokale Modelle"
+
+msgid "Running"
+msgstr "Läuft"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, Kontext %(context)s"
+
+msgid "unknown model"
+msgstr "unbekanntes Modell"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "unbekannt"
+
+msgid "Problem"
+msgstr "Problem"
+
+# "Probe" is a false friend in German: it means a sample or a rehearsal, never a check
+# a program runs. "Prüfung" is the word for what these actually are.
+msgid "Probes"
+msgstr "Prüfungen"
+
+msgid "probe"
+msgstr "Prüfung"
+
+msgid "result"
+msgstr "Ergebnis"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "ok"
+
+msgid "no server"
+msgstr "kein Server"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "fehlgeschlagen"
+
+# "Befund" rather than the literal "Untersuchungsergebnis": same meaning, a third of
+# the width, and this is a table column.
+msgid "Findings"
+msgstr "Befunde"
+
+msgid "level"
+msgstr "Stufe"
+
+msgid "finding"
+msgstr "Befund"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "Qualität*"
+
+# The list table's narrowest columns. "Params" is already an abbreviation in English,
+# so it stays one here; the caption below uses the same short form.
+msgid "Params"
+msgstr "Param."
+
+msgid "Context"
+msgstr "Kontext"
+
+msgid "Capabilities"
+msgstr "Fähigkeiten"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "Qualität ist die redaktionelle Basis, vor jedem Abschlag durch die Quantisierung; führen Sie `llamafit info <model>` aus, um die belegten Benchmarks dahinter zu sehen."
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "Param. ist bei einem Mixture-of-Experts-Modell die Zahl der Parameter in Milliarden als gesamt/aktiv, sonst eine einzige Zahl, wenn beide gleich sind."
+
+msgid "Models"
+msgstr "Modelle"
+
+msgid "Vendor"
+msgstr "Anbieter"
+
+msgid "Family"
+msgstr "Familie"
+
+msgid "Release date"
+msgstr "Erscheinungsdatum"
+
+msgid "Licence"
+msgstr "Lizenz"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "Parameter"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "%(total)sB gesamt, %(active)sB aktiv"
+
+msgid "%(tokens)s tokens native"
+msgstr "%(tokens)s Tokens nativ"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", %(tokens)s erweitert über %(method)s"
+
+msgid "unspecified method"
+msgstr "Methode nicht angegeben"
+
+msgid "Architecture"
+msgstr "Architektur"
+
+msgid "Notes"
+msgstr "Anmerkungen"
+
+msgid "Use cases"
+msgstr "Anwendungsfälle"
+
+# "Basisqualität", not the literal "Qualitäts-Ausgangswert": it names the same number
+# and matches the word the table caption uses for it.
+msgid "Quality baseline"
+msgstr "Basisqualität"
+
+msgid "Benchmark"
+msgstr "Benchmark"
+
+msgid "Source %(index)d"
+msgstr "Quelle %(index)d"
+
+msgid "not read yet"
+msgstr "noch nicht gelesen"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d Schicht"
+msgstr[1] "%(count)d Schichten"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d Experte"
+msgstr[1] "%(count)d/%(used)d Experten"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d Experte"
+msgstr[1] "%(count)d Experten"
+
+msgid "Quants"
+msgstr "Quantisierungen"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Size"
+msgstr "Größe"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "Angaben"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "unbekannt"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "Zeigt, was dieser Rechner hat: CPU, Speicher, GPUs, Datenträger und llama.cpp."
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "Überspringt die Messung der RAM-Bandbreite."
+
+msgid "Command: %(command)s"
+msgstr "Befehl: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "abgeschnittener GGUF-Header: %(wanted)d Bytes an Position %(offset)d erwartet, %(got)d erhalten"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "Die Datei wird vielleicht noch heruntergeladen, oder die URL zeigt nicht auf eine GGUF-Datei."
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "unbekannter GGUF-Werttyp %(type)d an Position %(offset)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "Diese Datei nutzt möglicherweise einen neueren GGUF-Metadatentyp, als LlamaFit unterstützt."
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "keine GGUF-Datei: falsche Signatur %(magic)s an Position 0"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "Prüfen Sie, ob diese Datei wirklich ein .gguf-Modell ist."
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "nicht unterstützte GGUF-Version %(version)d an Position 4"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit unterstützt die GGUF-Versionen %(versions)s."
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "diese GGUF-Dateien sind kein einzelnes aufgeteiltes Modell: sie sind sich über '%(key)s' nicht einig und geben %(values)s an"
+
+# "Shard" is the word German developers use for a piece of a split model; the literal
+# "Scherbe" would read as broken crockery.
+msgid "Pass the shards of one model, not of several."
+msgstr "Übergeben Sie die Shards eines einzigen Modells, nicht die mehrerer."
+
+msgid "no GGUF header to read facts from"
+msgstr "kein GGUF-Header, aus dem sich Angaben lesen lassen"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "Übergeben Sie die Datei des Modells oder jeden Shard eines aufgeteilten Modells."
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(count)d von %(total)d GGUF-Dateien haben keinen Schlüssel '%(key)s', deshalb lässt sich ihr Platz in einem aufgeteilten Modell nicht bestimmen"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "Übergeben Sie entweder eine einzelne, nicht aufgeteilte Datei allein oder jeden Shard eines aufgeteilten Modells."
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "unvollständiger Satz von Shards: das Modell gibt %(declared)d Shards an, angekommen sind %(arrived)d (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "Übergeben Sie jeden Shard des aufgeteilten Modells."
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "der Shard mit den Metadaten des Modells fehlt: erhalten wurde %(key)s %(numbers)s, einer davon müsste 0 sein"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "Übergeben Sie jeden Shard des aufgeteilten Modells, auch den ersten."
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "unvollständiger Satz von Shards: erwartet wurde %(key)s 0 bis %(last)d, erhalten wurde %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "Übergeben Sie jeden Shard des aufgeteilten Modells genau einmal."
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "unvollständiger Satz von Shards: das Modell gibt %(declared)d Tensoren an, und seine %(shards)d Shards enthalten zusammen %(held)d"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "%(path)s konnte nicht gelesen werden: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Prüfen Sie, ob die Datei vorhanden und lesbar ist."
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "%(url)s konnte nicht abgerufen werden: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "Prüfen Sie Ihre Netzwerkverbindung und ob die URL erreichbar ist."
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s hat HTTP %(status)d statt 206 Partial Content zurückgegeben; der Server unterstützt möglicherweise keine Range-Requests."
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "Vergewissern Sie sich, dass die URL auf eine herunterladbare GGUF-Datei zeigt."
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "unbekannt"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi hat keine GPUs zurückgegeben"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi hat keine Karten zurückgegeben"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler hat keine Displays zurückgegeben"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI hat keine Grafikcontroller zurückgegeben"
+
+msgid "lspci found no display controllers"
+msgstr "lspci hat keine Grafikcontroller gefunden"
+
+msgid "no populated memory modules"
+msgstr "keine bestückten Speichermodule"
+
+msgid "no SPMemoryDataType"
+msgstr "kein SPMemoryDataType"
+
+msgid "empty command"
+msgstr "leerer Befehl"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: Zeitüberschreitung nach %(seconds)ss"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: nicht gefunden"
+
+msgid "no output"
+msgstr "keine Ausgabe"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "Exit-Code %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "llama.cpp nicht gefunden: kein llama-server im PATH, in LLAMA_CPP_PATH oder in den üblichen Verzeichnissen"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "keine ggml-Backend-Bibliotheken neben llama-server gefunden; der Build ist möglicherweise statisch"
+
+msgid "no llama-server answering"
+msgstr "kein llama-server antwortet"
+
+msgid "unexpected response: %(error)s"
+msgstr "unerwartete Antwort: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "Installieren oder reparieren Sie den NVIDIA-Treiber; nvidia-smi wird mit ihm geliefert und muss im PATH liegen."
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "Installieren Sie ROCm (Linux), damit die VRAM-Werte von AMD sichtbar werden; ohne ROCm wird die GPU nur mit Namen aufgeführt."
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell konnte die Grafikcontroller nicht auflisten; führen Sie den Befehl in einer normalen Benutzersitzung aus."
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "Installieren Sie pciutils, damit GPUs auch ohne Herstellerwerkzeug mit Namen aufgeführt werden."
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "DDR-Typ und -Geschwindigkeit waren nicht lesbar; führen Sie den Befehl unter Linux einmal mit sudo aus (dmidecode) oder nehmen Sie stattdessen die gemessene Bandbreite."
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo ist fehlgeschlagen; das CPU-Modell und die Befehlssätze sind unbekannt."
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil konnte die CPU-Kerne nicht zählen; die Wahl der Threads fällt auf einen Kern zurück. Installieren Sie psutil mit `pip install --force-reinstall psutil` neu."
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil konnte die Speichergesamtwerte nicht lesen; solange das nicht funktioniert, lassen sich keine Budgets berechnen. Installieren Sie psutil mit `pip install --force-reinstall psutil` neu."
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "Die Anzahl der Performance-Kerne war aus sysctl nicht zu lesen."
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server ist vorhanden, hat aber keine Version gemeldet; die Binärdatei ist möglicherweise beschädigt."
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler ist fehlgeschlagen; es liegen keine Angaben zur GPU vor."
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "Kein Herstellerwerkzeug hat die Speichergröße der GPU gemeldet; tragen Sie die Größe in ein Hardwareprofil ein, damit für diesen Rechner Budgets berechnet werden können."
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp installiert"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "Build %(build)s in %(path)s, Backends: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "unbekannt"
+
+msgid "llama.cpp not found"
+msgstr "llama.cpp nicht gefunden"
+
+msgid "no llama-server binary was found"
+msgstr "es wurde keine llama-server-Binärdatei gefunden"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "Installieren Sie llama.cpp (Phase 2 von LlamaFit erledigt das: `llamafit install llama.cpp`); laden Sie bis dahin eine Version von https://github.com/ggml-org/llama.cpp/releases herunter und legen Sie deren bin-Verzeichnis in den PATH oder in LLAMA_CPP_PATH."
+
+msgid "Memory size unknown"
+msgstr "Speichergröße unbekannt"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit konnte die Speichergesamtwerte dieses Rechners nicht lesen und kann deshalb nicht bestimmen, was hineinpasst."
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: kein %(backend)s-Backend in llama.cpp"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp wurde gebaut mit: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "unbekannt"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "Installieren Sie einen llama.cpp-Build mit dem Backend %(backend)s oder Vulkan, um %(gpu)s zu nutzen."
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: VRAM-Größe unbekannt"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "das Herstellerwerkzeug, das den Speicher meldet, war nicht verfügbar"
+
+msgid "No GPU detected"
+msgstr "Keine GPU erkannt"
+
+msgid "models will run on the CPU only"
+msgstr "Modelle laufen nur auf der CPU"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "Wenn eine GPU vorhanden ist, prüfen Sie, ob ihre Treiberwerkzeuge installiert sind."
+
+msgid "RAM bandwidth assumed"
+msgstr "RAM-Bandbreite angenommen"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "es werden %(gbps)s GB/s als Standardwert verwendet"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "Installieren Sie numpy (`pip install llamafit[fast]`), damit LlamaFit die RAM-Bandbreite messen kann."
+
+msgid "Probe %(probe)s failed"
+msgstr "Prüfung %(probe)s fehlgeschlagen"
+
+msgid "unknown error"
+msgstr "unbekannter Fehler"
+
+msgid "llama-server running at %(url)s"
+msgstr "llama-server läuft unter %(url)s"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "Modell %(model)s, Kontext %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "unbekannt"
+
+msgid "Low disk space on %(path)s"
+msgstr "Wenig Speicherplatz auf %(path)s"
+
+msgid "%(size)s free"
+msgstr "%(size)s frei"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "Die meisten nützlichen Modelle brauchen 5 bis 120 GB; schaffen Sie Platz oder ändern Sie das Download-Verzeichnis."
+
+msgctxt "size"
+msgid "unknown"
+msgstr "unbekannt"

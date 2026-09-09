@@ -1,0 +1,809 @@
+# Norwegian Bokmål translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. Ingen som leser norsk har gått gjennom filen
+# linje for linje, og det er det docs/translations.md krever av enhver katalog før den
+# regnes som gjennomgått. Les den linje for linje og rett den i en pull request.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nb\n"
+"Language-Team: Norwegian Bokmål\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "Hugging Face svarte %(status)d da fillisten for %(repo)s ble hentet."
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "Klarte ikke å lese fillisten for %(repo)s fra Hugging Face."
+
+msgid "Check your network connection and try again."
+msgstr "Kontroller nettverksforbindelsen og prøv igjen."
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "Svaret fra Hugging Face for %(repo)s inneholdt ingen filliste."
+
+msgid "Check that the repository id is correct and public."
+msgstr "Kontroller at repositoriets ID er riktig, og at repositoriet er offentlig."
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "katalogen har %(count)d problem"
+msgstr[1] "katalogen har %(count)d problemer"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "Kjør `llamafit catalog validate` for detaljene."
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "klarte ikke å skrive %(path)s: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "Kontroller at katalogen er skrivbar og har plass igjen."
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "%(path)s har %(count)d problem og kan ikke oppdateres"
+msgstr[1] "%(path)s har %(count)d problemer og kan ikke oppdateres"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "Kjør `llamafit catalog validate` og rett filen først."
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "%(path)s kunne ikke leses i sin helhet, så å oppdatere bare %(model)s ville forkaste opplysninger filen har om modeller denne kjøringen ikke rører: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "Kjør `llamafit catalog refresh` uten --model for å bygge opp hele filen på nytt."
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "Finn, dimensjoner, installer og verifiser LLM-er med åpne vekter for llama.cpp på din egen maskin."
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "Skriver ut maskinlesbar JSON i stedet for tabeller."
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "Skriver detaljene til llamafit.log i loggkatalogen og viser sporingene."
+
+msgid "Disable colours."
+msgstr "Slår av fargene."
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "Snakker dette språket, for eksempel pt_PT. Et språk LlamaFit ikke har, faller tilbake til engelsk, og da sies det hvilke språk som finnes."
+
+msgid "Print the version and exit."
+msgstr "Skriver ut versjonen og avslutter."
+
+msgid "Unexpected error: %(error)s"
+msgstr "Uventet feil: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "Kjør på nytt med --verbose for hele sporingen."
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "Vedlikeholder katalogen: validerer filene, oppdaterer de foranderlige feltene."
+
+msgid "Keep only this use case."
+msgstr "Beholder bare dette bruksområdet."
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "Beholder bare modeller med denne egenskapen (kan gjentas)."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Beholder bare disse lisensbetegnelsene (kan gjentas)."
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "Validerer bare denne filen i stedet for den medfølgende katalogen og de egne tilpasningene."
+
+msgid "Did you mean: %(ids)s?"
+msgstr "Mente du: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Kjør `llamafit list` for å se alle modell-ID-er."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "ingen modell med navnet %(id)s i katalogen"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "Fant %(count)d problem i katalogen; kjør `llamafit catalog validate` for detaljene."
+msgstr[1] "Fant %(count)d problemer i katalogen; kjør `llamafit catalog validate` for detaljene."
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "Ingen modeller passet. Prøv et videre --use-case, --capability, --license, --vendor eller --search."
+
+msgid "invalid --use-case %(value)s"
+msgstr "ugyldig --use-case: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Gyldige bruksområder: %(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "ugyldig verdi for --capability: %(values)s"
+msgstr[1] "ugyldige verdier for --capability: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Gyldige egenskaper: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"Lister modellkatalogen, avgrenset av filtrene som er oppgitt.\n"
+"\n"
+"Tabellen viser høyst tre egenskaper per modell, pluss en markering +N for resten, og er sortert etter kolonnen Kvalitet som vises; info eller --json har alle egenskapene."
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "Beholder bare denne leverandøren, uten å skille mellom store og små bokstaver."
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "Treff på en del av ID, navn, leverandør eller familie, uten å skille mellom store og små bokstaver."
+
+msgid "Show at most this many."
+msgstr "Viser høyst så mange."
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "Kortform for llamafit list --search TEKST."
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "Tekst som skal matches mot ID, navn, leverandør eller familie."
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "Viser fakta om én modell, kildene dens og hver kvantisering den publiserer."
+
+msgid "A catalog model id."
+msgstr "En modell-ID fra katalogen."
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "Validerer katalogens YAML-filer mot skjemaet og skriver ut én linje per problem."
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "%(count)d fil kontrollert, ingen problemer funnet."
+msgstr[1] "%(count)d filer kontrollert, ingen problemer funnet."
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "Oppdaterer katalogens filnavn, størrelser, kontrollsummer og GGUF-fakta fra Hugging Face."
+
+msgid "Refresh only this model id."
+msgstr "Oppdaterer bare denne modell-ID-en."
+
+msgid "Compute the refresh but write nothing."
+msgstr "Regner ut oppdateringen, men skriver ingenting."
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "Avslutter med 1 hvis noe ville endret seg; endrer ingenting, for en planlagt CI-jobb."
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: advarsel: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "advarsel: %(warning)s (%(count)d modell: %(models)s)"
+msgstr[1] "advarsel: %(warning)s (%(count)d modeller: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: feil: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "Tips: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "oppdateringen trenger nettverkstilgang til Hugging Face; kontroller forbindelsen din og at repositoriets ID er riktig."
+
+msgid "No changes."
+msgstr "Ingen endringer."
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "Skriver ut den rå katalogoppføringen for én modell, som JSON til vanlig eller som YAML med --yaml."
+
+msgid "Print YAML instead of JSON."
+msgstr "Skriver ut YAML i stedet for JSON."
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "Forklarer hva som ble funnet, hva som gikk galt og hva som ville gitt mer."
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "ADVARSEL"
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "FEIL"
+
+# These four are read as the parenthesis after a GB/s figure, so they describe
+# "båndbredden" and stay in the plain form a figure takes.
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "målt"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "estimert"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "antatt"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "ukjent"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s og %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "Maskin"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d kjerner / %(logical)d tråder"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d ytelseskjerne"
+msgstr[1] "%(count)d ytelseskjerner"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "isa ukjent"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d modul"
+msgstr[1] "%(count)d moduler"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d kanal"
+msgstr[1] "%(count)d kanaler"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "ukjent"
+
+msgid "Memory"
+msgstr "Minne"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "%(total)s totalt, %(available)s tilgjengelig; %(details)s; båndbredde %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "type ukjent"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "ingen funnet"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, hvorav %(free)s ledig"
+
+msgid "VRAM unknown"
+msgstr "VRAM ukjent"
+
+# "(spec)" marks a figure that comes from the bundled specification table rather than
+# from this machine; "datablad" is what a Norwegian reader calls that table.
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (datablad)"
+
+msgid "driver %(driver)s"
+msgstr "driver %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "ingen spesifikasjoner"
+
+msgid "Memory pool"
+msgstr "Minnepool"
+
+msgid "unified (GPU shares system memory)"
+msgstr "felles (GPU-en deler systemminnet)"
+
+msgid "Disk"
+msgstr "Disk"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: %(free)s ledig av %(total)s"
+
+msgid "Installed"
+msgstr "Installert"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "nei"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "ukjent bygg"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "ja, %(build)s i %(path)s"
+
+msgid "Backends"
+msgstr "Backends"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "ingen funnet"
+
+msgid "Local models"
+msgstr "Lokale modeller"
+
+msgid "Running"
+msgstr "Kjører"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, kontekst %(context)s"
+
+msgid "unknown model"
+msgstr "ukjent modell"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "ukjent"
+
+msgid "Problem"
+msgstr "Problem"
+
+# A "probe" here is a check LlamaFit runs, not an instrument, so it is a "test": the
+# word a Norwegian developer reads in this column.
+msgid "Probes"
+msgstr "Tester"
+
+msgid "probe"
+msgstr "test"
+
+msgid "result"
+msgstr "resultat"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "ok"
+
+msgid "no server"
+msgstr "ingen server"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "mislyktes"
+
+msgid "Findings"
+msgstr "Funn"
+
+msgid "level"
+msgstr "nivå"
+
+msgid "finding"
+msgstr "funn"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "Kvalitet*"
+
+# "Params" is already an abbreviation in English and this is the narrowest column in
+# the list table, so it stays one here; the caption below uses the same short form.
+msgid "Params"
+msgstr "Param."
+
+msgid "Context"
+msgstr "Kontekst"
+
+msgid "Capabilities"
+msgstr "Egenskaper"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "Kvalitet er det redaksjonelle utgangspunktet, før ethvert fradrag for kvantisering; kjør `llamafit info <model>` for målingene med kildehenvisning som ligger bak."
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "Param. er antall parametere i milliarder som totalt/aktivt for en mixture-of-experts-modell, ellers ett enkelt tall når de er like."
+
+msgid "Models"
+msgstr "Modeller"
+
+msgid "Vendor"
+msgstr "Leverandør"
+
+msgid "Family"
+msgstr "Familie"
+
+msgid "Release date"
+msgstr "Utgivelsesdato"
+
+msgid "Licence"
+msgstr "Lisens"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "Parametere"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "%(total)sB totalt, %(active)sB aktive"
+
+msgid "%(tokens)s tokens native"
+msgstr "%(tokens)s tokens som standard"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", %(tokens)s utvidet via %(method)s"
+
+msgid "unspecified method"
+msgstr "metoden er ikke oppgitt"
+
+msgid "Architecture"
+msgstr "Arkitektur"
+
+msgid "Notes"
+msgstr "Merknader"
+
+msgid "Use cases"
+msgstr "Bruksområder"
+
+msgid "Quality baseline"
+msgstr "Basiskvalitet"
+
+msgid "Benchmark"
+msgstr "Måling"
+
+msgid "Source %(index)d"
+msgstr "Kilde %(index)d"
+
+msgid "not read yet"
+msgstr "ikke lest ennå"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d lag"
+msgstr[1] "%(count)d lag"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d ekspert"
+msgstr[1] "%(count)d/%(used)d eksperter"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d ekspert"
+msgstr[1] "%(count)d eksperter"
+
+msgid "Quants"
+msgstr "Kvantiseringer"
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "Size"
+msgstr "Størrelse"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "Fakta"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "ukjent"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "Viser hva denne maskinen har: CPU, minne, GPU-er, disker og llama.cpp."
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "Hopper over målingen av RAM-båndbredden."
+
+msgid "Command: %(command)s"
+msgstr "Kommando: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "avkuttet GGUF-header: ventet %(wanted)d byte på posisjon %(offset)d, fikk %(got)d"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "Filen lastes kanskje fortsatt ned, eller adressen peker ikke på en GGUF-fil."
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "ukjent GGUF-verditype %(type)d på posisjon %(offset)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "Denne filen bruker kanskje en nyere GGUF-metadatatype enn den LlamaFit støtter."
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "ikke en GGUF-fil: feil signatur %(magic)s på posisjon 0"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "Kontroller at denne filen virkelig er en .gguf-modell."
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "GGUF-versjon %(version)d støttes ikke, på posisjon 4"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit støtter GGUF-versjonene %(versions)s."
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "disse GGUF-filene er ikke én oppdelt modell: de er uenige om '%(key)s' og oppgir %(values)s"
+
+# "Shard" is the word Norwegian developers use for a piece of a split model; the
+# literal "skår" would read as a piece of broken glass.
+msgid "Pass the shards of one model, not of several."
+msgstr "Oppgi shards fra én modell, ikke fra flere."
+
+msgid "no GGUF header to read facts from"
+msgstr "ingen GGUF-header å lese fakta fra"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "Oppgi filen til modellen, eller hver shard i en oppdelt modell."
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(count)d av %(total)d GGUF-filer mangler nøkkelen '%(key)s', så plassen deres i en oppdelt modell kan ikke fastslås"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "Oppgi enten én udelt fil alene, eller hver shard i én oppdelt modell."
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "ufullstendig sett med shards: modellen oppgir %(declared)d shards, og %(arrived)d kom fram (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "Oppgi hver shard i den oppdelte modellen."
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "den sharden som bærer modellens metadata mangler: fikk %(key)s %(numbers)s, ventet at én av dem skulle være 0"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "Oppgi hver shard i den oppdelte modellen, også den første."
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "ufullstendig sett med shards: ventet %(key)s 0 til %(last)d, fikk %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "Oppgi hver shard i den oppdelte modellen nøyaktig én gang."
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "ufullstendig sett med shards: modellen oppgir %(declared)d tensorer, og de %(shards)d shardene rommer %(held)d til sammen"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "klarte ikke å lese %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Kontroller at filen finnes og kan leses."
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "klarte ikke å hente %(url)s: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "Kontroller nettverksforbindelsen og at adressen er tilgjengelig."
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s svarte HTTP %(status)d i stedet for 206 Partial Content; serveren støtter kanskje ikke range-forespørsler."
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "Bekreft at adressen peker på en GGUF-fil som kan lastes ned."
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "ukjent"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi ga ingen GPU-er"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi ga ingen kort"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler ga ingen skjermer"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI ga ingen skjermkontrollere"
+
+msgid "lspci found no display controllers"
+msgstr "lspci fant ingen skjermkontrollere"
+
+msgid "no populated memory modules"
+msgstr "ingen minnemoduler i bruk"
+
+msgid "no SPMemoryDataType"
+msgstr "ingen SPMemoryDataType"
+
+msgid "empty command"
+msgstr "tom kommando"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: tiden gikk ut etter %(seconds)ss"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: ikke funnet"
+
+msgid "no output"
+msgstr "ingen utdata"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "sluttkode %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "llama.cpp ble ikke funnet: ingen llama-server i PATH, i LLAMA_CPP_PATH eller i de vanlige katalogene"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "fant ingen ggml-backend-biblioteker ved siden av llama-server; bygget kan være statisk"
+
+msgid "no llama-server answering"
+msgstr "ingen llama-server svarer"
+
+msgid "unexpected response: %(error)s"
+msgstr "uventet svar: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "Installer eller reparer NVIDIA-driveren; nvidia-smi følger med den og må ligge i PATH."
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "Installer ROCm (Linux) for å få fram AMDs VRAM-tall; uten ROCm listes GPU-en bare med navn."
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell klarte ikke å liste skjermkontrollerne; kjør fra en vanlig brukerøkt."
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "Installer pciutils for å liste GPU-er med navn når det ikke finnes noe verktøy fra leverandøren."
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "DDR-type og hastighet var ikke til å lese; kjør én gang med sudo på Linux (dmidecode), eller nøy deg med den målte båndbredden i stedet."
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo mislyktes; CPU-modellen og instruksjonssettene er ukjente."
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil klarte ikke å telle CPU-kjernene; valget av tråder faller tilbake til én kjerne. Installer psutil på nytt med `pip install --force-reinstall psutil`."
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil klarte ikke å lese de samlede minnetallene; så lenge det ikke virker, kan ingen budsjetter regnes ut. Installer psutil på nytt med `pip install --force-reinstall psutil`."
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "Antall ytelseskjerner var ikke til å lese ut av sysctl."
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server finnes, men oppga ingen versjon; programfilen kan være ødelagt."
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler mislyktes; det finnes ingen opplysninger om GPU-en."
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "Ingen verktøy fra leverandøren oppga minnestørrelsen til GPU-en; skriv inn størrelsen i en maskinvareprofil, så budsjetter kan regnes ut for denne maskinen."
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp installert"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "bygg %(build)s i %(path)s, backends: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "ukjent"
+
+msgid "llama.cpp not found"
+msgstr "llama.cpp ble ikke funnet"
+
+msgid "no llama-server binary was found"
+msgstr "ingen llama-server-programfil ble funnet"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "Installer llama.cpp (fase 2 av LlamaFit gjør dette: `llamafit install llama.cpp`); last inntil videre ned en utgivelse fra https://github.com/ggml-org/llama.cpp/releases og legg bin-katalogen dens i PATH eller i LLAMA_CPP_PATH."
+
+msgid "Memory size unknown"
+msgstr "Minnestørrelsen er ukjent"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit klarte ikke å lese de samlede minnetallene for denne maskinen, og kan derfor ikke regne ut hva som får plass."
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: ingen %(backend)s-backend i llama.cpp"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp ble bygget med: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "ukjente"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "Installer et bygg av llama.cpp med backend %(backend)s eller Vulkan for å bruke %(gpu)s."
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: VRAM-størrelsen er ukjent"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "verktøyet fra leverandøren som oppgir minnet var ikke tilgjengelig"
+
+msgid "No GPU detected"
+msgstr "Ingen GPU funnet"
+
+msgid "models will run on the CPU only"
+msgstr "modeller vil bare kjøre på CPU-en"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "Hvis det finnes en GPU, kontroller at driververktøyene for den er installert."
+
+msgid "RAM bandwidth assumed"
+msgstr "RAM-båndbredden er antatt"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "%(gbps)s GB/s brukes som standardverdi"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "Installer numpy (`pip install llamafit[fast]`) slik at LlamaFit kan måle RAM-båndbredden."
+
+msgid "Probe %(probe)s failed"
+msgstr "Testen %(probe)s mislyktes"
+
+msgid "unknown error"
+msgstr "ukjent feil"
+
+msgid "llama-server running at %(url)s"
+msgstr "llama-server kjører på %(url)s"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "modell %(model)s, kontekst %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "ukjent"
+
+msgid "Low disk space on %(path)s"
+msgstr "Lite diskplass på %(path)s"
+
+msgid "%(size)s free"
+msgstr "%(size)s ledig"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "De fleste nyttige modeller trenger 5 til 120 GB; frigjør plass eller bytt katalog for nedlastinger."
+
+msgctxt "size"
+msgid "unknown"
+msgstr "ukjent"
