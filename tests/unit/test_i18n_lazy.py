@@ -1,6 +1,7 @@
 """The deferred form: a message defined before a language is chosen must still obey it."""
 
-from collections.abc import Iterator
+import copy
+from collections.abc import Callable, Iterator
 from pathlib import Path
 
 import pytest
@@ -232,3 +233,49 @@ def test_a_deferred_table_built_at_import_time_keeps_its_context() -> None:
     assert str(messages.GPU_ROW_EMPTY) == "none detected"
     translator.set_translator(CatalogTranslator("pt_PT", parse_po(CONTEXT_CATALOG)))
     assert str(messages.GPU_ROW_EMPTY) == "nenhuma detetada"
+
+
+def test_an_instance_built_without_the_constructor_fails_plainly_not_forever() -> None:
+    # This is the shape unpickling builds before it calls __setstate__, and the one
+    # copy.copy builds before it restores the slots. Every slot is unset, so reading one
+    # raises, which used to route straight back into __getattr__ and read the same slot
+    # again until the stack ended.
+    orphan = LazyString.__new__(LazyString)
+    with pytest.raises(AttributeError):
+        orphan.upper()
+    with pytest.raises(AttributeError):
+        str(orphan)
+
+
+@pytest.mark.parametrize("name", ["__deepcopy__", "__copy__", "__setstate__", "__wrapped__"])
+def test_a_dunder_is_refused_rather_than_looked_for_in_the_rendered_text(name: str) -> None:
+    # These are dunders object does not define, so they are the ones that reach
+    # __getattr__ at all. str has none of them either, so answering from the rendered
+    # text would be wrong as well as recursive: a protocol asking "do you support this?"
+    # has to hear no.
+    with pytest.raises(AttributeError):
+        getattr(lazy_gettext("No GPU detected"), name)
+
+
+@pytest.mark.parametrize("copier", [copy.copy, copy.deepcopy])
+def test_copying_a_deferred_message_works_and_still_follows_the_language(
+    copier: Callable[[LazyString], LazyString],
+) -> None:
+    original = lazy_gettext("No GPU detected")
+    duplicate = copier(original)
+    assert str(duplicate) == "No GPU detected"
+    _portuguese()
+    assert str(duplicate) == "Nenhuma GPU detetada"
+    assert duplicate.message == "No GPU detected"
+
+
+def test_a_slot_name_is_refused_rather_than_asked_of_the_rendered_text() -> None:
+    # "message" and "_render" resolve normally on a built instance; __getattr__ only sees
+    # them when they are unset, and then the answer is that they are not there.
+    orphan = LazyString.__new__(LazyString)
+    for slot in LazyString.__slots__:
+        with pytest.raises(AttributeError, match=slot):
+            getattr(orphan, slot)
+    built = lazy_gettext("No GPU detected")
+    assert built.message == "No GPU detected"
+    assert callable(built._render)

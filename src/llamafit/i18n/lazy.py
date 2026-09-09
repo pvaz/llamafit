@@ -121,7 +121,18 @@ class LazyString:
         return self._render() % values
 
     def __getattr__(self, name: str) -> Any:
-        """Forward every string method to the text it currently resolves to."""
+        """Forward every string method to the text it currently resolves to.
+
+        A dunder and a slot are refused before anything is rendered. This method runs
+        only when ordinary lookup has already failed, and on an instance built without
+        going through the constructor — ``copy.copy``, ``copy.deepcopy`` and unpickling
+        each build one — that is every slot. Rendering an answer would read ``_render``,
+        which would fail, which would arrive back here, which would read it again, until
+        the stack ran out. Raising turns that into the plain attribute error those
+        protocols already know how to read.
+        """
+        if name.startswith("__") or name in LazyString.__slots__:
+            raise AttributeError(f"{type(self).__name__!r} object has no attribute {name!r}")
         return getattr(self._render(), name)
 
 
