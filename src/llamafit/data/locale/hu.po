@@ -1,0 +1,817 @@
+# Hungarian translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. It was written from the English template in one
+# pass and it has had no second reader. By the standard docs/translations.md sets for
+# every language, that is not enough: please read it line by line and correct it in a
+# pull request.
+#
+# Hungarian glues its cases onto the word, so several messages put the placeholder
+# somewhere else than the English does: "%(free)s free of %(total)s" becomes
+# "%(total)s méretből %(free)s szabad", and "Source %(index)d" becomes the ordinal
+# "%(index)d. forrás". A numeral is always followed by a singular noun, which is why the
+# two plural forms read alike wherever the count itself is printed.
+#
+# "a(z)" is the usual written compromise where the definite article stands in front of a
+# value nobody can see in advance: a model id or a path may begin with either a vowel or
+# a consonant, and Hungarian chooses "a" or "az" accordingly.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hu\n"
+"Language-Team: Hungarian\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "A Hugging Face %(status)d kódot adott vissza a(z) %(repo)s fájljainak listázásakor."
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "Nem sikerült beolvasni a(z) %(repo)s fájllistáját a Hugging Face-ről."
+
+msgid "Check your network connection and try again."
+msgstr "Ellenőrizze a hálózati kapcsolatot, és próbálja újra."
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "A Hugging Face válasza a(z) %(repo)s tárolóra nem tartalmazott fájllistát."
+
+msgid "Check that the repository id is correct and public."
+msgstr "Ellenőrizze, hogy a tároló azonosítója helyes és nyilvános."
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "a katalógusban %(count)d probléma van"
+msgstr[1] "a katalógusban %(count)d probléma van"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "A részletekért futtassa a `llamafit catalog validate` parancsot."
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "nem sikerült írni a(z) %(path)s fájlba: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "Ellenőrizze, hogy a könyvtár írható, és van benne hely."
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "a(z) %(path)s fájlban %(count)d probléma van, ezért nem frissíthető"
+msgstr[1] "a(z) %(path)s fájlban %(count)d probléma van, ezért nem frissíthető"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "Futtassa a `llamafit catalog validate` parancsot, és előbb javítsa a fájlt."
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "A(z) %(path)s nem volt teljesen beolvasható, ezért csak a(z) %(model)s frissítése eldobná azokat az adatokat, amelyeket a fájl olyan modellekről őriz, amelyekhez ez a futás nem nyúl: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "A teljes fájl újraépítéséhez futtassa a `llamafit catalog refresh` parancsot --model nélkül."
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "Nyílt súlyú nyelvi modellek keresése, méretezése, telepítése és ellenőrzése a llama.cpp számára a saját gépén."
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "Táblázatok helyett géppel olvasható JSON kiírása."
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "Részletek írása a naplókönyvtár llamafit.log fájljába, és a hibakövetések megjelenítése."
+
+msgid "Disable colours."
+msgstr "A színek kikapcsolása."
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "Beszéljen ezen a nyelven, például pt_PT. Az a nyelv, amely a LlamaFit-ben nincs meg, angolra vált, és a program megmondja, melyek vannak meg."
+
+msgid "Print the version and exit."
+msgstr "A verzió kiírása és kilépés."
+
+msgid "Unexpected error: %(error)s"
+msgstr "Váratlan hiba: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "A teljes hibakövetésért futtassa újra a --verbose kapcsolóval."
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "A katalógus karbantartása: fájljainak ellenőrzése, változó mezőinek frissítése."
+
+msgid "Keep only this use case."
+msgstr "Csak ennek a felhasználási esetnek a megtartása."
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "Csak az ilyen képességű modellek megtartása (többször megadható)."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Csak ezeknek a licencazonosítóknak a megtartása (többször megadható)."
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "Csak ennek a fájlnak az ellenőrzése a beépített katalógus és az egyéni felülbírálások helyett."
+
+msgid "Did you mean: %(ids)s?"
+msgstr "Erre gondolt: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Az összes modellazonosító megtekintéséhez futtassa a `llamafit list` parancsot."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "nincs %(id)s nevű modell a katalógusban"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "%(count)d katalógusprobléma található; a részletekért futtassa a `llamafit catalog validate` parancsot."
+msgstr[1] "%(count)d katalógusprobléma található; a részletekért futtassa a `llamafit catalog validate` parancsot."
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "Nincs találat. Próbáljon tágabb --use-case, --capability, --license, --vendor vagy --search értéket."
+
+msgid "invalid --use-case %(value)s"
+msgstr "érvénytelen --use-case érték: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Érvényes felhasználási esetek: %(values)s"
+
+# The count does not reach this sentence, so the two forms differ in the only place
+# Hungarian can show it: the plural ending on "érték".
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "érvénytelen --capability érték: %(values)s"
+msgstr[1] "érvénytelen --capability értékek: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Érvényes képességek: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"A modellkatalógus listázása, a megadott szűrőkkel szűkítve.\n"
+"\n"
+"A táblázat modellenként legfeljebb három képességet mutat, a többit +N jelöléssel, és a megjelenített Minőség oszlop szerint van rendezve; az info és a --json minden képességet megjelenít."
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "Csak ennek a gyártónak a megtartása, kis- és nagybetűk megkülönböztetése nélkül."
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "Részleges egyezés az azonosítóban, a névben, a gyártóban vagy a családban, kis- és nagybetűk megkülönböztetése nélkül."
+
+msgid "Show at most this many."
+msgstr "Legfeljebb ennyi megjelenítése."
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "A llamafit list --search TEXT rövidítése."
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "Az azonosítóval, a névvel, a gyártóval vagy a családdal egyeztetendő szöveg."
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "Egy modell adatainak, forrásainak és minden közzétett kvantálásának megjelenítése."
+
+msgid "A catalog model id."
+msgstr "Egy katalógusbeli modellazonosító."
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "A katalógus YAML fájljainak ellenőrzése a séma alapján, problémánként egy sor kiírásával."
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "%(count)d fájl ellenőrizve, nem található probléma."
+msgstr[1] "%(count)d fájl ellenőrizve, nem található probléma."
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "A katalógus fájlneveinek, méreteinek, ellenőrzőösszegeinek és GGUF adatainak frissítése a Hugging Face-ről."
+
+msgid "Refresh only this model id."
+msgstr "Csak ennek a modellazonosítónak a frissítése."
+
+msgid "Compute the refresh but write nothing."
+msgstr "A frissítés kiszámítása, de semmi kiírása."
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "Kilépés 1-gyel, ha bármi változna; semmit nem módosít, ütemezett CI feladathoz."
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: figyelmeztetés: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "figyelmeztetés: %(warning)s (%(count)d modell: %(models)s)"
+msgstr[1] "figyelmeztetés: %(warning)s (%(count)d modell: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: hiba: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "Tipp: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "a frissítéshez hálózati hozzáférés kell a Hugging Face-hez; ellenőrizze a kapcsolatot és a tároló azonosítójának helyességét."
+
+msgid "No changes."
+msgstr "Nincs változás."
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "Egy modell nyers katalógusbejegyzésének kiírása, alapértelmezés szerint JSON, a --yaml kapcsolóval YAML formátumban."
+
+msgid "Print YAML instead of JSON."
+msgstr "YAML kiírása JSON helyett."
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "Bemutatja, mit talált a program, mi hiúsult meg, és mi tenne elérhetővé többet."
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "RENDBEN"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "FIGYELEM"
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "HIBA"
+
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "mért"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "becsült"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "feltételezett"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "ismeretlen"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s és %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "Gép"
+
+msgid "OS"
+msgstr "Op. rendszer"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d mag / %(logical)d szál"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d teljesítménymag"
+msgstr[1] "%(count)d teljesítménymag"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "ismeretlen utasításkészlet"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d memóriamodul"
+msgstr[1] "%(count)d memóriamodul"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d csatorna"
+msgstr[1] "%(count)d csatorna"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+# Hungarian has no grammatical gender, so the rows that ask their own question here all
+# answer with the same words. That is the right answer, not a missed distinction: what
+# the context decides elsewhere, Hungarian does not have to decide at all.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "ismeretlen"
+
+msgid "Memory"
+msgstr "Memória"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "%(total)s összesen, %(available)s elérhető; %(details)s; sávszélesség %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "ismeretlen típus"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "nem található egy sem"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, ebből %(free)s szabad"
+
+msgid "VRAM unknown"
+msgstr "ismeretlen VRAM"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (specifikáció szerint)"
+
+msgid "driver %(driver)s"
+msgstr "illesztőprogram: %(driver)s"
+
+# Hungarian numbers a thing with an ordinal, so the index leads: "2. GPU", not "GPU 2".
+msgid "GPU %(index)d"
+msgstr "%(index)d. GPU"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "nincs specifikáció"
+
+msgid "Memory pool"
+msgstr "Memóriakészlet"
+
+msgid "unified (GPU shares system memory)"
+msgstr "egyesített (a GPU a rendszermemórián osztozik)"
+
+msgid "Disk"
+msgstr "Lemez"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: %(total)s méretből %(free)s szabad"
+
+msgid "Installed"
+msgstr "Telepítve"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "nem"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "ismeretlen build"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "igen, %(build)s itt: %(path)s"
+
+msgid "Backends"
+msgstr "Háttérrendszerek"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "nem található egy sem"
+
+msgid "Local models"
+msgstr "Helyi modellek"
+
+msgid "Running"
+msgstr "Fut"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, kontextus: %(context)s"
+
+msgid "unknown model"
+msgstr "ismeretlen modell"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "ismeretlen"
+
+msgid "Problem"
+msgstr "Probléma"
+
+msgid "Probes"
+msgstr "Próbák"
+
+msgid "probe"
+msgstr "próba"
+
+msgid "result"
+msgstr "eredmény"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "rendben"
+
+msgid "no server"
+msgstr "nincs kiszolgáló"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "sikertelen"
+
+msgid "Findings"
+msgstr "Megállapítások"
+
+msgid "level"
+msgstr "szint"
+
+msgid "finding"
+msgstr "megállapítás"
+
+msgid "ID"
+msgstr "Azonosító"
+
+msgid "Quality*"
+msgstr "Minőség*"
+
+msgid "Params"
+msgstr "Param."
+
+msgid "Context"
+msgstr "Kontextus"
+
+msgid "Capabilities"
+msgstr "Képességek"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "A minőség a szerkesztőségi alapérték, még a kvantálás okozta veszteség előtt; a mögötte álló, forrásolt teljesítménytesztekért futtassa a `llamafit info <model>` parancsot."
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "A Param. a szakértőkeverékes modelleknél az összes/aktív paraméterek száma milliárdban, vagy egyetlen szám, ha a kettő megegyezik."
+
+msgid "Models"
+msgstr "Modellek"
+
+msgid "Vendor"
+msgstr "Gyártó"
+
+msgid "Family"
+msgstr "Család"
+
+msgid "Release date"
+msgstr "Megjelenés"
+
+msgid "Licence"
+msgstr "Licenc"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "Paraméterek"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "%(total)sB összesen, %(active)sB aktív"
+
+msgid "%(tokens)s tokens native"
+msgstr "%(tokens)s token natívan"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", %(method)s módszerrel %(tokens)s tokenre bővítve"
+
+msgid "unspecified method"
+msgstr "nincs megadva módszer"
+
+msgid "Architecture"
+msgstr "Architektúra"
+
+msgid "Notes"
+msgstr "Megjegyzések"
+
+msgid "Use cases"
+msgstr "Felhasználási esetek"
+
+msgid "Quality baseline"
+msgstr "Minőségi alapérték"
+
+msgid "Benchmark"
+msgstr "Teljesítményteszt"
+
+# An ordinal again: the numbered rows read "1. forrás", "2. forrás".
+msgid "Source %(index)d"
+msgstr "%(index)d. forrás"
+
+msgid "not read yet"
+msgstr "még nincs beolvasva"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d réteg"
+msgstr[1] "%(count)d réteg"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d szakértő"
+msgstr[1] "%(count)d/%(used)d szakértő"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d szakértő"
+msgstr[1] "%(count)d szakértő"
+
+msgid "Quants"
+msgstr "Kvantálások"
+
+msgid "Name"
+msgstr "Név"
+
+msgid "Size"
+msgstr "Méret"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "Adatok"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "ismeretlen"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "Megmutatja, mi van ebben a gépben: CPU, memória, GPU-k, lemezek és llama.cpp."
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "A RAM sávszélesség-mérésének kihagyása."
+
+msgid "Command: %(command)s"
+msgstr "Parancs: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "csonka GGUF fejléc: a(z) %(offset)d eltolásnál %(wanted)d bájt kellett volna, %(got)d érkezett"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "Lehet, hogy a fájl még töltődik le, vagy hogy az URL nem GGUF fájlra mutat."
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "ismeretlen GGUF értéktípus: %(type)d a(z) %(offset)d eltolásnál"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "Lehet, hogy ez a fájl újabb GGUF metaadattípust használ, mint amit a LlamaFit támogat."
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "nem GGUF fájl: hibás azonosító %(magic)s a 0 eltolásnál"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "Ellenőrizze, hogy ez a fájl valóban .gguf modell."
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "nem támogatott GGUF verzió: %(version)d a 4 eltolásnál"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "A LlamaFit a következő GGUF verziókat támogatja: %(versions)s."
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "ezek a GGUF fájlok nem egyetlen felosztott modellt alkotnak: nem értenek egyet a(z) '%(key)s' kulcsról, ezt jelentik: %(values)s"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "Egyetlen modell részeit adja meg, ne többét."
+
+msgid "no GGUF header to read facts from"
+msgstr "nincs GGUF fejléc, amelyből adatokat lehetne olvasni"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "Adja meg a modell fájlját, vagy egy felosztott modell összes részét."
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(total)d GGUF fájlból %(count)d nem hordozza a(z) '%(key)s' kulcsot, ezért nem állapítható meg a helyük a felosztott modellben"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "Adjon meg egyetlen, fel nem osztott fájlt önmagában, vagy egyetlen felosztott modell összes részét."
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "hiányos részhalmaz: a modell %(declared)d részt jelent be, és %(arrived)d érkezett meg (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "Adja meg a felosztott modell összes részét."
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "hiányzik a modell metaadatait hordozó rész: %(key)s %(numbers)s érkezett, pedig az egyiknek 0-nak kellene lennie"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "Adja meg a felosztott modell összes részét, az elsőt is beleértve."
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "hiányos részhalmaz: %(key)s 0-tól %(last)d-ig kellett volna, %(numbers)s érkezett"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "A felosztott modell minden részét pontosan egyszer adja meg."
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "hiányos részhalmaz: a modell %(declared)d tenzort jelent be, a %(shards)d része pedig összesen %(held)d tenzort tartalmaz"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "nem sikerült beolvasni a(z) %(path)s fájlt: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Ellenőrizze, hogy a fájl létezik és olvasható."
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "nem sikerült letölteni a(z) %(url)s címet: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "Ellenőrizze a hálózati kapcsolatot, és hogy az URL elérhető."
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "A(z) %(url)s a 206 Partial Content helyett HTTP %(status)d választ adott; lehet, hogy a kiszolgáló nem támogatja a tartománykéréseket."
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "Győződjön meg róla, hogy az URL letölthető GGUF fájlra mutat."
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "ismeretlen"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "az nvidia-smi egyetlen GPU-t sem adott vissza"
+
+msgid "rocm-smi returned no cards"
+msgstr "a rocm-smi egyetlen kártyát sem adott vissza"
+
+msgid "system_profiler returned no displays"
+msgstr "a system_profiler egyetlen kijelzőt sem adott vissza"
+
+msgid "WMI returned no video controllers"
+msgstr "a WMI egyetlen videovezérlőt sem adott vissza"
+
+msgid "lspci found no display controllers"
+msgstr "az lspci egyetlen megjelenítővezérlőt sem talált"
+
+msgid "no populated memory modules"
+msgstr "nincs behelyezett memóriamodul"
+
+msgid "no SPMemoryDataType"
+msgstr "nincs SPMemoryDataType"
+
+msgid "empty command"
+msgstr "üres parancs"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: időtúllépés %(seconds)s másodperc után"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: nem található"
+
+msgid "no output"
+msgstr "nincs kimenet"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "kilépési kód %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "a llama.cpp nem található: nincs llama-server a PATH-ban, a LLAMA_CPP_PATH alatt vagy a szokásos könyvtárakban"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "nem található ggml háttérkönyvtár a llama-server mellett; lehet, hogy a build statikus"
+
+msgid "no llama-server answering"
+msgstr "nincs válaszoló llama-server"
+
+msgid "unexpected response: %(error)s"
+msgstr "váratlan válasz: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "Telepítse vagy javítsa az NVIDIA illesztőprogramot; az nvidia-smi vele érkezik, és a PATH-ban kell lennie."
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "Telepítse a ROCm csomagot (Linux), hogy látszódjanak az AMD VRAM értékei; enélkül a GPU csak a nevével jelenik meg."
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "A PowerShell nem tudta listázni a videovezérlőket; futtassa normál felhasználói munkamenetből."
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "Telepítse a pciutils csomagot, hogy a GPU-k név szerint listázhatók legyenek, ha nincs gyártói eszköz."
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "A DDR típusa és sebessége nem volt olvasható; Linuxon futtassa egyszer sudóval (dmidecode), vagy fogadja el helyette a mért sávszélességet."
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "A py-cpuinfo hibát adott; a CPU modellje és utasításkészletei ismeretlenek."
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "A psutil nem tudta megszámolni a CPU magjait; a szálválasztás egyetlen magra esik vissza. Telepítse újra a psutilt a `pip install --force-reinstall psutil` paranccsal."
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "A psutil nem tudta beolvasni a memória összesítéseit; amíg ez nem működik, nem számíthatók ki a keretek. Telepítse újra a psutilt a `pip install --force-reinstall psutil` paranccsal."
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "A teljesítménymagok száma nem volt beolvasható a sysctl parancsból."
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "A llama-server létezik, de nem jelentett verziót; lehet, hogy a bináris sérült."
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "A system_profiler hibát adott; nincs információ a GPU-ról."
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "Egyetlen gyártói eszköz sem jelentette a GPU memóriaméretét; rögzítse a méretet egy hardverprofilban, hogy a keretek kiszámíthatók legyenek ehhez a géphez."
+
+msgid "llama.cpp installed"
+msgstr "a llama.cpp telepítve van"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "%(build)s build itt: %(path)s, háttérrendszerek: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "ismeretlen"
+
+msgid "llama.cpp not found"
+msgstr "a llama.cpp nem található"
+
+msgid "no llama-server binary was found"
+msgstr "nem található llama-server bináris"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "Telepítse a llama.cpp programot (a LlamaFit 2. fázisa ezt majd elvégzi: `llamafit install llama.cpp`); addig töltsön le egy kiadást innen: https://github.com/ggml-org/llama.cpp/releases, és tegye a bin könyvtárát a PATH-ba vagy a LLAMA_CPP_PATH alá."
+
+msgid "Memory size unknown"
+msgstr "Ismeretlen memóriaméret"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "A LlamaFit nem tudta beolvasni ennek a gépnek a memóriaösszesítéseit, ezért nem tudja kiszámítani, mi fér el rajta."
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: nincs %(backend)s háttérrendszer a llama.cpp-ben"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "a llama.cpp ezekkel készült: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "ismeretlen"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "Telepítsen olyan llama.cpp buildet, amelyben van %(backend)s vagy Vulkan háttérrendszer, hogy használhassa ezt: %(gpu)s."
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: ismeretlen VRAM méret"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "a memóriát jelentő gyártói eszköz nem volt elérhető"
+
+msgid "No GPU detected"
+msgstr "Nem található GPU"
+
+msgid "models will run on the CPU only"
+msgstr "a modellek csak a CPU-n fognak futni"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "Ha van GPU, ellenőrizze, hogy telepítve vannak-e az illesztőprogramjai."
+
+msgid "RAM bandwidth assumed"
+msgstr "Feltételezett RAM sávszélesség"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "%(gbps)s GB/s használata alapértelmezésként"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "Telepítse a numpy csomagot (`pip install llamafit[fast]`), hogy a LlamaFit meg tudja mérni a RAM sávszélességét."
+
+msgid "Probe %(probe)s failed"
+msgstr "A(z) %(probe)s próba sikertelen"
+
+msgid "unknown error"
+msgstr "ismeretlen hiba"
+
+msgid "llama-server running at %(url)s"
+msgstr "a llama-server fut itt: %(url)s"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "modell: %(model)s, kontextus: %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "ismeretlen"
+
+msgid "Low disk space on %(path)s"
+msgstr "Kevés a lemezterület itt: %(path)s"
+
+msgid "%(size)s free"
+msgstr "%(size)s szabad"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "A legtöbb hasznos modellhez 5-120 GB kell; szabadítson fel helyet, vagy változtassa meg a letöltési könyvtárat."
+
+msgctxt "size"
+msgid "unknown"
+msgstr "ismeretlen"
