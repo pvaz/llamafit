@@ -255,3 +255,65 @@ def test_the_template_writes_a_msgctxt_line_above_the_msgid(tmp_path: Path) -> N
     assert 'msgctxt "GPU"\nmsgid "none detected"' in template
     catalog = parse_po(template)
     assert set(catalog.messages) == {("GPU", "none detected"), (None, "none detected")}
+
+
+# --- the note a call site leaves for the translator ---------------------------------
+
+
+def test_a_marked_comment_above_a_call_reaches_the_template(tmp_path: Path) -> None:
+    source = (
+        "# Translators: this is punctuation, not prose.\n"
+        "# Write what your own language uses.\n"
+        'x = pgettext("thousands separator", ",")\n'
+    )
+    found = extract([_write(tmp_path, source)])
+    assert found.entries[0].comments == [
+        "Translators: this is punctuation, not prose.",
+        "Write what your own language uses.",
+    ]
+    rendered = render_template(found, version="0.0.0")
+    assert "#. Translators: this is punctuation, not prose." in rendered
+    assert "#. Write what your own language uses." in rendered
+
+
+def test_an_unmarked_comment_stays_in_the_code(tmp_path: Path) -> None:
+    # A note about the code is written for whoever maintains it, and a translator could
+    # not act on it, so only a block opening with the marker is copied.
+    source = '# this is why the call is here\n_("No GPU detected")\n'
+    found = extract([_write(tmp_path, source)])
+    assert found.entries[0].comments == []
+    assert "#." not in render_template(found, version="0.0.0")
+
+
+def test_a_blank_line_ends_the_block(tmp_path: Path) -> None:
+    # The note has to touch the call, or a comment further up the file would attach
+    # itself to whatever message happened to come next.
+    source = '# Translators: a note.\n\n_("No GPU detected")\n'
+    found = extract([_write(tmp_path, source)])
+    assert found.entries[0].comments == []
+
+
+def test_the_same_note_on_two_call_sites_is_not_recorded_twice(tmp_path: Path) -> None:
+    source = (
+        "# Translators: a note.\n"
+        '_("No GPU detected")\n'
+        "# Translators: a note.\n"
+        '_("No GPU detected")\n'
+    )
+    found = extract([_write(tmp_path, source)])
+    assert found.entries[0].comments == ["Translators: a note."]
+    assert len(found.entries[0].references) == 2
+
+
+def test_two_different_notes_on_one_message_are_both_kept(tmp_path: Path) -> None:
+    source = (
+        "# Translators: the GPU row.\n"
+        '_("none detected")\n'
+        "# Translators: the backends row.\n"
+        '_("none detected")\n'
+    )
+    found = extract([_write(tmp_path, source)])
+    assert found.entries[0].comments == [
+        "Translators: the GPU row.",
+        "Translators: the backends row.",
+    ]
