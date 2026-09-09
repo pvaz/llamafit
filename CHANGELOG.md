@@ -48,6 +48,14 @@ the changelog says so when they do.
   stderr so `--json` stays machine-readable. `docs/translations.md` says how to add a language.
 - European Portuguese catalog (`pt_PT.po`) covering the wrapped interface. It has had no
   second reader, and both the file and `docs/translations.md` say so.
+- Numbers are written the way the reader's language writes them. The group separator, the
+  decimal separator and the abbreviation for a thousand million are catalog entries, so a
+  language sets its own without a locale database or a dependency, and one that has not
+  filled them in falls back to English rather than to nothing. English writes a model's
+  context as `32,768`, which a reader who groups with a point would otherwise read as a
+  fraction.
+- `scripts/gen_messages.py` copies a `# Translators:` comment block above a call into the
+  template as `#.` lines, for what a message cannot say about itself.
 
 ### Fixed
 - RAM bandwidth now measures sequential read throughput, not a copy: a copy moves each
@@ -65,5 +73,9 @@ the changelog says so when they do.
 - Three hints named what they were about instead of pointing at it with a pronoun whose
   antecedent was in a neighbouring message, which a translator, and a reader taking in one
   line, never sees.
+- The `list` table's column budget measures terminal cells rather than characters. A
+  Japanese heading is two characters and four columns wide, and a Devanagari one counts
+  combining marks that occupy no column at all, so a budget in characters admitted columns
+  it had no room for.
 
 [Unreleased]: https://github.com/pvaz/llamafit/commits/main

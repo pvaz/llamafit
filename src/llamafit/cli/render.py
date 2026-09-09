@@ -27,7 +27,7 @@ from llamafit.models.host import Host, Probe, Source
 from llamafit.models.llamacpp import LlamaCpp
 from llamafit.services.catalog import ModelSummary, QuantDetail
 from llamafit.services.doctor import Finding
-from llamafit.units import format_bytes
+from llamafit.units import billions_suffix, format_bytes, format_grouped, localise_number
 
 _LEVEL_STYLE = {"ok": "green", "warn": "yellow", "error": "red"}
 
@@ -65,12 +65,12 @@ def _from_table(bandwidth_gbps: float | None, compute_tflops_fp16: float | None)
     """
     if bandwidth_gbps and compute_tflops_fp16:
         return _("%(bandwidth)s GB/s and %(compute)s TFLOPS fp16") % {
-            "bandwidth": bandwidth_gbps,
-            "compute": compute_tflops_fp16,
+            "bandwidth": localise_number(str(bandwidth_gbps)),
+            "compute": localise_number(str(compute_tflops_fp16)),
         }
     if bandwidth_gbps:
-        return _("%(bandwidth)s GB/s") % {"bandwidth": bandwidth_gbps}
-    return _("%(compute)s TFLOPS fp16") % {"compute": compute_tflops_fp16}
+        return _("%(bandwidth)s GB/s") % {"bandwidth": localise_number(str(bandwidth_gbps))}
+    return _("%(compute)s TFLOPS fp16") % {"compute": localise_number(str(compute_tflops_fp16))}
 
 
 def render_host(host: Host) -> Table:
@@ -134,7 +134,10 @@ def render_host(host: Host) -> Table:
     )
     bandwidth = (
         _("%(gbps)s GB/s (%(source)s)")
-        % {"gbps": mem.bandwidth_gbps, "source": _bandwidth_source_label(mem.bandwidth_source)}
+        % {
+            "gbps": localise_number(str(mem.bandwidth_gbps)),
+            "source": _bandwidth_source_label(mem.bandwidth_source),
+        }
         if mem.bandwidth_gbps
         else pgettext("memory bandwidth", "unknown")
     )
@@ -286,7 +289,7 @@ def render_findings(findings: Iterable[Finding]) -> Table:
 
 def _fmt_billions(value: float) -> str:
     """Format a parameter count in billions, dropping a trailing ``.0``."""
-    return f"{value:g}"
+    return localise_number(f"{value:g}")
 
 
 def _fmt_context_compact(tokens: int) -> str:
@@ -384,8 +387,8 @@ def _fmt_params(total_b: float, active_b: float) -> str:
     which is the only case the difference is telling anyone something.
     """
     if total_b == active_b:
-        return f"{_fmt_billions(total_b)}B"
-    return f"{_fmt_billions(total_b)}/{_fmt_billions(active_b)}B"
+        return f"{_fmt_billions(total_b)}{billions_suffix()}"
+    return f"{_fmt_billions(total_b)}/{_fmt_billions(active_b)}{billions_suffix()}"
 
 
 def _column_budget(
@@ -402,10 +405,10 @@ def _column_budget(
     because a blank column or a number missing a digit is worse than one column
     fewer.
 
-    Every width here is a count of terminal cells, measured with ``cell_len`` rather than
-    with ``len``: a Japanese heading is two characters and four columns wide, and a
-    Devanagari one counts combining marks as characters that occupy no column at all. A
-    budget that measures the wrong thing is not a budget, and the whole point of this
+    Every width here is a count of terminal cells, measured with ``cell_len`` rather
+    than with ``len``: a Japanese heading is two characters and four columns wide, and a
+    Devanagari one counts its combining marks as characters that occupy no column at all.
+    A budget that measures the wrong thing is not a budget, and the whole point of this
     function is that a column is admitted only when its content fits whole.
 
     Returns:
@@ -544,10 +547,16 @@ def render_model_facts(model: CatalogModel) -> Table:
             }
         ),
     )
-    context = _("%(tokens)s tokens native") % {"tokens": f"{model.context.native:,}"}
+    context = _("%(tokens)s tokens native") % {"tokens": format_grouped(model.context.native)}
     if model.context.extended:
+        # This second message is a fragment: it opens with a comma and continues the one
+        # above rather than standing on its own, which is exactly what a translator cannot
+        # work with. It should be two whole alternative sentences. It is deliberately left
+        # alone for now: catalogs are being translated against the committed template, and
+        # changing a message id orphans that work silently, with a green build. Fix it once
+        # they have landed, not helpfully in passing.
         context += _(", %(tokens)s extended via %(method)s") % {
-            "tokens": f"{model.context.extended:,}",
+            "tokens": format_grouped(model.context.extended),
             "method": model.context.extended_method or _("unspecified method"),
         }
     table.add_row(_("Context"), Text(context))
@@ -562,7 +571,8 @@ def render_model_facts(model: CatalogModel) -> Table:
     table.add_row(_("Quality baseline"), str(model.quality.baseline))
     for benchmark in model.quality.benchmarks:
         table.add_row(
-            _("Benchmark"), Text(f"{benchmark.name}: {benchmark.score} ({benchmark.source})")
+            _("Benchmark"),
+            Text(f"{benchmark.name}: {localise_number(str(benchmark.score))} ({benchmark.source})"),
         )
     for index, source in enumerate(model.sources):
         location = source.repo if source.kind == "gguf" else source.path
@@ -614,7 +624,9 @@ def render_quants(quants: Sequence[QuantDetail]) -> Table:
         table.add_row(
             Text(quant.name),
             format_bytes(quant.bytes_),
-            f"{quant.bpw:.2f}" if quant.bpw is not None else pgettext("bits per weight", "unknown"),
+            localise_number(f"{quant.bpw:.2f}")
+            if quant.bpw is not None
+            else pgettext("bits per weight", "unknown"),
             Text(_facts_summary(quant.facts)),
         )
     return table

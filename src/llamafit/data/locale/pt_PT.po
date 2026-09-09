@@ -802,6 +802,36 @@ msgstr "%(size)s livres"
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr "A maioria dos modelos úteis precisa de 5 a 120 GB; liberte espaço ou mude a pasta das transferências."
 
+#. Translators: this is punctuation, not prose. It is what your language puts between
+#. a number's groups of three digits: English writes 32,768 and German 32.768. Write
+#. the character your readers expect. An empty translation does not mean "no
+#. separator"; it means untranslated, and falls back to the English comma. A
+#. translation that is only a space counts as empty too, so a language that groups
+#. with a space (French, Russian, Swedish and others) cannot say so here yet: please
+#. open an issue rather than working around it, because the fix belongs in the reader.
+msgctxt "thousands separator"
+msgid ","
+msgstr "."
+
+#. Translators: this is punctuation, not prose. It is what your language puts before
+#. the fractional part of a number: English writes 127.8 and Portuguese 127,8. An empty
+#. translation means untranslated, and falls back to the English point.
+msgctxt "decimal separator"
+msgid "."
+msgstr ","
+
+#. Translators: this is an abbreviation, not a word. It marks a parameter count of a
+#. thousand million, as in 27B. Do not translate the English word "billion": the long
+#. and short scales disagree about what a billion is, so write the abbreviation your
+#. own readers expect for a thousand million.
+# Left as B on purpose, not overlooked. Portuguese counts on the long scale, where
+# a "bilião" is a million million, so the English word would be wrong by a factor of
+# a thousand. There is no settled Portuguese abbreviation for a thousand million,
+# and Portuguese writing about these models uses B, so B is what a reader expects.
+msgctxt "parameter count"
+msgid "B"
+msgstr "B"
+
 msgctxt "size"
 msgid "unknown"
 msgstr "desconhecido"
