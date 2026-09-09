@@ -357,3 +357,34 @@ def test_an_empty_msgid_with_a_context_is_a_message_not_the_header() -> None:
     catalog = parse_po(HEADER + '\nmsgctxt "odd"\nmsgid ""\nmsgstr "x"\n')
     assert catalog.language == "pt_PT"
     assert catalog.pgettext("odd", "") == "x"
+
+
+def test_a_translation_that_is_only_whitespace_counts_as_no_translation() -> None:
+    # A space, a tab, a newline and a non-breaking space: all of them reach a screen as
+    # a blank line, and all of them look like a finished translation in the file.
+    catalog = parse_po(HEADER + '\nmsgid "unknown"\nmsgstr " \\t\\n\u00a0"\n')
+    assert catalog.gettext("unknown") == "unknown"
+    assert catalog.untranslated() == ((None, "unknown"),)
+    assert not catalog.messages[None, "unknown"].translated
+
+
+def test_a_blank_plural_form_falls_back_like_an_empty_one() -> None:
+    catalog = parse_po(
+        HEADER
+        + """
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d modulo"
+msgstr[1] "   "
+"""
+    )
+    assert catalog.ngettext("%(count)d module", "%(count)d modules", 1) == "%(count)d modulo"
+    assert catalog.ngettext("%(count)d module", "%(count)d modules", 7) == "%(count)d modules"
+
+
+def test_a_translation_that_is_only_partly_whitespace_is_kept_exactly() -> None:
+    # Only a translation that is nothing but whitespace is absent. One that ends in a
+    # space is a translation, and the space is the translator's, so it survives.
+    catalog = parse_po(HEADER + '\nmsgid "Language: "\nmsgstr "Idioma: "\n')
+    assert catalog.gettext("Language: ") == "Idioma: "
+    assert catalog.untranslated() == ()

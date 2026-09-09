@@ -99,7 +99,8 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
 
 4. Translate. Leave a `msgstr` empty rather than guessing: an empty translation falls back
    to the English message, so an unfinished catalog degrades to English and never shows a
-   blank line.
+   blank line. A `msgstr` holding only spaces, tabs or newlines counts as empty too, and
+   the completeness check still lists it as a message your language needs.
 
 5. Run the tests. `tests/unit/test_i18n_catalogs.py` checks every catalog: it must parse,
    it must declare its plural rule, and it must not translate a message the template does
