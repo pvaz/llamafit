@@ -88,7 +88,7 @@ class HttpHfClient:
 
     def __init__(self, client: httpx.Client | None = None, token: str | None = None) -> None:
         self._owns_client = client is None
-        self._client = client if client is not None else httpx.Client()
+        self._client = client if client is not None else httpx.Client(follow_redirects=True)
         self._token = token if token is not None else os.environ.get("HF_TOKEN")
 
     def close(self) -> None:
@@ -121,7 +121,8 @@ class HttpHfClient:
         if self._token:
             headers["Authorization"] = f"Bearer {self._token}"
         try:
-            response = self._client.get(url, headers=headers)
+            # An injected client is never assumed to redirect on its own.
+            response = self._client.get(url, headers=headers, follow_redirects=True)
             if response.status_code != 200:
                 raise NetworkError(
                     f"Hugging Face returned {response.status_code} while listing files for {repo}.",

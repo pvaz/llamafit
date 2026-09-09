@@ -190,6 +190,47 @@ def test_a_non_206_response_is_a_network_error_naming_the_url(status: int) -> No
         source.read(0, 10)
 
 
+def test_a_redirected_range_request_still_returns_the_range() -> None:
+    # huggingface.co/.../resolve/main/... answers with a 302 to a CDN URL; an
+    # injected client must not be assumed to follow that on its own.
+    data = bytes(range(200))
+    requests: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        if str(request.url) == URL:
+            return httpx.Response(
+                302, headers={"location": "https://cdn.example.invalid/model.gguf"}
+            )
+        start, end = _parse_range(request.headers["range"])
+        end = min(end, len(data) - 1)
+        return httpx.Response(
+            206,
+            content=data[start : end + 1],
+            headers={"content-range": f"bytes {start}-{end}/{len(data)}"},
+        )
+
+    source = HttpRangeSource(URL, client=_client(handler), chunk=50)
+    result = source.read(10, 5)
+
+    assert result == data[10:15]
+    assert len(requests) == 2
+    assert all(request.method == "GET" for request in requests)
+
+
+def test_a_redirect_landing_on_a_full_body_is_a_network_error_naming_the_url() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        if str(request.url) == URL:
+            return httpx.Response(
+                302, headers={"location": "https://cdn.example.invalid/model.gguf"}
+            )
+        return httpx.Response(200, content=b"the entire fifty-gigabyte file")
+
+    source = HttpRangeSource(URL, client=_client(handler))
+    with pytest.raises(NetworkError, match=re.escape(URL)):
+        source.read(0, 10)
+
+
 def test_a_connection_error_is_a_network_error_naming_the_url_not_an_httpx_exception() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         raise httpx.ConnectError("boom", request=request)
