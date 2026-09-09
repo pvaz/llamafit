@@ -13,7 +13,7 @@ are built; their flags may still change.
 | Option | Effect |
 |---|---|
 | `--json` | Print machine-readable JSON instead of tables. |
-| `--verbose`, `-v` | Log details to `llamafit.log` at debug level and show tracebacks for unexpected errors. |
+| `--verbose`, `-v` | Show the full traceback for an unexpected error instead of a short message. |
 | `--no-color` | Disable colours; useful when piping into files. |
 | `--version` | Print the version and exit. |
 | `--profile NAME\|FILE` | Score against a hardware profile instead of the live scan (phase 1C). |
@@ -42,15 +42,15 @@ Scan the machine and show CPU, memory, GPUs, disks and the llama.cpp installatio
 $ llamafit system
 Host
   OS         windows Windows-11-10.0.26200-SP0 (x86_64)
-  CPU        Intel(R) Core(TM) i9-14900KF; 24 cores / 32 threads, 8 performance cores; avx2 avx512 avx512_vnni
-  Memory     128.0 GiB total, 100.2 GiB available; DDR5 4200 MT/s 2-channel; bandwidth 58.4 GB/s (measured)
-  GPU 0      NVIDIA GeForce RTX 4060 (cuda); 8.0 GiB VRAM, 7.5 GiB free; 272 GB/s, 15 TFLOPS fp16, driver 610.88
-  Disk D:\   1.2 TiB free of 1.8 TiB
+  CPU        Intel(R) Core(TM) i9-14900KF; 24 cores / 32 threads, 8 performance cores; avx2
+  Memory     127.8 GiB total, 102.6 GiB available; DDR5 4200 MT/s 4-channel; bandwidth 31.1 GB/s (measured)
+  GPU 0      NVIDIA GeForce RTX 4060 (cuda); 8.0 GiB VRAM, 7.2 GiB free; 272.0 GB/s, 15.0 TFLOPS fp16, driver 610.88
+  Disk C:\Dev\Projectos Pessoais\2026\llamafit   355.8 GiB free of 1.8 TiB
 
 llama.cpp
-  Installed     yes, b10867 (f3f1a8f27) at D:\llama.cpp\bin
+  Installed     yes, b10867 at D:\llama.cpp\bin
   Backends      cuda, rpc, cpu
-  Local models  3
+  Local models  5
 ```
 
 With `--json` the output is a `SystemReport`: `{"host": {...}, "llamacpp": {...}, "version": "..."}`.
