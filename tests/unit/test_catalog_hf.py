@@ -143,20 +143,15 @@ def test_assigns_each_file_to_the_longest_matching_quant() -> None:
     assert len(assigned) == len(set(assigned))
 
 
-def test_two_files_sharing_a_shard_index_are_ordered_not_compared() -> None:
+def test_a_quant_published_under_two_paths_is_left_out_not_summed() -> None:
     files = [
-        RepoFile(path="b/M-Q4_K_M-00001-of-00002.gguf", size=2, sha256=None),
-        RepoFile(path="a/M-Q4_K_M-00002-of-00002.gguf", size=3, sha256=None),
-        RepoFile(path="a/M-Q4_K_M-00001-of-00002.gguf", size=1, sha256=None),
+        RepoFile(path="main/M-Q4_K_M-00001-of-00002.gguf", size=2, sha256=None),
+        RepoFile(path="imat/M-Q4_K_M-00002-of-00002.gguf", size=3, sha256=None),
+        RepoFile(path="imat/M-Q4_K_M-00001-of-00002.gguf", size=1, sha256=None),
+        RepoFile(path="main/M-Q4_K_M-00002-of-00002.gguf", size=4, sha256=None),
     ]
 
-    matched = match_quant_files(files, "Q4_K_M")
-
-    assert [file.path for file in matched] == [
-        "a/M-Q4_K_M-00001-of-00002.gguf",
-        "b/M-Q4_K_M-00001-of-00002.gguf",
-        "a/M-Q4_K_M-00002-of-00002.gguf",
-    ]
+    assert match_quant_files(files, "Q4_K_M") == []
 
 
 def test_a_short_shard_set_is_left_out_rather_than_passed_on() -> None:

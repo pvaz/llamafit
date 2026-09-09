@@ -194,10 +194,12 @@ def _refresh_source(
 ) -> str | None:
     """Refresh one source's quants and extras in place.
 
-    A quant name that matched no files is not an error: the repository listing was
-    read successfully, the name is simply not (or no longer) published there. It is
-    recorded in ``warnings`` instead, so a curator can catch a typo or a renamed
-    quant rather than have it silently do nothing.
+    A quant name that matched no whole set of files is not an error: the repository
+    listing was read successfully, and the files simply do not add up to one quant —
+    the name is not published there, or is published twice over, or the set is missing
+    shards. It is recorded in ``warnings`` instead, so a curator can find out which
+    rather than have it silently do nothing. The warning does not claim to know which
+    of the three it is, because the matcher deliberately declines to guess.
 
     A quant whose facts cannot be read is an error, and it belongs to the model
     rather than to the run: one unreadable quant abandons its own model, with what
@@ -229,8 +231,10 @@ def _refresh_source(
         matched = assigned.get(quant.name, [])
         if not matched:
             warnings.append(
-                f"sources[{index}].quants[{qi}] ({quant.name!r}): no files in {repo} "
-                "matched this quant name"
+                f"sources[{index}].quants[{qi}] ({quant.name!r}): no whole set of files in "
+                f"{repo} matched this quant name; it may be published there more than once, "
+                "may be missing shards, or may not be published at all. Check the repository "
+                "listing."
             )
             continue
         try:

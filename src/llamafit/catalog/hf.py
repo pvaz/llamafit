@@ -30,32 +30,40 @@ def _quant_pattern(quant_name: str) -> re.Pattern[str]:
     return re.compile(rf"(?:^|[-_./]){name}(?:\.gguf$|{_SHARD_SUFFIX})", re.IGNORECASE)
 
 
-def _is_complete(group: Sequence[tuple[int, RepoFile]], total: int) -> bool:
-    """Whether a shard group holds every index its file names declare, ``1`` through ``total``."""
-    return {index for index, _ in group} == set(range(1, total + 1))
+def _is_whole_set(ordered: Sequence[tuple[int, RepoFile]], total: int) -> bool:
+    """Whether an ordered shard group holds exactly one file for each declared index.
+
+    Short and doubled are both refused, for the same reason: neither is one whole set.
+    A missing shard cannot be sized, and two files claiming one index are two
+    publications of the quant — an ``imat`` path and a ``main`` path, say — which are
+    usually genuinely different files. Summing them would record a size half again too
+    large; choosing between them would be guessing which one a curator meant.
+    """
+    return [index for index, _ in ordered] == list(range(1, total + 1))
 
 
 def _select_shard_set(files: Sequence[RepoFile]) -> list[RepoFile]:
-    """Pick the shards of the largest complete shard set among ``files``, or all of them sorted.
+    """Pick the largest whole shard set among ``files``, or all of them sorted.
 
     A split file's name declares how many shards there are, ``-00001-of-00004``, so a
-    set that is short — a repository mid-upload, a partial mirror — is recognised here
-    without asking the network anything, and left out rather than handed on as if it
-    were whole. The caller then sees no files for that quant, which it already treats
-    as a warning, instead of fetching headers only to reject what they describe.
+    set that is short — a repository mid-upload, a partial mirror — or one published
+    twice over is recognised here from the listing alone, without asking the network
+    anything, and left out rather than handed on as if it were whole. The caller then
+    sees no files for that quant, which it already treats as a warning, instead of
+    fetching headers for a set that could never add up.
 
-    Two files can carry the same shard index, which happens as soon as a repository
-    publishes one split under two directories, so the sort is keyed on the index and
-    the path rather than on the pair: :class:`RepoFile` has no ordering, and a plain
-    tuple sort would fall through to comparing the dataclasses and raise.
+    Each candidate group is ordered before it is judged, and the sort is keyed on the
+    index and then the path rather than on the pair: :class:`RepoFile` has no ordering,
+    so a plain tuple sort would fall through to comparing the dataclasses and raise the
+    moment two files shared an index — which is exactly the case being judged.
 
     Args:
         files: Files already known to belong to one quant.
 
     Returns:
-        When any file is part of a ``-NNNNN-of-MMMMM.gguf`` shard set, only the shards
-        of the largest *complete* such set, sorted by shard index and then by path, and
-        nothing at all when no set is complete; otherwise every file, sorted by path.
+        When any file is part of a ``-NNNNN-of-MMMMM.gguf`` shard set, the largest such
+        set that is whole, sorted by shard index, and nothing at all when none is;
+        otherwise every file, sorted by path.
     """
     shard_groups: dict[int, list[tuple[int, RepoFile]]] = {}
     for file in files:
@@ -66,11 +74,11 @@ def _select_shard_set(files: Sequence[RepoFile]) -> list[RepoFile]:
             shard_groups.setdefault(total, []).append((index, file))
 
     if shard_groups:
-        complete = [total for total, group in shard_groups.items() if _is_complete(group, total)]
-        if not complete:
-            return []
-        ordered = sorted(shard_groups[max(complete)], key=lambda pair: (pair[0], pair[1].path))
-        return [file for _, file in ordered]
+        for total in sorted(shard_groups, reverse=True):
+            ordered = sorted(shard_groups[total], key=lambda pair: (pair[0], pair[1].path))
+            if _is_whole_set(ordered, total):
+                return [file for _, file in ordered]
+        return []
 
     return sorted(files, key=lambda file: file.path)
 
@@ -218,10 +226,11 @@ def match_quant_files(files: Sequence[RepoFile], quant_name: str) -> list[RepoFi
         quant_name: The quantization to match, for example ``Q4_K_M`` or ``UD-Q4_K_XL``.
 
     Returns:
-        The matching files. When any of them is part of a shard set, only the shards
-        of the largest complete such set are returned, sorted by shard index, and
-        nothing at all when every set is missing shards; otherwise every matching file
-        is returned, sorted by path.
+        The matching files. When any of them is part of a shard set, only the largest
+        such set that is whole is returned, sorted by shard index, and nothing at all
+        when no set is whole — one missing a shard, or one published twice over, is
+        left out rather than guessed at; otherwise every matching file is returned,
+        sorted by path.
     """
     pattern = _quant_pattern(quant_name)
     candidates = [
