@@ -42,6 +42,11 @@ _CHANNEL_LETTER_PATTERNS = (
     re.compile(r"dimm[_ ]([a-z])\d", re.IGNORECASE),
     re.compile(r"^([a-z])\d+[_ ]dimm", re.IGNORECASE),
 )
+# Some boards report DeviceLocator as "ControllerN-DIMMx" instead of a channel letter: one
+# integrated memory controller per channel. Confirmed against this project's own reference
+# machine, whose four modules on a documented dual-channel board read Controller0-DIMM0,
+# Controller0-DIMM1, Controller1-DIMM0 and Controller1-DIMM1 - two controllers, two channels.
+_CONTROLLER_PATTERN = re.compile(r"controller(\d+)", re.IGNORECASE)
 
 
 def channel_from_labels(bank_label: str | None, device_locator: str | None) -> str | None:
@@ -52,7 +57,9 @@ def channel_from_labels(bank_label: str | None, device_locator: str | None) -> s
     Windows, or ``Bank Locator``/``Locator`` from ``dmidecode -t memory`` on Linux.
     Recognises, case-insensitively, ``ChannelA-DIMM1``, ``Channel A Slot 0``,
     ``DIMM_A1``, ``DIMM A1``, ``A1_DIMM0`` and the bare ``CHANNEL A`` dmidecode also
-    prints, and returns the channel letter they encode (lower-cased).
+    prints, returning the channel letter they encode (lower-cased); and
+    ``Controller0-DIMM0`` style locators, returning ``"controllerN"`` for the
+    controller number, since some boards report one memory controller per channel.
 
     Returns ``None`` for a label that does not encode a channel, such as ``BANK 0``
     (which numbers slots or ranks, not channels) or a bare ``DIMM 0``: an unrecognised
@@ -65,6 +72,9 @@ def channel_from_labels(bank_label: str | None, device_locator: str | None) -> s
             match = pattern.search(label)
             if match:
                 return match.group(1).lower()
+        controller = _CONTROLLER_PATTERN.search(label)
+        if controller:
+            return f"controller{controller.group(1)}"
     return None
 
 
@@ -95,10 +105,11 @@ def detect_memory(
     The theoretical bandwidth estimate needs the channel count, which is not the module
     count. Windows and Linux report it indirectly: their slot labels (``BankLabel`` and
     ``DeviceLocator`` on Windows, ``Bank Locator`` and ``Locator`` from ``dmidecode`` on
-    Linux) usually encode a channel letter, which ``channel_from_labels`` parses. The
-    estimate is computed only when that parse genuinely found one; macOS's
-    ``system_profiler`` reports no such labels, so channels stays unknown there, and the
-    bandwidth then comes from the measurement or the assumed default.
+    Linux) usually encode a channel letter or a per-controller locator, which
+    ``channel_from_labels`` parses. The estimate is computed only when that parse
+    genuinely found one; macOS's ``system_profiler`` reports no such labels, so channels
+    stays unknown there, and the bandwidth then comes from the measurement or the assumed
+    default.
     """
     probes: list[Probe] = []
     start = time.perf_counter()

@@ -29,10 +29,12 @@ it, so a `doctor` warning can always be traced here.
 The module count is not the channel count: a dual-channel board with four modules reports four
 modules, and the module count alone says nothing about channels. On Windows and Linux, the
 slot labels the module count comes from (`BankLabel`/`DeviceLocator`, or `dmidecode`'s `Bank
-Locator`/`Locator`) usually also encode a channel letter, in forms such as `ChannelA-DIMM1`,
-`Channel A Slot 0`, `DIMM_A1` or the bare `CHANNEL A`; LlamaFit parses that letter and counts
-the distinct ones across populated modules. An uninformative label such as `BANK 0`, or a form
-not recognised, leaves the channel count unknown rather than guessing, so the theoretical
+Locator`/`Locator`) usually also encode the channel, either as a letter in forms such as
+`ChannelA-DIMM1`, `Channel A Slot 0`, `DIMM_A1` or the bare `CHANNEL A`, or as a controller
+number in `ControllerN-DIMMx` (one integrated memory controller per channel on boards that
+label it this way); LlamaFit parses whichever it finds and counts the distinct identifiers
+across populated modules. An uninformative label such as `BANK 0`, or a form not recognised,
+leaves the channel count unknown rather than guessing, so the theoretical
 `speed x 8 bytes x channels` estimate only runs once a channel was genuinely parsed out. macOS's
 `system_profiler` reports no such labels, so the channel count stays unknown there.
 
