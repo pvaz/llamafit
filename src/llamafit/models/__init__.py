@@ -1,26 +1,69 @@
 """Typed data shared by every layer of LlamaFit."""
 
+from llamafit.models.catalog import (
+    ArchClass,
+    Architecture,
+    Benchmark,
+    Capability,
+    Catalog,
+    CatalogModel,
+    ChatTemplate,
+    Context,
+    Extra,
+    ExtraRole,
+    License,
+    LlamaCppNeeds,
+    Measured,
+    Params,
+    Quality,
+    Quant,
+    Sampling,
+    Source,
+    Trust,
+    UseCase,
+)
 from llamafit.models.gguf import GgufFacts, GgufHeader, TensorInfo
-from llamafit.models.host import Arch, Backend, Cpu, Disk, Gpu, Host, Memory, OsName, Probe, Source
+from llamafit.models.host import Arch, Backend, Cpu, Disk, Gpu, Host, Memory, OsName, Probe
+from llamafit.models.host import Source as HostSource
 from llamafit.models.llamacpp import LlamaCpp, LocalModel, RunningServer
 from llamafit.models.report import SystemReport
 
 __all__ = [
     "Arch",
+    "ArchClass",
+    "Architecture",
     "Backend",
+    "Benchmark",
+    "Capability",
+    "Catalog",
+    "CatalogModel",
+    "ChatTemplate",
+    "Context",
     "Cpu",
     "Disk",
+    "Extra",
+    "ExtraRole",
     "GgufFacts",
     "GgufHeader",
     "Gpu",
     "Host",
+    "HostSource",
+    "License",
     "LlamaCpp",
+    "LlamaCppNeeds",
     "LocalModel",
+    "Measured",
     "Memory",
     "OsName",
+    "Params",
     "Probe",
+    "Quality",
+    "Quant",
     "RunningServer",
+    "Sampling",
     "Source",
     "SystemReport",
     "TensorInfo",
+    "Trust",
+    "UseCase",
 ]
