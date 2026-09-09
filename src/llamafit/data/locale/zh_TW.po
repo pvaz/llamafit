@@ -803,8 +803,10 @@ msgctxt "decimal separator"
 msgid "."
 msgstr "."
 
-# Left as B on purpose. Chinese counts in 億, a hundred million, so a thousand million
-# is 10億 — a number, not a suffix — and there is nothing here to abbreviate.
+# B is not the English word for a thousand million; it is how these models are named.
+# The file is Qwen3-27B and the identifier in this row already says 27B, so a localised
+# abbreviation would make one row disagree with itself. Change it only if your readers
+# genuinely would not recognise B, and say in a comment here why.
 msgctxt "parameter count"
 msgid "B"
 msgstr "B"

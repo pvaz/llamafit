@@ -814,8 +814,10 @@ msgctxt "decimal separator"
 msgid "."
 msgstr ","
 
-# Left as B on purpose. Spanish has no unit at a thousand million — it is 1000 M, and
-# a billón is a million million — so there is no Spanish abbreviation to write here.
+# B is not the English word for a thousand million; it is how these models are named.
+# The file is Qwen3-27B and the identifier in this row already says 27B, so a localised
+# abbreviation would make one row disagree with itself. Change it only if your readers
+# genuinely would not recognise B, and say in a comment here why.
 msgctxt "parameter count"
 msgid "B"
 msgstr "B"
