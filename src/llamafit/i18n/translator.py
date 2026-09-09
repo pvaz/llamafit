@@ -190,7 +190,11 @@ def set_language(
                 requested=choice.language,
                 notice=f"LlamaFit could not read its {choice.language} translation, "
                 "so it is using English.",
-                hint="Reinstall LlamaFit, or report the file the log names.",
+                # The catalog errors know what is wrong with the file and say what would
+                # fix it. Only a missing or unreadable file has nothing to add, and only
+                # for that one is a broken install the likeliest explanation.
+                hint=(isinstance(exc, ConfigError) and exc.hint)
+                or "Reinstall LlamaFit, or report the file the log names.",
             )
         )
     set_translator(CatalogTranslator(choice.language, catalog))
