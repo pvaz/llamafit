@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import json
 from functools import lru_cache
-from importlib import resources
 
 from pydantic import BaseModel
 
+from llamafit.data import packaged_text
 from llamafit.models.host import Gpu
 
 
@@ -23,7 +23,12 @@ class GpuSpec(BaseModel):
 
 @lru_cache(maxsize=1)
 def _table() -> list[GpuSpec]:
-    text = resources.files("llamafit.data").joinpath("gpus.json").read_text(encoding="utf-8")
+    """Read the packaged table once.
+
+    Raises:
+        PackagedDataError: The file did not ship in this installation.
+    """
+    text = packaged_text("llamafit.data", "gpus.json", what="its GPU specification table")
     return [GpuSpec(**row) for row in json.loads(text)["gpus"]]
 
 
