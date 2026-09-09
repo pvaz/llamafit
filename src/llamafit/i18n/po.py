@@ -51,6 +51,7 @@ _STARTS_AN_ENTRY = frozenset({"msgctxt", "msgid"})
 _PLURAL_FORMS = "Plural-Forms"
 _LANGUAGE = "Language"
 _MAX_PLURAL_INDEX = 9
+_BOM = "\ufeff"
 
 MessageKey = tuple[str | None, str]
 """What identifies an entry: its context, ``None`` when it has none, and its ``msgid``."""
@@ -205,7 +206,7 @@ def parse_po(text: str, *, source: str = "<string>") -> PoCatalog:
     """Parse the text of a ``.po`` file.
 
     Args:
-        text: The whole file, already decoded as UTF-8.
+        text: The whole file, already decoded. A leading byte order mark is dropped.
         source: The name to put in error messages, usually the path.
 
     Returns:
@@ -219,7 +220,7 @@ def parse_po(text: str, *, source: str = "<string>") -> PoCatalog:
     current = _Entry(line=1)
     target: tuple[str, int] | None = None
 
-    for number, raw in enumerate(text.splitlines(), start=1):
+    for number, raw in enumerate(text.removeprefix(_BOM).splitlines(), start=1):
         line = raw.strip()
         if not line:
             if not current.empty:
@@ -248,6 +249,11 @@ def parse_po(text: str, *, source: str = "<string>") -> PoCatalog:
 def read_po(path: Path) -> PoCatalog:
     """Read and parse a ``.po`` file, always as UTF-8 whatever the platform default is.
 
+    A byte order mark is accepted and dropped. A Windows editor writes one by
+    default, and a Windows translator is precisely the reader this format is here
+    for; refusing the file over an invisible character, in a message that then
+    quotes the invisible character back, is no way to meet one.
+
     Returns:
         The parsed catalog.
 
@@ -256,7 +262,7 @@ def read_po(path: Path) -> PoCatalog:
         OSError: If the file cannot be opened.
     """
     try:
-        text = path.read_text(encoding="utf-8")
+        text = path.read_text(encoding="utf-8-sig")
     except UnicodeDecodeError as exc:
         raise PoSyntaxError(str(path), 1, f"the file is not valid UTF-8: {exc}") from exc
     return parse_po(text, source=str(path))

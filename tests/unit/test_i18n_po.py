@@ -15,6 +15,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\\n"
 """
 
+HEADER_BYTES = b"\xef\xbb\xbf" + HEADER.encode()
+"""HEADER as a Windows editor saves it: a byte order mark, then the same text."""
+
 POLISH_HEADER = """
 msgid ""
 msgstr ""
@@ -388,3 +391,30 @@ def test_a_translation_that_is_only_partly_whitespace_is_kept_exactly() -> None:
     catalog = parse_po(HEADER + '\nmsgid "Language: "\nmsgstr "Idioma: "\n')
     assert catalog.gettext("Language: ") == "Idioma: "
     assert catalog.untranslated() == ()
+
+
+def test_a_catalog_saved_with_a_byte_order_mark_is_read(tmp_path: Path) -> None:
+    # What Notepad and a good few other Windows editors write by default. Refusing it
+    # reported an unknown keyword whose name held an invisible character.
+    path = tmp_path / "pt_PT.po"
+    path.write_bytes(
+        b"" + HEADER_BYTES + b'\nmsgid "No GPU detected"\nmsgstr "Nenhuma GPU detetada"\n'
+    )
+    assert read_po(path).gettext("No GPU detected") == "Nenhuma GPU detetada"
+
+
+def test_a_catalog_saved_without_one_reads_exactly_the_same(tmp_path: Path) -> None:
+    marked, plain = tmp_path / "a.po", tmp_path / "b.po"
+    body = HEADER_BYTES[3:] + b'\nmsgid "No GPU detected"\nmsgstr "Nenhuma GPU detetada"\n'
+    marked.write_bytes(b"\xef\xbb\xbf" + body)
+    plain.write_bytes(body)
+    assert read_po(marked).messages.keys() == read_po(plain).messages.keys()
+    assert read_po(marked).headers == read_po(plain).headers
+
+
+def test_parsed_text_that_still_carries_a_mark_is_read_too() -> None:
+    # read_po strips it through the encoding; a caller that decoded the bytes itself, as
+    # the packaging test does, hands the mark straight to the parser.
+    catalog = parse_po("\ufeff" + HEADER + '\nmsgid "unknown"\nmsgstr "desconhecido"\n')
+    assert catalog.gettext("unknown") == "desconhecido"
+    assert catalog.language == "pt_PT"
