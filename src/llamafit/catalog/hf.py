@@ -36,10 +36,15 @@ def _select_shard_set(files: Sequence[RepoFile]) -> list[RepoFile]:
     Args:
         files: Files already known to belong to one quant.
 
+    Two files can carry the same shard index, which happens as soon as a repository
+    publishes one split under two directories, so the sort is keyed on the index and
+    the path rather than on the pair: :class:`RepoFile` has no ordering, and a plain
+    tuple sort would fall through to comparing the dataclasses and raise.
+
     Returns:
         When any file is part of a ``-NNNNN-of-MMMMM.gguf`` shard set, only the shards
-        of the largest such set, sorted by shard index; otherwise every file, sorted
-        by path.
+        of the largest such set, sorted by shard index and then by path; otherwise
+        every file, sorted by path.
     """
     shard_groups: dict[int, list[tuple[int, RepoFile]]] = {}
     for file in files:
@@ -51,7 +56,8 @@ def _select_shard_set(files: Sequence[RepoFile]) -> list[RepoFile]:
 
     if shard_groups:
         largest_total = max(shard_groups)
-        return [file for _, file in sorted(shard_groups[largest_total])]
+        ordered = sorted(shard_groups[largest_total], key=lambda pair: (pair[0], pair[1].path))
+        return [file for _, file in ordered]
 
     return sorted(files, key=lambda file: file.path)
 
