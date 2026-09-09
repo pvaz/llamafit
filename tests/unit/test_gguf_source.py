@@ -115,6 +115,65 @@ def test_etag_is_none_when_the_server_sends_no_etag() -> None:
     assert source.etag is None
 
 
+def test_head_returns_the_etag_and_content_length_without_fetching_a_body() -> None:
+    requests: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        assert request.method == "HEAD"
+        return httpx.Response(200, headers={"etag": "abc123", "content-length": "500"})
+
+    source = HttpRangeSource(URL, client=_client(handler))
+    etag, size = source.head()
+
+    assert (etag, size) == ("abc123", 500)
+    assert len(requests) == 1
+    assert source.etag == "abc123"
+    assert source.size() == 500
+
+
+def test_head_follows_a_redirect_and_reads_the_etag_from_the_final_response() -> None:
+    requests: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        if str(request.url) == URL:
+            return httpx.Response(
+                302, headers={"location": "https://cdn.example.invalid/model.gguf"}
+            )
+        return httpx.Response(200, headers={"etag": "cdn-etag"})
+
+    source = HttpRangeSource(URL, client=_client(handler))
+    etag, _ = source.head()
+
+    assert etag == "cdn-etag"
+    assert len(requests) == 2
+    assert all(request.method == "HEAD" for request in requests)
+
+
+def test_head_returns_none_when_the_server_refuses_head() -> None:
+    source = HttpRangeSource(URL, client=_client(lambda request: httpx.Response(405)))
+    assert source.head() == (None, None)
+    assert source.etag is None
+
+
+def test_head_returns_none_on_a_connection_error() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        raise httpx.ConnectError("boom", request=request)
+
+    source = HttpRangeSource(URL, client=_client(handler))
+    assert source.head() == (None, None)
+
+
+def test_head_returns_no_etag_when_the_server_sends_none() -> None:
+    source = HttpRangeSource(
+        URL, client=_client(lambda request: httpx.Response(200, headers={"content-length": "10"}))
+    )
+    etag, size = source.head()
+    assert etag is None
+    assert size == 10
+
+
 def test_size_is_none_when_the_server_sends_no_content_range() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         return httpx.Response(206, content=b"12345")
