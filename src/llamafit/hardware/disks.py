@@ -10,10 +10,15 @@ from llamafit.models.host import Disk
 
 
 def detect_disks(paths: Iterable[Path]) -> list[Disk]:
-    """One ``Disk`` per distinct mount among ``paths``; missing paths fall back to parents."""
+    """One ``Disk`` per distinct mount among ``paths``.
+
+    Paths are made absolute first, so a root-relative path such as
+    ``/definitely/missing/xyz`` resolves against the current drive on Windows before
+    walking up; missing paths fall back to their nearest existing parent.
+    """
     seen: dict[str, Disk] = {}
     for path in paths:
-        candidate = Path(path)
+        candidate = Path(path).absolute()
         while not candidate.exists() and candidate.parent != candidate:
             candidate = candidate.parent
         if not candidate.exists():
