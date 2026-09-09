@@ -32,8 +32,9 @@ the changelog says so when they do.
   parallelise because it holds the GIL and still measures a copy, keeps its own
   (re-derived) correction factor and is labelled `estimated` rather than `measured`.
 - Memory channel count is parsed from Windows (`BankLabel`/`DeviceLocator`) and Linux
-  (`dmidecode`'s `Bank Locator`/`Locator`) slot labels when they encode a channel
-  identifier, so the theoretical bandwidth estimate runs again on boards that report one;
-  `llamafit system` shows the channel count next to the module count when it is known.
+  (`dmidecode`'s `Bank Locator`/`Locator`) slot labels when they encode a channel letter
+  or a `ControllerN-DIMMx` per-controller locator, so the theoretical bandwidth estimate
+  runs again on boards that report one; `llamafit system` shows the channel count next to
+  the module count when it is known.
 
 [Unreleased]: https://github.com/pvaz/llamafit/commits/main

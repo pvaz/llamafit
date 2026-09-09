@@ -43,11 +43,10 @@ WIN_MODULES_WITH_CHANNELS = json.dumps(
     ]
 )
 
-# The four DIMMs on the actual dev machine this fix was verified on: a real, dual-channel,
-# four-module board whose DeviceLocator uses "ControllerN-DIMMx" rather than any of the
-# channel-letter forms above. channel_from_labels does not recognise it (see its docstring
-# and tests below), so this stays an honest "channels unknown" rather than a forced guess.
-WIN_MODULES_UNRECOGNISED_LOCATORS = json.dumps(
+# The exact four DeviceLocator values read from the actual dev machine this fix was
+# verified on: a real, dual-channel, four-module board that names channels via one
+# integrated memory controller per channel rather than a channel letter.
+WIN_MODULES_CONTROLLER_LOCATORS = json.dumps(
     [
         _module("BANK 0", "Controller0-DIMM0"),
         _module("BANK 0", "Controller0-DIMM1"),
@@ -164,14 +163,14 @@ def test_windows_channel_labels_give_the_channel_count() -> None:
     assert memory.bandwidth_source == "estimated"
 
 
-def test_windows_unrecognised_locators_leave_channels_unknown() -> None:
-    """The real reference machine's own "ControllerN-DIMMx" form is not force-matched."""
-    runner = FakeRunner({"powershell": WIN_MODULES_UNRECOGNISED_LOCATORS})
+def test_windows_controller_locators_give_the_channel_count() -> None:
+    """The real reference machine's own "ControllerN-DIMMx" locators resolve to 2 channels."""
+    runner = FakeRunner({"powershell": WIN_MODULES_CONTROLLER_LOCATORS})
     memory, _ = detect_memory(runner, "windows", vm_provider=vm)
     assert memory.modules == 4
-    assert memory.channels is None
-    assert memory.bandwidth_gbps is None
-    assert memory.bandwidth_source == "unknown"
+    assert memory.channels == 2
+    assert memory.bandwidth_gbps == 67.2
+    assert memory.bandwidth_source == "estimated"
 
 
 def test_macos_memory_type_without_speed() -> None:
@@ -218,13 +217,17 @@ def test_dmidecode_channel_labels_give_the_channel_count() -> None:
         # A board that puts the informative label in BankLabel and a plain index in
         # DeviceLocator (common on consumer boards, e.g. "P0 CHANNEL A" / "DIMM 0").
         ("P0 CHANNEL A", "DIMM 0", "a"),
+        # The per-controller form, using the exact strings read from the real reference
+        # machine (one integrated memory controller per channel on this board).
+        ("BANK 0", "Controller0-DIMM0", "controller0"),
+        ("BANK 0", "Controller0-DIMM1", "controller0"),
+        ("BANK 0", "Controller1-DIMM0", "controller1"),
+        ("BANK 0", "Controller1-DIMM1", "controller1"),
         # Rejects: uninformative or unrecognised labels must come back None, not a guess.
         ("BANK 0", None, None),
         ("BANK 0", "BANK 0", None),
         (None, "DIMM0", None),
         (None, None, None),
-        # This machine's real DeviceLocator convention: a genuine gap, not to be forced.
-        ("BANK 0", "Controller0-DIMM0", None),
     ],
 )
 def test_channel_from_labels(
