@@ -31,10 +31,15 @@ modules and says nothing about channels. No source above reports a channel count
 leaves it unknown and does not compute the theoretical `speed x 8 bytes x channels` estimate
 from it; the estimate returns when a probe genuinely reads the channel count.
 
-The RAM bandwidth measurement is not a probe: it runs in-process and reports `measured` when
-it can allocate its buffer (more accurate with NumPy: `pip install llamafit[fast]`),
-`estimated` when the channel count is known (no current source reports it), and `assumed`
-(40 GB/s) when nothing better is known.
+The RAM bandwidth measurement is not a probe: it runs in-process. With NumPy importable
+(`pip install llamafit[fast]`), it splits a buffer across a thread pool sized to the physical
+core count (capped at 8) and copies the slices concurrently, because a single thread cannot
+saturate a multi-channel memory controller; that result is labelled `measured`. Without NumPy,
+a single-threaded pure-Python copy is used instead, scaled by a documented correction factor
+(1.6x, `PURE_PYTHON_CORRECTION`) and labelled `estimated`, since a single thread under-reports
+achievable bandwidth and the correction is only an approximation. `estimated` is also used for
+the DDR-facts calculation above when the in-process measurement is unavailable or implausible,
+and `assumed` (40 GB/s) is the last resort when nothing better is known.
 
 A GPU's memory bandwidth and fp16 compute are not measured: they come from a bundled table of
 vendor specifications matched by device name, which is why the tables label them `spec`. Only

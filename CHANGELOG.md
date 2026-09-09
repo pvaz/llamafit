@@ -23,4 +23,10 @@ the changelog says so when they do.
 - `llamafit system` and `llamafit doctor` with Rich tables, `--json`, hints and exit codes.
 - Documentation: CLI reference, platform support, development guide, contributing guide.
 
+### Fixed
+- RAM bandwidth is now measured with a multi-threaded NumPy copy split across a thread
+  pool (physical core count, capped at 8), because a single thread cannot saturate a
+  multi-channel memory controller; the pure-Python fallback, which cannot parallelise
+  because it holds the GIL, is now labelled `estimated` rather than `measured`.
+
 [Unreleased]: https://github.com/pvaz/llamafit/commits/main
