@@ -56,6 +56,19 @@ def test_report_round_trips_through_json() -> None:
     assert again == report
 
 
-def test_probe_defaults() -> None:
-    probe = Probe(name="nvidia-smi", ok=False, duration_ms=3, error="not found")
-    assert probe.error == "not found"
+def test_probe_error_defaults_to_none() -> None:
+    probe = Probe(name="nvidia-smi", ok=True, duration_ms=3)
+    assert probe.error is None
+    failed = Probe(name="nvidia-smi", ok=False, duration_ms=3, error="not found")
+    assert failed.error == "not found"
+
+
+def test_vram_free_clamps_at_zero_when_used_exceeds_total() -> None:
+    gpu = Gpu(
+        index=0,
+        vendor="nvidia",
+        name="RTX 4060",
+        vram_total_bytes=8 * 1024**3,
+        vram_used_bytes=9 * 1024**3,
+    )
+    assert gpu.vram_free_bytes == 0
