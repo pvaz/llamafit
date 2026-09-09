@@ -50,3 +50,14 @@ class NetworkError(LlamaFitError):
 
 class NotInstalledError(LlamaFitError):
     """A required external program (for example llama.cpp) is not installed."""
+
+
+class PackagedDataError(LlamaFitError):
+    """Data that ships inside the package is missing from this installation.
+
+    Everything under ``llamafit/data/`` is read through ``importlib.resources`` at run
+    time, so a wheel built without one of those directories installs perfectly and fails
+    only when a command reaches the data it needs. That is a broken installation, not
+    something the reader did or can edit their way out of, which is why this is the one
+    error whose hint is "reinstall".
+    """
