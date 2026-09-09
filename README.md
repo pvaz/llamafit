@@ -11,10 +11,10 @@ the real speed, and uses those measurements to sharpen its own estimates.
 It works on Windows, macOS and Linux, installs with `pip`, and never uses a language model to
 do any of this: every number is computed, labelled with how it was obtained, and explainable.
 
-> **Status: design complete, implementation starting (September 2026).** The design is in
-> [`docs/specs/`](docs/specs/2026-09-09-llamafit-design.md) and the
-> work is planned in [`docs/plans/`](docs/plans/). Nothing is published
-> on PyPI yet. Watch the repository or read the [roadmap](ROADMAP.md) to see what lands when.
+> **Status: phase 1A (host scan and diagnostics) is in progress.** The design is in
+> [`docs/specs/`](docs/specs/2026-09-09-llamafit-design.md) and the implementation plan is in
+> [`docs/plans/2026-09-09-phase1a-foundation-and-host-scan.md`](docs/plans/2026-09-09-phase1a-foundation-and-host-scan.md).
+> Nothing is published on PyPI yet. Watch the repository or read the [roadmap](ROADMAP.md) to see what lands when.
 
 ## Why
 
