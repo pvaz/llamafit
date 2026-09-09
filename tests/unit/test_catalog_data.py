@@ -49,3 +49,14 @@ def test_the_schema_file_matches_the_models() -> None:
     assert json.loads(text) == CatalogModel.model_json_schema(by_alias=True), (
         "regenerate with: python scripts/gen_schema.py"
     )
+
+
+def test_the_one_model_with_a_streamable_table_names_it() -> None:
+    catalog, _ = load_catalog(custom_path=None)
+    assert catalog.by_id["qwen3.8-flash-next"].llama_cpp.lazy_tensors == ["per_layer_token_embd"]
+    others = [
+        model.id
+        for model in catalog.models
+        if model.id != "qwen3.8-flash-next" and model.llama_cpp.lazy_tensors
+    ]
+    assert others == [], f"{others} claim streamable tables they do not have"

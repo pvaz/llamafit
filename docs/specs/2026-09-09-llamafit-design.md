@@ -241,6 +241,7 @@ llama_cpp:
   kv_types_allowed: [f16]                   # architectures that assert on quantised KV
   requires: {mmproj: optional, mtp: optional, lazy_mode: recommended}
   quirks: ["--lazy-mode on streams the n-gram table from disk"]
+  lazy_tensors: [per_layer_token_embd]         # tensor-name prefixes llama.cpp streams from disk
 sources:
   - repo: unsloth/Qwen3.8-Flash-Next-GGUF
     kind: gguf
@@ -260,6 +261,9 @@ Field rules:
 
 - `params.active_b` drives speed; `params.total_b` and the quant `bytes` drive memory. Optional `ngram_table_b` and similar auxiliary tables are budgeted separately when `llama_cpp.requires.lazy_mode` allows streaming.
 - `quants[].bpw` is the quant's bits per weight, so it divides the weight bytes by `params.total_b`, not the whole download. A file may carry a large auxiliary table that `params.total_b` deliberately excludes, and counting it would report a four-bit quant as a seven-bit one. The weight bytes are the file bytes less whatever the facts report as streamable tables.
+- `context.native` is a curator's figure from the model card, and `catalog validate` checks it against the file once a quant has been refreshed: a curated value longer than the header's `{arch}.context_length` is reported, because the file contradicts it. A shorter one is not, because a vendor routinely documents less context than the file permits and reporting that would make the check noise. A `measured[].context` is the context one measurement ran at and is never compared.
+- `llama_cpp.lazy_tensors` names the tensor-name prefixes llama.cpp can stream from disk rather than hold in memory. It is a property of the architecture, identical across every quant, so it is curated beside `requires` and `quirks` rather than read from a file: no GGUF header says which of its tensors are streamable. `refresh` passes it to the reader, which sums those tensors into `bytes_lazy_tables` instead of counting them as resident weights, and `bpw` then describes the quantisation rather than the download.
+- `sources[].repo_path` is optional for a `gguf` source and names a directory inside the repository; only files under it are matched against that source's quants and extras. It exists because a repository routinely publishes the same quant name twice, a plain build and an importance-matrix build in two directories, and the matcher refuses to guess between them. Unset, every file in the repository is considered, so no existing entry changes meaning. A `repo_path` that holds no files is a curated mistake and leaves the model untouched. It is deliberately not the same field as `sources[].path`, which is a local file path for a `local` source: one name with two definitions chosen by a sibling field is a trap for whoever writes the next entry, so each kind refuses the other's field.
 - `quality.baseline` is the model's quality on its primary use case, 0 to 100, set by the curator from published benchmarks with the sources listed. The contribution guide defines the rubric (section 11.1).
 - `quants[].gguf_facts` is filled by `refresh` (section 7) and is what the budget uses; when absent, the budget falls back to family-level formulas and lowers confidence.
 
@@ -299,18 +303,21 @@ From the header LlamaFit derives, per quant:
 
 | Fact | Derivation |
 |---|---|
-| `n_layer`, `n_embd`, `n_vocab`, `n_head`, `n_head_kv`, `head_dim` | `{arch}.block_count`, `{arch}.embedding_length`, tokenizer vocab size, `{arch}.attention.head_count(_kv)`, key length |
+| `n_layer`, `n_embd`, `n_vocab`, `n_head`, `n_head_kv`, `head_dim`, `value_head_dim` | `{arch}.block_count`, `{arch}.embedding_length`, tokenizer vocab size, `{arch}.attention.head_count(_kv)`, `{arch}.attention.key_length` (falling back to embedding length over head count), `{arch}.attention.value_length` (falling back to `head_dim`). `head_dim` is the head dimension everywhere that means one; the KV cache is the exception and uses both |
 | `attention_layers` | the number of blocks that own `attn_k.weight` and `attn_v.weight` tensors, which is exact for every architecture including hybrids, since a block without a KV projection cannot hold a KV cache; the architecture's interval or layer-type array, and then the family rule in the catalog, are fallbacks for a file whose tensor names do not follow the convention. Recorded alongside as `attention_layers_source` so a reader can tell a counted figure from an assumed one |
 | `sliding_window` | `{arch}.attention.sliding_window` when the architecture declares one, else null. Recorded but not yet used: a model with sliding-window attention holds a full-length KV cache on only a fraction of its layers, so treating every attention layer as full-context overstates the cache several-fold. Which layers slide is not in the header and comes from a per-architecture rule or the catalog |
+| `context_length` | `{arch}.context_length` when the architecture declares one, else null. Recorded but not yet used: it is the longest context the file permits, which a curated `context.native` may deliberately sit below and must never exceed |
 | `n_expert`, `n_expert_used`, `shared_experts` | `{arch}.expert_count`, `{arch}.expert_used_count`, presence of `_shexp` tensors |
 | `bytes_expert_weights` | sum of tensor sizes whose names contain `_exps` |
-| `bytes_attention_weights` | sum of all other block tensors |
+| `bytes_dense_block_weights` | sum of all other block tensors: attention projections, feed-forward weights and norms. Nearly the whole file on a dense model, so it is not an attention-only figure |
 | `bytes_output_head`, `bytes_token_embd` | `output.weight`, `token_embd.weight` |
 | `bytes_lazy_tables` | tensors the catalog marks as streamable (for example `per_layer_token_embd`) |
-| `kv_bytes_per_token` | `2 × attention_layers × n_head_kv × head_dim × bytes(kv_type)` |
+| `kv_bytes_per_token` | `bytes(attention_layers × n_head_kv × head_dim, kv_type) + bytes(attention_layers × n_head_kv × value_head_dim, kv_type)`. Each cache is sized from its own head dimension and rounded up to a whole number of blocks on its own, then the two are added: llama.cpp allocates the key cache and the value cache as separate tensors, so neither doubling the key cache nor rounding once over a combined element count models what it actually does, and a count that does not divide evenly takes the next whole block rather than one fewer. Rounding down would report a cache smaller than the one allocated, which is the direction that tells somebody a model fits when it does not. Every file in the catalog today declares the two lengths equal and divides every block size exactly, so the figure is unchanged |
 | `recurrent_state_bytes` | from the architecture's state dimensions, else the catalog's measured value |
 
 Tensor sizes come from the tensor info table (dimensions and type), so they are exact for the file, not estimates.
+
+The facts carry only the bounds real headers satisfy: every count and every byte figure is a non-negative whole number, and the byte buckets sum exactly to `bytes_total`. Nothing narrower is asserted. The same model backs the reader, so a bound argued from reasoning rather than from files would reject a model that runs — Gemma 3 alone breaks `n_embd = n_head × head_dim` (5,376 against 32 × 128), and a split model's metadata shard legitimately reports zero bytes.
 
 ## 8. Memory budget
 
