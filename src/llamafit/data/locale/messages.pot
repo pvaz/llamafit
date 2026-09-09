@@ -44,12 +44,444 @@ msgstr ""
 msgid "Run again with --verbose for the full traceback."
 msgstr ""
 
+#: src/llamafit/cli/render.py:37
+msgctxt "finding level"
+msgid "OK"
+msgstr ""
+
+#: src/llamafit/cli/render.py:38
+msgctxt "finding level"
+msgid "WARN"
+msgstr ""
+
+#: src/llamafit/cli/render.py:39
+msgctxt "finding level"
+msgid "ERROR"
+msgstr ""
+
+#: src/llamafit/cli/render.py:51
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr ""
+
+#: src/llamafit/cli/render.py:52
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr ""
+
+#: src/llamafit/cli/render.py:53
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr ""
+
+#: src/llamafit/cli/render.py:54
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr ""
+
+#: src/llamafit/cli/render.py:66
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr ""
+
+#: src/llamafit/cli/render.py:71
+msgid "%(bandwidth)s GB/s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:72
+msgid "%(compute)s TFLOPS fp16"
+msgstr ""
+
+#: src/llamafit/cli/render.py:81
+msgid "Host"
+msgstr ""
+
+#: src/llamafit/cli/render.py:85
+msgid "OS"
+msgstr ""
+
+#: src/llamafit/cli/render.py:87
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr ""
+
+#: src/llamafit/cli/render.py:91
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr ""
+
+#: src/llamafit/cli/render.py:96
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/render.py:102
+msgid "CPU"
+msgstr ""
+
+#: src/llamafit/cli/render.py:104
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:108
+msgid "isa unknown"
+msgstr ""
+
+#: src/llamafit/cli/render.py:120
+msgid "%(speed)d MT/s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:124
+#: tests/fixtures/messages.py:31
+#: tests/fixtures/messages.py:105
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/render.py:127
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/render.py:135
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr ""
+
+#: src/llamafit/cli/render.py:138
+#: tests/fixtures/messages.py:76
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr ""
+
+#: src/llamafit/cli/render.py:141
+msgid "Memory"
+msgstr ""
+
+#: src/llamafit/cli/render.py:143
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:147
+msgid "type unknown"
+msgstr ""
+
+#: src/llamafit/cli/render.py:153
+msgid "GPU"
+msgstr ""
+
+#: src/llamafit/cli/render.py:153
+#: tests/fixtures/messages.py:32
+#: tests/fixtures/messages.py:84
+msgctxt "GPU"
+msgid "none detected"
+msgstr ""
+
+#: src/llamafit/cli/render.py:156
+msgid "%(total)s VRAM, %(free)s free"
+msgstr ""
+
+#: src/llamafit/cli/render.py:162
+msgid "VRAM unknown"
+msgstr ""
+
+#: src/llamafit/cli/render.py:169
+msgid "%(specs)s (spec)"
+msgstr ""
+
+#: src/llamafit/cli/render.py:173
+msgid "driver %(driver)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:178
+msgid "GPU %(index)d"
+msgstr ""
+
+#: src/llamafit/cli/render.py:180
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:185
+msgid "no specs"
+msgstr ""
+
+#: src/llamafit/cli/render.py:190
+msgid "Memory pool"
+msgstr ""
+
+#: src/llamafit/cli/render.py:190
+msgid "unified (GPU shares system memory)"
+msgstr ""
+
+#: src/llamafit/cli/render.py:193
+msgid "Disk"
+msgstr ""
+
+#: src/llamafit/cli/render.py:195
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:212
+#: src/llamafit/cli/render.py:224
+msgid "Installed"
+msgstr ""
+
+#: src/llamafit/cli/render.py:212
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr ""
+
+#: src/llamafit/cli/render.py:215
+msgid "b%(build)d (%(commit)s)"
+msgstr ""
+
+#: src/llamafit/cli/render.py:220
+msgid "b%(build)d"
+msgstr ""
+
+#: src/llamafit/cli/render.py:222
+msgid "unknown build"
+msgstr ""
+
+#: src/llamafit/cli/render.py:225
+msgid "yes, %(build)s at %(path)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:228
+msgid "Backends"
+msgstr ""
+
+#: src/llamafit/cli/render.py:229
+#: tests/fixtures/messages.py:88
+msgctxt "backends"
+msgid "none detected"
+msgstr ""
+
+#: src/llamafit/cli/render.py:231
+msgid "Local models"
+msgstr ""
+
+#: src/llamafit/cli/render.py:234
+msgid "Running"
+msgstr ""
+
+#: src/llamafit/cli/render.py:236
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:239
+msgid "unknown model"
+msgstr ""
+
+#: src/llamafit/cli/render.py:240
+msgctxt "context length"
+msgid "unknown"
+msgstr ""
+
+#: src/llamafit/cli/render.py:245
+msgid "Problem"
+msgstr ""
+
+#: src/llamafit/cli/render.py:255
+msgid "Probes"
+msgstr ""
+
+#: src/llamafit/cli/render.py:256
+msgid "probe"
+msgstr ""
+
+#: src/llamafit/cli/render.py:257
+msgid "result"
+msgstr ""
+
+#: src/llamafit/cli/render.py:258
+msgid "ms"
+msgstr ""
+
+#: src/llamafit/cli/render.py:261
+msgctxt "probe result"
+msgid "ok"
+msgstr ""
+
+#: src/llamafit/cli/render.py:263
+#: tests/fixtures/messages.py:92
+msgid "no server"
+msgstr ""
+
+#: src/llamafit/cli/render.py:265
+msgctxt "probe result"
+msgid "failed"
+msgstr ""
+
+#: src/llamafit/cli/render.py:274
+msgid "Findings"
+msgstr ""
+
+#: src/llamafit/cli/render.py:275
+msgid "level"
+msgstr ""
+
+#: src/llamafit/cli/render.py:276
+msgid "finding"
+msgstr ""
+
+#: src/llamafit/cli/render.py:281
+#: src/llamafit/errors.py:40
+msgid "Hint: %(hint)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:349
+msgid "ID"
+msgstr ""
+
+#: src/llamafit/cli/render.py:350
+msgid "Quality*"
+msgstr ""
+
+#: src/llamafit/cli/render.py:351
+msgid "Params"
+msgstr ""
+
+#: src/llamafit/cli/render.py:352
+#: src/llamafit/cli/render.py:542
+msgid "Context"
+msgstr ""
+
+#: src/llamafit/cli/render.py:353
+#: src/llamafit/cli/render.py:549
+msgid "Capabilities"
+msgstr ""
+
+#: src/llamafit/cli/render.py:360
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
+
+#: src/llamafit/cli/render.py:364
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
+
+#: src/llamafit/cli/render.py:479
+msgid "Models"
+msgstr ""
+
+#: src/llamafit/cli/render.py:519
+msgid "Vendor"
+msgstr ""
+
+#: src/llamafit/cli/render.py:520
+msgid "Family"
+msgstr ""
+
+#: src/llamafit/cli/render.py:521
+msgid "Release date"
+msgstr ""
+
+#: src/llamafit/cli/render.py:523
+msgid "Licence"
+msgstr ""
+
+#: src/llamafit/cli/render.py:524
+msgid "%(spdx)s (%(url)s)"
+msgstr ""
+
+#: src/llamafit/cli/render.py:527
+msgid "Parameters"
+msgstr ""
+
+#: src/llamafit/cli/render.py:529
+msgid "%(total)sB total, %(active)sB active"
+msgstr ""
+
+#: src/llamafit/cli/render.py:536
+msgid "%(tokens)s tokens native"
+msgstr ""
+
+#: src/llamafit/cli/render.py:538
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ""
+
+#: src/llamafit/cli/render.py:540
+msgid "unspecified method"
+msgstr ""
+
+#: src/llamafit/cli/render.py:544
+msgid "Architecture"
+msgstr ""
+
+#: src/llamafit/cli/render.py:548
+msgid "Notes"
+msgstr ""
+
+#: src/llamafit/cli/render.py:550
+msgid "Use cases"
+msgstr ""
+
+#: src/llamafit/cli/render.py:551
+msgid "Quality baseline"
+msgstr ""
+
+#: src/llamafit/cli/render.py:554
+msgid "Benchmark"
+msgstr ""
+
+#: src/llamafit/cli/render.py:559
+msgid "Source %(index)d"
+msgstr ""
+
+#: src/llamafit/cli/render.py:568
+msgid "not read yet"
+msgstr ""
+
+#: src/llamafit/cli/render.py:572
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/render.py:578
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/render.py:583
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/render.py:597
+msgid "Quants"
+msgstr ""
+
+#: src/llamafit/cli/render.py:598
+msgid "Name"
+msgstr ""
+
+#: src/llamafit/cli/render.py:599
+msgid "Size"
+msgstr ""
+
+#: src/llamafit/cli/render.py:600
+msgid "BPW"
+msgstr ""
+
+#: src/llamafit/cli/render.py:601
+msgid "Facts"
+msgstr ""
+
+#: src/llamafit/cli/render.py:606
+#: tests/fixtures/messages.py:80
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr ""
+
 #: src/llamafit/errors.py:38
 msgid "Command: %(command)s"
 msgstr ""
 
-#: src/llamafit/errors.py:40
-msgid "Hint: %(hint)s"
+#: src/llamafit/units.py:41
+msgctxt "size"
+msgid "unknown"
 msgstr ""
 
 #: tests/fixtures/messages.py:27
@@ -65,19 +497,6 @@ msgstr ""
 #: tests/fixtures/messages.py:30
 #: tests/fixtures/messages.py:44
 msgid "No GPU detected"
-msgstr ""
-
-#: tests/fixtures/messages.py:31
-#: tests/fixtures/messages.py:105
-msgid "%(count)d module"
-msgid_plural "%(count)d modules"
-msgstr[0] ""
-msgstr[1] ""
-
-#: tests/fixtures/messages.py:32
-#: tests/fixtures/messages.py:84
-msgctxt "GPU"
-msgid "none detected"
 msgstr ""
 
 #: tests/fixtures/messages.py:36
@@ -102,25 +521,6 @@ msgstr ""
 
 #: tests/fixtures/messages.py:68
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
-msgstr ""
-
-#: tests/fixtures/messages.py:76
-msgctxt "memory bandwidth"
-msgid "unknown"
-msgstr ""
-
-#: tests/fixtures/messages.py:80
-msgctxt "bits per weight"
-msgid "unknown"
-msgstr ""
-
-#: tests/fixtures/messages.py:88
-msgctxt "backends"
-msgid "none detected"
-msgstr ""
-
-#: tests/fixtures/messages.py:92
-msgid "no server"
 msgstr ""
 
 #: tests/fixtures/messages.py:101

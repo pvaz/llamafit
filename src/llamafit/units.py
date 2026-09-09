@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import re
 
+from llamafit.i18n import pgettext
+
 _SIZE_RE = re.compile(r"^\s*(\d+(?:\.\d+)?)\s*([kmgt]?)(i?)b?\s*$", re.IGNORECASE)
 _DECIMAL = {"": 1, "k": 10**3, "m": 10**6, "g": 10**9, "t": 10**12}
 _BINARY = {"": 1, "k": 1024, "m": 1024**2, "g": 1024**3, "t": 1024**4}
@@ -30,9 +32,13 @@ def parse_size(text: str) -> int:
 
 
 def format_bytes(n: int | None, *, binary: bool = True, digits: int = 1) -> str:
-    """Format a byte count for humans, ``"unknown"`` when ``n`` is ``None``."""
+    """Format a byte count for humans, ``"unknown"`` when ``n`` is ``None``.
+
+    The word carries a context because two other rows say *unknown* about something
+    else, and Portuguese inflects it for the noun each row is about.
+    """
     if n is None:
-        return "unknown"
+        return pgettext("size", "unknown")
     base = 1024 if binary else 1000
     units = _BINARY_UNITS if binary else _DECIMAL_UNITS
     value = float(n)
