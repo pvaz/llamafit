@@ -20,6 +20,7 @@ from typing import Any, Protocol
 
 import httpx
 
+from llamafit.i18n import _
 from llamafit.models.host import Probe
 from llamafit.models.llamacpp import RunningServer
 
@@ -82,7 +83,8 @@ def candidate_ports(env: Mapping[str, str]) -> list[int]:
 
 def discover_servers(http: HttpClient, ports: Iterable[int]) -> list[RunningServer]:
     """Probe each port for a llama-server and describe what it is serving."""
-    return [server for server, _ in _discover(http, ports) if server]
+    # `_probe` rather than `_`: this module imports the translator under that name.
+    return [server for server, _probe in _discover(http, ports) if server]
 
 
 def _as_int(value: object) -> int | None:
@@ -112,7 +114,7 @@ def _probe_port(http: HttpClient, port: int) -> tuple[RunningServer | None, Prob
                 name=f"server:{port}",
                 ok=False,
                 duration_ms=duration,
-                error="no llama-server answering",
+                error=_("no llama-server answering"),
             ),
         )
     try:
@@ -146,7 +148,7 @@ def _probe_port(http: HttpClient, port: int) -> tuple[RunningServer | None, Prob
                 name=f"server:{port}",
                 ok=False,
                 duration_ms=duration,
-                error=f"unexpected response: {exc}",
+                error=_("unexpected response: %(error)s") % {"error": exc},
             ),
         )
 
@@ -165,4 +167,4 @@ def discover_with_probes(
 ) -> tuple[list[RunningServer], list[Probe]]:
     """Like ``discover_servers`` but also returns the probe records for ``doctor``."""
     pairs = _discover(http, ports)
-    return [s for s, _ in pairs if s], [p for _, p in pairs]
+    return [s for s, _p in pairs if s], [p for _s, p in pairs]

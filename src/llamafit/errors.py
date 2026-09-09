@@ -23,12 +23,21 @@ class LlamaFitError(Exception):
         self.command = command
 
     def render(self) -> str:
-        """Return the message with its hint and command on separate lines."""
-        lines = [self.message]
+        """Return the message with its hint and command on separate lines.
+
+        The message and the hint arrive already translated, from wherever the failure
+        was raised; what this adds is the two labels in front of them.
+        """
+        # Imported here rather than at module scope because the translation layer raises
+        # ConfigError, so llamafit.i18n imports this module: asking for the translator at
+        # module scope would be a cycle. Render time is when the language is known anyway.
+        from llamafit.i18n import _
+
+        lines = [str(self.message)]
         if self.command:
-            lines.append(f"Command: {self.command}")
+            lines.append(_("Command: %(command)s") % {"command": self.command})
         if self.hint:
-            lines.append(f"Hint: {self.hint}")
+            lines.append(_("Hint: %(hint)s") % {"hint": self.hint})
         return "\n".join(lines)
 
 

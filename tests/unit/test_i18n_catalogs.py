@@ -70,8 +70,11 @@ def _template_messages() -> dict[MessageKey, str | None]:
 
 
 def test_at_least_one_language_ships() -> None:
+    # Only that some catalog is packaged, which is what makes every parametrised check
+    # below run at all. Which languages ship is not this test's business: the ones that do
+    # are each checked by name where something specific to them is being asserted, and
+    # nothing here should fail because somebody contributed a translation.
     assert LANGUAGES, "no .po catalogs are packaged"
-    assert "pt_PT" in LANGUAGES
 
 
 def test_every_catalog_file_is_named_for_its_language() -> None:
@@ -120,7 +123,11 @@ def test_every_plural_entry_matches_the_template_and_the_declared_form_count(
 def test_a_message_missing_from_a_catalog_is_a_warning_not_a_failure(language: str) -> None:
     template = _template_messages()
     catalog = load_language(language)
-    missing = sorted(set(template) - set(catalog.messages)) + list(catalog.untranslated())
+    # Sorted through a key, not on the tuples themselves: a key is (context, msgid) and a
+    # context is None for a message that has none, so comparing two keys straight compares
+    # None with a str the moment both kinds are missing at once.
+    absent = sorted(set(template) - set(catalog.messages), key=lambda key: (key[0] or "", key[1]))
+    missing = absent + list(catalog.untranslated())
     if missing:
         warnings.warn(
             f"{language} still needs {len(missing)} message(s): {missing[0]!r}"

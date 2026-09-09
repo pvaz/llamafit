@@ -11,6 +11,7 @@ from typing import Any
 import psutil
 
 from llamafit.hardware.runner import Runner, probe
+from llamafit.i18n import _
 from llamafit.models.host import Memory, OsName, Probe
 
 _SMBIOS_TYPES = {
@@ -159,7 +160,7 @@ def _parse_windows_modules(out: str) -> tuple[str | None, int | None, int | None
     modules = data if isinstance(data, list) else [data]
     populated = [m for m in modules if m.get("Capacity")]
     if not populated:
-        raise ValueError("no populated memory modules")
+        raise ValueError(_("no populated memory modules"))
     first = populated[0]
     mem_type = _SMBIOS_TYPES.get(int(first.get("SMBIOSMemoryType") or 0))
     speed = first.get("ConfiguredClockSpeed") or first.get("Speed")
@@ -172,7 +173,7 @@ def _parse_macos_memory(out: str) -> tuple[str | None, int | None, int | None, i
     data = json.loads(out)
     items = data.get("SPMemoryDataType", [])
     if not items:
-        raise ValueError("no SPMemoryDataType")
+        raise ValueError(_("no SPMemoryDataType"))
     mem_type = items[0].get("dimm_type")
     return (str(mem_type) if mem_type else None), None, len(items), None
 
@@ -218,5 +219,5 @@ def _parse_dmidecode(out: str) -> tuple[str | None, int | None, int | None, int 
             speed = int(digits) if digits else None
     flush()
     if populated == 0:
-        raise ValueError("no populated memory modules")
+        raise ValueError(_("no populated memory modules"))
     return mem_type, speed, populated, _count_channels(pairs)
