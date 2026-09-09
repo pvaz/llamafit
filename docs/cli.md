@@ -43,7 +43,7 @@ $ llamafit system
 Host
   OS         windows Windows-11-10.0.26200-SP0 (x86_64)
   CPU        Intel(R) Core(TM) i9-14900KF; 24 cores / 32 threads, 8 performance cores; avx2
-  Memory     127.8 GiB total, 102.1 GiB available; DDR5 4200 MT/s 4-channel; bandwidth 30.7 GB/s (measured)
+  Memory     127.8 GiB total, 102.1 GiB available; DDR5 4200 MT/s, 4 modules; bandwidth 30.7 GB/s (measured)
   GPU 0      NVIDIA GeForce RTX 4060 (cuda); 8.0 GiB VRAM, 7.2 GiB free; 272.0 GB/s, 15.0 TFLOPS fp16, driver 610.88
   Disk       C:\Dev\Projectos Pessoais\2026\llamafit: 355.7 GiB free of 1.8 TiB
 

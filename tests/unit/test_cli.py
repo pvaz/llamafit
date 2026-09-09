@@ -31,6 +31,7 @@ def fake_report() -> SystemReport:
             available_bytes=100 * 1024**3,
             type="DDR5",
             speed_mts=4200,
+            modules=4,
             channels=2,
             bandwidth_gbps=67.2,
             bandwidth_source="estimated",
@@ -72,6 +73,8 @@ def test_system_table_mentions_gpu_and_memory() -> None:
     assert result.exit_code == 0, result.output
     assert "RTX 4060" in result.output
     assert "DDR5" in result.output
+    assert "4 modules" in result.output
+    assert "2-channel" in result.output
     assert "67.2" in result.output
     assert "b10867" in result.output
     assert "D:\\" in result.output
