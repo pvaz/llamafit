@@ -217,6 +217,34 @@ _QUALITY_CAPTION = (
     "Quality is the editorial baseline, before any quantisation penalty; "
     "run `llamafit info <model>` for the sourced benchmarks behind it."
 )
+_PARAMS_CAPTION = (
+    "Params is total/active billions for a mixture-of-experts model, "
+    "or one number when they are equal."
+)
+
+
+def _fmt_params(total_b: float, active_b: float) -> str:
+    """One parameter count when dense, a total/active pair when they differ.
+
+    Total and active parameters are equal by definition for a dense model, so a
+    pair like ``27/27B`` reads like a typo rather than a fact; printing the single
+    number it actually is says the same thing without inviting that doubt. A
+    mixture-of-experts model, where the two genuinely differ, keeps the pair,
+    which is the only case the difference is telling anyone something.
+    """
+    if total_b == active_b:
+        return f"{_fmt_billions(total_b)}B"
+    return f"{_fmt_billions(total_b)}/{_fmt_billions(active_b)}B"
+
+
+def _table_caption(included: Sequence[str]) -> str | None:
+    """The footnote explaining whichever of quality and params is shown, or none."""
+    parts = [
+        caption
+        for name, caption in (("quality", _QUALITY_CAPTION), ("params", _PARAMS_CAPTION))
+        if name in included
+    ]
+    return " ".join(parts) if parts else None
 
 
 def _column_budget(
@@ -246,10 +274,7 @@ def _column_budget(
     params_width = max(
         [
             len("Params"),
-            *(
-                len(f"{_fmt_billions(s.params_total_b)}/{_fmt_billions(s.params_active_b)}B")
-                for s in summaries
-            ),
+            *(len(_fmt_params(s.params_total_b, s.params_active_b)) for s in summaries),
         ]
     )
     context_width = max(
@@ -271,14 +296,16 @@ def _column_budget(
 def render_catalog_list(summaries: Sequence[ModelSummary], *, console_width: int = 80) -> Table:
     """A table listing models: enough to tell them apart, not everything about them.
 
-    Columns are id, quality, parameters, native context and capabilities (as many
-    complete names as fit, up to three, plus a ``+N`` marker for the rest;
-    ``info`` or ``--json`` has every one): what separates one candidate from
-    another at a glance, and, for quality, *why* they are ordered the way they are
-    (``filter_models`` sorts by it, so a reader should not have to take the order
-    on faith — see the caption for what that number is and is not). Vendor,
-    licence and quant count are left out entirely; an id already carries the
-    family (``qwen3-coder-next``), so vendor is the cheapest of the three to drop.
+    Columns are id, quality, parameters (one number for a dense model, a
+    total/active pair for a mixture-of-experts one, per :func:`_fmt_params`),
+    native context and capabilities (as many complete names as fit, up to three,
+    plus a ``+N`` marker for the rest; ``info`` or ``--json`` has every one): what
+    separates one candidate from another at a glance, and, for quality, *why*
+    they are ordered the way they are (``filter_models`` sorts by it, so a reader
+    should not have to take the order on faith — see the caption for what that
+    number, and the params pair, are and are not). Vendor, licence and quant
+    count are left out entirely; an id already carries the family
+    (``qwen3-coder-next``), so vendor is the cheapest of the three to drop.
 
     Fitting the rest to ``console_width`` is :func:`_column_budget`'s job, in a
     fixed priority: id first, then quality, params, context, and capabilities
@@ -304,7 +331,7 @@ def render_catalog_list(summaries: Sequence[ModelSummary], *, console_width: int
 
     table = Table(
         title="Models",
-        caption=_QUALITY_CAPTION if "quality" in included else None,
+        caption=_table_caption(included),
     )
     table.add_column("ID", style="bold", max_width=id_width, overflow="fold")
     if "quality" in included:
@@ -321,9 +348,7 @@ def render_catalog_list(summaries: Sequence[ModelSummary], *, console_width: int
         if "quality" in included:
             row.append(str(summary.quality_baseline))
         if "params" in included:
-            total = _fmt_billions(summary.params_total_b)
-            active = _fmt_billions(summary.params_active_b)
-            row.append(f"{total}/{active}B")
+            row.append(_fmt_params(summary.params_total_b, summary.params_active_b))
         if "context" in included:
             row.append(_fmt_context_compact(summary.context_native))
         if include_capabilities:
