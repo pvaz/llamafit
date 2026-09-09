@@ -149,6 +149,12 @@ simply never been refreshed.
 `files`, `bytes`, `sha256`, `bpw` and `gguf_facts` are never written to the YAML at all — see
 [Where the facts live](#where-the-facts-live).
 
+A `quants[].name` must be unique across *every* source in a model, not just within one source:
+the facts file keys a quant's volatile fields by the model id and the quant name alone, with no
+notion of which source published it, so a name reused by two sources (an official repository and
+a community one often carry the same names) would have both silently merged under the same key.
+The loader rejects this as a `Problem` naming the model, the quant name, and both sources.
+
 `license.spdx` carries the SPDX identifier when the licence is registered with SPDX (for
 example `Apache-2.0`); when it is not, it carries the vendor's own licence slug instead (for
 example `qwen-community-1.0` for a custom Qwen licence), so the field is not guaranteed to

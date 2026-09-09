@@ -27,7 +27,7 @@ import yaml
 from pydantic import ValidationError
 
 from llamafit.errors import CatalogError
-from llamafit.models.catalog import Catalog, CatalogModel, Extra, Quant
+from llamafit.models.catalog import Catalog, CatalogModel, Extra, ModelSource, Quant
 from llamafit.models.gguf import GgufFacts
 from llamafit.paths import get_paths
 
@@ -88,7 +88,7 @@ def load_models_from_file(path: Path) -> tuple[list[CatalogModel], list[Problem]
     for entry in raw:
         model_id = entry.get("id") if isinstance(entry, dict) else None
         try:
-            models.append(CatalogModel.model_validate(entry))
+            model = CatalogModel.model_validate(entry)
         except ValidationError as exc:
             for error in exc.errors():
                 location = ".".join(str(part) for part in error["loc"]) or "(root)"
@@ -100,6 +100,9 @@ def load_models_from_file(path: Path) -> tuple[list[CatalogModel], list[Problem]
                         message=error["msg"],
                     )
                 )
+            continue
+        models.append(model)
+        problems.extend(_duplicate_quant_name_problems(model, str(path)))
     problems.extend(_merge_facts(models, facts_path_for(path)))
     return models, problems
 
@@ -107,6 +110,48 @@ def load_models_from_file(path: Path) -> tuple[list[CatalogModel], list[Problem]
 def facts_path_for(path: Path) -> Path:
     """The generated facts file that sits beside one curated catalog file."""
     return path.with_name(f"{path.stem}.facts.json")
+
+
+def _source_identifier(source: ModelSource) -> str:
+    """A human-readable identifier for one source: its repository, or its local path."""
+    if source.repo is not None:
+        return source.repo
+    return source.path if source.path is not None else source.kind
+
+
+def _duplicate_quant_name_problems(model: CatalogModel, file: str) -> list[Problem]:
+    """Report a quant name defined by more than one of a model's sources.
+
+    The facts file keys a quant's volatile fields by the model id and the quant
+    name alone; it has no notion of which source published it. A name reused
+    across sources (an official repository and a community one often carry the
+    same quant names) would have both sources silently merged under that one key,
+    so this is checked rather than merely assumed.
+    """
+    first_source: dict[str, str] = {}
+    problems: list[Problem] = []
+    reported: set[str] = set()
+    for source in model.sources:
+        identifier = _source_identifier(source)
+        for quant in source.quants:
+            earlier = first_source.get(quant.name)
+            if earlier is None:
+                first_source[quant.name] = identifier
+            elif quant.name not in reported:
+                reported.add(quant.name)
+                problems.append(
+                    Problem(
+                        file=file,
+                        model_id=model.id,
+                        location=f"quants.{quant.name}",
+                        message=(
+                            f"quant name {quant.name!r} is defined by more than one "
+                            f"source ({earlier!r} and {identifier!r}); quant names must "
+                            "be unique within a model because the facts file keys on them"
+                        ),
+                    )
+                )
+    return problems
 
 
 def _merge_facts(models: list[CatalogModel], facts_path: Path) -> list[Problem]:

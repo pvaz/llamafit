@@ -183,3 +183,68 @@ def test_a_facts_file_naming_an_unknown_model_is_a_problem_naming_both(tmp_path:
     _, problems = load_models_from_file(path)
 
     assert any(p.model_id == "no-such-model" and "no-such-model" in p.message for p in problems)
+
+
+def test_a_quant_name_reused_across_sources_is_a_problem_naming_both_repos(
+    tmp_path: Path,
+) -> None:
+    text = """
+- id: tiny-1b
+  name: Tiny 1B
+  vendor: Example
+  family: tiny
+  release_date: 2026-01-01
+  license: {spdx: MIT, url: "https://example.invalid/l"}
+  params: {total_b: 1.0, active_b: 1.0}
+  architecture: {class: dense, gguf_arch: llama}
+  context: {native: 8192}
+  capabilities: [coding]
+  use_cases: [coding]
+  quality: {baseline: 60}
+  sources:
+    - repo: official/tiny-1b-GGUF
+      trust: official
+      quants:
+        - {name: Q4_K_M}
+    - repo: community/tiny-1b-GGUF
+      trust: community
+      quants:
+        - {name: Q4_K_M}
+"""
+    models, problems = load_models_from_file(write(tmp_path, "dup.yaml", text))
+
+    assert [m.id for m in models] == ["tiny-1b"]
+    matches = [p for p in problems if p.model_id == "tiny-1b"]
+    assert len(matches) == 1
+    assert matches[0].location == "quants.Q4_K_M"
+    assert "official/tiny-1b-GGUF" in matches[0].message
+    assert "community/tiny-1b-GGUF" in matches[0].message
+    assert "unique within a model" in matches[0].message
+
+
+def test_distinct_quant_names_across_sources_are_not_a_problem(tmp_path: Path) -> None:
+    text = """
+- id: tiny-1b
+  name: Tiny 1B
+  vendor: Example
+  family: tiny
+  release_date: 2026-01-01
+  license: {spdx: MIT, url: "https://example.invalid/l"}
+  params: {total_b: 1.0, active_b: 1.0}
+  architecture: {class: dense, gguf_arch: llama}
+  context: {native: 8192}
+  capabilities: [coding]
+  use_cases: [coding]
+  quality: {baseline: 60}
+  sources:
+    - repo: official/tiny-1b-GGUF
+      trust: official
+      quants:
+        - {name: Q4_K_M}
+    - repo: community/tiny-1b-GGUF
+      trust: community
+      quants:
+        - {name: UD-Q4_K_XL}
+"""
+    _, problems = load_models_from_file(write(tmp_path, "ok.yaml", text))
+    assert problems == []

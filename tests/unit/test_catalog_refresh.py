@@ -115,7 +115,7 @@ TWO_SOURCE_ENTRY = """
     - repo: example/missing-GGUF
       trust: community
       quants:
-        - {name: Q4_K_M}
+        - {name: Q5_K_M}
 """
 
 
