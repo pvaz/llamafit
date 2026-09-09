@@ -21,7 +21,7 @@ from llamafit.errors import ConfigError
 from llamafit.i18n.catalogs import load_language
 from llamafit.i18n.detect import LocaleProvider
 from llamafit.i18n.po import PoCatalog
-from llamafit.i18n.select import LanguageChoice, resolve_language
+from llamafit.i18n.select import LanguageChoice, resolve_language, substitution_notice
 from llamafit.i18n.tags import SOURCE_LANGUAGE
 from llamafit.logging import get_logger
 
@@ -166,7 +166,20 @@ def set_language(
         )
     set_translator(CatalogTranslator(choice.language, catalog))
     _log.debug("speaking %s, chosen by %s", choice.language, choice.source)
-    return _once(choice)
+    return _once(_named(choice, catalog))
+
+
+def _named(choice: LanguageChoice, catalog: PoCatalog) -> LanguageChoice:
+    """Let a substitution notice call the catalog what the catalog calls itself.
+
+    ``resolve_language`` only knows the tag, because it has read no file yet. Once the
+    catalog is open it can say ``Portuguese (Portugal)`` instead of ``pt_PT``, which is
+    the difference between a reader understanding why the wording looks foreign and not.
+    """
+    team = catalog.headers.get("Language-Team", "").strip()
+    if choice.notice is None or choice.requested is None or not team:
+        return choice
+    return replace(choice, notice=substitution_notice(choice.requested, team))
 
 
 def gettext(message: str) -> str:
