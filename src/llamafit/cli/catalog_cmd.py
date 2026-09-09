@@ -20,6 +20,7 @@ import httpx
 import typer
 import yaml
 from pydantic import ValidationError
+from rich.console import Console
 from rich.text import Text
 
 from llamafit.catalog.hf import HttpHfClient
@@ -102,10 +103,35 @@ def _find_model(catalog: Catalog, model_id: str) -> CatalogModel:
     raise CatalogError(f"no model named {model_id!r} in the catalog", hint=hint)
 
 
+def _load_catalog(state: CliState) -> Catalog:
+    """Load the catalog, warning to stderr once when any file had a problem.
+
+    A user who adds a model to their custom catalog and mistypes a field would
+    otherwise just be told the model does not exist, with a hint pointing at
+    ``list``, which silently does not show it either: the loader already knows
+    exactly what went wrong, and this is the one place every command reaches it
+    from. The warning is one line, not fatal, and never dumped into a table:
+    browsing keeps working with whatever loaded, and ``catalog validate`` is
+    where the detail lives.
+    """
+    catalog, problems = load_catalog()
+    if problems:
+        word = "problem" if len(problems) == 1 else "problems"
+        stderr = Console(stderr=True, no_color=state.no_color, highlight=False)
+        stderr.print(
+            Text(
+                f"{len(problems)} catalog {word} found; "
+                "run `llamafit catalog validate` for details.",
+                style="yellow",
+            )
+        )
+    return catalog
+
+
 def _print_list(ctx: typer.Context, filters: ModelFilters, limit: int | None) -> None:
     """Filter the catalog, summarise the results, and print them as a table or as JSON."""
     state: CliState = ctx.obj
-    catalog, _ = load_catalog()
+    catalog = _load_catalog(state)
     models = filter_models(catalog, filters)
     if limit is not None:
         models = models[:limit]
@@ -115,6 +141,12 @@ def _print_list(ctx: typer.Context, filters: ModelFilters, limit: int | None) ->
         typer.echo(json.dumps(payload, indent=2))
         return
     console = state.console
+    if not summaries:
+        console.print(
+            "No models matched. Try a broader --use-case, --capability, --license, "
+            "--vendor or --search."
+        )
+        return
     console.print(render_catalog_list(summaries, console_width=console.width))
 
 
@@ -191,7 +223,7 @@ def info_command(
 ) -> None:
     """Show one model's facts, sources and every quant it publishes."""
     state: CliState = ctx.obj
-    catalog, _ = load_catalog()
+    catalog = _load_catalog(state)
     model = _find_model(catalog, model_id)
     detail = describe(model)
     if state.json_output:
@@ -249,7 +281,7 @@ def refresh_command(
     """Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."""
     state: CliState = ctx.obj
     if model is not None:
-        catalog, _ = load_catalog()
+        catalog = _load_catalog(state)
         _find_model(catalog, model)
 
     results: list[RefreshResult] = []
@@ -312,11 +344,12 @@ def _dump_one(model: CatalogModel) -> str:
 
 @catalog_app.command("show")
 def show_command(
+    ctx: typer.Context,
     model_id: str = typer.Argument(..., metavar="MODEL", help="A catalog model id."),
     yaml_output: bool = typer.Option(False, "--yaml", help="Print YAML instead of JSON."),
 ) -> None:
     """Print one model's raw catalog entry, as JSON by default or as YAML with ``--yaml``."""
-    catalog, _ = load_catalog()
+    catalog = _load_catalog(ctx.obj)
     model = _find_model(catalog, model_id)
     if yaml_output:
         typer.echo(_dump_one(model))

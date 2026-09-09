@@ -271,7 +271,9 @@ def render_model_facts(model: CatalogModel) -> Table:
     a source's repository or path) is wrapped in ``Text`` rather than interpolated
     into a markup string.
     """
-    table = Table(title=f"{model.name} ({model.id})", show_header=False, box=None, pad_edge=False)
+    table = Table(
+        title=Text(f"{model.name} ({model.id})"), show_header=False, box=None, pad_edge=False
+    )
     table.add_column("key", style="bold")
     table.add_column("value")
     table.add_row("Vendor", Text(model.vendor))

@@ -21,6 +21,7 @@ from llamafit.cli.app import app
 from llamafit.errors import CatalogError
 from llamafit.models.catalog import Architecture, Catalog, License, ModelSource, Quant
 from llamafit.models.gguf import GgufFacts
+from llamafit.services.catalog import ModelSummary
 from tests.unit.test_models_catalog import minimal
 
 runner = CliRunner()
@@ -161,6 +162,30 @@ def test_search_is_list_search() -> None:
     assert "coder-only" not in result.output
 
 
+def test_no_matches_says_so_instead_of_printing_an_empty_table() -> None:
+    result = runner.invoke(app, ["list", "--vendor", "Nobody Makes This"])
+    assert result.exit_code == 0, result.output
+    assert "No models matched" in result.output
+    # a hint at what to try, not just a bare "nothing found"
+    assert "--vendor" in result.output
+
+
+def test_no_matches_with_json_is_still_an_empty_array() -> None:
+    result = runner.invoke(app, ["--json", "list", "--vendor", "Nobody Makes This"])
+    assert result.exit_code == 0, result.output
+    assert json.loads(result.output) == []
+
+
+def test_the_list_table_labels_the_quality_score_with_its_caveat() -> None:
+    result = runner.invoke(app, ["list"])
+    assert result.exit_code == 0, result.output
+    output = " ".join(result.output.split())
+    assert "Quality" in output
+    assert "editorial baseline" in output
+    assert "quantisation penalty" in output
+    assert "info" in output  # points at where the sourced benchmarks live
+
+
 # --- info ----------------------------------------------------------------------
 
 
@@ -226,11 +251,17 @@ def test_info_ambiguous_prefix_lists_every_tied_match() -> None:
 def test_a_bracket_in_catalog_text_does_not_crash_list_or_info(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    # A lone closing tag actually matches Rich's markup grammar and raises
+    # ``MarkupError`` if this text is ever handed to Rich as a plain string
+    # instead of wrapped in ``Text`` (verified directly:
+    # ``Text.from_markup("Model [/bold] v2")`` raises). "Hostile [Name]" (capital
+    # N) does not match that grammar and passes through even with the bug
+    # present, so it proves nothing; this uses a form that actually bites.
     hostile = minimal(
         id="hostile-model",
-        name="Hostile [Name]",
-        vendor="Vendor [Co]",
-        license=License(spdx="weird-[licence]", url="https://example.invalid/l"),
+        name="Model [/bold] v2",
+        vendor="Vendor [/red]",
+        license=License(spdx="weird-[/bold]licence", url="https://example.invalid/l"),
     )
     monkeypatch.setattr(
         "llamafit.cli.catalog_cmd.load_catalog", lambda: (Catalog(models=[hostile]), [])
@@ -245,8 +276,49 @@ def test_a_bracket_in_catalog_text_does_not_crash_list_or_info(
 
     info_result = runner.invoke(app, ["info", "hostile-model"])
     assert info_result.exit_code == 0, info_result.output
-    assert "Vendor [Co]" in info_result.output
-    assert "weird-[licence]" in info_result.output
+    assert "Model [/bold] v2" in info_result.output  # the table's title
+    assert "Vendor [/red]" in info_result.output
+    assert "weird-[/bold]licence" in info_result.output
+
+
+# --- catalog problems: reported, never fatal, never dumped into a table -------
+
+
+def test_a_catalog_problem_is_reported_but_browsing_still_works(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    problem = Problem(
+        file="custom_models.yaml",
+        model_id="typo-model",
+        location="quality.baseline",
+        message="field required",
+    )
+    monkeypatch.setattr("llamafit.cli.catalog_cmd.load_catalog", lambda: (_catalog(), [problem]))
+
+    result = runner.invoke(app, ["list"])
+
+    assert result.exit_code == 0, result.output
+    assert "coder-with-tools" in result.output  # the entries that did load still show
+    assert "1 catalog problem found" in result.output
+    assert "llamafit catalog validate" in result.output
+    # the problem's own detail is not dumped into the table; `validate` is where it lives
+    assert "field required" not in result.output
+    assert "typo-model" not in result.output
+
+
+def test_multiple_catalog_problems_are_reported_as_a_count(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    problems = [
+        Problem(file="a.yaml", model_id="x", location="id", message="bad"),
+        Problem(file="b.yaml", model_id="y", location="id", message="also bad"),
+    ]
+    monkeypatch.setattr("llamafit.cli.catalog_cmd.load_catalog", lambda: (_catalog(), problems))
+
+    result = runner.invoke(app, ["info", "coder-with-tools"])
+
+    assert result.exit_code == 0, result.output
+    assert "2 catalog problems found" in result.output
 
 
 # --- catalog validate ------------------------------------------------------
