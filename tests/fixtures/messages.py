@@ -10,7 +10,17 @@ When the sweep does land, these functions go away and `scripts.gen_messages.SOUR
 stops naming this file.
 """
 
-from llamafit.i18n import _, ngettext
+from llamafit.i18n import LazyString, _, lazy_gettext, lazy_ngettext, ngettext
+
+# Built while this module is imported, which is before any test has chosen a language:
+# exactly the shape of llamafit.services.doctor.PROBE_HINTS and of a Typer help= string.
+# Wrapped with the eager _() these would be English for the life of the process, silently.
+PROBE_HINTS: dict[str, LazyString] = {
+    "nvidia-smi": lazy_gettext("If a GPU is present, check that its driver tools are installed."),
+    "memory-modules": lazy_gettext("the vendor tool that reports memory was not available"),
+}
+GPU_SUMMARY: LazyString = lazy_gettext("No GPU detected")
+MODULE_COUNT: LazyString = lazy_ngettext("%(count)d module", "%(count)d modules", 3)
 
 
 def llamacpp_installed() -> str:
