@@ -45,6 +45,20 @@ def test_a_failure_is_a_network_error_naming_the_repository() -> None:
         client_for(lambda request: httpx.Response(404, json={})).list_files("org/model")
 
 
+def test_a_redirect_is_followed_even_on_an_injected_client() -> None:
+    requests: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        if "api/models" in str(request.url):
+            return httpx.Response(302, headers={"location": "https://huggingface.co/api/moved"})
+        return httpx.Response(200, json=API)
+
+    files = client_for(handler).list_files("org/model")
+    assert len(requests) == 2
+    assert {f.path for f in files} == {s["rfilename"] for s in API["siblings"]}
+
+
 def test_a_transport_failure_is_a_network_error_naming_the_repository() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         raise httpx.ConnectError("connection refused", request=request)
