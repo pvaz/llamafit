@@ -387,3 +387,89 @@ def test_a_facts_problem_for_another_model_is_still_reported(tmp_path: Path) -> 
 
     assert [r.model_id for r in results] == ["tiny-1b"]
     assert any("other-2b" in w for w in results[0].warnings)
+
+
+TINY_PARAMS_ENTRY = ENTRY.replace(
+    "params: {total_b: 1.0, active_b: 1.0}", "params: {total_b: 0.001, active_b: 0.001}"
+)
+
+
+def failing_facts(url: object = "", *args: object, **kwargs: object) -> GgufFacts:
+    """Read facts as usual, unless the URL is tiny-1b's, which cannot be read at all."""
+    if "tiny-1b" in str(url):
+        raise NetworkError("the file set is incomplete")
+    return facts_stub()
+
+
+def test_a_bits_per_weight_no_quant_could_hold_is_a_warning_and_is_not_written(
+    tmp_path: Path,
+) -> None:
+    path = write(tmp_path, "tiny.yaml", TINY_PARAMS_ENTRY)
+
+    results = refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
+
+    assert results[0].error is None
+    assert results[0].changed is True
+    assert any("params.total_b" in warning for warning in results[0].warnings)
+    assert not any(field.endswith(".bpw") for field in results[0].fields)
+
+    document = json.loads(facts_path_of(path).read_text(encoding="utf-8"))
+    assert document["models"]["tiny-1b"]["quants"]["Q4_K_M"]["bpw"] is None
+    assert document["models"]["tiny-1b"]["quants"]["Q4_K_M"]["bytes"] == 700_000_000
+
+    _, problems = load_models_from_file(path)
+    assert problems == []
+
+
+def test_a_partial_refresh_over_an_unreadable_facts_file_refuses(tmp_path: Path) -> None:
+    path = write(tmp_path, "multi.yaml", MULTI_ENTRY)
+    write(tmp_path, "multi.facts.json", "{not json")
+
+    with pytest.raises(CatalogError) as info:
+        refresh_file(path, hf=FakeHfClient(MULTI_FILES), read_facts_fn=facts_stub, only="tiny-1b")
+
+    assert "multi.facts.json" in str(info.value)
+    assert info.value.hint is not None and "--model" in info.value.hint
+
+    results = refresh_file(path, hf=FakeHfClient(MULTI_FILES), read_facts_fn=facts_stub)
+
+    assert [r.model_id for r in results] == ["tiny-1b", "other-2b"]
+    document = json.loads(facts_path_of(path).read_text(encoding="utf-8"))
+    assert set(document["models"]) == {"tiny-1b", "other-2b"}
+
+
+def test_a_partial_refresh_over_one_bad_field_elsewhere_still_runs(tmp_path: Path) -> None:
+    path = write(tmp_path, "multi.yaml", MULTI_ENTRY)
+    write_facts(tmp_path, {"other-2b": {"quants": {"Q4_K_M": {"bytes": "nonsense"}}}}, 1, "multi")
+
+    results = refresh_file(
+        path, hf=FakeHfClient(MULTI_FILES), read_facts_fn=facts_stub, only="tiny-1b"
+    )
+
+    assert [r.model_id for r in results] == ["tiny-1b"]
+    assert results[0].error is None
+
+
+def test_a_quant_whose_facts_cannot_be_read_leaves_that_model_alone(tmp_path: Path) -> None:
+    path = write(tmp_path, "multi.yaml", MULTI_ENTRY)
+    refresh_file(path, hf=FakeHfClient(MULTI_FILES), read_facts_fn=facts_stub)
+    before = json.loads(facts_path_of(path).read_text(encoding="utf-8"))
+    assert before["models"]["tiny-1b"]["quants"]["Q4_K_M"]["bytes"] == 700_000_000
+
+    moved_on = dict(MULTI_FILES)
+    moved_on["example/other-2b-GGUF"] = [
+        RepoFile(path="other-2b-Q4_K_M.gguf", size=1_500_000_000, sha256="zzz999")
+    ]
+
+    results = refresh_file(path, hf=FakeHfClient(moved_on), read_facts_fn=failing_facts)
+
+    by_id = {result.model_id: result for result in results}
+    assert by_id["tiny-1b"].error is not None
+    assert "Q4_K_M" in by_id["tiny-1b"].error
+    assert "incomplete" in by_id["tiny-1b"].error
+    assert by_id["tiny-1b"].changed is False
+    assert by_id["other-2b"].changed is True
+
+    after = json.loads(facts_path_of(path).read_text(encoding="utf-8"))
+    assert after["models"]["tiny-1b"] == before["models"]["tiny-1b"]
+    assert after["models"]["other-2b"]["quants"]["Q4_K_M"]["bytes"] == 1_500_000_000

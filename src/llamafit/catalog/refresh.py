@@ -21,6 +21,9 @@ curated field; a problem in the generated facts file does not, because the run i
 about to replace that file wholesale. Those become warnings on the result and the
 affected fields are refreshed as though they had never been filled, so a corrupt
 facts file is never something a user has to delete by hand to get their tool back.
+The one thing that does stop is a refresh limited to a single model over a document
+that could not be read at all: it would drop what the file records for every model it
+was not asked to rebuild, so it says to run the full refresh instead.
 
 Nothing here touches a curated field, and nothing here writes a truncated file: the
 facts file is written to a sibling temporary path and moved into place with
@@ -49,7 +52,7 @@ from llamafit.catalog.loader import (
     load_models_from_file,
 )
 from llamafit.errors import CatalogError, LlamaFitError
-from llamafit.models.catalog import CatalogModel, Extra, ModelSource, Quant
+from llamafit.models.catalog import MAX_BPW, CatalogModel, Extra, ModelSource, Quant
 from llamafit.models.gguf import GgufFacts
 
 __all__ = ["FACTS_SCHEMA_VERSION", "RefreshResult", "refresh_file"]
@@ -115,9 +118,18 @@ def _refresh_quant(
     read_facts_fn: Callable[..., GgufFacts],
     prefix: str,
     changed_fields: list[str],
+    warnings: list[str],
     file_url: Callable[[str], str],
 ) -> None:
-    """Fill one quant's volatile fields from its matched files, recording what changed."""
+    """Fill one quant's volatile fields from its matched files, recording what changed.
+
+    Bits per weight is computed from the curated parameter count, so it is the one
+    field here a curated mistake can make impossible. A figure outside what a quant
+    can hold is not written: it would only be refused the next time the catalog is
+    read, and would then be reported on every load until somebody edited the YAML.
+    It becomes a warning naming ``params.total_b`` instead, which is the field a
+    person can go and check.
+    """
     if not files:
         return
 
@@ -137,8 +149,15 @@ def _refresh_quant(
         changed_fields.append(f"{prefix}.sha256")
 
     if total_bytes is not None:
-        bpw = round(total_bytes * 8 / (total_b * 1e9), 2)
-        if bpw != quant.bpw:
+        # A total_b of zero yields no figure at all, and takes the same warning.
+        bpw = round(total_bytes * 8 / (total_b * 1e9), 2) if total_b > 0 else 0.0
+        if not 0 < bpw <= MAX_BPW:
+            warnings.append(
+                f"{prefix} ({quant.name!r}): {bpw:g} bits per weight is not a figure a quant "
+                f"can hold (above 0, at most {MAX_BPW:g}), so it was not written; check "
+                "params.total_b, which is usually the field that is wrong"
+            )
+        elif bpw != quant.bpw:
             quant.bpw = bpw
             changed_fields.append(f"{prefix}.bpw")
 
@@ -179,9 +198,16 @@ def _refresh_source(
     recorded in ``warnings`` instead, so a curator can catch a typo or a renamed
     quant rather than have it silently do nothing.
 
+    A quant whose facts cannot be read is an error, and it belongs to the model
+    rather than to the run: one unreadable quant abandons its own model, with what
+    was already recorded for it left untouched, and every other model in the file is
+    refreshed as usual. A single bad quant must never cost the whole catalog its
+    refresh.
+
     Returns:
-        An error message when the source's repository could not be listed, so the
-        caller can abandon the whole model; ``None`` on success.
+        An error message when the source's repository could not be listed or one of
+        its quants could not be read, so the caller can abandon the whole model;
+        ``None`` on success.
     """
     if source.kind != "gguf" or not source.repo:
         return None
@@ -206,15 +232,19 @@ def _refresh_source(
                 "matched this quant name"
             )
             continue
-        _refresh_quant(
-            quant,
-            matched,
-            total_b,
-            read_facts_fn,
-            f"sources[{index}].quants[{qi}]",
-            changed_fields,
-            file_url,
-        )
+        try:
+            _refresh_quant(
+                quant,
+                matched,
+                total_b,
+                read_facts_fn,
+                f"sources[{index}].quants[{qi}]",
+                changed_fields,
+                warnings,
+                file_url,
+            )
+        except LlamaFitError as exc:
+            return f"{repo}: {quant.name}: {exc}"
     for ei, extra in enumerate(source.extras):
         _refresh_extra(extra, files, f"sources[{index}].extras[{ei}]", changed_fields)
     return None
@@ -373,8 +403,10 @@ def refresh_file(
     its quants and extras are matched against that listing, and the resulting
     fields are compared with what the sibling facts file already holds (already
     merged onto the model by :func:`~llamafit.catalog.loader.load_models_from_file`).
-    A model whose repository listing fails is left exactly as it was and reported
-    with ``error`` set; it never blanks out fields that were already filled in.
+    A model whose repository listing fails, or one of whose quants cannot be read,
+    is left exactly as it was and reported with ``error`` set; it never blanks out
+    fields that were already filled in, and it never costs another model its
+    refresh.
 
     A problem loading the file is judged by which file it came from. The curated
     YAML is hand-written and nothing here may guess at it, so a problem there stops
@@ -384,13 +416,21 @@ def refresh_file(
     correct again. Refusing to run would leave a user with a file only a manual
     deletion could clear.
 
+    A partial refresh is the exception, and the difference is partial against full
+    rather than broken against sound. A full refresh rebuilds every model in the
+    document, so it loses nothing and stays the way back from a corrupt file. A
+    refresh limited by ``only`` must preserve the models it was not asked to touch,
+    and it cannot preserve what it could not read, so a document that could not be
+    read at all stops it, with a hint pointing at the full refresh that will rebuild
+    the file. One unusable field elsewhere does not: everything else about that
+    model still merges and is written back.
+
     The curated YAML file named by ``path`` is only ever read, never written. The
     facts file, named by :func:`~llamafit.catalog.loader.facts_path_for`, is
     rewritten, atomically, only when at least one model actually changed and
     ``dry_run`` is ``False``; it reflects every model currently in the YAML,
     including those left untouched by an ``only`` filter or a failed source, so a
-    partial refresh never drops facts a previous run recorded *and this run could
-    read*. Facts that could not be read are gone either way; the warnings say so.
+    partial refresh never drops facts a previous run recorded.
 
     Args:
         path: The curated catalog YAML file to refresh.
@@ -405,16 +445,27 @@ def refresh_file(
 
     Raises:
         CatalogError: The curated YAML file could not be parsed or failed
-            validation, so refreshing it could not be done safely; or the facts
-            file could not be written.
+            validation, so refreshing it could not be done safely; a partial
+            refresh was asked for over a facts file that could not be read; or the
+            facts file could not be written.
     """
+    facts_path = facts_path_for(path)
     models, problems = load_models_from_file(path)
-    curated, stale = _split_by_file(problems, facts_path_for(path))
+    curated, stale = _split_by_file(problems, facts_path)
     if curated:
         details = "; ".join(f"{p.location}: {p.message}" for p in curated)
         raise CatalogError(
             f"{path} has {len(curated)} problem(s) and cannot be refreshed: {details}",
             hint="Run `llamafit catalog validate` and fix the file first.",
+        )
+
+    unreadable = [problem for problem in stale if problem.model_id is None]
+    if only is not None and unreadable:
+        details = "; ".join(f"{p.location}: {p.message}" for p in unreadable)
+        raise CatalogError(
+            f"{facts_path} could not be read, so refreshing only {only!r} would drop what it "
+            f"records for every other model: {details}",
+            hint="Run `llamafit catalog refresh` without --model to rebuild the whole file.",
         )
 
     considered = {model.id for model in models if only is None or model.id == only}
@@ -450,6 +501,6 @@ def refresh_file(
 
     if any_changed and not dry_run:
         document = _build_facts_document(final_models)
-        _write_facts_atomically(facts_path_for(path), _dump_facts_json(document))
+        _write_facts_atomically(facts_path, _dump_facts_json(document))
 
     return results
