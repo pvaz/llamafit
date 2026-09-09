@@ -175,6 +175,9 @@ def test_entries_do_not_need_a_blank_line_between_them() -> None:
     [
         ('msgid "a"\nmsgstr "b\n', "expected a double-quoted string"),
         ('"orphan"\n', "a string continues nothing"),
+        # msgctxt used to be the worked example of a keyword the reader refuses.
+        ('msgtext "a"\nmsgid "b"\n', "unknown keyword 'msgtext'"),
+        ('123 "a"\n', "unknown keyword '123 \"a\"'"),
         ('msgctxt "menu"\nmsgctxt "file"\nmsgid "Open"\n', "already has a msgctxt"),
         (
             'msgid "Open"\nmsgctxt "menu"\nmsgstr "Abrir"\n',
