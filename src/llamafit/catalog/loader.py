@@ -62,6 +62,14 @@ _REWRITE_HINT = "`llamafit catalog refresh` rewrites it"
 
 _EXPECTED_SHAPE = "expected an object with a 'models' mapping"
 
+_DISCARDING_LOCATIONS = frozenset({"file", "schema_version", "(root)", "quants", "extras"})
+"""Where a problem costs a whole document, model entry or section rather than one field.
+
+These are the locations :func:`_merge_facts`, :func:`_merge_model_facts` and
+:func:`_facts_section` report when they give up on more than a single field, and
+:func:`discards_recorded_facts` is the name a caller should ask by.
+"""
+
 _JSON_TYPE_NAMES: dict[type[object], str] = {
     type(None): "null",
     bool: "a boolean",
@@ -89,6 +97,22 @@ class Problem:
     model_id: str | None
     location: str
     message: str
+
+
+def discards_recorded_facts(problem: Problem) -> bool:
+    """Whether a facts-file problem cost more than the one field it names.
+
+    A field is only a field: everything else in its entry still merged, and a caller
+    that rewrites that entry loses nothing else. A document, a model entry or a whole
+    ``quants``/``extras`` section that could not be read takes every fact recorded
+    under it, which is the difference a partial refresh has to care about: it exists
+    to leave other models exactly as they were, and it cannot preserve what nobody
+    could read.
+
+    Returns:
+        ``True`` when the problem discarded a document, an entry or a section.
+    """
+    return problem.location in _DISCARDING_LOCATIONS
 
 
 def load_models_from_file(path: Path) -> tuple[list[CatalogModel], list[Problem]]:
