@@ -6,7 +6,7 @@ import struct
 
 from llamafit.errors import CatalogError
 from llamafit.gguf.source import ByteSource
-from llamafit.gguf.types import ValueType, tensor_bytes, type_name
+from llamafit.gguf.types import ValueType, is_misaligned, tensor_bytes, type_name
 from llamafit.models.gguf import GgufHeader, TensorInfo
 
 _MAGIC = b"GGUF"
@@ -103,7 +103,10 @@ def read_header(source: ByteSource) -> GgufHeader:
             header is truncated, or it contains an unknown value type. One
             tensor with an unrecognised type does not fail the whole read;
             its size is recorded as 0 and its name and type are listed under
-            the ``_unknown_tensor_types`` metadata key.
+            the ``_unknown_tensor_types`` metadata key. A tensor whose element
+            count is not an exact multiple of its type's block size has its
+            size rounded up rather than truncated, and is listed under the
+            ``_misaligned_tensors`` metadata key.
     """
     cursor = _Cursor(source)
     magic = cursor.take(4)
@@ -133,6 +136,7 @@ def read_header(source: ByteSource) -> GgufHeader:
 
     tensors: list[TensorInfo] = []
     unknown_types: list[str] = []
+    misaligned: list[str] = []
     for _ in range(tensor_count):
         name = _string(cursor)
         (n_dims,) = struct.unpack("<I", cursor.take(4))
@@ -144,10 +148,15 @@ def read_header(source: ByteSource) -> GgufHeader:
         except KeyError:
             size = 0
             unknown_types.append(f"{name}:{type_name(type_id)}")
+        else:
+            if is_misaligned(dims, type_id):
+                misaligned.append(f"{name}:{type_name(type_id)}")
         tensors.append(TensorInfo(name=name, dims=dims, type=type_id, offset=offset, bytes_=size))
 
     if unknown_types:
         metadata["_unknown_tensor_types"] = unknown_types
+    if misaligned:
+        metadata["_misaligned_tensors"] = misaligned
 
     return GgufHeader(
         version=version,
