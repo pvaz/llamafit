@@ -407,3 +407,50 @@ def test_default_catalog_paths_lists_the_real_bundled_files(
     paths = _default_catalog_paths()
     assert paths
     assert all(path.suffix == ".yaml" for path in paths)
+
+
+# --- _fmt_capabilities: whole items only, marker always survives --------------
+
+
+def test_a_narrow_width_drops_whole_capabilities_never_cuts_one_in_half() -> None:
+    from llamafit.cli.render import _fmt_capabilities
+
+    # "vision, multilingual, long-context" (the eligible top 3) is 34 characters and
+    # does not fit in 23; "vision, multilingual" plus a marker for the two dropped
+    # (long-context, and tools beyond the top-3 cap) is exactly 23.
+    capabilities = ["vision", "multilingual", "long-context", "tools"]
+    result = _fmt_capabilities(capabilities, width=23)
+
+    assert result == "vision, multilingual +2"
+    assert len(result) <= 23
+    assert "…" not in result  # no ellipsis, ever
+    shown, _, marker = result.partition(" +")
+    shown_items = shown.split(", ") if shown else []
+    for item in shown_items:
+        assert item in capabilities, f"{item!r} is not a complete capability name"
+    assert marker == "2"  # long-context and tools were dropped
+
+
+def test_when_nothing_whole_fits_only_the_marker_is_shown() -> None:
+    from llamafit.cli.render import _fmt_capabilities
+
+    result = _fmt_capabilities(["multilingual", "long-context"], width=3)
+
+    assert result == "+2"
+    assert "…" not in result
+
+
+def test_a_wide_enough_width_shows_the_full_top_three_and_a_marker() -> None:
+    from llamafit.cli.render import _fmt_capabilities
+
+    capabilities = ["coding", "thinking", "vision", "tools", "multilingual", "long-context"]
+    result = _fmt_capabilities(capabilities, width=100)
+
+    assert result == "coding, thinking, vision +3"
+
+
+def test_no_marker_when_every_capability_already_fits() -> None:
+    from llamafit.cli.render import _fmt_capabilities
+
+    assert _fmt_capabilities(["coding", "tools"], width=100) == "coding, tools"
+    assert _fmt_capabilities([], width=100) == ""

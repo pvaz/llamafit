@@ -181,42 +181,55 @@ def _fmt_context_compact(tokens: int) -> str:
     return str(tokens)
 
 
-def _fmt_capabilities(capabilities: Sequence[str], *, limit: int = 3) -> str:
-    """The first ``limit`` capabilities, joined, with a ``+N`` marker for the rest.
+def _fmt_capabilities(capabilities: Sequence[str], *, width: int, limit: int = 3) -> str:
+    """As many complete capability names (up to ``limit``) as fit in ``width``.
 
-    A model with many capabilities would otherwise wrap its row across several
-    lines, which makes five models harder to compare, not easier: the eye can scan
-    down a column of one-line rows but not across a staircase of wrapped ones. The
-    full list is one ``info`` or ``--json`` away.
+    Items are dropped whole, never cut mid-name: handing Rich a longer string and
+    letting its ellipsis crop it would risk cropping a name in half, or cropping
+    the ``+N`` marker itself away, leaving a reader with less information than a
+    shorter, complete answer would have given them (``coding, tools +4`` beats
+    ``coding, tools, long…`` even though it names fewer capabilities, because
+    nothing in it is a guess). This starts from the full (up to ``limit``) list and
+    drops one whole item at a time from the end, each time re-adding a marker for
+    everything dropped so far, until the result fits; when even one name plus the
+    marker will not fit, the marker alone is shown. Empty input is the only case
+    with no marker and no items.
     """
-    shown = list(capabilities[:limit])
-    text = ", ".join(shown)
-    remaining = len(capabilities) - len(shown)
-    return f"{text} +{remaining}" if remaining > 0 else text
+    eligible = list(capabilities[:limit])
+    total = len(capabilities)
+    for shown_count in range(len(eligible), 0, -1):
+        shown = eligible[:shown_count]
+        dropped = total - shown_count
+        text = ", ".join(shown)
+        candidate = f"{text} +{dropped}" if dropped else text
+        if len(candidate) <= width:
+            return candidate
+    return f"+{total}" if total else ""
 
 
 def render_catalog_list(summaries: Sequence[ModelSummary], *, console_width: int = 80) -> Table:
     """A table listing models: enough to tell them apart, not everything about them.
 
-    Columns are id, parameters, native context, quality and capabilities (the first
-    three, with a ``+N`` marker for the rest; ``info`` or ``--json`` has every one):
-    what separates one candidate from another at a glance, and, for quality, *why*
-    they are ordered the way they are (``filter_models`` sorts by it, so a reader
-    should not have to take the order on faith). Vendor, licence and quant count are
-    left out to keep every row on one line at 80 columns; an id already carries the
-    family (``qwen3-coder-next``), so vendor is the one of the three that costs
-    least to drop.
+    Columns are id, parameters, native context, quality and capabilities (as many
+    complete names, up to three, as fit, plus a ``+N`` marker for the rest;
+    ``info`` or ``--json`` has every one): what separates one candidate from
+    another at a glance, and, for quality, *why* they are ordered the way they are
+    (``filter_models`` sorts by it, so a reader should not have to take the order
+    on faith). Vendor, licence and quant count are left out to keep every row on
+    one line at 80 columns; an id already carries the family
+    (``qwen3-coder-next``), so vendor is the one of the three that costs least to
+    drop.
 
     Every column is ``no_wrap``: an id is one hyphenated word with no space to wrap
     on, and a wrapped row anywhere turns a table meant to be scanned down a column
     back into the staircase this whole layout exists to avoid. The other four
     columns are content-sized and fully rigid (id, a number or a short code), so
-    capabilities is deliberately the one elastic column: its ``max_width`` is
-    computed from ``console_width`` minus what those four need, so a wide terminal
-    shows every one of the first three capabilities in full and only a genuinely
-    80-column terminal falls back to Rich's own ellipsis mid-list. That trade keeps
-    every row one line, which a fuller but wrapped cell would not. Every cell built
-    from catalog text goes through ``Text``, not an f-string handed to
+    the capabilities column is the one built to fit whatever is left: its text is
+    computed by :func:`_fmt_capabilities` from ``console_width`` minus what those
+    four need, one complete capability at a time, rather than handed a longer
+    string for Rich to crop. A wide terminal shows all three capabilities plus a
+    marker for the rest; a narrow one shows fewer, never a partial one. Every cell
+    built from catalog text goes through ``Text``, not an f-string handed to
     ``console.print``, since a model name or id is never guaranteed free of
     characters Rich would try to parse as markup.
 
@@ -229,23 +242,24 @@ def render_catalog_list(summaries: Sequence[ModelSummary], *, console_width: int
     # (an id up to "llama-3.1-8b-instruct" long, plus three short numeric columns)
     # and every border and padding character around all five columns; it will
     # drift a little as ids grow, which only ever costs capabilities a character
-    # or two of headroom, never a wrapped row.
+    # or two of headroom, never a wrapped or cropped row.
     capabilities_width = max(15, console_width - 59)
     table = Table(title="Models")
     table.add_column("ID", style="bold", no_wrap=True)
     table.add_column("Params", justify="right", no_wrap=True)
     table.add_column("Context", justify="right", no_wrap=True)
     table.add_column("Quality", justify="right", no_wrap=True)
-    table.add_column("Capabilities", no_wrap=True, max_width=capabilities_width)
+    table.add_column("Capabilities", no_wrap=True)
     for summary in summaries:
         total = _fmt_billions(summary.params_total_b)
         active = _fmt_billions(summary.params_active_b)
+        capabilities = _fmt_capabilities(summary.capabilities, width=capabilities_width)
         table.add_row(
             Text(summary.id),
             f"{total}/{active}B",
             _fmt_context_compact(summary.context_native),
             str(summary.quality_baseline),
-            Text(_fmt_capabilities(summary.capabilities)),
+            Text(capabilities),
         )
     return table
 
