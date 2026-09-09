@@ -209,7 +209,7 @@ Specified in section 15. Phase 1 only needs the detection above and the `flags` 
 - Curated YAML in the repository, one file per model family, reviewed by pull request. No scraping in the shipped data.
 - Every factual field has a `source` (a URL) or is derived from GGUF headers.
 - A JSON schema validates every file in CI and through `llamafit catalog validate`.
-- A `refresh` command updates volatile fields (file sizes, SHA-256, GGUF facts) from the Hugging Face API and rewrites the YAML deterministically so diffs stay reviewable.
+- A `refresh` command updates volatile fields (file sizes, SHA-256, GGUF facts) from the Hugging Face API and writes them to a sibling generated file, deterministically, so diffs stay reviewable. It never writes the curated YAML; section 6.5 says why that has to be structurally impossible rather than merely avoided.
 - Users can override or add entries locally with the same schema (section 6.4).
 
 ### 6.2 Entry schema
