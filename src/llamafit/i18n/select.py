@@ -109,7 +109,10 @@ def substitution_notice(requested: str, using: str) -> str:
     """The sentence said when one region's catalog stands in for another region's.
 
     ``using`` is the tag at first, and the catalog's ``Language-Team`` once the catalog
-    has been read and can say what it calls itself.
+    has been read and can say what it calls itself. That header is data from a file, so
+    the sentence it lands in is data too: print it with ``console.print(Text(notice))``
+    and never as markup, or a team name holding a square-bracket tag raises at start-up.
+    ``docs/translations.md`` shows the call.
     """
     return f"LlamaFit has no {requested} translation, so it is using the {using} one."
 

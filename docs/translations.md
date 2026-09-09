@@ -331,11 +331,20 @@ An interface chooses the language once, at start-up, and says so when the reques
 not be met:
 
 ```python
+from rich.text import Text
+
 from llamafit.i18n import set_language
 
 choice = set_language(language_option)
 if choice.notice:
-    console.print(choice.notice)
+    console.print(Text(choice.notice))
     if choice.hint:
-        console.print(choice.hint)
+        console.print(Text(choice.hint))
 ```
+
+`Text(...)`, not the bare string. A substitution notice quotes the catalog's own
+`Language-Team` header, which is data read from a file, and `console.print` parses square
+brackets as Rich markup: a catalog whose team read `Portuguese [Brazil]` would raise at
+start-up, before the program had done anything. Wrapping the sentence in `Text` says it is
+text and not markup, which is the rule everywhere in this project that prints a value it
+did not write itself.
