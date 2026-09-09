@@ -133,3 +133,15 @@ def test_the_billions_suffix_is_taken_from_the_catalog() -> None:
     _speaking(group=".", decimal=",", billions="MM")
     assert _fmt_params(27, 27) == "27MM"
     assert _fmt_params(80, 3) == "80/3MM"
+
+
+def test_the_packaged_french_catalog_really_groups_with_a_space() -> None:
+    # Through the shipped file rather than a catalog assembled here, because the bug this
+    # whole change exists for was in what the shipped file could say and not in what the
+    # formatter did with it: French asked for a space and was handed the English comma.
+    from llamafit.i18n import set_language
+    from llamafit.units import format_bytes, format_grouped
+
+    set_language("fr", env={})
+    assert format_grouped(32768) == "32" + chr(160) + "768"
+    assert format_bytes(137438953472) == "128,0 GiB"
