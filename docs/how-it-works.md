@@ -3,7 +3,7 @@
 This page explains where every number on the board comes from. It is written for someone
 who wants to check LlamaFit's reasoning, not for someone who wants to change the code; for
 that see [architecture.md](architecture.md) and the
-[design specification](superpowers/specs/2026-09-09-llamafit-design.md), which carries the
+[design specification](specs/2026-09-09-llamafit-design.md), which carries the
 same formulas with their constants.
 
 ## 1. Two facts about running a model locally

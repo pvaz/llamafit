@@ -16,6 +16,6 @@
 | [Calibration set](calibration/) | you want the raw measurements the estimator is fitted to |
 
 The complete design, including the parts not yet implemented, is the
-[design specification](superpowers/specs/2026-09-09-llamafit-design.md); the work is planned
-in [`superpowers/plans/`](superpowers/plans/). The [roadmap](../ROADMAP.md) says what lands in
+[design specification](specs/2026-09-09-llamafit-design.md); the work is planned
+in [`plans/`](plans/). The [roadmap](../ROADMAP.md) says what lands in
 which phase.

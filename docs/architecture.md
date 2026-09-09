@@ -2,7 +2,7 @@
 
 This page is the map for someone about to change the code. The full design, including the
 formulas and the parts not yet built, is the
-[design specification](superpowers/specs/2026-09-09-llamafit-design.md); this page does not
+[design specification](specs/2026-09-09-llamafit-design.md); this page does not
 repeat it.
 
 ## Layers

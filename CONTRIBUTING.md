@@ -19,10 +19,10 @@ merged quickly.
 ## Before you start on code
 
 Open an issue first for anything larger than a fix, and say you are working on it. The
-design specification in `docs/superpowers/specs/` explains why things are the way they are;
+design specification in `docs/specs/` explains why things are the way they are;
 if your change disagrees with it, the specification is what to discuss, not the code.
 
-Work happens in phases with written plans in `docs/superpowers/plans/`. Each plan is a list of
+Work happens in phases with written plans in `docs/plans/`. Each plan is a list of
 small tasks with tests; picking a task from the current plan is the easiest way in.
 
 ## Setting up

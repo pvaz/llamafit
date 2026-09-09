@@ -12,8 +12,8 @@ It works on Windows, macOS and Linux, installs with `pip`, and never uses a lang
 do any of this: every number is computed, labelled with how it was obtained, and explainable.
 
 > **Status: design complete, implementation starting (September 2026).** The design is in
-> [`docs/superpowers/specs/`](docs/superpowers/specs/2026-09-09-llamafit-design.md) and the
-> work is planned in [`docs/superpowers/plans/`](docs/superpowers/plans/). Nothing is published
+> [`docs/specs/`](docs/specs/2026-09-09-llamafit-design.md) and the
+> work is planned in [`docs/plans/`](docs/plans/). Nothing is published
 > on PyPI yet. Watch the repository or read the [roadmap](ROADMAP.md) to see what lands when.
 
 ## Why
@@ -108,7 +108,7 @@ Requirements: Python 3.10 or newer. No compiler, no Node, no account. The option
 - [Platform support and probes](docs/platform-support.md)
 - [The catalog](docs/catalog.md), [custom models](docs/custom-models.md) and [hardware profiles](docs/hardware-profiles.md)
 - [Benchmarking and calibration](docs/benchmarking.md)
-- [Architecture](docs/architecture.md) and the [design specification](docs/superpowers/specs/2026-09-09-llamafit-design.md)
+- [Architecture](docs/architecture.md) and the [design specification](docs/specs/2026-09-09-llamafit-design.md)
 - [Development](docs/development.md) and [contributing](CONTRIBUTING.md)
 
 ## Principles

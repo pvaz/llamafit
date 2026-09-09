@@ -1,8 +1,8 @@
 # Roadmap
 
 LlamaFit is built in phases. Each phase ships working software with tests on Windows, macOS
-and Linux, and each has a written plan under `docs/superpowers/plans/` that lists its tasks.
-The design for all phases is in `docs/superpowers/specs/2026-09-09-llamafit-design.md`.
+and Linux, and each has a written plan under `docs/plans/` that lists its tasks.
+The design for all phases is in `docs/specs/2026-09-09-llamafit-design.md`.
 
 Dates are not promised. The order is.
 
