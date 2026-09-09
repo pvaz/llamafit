@@ -1,0 +1,796 @@
+# Thai translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. It was written from the template in one pass and
+# has had no second reader. By the standard docs/translations.md sets for every language,
+# that is not enough: please read it line by line and correct it in a pull request.
+#
+# Thai takes one plural form, so every plural message has a single msgstr[0] and the
+# count is carried by %(count)d, as it already is in the English.
+#
+# Thai does not end a sentence with a full stop, so the English trailing period is not
+# carried over; a space is what separates one sentence from the next.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: th\n"
+"Language-Team: Thai\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "Hugging Face ส่ง %(status)d กลับมาขณะแสดงรายการไฟล์ของ %(repo)s"
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "อ่านรายการไฟล์ของ %(repo)s จาก Hugging Face ไม่ได้"
+
+msgid "Check your network connection and try again."
+msgstr "ตรวจสอบการเชื่อมต่อเครือข่ายแล้วลองใหม่อีกครั้ง"
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "การตอบกลับของ Hugging Face สำหรับ %(repo)s ไม่มีรายการไฟล์"
+
+msgid "Check that the repository id is correct and public."
+msgstr "ตรวจสอบว่า id ที่เก็บถูกต้องและเป็นสาธารณะ"
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "แคตตาล็อกมีปัญหา %(count)d รายการ"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "รัน `llamafit catalog validate` เพื่อดูรายละเอียด"
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "เขียน %(path)s ไม่ได้: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "ตรวจสอบว่าไดเรกทอรีนี้เขียนได้และมีที่ว่างเหลือ"
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "%(path)s มีปัญหา %(count)d รายการ จึงรีเฟรชไม่ได้"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "รัน `llamafit catalog validate` แล้วแก้ไขไฟล์ก่อน"
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "อ่าน %(path)s ได้ไม่ครบ ถ้ารีเฟรชเฉพาะ %(model)s จะทำให้ข้อมูลที่ไฟล์บันทึกไว้สำหรับโมเดลที่การรันครั้งนี้ไม่แตะต้องหายไป: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "รัน `llamafit catalog refresh` โดยไม่ใส่ --model เพื่อสร้างไฟล์ทั้งไฟล์ขึ้นใหม่"
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "ค้นหา ประเมินขนาด ติดตั้ง และตรวจสอบ LLM แบบเปิดน้ำหนักสำหรับ llama.cpp บนเครื่องของคุณเอง"
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "แสดงผลเป็น JSON ที่เครื่องอ่านได้แทนตาราง"
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "เขียนรายละเอียดลงใน llamafit.log ในไดเรกทอรีบันทึก และแสดง traceback"
+
+msgid "Disable colours."
+msgstr "ปิดการแสดงสี"
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "ใช้ภาษานี้ เช่น pt_PT ภาษาที่ LlamaFit ไม่มีจะกลับไปใช้ภาษาอังกฤษ และจะบอกว่ามีภาษาใดบ้าง"
+
+msgid "Print the version and exit."
+msgstr "แสดงเวอร์ชันแล้วออก"
+
+msgid "Unexpected error: %(error)s"
+msgstr "ข้อผิดพลาดที่ไม่คาดคิด: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "รันใหม่พร้อม --verbose เพื่อดู traceback ทั้งหมด"
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "ดูแลแคตตาล็อก: ตรวจสอบไฟล์ และรีเฟรชฟิลด์ที่เปลี่ยนบ่อย"
+
+msgid "Keep only this use case."
+msgstr "เก็บเฉพาะกรณีใช้งานนี้"
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "เก็บเฉพาะโมเดลที่มีความสามารถนี้ (ระบุซ้ำได้)"
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "เก็บเฉพาะรหัสสัญญาอนุญาตเหล่านี้ (ระบุซ้ำได้)"
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "ตรวจสอบเฉพาะไฟล์นี้ แทนแคตตาล็อกที่มากับโปรแกรมและไฟล์แทนที่ของผู้ใช้"
+
+msgid "Did you mean: %(ids)s?"
+msgstr "คุณหมายถึง: %(ids)s ใช่ไหม"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "รัน `llamafit list` เพื่อดู id ของโมเดลทั้งหมด"
+
+msgid "no model named %(id)s in the catalog"
+msgstr "ไม่มีโมเดลชื่อ %(id)s ในแคตตาล็อก"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "พบปัญหาในแคตตาล็อก %(count)d รายการ; รัน `llamafit catalog validate` เพื่อดูรายละเอียด"
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "ไม่มีโมเดลที่ตรงกัน ลองขยาย --use-case, --capability, --license, --vendor หรือ --search ให้กว้างขึ้น"
+
+msgid "invalid --use-case %(value)s"
+msgstr "--use-case ไม่ถูกต้อง: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "กรณีใช้งานที่ใช้ได้: %(values)s"
+
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "ค่า --capability ไม่ถูกต้อง: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "ความสามารถที่ใช้ได้: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"แสดงรายการแคตตาล็อกโมเดล โดยกรองตามตัวกรองที่ระบุ\n"
+"\n"
+"ตารางแสดงความสามารถได้มากที่สุดสามอย่างต่อโมเดล พร้อมเครื่องหมาย +N สำหรับส่วนที่เหลือ และเรียงตามคอลัมน์คุณภาพที่แสดงอยู่; info หรือ --json มีความสามารถครบทุกอย่าง"
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "เก็บเฉพาะผู้พัฒนารายนี้ โดยไม่สนตัวพิมพ์ใหญ่เล็ก"
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "จับคู่ข้อความบางส่วนกับ id ชื่อ ผู้พัฒนา หรือตระกูล โดยไม่สนตัวพิมพ์ใหญ่เล็ก"
+
+msgid "Show at most this many."
+msgstr "แสดงมากที่สุดเท่านี้"
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "รูปย่อของ llamafit list --search TEXT"
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "ข้อความที่จะใช้จับคู่กับ id ชื่อ ผู้พัฒนา หรือตระกูล"
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "แสดงข้อมูล แหล่งที่มา และไฟล์ควอนไทซ์ทุกแบบที่โมเดลหนึ่งเผยแพร่"
+
+msgid "A catalog model id."
+msgstr "id ของโมเดลในแคตตาล็อก"
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "ตรวจสอบไฟล์ YAML ของแคตตาล็อกกับสคีมา โดยแสดงปัญหาบรรทัดละหนึ่งรายการ"
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "ตรวจแล้ว %(count)d ไฟล์ ไม่พบปัญหา"
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "รีเฟรชชื่อไฟล์ ขนาด เช็กซัม และข้อมูล GGUF ของแคตตาล็อกจาก Hugging Face"
+
+msgid "Refresh only this model id."
+msgstr "รีเฟรชเฉพาะ id โมเดลนี้"
+
+msgid "Compute the refresh but write nothing."
+msgstr "คำนวณการรีเฟรชแต่ไม่เขียนอะไรเลย"
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "ออกด้วยรหัส 1 ถ้ามีอะไรจะเปลี่ยน โดยไม่เปลี่ยนอะไรเลย สำหรับงาน CI ตามกำหนดเวลา"
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: คำเตือน: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "คำเตือน: %(warning)s (%(count)d โมเดล: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: ข้อผิดพลาด: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "คำแนะนำ: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "การรีเฟรชต้องเชื่อมต่อเครือข่ายไปยัง Hugging Face; ตรวจสอบการเชื่อมต่อและ id ที่เก็บว่าถูกต้อง"
+
+msgid "No changes."
+msgstr "ไม่มีการเปลี่ยนแปลง"
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "แสดงรายการดิบในแคตตาล็อกของโมเดลหนึ่ง เป็น JSON โดยค่าเริ่มต้น หรือเป็น YAML เมื่อใส่ --yaml"
+
+msgid "Print YAML instead of JSON."
+msgstr "แสดงผลเป็น YAML แทน JSON"
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "อธิบายว่าตรวจพบอะไร อะไรล้มเหลว และทำอะไรจึงจะใช้ได้มากขึ้น"
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "OK"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "เตือน"
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "ผิดพลาด"
+
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "วัดได้"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "ประมาณ"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "สมมติ"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "ไม่ทราบ"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s และ %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "โฮสต์"
+
+msgid "OS"
+msgstr "ระบบปฏิบัติการ"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d คอร์ / %(logical)d เธรด"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "คอร์ประสิทธิภาพ %(count)d คอร์"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "ไม่ทราบชุดคำสั่ง"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d โมดูล"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d ช่อง"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+# Thai marks neither gender nor number on these words, so every row that says
+# "unknown" or "none detected" reads the same. Each context is still filled in:
+# leaving one empty would drop that row back to English on its own.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "ไม่ทราบ"
+
+msgid "Memory"
+msgstr "หน่วยความจำ"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "ทั้งหมด %(total)s, ว่าง %(available)s; %(details)s; แบนด์วิดท์ %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "ไม่ทราบชนิด"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "ไม่พบ"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "VRAM %(total)s, ว่าง %(free)s"
+
+msgid "VRAM unknown"
+msgstr "ไม่ทราบ VRAM"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (ตามสเปก)"
+
+msgid "driver %(driver)s"
+msgstr "ไดรเวอร์ %(driver)s"
+
+msgid "GPU %(index)d"
+msgstr "GPU %(index)d"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "ไม่มีสเปก"
+
+msgid "Memory pool"
+msgstr "พูลหน่วยความจำ"
+
+msgid "unified (GPU shares system memory)"
+msgstr "รวมกัน (GPU ใช้หน่วยความจำระบบร่วมกัน)"
+
+msgid "Disk"
+msgstr "ดิสก์"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: ว่าง %(free)s จาก %(total)s"
+
+msgid "Installed"
+msgstr "ติดตั้งแล้ว"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "ไม่"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "ไม่ทราบบิลด์"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "ใช่, %(build)s ที่ %(path)s"
+
+msgid "Backends"
+msgstr "แบ็กเอนด์"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "ไม่พบ"
+
+msgid "Local models"
+msgstr "โมเดลในเครื่อง"
+
+msgid "Running"
+msgstr "กำลังทำงาน"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, คอนเท็กซ์ %(context)s"
+
+msgid "unknown model"
+msgstr "ไม่ทราบโมเดล"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "ไม่ทราบ"
+
+msgid "Problem"
+msgstr "ปัญหา"
+
+msgid "Probes"
+msgstr "การตรวจสอบ"
+
+msgid "probe"
+msgstr "รายการตรวจ"
+
+msgid "result"
+msgstr "ผลลัพธ์"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "ผ่าน"
+
+msgid "no server"
+msgstr "ไม่มีเซิร์ฟเวอร์"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "ล้มเหลว"
+
+msgid "Findings"
+msgstr "ผลการวินิจฉัย"
+
+msgid "level"
+msgstr "ระดับ"
+
+msgid "finding"
+msgstr "รายละเอียด"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Quality*"
+msgstr "คุณภาพ*"
+
+msgid "Params"
+msgstr "พารามิเตอร์"
+
+msgid "Context"
+msgstr "คอนเท็กซ์"
+
+msgid "Capabilities"
+msgstr "ความสามารถ"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "คุณภาพคือค่าพื้นฐานที่กองบรรณาธิการกำหนด ก่อนหักผลจากการควอนไทซ์; รัน `llamafit info <model>` เพื่อดูผลทดสอบมาตรฐานพร้อมแหล่งอ้างอิงที่อยู่เบื้องหลัง"
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "สำหรับโมเดลแบบผสมผู้เชี่ยวชาญ พารามิเตอร์คือค่าทั้งหมด/ที่ทำงานจริง หน่วยพันล้าน หรือเป็นตัวเลขเดียวเมื่อทั้งสองค่าเท่ากัน"
+
+msgid "Models"
+msgstr "โมเดล"
+
+msgid "Vendor"
+msgstr "ผู้พัฒนา"
+
+msgid "Family"
+msgstr "ตระกูล"
+
+msgid "Release date"
+msgstr "วันที่เผยแพร่"
+
+msgid "Licence"
+msgstr "สัญญาอนุญาต"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "พารามิเตอร์"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "ทั้งหมด %(total)sB, ทำงานจริง %(active)sB"
+
+msgid "%(tokens)s tokens native"
+msgstr "%(tokens)s โทเค็นตามต้นฉบับ"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", ขยายเป็น %(tokens)s ด้วย %(method)s"
+
+msgid "unspecified method"
+msgstr "ไม่ระบุวิธี"
+
+msgid "Architecture"
+msgstr "สถาปัตยกรรม"
+
+msgid "Notes"
+msgstr "หมายเหตุ"
+
+msgid "Use cases"
+msgstr "กรณีใช้งาน"
+
+msgid "Quality baseline"
+msgstr "คุณภาพพื้นฐาน"
+
+msgid "Benchmark"
+msgstr "ผลทดสอบมาตรฐาน"
+
+msgid "Source %(index)d"
+msgstr "แหล่งที่มา %(index)d"
+
+msgid "not read yet"
+msgstr "ยังไม่ได้อ่าน"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d เลเยอร์"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "ผู้เชี่ยวชาญ %(count)d/%(used)d"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "ผู้เชี่ยวชาญ %(count)d"
+
+msgid "Quants"
+msgstr "ไฟล์ควอนไทซ์"
+
+msgid "Name"
+msgstr "ชื่อ"
+
+msgid "Size"
+msgstr "ขนาด"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "ข้อมูล"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "ไม่ทราบ"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "แสดงว่าเครื่องนี้มีอะไรบ้าง: CPU, หน่วยความจำ, GPU, ดิสก์ และ llama.cpp"
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "ข้ามการวัดแบนด์วิดท์ของ RAM"
+
+msgid "Command: %(command)s"
+msgstr "คำสั่ง: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "ส่วนหัว GGUF ถูกตัดขาด: ต้องการ %(wanted)d ไบต์ที่ออฟเซ็ต %(offset)d แต่ได้ %(got)d"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "ไฟล์อาจยังดาวน์โหลดไม่เสร็จ หรือ URL อาจไม่ใช่ไฟล์ GGUF"
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "ชนิดค่า GGUF %(type)d ที่ออฟเซ็ต %(offset)d ไม่รู้จัก"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "ไฟล์นี้อาจใช้ชนิดเมตาดาตา GGUF ที่ใหม่กว่าที่ LlamaFit รองรับ"
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "ไม่ใช่ไฟล์ GGUF: ค่า magic %(magic)s ที่ออฟเซ็ต 0 ไม่ถูกต้อง"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "ตรวจสอบว่าไฟล์นี้เป็นโมเดล .gguf จริง"
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "ไม่รองรับ GGUF เวอร์ชัน %(version)d ที่ออฟเซ็ต 4"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit รองรับ GGUF เวอร์ชัน %(versions)s"
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "ไฟล์ GGUF เหล่านี้ไม่ได้เป็นโมเดลที่แบ่งชาร์ดชุดเดียวกัน: ค่า '%(key)s' ไม่ตรงกัน โดยประกาศเป็น %(values)s"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "ส่งชาร์ดของโมเดลเดียว ไม่ใช่ของหลายโมเดล"
+
+msgid "no GGUF header to read facts from"
+msgstr "ไม่มีส่วนหัว GGUF ให้อ่านข้อมูล"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "ส่งไฟล์ของโมเดล หรือชาร์ดทุกชิ้นของโมเดลที่แบ่งชาร์ด"
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "ไฟล์ GGUF %(count)d จาก %(total)d ไฟล์ไม่มีคีย์ '%(key)s' จึงระบุตำแหน่งของไฟล์เหล่านั้นในโมเดลที่แบ่งชาร์ดไม่ได้"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "ส่งไฟล์เดี่ยวที่ไม่ได้แบ่งชาร์ดเพียงไฟล์เดียว หรือชาร์ดทุกชิ้นของโมเดลที่แบ่งชาร์ดชุดเดียว"
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "ชาร์ดไม่ครบ: โมเดลประกาศไว้ %(declared)d ชาร์ด แต่มาถึง %(arrived)d ชาร์ด (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "ส่งชาร์ดทุกชิ้นของโมเดลที่แบ่งชาร์ด"
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "ไม่มีชาร์ดที่เก็บเมตาดาตาของโมเดล: ได้รับ %(key)s %(numbers)s แต่ต้องมีชิ้นหนึ่งเป็น 0"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "ส่งชาร์ดทุกชิ้นของโมเดลที่แบ่งชาร์ด รวมถึงชิ้นแรกด้วย"
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "ชาร์ดไม่ครบ: ต้องการ %(key)s ตั้งแต่ 0 ถึง %(last)d แต่ได้ %(numbers)s"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "ส่งชาร์ดแต่ละชิ้นของโมเดลที่แบ่งชาร์ดเพียงครั้งเดียว"
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "ชาร์ดไม่ครบ: โมเดลประกาศเทนเซอร์ไว้ %(declared)d ตัว แต่ชาร์ด %(shards)d ชิ้นรวมกันมีเพียง %(held)d ตัว"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "อ่าน %(path)s ไม่ได้: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "ตรวจสอบว่าไฟล์มีอยู่จริงและอ่านได้"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "ดึง %(url)s ไม่ได้: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "ตรวจสอบการเชื่อมต่อเครือข่ายและว่า URL นี้เข้าถึงได้"
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s ส่ง HTTP %(status)d กลับมาแทน 206 Partial Content; เซิร์ฟเวอร์อาจไม่รองรับคำขอแบบช่วง"
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "ยืนยันว่า URL ชี้ไปยังไฟล์ GGUF ที่ดาวน์โหลดได้"
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "ไม่ทราบ"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi ไม่ได้ส่ง GPU กลับมาเลย"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi ไม่ได้ส่งการ์ดกลับมาเลย"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler ไม่ได้ส่งจอแสดงผลกลับมาเลย"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI ไม่ได้ส่งตัวควบคุมวิดีโอกลับมาเลย"
+
+msgid "lspci found no display controllers"
+msgstr "lspci ไม่พบตัวควบคุมการแสดงผล"
+
+msgid "no populated memory modules"
+msgstr "ไม่มีโมดูลหน่วยความจำที่ติดตั้งอยู่"
+
+msgid "no SPMemoryDataType"
+msgstr "ไม่มี SPMemoryDataType"
+
+msgid "empty command"
+msgstr "คำสั่งว่างเปล่า"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: หมดเวลาหลังจาก %(seconds)s วินาที"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: ไม่พบ"
+
+msgid "no output"
+msgstr "ไม่มีผลลัพธ์"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "รหัสออก %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "ไม่พบ llama.cpp: ไม่มี llama-server ใน PATH, ใน LLAMA_CPP_PATH หรือในไดเรกทอรีที่ใช้กันทั่วไป"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "ไม่พบไลบรารีแบ็กเอนด์ ggml ข้าง llama-server; บิลด์นี้อาจเป็นแบบสแตติก"
+
+msgid "no llama-server answering"
+msgstr "ไม่มี llama-server ตอบกลับ"
+
+msgid "unexpected response: %(error)s"
+msgstr "การตอบกลับที่ไม่คาดคิด: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "ติดตั้งหรือซ่อมไดรเวอร์ NVIDIA; nvidia-smi มากับไดรเวอร์และต้องอยู่ใน PATH"
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "ติดตั้ง ROCm (Linux) เพื่อให้เห็นตัวเลข VRAM ของ AMD; ถ้าไม่มี GPU จะแสดงเพียงชื่อเท่านั้น"
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell แสดงรายการตัวควบคุมวิดีโอไม่ได้; ให้รันจากเซสชันผู้ใช้ปกติ"
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "ติดตั้ง pciutils เพื่อแสดงชื่อ GPU เมื่อไม่มีเครื่องมือของผู้ผลิต"
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "อ่านชนิดและความเร็วของ DDR ไม่ได้; บน Linux ให้รันด้วย sudo หนึ่งครั้ง (dmidecode) หรือใช้แบนด์วิดท์ที่วัดได้แทน"
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo ล้มเหลว; ไม่ทราบรุ่นของ CPU และชุดคำสั่ง"
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil นับจำนวนคอร์ของ CPU ไม่ได้; การเลือกจำนวนเธรดจะถอยกลับไปใช้คอร์เดียว ติดตั้ง psutil ใหม่ด้วย `pip install --force-reinstall psutil`"
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil อ่านหน่วยความจำรวมไม่ได้; คำนวณการจัดสรรไม่ได้จนกว่าจะแก้ตรงนี้ได้ ติดตั้ง psutil ใหม่ด้วย `pip install --force-reinstall psutil`"
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "อ่านจำนวนคอร์ประสิทธิภาพจาก sysctl ไม่ได้"
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server มีอยู่แต่ไม่ได้แจ้งเวอร์ชัน; ไฟล์โปรแกรมอาจเสียหาย"
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler ล้มเหลว; ไม่มีข้อมูลของ GPU"
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "ไม่มีเครื่องมือของผู้ผลิตรายใดแจ้งขนาดหน่วยความจำของ GPU; บันทึกขนาดไว้ในโปรไฟล์ฮาร์ดแวร์เพื่อให้คำนวณการจัดสรรสำหรับเครื่องนี้ได้"
+
+msgid "llama.cpp installed"
+msgstr "ติดตั้ง llama.cpp แล้ว"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "บิลด์ %(build)s ที่ %(path)s, แบ็กเอนด์: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "ไม่ทราบ"
+
+msgid "llama.cpp not found"
+msgstr "ไม่พบ llama.cpp"
+
+msgid "no llama-server binary was found"
+msgstr "ไม่พบไฟล์โปรแกรม llama-server"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "ติดตั้ง llama.cpp (LlamaFit เฟส 2 จะทำให้: `llamafit install llama.cpp`); ระหว่างนี้ให้ดาวน์โหลดรุ่นที่เผยแพร่จาก https://github.com/ggml-org/llama.cpp/releases แล้วนำไดเรกทอรี bin ของมันใส่ไว้ใน PATH หรือ LLAMA_CPP_PATH"
+
+msgid "Memory size unknown"
+msgstr "ไม่ทราบขนาดหน่วยความจำ"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit อ่านหน่วยความจำรวมของเครื่องนี้ไม่ได้ จึงคำนวณไม่ได้ว่าอะไรจะพอดี"
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: ไม่มีแบ็กเอนด์ %(backend)s ใน llama.cpp"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp ถูกบิลด์มาพร้อม: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "ไม่ทราบ"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "ติดตั้ง llama.cpp บิลด์ที่มีแบ็กเอนด์ %(backend)s หรือ Vulkan เพื่อใช้ %(gpu)s"
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: ไม่ทราบขนาด VRAM"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "ไม่มีเครื่องมือของผู้ผลิตที่แจ้งหน่วยความจำ"
+
+msgid "No GPU detected"
+msgstr "ไม่พบ GPU"
+
+msgid "models will run on the CPU only"
+msgstr "โมเดลจะทำงานบน CPU เท่านั้น"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "ถ้ามี GPU อยู่ ให้ตรวจสอบว่าติดตั้งเครื่องมือไดรเวอร์ของมันแล้ว"
+
+msgid "RAM bandwidth assumed"
+msgstr "สมมติแบนด์วิดท์ของ RAM"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "ใช้ %(gbps)s GB/s เป็นค่าเริ่มต้น"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "ติดตั้ง numpy (`pip install llamafit[fast]`) เพื่อให้ LlamaFit วัดแบนด์วิดท์ของ RAM ได้"
+
+msgid "Probe %(probe)s failed"
+msgstr "การตรวจสอบ %(probe)s ล้มเหลว"
+
+msgid "unknown error"
+msgstr "ข้อผิดพลาดที่ไม่ทราบสาเหตุ"
+
+msgid "llama-server running at %(url)s"
+msgstr "llama-server ทำงานอยู่ที่ %(url)s"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "โมเดล %(model)s, คอนเท็กซ์ %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "ไม่ทราบ"
+
+msgid "Low disk space on %(path)s"
+msgstr "พื้นที่ดิสก์บน %(path)s เหลือน้อย"
+
+msgid "%(size)s free"
+msgstr "ว่าง %(size)s"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "โมเดลที่ใช้งานได้จริงส่วนใหญ่ต้องการ 5 ถึง 120 GB; ให้เพิ่มพื้นที่ว่างหรือเปลี่ยนไดเรกทอรีดาวน์โหลด"
+
+msgctxt "size"
+msgid "unknown"
+msgstr "ไม่ทราบ"
