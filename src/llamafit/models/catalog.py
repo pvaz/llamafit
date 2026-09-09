@@ -39,11 +39,16 @@ class _Strict(BaseModel):
 
 
 class License(_Strict):
-    """A model's licence: its SPDX identifier and where the actual text lives.
+    """A model's licence: its identifier and where the actual text lives.
 
     Attributes:
-        spdx: The SPDX licence identifier, for example ``Apache-2.0``.
-        url: A working URL to the licence text.
+        spdx: The SPDX licence identifier when the licence has one, for example
+            ``Apache-2.0``; otherwise the vendor's own licence slug, for example
+            ``qwen-community-1.0``. Not every open-weight licence is registered
+            with SPDX, so this field is not guaranteed to resolve against that
+            registry.
+        url: A working URL to the licence text. Always present, regardless of
+            whether ``spdx`` is a registered identifier.
     """
 
     spdx: str
@@ -224,7 +229,7 @@ class Extra(_Strict):
     sha256: str | None = None
 
 
-class Source(_Strict):
+class ModelSource(_Strict):
     """Where a model's files come from: a Hugging Face repository or a local path.
 
     Attributes:
@@ -244,7 +249,7 @@ class Source(_Strict):
     extras: list[Extra] = Field(default_factory=list)
 
     @model_validator(mode="after")
-    def _repo_or_path_matches_kind(self) -> Source:
+    def _repo_or_path_matches_kind(self) -> ModelSource:
         """Reject a ``gguf`` source with no repository or a ``local`` source with no path."""
         if self.kind == "gguf" and not self.repo:
             raise ValueError("a gguf source needs a repo")
@@ -319,7 +324,7 @@ class CatalogModel(_Strict):
     sampling: Sampling = Field(default_factory=Sampling)
     chat_template: ChatTemplate = Field(default_factory=ChatTemplate)
     llama_cpp: LlamaCppNeeds = Field(default_factory=LlamaCppNeeds)
-    sources: list[Source]
+    sources: list[ModelSource]
     measured: list[Measured] = Field(default_factory=list)
 
     @model_validator(mode="after")

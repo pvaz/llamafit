@@ -3,7 +3,7 @@ from datetime import date
 import pytest
 from pydantic import ValidationError
 
-from llamafit.models.catalog import Architecture, CatalogModel, License, Params, Quant, Source
+from llamafit.models.catalog import Architecture, CatalogModel, License, ModelSource, Params, Quant
 
 
 def minimal(**overrides: object) -> CatalogModel:
@@ -21,7 +21,7 @@ def minimal(**overrides: object) -> CatalogModel:
         "use_cases": ["coding"],
         "quality": {"baseline": 86},
         "sources": [
-            Source(
+            ModelSource(
                 repo="unsloth/Qwen3-Coder-Next-GGUF",
                 trust="unsloth",
                 quants=[Quant(name="UD-Q4_K_XL")],
@@ -66,10 +66,10 @@ def test_the_identifier_must_be_a_slug() -> None:
 
 def test_a_gguf_source_needs_a_repository_and_a_local_source_needs_a_path() -> None:
     with pytest.raises(ValidationError):
-        Source(kind="gguf", quants=[Quant(name="Q4_K_M")])
+        ModelSource(kind="gguf", quants=[Quant(name="Q4_K_M")])
     with pytest.raises(ValidationError):
-        Source(kind="local", quants=[Quant(name="Q4_K_M")])
-    assert Source(kind="local", path="D:/models/x.gguf", quants=[Quant(name="Q4_K_M")]).path
+        ModelSource(kind="local", quants=[Quant(name="Q4_K_M")])
+    assert ModelSource(kind="local", path="D:/models/x.gguf", quants=[Quant(name="Q4_K_M")]).path
 
 
 def test_a_model_needs_at_least_one_source_and_one_use_case() -> None:

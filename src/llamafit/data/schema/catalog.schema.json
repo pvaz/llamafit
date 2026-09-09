@@ -378,7 +378,7 @@
     },
     "License": {
       "additionalProperties": false,
-      "description": "A model's licence: its SPDX identifier and where the actual text lives.\n\nAttributes:\n    spdx: The SPDX licence identifier, for example ``Apache-2.0``.\n    url: A working URL to the licence text.",
+      "description": "A model's licence: its identifier and where the actual text lives.\n\nAttributes:\n    spdx: The SPDX licence identifier when the licence has one, for example\n        ``Apache-2.0``; otherwise the vendor's own licence slug, for example\n        ``qwen-community-1.0``. Not every open-weight licence is registered\n        with SPDX, so this field is not guaranteed to resolve against that\n        registry.\n    url: A working URL to the licence text. Always present, regardless of\n        whether ``spdx`` is a registered identifier.",
       "properties": {
         "spdx": {
           "title": "Spdx",
@@ -552,6 +552,72 @@
         "quant"
       ],
       "title": "Measured",
+      "type": "object"
+    },
+    "ModelSource": {
+      "additionalProperties": false,
+      "description": "Where a model's files come from: a Hugging Face repository or a local path.\n\nAttributes:\n    repo: The Hugging Face repository, for a ``gguf`` source.\n    kind: Whether this source is a Hugging Face repository or a local file.\n    trust: Who publishes this source's files.\n    path: A local file path, for a ``local`` source.\n    quants: The quantisations this source publishes.\n    extras: Auxiliary files this source publishes.",
+      "properties": {
+        "extras": {
+          "items": {
+            "$ref": "#/$defs/Extra"
+          },
+          "title": "Extras",
+          "type": "array"
+        },
+        "kind": {
+          "default": "gguf",
+          "enum": [
+            "gguf",
+            "local"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "quants": {
+          "items": {
+            "$ref": "#/$defs/Quant"
+          },
+          "title": "Quants",
+          "type": "array"
+        },
+        "repo": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repo"
+        },
+        "trust": {
+          "default": "community",
+          "enum": [
+            "official",
+            "unsloth",
+            "bartowski",
+            "community"
+          ],
+          "title": "Trust",
+          "type": "string"
+        }
+      },
+      "title": "ModelSource",
       "type": "object"
     },
     "Params": {
@@ -753,72 +819,6 @@
       },
       "title": "Sampling",
       "type": "object"
-    },
-    "Source": {
-      "additionalProperties": false,
-      "description": "Where a model's files come from: a Hugging Face repository or a local path.\n\nAttributes:\n    repo: The Hugging Face repository, for a ``gguf`` source.\n    kind: Whether this source is a Hugging Face repository or a local file.\n    trust: Who publishes this source's files.\n    path: A local file path, for a ``local`` source.\n    quants: The quantisations this source publishes.\n    extras: Auxiliary files this source publishes.",
-      "properties": {
-        "extras": {
-          "items": {
-            "$ref": "#/$defs/Extra"
-          },
-          "title": "Extras",
-          "type": "array"
-        },
-        "kind": {
-          "default": "gguf",
-          "enum": [
-            "gguf",
-            "local"
-          ],
-          "title": "Kind",
-          "type": "string"
-        },
-        "path": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Path"
-        },
-        "quants": {
-          "items": {
-            "$ref": "#/$defs/Quant"
-          },
-          "title": "Quants",
-          "type": "array"
-        },
-        "repo": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Repo"
-        },
-        "trust": {
-          "default": "community",
-          "enum": [
-            "official",
-            "unsloth",
-            "bartowski",
-            "community"
-          ],
-          "title": "Trust",
-          "type": "string"
-        }
-      },
-      "title": "Source",
-      "type": "object"
     }
   },
   "additionalProperties": false,
@@ -891,7 +891,7 @@
     },
     "sources": {
       "items": {
-        "$ref": "#/$defs/Source"
+        "$ref": "#/$defs/ModelSource"
       },
       "title": "Sources",
       "type": "array"
