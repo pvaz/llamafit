@@ -58,7 +58,9 @@ def bandwidth_assumed() -> str:
 
 
 def install_numpy() -> str:
-    return _("Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure it.")
+    return _(
+        "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+    )
 
 
 def vram_tool_missing() -> str:
