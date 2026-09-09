@@ -94,6 +94,43 @@ def placeholder_problems(catalog: PoCatalog) -> list[str]:
     return problems
 
 
+# Words and spellings only Brazilian Portuguese uses, each with what European Portuguese
+# writes instead. Enough of them to catch a catalog drifting, few enough that every one is
+# unambiguous: none of these is also a European word, and none is a substring of one.
+_BRAZILIAN_ONLY = {
+    "detecta": "deteta",
+    "detecção": "deteção",
+    "arquivo": "ficheiro",
+    "usuário": "utilizador",
+    "gerenciar": "gerir",
+    "gerenciamento": "gestão",
+    "aplicativo": "aplicação",
+    "cadastro": "registo",
+    "registro": "registo",
+    "baixar": "transferir",
+    "econômic": "económic",
+    "eletrônic": "eletrónic",
+}
+
+
+def brazilian_forms(catalog: PoCatalog) -> list[str]:
+    """Report every Brazilian-only word or spelling a catalog's translations use.
+
+    The Portuguese catalog says at the top that it wants a native speaker to go through
+    it line by line, so no test may freeze one of its sentences. What has to hold whatever
+    the words become is that they are European.
+    """
+    found: list[str] = []
+    for message in catalog.messages.values():
+        for translation in message.translations:
+            lowered = translation.lower()
+            for brazilian, european in _BRAZILIAN_ONLY.items():
+                note = f"{brazilian!r} is Brazilian; European Portuguese writes {european!r}"
+                if brazilian in lowered and note not in found:
+                    found.append(note)
+    return found
+
+
 def _template_messages() -> dict[MessageKey, str | None]:
     found = extract()
     assert found.problems == [], found.problems
@@ -184,10 +221,27 @@ def test_the_template_falls_back_to_english_for_every_message() -> None:
 
 
 def test_the_portuguese_catalog_is_european_not_brazilian() -> None:
+    # This used to freeze one sentence word for word, which made the invitation at the
+    # top of pt_PT.po — read it line by line and correct it — a way to break the build.
+    # What the test is really guarding is the variety, so that is what it asserts, and
+    # every sentence in the file is free to change.
     catalog = load_language("pt_PT")
     assert catalog.headers.get("Language-Team", "").startswith("Portuguese (Portugal)")
-    # "detetada" is the European spelling; Brazilian Portuguese writes "detectada".
-    assert catalog.gettext("No GPU detected") == "Nenhuma GPU detetada"
+    assert catalog.language == "pt_PT"
+    assert brazilian_forms(catalog) == []
+
+
+def test_the_variety_check_would_catch_a_brazilian_sentence() -> None:
+    # Otherwise the check above passes on any catalog at all, including an empty one.
+    catalog = parse_po(
+        'msgid ""\nmsgstr ""\n"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n\n'
+        'msgid "No GPU detected"\nmsgstr "Nenhuma GPU detectada"\n\n'
+        'msgid "file"\nmsgstr "arquivo"\n'
+    )
+    assert brazilian_forms(catalog) == [
+        "'detecta' is Brazilian; European Portuguese writes 'deteta'",
+        "'arquivo' is Brazilian; European Portuguese writes 'ficheiro'",
+    ]
 
 
 def test_the_packaged_directory_is_addressed_the_way_the_other_data_is() -> None:
