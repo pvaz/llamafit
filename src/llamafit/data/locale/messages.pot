@@ -44,6 +44,168 @@ msgstr ""
 msgid "Run again with --verbose for the full traceback."
 msgstr ""
 
+#: src/llamafit/cli/catalog_cmd.py:45
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:60
+msgid "Keep only this use case."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:65
+msgid "Keep only models with this capability (repeatable)."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:70
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:76
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:131
+msgid "Did you mean: %(ids)s?"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:133
+msgid "Run `llamafit list` to see every model id."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:136
+msgid "no model named %(id)s in the catalog"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:156
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/catalog_cmd.py:184
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:215
+msgid "invalid --use-case %(value)s"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:216
+msgid "Valid use cases: %(values)s"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:221
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/catalog_cmd.py:227
+msgid "Valid capabilities: %(values)s"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:242
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:258
+msgid "Keep only this vendor, case-insensitive."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:265
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:269
+msgid "Show at most this many."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:285
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:291
+msgid "Text to match against id, name, vendor or family."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:300
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:305
+#: src/llamafit/cli/catalog_cmd.py:536
+msgid "A catalog model id."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:336
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:355
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/catalog_cmd.py:388
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:396
+msgid "Refresh only this model id."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:401
+msgid "Compute the refresh but write nothing."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:408
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:454
+msgid "%(model)s: warning: %(warning)s"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:462
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/catalog_cmd.py:482
+msgid "%(model)s: error: %(error)s"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:494
+#: src/llamafit/cli/render.py:281
+#: src/llamafit/errors.py:40
+msgid "Hint: %(hint)s"
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:496
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:505
+msgid "No changes."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:528
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr ""
+
+#: src/llamafit/cli/catalog_cmd.py:539
+msgid "Print YAML instead of JSON."
+msgstr ""
+
+#: src/llamafit/cli/doctor_cmd.py:22
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr ""
+
 #: src/llamafit/cli/render.py:37
 msgctxt "finding level"
 msgid "OK"
@@ -324,11 +486,6 @@ msgstr ""
 msgid "finding"
 msgstr ""
 
-#: src/llamafit/cli/render.py:281
-#: src/llamafit/errors.py:40
-msgid "Hint: %(hint)s"
-msgstr ""
-
 #: src/llamafit/cli/render.py:349
 msgid "ID"
 msgstr ""
@@ -475,6 +632,15 @@ msgctxt "bits per weight"
 msgid "unknown"
 msgstr ""
 
+#: src/llamafit/cli/system_cmd.py:23
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr ""
+
+#: src/llamafit/cli/system_cmd.py:31
+#: tests/fixtures/messages.py:101
+msgid "Skip the RAM bandwidth measurement."
+msgstr ""
+
 #: src/llamafit/errors.py:38
 msgid "Command: %(command)s"
 msgstr ""
@@ -521,10 +687,6 @@ msgstr ""
 
 #: tests/fixtures/messages.py:68
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
-msgstr ""
-
-#: tests/fixtures/messages.py:101
-msgid "Skip the RAM bandwidth measurement."
 msgstr ""
 
 #: tests/fixtures/messages.py:109
