@@ -16,6 +16,12 @@ a contextual call whose context is empty: a message with no context is written w
 A context is part of what identifies a message, so ``pgettext("GPU", "none detected")``
 and ``pgettext("backends", "none detected")`` are two entries, written into the template
 with a ``msgctxt`` line each, and a translator sees two strings to translate differently.
+
+A comment block immediately above a call, whose first line opens with ``Translators:``, is
+copied into the template as ``#.`` lines. It is how a call site says something a translator
+cannot work out from the message alone -- that a message is punctuation rather than prose,
+say. Only a block carrying that marker is copied, so a comment written for whoever
+maintains the code stays in the code.
 """
 
 from __future__ import annotations
@@ -77,6 +83,13 @@ _HEADER_FIELDS = (
 )
 _ESCAPES = {"\\": "\\\\", '"': '\\"', "\n": "\\n", "\t": "\\t", "\r": "\\r"}
 
+TRANSLATOR_MARKER = "Translators:"
+"""What a comment block must open with before it is copied into the template.
+
+The marker is the convention every gettext toolchain already uses, and it is what keeps
+notes written for whoever maintains the code out of a file whose reader cannot act on them.
+"""
+
 
 @dataclass
 class Entry:
@@ -88,6 +101,9 @@ class Entry:
         context: What the call said the message is used for, or ``None`` for a call that
             said nothing. A message with no context is not the same entry as the same
             message with one, and neither is the same as a context of ``""``.
+        comments: Notes for the translator, from the ``Translators:`` blocks above the call
+            sites, in the order they were found and without repeats: a message wrapped in
+            two places under the same note is not told it twice.
         references: ``file:line`` for every call site, in the order they were found.
         first: The file and line the message was first seen at, which orders the file.
     """
@@ -95,6 +111,7 @@ class Entry:
     msgid: str
     plural: str | None = None
     context: str | None = None
+    comments: list[str] = field(default_factory=list)
     references: list[str] = field(default_factory=list)
     first: tuple[str, int] = ("", 0)
 
@@ -153,6 +170,8 @@ def render_template(found: Extraction, *, version: str) -> str:
         lines.append(f'"{name}: {value.format(version=version)}\\n"')
     for entry in found.entries:
         lines.append("")
+        for comment in entry.comments:
+            lines.append(f"#. {comment}" if comment else "#.")
         for reference in entry.references:
             lines.append(f"#: {reference}")
         if entry.context is not None:
@@ -206,18 +225,19 @@ def _extract_file(
     except SyntaxError as exc:
         found.problems.append(f"{_where(path, exc.lineno or 1)}: cannot parse: {exc.msg}")
         return
+    lines = text.splitlines()
     for node in ast.walk(tree):
         if not isinstance(node, ast.Call):
             continue
         name = _called_name(node.func)
         if name in SINGULAR_NAMES:
-            _collect(path, node, found, by_key, arity=1, contextual=False)
+            _collect(path, node, found, by_key, lines, arity=1, contextual=False)
         elif name in PLURAL_NAMES:
-            _collect(path, node, found, by_key, arity=2, contextual=False)
+            _collect(path, node, found, by_key, lines, arity=2, contextual=False)
         elif name in CONTEXT_SINGULAR_NAMES:
-            _collect(path, node, found, by_key, arity=1, contextual=True)
+            _collect(path, node, found, by_key, lines, arity=1, contextual=True)
         elif name in CONTEXT_PLURAL_NAMES:
-            _collect(path, node, found, by_key, arity=2, contextual=True)
+            _collect(path, node, found, by_key, lines, arity=2, contextual=True)
 
 
 def _collect(
@@ -225,6 +245,7 @@ def _collect(
     node: ast.Call,
     found: Extraction,
     by_key: dict[tuple[str | None, str], Entry],
+    lines: Sequence[str],
     *,
     arity: int,
     contextual: bool,
@@ -264,7 +285,39 @@ def _collect(
     elif entry.plural != plural and plural is not None:
         found.problems.append(f"{reference}: {msgid!r} already has a different plural form")
         return
+    for comment in translator_comment(lines, node.lineno):
+        if comment not in entry.comments:
+            entry.comments.append(comment)
     entry.references.append(reference)
+
+
+def translator_comment(lines: Sequence[str], lineno: int) -> list[str]:
+    """The ``Translators:`` note written immediately above line ``lineno``, if there is one.
+
+    The block has to touch the call: a blank line, or any code, ends it. Only a block whose
+    first line opens with :data:`TRANSLATOR_MARKER` comes back, so a comment explaining the
+    code to whoever maintains it never reaches a translator who could not act on it.
+
+    Args:
+        lines: The file's lines, without their endings.
+        lineno: The call's line number, counting from one.
+
+    Returns:
+        The note's lines, marker included, each with its ``#`` and one following space
+        stripped; empty when the lines above the call are not a marked block.
+    """
+    block: list[str] = []
+    index = lineno - 2  # the line above the call, counting from zero
+    while index >= 0:
+        stripped = lines[index].strip()
+        if not stripped.startswith("#"):
+            break
+        block.append(stripped[1:].removeprefix(" "))
+        index -= 1
+    block.reverse()
+    if not block or not block[0].startswith(TRANSLATOR_MARKER):
+        return []
+    return block
 
 
 def _called_name(func: ast.expr) -> str | None:
