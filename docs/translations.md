@@ -28,10 +28,50 @@ the program reads.
 
 ## What LlamaFit speaks today
 
+Thirty-seven catalogs, and **not one of them has been read by a native speaker.** Every
+line of that column says the same thing on purpose: it is the honest state of the set, not
+a formatting accident, and the rule further down this page is what it is measured against.
+
 | Language | Catalog | Reviewed by a native speaker |
 |---|---|---|
 | English | none needed; the messages are written in it | — |
+| Arabic | `ar.po` | **not yet** |
+| Bengali | `bn.po` | **not yet** |
+| Bulgarian | `bg.po` | **not yet** |
+| Catalan | `ca.po` | **not yet** |
+| Chinese (Simplified) | `zh_CN.po` | **not yet** |
+| Chinese (Traditional) | `zh_TW.po` | **not yet** |
+| Croatian | `hr.po` | **not yet** |
+| Czech | `cs.po` | **not yet** |
+| Danish | `da.po` | **not yet** |
+| Dutch | `nl.po` | **not yet** |
+| Finnish | `fi.po` | **not yet** |
+| French | `fr.po` | **not yet** |
+| German | `de.po` | **not yet** |
+| Greek | `el.po` | **not yet** |
+| Hebrew | `he.po` | **not yet** |
+| Hindi | `hi.po` | **not yet** |
+| Hungarian | `hu.po` | **not yet** |
+| Indonesian | `id.po` | **not yet** |
+| Italian | `it.po` | **not yet** |
+| Japanese | `ja.po` | **not yet** |
+| Korean | `ko.po` | **not yet** |
+| Malay | `ms.po` | **not yet** |
+| Norwegian Bokmål | `nb.po` | **not yet** |
+| Polish | `pl.po` | **not yet** |
+| Portuguese (Brazil) | `pt_BR.po` | **not yet** |
 | Portuguese (Portugal) | `pt_PT.po` | **not yet** |
+| Romanian | `ro.po` | **not yet** |
+| Russian | `ru.po` | **not yet** |
+| Serbian (Cyrillic) | `sr.po` | **not yet** |
+| Spanish (Spain) | `es.po` | **not yet** |
+| Swedish | `sv.po` | **not yet** |
+| Tamil | `ta.po` | **not yet** |
+| Thai | `th.po` | **not yet** |
+| Turkish | `tr.po` | **not yet** |
+| Ukrainian | `uk.po` | **not yet** |
+| Urdu | `ur.po` | **not yet** |
+| Vietnamese | `vi.po` | **not yet** |
 
 `pt_PT.po` was written alongside the machinery that reads it and grew with the sweep that
 wrapped the interface, and it has had no second reader. By the standard this page sets
@@ -39,6 +79,11 @@ below, that is not enough, and the file says so at the top. It ships because a f
 catalog is what makes everything else testable, not because it has met the bar. If you
 read European Portuguese, going through it line by line is the most useful contribution
 you can make here.
+
+The other thirty-six were written in one pass each, from the template, and every one of
+them says so at the top of the file too. The most useful thing anybody can do with this
+page is take one language off that list. Reading a catalog line by line is a bigger
+contribution than adding the thirty-eighth.
 
 ## How the language is chosen
 
@@ -186,7 +231,7 @@ locale database:
 |---|---|---|
 | `thousands separator` | `,` | What goes between groups of three digits: `32,768`, `32.768`, `32 768` |
 | `decimal separator` | `.` | What goes before the fraction: `127.8`, `127,8` |
-| `parameter count` | `B` | The abbreviation for a thousand million, as in `27B` |
+| `parameter count` | `B` | Leave as `B`; see below |
 
 This is not cosmetic. English writes a model's context as `32,768`; a reader whose language
 groups with a point reads that as a fraction and is told the model holds thirty-two tokens.
@@ -208,12 +253,26 @@ draw a box.
 **An empty translation still means untranslated**, and falls back to the English character
 rather than to nothing. That is the one way to say nothing here.
 
-**Do not translate the word *billion*:** the long and short scales disagree about what one
-is, so write the abbreviation your readers expect for a thousand million. If your language
-has no short form of its own — Japanese, Korean and Chinese count in hundreds of millions,
-Spanish and Catalan write `1000 M`, Bengali counts in tens of millions — write `B`, which
-is what readers of these model names already use, and say in a `#` comment that it was a
-decision and not an oversight.
+**`parameter count` stays `B` in every language, and it is not the word *billion*.** It is
+domain vocabulary: the model's own name carries it. The file is `Qwen3-27B`, the vendor
+announces a 27B model, every article about it says 27B, and this cell sits in the same table
+row as that identifier. Localise it and one row disagrees with itself — `27bi` beside
+`Qwen3-27B` — and an abbreviation that means a thousand million in your language may well be
+read as a million or as a million million by somebody who has spent the day reading model
+names. Your language's actual word for a thousand million belongs in prose, not here.
+
+All thirty-seven catalogs write `B`, each with a `#` comment saying it was decided rather
+than skipped. The entry exists for the language whose readers genuinely would not recognise
+`B`; if that is yours, write what they do use and say in a comment why. Write something
+either way — an empty `msgstr` prints the same `B` and then reads as one message short in
+every completeness report from now on.
+
+**These entries hold a character, not a grouping rule.** LlamaFit groups digits in threes
+everywhere, so Hindi and Urdu come out as `3,276,800` rather than on the South Asian pattern
+their readers use, `32,76,800`. That is a known limitation and not something this entry can
+fix: it is one separator, and where the separators go is decided in the code. Say so in an
+issue if it matters to your language — the fix is a grouping pattern per language, and it
+has to be made once for all of them.
 
 ### When a message has a context
 
