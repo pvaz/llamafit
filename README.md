@@ -11,11 +11,12 @@ the real speed, and uses those measurements to sharpen its own estimates.
 It works on Windows, macOS and Linux, installs with `pip`, and never uses a language model to
 do any of this: every number is computed, labelled with how it was obtained, and explainable.
 
-> **Status: phase 1A (host scan and diagnostics) is done.** `llamafit system` and
-> `llamafit doctor` work on Windows, macOS and Linux. The catalog, scoring, the terminal
-> dashboard and the web dashboard follow. The design is in
-> [`docs/specs/`](docs/specs/2026-09-09-llamafit-design.md) and the implementation plan is in
-> [`docs/plans/2026-09-09-phase1a-foundation-and-host-scan.md`](docs/plans/2026-09-09-phase1a-foundation-and-host-scan.md).
+> **Status: phase 1A (host scan and diagnostics) and phase 1B (the model catalog) are done.**
+> `llamafit system`, `llamafit doctor`, `llamafit list`, `search`, `info` and the `catalog`
+> commands work on Windows, macOS and Linux. Memory budgets, scoring, the terminal dashboard
+> and the web dashboard follow. The design is in
+> [`docs/specs/`](docs/specs/2026-09-09-llamafit-design.md) and the implementation plans are in
+> [`docs/plans/`](docs/plans/).
 > Watch the repository or read the [roadmap](ROADMAP.md) to see what lands when.
 
 ## Why
@@ -40,9 +41,11 @@ LlamaFit exists to make that chain explicit, correct, and reproducible.
    backends (CUDA, Metal, HIP, Vulkan, SYCL, CPU), local GGUF files, and any `llama-server`
    already running.
 3. **Reads the catalog.** Curated YAML, one file per model family, with parameters, architecture
-   class, capabilities, context, license, published benchmark scores, the Hugging Face
-   repositories that carry the GGUF files, and every quant's real size. Volatile facts are
-   refreshed from the Hugging Face API without downloading a single weight.
+   class, capabilities, context, license, published benchmark scores and the Hugging Face
+   repositories that carry the GGUF files. What changes — file names, sizes, checksums, bits per
+   weight and GGUF header facts — is refreshed from the Hugging Face API into a generated file
+   beside it, without downloading a single weight. Every model it ships is listed in
+   [MODELS.md](MODELS.md).
 4. **Computes the budget.** From the GGUF header of each file: weight bytes by tensor class,
    KV cache per thousand tokens, compute buffer as a function of micro-batch and context,
    projector cost. It then searches placements (all on GPU; attention on GPU with experts in
@@ -65,8 +68,8 @@ Every command has a `--json` form for scripts. The Textual terminal dashboard op
 |---|---|---|
 | `llamafit system` | show the host scan and the llama.cpp installation | 1A (done) |
 | `llamafit doctor` | every probe, what failed, what would unlock more | 1A (done) |
-| `llamafit list`, `search`, `info` | browse the catalog; `info` shows the budget of every quant on this host | 1B |
-| `llamafit catalog validate`, `refresh` | maintain the catalog | 1B |
+| `llamafit list`, `search`, `info` | browse the catalog; `info` shows one model in full, with every quant it publishes | 1B (done) |
+| `llamafit catalog validate`, `refresh`, `show` | maintain the catalog | 1B (done) |
 | `llamafit fit` | every model ranked by fit on this machine | 1C |
 | `llamafit recommend` | the board for your needs: use case, required capabilities, minimum context, size and license limits | 1C |
 | `llamafit plan <model>` | placement, memory budget, context tiers, flags and the command line | 1C |
@@ -101,10 +104,15 @@ Requirements: Python 3.10 or newer. No compiler, no Node, no account. The option
 ## Use
 
 ```
+llamafit list                   # the catalog, strongest first
+llamafit info qwen3-coder-next  # one model in full: facts, sources, every quant
 llamafit system                 # CPU, memory, GPUs, disks, llama.cpp installation
 llamafit doctor                 # what was detected, what failed, what would help
 llamafit --json system          # the same as JSON for scripts
 ```
+
+Sizes and GGUF facts read `unknown` until `llamafit catalog refresh` fills them in from
+Hugging Face; nothing is downloaded but file metadata and headers.
 
 ## Documentation
 
@@ -112,7 +120,7 @@ llamafit --json system          # the same as JSON for scripts
 - [Command-line reference](docs/cli.md)
 - [Terminal dashboard](docs/tui.md) and [web dashboard and API](docs/web.md)
 - [Platform support and probes](docs/platform-support.md)
-- [The catalog](docs/catalog.md), [custom models](docs/custom-models.md) and [hardware profiles](docs/hardware-profiles.md)
+- [The catalog](docs/catalog.md) and the models it ships ([MODELS.md](MODELS.md)), [custom models](docs/custom-models.md) and [hardware profiles](docs/hardware-profiles.md)
 - [Benchmarking and calibration](docs/benchmarking.md)
 - [Architecture](docs/architecture.md) and the [design specification](docs/specs/2026-09-09-llamafit-design.md)
 - [Development](docs/development.md) and [contributing](CONTRIBUTING.md)
@@ -132,9 +140,11 @@ llamafit --json system          # the same as JSON for scripts
 
 ## Contributing
 
-Catalog entries, hardware fixtures, GPU table rows, bug reports and documentation are all
-welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md); catalog rules are in
-[docs/catalog.md](docs/catalog.md). Please read the [code of conduct](CODE_OF_CONDUCT.md).
+Catalog entries, hardware fixtures, GPU table rows, translations, bug reports and
+documentation are all welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md); catalog rules are
+in [docs/catalog.md](docs/catalog.md) and translation rules in
+[docs/translations.md](docs/translations.md). Please read the
+[code of conduct](CODE_OF_CONDUCT.md).
 
 ## License
 

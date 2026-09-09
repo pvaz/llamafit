@@ -1,0 +1,1023 @@
+{
+  "$defs": {
+    "Architecture": {
+      "additionalProperties": false,
+      "description": "The model's architecture family and how llama.cpp names it.\n\nAttributes:\n    class_: The architecture class. Serialized as ``class``, its alias, since\n        ``class`` is a Python keyword.\n    gguf_arch: The ``general.architecture`` value llama.cpp expects in the GGUF\n        header for this family.\n    notes: Anything else worth recording about the architecture.",
+      "properties": {
+        "class": {
+          "enum": [
+            "dense",
+            "moe",
+            "dense-hybrid",
+            "moe-hybrid"
+          ],
+          "title": "Class",
+          "type": "string"
+        },
+        "gguf_arch": {
+          "title": "Gguf Arch",
+          "type": "string"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        }
+      },
+      "required": [
+        "class",
+        "gguf_arch"
+      ],
+      "title": "Architecture",
+      "type": "object"
+    },
+    "Benchmark": {
+      "additionalProperties": false,
+      "description": "One published benchmark score.\n\nAttributes:\n    name: The benchmark's name, for example ``MMLU-Pro``.\n    score: The published score.\n    source: A URL to where the score was published.",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "score": {
+          "title": "Score",
+          "type": "number"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "score",
+        "source"
+      ],
+      "title": "Benchmark",
+      "type": "object"
+    },
+    "ChatTemplate": {
+      "additionalProperties": false,
+      "description": "Quirks of a model's chat template that llama.cpp needs to know about.\n\nAttributes:\n    reasoning_format: The chat template's reasoning/thinking format, if any.\n    thinking_toggle: How thinking mode is toggled, if the template supports it.",
+      "properties": {
+        "reasoning_format": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reasoning Format"
+        },
+        "thinking_toggle": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Thinking Toggle"
+        }
+      },
+      "title": "ChatTemplate",
+      "type": "object"
+    },
+    "Context": {
+      "additionalProperties": false,
+      "description": "The context lengths a model supports.\n\nAttributes:\n    native: Native context length, in tokens.\n    extended: Extended context length, in tokens, when the model supports one\n        beyond its native length.\n    extended_method: The technique used to reach ``extended``, for example\n        ``yarn`` or ``rope-scaling``.",
+      "properties": {
+        "extended": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extended"
+        },
+        "extended_method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Extended Method"
+        },
+        "native": {
+          "title": "Native",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "native"
+      ],
+      "title": "Context",
+      "type": "object"
+    },
+    "Extra": {
+      "additionalProperties": false,
+      "description": "An auxiliary file that accompanies a model, such as a vision projector.\n\nAttributes:\n    role: What this file is for.\n    file: The file name.\n    bytes_: Size in bytes, never negative. Serialized as ``bytes``, its alias.\n        Filled by the refresh command.\n    sha256: Checksum of the file. Filled by the refresh command.",
+      "properties": {
+        "bytes": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Bytes"
+        },
+        "file": {
+          "title": "File",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "mmproj",
+            "mtp",
+            "draft",
+            "lora"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        }
+      },
+      "required": [
+        "role",
+        "file"
+      ],
+      "title": "Extra",
+      "type": "object"
+    },
+    "GgufFacts": {
+      "additionalProperties": false,
+      "description": "Architecture facts and byte-size breakdown derived from a GGUF header.\n\nEvery number here is read from the file, not estimated: layer, head and\nvocabulary counts come from the file's own metadata, and every\n``bytes_*`` field is a sum of tensor sizes the header already reports.\n``attention_layers_source`` records how ``attention_layers`` was\ndetermined: ``\"tensors\"`` when full-attention blocks were identified by\nthe tensors they carry, ``\"all-layers\"`` when no block could be\ndistinguished and every layer was assumed to have full attention, or\n``\"unknown\"`` when neither could be established.\n\nAttributes:\n    arch: The model family, from ``general.architecture``.\n    n_layer: Number of transformer blocks, or ``None`` if not reported.\n    n_embd: Embedding (hidden) dimension.\n    n_vocab: Vocabulary size.\n    n_head: Number of attention heads.\n    n_head_kv: Number of key/value heads (for grouped-query attention).\n    head_dim: Dimension of one attention head's key vector, from\n        ``{arch}.attention.key_length``, or ``embedding_length`` over\n        ``head_count`` when the architecture declares no key length. This is\n        the head dimension for everything that legitimately means one; the\n        KV cache is the exception and needs ``value_head_dim`` too.\n    value_head_dim: Dimension of one attention head's value vector, from\n        ``{arch}.attention.value_length``, falling back to ``head_dim`` when\n        the architecture declares only a key length. Every model in the\n        catalog today declares the two equal, but an architecture is free to\n        separate them, and a cache sized from twice the key length would then\n        be wrong in proportion.\n    attention_layers: Number of layers with full (non-linear) attention.\n    attention_layers_source: How ``attention_layers`` was determined.\n    sliding_window: Length of the sliding attention window in tokens, from\n        ``{arch}.attention.sliding_window``, or ``None`` when the architecture\n        declares none. Recorded, not used: a model that slides holds a\n        full-length KV cache on only a fraction of its layers, and the header\n        does not say which, so the pattern has to come from a per-architecture\n        rule or the catalog.\n    context_length: The longest context the file itself declares, from\n        ``{arch}.context_length``, or ``None`` when the architecture declares\n        none. Recorded, not used: it is what the file permits, which is not\n        always what the vendor supports.\n    n_expert: Number of experts, for mixture-of-experts architectures.\n    n_expert_used: Number of experts activated per token.\n    has_shared_experts: Whether the model has always-on shared experts\n        in addition to routed ones.\n    bytes_expert_weights: Total bytes of routed expert weight tensors.\n    bytes_dense_block_weights: Total bytes of every non-expert tensor inside\n        a block: attention projections, feed-forward weights and norms alike.\n        On a dense model that is nearly the whole file, so it is named for\n        what it holds rather than for attention alone.\n    bytes_output_head: Bytes of the output (unembedding) tensor.\n    bytes_token_embd: Bytes of the token embedding tensor.\n    bytes_lazy_tables: Bytes of tensors that can be loaded lazily rather\n        than kept resident, such as per-layer embedding tables.\n    bytes_global_weights: Total bytes of tensors that belong to none of\n        the other buckets: not per-block, not the token embedding, the\n        output head or a lazy table, for example ``output_norm.weight``.\n    bytes_total: Total bytes of every tensor in the file. Always equal to\n        the sum of every other ``bytes_*`` field, so the taxonomy above\n        accounts for the whole file.\n    kv_bytes_per_token_f16: Bytes of KV cache needed per token at f16\n        precision, or ``None`` when it cannot be computed.\n    recurrent_state_bytes: Bytes of fixed recurrent/SSM state, for hybrid\n        or state-space architectures, or ``None`` when not applicable.",
+      "properties": {
+        "arch": {
+          "title": "Arch",
+          "type": "string"
+        },
+        "attention_layers": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attention Layers"
+        },
+        "attention_layers_source": {
+          "default": "unknown",
+          "enum": [
+            "tensors",
+            "all-layers",
+            "unknown"
+          ],
+          "title": "Attention Layers Source",
+          "type": "string"
+        },
+        "bytes_dense_block_weights": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Bytes Dense Block Weights",
+          "type": "integer"
+        },
+        "bytes_expert_weights": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Bytes Expert Weights",
+          "type": "integer"
+        },
+        "bytes_global_weights": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Bytes Global Weights",
+          "type": "integer"
+        },
+        "bytes_lazy_tables": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Bytes Lazy Tables",
+          "type": "integer"
+        },
+        "bytes_output_head": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Bytes Output Head",
+          "type": "integer"
+        },
+        "bytes_token_embd": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Bytes Token Embd",
+          "type": "integer"
+        },
+        "bytes_total": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Bytes Total",
+          "type": "integer"
+        },
+        "context_length": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Context Length"
+        },
+        "has_shared_experts": {
+          "default": false,
+          "title": "Has Shared Experts",
+          "type": "boolean"
+        },
+        "head_dim": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Head Dim"
+        },
+        "kv_bytes_per_token_f16": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Kv Bytes Per Token F16"
+        },
+        "n_embd": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "N Embd"
+        },
+        "n_expert": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "N Expert"
+        },
+        "n_expert_used": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "N Expert Used"
+        },
+        "n_head": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "N Head"
+        },
+        "n_head_kv": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "N Head Kv"
+        },
+        "n_layer": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "N Layer"
+        },
+        "n_vocab": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "N Vocab"
+        },
+        "recurrent_state_bytes": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recurrent State Bytes"
+        },
+        "sliding_window": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sliding Window"
+        },
+        "value_head_dim": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value Head Dim"
+        }
+      },
+      "required": [
+        "arch"
+      ],
+      "title": "GgufFacts",
+      "type": "object"
+    },
+    "License": {
+      "additionalProperties": false,
+      "description": "A model's licence: its identifier and where the actual text lives.\n\nAttributes:\n    spdx: The SPDX licence identifier when the licence has one, for example\n        ``Apache-2.0``; otherwise the vendor's own licence slug, for example\n        ``qwen-community-1.0``. Not every open-weight licence is registered\n        with SPDX, so this field is not guaranteed to resolve against that\n        registry.\n    url: A working URL to the licence text. Always present, regardless of\n        whether ``spdx`` is a registered identifier.",
+      "properties": {
+        "spdx": {
+          "title": "Spdx",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "spdx",
+        "url"
+      ],
+      "title": "License",
+      "type": "object"
+    },
+    "LlamaCppNeeds": {
+      "additionalProperties": false,
+      "description": "Requirements this model places on the llama.cpp build that serves it.\n\nAttributes:\n    min_build: The minimum llama.cpp build number known to support this model.\n    kv_types_allowed: KV cache quantisation types known to work with this model.\n    requires: Other requirements, keyed by name, for example a minimum CUDA\n        version.\n    quirks: Free-text notes about anything else llama.cpp needs to run this\n        model correctly.\n    lazy_tensors: Name prefixes of tensors llama.cpp can stream from disk\n        rather than hold in memory, for example ``per_layer_token_embd``.\n        Curated, and a property of the architecture rather than of a file:\n        every quant of a model streams the same tables. The refresh passes\n        these to the GGUF reader, which sums their bytes into\n        :attr:`~llamafit.models.gguf.GgufFacts.bytes_lazy_tables` instead of\n        counting them as resident weights. Empty for a model that streams\n        nothing, which is most of them.",
+      "properties": {
+        "kv_types_allowed": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Kv Types Allowed",
+          "type": "array"
+        },
+        "lazy_tensors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Lazy Tensors",
+          "type": "array"
+        },
+        "min_build": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Build"
+        },
+        "quirks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Quirks",
+          "type": "array"
+        },
+        "requires": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Requires",
+          "type": "object"
+        }
+      },
+      "title": "LlamaCppNeeds",
+      "type": "object"
+    },
+    "Measured": {
+      "additionalProperties": false,
+      "description": "One measurement of this model's speed and memory use on a real machine.\n\nAttributes:\n    profile: A short label for what was run, for example ``llama-bench tg128``.\n    quant: The quant that was measured.\n    gen_tps: Generation speed, in tokens per second.\n    pp_tps: Prompt processing speed, in tokens per second.\n    context: Context length in use during the measurement, in tokens.\n    flags: The llama.cpp flags used, quoted exactly.\n    llama_cpp_build: The llama.cpp build number used.\n    peak_vram_gb: Peak VRAM used, in gigabytes.\n    date: The date of the measurement.\n    source: Where the measurement is recorded.",
+      "properties": {
+        "context": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Context"
+        },
+        "date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Date"
+        },
+        "flags": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Flags"
+        },
+        "gen_tps": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gen Tps"
+        },
+        "llama_cpp_build": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Llama Cpp Build"
+        },
+        "peak_vram_gb": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Peak Vram Gb"
+        },
+        "pp_tps": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pp Tps"
+        },
+        "profile": {
+          "title": "Profile",
+          "type": "string"
+        },
+        "quant": {
+          "title": "Quant",
+          "type": "string"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        }
+      },
+      "required": [
+        "profile",
+        "quant"
+      ],
+      "title": "Measured",
+      "type": "object"
+    },
+    "ModelSource": {
+      "additionalProperties": false,
+      "description": "Where a model's files come from: a Hugging Face repository or a local path.\n\nAttributes:\n    repo: The Hugging Face repository, for a ``gguf`` source.\n    kind: Whether this source is a Hugging Face repository or a local file.\n    trust: Who publishes this source's files.\n    path: A local file path, for a ``local`` source. It says nothing about a\n        ``gguf`` source and must be left unset on one; the directory inside a\n        repository is ``repo_path``, which is a different thing with a\n        different name so nobody has to hold the source kind in their head to\n        know which definition applies.\n    repo_path: A directory inside the repository, for a ``gguf`` source, or\n        ``None`` for the whole repository. When set, only files under it are\n        matched against this source's quants and extras. A repository\n        routinely publishes the same quant name twice, a plain build and an\n        importance-matrix build side by side in two directories, and the\n        matcher refuses to guess between them; naming the directory is how a\n        curator says which one they meant. Left unset, every file in the\n        repository is considered.\n    quants: The quantisations this source publishes.\n    extras: Auxiliary files this source publishes.",
+      "properties": {
+        "extras": {
+          "items": {
+            "$ref": "#/$defs/Extra"
+          },
+          "title": "Extras",
+          "type": "array"
+        },
+        "kind": {
+          "default": "gguf",
+          "enum": [
+            "gguf",
+            "local"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "quants": {
+          "items": {
+            "$ref": "#/$defs/Quant"
+          },
+          "title": "Quants",
+          "type": "array"
+        },
+        "repo": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repo"
+        },
+        "repo_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repo Path"
+        },
+        "trust": {
+          "default": "community",
+          "enum": [
+            "official",
+            "unsloth",
+            "bartowski",
+            "community"
+          ],
+          "title": "Trust",
+          "type": "string"
+        }
+      },
+      "title": "ModelSource",
+      "type": "object"
+    },
+    "Params": {
+      "additionalProperties": false,
+      "description": "Parameter counts, in billions.\n\nAttributes:\n    total_b: Total parameters, in billions, always above zero. A model with no\n        parameters is not a model, and every figure derived from this one \u2014 bits\n        per weight above all \u2014 is nonsense or a division by zero without it.\n    active_b: Parameters active per token, in billions, always above zero. Equal to\n        ``total_b`` for a dense model, smaller for a mixture-of-experts model; a\n        model that activates nothing per token does not exist.\n    ngram_table_b: Size of an auxiliary n-gram lookup table, in billions of entries,\n        for models that stream one from disk instead of holding it in weights.",
+      "properties": {
+        "active_b": {
+          "exclusiveMinimum": 0,
+          "title": "Active B",
+          "type": "number"
+        },
+        "ngram_table_b": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ngram Table B"
+        },
+        "total_b": {
+          "exclusiveMinimum": 0,
+          "title": "Total B",
+          "type": "number"
+        }
+      },
+      "required": [
+        "total_b",
+        "active_b"
+      ],
+      "title": "Params",
+      "type": "object"
+    },
+    "Quality": {
+      "additionalProperties": false,
+      "description": "A model's overall quality rating and the published scores behind it.\n\nAttributes:\n    baseline: An editorial quality score from 0 to 100, used to rank models\n        against each other. Not itself sourced from a single publication.\n    benchmarks: Published benchmark scores, each with its own source.",
+      "properties": {
+        "baseline": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Baseline",
+          "type": "integer"
+        },
+        "benchmarks": {
+          "items": {
+            "$ref": "#/$defs/Benchmark"
+          },
+          "title": "Benchmarks",
+          "type": "array"
+        }
+      },
+      "required": [
+        "baseline"
+      ],
+      "title": "Quality",
+      "type": "object"
+    },
+    "Quant": {
+      "additionalProperties": false,
+      "description": "One quantisation of a model, as a set of GGUF files.\n\nAttributes:\n    name: The quant's name, for example ``UD-Q4_K_XL``.\n    files: The GGUF file names that make up this quant, in shard order. Filled\n        by the refresh command.\n    bytes_: Total size of ``files``, in bytes, never negative. Serialized as\n        ``bytes``, its alias, since ``bytes`` is a Python builtin. Filled by\n        the refresh command.\n    bpw: Bits per weight: finite, above zero and at most :data:`MAX_BPW`.\n        Filled by the refresh command.\n    sha256: One checksum per entry in ``files``, in the same order. Filled by\n        the refresh command.\n    gguf_facts: Architecture facts read from this quant's GGUF header. Filled\n        by the refresh command.",
+      "properties": {
+        "bpw": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 32.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Bpw"
+        },
+        "bytes": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Bytes"
+        },
+        "files": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Files",
+          "type": "array"
+        },
+        "gguf_facts": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GgufFacts"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "sha256": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Sha256",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Quant",
+      "type": "object"
+    },
+    "Sampling": {
+      "additionalProperties": false,
+      "description": "Recommended sampling parameters for this model.\n\nAttributes:\n    temp: Sampling temperature.\n    top_p: Nucleus sampling threshold.\n    top_k: Top-k sampling cutoff.\n    min_p: Minimum-probability sampling threshold.\n    presence_penalty: Presence penalty.\n    repeat_penalty: Repetition penalty.",
+      "properties": {
+        "min_p": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min P"
+        },
+        "presence_penalty": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Presence Penalty"
+        },
+        "repeat_penalty": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repeat Penalty"
+        },
+        "temp": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temp"
+        },
+        "top_k": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Top K"
+        },
+        "top_p": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Top P"
+        }
+      },
+      "title": "Sampling",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Everything LlamaFit knows about one model before it reads its files.\n\nAttributes:\n    id: A stable slug identifying this model, for example ``qwen3-coder-next``.\n    name: The model's display name.\n    vendor: Who trained the model.\n    family: The model family this entry belongs to.\n    release_date: When the model was released.\n    license: The model's licence.\n    params: Parameter counts.\n    architecture: Architecture facts about the family.\n    context: Supported context lengths.\n    capabilities: What the model can do.\n    use_cases: What the model is good for.\n    quality: The model's quality rating.\n    sampling: Recommended sampling parameters.\n    chat_template: Chat template quirks.\n    llama_cpp: Requirements this model places on llama.cpp.\n    sources: Where this model's files come from.\n    measured: Real measurements of this model's speed and memory use.",
+  "properties": {
+    "architecture": {
+      "$ref": "#/$defs/Architecture"
+    },
+    "capabilities": {
+      "items": {
+        "enum": [
+          "coding",
+          "thinking",
+          "vision",
+          "tools",
+          "multilingual",
+          "long-context",
+          "embeddings",
+          "audio"
+        ],
+        "type": "string"
+      },
+      "title": "Capabilities",
+      "type": "array"
+    },
+    "chat_template": {
+      "$ref": "#/$defs/ChatTemplate"
+    },
+    "context": {
+      "$ref": "#/$defs/Context"
+    },
+    "family": {
+      "title": "Family",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "license": {
+      "$ref": "#/$defs/License"
+    },
+    "llama_cpp": {
+      "$ref": "#/$defs/LlamaCppNeeds"
+    },
+    "measured": {
+      "items": {
+        "$ref": "#/$defs/Measured"
+      },
+      "title": "Measured",
+      "type": "array"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "params": {
+      "$ref": "#/$defs/Params"
+    },
+    "quality": {
+      "$ref": "#/$defs/Quality"
+    },
+    "release_date": {
+      "format": "date",
+      "title": "Release Date",
+      "type": "string"
+    },
+    "sampling": {
+      "$ref": "#/$defs/Sampling"
+    },
+    "sources": {
+      "items": {
+        "$ref": "#/$defs/ModelSource"
+      },
+      "title": "Sources",
+      "type": "array"
+    },
+    "use_cases": {
+      "items": {
+        "enum": [
+          "general",
+          "coding",
+          "reasoning",
+          "chat",
+          "multimodal",
+          "embedding"
+        ],
+        "type": "string"
+      },
+      "title": "Use Cases",
+      "type": "array"
+    },
+    "vendor": {
+      "title": "Vendor",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "vendor",
+    "family",
+    "release_date",
+    "license",
+    "params",
+    "architecture",
+    "context",
+    "capabilities",
+    "use_cases",
+    "quality",
+    "sources"
+  ],
+  "title": "CatalogModel",
+  "type": "object"
+}

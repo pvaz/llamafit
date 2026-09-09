@@ -1,12 +1,13 @@
 # Command-line reference
 
 LlamaFit is one executable, `llamafit`, with subcommands. Every command accepts the global
-options, and every command can print JSON instead of tables so scripts can consume it. The
-JSON is the serialised data model of the command's result; the tables show the same data.
+options that have shipped — the table marks the ones that arrive with a later phase — and every
+command can print JSON instead of tables so scripts can consume it. The JSON is the serialised
+data model of the command's result; the tables show the same data.
 
-The **Phase** column says when a command lands (see the [roadmap](../ROADMAP.md)). Commands
-from phases that are not released yet are documented so their shape is agreed before they
-are built; their flags may still change.
+Every heading names the phase its command belongs to and says whether it has shipped.
+Phases 1A and 1B have; the rest are documented so their shape is agreed before they are
+built, and their flags may still change. The [roadmap](../ROADMAP.md) says what lands when.
 
 ## Global options
 
@@ -30,7 +31,7 @@ are built; their flags may still change.
 
 ## Commands
 
-### `llamafit system` — phase 1A
+### `llamafit system` — phase 1A, shipped
 
 Scan the machine and show CPU, memory, GPUs, disks and the llama.cpp installation.
 
@@ -57,7 +58,7 @@ llama.cpp
 With `--json` the output is a `SystemReport`: `{"host": {...}, "llamacpp": {...}, "version": "..."}`.
 Every bandwidth figure carries its `bandwidth_source`: `measured`, `estimated`, `assumed` or `unknown`.
 
-### `llamafit doctor` — phase 1A
+### `llamafit doctor` — phase 1A, shipped
 
 Show every probe that ran, whether it succeeded, and findings ordered worst first: errors
 (llama.cpp missing), warnings (a GPU without a matching backend, an assumed bandwidth, a failed
@@ -67,28 +68,147 @@ carries a hint. Exit code 2 when there is an error, so `doctor` can gate scripts
 With `--json` the output is a `Diagnosis`: the report plus `findings`, each with `level`,
 `title`, `detail` and `hint`.
 
-### `llamafit list` — phase 1B
+### `llamafit list` — phase 1B, shipped
 
-List the catalog. Filters: `--use-case`, `--capability` (repeatable), `--license`, `--vendor`,
-`--search TEXT`. Columns: id, vendor, parameters (total and active), capabilities, native
-context, license, number of quants.
+List the catalog, narrowed by any filters given.
 
-### `llamafit search <text>` — phase 1B
+| Option | Effect |
+|---|---|
+| `--use-case NAME` | Keep only this use case: `general`, `coding`, `reasoning`, `chat`, `multimodal`, `embedding`. |
+| `--capability NAME` | Keep only models with this capability; repeatable, and every one given must be present. |
+| `--license SPDX` | Keep only these licence identifiers; repeatable. |
+| `--vendor NAME` | Keep only this vendor, case-insensitive. |
+| `--search TEXT` | Case-insensitive substring match on id, name, vendor or family. |
+| `--limit N` | Show at most this many. |
 
-`list --search` with the text as the argument.
+```
+$ llamafit list
+                                   Models
+┌───────────────────────┬──────────┬────────┬─────────┬─────────────────────┐
+│ ID                    │ Quality* │ Params │ Context │ Capabilities        │
+├───────────────────────┼──────────┼────────┼─────────┼─────────────────────┤
+│ qwen3-coder-next      │       85 │  80/3B │    256K │ coding, tools +1    │
+│ qwen3.8-flash-next    │       84 │ 125/6B │    256K │ coding, thinking +4 │
+│ gemma-3-27b-it        │       74 │    27B │    128K │ vision +3           │
+│ llama-3.1-8b-instruct │       62 │     8B │    128K │ tools +2            │
+│ qwen3-0.6b            │       35 │   0.6B │     32K │ coding, tools +1    │
+└───────────────────────┴──────────┴────────┴─────────┴─────────────────────┘
+   Quality is the editorial baseline, before any quantisation penalty; run
+   `llamafit info <model>` for the sourced benchmarks behind it. Params is
+total/active billions for a mixture-of-experts model, or one number when they
+                                 are equal.
+```
 
-### `llamafit info <model>` — phase 1B
+Columns: id, quality, parameters (one number for a dense model, total/active for a
+mixture-of-experts one), native context and capabilities (as many complete names as fit, plus
+a `+N` marker for the rest) — sorted by quality, the column that says why. Vendor, licence and
+quant count are left out of the table; all three are one `info` or `--json` away. At narrow
+widths, context and then capabilities give way first so the id and quality never get cut or
+blanked.
 
-Everything about one model: facts and sources, quants with sizes, and, on this host, the
-budget of every quant at the default context. Options: `--quant NAME`, `--context N`.
+An unknown `--use-case` or `--capability` exits 1 and lists the values that would have worked.
+Nothing matched prints one line saying so, and exits 0: an empty result is an answer.
 
-### `llamafit catalog validate|refresh|show` — phase 1B
+With `--json` the output is a list of `ModelSummary` objects, each with every capability, the
+quant names, and the largest quant size that is known (`null` until `catalog refresh` has run).
 
-- `validate [FILE]`: check the bundled catalog and the custom models file against the schema;
-  exit 1 on any problem, listing each.
-- `refresh [--model ID] [--dry-run] [--check]`: update file sizes, checksums and GGUF facts
-  from Hugging Face; `--check` exits non-zero when the committed data is stale.
-- `show <model>`: print the raw catalog entry.
+### `llamafit search` `<text>` — phase 1B, shipped
+
+`list --search` with the text as the argument, and no other filters.
+
+```
+$ llamafit search coder
+                               Models
+┌──────────────────┬──────────┬────────┬─────────┬──────────────────┐
+│ ID               │ Quality* │ Params │ Context │ Capabilities     │
+├──────────────────┼──────────┼────────┼─────────┼──────────────────┤
+│ qwen3-coder-next │       85 │  80/3B │    256K │ coding, tools +1 │
+└──────────────────┴──────────┴────────┴─────────┴──────────────────┘
+```
+
+### `llamafit info` `<model>` — phase 1B, shipped
+
+One model's curated facts (licence, parameters, context, architecture, capabilities, quality
+with its sourced benchmarks, sources) and every quant it publishes, with its size, bits per
+weight and GGUF architecture facts.
+
+```
+$ llamafit info qwen3-coder-next
+                      Qwen3-Coder-Next (qwen3-coder-next)
+Vendor            Alibaba Qwen
+Family            qwen3
+Release date      2026-02-03
+Licence           Apache-2.0 (https://www.apache.org/licenses/LICENSE-2.0)
+Parameters        80B total, 3B active
+Context           262,144 tokens native
+Architecture      moe-hybrid, gguf_arch=qwen3next
+Notes             48 layers combining Gated DeltaNet linear-attention blocks
+                  with Gated Attention (full-attention) blocks; 512 routed
+                  experts, 10 used per token, plus 1 shared expert. Hidden
+                  dimension 2,048.
+Capabilities      coding, tools, long-context
+Use cases         coding
+Quality baseline  85
+Benchmark         SWE-bench Verified: 70.6
+                  (https://huggingface.co/Qwen/Qwen3-Coder-Next)
+Benchmark         SWE-bench Pro: 44.3
+                  (https://huggingface.co/Qwen/Qwen3-Coder-Next)
+Benchmark         Terminal-Bench 2.0: 36.2
+                  (https://huggingface.co/Qwen/Qwen3-Coder-Next)
+Source 1          unsloth/Qwen3-Coder-Next-GGUF (gguf, trust=unsloth)
+
+                     Quants
+┌────────────┬─────────┬─────────┬──────────────┐
+│ Name       │    Size │     BPW │ Facts        │
+├────────────┼─────────┼─────────┼──────────────┤
+│ UD-Q4_K_XL │ unknown │ unknown │ not read yet │
+└────────────┴─────────┴─────────┴──────────────┘
+```
+
+Size, bits per weight and facts read `unknown` and `not read yet` until `catalog refresh` has
+filled them in for that quant; the bundled catalog carries no refreshed facts today, which is
+why the example shows none. See
+[catalog.md](catalog.md#where-the-facts-live) for where those numbers live.
+
+An unknown id exits 1, naming the catalog id that shares the longest prefix with it when one
+shares enough of it to be worth naming:
+
+```
+$ llamafit info qwen3-coder
+no model named 'qwen3-coder' in the catalog
+Hint: Did you mean: qwen3-coder-next?
+```
+
+Per-host budgets per quant (`--quant`, `--context`) are phase 1C; nothing here estimates one.
+
+With `--json` the output is a `ModelDetail`: the whole catalog entry, plus every quant with its
+`bytes`, `bpw`, `files` and `facts`.
+
+### `llamafit catalog` `validate|refresh|show` — phase 1B, shipped
+
+- `validate [FILE]`: check the bundled catalog files and the custom models file (or just
+  `FILE` when given); exit 1 on any problem, listing each. See
+  [catalog.md](catalog.md#validating) for what is and is not checked.
+- `refresh [--model ID] [--dry-run] [--check]`: fill file names, sizes, checksums, bits per
+  weight and GGUF facts from Hugging Face, writing them to the generated `<family>.facts.json`
+  files and never to the curated YAML. `--dry-run` computes without writing; `--check` does the
+  same and exits 1 if anything would change, for a scheduled job. Either way it exits 1 when a
+  repository could not be read. Needs network access.
+- `show <model> [--yaml]`: print the raw catalog entry, as JSON by default or as YAML.
+
+```
+$ llamafit catalog validate
+4 file(s) checked, no problems found.
+
+$ llamafit catalog refresh --model qwen3-0.6b --dry-run
+qwen3-0.6b: sources[0].quants[0].files, sources[0].quants[0].bytes,
+sources[0].quants[0].sha256, sources[0].quants[0].gguf_facts,
+sources[0].quants[0].bpw
+```
+
+`refresh` prints one line per model that changed, naming the fields; warnings and errors come
+first, each naming the model. A repository that cannot be listed leaves its whole model exactly
+as it was and exits 1, rather than blanking out fields that took a real read to fill in.
 
 ### `llamafit fit` — phase 1C
 
@@ -128,8 +248,8 @@ authentication. See [web.md](web.md).
 
 ### `llamafit` (no command) — phase 1D
 
-Open the terminal dashboard. In a non-interactive terminal it behaves like `recommend`.
-See [tui.md](tui.md).
+Today it prints the help and exits. From phase 1D it opens the terminal dashboard, and in a
+non-interactive terminal behaves like `recommend`. See [tui.md](tui.md).
 
 ### `llamafit install llama.cpp|model <id>` — phase 2
 
