@@ -588,6 +588,8 @@ class _Cursor:
         return chunk
 ```
 
+The window default must be strictly below one megabyte, because the test asserts the reader never reaches that far into the file; use `(1 << 20) - 1`.
+
 `_scalar`, `_string` and `_value` build on `take`; `_value` dispatches on the type id, handles `ARRAY` by reading its element type and count and recursing, and raises `CatalogError(f"unknown GGUF value type {type_id} at offset ...")` for anything else. `read_header` checks the magic and version first, reads the two counts, then the metadata map, then the tensor infos, computing `bytes_` for each with `tensor_bytes` and falling back to `0` with the tensor recorded in `header.metadata["_unknown_tensor_types"]` when the type id is missing from the table, so one unknown type does not fail the whole read. `alignment` comes from `general.alignment` when present, else `_DEFAULT_ALIGNMENT`. `header_bytes` is the cursor offset when the parse finishes.
 
 - [ ] **Step 6: Run the tests, lint and type-check**
@@ -737,7 +739,7 @@ def hybrid_moe_header() -> bytes:
     ]
     tensors = [
         b.tensor("token_embd.weight", [2560, 1024], 8, 0),
-        b.tensor("per_layer_token_embd.weight", [2560, 1024], 8, 1),
+        b.tensor("per_layer_token_embd.weight", [2560, 1024, 4], 8, 1),
         # three linear-attention layers and one full-attention layer
         b.tensor("blk.0.ssm_out.weight", [2560, 2560], 8, 2),
         b.tensor("blk.0.ffn_down_exps.weight", [512, 2560, 512], 8, 3),
@@ -772,7 +774,8 @@ def test_hybrid_moe_counts_only_the_full_attention_layers() -> None:
     assert facts.has_shared_experts is True
     assert facts.bytes_expert_weights > 0
     assert facts.bytes_lazy_tables > 0
-    assert facts.bytes_lazy_tables not in (facts.bytes_token_embd,)
+    # the per-layer table carries a third dimension, so it cannot equal the embedding table
+    assert facts.bytes_lazy_tables != facts.bytes_token_embd
 
 
 def test_head_dimension_falls_back_to_embedding_over_heads() -> None:
@@ -1332,7 +1335,7 @@ git commit -m "feat: Hugging Face metadata client"
 - Test: `tests/unit/test_catalog_refresh.py`
 
 **Interfaces:**
-- Consumes: `HfClient`, `match_quant_files`, `read_facts`, `HeaderCache`, `load_models_from_file`.
+- Consumes: `HfClient`, `assign_files_to_quants`, `read_facts`, `HeaderCache`, `load_models_from_file`. Call `assign_files_to_quants(files, [q.name for q in source.quants])` once per source rather than matching each quant on its own, so a repository publishing both `Q4_K_XL` and `UD-Q4_K_XL` gives every file to exactly one of them.
 - Produces:
   - `RefreshResult(model_id: str, file: str, changed: bool, fields: list[str], error: str | None = None)`
   - `refresh_file(path: Path, *, hf: HfClient, read_facts_fn: Callable[..., GgufFacts], dry_run: bool = False, only: str | None = None) -> list[RefreshResult]`
