@@ -22,6 +22,25 @@ built, and their flags may still change. The [roadmap](../ROADMAP.md) says what 
 | `--memory SIZE`, `--ram SIZE`, `--cpu-cores N` | Override single values of the scan for a what-if (phase 1C). Sizes accept `8G`, `7.5GiB`, `512M`. |
 | `--max-context N` | Cap the context used for budgets and scores (phase 1C). |
 
+### What `--json` does and does not translate
+
+A JSON document holds two kinds of string, and LlamaFit treats them differently on purpose.
+
+**Keys and enumerated values never change with the language.** Field names, a finding's
+`level` (`ok`, `warn`, `error`), `bandwidth_source` (`measured`, `estimated`, `assumed`,
+`unknown`), probe names, backend names, capability and use-case ids, and model ids are
+identifiers. A script matches on them, and the same script works whatever the operator's
+locale says.
+
+**Prose does change with the language.** A finding's `title`, `detail` and `hint`,
+`llamacpp.problems` and a probe's `error` are sentences written for a person, and they are
+the same strings the tables print. Numbers inside that prose carry the language's own
+separators too, so a Portuguese `detail` reads `67,2 GB/s`. Do not parse them: read the
+typed fields beside them, which is what those are for.
+
+A pipeline that needs the prose to stay put should pass `--language en`, which pins it
+whatever the machine's locale says.
+
 ## Exit codes
 
 | Code | Meaning |
