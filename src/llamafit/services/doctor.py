@@ -64,8 +64,8 @@ _BACKEND_FOR_VENDOR = {
 _VRAM_HINT_PROBE = {"nvidia": "nvidia-smi", "amd": "rocm-smi"}
 _VENDOR_PROBE = {"nvidia-smi": "nvidia", "rocm-smi": "amd", "system-profiler": "apple"}
 _GENERIC_VRAM_HINT = lazy_gettext(
-    "No vendor tool reported this GPU's memory size; record it in a hardware profile "
-    "so budgets can be computed for this machine."
+    "No vendor tool reported the GPU's memory size; record the size in a hardware "
+    "profile so budgets can be computed for this machine."
 )
 _LOW_DISK_BYTES = 20 * 1024**3
 
@@ -170,9 +170,9 @@ def diagnose(report: SystemReport) -> Diagnosis:
                     % {"backends": ", ".join(llamacpp.backends) or pgettext("backends", "unknown")},
                     hint=_(
                         "Install a llama.cpp build with the %(backend)s or Vulkan backend "
-                        "to use this GPU."
+                        "to use %(gpu)s."
                     )
-                    % {"backend": expected[1]},
+                    % {"backend": expected[1], "gpu": gpu.name},
                 )
             )
         if gpu.vram_total_bytes is None and not host.unified_memory:
@@ -200,7 +200,10 @@ def diagnose(report: SystemReport) -> Diagnosis:
                 level="warn",
                 title=_("RAM bandwidth assumed"),
                 detail=_("using %(gbps)s GB/s as a default") % {"gbps": host.memory.bandwidth_gbps},
-                hint=_("Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure it."),
+                hint=_(
+                    "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure "
+                    "the RAM bandwidth."
+                ),
             )
         )
 
