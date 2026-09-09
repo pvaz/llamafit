@@ -647,6 +647,117 @@ msgstr ""
 msgid "Command: %(command)s"
 msgstr ""
 
+#: src/llamafit/gguf/reader.py:72
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:77
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:113
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:115
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:136
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:137
+msgid "Check that this file is actually a .gguf model."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:142
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:143
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:235
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:240
+msgid "Pass the shards of one model, not of several."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:295
+msgid "no GGUF header to read facts from"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:296
+msgid "Pass the model's file, or every shard of a split model."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:311
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:316
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:325
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:335
+#: src/llamafit/gguf/reader.py:371
+msgid "Pass every shard of the split model."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:341
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:346
+msgid "Pass every shard of the split model, including the first."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:350
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:352
+msgid "Pass each shard of the split model exactly once."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:362
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr ""
+
+#: src/llamafit/gguf/source.py:75
+#: src/llamafit/gguf/source.py:89
+msgid "could not read %(path)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/gguf/source.py:76
+#: src/llamafit/gguf/source.py:90
+msgid "Check that the file exists and is readable."
+msgstr ""
+
+#: src/llamafit/gguf/source.py:200
+msgid "could not fetch %(url)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/gguf/source.py:201
+msgid "Check your network connection and that the URL is reachable."
+msgstr ""
+
+#: src/llamafit/gguf/source.py:208
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr ""
+
+#: src/llamafit/gguf/source.py:213
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr ""
+
 #: src/llamafit/hardware/cpu.py:87
 #: src/llamafit/hardware/cpu.py:92
 msgctxt "CPU model"

@@ -114,7 +114,8 @@ def read_one_header(
         http_source = HttpRangeSource(target, client=client)
         head_etag: str | None = None
         if cache is not None:
-            head_etag, _ = http_source.head()
+            # Named rather than `_`, for the same reason as everywhere else here.
+            head_etag, _size = http_source.head()
             if head_etag is not None:
                 cached = cache.get(cache_key_for_url(target, head_etag))
                 if cached is not None:
