@@ -71,11 +71,14 @@ def patch_scan(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_system_table_mentions_gpu_and_memory() -> None:
     result = runner.invoke(app, ["system"])
     assert result.exit_code == 0, result.output
-    assert "RTX 4060" in result.output
-    assert "DDR5" in result.output
-    assert "4 modules" in result.output
-    assert "2-channel" in result.output
-    assert "67.2" in result.output
+    # Rich wraps the table to the terminal width, which can split "2 channels" across
+    # lines; normalise whitespace so the assertion does not depend on where that lands.
+    output = " ".join(result.output.split())
+    assert "RTX 4060" in output
+    assert "DDR5" in output
+    assert "4 modules" in output
+    assert "2 channels" in output
+    assert "67.2" in output
     assert "b10867" in result.output
     assert "D:\\" in result.output
     assert "free of" in result.output
