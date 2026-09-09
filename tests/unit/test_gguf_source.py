@@ -21,7 +21,7 @@ def _parse_range(value: str) -> tuple[int, int]:
 
 
 def _range_handler(
-    data: bytes, requests: list[httpx.Request]
+    data: bytes, requests: list[httpx.Request], etag: str | None = None
 ) -> Callable[[httpx.Request], httpx.Response]:
     """A mock transport handler serving byte ranges out of ``data``, recording requests."""
 
@@ -29,10 +29,13 @@ def _range_handler(
         requests.append(request)
         start, end = _parse_range(request.headers["range"])
         end = min(end, len(data) - 1)
+        headers = {"content-range": f"bytes {start}-{end}/{len(data)}"}
+        if etag is not None:
+            headers["etag"] = etag
         return httpx.Response(
             206,
             content=data[start : end + 1],
-            headers={"content-range": f"bytes {start}-{end}/{len(data)}"},
+            headers=headers,
         )
 
     return handler
@@ -89,6 +92,27 @@ def test_size_reads_the_total_from_the_content_range_header() -> None:
     assert source.size() is None
     source.read(0, 10)
     assert source.size() == 50000
+
+
+def test_etag_is_captured_from_the_first_response() -> None:
+    data = bytes(range(200))
+    requests: list[httpx.Request] = []
+    source = HttpRangeSource(
+        URL, client=_client(_range_handler(data, requests, etag="abc123")), chunk=64
+    )
+
+    assert source.etag is None
+    source.read(0, 4)
+    assert source.etag == "abc123"
+
+
+def test_etag_is_none_when_the_server_sends_no_etag() -> None:
+    data = bytes(range(200))
+    requests: list[httpx.Request] = []
+    source = HttpRangeSource(URL, client=_client(_range_handler(data, requests)), chunk=64)
+
+    source.read(0, 4)
+    assert source.etag is None
 
 
 def test_size_is_none_when_the_server_sends_no_content_range() -> None:

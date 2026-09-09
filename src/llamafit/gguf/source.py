@@ -105,6 +105,7 @@ class HttpRangeSource:
         self._data = b""
         self._start = 0
         self._total_size: int | None = None
+        self._etag: str | None = None
 
     def read(self, offset: int, length: int) -> bytes:
         """Return up to ``length`` bytes starting at ``offset``, fetching if needed."""
@@ -117,6 +118,17 @@ class HttpRangeSource:
     def size(self) -> int | None:
         """The remote file's total size, known once a range has been fetched."""
         return self._total_size
+
+    @property
+    def etag(self) -> str | None:
+        """The remote file's ``ETag``, captured from its first response, if it sent one.
+
+        Two different files served from the same URL at different times generally
+        carry different ETags; a cache key built from this (see
+        :func:`llamafit.gguf.cache.cache_key_for_url`) changes along with the file,
+        instead of colliding on the URL alone.
+        """
+        return self._etag
 
     def _fetch(self, offset: int, length: int) -> None:
         headers = {"Range": f"bytes={offset}-{offset + length - 1}"}
@@ -140,5 +152,9 @@ class HttpRangeSource:
         total = content_range.rsplit("/", 1)[-1] if "/" in content_range else ""
         if total.isdigit():
             self._total_size = int(total)
+        if self._etag is None:
+            etag = response.headers.get("etag")
+            if etag:
+                self._etag = etag
         self._data = response.content
         self._start = offset
