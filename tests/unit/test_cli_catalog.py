@@ -526,3 +526,110 @@ def test_no_marker_when_every_capability_already_fits() -> None:
 
     assert _fmt_capabilities(["coding", "tools"], width=100) == "coding, tools"
     assert _fmt_capabilities([], width=100) == ""
+
+
+# --- render_catalog_list end to end: a long id must never blank another column -
+
+
+def _rendered(summaries: list[ModelSummary], width: int) -> str:
+    """Render the real table through Rich at ``width`` and return the plain text."""
+    from rich.console import Console
+
+    from llamafit.cli.render import render_catalog_list
+
+    console = Console(width=width)
+    with console.capture() as capture:
+        console.print(render_catalog_list(summaries, console_width=width))
+    return capture.get()
+
+
+def _id_column_cells(output: str) -> list[str]:
+    """The id (first) column's text from every content line, in top-to-bottom order.
+
+    A row whose id folds onto extra lines contributes one cell per physical line;
+    concatenating them in order reconstructs the id without whatever a shorter
+    quality or capabilities cell on the very same line would otherwise interleave
+    into a reading that just strips separators from the whole block of text.
+    """
+    cells = []
+    for line in output.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped[0] not in "|│":
+            continue
+        inner = stripped[1:]
+        end = next((i for i, ch in enumerate(inner) if ch in "|│"), len(inner))
+        cell = inner[:end].strip()
+        if any(ch.isalnum() for ch in cell):  # skip pure separator lines
+            cells.append(cell)
+    return cells
+
+
+def _summary(
+    model_id: str, quality: int, total_b: float, active_b: float, context: int
+) -> ModelSummary:
+    return ModelSummary(
+        id=model_id,
+        name=model_id,
+        vendor="Acme",
+        params_total_b=total_b,
+        params_active_b=active_b,
+        capabilities=["vision", "multilingual", "long-context", "tools"],
+        context_native=context,
+        license_spdx="MIT",
+        quant_names=["Q4_K_M"],
+        largest_quant_bytes=None,
+        quality_baseline=quality,
+    )
+
+
+def test_a_53_character_id_never_blanks_or_cuts_another_column_at_80_or_50() -> None:
+    from llamafit.cli.render import (
+        _column_budget,
+        _fmt_billions,
+        _fmt_capabilities,
+        _fmt_context_compact,
+    )
+
+    # Built rather than hand-counted, to match the reviewer's 53-character report exactly.
+    long_id = "custom-model-" + "a" * 37 + "-53"
+    assert len(long_id) == 53
+    summaries = [
+        _summary("short-id", 61, 8, 8, 131072),
+        _summary(long_id, 74, 27, 27, 131072),
+    ]
+
+    for width in (50, 80):
+        _id_width, included, capabilities_width = _column_budget(summaries, width)
+        output = _rendered(summaries, width)
+
+        assert "…" not in output  # never an ellipsis
+        assert "�" not in output  # never a replacement character either
+
+        for summary in summaries:
+            if "quality" in included:
+                assert str(summary.quality_baseline) in output, (
+                    f"quality {summary.quality_baseline} missing or cut at width {width}"
+                )
+            if "params" in included:
+                expected = (
+                    f"{_fmt_billions(summary.params_total_b)}/"
+                    f"{_fmt_billions(summary.params_active_b)}B"
+                )
+                assert expected in output, f"params {expected!r} missing or cut at width {width}"
+            if "context" in included:
+                expected_ctx = _fmt_context_compact(summary.context_native)
+                assert expected_ctx in output, (
+                    f"context {expected_ctx!r} missing or cut at width {width}"
+                )
+            if capabilities_width >= 3:
+                expected_caps = _fmt_capabilities(summary.capabilities, width=capabilities_width)
+                assert expected_caps in output, (
+                    f"capabilities {expected_caps!r} missing or cut at width {width}"
+                )
+
+        # The id folds onto extra lines rather than losing characters. Extracting
+        # only the first (id) cell of every content line, in order, and joining
+        # them reconstructs each row's id without whatever the quality or
+        # capabilities cell on the same physical line would otherwise interleave
+        # into a naive strip-everything-and-concatenate reading of the output.
+        assert long_id in "".join(_id_column_cells(output))
