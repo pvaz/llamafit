@@ -187,7 +187,7 @@
     },
     "GgufFacts": {
       "additionalProperties": false,
-      "description": "Architecture facts and byte-size breakdown derived from a GGUF header.\n\nEvery number here is read from the file, not estimated: layer, head and\nvocabulary counts come from the file's own metadata, and every\n``bytes_*`` field is a sum of tensor sizes the header already reports.\n``attention_layers_source`` records how ``attention_layers`` was\ndetermined: ``\"tensors\"`` when full-attention blocks were identified by\nthe tensors they carry, ``\"all-layers\"`` when no block could be\ndistinguished and every layer was assumed to have full attention, or\n``\"unknown\"`` when neither could be established.\n\nAttributes:\n    arch: The model family, from ``general.architecture``.\n    n_layer: Number of transformer blocks, or ``None`` if not reported.\n    n_embd: Embedding (hidden) dimension.\n    n_vocab: Vocabulary size.\n    n_head: Number of attention heads.\n    n_head_kv: Number of key/value heads (for grouped-query attention).\n    head_dim: Dimension of one attention head.\n    attention_layers: Number of layers with full (non-linear) attention.\n    attention_layers_source: How ``attention_layers`` was determined.\n    n_expert: Number of experts, for mixture-of-experts architectures.\n    n_expert_used: Number of experts activated per token.\n    has_shared_experts: Whether the model has always-on shared experts\n        in addition to routed ones.\n    bytes_expert_weights: Total bytes of routed expert weight tensors.\n    bytes_attention_weights: Total bytes of attention weight tensors.\n    bytes_output_head: Bytes of the output (unembedding) tensor.\n    bytes_token_embd: Bytes of the token embedding tensor.\n    bytes_lazy_tables: Bytes of tensors that can be loaded lazily rather\n        than kept resident, such as per-layer embedding tables.\n    bytes_global_weights: Total bytes of tensors that belong to none of\n        the other buckets: not per-block, not the token embedding, the\n        output head or a lazy table, for example ``output_norm.weight``.\n    bytes_total: Total bytes of every tensor in the file. Always equal to\n        the sum of every other ``bytes_*`` field, so the taxonomy above\n        accounts for the whole file.\n    kv_bytes_per_token_f16: Bytes of KV cache needed per token at f16\n        precision, or ``None`` when it cannot be computed.\n    recurrent_state_bytes: Bytes of fixed recurrent/SSM state, for hybrid\n        or state-space architectures, or ``None`` when not applicable.",
+      "description": "Architecture facts and byte-size breakdown derived from a GGUF header.\n\nEvery number here is read from the file, not estimated: layer, head and\nvocabulary counts come from the file's own metadata, and every\n``bytes_*`` field is a sum of tensor sizes the header already reports.\n``attention_layers_source`` records how ``attention_layers`` was\ndetermined: ``\"tensors\"`` when full-attention blocks were identified by\nthe tensors they carry, ``\"all-layers\"`` when no block could be\ndistinguished and every layer was assumed to have full attention, or\n``\"unknown\"`` when neither could be established.\n\nAttributes:\n    arch: The model family, from ``general.architecture``.\n    n_layer: Number of transformer blocks, or ``None`` if not reported.\n    n_embd: Embedding (hidden) dimension.\n    n_vocab: Vocabulary size.\n    n_head: Number of attention heads.\n    n_head_kv: Number of key/value heads (for grouped-query attention).\n    head_dim: Dimension of one attention head's key vector, from\n        ``{arch}.attention.key_length``, or ``embedding_length`` over\n        ``head_count`` when the architecture declares no key length. This is\n        the head dimension for everything that legitimately means one; the\n        KV cache is the exception and needs ``value_head_dim`` too.\n    value_head_dim: Dimension of one attention head's value vector, from\n        ``{arch}.attention.value_length``, falling back to ``head_dim`` when\n        the architecture declares only a key length. Every model in the\n        catalog today declares the two equal, but an architecture is free to\n        separate them, and a cache sized from twice the key length would then\n        be wrong in proportion.\n    attention_layers: Number of layers with full (non-linear) attention.\n    attention_layers_source: How ``attention_layers`` was determined.\n    sliding_window: Length of the sliding attention window in tokens, from\n        ``{arch}.attention.sliding_window``, or ``None`` when the architecture\n        declares none. Recorded, not used: a model that slides holds a\n        full-length KV cache on only a fraction of its layers, and the header\n        does not say which, so the pattern has to come from a per-architecture\n        rule or the catalog.\n    context_length: The longest context the file itself declares, from\n        ``{arch}.context_length``, or ``None`` when the architecture declares\n        none. Recorded, not used: it is what the file permits, which is not\n        always what the vendor supports.\n    n_expert: Number of experts, for mixture-of-experts architectures.\n    n_expert_used: Number of experts activated per token.\n    has_shared_experts: Whether the model has always-on shared experts\n        in addition to routed ones.\n    bytes_expert_weights: Total bytes of routed expert weight tensors.\n    bytes_dense_block_weights: Total bytes of every non-expert tensor inside\n        a block: attention projections, feed-forward weights and norms alike.\n        On a dense model that is nearly the whole file, so it is named for\n        what it holds rather than for attention alone.\n    bytes_output_head: Bytes of the output (unembedding) tensor.\n    bytes_token_embd: Bytes of the token embedding tensor.\n    bytes_lazy_tables: Bytes of tensors that can be loaded lazily rather\n        than kept resident, such as per-layer embedding tables.\n    bytes_global_weights: Total bytes of tensors that belong to none of\n        the other buckets: not per-block, not the token embedding, the\n        output head or a lazy table, for example ``output_norm.weight``.\n    bytes_total: Total bytes of every tensor in the file. Always equal to\n        the sum of every other ``bytes_*`` field, so the taxonomy above\n        accounts for the whole file.\n    kv_bytes_per_token_f16: Bytes of KV cache needed per token at f16\n        precision, or ``None`` when it cannot be computed.\n    recurrent_state_bytes: Bytes of fixed recurrent/SSM state, for hybrid\n        or state-space architectures, or ``None`` when not applicable.",
       "properties": {
         "arch": {
           "title": "Arch",
@@ -196,6 +196,7 @@
         "attention_layers": {
           "anyOf": [
             {
+              "minimum": 0,
               "type": "integer"
             },
             {
@@ -215,40 +216,60 @@
           "title": "Attention Layers Source",
           "type": "string"
         },
-        "bytes_attention_weights": {
+        "bytes_dense_block_weights": {
           "default": 0,
-          "title": "Bytes Attention Weights",
+          "minimum": 0,
+          "title": "Bytes Dense Block Weights",
           "type": "integer"
         },
         "bytes_expert_weights": {
           "default": 0,
+          "minimum": 0,
           "title": "Bytes Expert Weights",
           "type": "integer"
         },
         "bytes_global_weights": {
           "default": 0,
+          "minimum": 0,
           "title": "Bytes Global Weights",
           "type": "integer"
         },
         "bytes_lazy_tables": {
           "default": 0,
+          "minimum": 0,
           "title": "Bytes Lazy Tables",
           "type": "integer"
         },
         "bytes_output_head": {
           "default": 0,
+          "minimum": 0,
           "title": "Bytes Output Head",
           "type": "integer"
         },
         "bytes_token_embd": {
           "default": 0,
+          "minimum": 0,
           "title": "Bytes Token Embd",
           "type": "integer"
         },
         "bytes_total": {
           "default": 0,
+          "minimum": 0,
           "title": "Bytes Total",
           "type": "integer"
+        },
+        "context_length": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Context Length"
         },
         "has_shared_experts": {
           "default": false,
@@ -258,6 +279,7 @@
         "head_dim": {
           "anyOf": [
             {
+              "minimum": 0,
               "type": "integer"
             },
             {
@@ -270,6 +292,7 @@
         "kv_bytes_per_token_f16": {
           "anyOf": [
             {
+              "minimum": 0,
               "type": "integer"
             },
             {
@@ -282,6 +305,7 @@
         "n_embd": {
           "anyOf": [
             {
+              "minimum": 0,
               "type": "integer"
             },
             {
@@ -294,6 +318,7 @@
         "n_expert": {
           "anyOf": [
             {
+              "minimum": 0,
               "type": "integer"
             },
             {
@@ -306,6 +331,7 @@
         "n_expert_used": {
           "anyOf": [
             {
+              "minimum": 0,
               "type": "integer"
             },
             {
@@ -318,6 +344,7 @@
         "n_head": {
           "anyOf": [
             {
+              "minimum": 0,
               "type": "integer"
             },
             {
@@ -330,6 +357,7 @@
         "n_head_kv": {
           "anyOf": [
             {
+              "minimum": 0,
               "type": "integer"
             },
             {
@@ -342,6 +370,7 @@
         "n_layer": {
           "anyOf": [
             {
+              "minimum": 0,
               "type": "integer"
             },
             {
@@ -354,6 +383,7 @@
         "n_vocab": {
           "anyOf": [
             {
+              "minimum": 0,
               "type": "integer"
             },
             {
@@ -366,6 +396,7 @@
         "recurrent_state_bytes": {
           "anyOf": [
             {
+              "minimum": 0,
               "type": "integer"
             },
             {
@@ -374,6 +405,32 @@
           ],
           "default": null,
           "title": "Recurrent State Bytes"
+        },
+        "sliding_window": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sliding Window"
+        },
+        "value_head_dim": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value Head Dim"
         }
       },
       "required": [
@@ -404,13 +461,20 @@
     },
     "LlamaCppNeeds": {
       "additionalProperties": false,
-      "description": "Requirements this model places on the llama.cpp build that serves it.\n\nAttributes:\n    min_build: The minimum llama.cpp build number known to support this model.\n    kv_types_allowed: KV cache quantisation types known to work with this model.\n    requires: Other requirements, keyed by name, for example a minimum CUDA\n        version.\n    quirks: Free-text notes about anything else llama.cpp needs to run this\n        model correctly.",
+      "description": "Requirements this model places on the llama.cpp build that serves it.\n\nAttributes:\n    min_build: The minimum llama.cpp build number known to support this model.\n    kv_types_allowed: KV cache quantisation types known to work with this model.\n    requires: Other requirements, keyed by name, for example a minimum CUDA\n        version.\n    quirks: Free-text notes about anything else llama.cpp needs to run this\n        model correctly.\n    lazy_tensors: Name prefixes of tensors llama.cpp can stream from disk\n        rather than hold in memory, for example ``per_layer_token_embd``.\n        Curated, and a property of the architecture rather than of a file:\n        every quant of a model streams the same tables. The refresh passes\n        these to the GGUF reader, which sums their bytes into\n        :attr:`~llamafit.models.gguf.GgufFacts.bytes_lazy_tables` instead of\n        counting them as resident weights. Empty for a model that streams\n        nothing, which is most of them.",
       "properties": {
         "kv_types_allowed": {
           "items": {
             "type": "string"
           },
           "title": "Kv Types Allowed",
+          "type": "array"
+        },
+        "lazy_tensors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Lazy Tensors",
           "type": "array"
         },
         "min_build": {
@@ -562,7 +626,7 @@
     },
     "ModelSource": {
       "additionalProperties": false,
-      "description": "Where a model's files come from: a Hugging Face repository or a local path.\n\nAttributes:\n    repo: The Hugging Face repository, for a ``gguf`` source.\n    kind: Whether this source is a Hugging Face repository or a local file.\n    trust: Who publishes this source's files.\n    path: A local file path, for a ``local`` source.\n    quants: The quantisations this source publishes.\n    extras: Auxiliary files this source publishes.",
+      "description": "Where a model's files come from: a Hugging Face repository or a local path.\n\nAttributes:\n    repo: The Hugging Face repository, for a ``gguf`` source.\n    kind: Whether this source is a Hugging Face repository or a local file.\n    trust: Who publishes this source's files.\n    path: A local file path, for a ``local`` source. It says nothing about a\n        ``gguf`` source and must be left unset on one; the directory inside a\n        repository is ``repo_path``, which is a different thing with a\n        different name so nobody has to hold the source kind in their head to\n        know which definition applies.\n    repo_path: A directory inside the repository, for a ``gguf`` source, or\n        ``None`` for the whole repository. When set, only files under it are\n        matched against this source's quants and extras. A repository\n        routinely publishes the same quant name twice, a plain build and an\n        importance-matrix build side by side in two directories, and the\n        matcher refuses to guess between them; naming the directory is how a\n        curator says which one they meant. Left unset, every file in the\n        repository is considered.\n    quants: The quantisations this source publishes.\n    extras: Auxiliary files this source publishes.",
       "properties": {
         "extras": {
           "items": {
@@ -610,6 +674,18 @@
           ],
           "default": null,
           "title": "Repo"
+        },
+        "repo_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repo Path"
         },
         "trust": {
           "default": "community",

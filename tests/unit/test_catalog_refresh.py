@@ -141,7 +141,7 @@ def facts_stub(*args: object, **kwargs: object) -> GgufFacts:
         attention_layers=16,
         attention_layers_source="tensors",
         bytes_expert_weights=0,
-        bytes_attention_weights=1,
+        bytes_dense_block_weights=1,
         bytes_output_head=1,
         bytes_token_embd=1,
         bytes_lazy_tables=0,
@@ -584,3 +584,124 @@ def test_a_projector_named_for_the_quant_does_not_inflate_it(tmp_path: Path) -> 
     quant = models[0].sources[0].quants[0]
     assert quant.files == ["tiny-1b-Q4_K_M.gguf"]
     assert quant.bytes_ == 700_000_000
+
+
+LAZY_ENTRY = ENTRY.replace(
+    "  sources:",
+    "  llama_cpp:\n    lazy_tensors: [per_layer_token_embd]\n  sources:",
+)
+
+
+class RecordingFactsReader:
+    """A ``read_facts_fn`` that remembers the lazy tensor names it was handed."""
+
+    def __init__(self) -> None:
+        self.lazy_tensor_names: list[list[str]] = []
+
+    def __call__(self, *args: object, **kwargs: object) -> GgufFacts:
+        names = kwargs.get("lazy_tensor_names", [])
+        assert isinstance(names, list)
+        self.lazy_tensor_names.append(list(names))
+        return facts_stub()
+
+
+def test_the_curated_lazy_tensors_reach_the_gguf_reader(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", LAZY_ENTRY)
+    reader = RecordingFactsReader()
+
+    refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=reader)
+
+    assert reader.lazy_tensor_names == [["per_layer_token_embd"]]
+
+
+def test_a_model_that_streams_nothing_passes_no_lazy_tensors(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    reader = RecordingFactsReader()
+
+    refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=reader)
+
+    assert reader.lazy_tensor_names == [[]]
+
+
+PATHED_ENTRY = ENTRY.replace(
+    "    - repo: example/tiny-1b-GGUF",
+    "    - repo: example/tiny-1b-GGUF\n      repo_path: main",
+)
+
+TWO_BUILDS = {
+    "example/tiny-1b-GGUF": [
+        RepoFile(path="main/tiny-1b-Q4_K_M.gguf", size=700_000_000, sha256="main1"),
+        RepoFile(path="imat/tiny-1b-Q4_K_M.gguf", size=690_000_000, sha256="imat1"),
+    ]
+}
+
+
+def test_a_quant_published_twice_is_still_refused_without_a_repo_path(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+
+    results = refresh_file(path, hf=FakeHfClient(TWO_BUILDS), read_facts_fn=facts_stub)
+
+    assert results[0].changed is False
+    assert "set the source's repo_path" in results[0].warnings[0]
+
+
+def test_a_repo_path_picks_the_build_the_curator_meant(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", PATHED_ENTRY)
+
+    results = refresh_file(path, hf=FakeHfClient(TWO_BUILDS), read_facts_fn=facts_stub)
+
+    assert results[0].error is None
+    assert results[0].warnings == []
+    models, problems = load_models_from_file(path)
+    assert problems == []
+    quant = models[0].sources[0].quants[0]
+    assert quant.files == ["main/tiny-1b-Q4_K_M.gguf"]
+    assert quant.sha256 == ["main1"]
+
+
+def test_a_repo_path_stops_at_a_directory_boundary(tmp_path: Path) -> None:
+    # "main" must not swallow "main-imat": they are two builds, not one.
+    files = {
+        "example/tiny-1b-GGUF": [
+            RepoFile(path="main-imat/tiny-1b-Q4_K_M.gguf", size=690_000_000, sha256="imat1"),
+            RepoFile(path="main/tiny-1b-Q4_K_M.gguf", size=700_000_000, sha256="main1"),
+        ]
+    }
+    path = write(tmp_path, "tiny.yaml", PATHED_ENTRY)
+
+    refresh_file(path, hf=FakeHfClient(files), read_facts_fn=facts_stub)
+
+    models, _ = load_models_from_file(path)
+    assert models[0].sources[0].quants[0].files == ["main/tiny-1b-Q4_K_M.gguf"]
+
+
+def test_a_repo_path_that_holds_nothing_is_an_error_naming_it(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", PATHED_ENTRY)
+
+    results = refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=facts_stub)
+
+    assert results[0].error is not None
+    assert "'main'" in results[0].error
+    assert results[0].changed is False
+
+
+def test_a_repo_path_narrows_the_extras_too(tmp_path: Path) -> None:
+    entry = PATHED_ENTRY.replace(
+        "        - {name: Q4_K_M}",
+        "        - {name: Q4_K_M}\n      extras:\n        - {role: mmproj, file: mmproj-F16.gguf}",
+    )
+    files = {
+        "example/tiny-1b-GGUF": [
+            RepoFile(path="main/tiny-1b-Q4_K_M.gguf", size=700_000_000, sha256="main1"),
+            RepoFile(path="main/mmproj-F16.gguf", size=900_000, sha256="mmproj-main"),
+            RepoFile(path="imat/mmproj-F16.gguf", size=800_000, sha256="mmproj-imat"),
+        ]
+    }
+    path = write(tmp_path, "tiny.yaml", entry)
+
+    refresh_file(path, hf=FakeHfClient(files), read_facts_fn=facts_stub)
+
+    models, problems = load_models_from_file(path)
+    assert problems == []
+    extra = models[0].sources[0].extras[0]
+    assert extra.bytes_ == 900_000 and extra.sha256 == "mmproj-main"

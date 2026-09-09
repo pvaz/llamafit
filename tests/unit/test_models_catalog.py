@@ -123,3 +123,18 @@ def test_active_parameters_must_be_above_zero() -> None:
         Params(total_b=8, active_b=0)
     with pytest.raises(ValidationError):
         Params(total_b=8, active_b=-1)
+
+
+def test_a_gguf_source_may_not_carry_a_local_path() -> None:
+    with pytest.raises(ValidationError, match="repo_path"):
+        ModelSource(repo="acme/model-gguf", kind="gguf", path="D:/models/model.gguf")
+
+
+def test_a_local_source_may_not_carry_a_repo_path() -> None:
+    with pytest.raises(ValidationError, match="repo_path"):
+        ModelSource(kind="local", path="D:/models/model.gguf", repo_path="main")
+
+
+def test_a_gguf_source_may_narrow_its_repository_to_a_directory() -> None:
+    source = ModelSource(repo="acme/model-gguf", repo_path="UD-Q4_K_XL")
+    assert (source.path, source.repo_path) == (None, "UD-Q4_K_XL")

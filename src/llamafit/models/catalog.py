@@ -23,7 +23,7 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from llamafit.models.gguf import GgufFacts
+from llamafit.models.gguf import ByteSize, GgufFacts
 
 _ID_RE = re.compile(r"^[a-z0-9][a-z0-9.\-]*$")
 
@@ -33,9 +33,6 @@ MAX_BPW = 32.0
 Anything above this is not a quantisation but a wrong number — a size that belongs to
 some other file, or a parameter count that is wrong.
 """
-
-ByteSize = Annotated[int, Field(ge=0)]
-"""A size in bytes. Never negative, whoever supplied it."""
 
 BitsPerWeight = Annotated[float, Field(gt=0, le=MAX_BPW, allow_inf_nan=False)]
 """Bits per weight: above zero, no wider than :data:`MAX_BPW`, and finite.
@@ -204,12 +201,21 @@ class LlamaCppNeeds(_Strict):
             version.
         quirks: Free-text notes about anything else llama.cpp needs to run this
             model correctly.
+        lazy_tensors: Name prefixes of tensors llama.cpp can stream from disk
+            rather than hold in memory, for example ``per_layer_token_embd``.
+            Curated, and a property of the architecture rather than of a file:
+            every quant of a model streams the same tables. The refresh passes
+            these to the GGUF reader, which sums their bytes into
+            :attr:`~llamafit.models.gguf.GgufFacts.bytes_lazy_tables` instead of
+            counting them as resident weights. Empty for a model that streams
+            nothing, which is most of them.
     """
 
     min_build: int | None = None
     kv_types_allowed: list[str] = Field(default_factory=list)
     requires: dict[str, str] = Field(default_factory=dict)
     quirks: list[str] = Field(default_factory=list)
+    lazy_tensors: list[str] = Field(default_factory=list)
 
 
 class Quant(_Strict):
@@ -274,7 +280,19 @@ class ModelSource(_Strict):
         repo: The Hugging Face repository, for a ``gguf`` source.
         kind: Whether this source is a Hugging Face repository or a local file.
         trust: Who publishes this source's files.
-        path: A local file path, for a ``local`` source.
+        path: A local file path, for a ``local`` source. It says nothing about a
+            ``gguf`` source and must be left unset on one; the directory inside a
+            repository is ``repo_path``, which is a different thing with a
+            different name so nobody has to hold the source kind in their head to
+            know which definition applies.
+        repo_path: A directory inside the repository, for a ``gguf`` source, or
+            ``None`` for the whole repository. When set, only files under it are
+            matched against this source's quants and extras. A repository
+            routinely publishes the same quant name twice, a plain build and an
+            importance-matrix build side by side in two directories, and the
+            matcher refuses to guess between them; naming the directory is how a
+            curator says which one they meant. Left unset, every file in the
+            repository is considered.
         quants: The quantisations this source publishes.
         extras: Auxiliary files this source publishes.
     """
@@ -283,16 +301,28 @@ class ModelSource(_Strict):
     kind: Literal["gguf", "local"] = "gguf"
     trust: Trust = "community"
     path: str | None = None
+    repo_path: str | None = None
     quants: list[Quant] = Field(default_factory=list)
     extras: list[Extra] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def _repo_or_path_matches_kind(self) -> ModelSource:
-        """Reject a ``gguf`` source with no repository or a ``local`` source with no path."""
+        """Reject a source whose location fields do not match the kind it declares.
+
+        A ``gguf`` source needs a repository and may narrow it with ``repo_path``; a
+        ``local`` source needs a file path and can narrow nothing. Each field is
+        refused on the kind it means nothing to, so a curator who reaches for the
+        wrong one is told at load time rather than left wondering why it had no
+        effect.
+        """
         if self.kind == "gguf" and not self.repo:
             raise ValueError("a gguf source needs a repo")
+        if self.kind == "gguf" and self.path:
+            raise ValueError("a gguf source has no local path; use repo_path for a directory")
         if self.kind == "local" and not self.path:
             raise ValueError("a local source needs a path")
+        if self.kind == "local" and self.repo_path:
+            raise ValueError("a local source has no repo_path")
         return self
 
 

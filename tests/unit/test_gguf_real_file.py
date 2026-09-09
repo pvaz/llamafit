@@ -50,7 +50,7 @@ def test_the_byte_buckets_sum_exactly_to_the_total(path: Path) -> None:
         facts.bytes_token_embd
         + facts.bytes_output_head
         + facts.bytes_expert_weights
-        + facts.bytes_attention_weights
+        + facts.bytes_dense_block_weights
         + facts.bytes_lazy_tables
         + facts.bytes_global_weights
     )
@@ -68,7 +68,7 @@ def test_facts_from_the_reference_machines_coder_model() -> None:
     assert facts.attention_layers < (facts.n_layer or 0), (
         "a hybrid model has fewer attention layers"
     )
-    assert facts.bytes_expert_weights > facts.bytes_attention_weights
+    assert facts.bytes_expert_weights > facts.bytes_dense_block_weights
 
 
 @pytest.mark.hardware
