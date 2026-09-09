@@ -27,7 +27,7 @@ built, and their flags may still change. The [roadmap](../ROADMAP.md) says what 
 |---|---|
 | 0 | Success. |
 | 1 | A user or configuration error; the message says what to change. |
-| 2 | An environment problem: llama.cpp missing, a required tool missing, or `doctor` found an error. |
+| 2 | An environment problem: llama.cpp missing, a required tool missing, an installation missing the data that ships inside it, or `doctor` found an error. |
 
 ## Commands
 

@@ -92,7 +92,9 @@ def test_the_command_line_prints_it_instead_of_a_traceback(
     with pytest.raises(SystemExit) as exit_info:
         app_module.main()
     err = capsys.readouterr().err
-    assert exit_info.value.code == 1
+    # 2, not 1: an installation missing its own data is an environment problem, and a
+    # script has to be able to tell that from "your catalog file has a typo".
+    assert exit_info.value.code == 2
     assert "This llamafit installation is missing its model catalog" in err
     assert "pip install --force-reinstall llamafit" in err
     assert "Traceback" not in err
