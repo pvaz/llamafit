@@ -241,6 +241,7 @@ llama_cpp:
   kv_types_allowed: [f16]                   # architectures that assert on quantised KV
   requires: {mmproj: optional, mtp: optional, lazy_mode: recommended}
   quirks: ["--lazy-mode on streams the n-gram table from disk"]
+  lazy_tensors: [per_layer_token_embd]         # tensor-name prefixes llama.cpp streams from disk
 sources:
   - repo: unsloth/Qwen3.8-Flash-Next-GGUF
     kind: gguf
@@ -261,6 +262,7 @@ Field rules:
 - `params.active_b` drives speed; `params.total_b` and the quant `bytes` drive memory. Optional `ngram_table_b` and similar auxiliary tables are budgeted separately when `llama_cpp.requires.lazy_mode` allows streaming.
 - `quants[].bpw` is the quant's bits per weight, so it divides the weight bytes by `params.total_b`, not the whole download. A file may carry a large auxiliary table that `params.total_b` deliberately excludes, and counting it would report a four-bit quant as a seven-bit one. The weight bytes are the file bytes less whatever the facts report as streamable tables.
 - `context.native` is a curator's figure from the model card, and `catalog validate` checks it against the file once a quant has been refreshed: a curated value longer than the header's `{arch}.context_length` is reported, because the file contradicts it. A shorter one is not, because a vendor routinely documents less context than the file permits and reporting that would make the check noise. A `measured[].context` is the context one measurement ran at and is never compared.
+- `llama_cpp.lazy_tensors` names the tensor-name prefixes llama.cpp can stream from disk rather than hold in memory. It is a property of the architecture, identical across every quant, so it is curated beside `requires` and `quirks` rather than read from a file: no GGUF header says which of its tensors are streamable. `refresh` passes it to the reader, which sums those tensors into `bytes_lazy_tables` instead of counting them as resident weights, and `bpw` then describes the quantisation rather than the download.
 - `quality.baseline` is the model's quality on its primary use case, 0 to 100, set by the curator from published benchmarks with the sources listed. The contribution guide defines the rubric (section 11.1).
 - `quants[].gguf_facts` is filled by `refresh` (section 7) and is what the budget uses; when absent, the budget falls back to family-level formulas and lowers confidence.
 

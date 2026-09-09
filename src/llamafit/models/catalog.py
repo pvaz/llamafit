@@ -204,12 +204,21 @@ class LlamaCppNeeds(_Strict):
             version.
         quirks: Free-text notes about anything else llama.cpp needs to run this
             model correctly.
+        lazy_tensors: Name prefixes of tensors llama.cpp can stream from disk
+            rather than hold in memory, for example ``per_layer_token_embd``.
+            Curated, and a property of the architecture rather than of a file:
+            every quant of a model streams the same tables. The refresh passes
+            these to the GGUF reader, which sums their bytes into
+            :attr:`~llamafit.models.gguf.GgufFacts.bytes_lazy_tables` instead of
+            counting them as resident weights. Empty for a model that streams
+            nothing, which is most of them.
     """
 
     min_build: int | None = None
     kv_types_allowed: list[str] = Field(default_factory=list)
     requires: dict[str, str] = Field(default_factory=dict)
     quirks: list[str] = Field(default_factory=list)
+    lazy_tensors: list[str] = Field(default_factory=list)
 
 
 class Quant(_Strict):

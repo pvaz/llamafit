@@ -584,3 +584,40 @@ def test_a_projector_named_for_the_quant_does_not_inflate_it(tmp_path: Path) -> 
     quant = models[0].sources[0].quants[0]
     assert quant.files == ["tiny-1b-Q4_K_M.gguf"]
     assert quant.bytes_ == 700_000_000
+
+
+LAZY_ENTRY = ENTRY.replace(
+    "  sources:",
+    "  llama_cpp:\n    lazy_tensors: [per_layer_token_embd]\n  sources:",
+)
+
+
+class RecordingFactsReader:
+    """A ``read_facts_fn`` that remembers the lazy tensor names it was handed."""
+
+    def __init__(self) -> None:
+        self.lazy_tensor_names: list[list[str]] = []
+
+    def __call__(self, *args: object, **kwargs: object) -> GgufFacts:
+        names = kwargs.get("lazy_tensor_names", [])
+        assert isinstance(names, list)
+        self.lazy_tensor_names.append(list(names))
+        return facts_stub()
+
+
+def test_the_curated_lazy_tensors_reach_the_gguf_reader(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", LAZY_ENTRY)
+    reader = RecordingFactsReader()
+
+    refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=reader)
+
+    assert reader.lazy_tensor_names == [["per_layer_token_embd"]]
+
+
+def test_a_model_that_streams_nothing_passes_no_lazy_tensors(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    reader = RecordingFactsReader()
+
+    refresh_file(path, hf=FakeHfClient(FILES), read_facts_fn=reader)
+
+    assert reader.lazy_tensor_names == [[]]

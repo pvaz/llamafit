@@ -117,6 +117,7 @@ def _refresh_quant(
     quant: Quant,
     files: Sequence[RepoFile],
     total_b: float,
+    lazy_tensors: Sequence[str],
     read_facts_fn: Callable[..., GgufFacts],
     prefix: str,
     changed_fields: list[str],
@@ -153,8 +154,12 @@ def _refresh_quant(
     # The facts come first because bits per weight needs them: a quant's own lazy
     # tables have to come out of the numerator before the ratio describes the
     # quantization. Every file is passed, not the first: a split model's opening
-    # shard can carry the whole metadata block and no tensors at all.
-    facts = read_facts_fn([file_url(repo_file.path) for repo_file in files])
+    # shard can carry the whole metadata block and no tensors at all. The lazy
+    # tensor names come from the model, not the file: nothing in a GGUF header says
+    # which of its tensors llama.cpp can stream.
+    facts = read_facts_fn(
+        [file_url(repo_file.path) for repo_file in files], lazy_tensor_names=list(lazy_tensors)
+    )
     if facts != quant.gguf_facts:
         quant.gguf_facts = facts
         changed_fields.append(f"{prefix}.gguf_facts")
@@ -196,6 +201,7 @@ def _refresh_source(
     source: ModelSource,
     index: int,
     total_b: float,
+    lazy_tensors: Sequence[str],
     hf: HfClient,
     read_facts_fn: Callable[..., GgufFacts],
     changed_fields: list[str],
@@ -255,6 +261,7 @@ def _refresh_source(
                 quant,
                 matched,
                 total_b,
+                lazy_tensors,
                 read_facts_fn,
                 f"sources[{index}].quants[{qi}]",
                 changed_fields,
@@ -283,7 +290,14 @@ def _refresh_model(
     warnings: list[str] = []
     for index, source in enumerate(updated.sources):
         error = _refresh_source(
-            source, index, model.params.total_b, hf, read_facts_fn, changed_fields, warnings
+            source,
+            index,
+            model.params.total_b,
+            model.llama_cpp.lazy_tensors,
+            hf,
+            read_facts_fn,
+            changed_fields,
+            warnings,
         )
         if error is not None:
             return model, [], [], error

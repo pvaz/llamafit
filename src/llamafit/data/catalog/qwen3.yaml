@@ -84,6 +84,10 @@
   chat_template: { reasoning_format: deepseek, thinking_toggle: enable_thinking }
   llama_cpp:
     kv_types_allowed: [f16]
+    # per_layer_token_embd.weight is a 28.8 GB lookup table, a quarter of the download,
+    # that llama.cpp streams from disk rather than holding in memory. Naming it here keeps
+    # it out of the resident weights and out of the bits-per-weight figure.
+    lazy_tensors: [per_layer_token_embd]
   sources:
     - repo: unsloth/Qwen3.8-Flash-Next-GGUF
       kind: gguf
