@@ -41,6 +41,14 @@ facts files do not record. It needs the network, so it never runs on a pull requ
 connection must not fail somebody's unrelated change. It opens no issue and no pull request —
 a red run is the notification, and a `catalog refresh` is the answer.
 
+`.github/dependabot.yml` is not a workflow but belongs with them. `.github/workflows/release.yml`
+pins every action it uses to a commit rather than to a moving tag, because those actions handle
+the token that publishes under this project's name on PyPI and the bytes that go with it; the
+file's header comment explains where that line is drawn and why. An exact pin gives up automatic
+updates, so Dependabot opens a weekly pull request when a pinned commit moves and rewrites the
+version in the trailing comment. Read the release notes for what changed, let CI run on it, and
+merge — but never resolve one of those pull requests by replacing a pin with a moving tag.
+
 ## How detection is tested without hardware
 
 Every external command runs through `llamafit.hardware.runner.Runner`. Tests pass a
