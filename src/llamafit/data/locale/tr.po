@@ -1,0 +1,810 @@
+# Turkish translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. It was written from the English template in one
+# pass and it has had no second reader. By the standard docs/translations.md sets for
+# every language, that is not enough: please read it line by line and correct it in a
+# pull request.
+#
+# Turkish puts the verb last and marks case with suffixes, so several messages carry
+# their placeholders in another order than the English does: "%(free)s free of %(total)s"
+# becomes "%(total)s içinde %(free)s boş", and "Source %(index)d" becomes the ordinal
+# "%(index)d. Kaynak". A numeral is always followed by a singular noun here, which is
+# why the two plural forms read alike wherever the count itself is printed.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: tr\n"
+"Language-Team: Turkish\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
+msgstr "%(repo)s için dosyalar listelenirken Hugging Face %(status)d döndürdü."
+
+msgid "Could not read the file listing for %(repo)s from Hugging Face."
+msgstr "%(repo)s için dosya listesi Hugging Face'ten okunamadı."
+
+msgid "Check your network connection and try again."
+msgstr "Ağ bağlantınızı denetleyip yeniden deneyin."
+
+msgid "Hugging Face's response for %(repo)s did not include a file listing."
+msgstr "Hugging Face'in %(repo)s için verdiği yanıt bir dosya listesi içermiyordu."
+
+msgid "Check that the repository id is correct and public."
+msgstr "Depo kimliğinin doğru ve herkese açık olduğunu denetleyin."
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "katalogda %(count)d sorun var"
+msgstr[1] "katalogda %(count)d sorun var"
+
+msgid "Run `llamafit catalog validate` for details."
+msgstr "Ayrıntılar için `llamafit catalog validate` komutunu çalıştırın."
+
+msgid "could not write %(path)s: %(error)s"
+msgstr "%(path)s yazılamadı: %(error)s"
+
+msgid "Check that the directory is writable and has room."
+msgstr "Dizinin yazılabilir olduğunu ve yeterli yer bulunduğunu denetleyin."
+
+msgid "%(path)s has %(count)d problem and cannot be refreshed"
+msgid_plural "%(path)s has %(count)d problems and cannot be refreshed"
+msgstr[0] "%(path)s dosyasında %(count)d sorun var, bu yüzden yenilenemiyor"
+msgstr[1] "%(path)s dosyasında %(count)d sorun var, bu yüzden yenilenemiyor"
+
+msgid "Run `llamafit catalog validate` and fix the file first."
+msgstr "Önce `llamafit catalog validate` komutunu çalıştırıp dosyayı düzeltin."
+
+msgid "%(path)s could not be read in full, so refreshing only %(model)s would drop facts it records for models this run leaves alone: %(details)s"
+msgstr "%(path)s tümüyle okunamadı; bu yüzden yalnızca %(model)s yenilenirse bu çalıştırmanın dokunmadığı modeller için orada kayıtlı bilgiler düşer: %(details)s"
+
+msgid "Run `llamafit catalog refresh` without --model to rebuild the whole file."
+msgstr "Dosyanın tamamını yeniden oluşturmak için `llamafit catalog refresh` komutunu --model olmadan çalıştırın."
+
+msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
+msgstr "llama.cpp için açık ağırlıklı büyük dil modellerini kendi makinenizde bulun, boyutlandırın, kurun ve doğrulayın."
+
+msgid "Print machine-readable JSON instead of tables."
+msgstr "Tablolar yerine makinece okunabilir JSON yazdırır."
+
+msgid "Write details to llamafit.log in the log directory and show tracebacks."
+msgstr "Ayrıntıları günlük dizinindeki llamafit.log dosyasına yazar ve hata izlerini gösterir."
+
+msgid "Disable colours."
+msgstr "Renkleri kapatır."
+
+msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
+msgstr "Bu dili konuşur, örneğin pt_PT. LlamaFit'te bulunmayan bir dil İngilizceye döner ve hangi dillerin bulunduğu söylenir."
+
+msgid "Print the version and exit."
+msgstr "Sürümü yazdırıp çıkar."
+
+msgid "Unexpected error: %(error)s"
+msgstr "Beklenmeyen hata: %(error)s"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "Tam hata izi için --verbose ile yeniden çalıştırın."
+
+msgid "Maintain the catalog: validate its files, refresh volatile fields."
+msgstr "Kataloğun bakımını yapar: dosyalarını doğrular, değişken alanlarını yeniler."
+
+msgid "Keep only this use case."
+msgstr "Yalnızca bu kullanım alanını tutar."
+
+msgid "Keep only models with this capability (repeatable)."
+msgstr "Yalnızca bu yeteneğe sahip modelleri tutar (yinelenebilir)."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Yalnızca bu lisans kimliklerini tutar (yinelenebilir)."
+
+msgid "Validate only this file instead of the bundled catalog and custom overrides."
+msgstr "Paketle gelen katalog ve özel geçersiz kılmalar yerine yalnızca bu dosyayı doğrular."
+
+msgid "Did you mean: %(ids)s?"
+msgstr "Şunu mu demek istediniz: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Tüm model kimliklerini görmek için `llamafit list` komutunu çalıştırın."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "katalogda %(id)s adlı bir model yok"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "%(count)d katalog sorunu bulundu; ayrıntılar için `llamafit catalog validate` komutunu çalıştırın."
+msgstr[1] "%(count)d katalog sorunu bulundu; ayrıntılar için `llamafit catalog validate` komutunu çalıştırın."
+
+msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
+msgstr "Eşleşen model yok. Daha geniş bir --use-case, --capability, --license, --vendor veya --search deneyin."
+
+msgid "invalid --use-case %(value)s"
+msgstr "geçersiz --use-case değeri: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Geçerli kullanım alanları: %(values)s"
+
+# The count does not reach this sentence, so the two forms differ in the only place
+# Turkish can show it: the plural suffix on "değer".
+msgid "invalid --capability value: %(values)s"
+msgid_plural "invalid --capability values: %(values)s"
+msgstr[0] "geçersiz --capability değeri: %(values)s"
+msgstr[1] "geçersiz --capability değerleri: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Geçerli yetenekler: %(values)s"
+
+msgid ""
+"List the model catalog, narrowed by any filters given.\n"
+"\n"
+"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr ""
+"Verilen süzgeçlerle daraltılmış model kataloğunu listeler.\n"
+"\n"
+"Tablo her model için en çok üç yetenek, geri kalanlar için de bir +N imi gösterir ve gösterilen Kalite sütununa göre sıralanır; yeteneklerin tamamı info çıktısında ya da --json ile yer alır."
+
+msgid "Keep only this vendor, case-insensitive."
+msgstr "Büyük küçük harf ayrımı yapmadan yalnızca bu üreticiyi tutar."
+
+msgid "Case-insensitive substring match on id, name, vendor or family."
+msgstr "Kimlik, ad, üretici veya ailede büyük küçük harf ayrımı yapmadan parça eşleşmesi."
+
+msgid "Show at most this many."
+msgstr "En çok bu sayıda kaydı gösterir."
+
+msgid "Shorthand for llamafit list --search TEXT."
+msgstr "llamafit list --search TEXT için kısayol."
+
+msgid "Text to match against id, name, vendor or family."
+msgstr "Kimlik, ad, üretici veya aile ile eşleştirilecek metin."
+
+msgid "Show one model's facts, sources and every quant it publishes."
+msgstr "Bir modelin bilgilerini, kaynaklarını ve yayımladığı her nicemlemeyi gösterir."
+
+msgid "A catalog model id."
+msgstr "Bir katalog model kimliği."
+
+msgid "Validate catalog YAML files against the schema, printing one line per problem."
+msgstr "Katalog YAML dosyalarını şemaya göre doğrular ve her sorun için bir satır yazdırır."
+
+msgid "%(count)d file checked, no problems found."
+msgid_plural "%(count)d files checked, no problems found."
+msgstr[0] "%(count)d dosya denetlendi, sorun bulunmadı."
+msgstr[1] "%(count)d dosya denetlendi, sorun bulunmadı."
+
+msgid "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+msgstr "Katalog için dosya adlarını, boyutları, sağlama toplamlarını ve GGUF bilgilerini Hugging Face'ten yeniler."
+
+msgid "Refresh only this model id."
+msgstr "Yalnızca bu model kimliğini yeniler."
+
+msgid "Compute the refresh but write nothing."
+msgstr "Yenilemeyi hesaplar ama hiçbir şey yazmaz."
+
+msgid "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+msgstr "Değişecek bir şey varsa 1 ile çıkar; hiçbir şeyi değiştirmez, zamanlanmış bir CI işi içindir."
+
+msgid "%(model)s: warning: %(warning)s"
+msgstr "%(model)s: uyarı: %(warning)s"
+
+msgid "warning: %(warning)s (%(count)d model: %(models)s)"
+msgid_plural "warning: %(warning)s (%(count)d models: %(models)s)"
+msgstr[0] "uyarı: %(warning)s (%(count)d model: %(models)s)"
+msgstr[1] "uyarı: %(warning)s (%(count)d model: %(models)s)"
+
+msgid "%(model)s: error: %(error)s"
+msgstr "%(model)s: hata: %(error)s"
+
+msgid "Hint: %(hint)s"
+msgstr "İpucu: %(hint)s"
+
+msgid "refresh needs network access to Hugging Face; check your connection and that the repository id is correct."
+msgstr "yenileme, Hugging Face'e ağ erişimi gerektirir; bağlantınızı ve depo kimliğinin doğru olduğunu denetleyin."
+
+msgid "No changes."
+msgstr "Değişiklik yok."
+
+msgid "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+msgstr "Bir modelin ham katalog kaydını yazdırır; öntanımlı olarak JSON, --yaml ile YAML."
+
+msgid "Print YAML instead of JSON."
+msgstr "JSON yerine YAML yazdırır."
+
+msgid "Explain what was detected, what failed, and what would unlock more."
+msgstr "Neyin algılandığını, neyin başarısız olduğunu ve neyin daha fazlasını açacağını anlatır."
+
+msgctxt "finding level"
+msgid "OK"
+msgstr "TAMAM"
+
+msgctxt "finding level"
+msgid "WARN"
+msgstr "UYARI"
+
+msgctxt "finding level"
+msgid "ERROR"
+msgstr "HATA"
+
+msgctxt "bandwidth source"
+msgid "measured"
+msgstr "ölçüldü"
+
+msgctxt "bandwidth source"
+msgid "estimated"
+msgstr "tahmin edildi"
+
+msgctxt "bandwidth source"
+msgid "assumed"
+msgstr "varsayıldı"
+
+msgctxt "bandwidth source"
+msgid "unknown"
+msgstr "bilinmiyor"
+
+msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
+msgstr "%(bandwidth)s GB/s ve %(compute)s TFLOPS fp16"
+
+msgid "%(bandwidth)s GB/s"
+msgstr "%(bandwidth)s GB/s"
+
+msgid "%(compute)s TFLOPS fp16"
+msgstr "%(compute)s TFLOPS fp16"
+
+msgid "Host"
+msgstr "Makine"
+
+msgid "OS"
+msgstr "İşletim sistemi"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "%(physical)d cores / %(logical)d threads"
+msgstr "%(physical)d çekirdek / %(logical)d iş parçacığı"
+
+msgid "%(count)d performance core"
+msgid_plural "%(count)d performance cores"
+msgstr[0] "%(count)d performans çekirdeği"
+msgstr[1] "%(count)d performans çekirdeği"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "isa unknown"
+msgstr "komut kümesi bilinmiyor"
+
+msgid "%(speed)d MT/s"
+msgstr "%(speed)d MT/s"
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d bellek modülü"
+msgstr[1] "%(count)d bellek modülü"
+
+msgid "%(count)d channel"
+msgid_plural "%(count)d channels"
+msgstr[0] "%(count)d kanal"
+msgstr[1] "%(count)d kanal"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "bilinmiyor"
+
+msgid "Memory"
+msgstr "Bellek"
+
+msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
+msgstr "%(total)s toplam, %(available)s kullanılabilir; %(details)s; bant genişliği %(bandwidth)s"
+
+msgid "type unknown"
+msgstr "tür bilinmiyor"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "algılanmadı"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, %(free)s boş"
+
+msgid "VRAM unknown"
+msgstr "VRAM bilinmiyor"
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (belirtim)"
+
+msgid "driver %(driver)s"
+msgstr "sürücü %(driver)s"
+
+# Turkish numbers a thing with an ordinal, so the index leads: "2. GPU", not "GPU 2".
+msgid "GPU %(index)d"
+msgstr "%(index)d. GPU"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "no specs"
+msgstr "belirtim yok"
+
+msgid "Memory pool"
+msgstr "Bellek havuzu"
+
+msgid "unified (GPU shares system memory)"
+msgstr "birleşik (GPU sistem belleğini paylaşır)"
+
+msgid "Disk"
+msgstr "Disk"
+
+msgid "%(path)s: %(free)s free of %(total)s"
+msgstr "%(path)s: %(total)s içinde %(free)s boş"
+
+msgid "Installed"
+msgstr "Kurulu"
+
+msgctxt "llama.cpp is installed"
+msgid "no"
+msgstr "hayır"
+
+msgid "b%(build)d (%(commit)s)"
+msgstr "b%(build)d (%(commit)s)"
+
+msgid "b%(build)d"
+msgstr "b%(build)d"
+
+msgid "unknown build"
+msgstr "bilinmeyen derleme"
+
+msgid "yes, %(build)s at %(path)s"
+msgstr "evet, %(path)s içinde %(build)s"
+
+msgid "Backends"
+msgstr "Arka uçlar"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "algılanmadı"
+
+msgid "Local models"
+msgstr "Yerel modeller"
+
+msgid "Running"
+msgstr "Çalışıyor"
+
+msgid "%(url)s: %(model)s, context %(context)s"
+msgstr "%(url)s: %(model)s, bağlam %(context)s"
+
+msgid "unknown model"
+msgstr "bilinmeyen model"
+
+msgctxt "context length"
+msgid "unknown"
+msgstr "bilinmiyor"
+
+msgid "Problem"
+msgstr "Sorun"
+
+msgid "Probes"
+msgstr "Yoklamalar"
+
+msgid "probe"
+msgstr "yoklama"
+
+msgid "result"
+msgstr "sonuç"
+
+msgid "ms"
+msgstr "ms"
+
+msgctxt "probe result"
+msgid "ok"
+msgstr "tamam"
+
+msgid "no server"
+msgstr "sunucu yok"
+
+msgctxt "probe result"
+msgid "failed"
+msgstr "başarısız"
+
+msgid "Findings"
+msgstr "Bulgular"
+
+msgid "level"
+msgstr "düzey"
+
+msgid "finding"
+msgstr "bulgu"
+
+msgid "ID"
+msgstr "Kimlik"
+
+msgid "Quality*"
+msgstr "Kalite*"
+
+msgid "Params"
+msgstr "Param."
+
+msgid "Context"
+msgstr "Bağlam"
+
+msgid "Capabilities"
+msgstr "Yetenekler"
+
+msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr "Kalite, herhangi bir nicemleme kaybından önceki yayın temelidir; arkasındaki kaynaklı kıyaslamalar için `llamafit info <model>` komutunu çalıştırın."
+
+msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr "Param., uzman karışımı bir modelde milyar cinsinden toplam/etkin sayıdır; ikisi eşitse tek bir sayıdır."
+
+msgid "Models"
+msgstr "Modeller"
+
+msgid "Vendor"
+msgstr "Üretici"
+
+msgid "Family"
+msgstr "Aile"
+
+msgid "Release date"
+msgstr "Yayın tarihi"
+
+msgid "Licence"
+msgstr "Lisans"
+
+msgid "%(spdx)s (%(url)s)"
+msgstr "%(spdx)s (%(url)s)"
+
+msgid "Parameters"
+msgstr "Parametreler"
+
+msgid "%(total)sB total, %(active)sB active"
+msgstr "%(total)sB toplam, %(active)sB etkin"
+
+msgid "%(tokens)s tokens native"
+msgstr "yerel olarak %(tokens)s token"
+
+msgid ", %(tokens)s extended via %(method)s"
+msgstr ", %(method)s ile %(tokens)s token'a genişletilmiş"
+
+msgid "unspecified method"
+msgstr "yöntem belirtilmemiş"
+
+msgid "Architecture"
+msgstr "Mimari"
+
+msgid "Notes"
+msgstr "Notlar"
+
+msgid "Use cases"
+msgstr "Kullanım alanları"
+
+msgid "Quality baseline"
+msgstr "Kalite temeli"
+
+msgid "Benchmark"
+msgstr "Kıyaslama"
+
+# An ordinal again: the numbered rows read "1. Kaynak", "2. Kaynak".
+msgid "Source %(index)d"
+msgstr "%(index)d. Kaynak"
+
+msgid "not read yet"
+msgstr "henüz okunmadı"
+
+msgid "%(count)d layer"
+msgid_plural "%(count)d layers"
+msgstr[0] "%(count)d katman"
+msgstr[1] "%(count)d katman"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d uzman"
+msgstr[1] "%(count)d/%(used)d uzman"
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d uzman"
+msgstr[1] "%(count)d uzman"
+
+msgid "Quants"
+msgstr "Nicemlemeler"
+
+msgid "Name"
+msgstr "Ad"
+
+msgid "Size"
+msgstr "Boyut"
+
+msgid "BPW"
+msgstr "BPW"
+
+msgid "Facts"
+msgstr "Bilgiler"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "bilinmiyor"
+
+msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
+msgstr "Bu makinede ne olduğunu gösterir: CPU, bellek, GPU'lar, diskler ve llama.cpp."
+
+msgid "Skip the RAM bandwidth measurement."
+msgstr "RAM bant genişliği ölçümünü atlar."
+
+msgid "Command: %(command)s"
+msgstr "Komut: %(command)s"
+
+msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr "kesik GGUF başlığı: %(offset)d konumunda %(wanted)d bayt bekleniyordu, %(got)d alındı"
+
+msgid "The file may still be downloading, or the URL may not be a GGUF file."
+msgstr "Dosya hâlâ iniyor olabilir veya URL bir GGUF dosyasına ait olmayabilir."
+
+msgid "unknown GGUF value type %(type)d at offset %(offset)d"
+msgstr "%(offset)d konumunda bilinmeyen GGUF değer türü %(type)d"
+
+msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
+msgstr "Bu dosya, LlamaFit'in desteklediğinden daha yeni bir GGUF üstveri türü kullanıyor olabilir."
+
+msgid "not a GGUF file: bad magic %(magic)s at offset 0"
+msgstr "GGUF dosyası değil: 0 konumunda geçersiz imza %(magic)s"
+
+msgid "Check that this file is actually a .gguf model."
+msgstr "Bu dosyanın gerçekten bir .gguf modeli olduğunu denetleyin."
+
+msgid "unsupported GGUF version %(version)d at offset 4"
+msgstr "4 konumunda desteklenmeyen GGUF sürümü %(version)d"
+
+msgid "LlamaFit supports GGUF versions %(versions)s."
+msgstr "LlamaFit şu GGUF sürümlerini destekler: %(versions)s."
+
+msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
+msgstr "bu GGUF dosyaları tek bir bölünmüş model değil: '%(key)s' konusunda ayrışıyor ve %(values)s bildiriyorlar"
+
+msgid "Pass the shards of one model, not of several."
+msgstr "Birkaç modelin değil, tek bir modelin parçalarını verin."
+
+msgid "no GGUF header to read facts from"
+msgstr "bilgilerin okunacağı bir GGUF başlığı yok"
+
+msgid "Pass the model's file, or every shard of a split model."
+msgstr "Modelin dosyasını ya da bölünmüş bir modelin tüm parçalarını verin."
+
+msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr "%(total)d GGUF dosyasının %(count)d tanesi '%(key)s' anahtarını taşımıyor, bu yüzden bölünmüş bir modeldeki yerleri belirlenemiyor"
+
+msgid "Pass a single unsplit file on its own, or every shard of one split model."
+msgstr "Bölünmemiş tek bir dosyayı kendi başına ya da tek bir bölünmüş modelin tüm parçalarını verin."
+
+msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr "eksik parça kümesi: model %(declared)d parça bildiriyor, %(arrived)d parça geldi (%(key)s %(numbers)s)"
+
+msgid "Pass every shard of the split model."
+msgstr "Bölünmüş modelin tüm parçalarını verin."
+
+msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
+msgstr "modelin üstverisini taşıyan parça eksik: %(key)s %(numbers)s alındı, birinin 0 olması bekleniyordu"
+
+msgid "Pass every shard of the split model, including the first."
+msgstr "Bölünmüş modelin ilki dâhil tüm parçalarını verin."
+
+msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
+msgstr "eksik parça kümesi: %(key)s 0 ile %(last)d arasında bekleniyordu, %(numbers)s alındı"
+
+msgid "Pass each shard of the split model exactly once."
+msgstr "Bölünmüş modelin her parçasını tam olarak bir kez verin."
+
+msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+msgstr "eksik parça kümesi: model %(declared)d tensör bildiriyor, %(shards)d parçası toplamda %(held)d tensör taşıyor"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "%(path)s okunamadı: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Dosyanın var olduğunu ve okunabildiğini denetleyin."
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "%(url)s alınamadı: %(error)s"
+
+msgid "Check your network connection and that the URL is reachable."
+msgstr "Ağ bağlantınızı ve URL'ye erişilebildiğini denetleyin."
+
+msgid "%(url)s returned HTTP %(status)d instead of 206 Partial Content; the server may not support range requests."
+msgstr "%(url)s, 206 Partial Content yerine HTTP %(status)d döndürdü; sunucu aralık isteklerini desteklemiyor olabilir."
+
+msgid "Confirm the URL points at a downloadable GGUF file."
+msgstr "URL'nin indirilebilir bir GGUF dosyasına işaret ettiğini doğrulayın."
+
+msgctxt "CPU model"
+msgid "unknown"
+msgstr "bilinmiyor"
+
+msgid "nvidia-smi returned no GPUs"
+msgstr "nvidia-smi hiç GPU döndürmedi"
+
+msgid "rocm-smi returned no cards"
+msgstr "rocm-smi hiç kart döndürmedi"
+
+msgid "system_profiler returned no displays"
+msgstr "system_profiler hiç ekran döndürmedi"
+
+msgid "WMI returned no video controllers"
+msgstr "WMI hiç görüntü denetleyicisi döndürmedi"
+
+msgid "lspci found no display controllers"
+msgstr "lspci hiç görüntü denetleyicisi bulamadı"
+
+msgid "no populated memory modules"
+msgstr "dolu bellek modülü yok"
+
+msgid "no SPMemoryDataType"
+msgstr "SPMemoryDataType yok"
+
+msgid "empty command"
+msgstr "boş komut"
+
+msgid "%(program)s: timed out after %(seconds)ss"
+msgstr "%(program)s: %(seconds)s saniye sonra zaman aşımına uğradı"
+
+msgid "%(program)s: %(error)s"
+msgstr "%(program)s: %(error)s"
+
+msgid "%(program)s: not found"
+msgstr "%(program)s: bulunamadı"
+
+msgid "no output"
+msgstr "çıktı yok"
+
+msgid "exit code %(code)d: %(detail)s"
+msgstr "çıkış kodu %(code)d: %(detail)s"
+
+msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
+msgstr "llama.cpp bulunamadı: PATH üzerinde, LLAMA_CPP_PATH içinde ya da alışılmış dizinlerde llama-server yok"
+
+msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr "llama-server yanında ggml arka uç kitaplıkları bulunamadı; derleme statik olabilir"
+
+msgid "no llama-server answering"
+msgstr "yanıt veren llama-server yok"
+
+msgid "unexpected response: %(error)s"
+msgstr "beklenmeyen yanıt: %(error)s"
+
+msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+msgstr "NVIDIA sürücüsünü kurun ya da onarın; nvidia-smi onunla birlikte gelir ve PATH üzerinde olmalıdır."
+
+msgid "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is listed by name only."
+msgstr "AMD VRAM değerlerinin görünmesi için ROCm kurun (Linux); onsuz GPU yalnızca adıyla listelenir."
+
+msgid "PowerShell could not list video controllers; run from a normal user session."
+msgstr "PowerShell görüntü denetleyicilerini listeleyemedi; normal bir kullanıcı oturumundan çalıştırın."
+
+msgid "Install pciutils to list GPUs by name when no vendor tool is available."
+msgstr "Üretici aracı yokken GPU'ları adıyla listelemek için pciutils kurun."
+
+msgid "DDR type and speed were not readable; on Linux run once with sudo (dmidecode) or accept the measured bandwidth instead."
+msgstr "DDR türü ve hızı okunamadı; Linux'ta bir kez sudo ile (dmidecode) çalıştırın ya da bunun yerine ölçülen bant genişliğini kabul edin."
+
+msgid "py-cpuinfo failed; the CPU model and instruction sets are unknown."
+msgstr "py-cpuinfo başarısız oldu; CPU modeli ve komut kümeleri bilinmiyor."
+
+msgid "psutil could not count the CPU cores; thread choice falls back to one core. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil CPU çekirdeklerini sayamadı; iş parçacığı seçimi tek çekirdeğe döner. psutil'i `pip install --force-reinstall psutil` ile yeniden kurun."
+
+msgid "psutil could not read the memory totals; budgets cannot be computed until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+msgstr "psutil bellek toplamlarını okuyamadı; bu çalışana kadar bütçeler hesaplanamaz. psutil'i `pip install --force-reinstall psutil` ile yeniden kurun."
+
+msgid "Could not read performance-core count from sysctl."
+msgstr "Performans çekirdeği sayısı sysctl'den okunamadı."
+
+msgid "llama-server exists but did not report a version; the binary may be broken."
+msgstr "llama-server var ama bir sürüm bildirmedi; ikili dosya bozuk olabilir."
+
+msgid "system_profiler failed; GPU information is unavailable."
+msgstr "system_profiler başarısız oldu; GPU bilgisi yok."
+
+msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
+msgstr "GPU'nun bellek boyutunu hiçbir üretici aracı bildirmedi; bu makine için bütçelerin hesaplanabilmesi adına boyutu bir donanım profiline kaydedin."
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp kurulu"
+
+msgid "build %(build)s at %(path)s, backends: %(backends)s"
+msgstr "%(path)s içinde %(build)s derlemesi, arka uçlar: %(backends)s"
+
+msgctxt "llama.cpp build"
+msgid "unknown"
+msgstr "bilinmiyor"
+
+msgid "llama.cpp not found"
+msgstr "llama.cpp bulunamadı"
+
+msgid "no llama-server binary was found"
+msgstr "llama-server ikili dosyası bulunamadı"
+
+msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgstr "llama.cpp kurun (LlamaFit bunu 2. aşamada yapacak: `llamafit install llama.cpp`); o zamana kadar https://github.com/ggml-org/llama.cpp/releases adresinden bir sürüm indirin ve bin dizinini PATH üzerine ya da LLAMA_CPP_PATH içine koyun."
+
+msgid "Memory size unknown"
+msgstr "Bellek boyutu bilinmiyor"
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr "LlamaFit bu makinenin bellek toplamlarını okuyamadı, bu yüzden neyin sığacağını hesaplayamıyor."
+
+msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
+msgstr "%(gpu)s: llama.cpp içinde %(backend)s arka ucu yok"
+
+msgid "llama.cpp was built with: %(backends)s"
+msgstr "llama.cpp şununla derlendi: %(backends)s"
+
+msgctxt "backends"
+msgid "unknown"
+msgstr "bilinmiyor"
+
+msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
+msgstr "%(gpu)s kullanmak için %(backend)s ya da Vulkan arka ucuna sahip bir llama.cpp derlemesi kurun."
+
+msgid "%(gpu)s: VRAM size unknown"
+msgstr "%(gpu)s: VRAM boyutu bilinmiyor"
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "belleği bildiren üretici aracı yoktu"
+
+msgid "No GPU detected"
+msgstr "GPU algılanmadı"
+
+msgid "models will run on the CPU only"
+msgstr "modeller yalnızca CPU üzerinde çalışacak"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "Bir GPU varsa sürücü araçlarının kurulu olduğunu denetleyin."
+
+msgid "RAM bandwidth assumed"
+msgstr "RAM bant genişliği varsayıldı"
+
+msgid "using %(gbps)s GB/s as a default"
+msgstr "öntanımlı olarak %(gbps)s GB/s kullanılıyor"
+
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
+msgstr "LlamaFit'in RAM bant genişliğini ölçebilmesi için numpy kurun (`pip install llamafit[fast]`)."
+
+msgid "Probe %(probe)s failed"
+msgstr "%(probe)s yoklaması başarısız oldu"
+
+msgid "unknown error"
+msgstr "bilinmeyen hata"
+
+msgid "llama-server running at %(url)s"
+msgstr "llama-server %(url)s adresinde çalışıyor"
+
+msgid "model %(model)s, context %(context)s"
+msgstr "model %(model)s, bağlam %(context)s"
+
+msgctxt "model name"
+msgid "unknown"
+msgstr "bilinmiyor"
+
+msgid "Low disk space on %(path)s"
+msgstr "%(path)s üzerinde disk alanı az"
+
+msgid "%(size)s free"
+msgstr "%(size)s boş"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr "İşe yarar modellerin çoğu 5 ile 120 GB arasında yer ister; yer açın ya da indirme dizinini değiştirin."
+
+msgctxt "size"
+msgid "unknown"
+msgstr "bilinmiyor"
