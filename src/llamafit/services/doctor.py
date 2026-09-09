@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 
 from llamafit.i18n import LazyString, _, lazy_gettext, pgettext
 from llamafit.models.report import SystemReport
-from llamafit.units import format_bytes
+from llamafit.units import format_bytes, localise_number
 
 Level = Literal["ok", "warn", "error"]
 _ORDER: dict[Level, int] = {"ok": 0, "warn": 1, "error": 2}
@@ -199,7 +199,8 @@ def diagnose(report: SystemReport) -> Diagnosis:
             Finding(
                 level="warn",
                 title=_("RAM bandwidth assumed"),
-                detail=_("using %(gbps)s GB/s as a default") % {"gbps": host.memory.bandwidth_gbps},
+                detail=_("using %(gbps)s GB/s as a default")
+                % {"gbps": localise_number(str(host.memory.bandwidth_gbps))},
                 hint=_(
                     "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure "
                     "the RAM bandwidth."
