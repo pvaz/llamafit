@@ -29,9 +29,10 @@ The RAM bandwidth measurement is not a probe: it runs in-process and reports `me
 it can allocate its buffer (more accurate with NumPy: `pip install llamafit[fast]`),
 `estimated` from DDR facts otherwise, and `assumed` (40 GB/s) when nothing better is known.
 
-A failed vendor GPU probe (`nvidia-smi`, `rocm-smi`, `system-profiler`) is only reported by
-`doctor` when the host actually has a GPU from that vendor: a machine with only an NVIDIA card
-is never warned that `rocm-smi` failed.
+A failed vendor GPU probe (`nvidia-smi`, `rocm-smi`, `system-profiler`) is hidden by `doctor`
+when the machine has GPUs but none from that vendor: a host with only an NVIDIA card is never
+told that `rocm-smi` failed. When no GPU was detected at all, every failed probe is reported,
+next to the "No GPU detected" warning, because one of them is usually the reason.
 
 ## Operating systems
 
