@@ -52,14 +52,17 @@ def decimal_separator() -> str:
 
 
 def billions_suffix() -> str:
-    """The abbreviation this language uses for a thousand million, as in ``27B``."""
-    # Translators: this is an abbreviation, not a word. It marks a parameter count of a
-    # thousand million, as in 27B. Do not translate the English word "billion": the long
-    # and short scales disagree about what a billion is, so write the abbreviation your
-    # own readers expect for a thousand million. Whitespace is read as written here too,
-    # for a form your language separates from the digits. If your readers have no short
-    # form of their own and know these models as 27B, write B and say why in a comment:
-    # that is an answer, and it is a better one than an abbreviation nobody uses.
+    """The mark a parameter count of a thousand million carries, as in ``27B``."""
+    # Translators: leave this as B. It is not the English word "billion" — the long and
+    # short scales disagree about what one of those is — and it is not a number word at
+    # all. It is how these models are named: the file is Qwen3-27B, the vendor announces
+    # a 27B model, and this cell sits in the same row as that identifier, so a localised
+    # abbreviation would make one row disagree with itself. Readers of every language
+    # meet the B in the model's own name before they meet this table.
+    # The entry is here for the language whose readers genuinely would not recognise it.
+    # If yours is one, write what they do use; whitespace is read as written, for a form
+    # your language separates from the digits. Otherwise leave it, and leave it filled in
+    # rather than empty, so the next reader can see the question was asked.
     return pgettext_literal("parameter count", "B")
 
 
