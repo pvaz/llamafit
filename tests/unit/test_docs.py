@@ -37,9 +37,26 @@ def test_development_doc_only_names_workflows_that_exist() -> None:
         )
 
 
-def test_readme_shows_the_two_commands_that_exist() -> None:
+def test_readme_shows_the_commands_that_ship() -> None:
     text = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert "llamafit system" in text and "llamafit doctor" in text
+    for command in ("llamafit system", "llamafit doctor", "llamafit list", "llamafit info"):
+        assert command in text, f"README.md lacks {command}"
+
+
+def test_catalog_doc_documents_every_top_level_field() -> None:
+    """Every field of the catalog's model is named in the field reference.
+
+    The names are read from the model, not listed here, so a field added tomorrow
+    fails this test until somebody documents it.
+    """
+    from llamafit.models.catalog import CatalogModel
+
+    text = (ROOT / "docs" / "catalog.md").read_text(encoding="utf-8")
+    for name, field in CatalogModel.model_fields.items():
+        documented = field.alias or name
+        assert re.search(rf"`{re.escape(documented)}[`.\[]", text), (
+            f"docs/catalog.md does not document the {documented!r} field"
+        )
 
 
 def test_models_md_matches_the_catalog() -> None:
