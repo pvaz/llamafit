@@ -116,10 +116,52 @@ def test_head_dimension_falls_back_to_embedding_over_heads() -> None:
 
 def test_kv_bytes_per_token_by_cache_type() -> None:
     facts = derive_facts(read_header(FakeSource(dense_header())))
-    # 2 caches * 2 attention layers * 8 kv heads * 128 head dim = 4096 elements per token
+    # 2 attention layers * 8 kv heads * (128 key + 128 value) = 4096 elements per token
     assert kv_bytes_per_token(facts, "f16") == 4096 * 2
     assert kv_bytes_per_token(facts, "q8_0") == 4096 * 34 // 32
     assert facts.kv_bytes_per_token_f16 == 4096 * 2
+
+
+def test_the_value_length_falls_back_to_the_key_length_when_undeclared() -> None:
+    facts = derive_facts(read_header(FakeSource(dense_header())))
+    assert facts.head_dim == 128
+    assert facts.value_head_dim == 128
+
+
+def test_a_value_length_that_differs_from_the_key_length_is_recorded_and_used() -> None:
+    # No file in the catalog separates them today, but nothing stops an architecture
+    # from doing it, and a cache sized from twice the key length would be too large.
+    metadata = [
+        b.string("general.architecture", "acme"),
+        b.uint32("acme.block_count", 2),
+        b.uint32("acme.embedding_length", 4096),
+        b.uint32("acme.attention.head_count", 32),
+        b.uint32("acme.attention.head_count_kv", 8),
+        b.uint32("acme.attention.key_length", 256),
+        b.uint32("acme.attention.value_length", 128),
+    ]
+    tensors = [
+        b.tensor("blk.0.attn_k.weight", [10], 0, 0),
+        b.tensor("blk.1.attn_k.weight", [10], 0, 1),
+    ]
+    facts = derive_facts(read_header(FakeSource(b.build(metadata, tensors))))
+
+    assert (facts.head_dim, facts.value_head_dim) == (256, 128)
+    # 2 attention layers * 8 kv heads * (256 key + 128 value) = 6144 elements per token,
+    # not the 8192 that doubling the key length would give.
+    assert kv_bytes_per_token(facts, "f16") == 6144 * 2
+    assert facts.kv_bytes_per_token_f16 == 6144 * 2
+
+
+def test_the_head_dimension_is_still_the_key_length_on_its_own() -> None:
+    metadata = [
+        b.string("general.architecture", "acme"),
+        b.uint32("acme.block_count", 1),
+        b.uint32("acme.attention.key_length", 256),
+        b.uint32("acme.attention.value_length", 128),
+    ]
+    facts = derive_facts(read_header(FakeSource(b.build(metadata, []))))
+    assert facts.head_dim == 256
 
 
 def test_a_global_tensor_is_bucketed_and_not_lost() -> None:

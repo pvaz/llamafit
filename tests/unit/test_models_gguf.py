@@ -57,6 +57,7 @@ def test_facts_built_with_only_arch_has_documented_defaults() -> None:
     assert facts.n_head is None
     assert facts.n_head_kv is None
     assert facts.head_dim is None
+    assert facts.value_head_dim is None
     assert facts.attention_layers is None
     assert facts.attention_layers_source == "unknown"
     assert facts.sliding_window is None
@@ -88,6 +89,7 @@ def test_attention_layers_source_rejects_value_outside_the_three_allowed() -> No
         "n_head",
         "n_head_kv",
         "head_dim",
+        "value_head_dim",
         "attention_layers",
         "sliding_window",
         "context_length",

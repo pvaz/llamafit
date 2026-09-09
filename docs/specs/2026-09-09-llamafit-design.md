@@ -303,7 +303,7 @@ From the header LlamaFit derives, per quant:
 
 | Fact | Derivation |
 |---|---|
-| `n_layer`, `n_embd`, `n_vocab`, `n_head`, `n_head_kv`, `head_dim` | `{arch}.block_count`, `{arch}.embedding_length`, tokenizer vocab size, `{arch}.attention.head_count(_kv)`, key length |
+| `n_layer`, `n_embd`, `n_vocab`, `n_head`, `n_head_kv`, `head_dim`, `value_head_dim` | `{arch}.block_count`, `{arch}.embedding_length`, tokenizer vocab size, `{arch}.attention.head_count(_kv)`, `{arch}.attention.key_length` (falling back to embedding length over head count), `{arch}.attention.value_length` (falling back to `head_dim`). `head_dim` is the head dimension everywhere that means one; the KV cache is the exception and uses both |
 | `attention_layers` | the number of blocks that own `attn_k.weight` and `attn_v.weight` tensors, which is exact for every architecture including hybrids, since a block without a KV projection cannot hold a KV cache; the architecture's interval or layer-type array, and then the family rule in the catalog, are fallbacks for a file whose tensor names do not follow the convention. Recorded alongside as `attention_layers_source` so a reader can tell a counted figure from an assumed one |
 | `sliding_window` | `{arch}.attention.sliding_window` when the architecture declares one, else null. Recorded but not yet used: a model with sliding-window attention holds a full-length KV cache on only a fraction of its layers, so treating every attention layer as full-context overstates the cache several-fold. Which layers slide is not in the header and comes from a per-architecture rule or the catalog |
 | `context_length` | `{arch}.context_length` when the architecture declares one, else null. Recorded but not yet used: it is the longest context the file permits, which a curated `context.native` may deliberately sit below and must never exceed |
@@ -312,7 +312,7 @@ From the header LlamaFit derives, per quant:
 | `bytes_dense_block_weights` | sum of all other block tensors: attention projections, feed-forward weights and norms. Nearly the whole file on a dense model, so it is not an attention-only figure |
 | `bytes_output_head`, `bytes_token_embd` | `output.weight`, `token_embd.weight` |
 | `bytes_lazy_tables` | tensors the catalog marks as streamable (for example `per_layer_token_embd`) |
-| `kv_bytes_per_token` | `2 × attention_layers × n_head_kv × head_dim × bytes(kv_type)` |
+| `kv_bytes_per_token` | `attention_layers × n_head_kv × (head_dim + value_head_dim) × bytes(kv_type)`. The two caches are sized from their own head dimensions and added rather than one being doubled: an architecture may declare a value length different from its key length, and doubling the key length would then be wrong in proportion. Every file in the catalog today declares them equal, so the figure is unchanged |
 | `recurrent_state_bytes` | from the architecture's state dimensions, else the catalog's measured value |
 
 Tensor sizes come from the tensor info table (dimensions and type), so they are exact for the file, not estimates.

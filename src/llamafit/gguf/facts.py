@@ -88,6 +88,10 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
     head_dim = _int(header, f"{arch}.attention.key_length")
     if head_dim is None and n_embd is not None and n_head:
         head_dim = n_embd // n_head
+    # The value vector is sized separately, because nothing says it matches the key.
+    value_head_dim = _int(header, f"{arch}.attention.value_length")
+    if value_head_dim is None:
+        value_head_dim = head_dim
 
     tokens = header.metadata.get("tokenizer.ggml.tokens")
     n_vocab = len(tokens) if isinstance(tokens, list) else _int(header, f"{arch}.vocab_size")
@@ -144,6 +148,7 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
         n_head=n_head,
         n_head_kv=n_head_kv,
         head_dim=head_dim,
+        value_head_dim=value_head_dim,
         attention_layers=attention_layers,
         attention_layers_source=attention_layers_source,
         sliding_window=sliding_window,
@@ -165,11 +170,28 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
 
 
 def kv_bytes_per_token(facts: GgufFacts, kv_type: str) -> int | None:
-    """Bytes both KV caches grow by per token, or ``None`` when the shape is unknown."""
+    """Bytes both KV caches grow by per token, or ``None`` when the shape is unknown.
+
+    The two caches are sized from their own head dimensions and added, rather than one
+    of them being doubled. An architecture is free to declare a value length different
+    from its key length, and doubling the key length would then be wrong in proportion
+    on the single number a memory budget leans on hardest. Every file in the catalog
+    today declares the two equal, so this returns exactly what doubling returned.
+
+    Args:
+        facts: The file's facts, which must carry an attention-layer count, a
+            key/value head count and a head dimension for a figure to exist at all.
+        kv_type: The KV cache quantisation, one of ``f16``, ``q8_0`` or ``q4_0``.
+
+    Returns:
+        Bytes the K and V caches together grow by per token, or ``None`` when the
+        shape is unknown.
+    """
     if facts.attention_layers is None or facts.n_head_kv is None or facts.head_dim is None:
         return None
+    value_head_dim = facts.head_dim if facts.value_head_dim is None else facts.value_head_dim
     block_elements, block_bytes = _KV_TYPE_BYTES[kv_type]
-    elements = 2 * facts.attention_layers * facts.n_head_kv * facts.head_dim
+    elements = facts.attention_layers * facts.n_head_kv * (facts.head_dim + value_head_dim)
     return elements // block_elements * block_bytes
 
 
