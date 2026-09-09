@@ -167,3 +167,26 @@ def kv_bytes_per_token(facts: GgufFacts, kv_type: str) -> int | None:
     block_elements, block_bytes = _KV_TYPE_BYTES[kv_type]
     elements = 2 * facts.attention_layers * facts.n_head_kv * facts.head_dim
     return elements // block_elements * block_bytes
+
+
+def bits_per_weight(file_bytes: int, lazy_table_bytes: int, total_b: float) -> float:
+    """Bits per weight, counting only the bytes of the download that are weights.
+
+    A model's files can hold a large tensor that is a lookup table rather than a
+    weight — an n-gram or per-layer embedding table that llama.cpp streams from disk
+    rather than holding in memory. Counting it inflates the figure until it no longer
+    describes the quantization: Qwen3.8-Flash-Next UD-Q4_K_XL is 111.33 GB of which
+    28.80 GB is one such table, which reads as 7.13 bits per weight over the whole
+    download and 5.28 over its weights, and only the second is a four-bit quant.
+
+    Args:
+        file_bytes: Total bytes of the model's files, every shard included.
+        lazy_table_bytes: How many of those bytes are lazy lookup tables, i.e.
+            :attr:`~llamafit.models.gguf.GgufFacts.bytes_lazy_tables`. Zero leaves
+            this exactly the ratio over the whole download.
+        total_b: The model's parameter count, in billions.
+
+    Returns:
+        Bits per weight, unrounded.
+    """
+    return (file_bytes - lazy_table_bytes) * 8 / (total_b * 1e9)

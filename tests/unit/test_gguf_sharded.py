@@ -16,7 +16,7 @@ import httpx
 import pytest
 
 from llamafit.errors import CatalogError
-from llamafit.gguf import merge_shard_headers, read_facts
+from llamafit.gguf import bits_per_weight, merge_shard_headers, read_facts
 from llamafit.gguf.cache import HeaderCache
 from llamafit.gguf.facts import derive_facts
 from llamafit.gguf.reader import read_header
@@ -293,6 +293,29 @@ def test_a_shard_set_reads_over_http_and_caches_per_shard(tmp_path: Path) -> Non
     assert again == facts
     assert [entry.split(" ")[0] for entry in hit] == ["HEAD"] * len(shards), (
         "a warm shard set must cost one HEAD per shard and no range request"
+    )
+
+
+def test_bits_per_weight_reduces_to_the_old_formula_without_lazy_tables() -> None:
+    file_bytes = 111_334_654_784
+    total_b = 125.0
+    assert bits_per_weight(file_bytes, 0, total_b) == file_bytes * 8 / (total_b * 1e9)
+    assert round(bits_per_weight(file_bytes, 0, total_b), 2) == 7.13
+
+
+def test_bits_per_weight_leaves_out_the_lazy_lookup_table() -> None:
+    """The measured figures for Qwen3.8-Flash-Next UD-Q4_K_XL: 111.33 GB, 28.80 GB lazy."""
+    assert round(bits_per_weight(111_330_000_000, 28_800_000_000, 125.0), 2) == 5.28
+
+
+def test_bits_per_weight_is_driven_by_the_facts_a_split_model_reports(tmp_path: Path) -> None:
+    """With the lazy table named, the union's bucket is what the figure drops."""
+    paths = write_shards(tmp_path, split_model())
+    plain = read_facts(paths)
+    lazy = read_facts(paths, lazy_tensor_names=["per_layer_token_embd."])
+    assert lazy.bytes_lazy_tables > 0 and plain.bytes_lazy_tables == 0
+    assert bits_per_weight(lazy.bytes_total, lazy.bytes_lazy_tables, 1.0) < bits_per_weight(
+        plain.bytes_total, plain.bytes_lazy_tables, 1.0
     )
 
 
