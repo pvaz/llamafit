@@ -1,11 +1,28 @@
 import os
+import re
 from pathlib import Path
+
+import httpx
 
 from llamafit.gguf import read_facts
 from llamafit.gguf.cache import HeaderCache, cache_key_for_path, cache_key_for_url
 from llamafit.gguf.reader import read_header
 from llamafit.gguf.source import FakeSource
+from tests.fixtures import gguf_builder as b
 from tests.unit.test_gguf_facts import dense_header
+
+
+def _handler_for(data: bytes, etag: str | None) -> httpx.MockTransport:
+    def handler(request: httpx.Request) -> httpx.Response:
+        match = re.match(r"bytes=(\d+)-(\d+)", request.headers["range"])
+        assert match is not None
+        start, end = int(match.group(1)), min(int(match.group(2)), len(data) - 1)
+        headers = {"content-range": f"bytes {start}-{end}/{len(data)}"}
+        if etag is not None:
+            headers["etag"] = etag
+        return httpx.Response(206, content=data[start : end + 1], headers=headers)
+
+    return httpx.MockTransport(handler)
 
 
 def test_a_cached_header_round_trips(tmp_path: Path) -> None:
@@ -58,3 +75,26 @@ def test_read_facts_uses_the_cache_the_second_time(tmp_path: Path) -> None:
     os.utime(target, (stat.st_atime, stat.st_mtime))
     second = read_facts(target, cache=cache)
     assert second.n_layer == first.n_layer
+
+
+def test_read_facts_over_http_does_not_serve_a_stale_header_across_etags(tmp_path: Path) -> None:
+    cache = HeaderCache(tmp_path)
+    url = "https://x/model.gguf"
+    second_data = b.build(
+        [b.string("general.architecture", "llama"), b.uint32("llama.block_count", 99)], []
+    )
+
+    client_a = httpx.Client(transport=_handler_for(dense_header(), "etag-a"))
+    first = read_facts(url, cache=cache, client=client_a)
+    assert first.n_layer == 2
+
+    client_b = httpx.Client(transport=_handler_for(second_data, "etag-b"))
+    second = read_facts(url, cache=cache, client=client_b)
+    assert second.n_layer == 99, "a new ETag must not be served the first file's cached header"
+
+
+def test_read_facts_over_http_still_works_when_the_server_sends_no_etag(tmp_path: Path) -> None:
+    cache = HeaderCache(tmp_path)
+    client = httpx.Client(transport=_handler_for(dense_header(), None))
+    facts = read_facts("https://x/model.gguf", cache=cache, client=client)
+    assert facts.n_layer == 2

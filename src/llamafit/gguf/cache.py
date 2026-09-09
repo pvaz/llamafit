@@ -86,14 +86,20 @@ def read_facts(
     A ``Path``, or a string with no ``http://`` or ``https://`` scheme, is read from the
     local filesystem; a URL is read over HTTP range requests, without downloading the
     file. This is the one function the rest of LlamaFit calls to get a GGUF file's facts.
+
+    A local file's cache key is known before any read (its path, size and modification
+    time), so an unchanged file can skip re-parsing entirely. A remote file's identity
+    is only known from a response header, so its header is always fetched and parsed;
+    what caching still buys here is a correct key to store it under, keyed by the
+    ``ETag`` :class:`~llamafit.gguf.source.HttpRangeSource` captured, so a file that
+    changes at the same URL is never confused with the version cached before it.
     """
-    source: ByteSource
     if isinstance(target, str) and target.startswith(("http://", "https://")):
-        source = HttpRangeSource(target, client=client)
-        key = cache_key_for_url(target, None)
+        http_source = HttpRangeSource(target, client=client)
+        header = read_header(http_source)
+        if cache is not None:
+            cache.put(cache_key_for_url(target, http_source.etag), header)
     else:
         path = Path(target)
-        source = LocalSource(path)
-        key = cache_key_for_path(path)
-    header = read_header_cached(source, key, cache)
+        header = read_header_cached(LocalSource(path), cache_key_for_path(path), cache)
     return derive_facts(header, lazy_tensor_names=lazy_tensor_names)
