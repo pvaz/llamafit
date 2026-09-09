@@ -34,6 +34,40 @@ def test_discover_ignores_non_llama_services() -> None:
     assert discover_servers(http, [8080]) == []
 
 
+def test_discover_tolerates_malformed_models_and_props() -> None:
+    http = FakeHttp(
+        {
+            "http://127.0.0.1:8080/health": HEALTH,
+            "http://127.0.0.1:8080/v1/models": {"data": ["not-a-dict"]},
+            "http://127.0.0.1:8080/props": {
+                "default_generation_settings": ["not-a-dict"],
+                "build_info": 42,
+            },
+        }
+    )
+    servers = discover_servers(http, [8080])
+    assert len(servers) == 1
+    assert servers[0].model is None and servers[0].n_ctx is None and servers[0].build is None
+
+
+def test_discover_reads_string_and_zero_context_sizes() -> None:
+    http = FakeHttp(
+        {
+            "http://127.0.0.1:8080/health": HEALTH,
+            "http://127.0.0.1:8080/props": {"default_generation_settings": {"n_ctx": "4096"}},
+            "http://127.0.0.1:8081/health": HEALTH,
+            "http://127.0.0.1:8081/props": {"default_generation_settings": {"n_ctx": 0}},
+        }
+    )
+    servers = discover_servers(http, [8080, 8081])
+    assert [s.n_ctx for s in servers] == [4096, 0]
+
+
+def test_candidate_ports_ignores_non_numeric_and_duplicates() -> None:
+    assert candidate_ports({"LLAMA_SERVER_PORT": "abc"}) == [8080, 8081, 8098]
+    assert candidate_ports({"LLAMA_SERVER_PORT": "8081"}) == [8081, 8080, 8098]
+
+
 def test_detect_llamacpp_composes() -> None:
     http = FakeHttp(
         {
