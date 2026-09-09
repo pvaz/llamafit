@@ -91,7 +91,10 @@ class GgufFacts(_Strict):
         has_shared_experts: Whether the model has always-on shared experts
             in addition to routed ones.
         bytes_expert_weights: Total bytes of routed expert weight tensors.
-        bytes_attention_weights: Total bytes of attention weight tensors.
+        bytes_dense_block_weights: Total bytes of every non-expert tensor inside
+            a block: attention projections, feed-forward weights and norms alike.
+            On a dense model that is nearly the whole file, so it is named for
+            what it holds rather than for attention alone.
         bytes_output_head: Bytes of the output (unembedding) tensor.
         bytes_token_embd: Bytes of the token embedding tensor.
         bytes_lazy_tables: Bytes of tensors that can be loaded lazily rather
@@ -121,7 +124,7 @@ class GgufFacts(_Strict):
     n_expert_used: int | None = None
     has_shared_experts: bool = False
     bytes_expert_weights: int = 0
-    bytes_attention_weights: int = 0
+    bytes_dense_block_weights: int = 0
     bytes_output_head: int = 0
     bytes_token_embd: int = 0
     bytes_lazy_tables: int = 0

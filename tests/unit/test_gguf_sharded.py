@@ -157,7 +157,7 @@ def test_every_byte_bucket_still_sums_to_the_total(tmp_path: Path) -> None:
         facts.bytes_token_embd
         + facts.bytes_output_head
         + facts.bytes_expert_weights
-        + facts.bytes_attention_weights
+        + facts.bytes_dense_block_weights
         + facts.bytes_lazy_tables
         + facts.bytes_global_weights
     )

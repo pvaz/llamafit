@@ -304,7 +304,7 @@ From the header LlamaFit derives, per quant:
 | `sliding_window` | `{arch}.attention.sliding_window` when the architecture declares one, else null. Recorded but not yet used: a model with sliding-window attention holds a full-length KV cache on only a fraction of its layers, so treating every attention layer as full-context overstates the cache several-fold. Which layers slide is not in the header and comes from a per-architecture rule or the catalog |
 | `n_expert`, `n_expert_used`, `shared_experts` | `{arch}.expert_count`, `{arch}.expert_used_count`, presence of `_shexp` tensors |
 | `bytes_expert_weights` | sum of tensor sizes whose names contain `_exps` |
-| `bytes_attention_weights` | sum of all other block tensors |
+| `bytes_dense_block_weights` | sum of all other block tensors: attention projections, feed-forward weights and norms. Nearly the whole file on a dense model, so it is not an attention-only figure |
 | `bytes_output_head`, `bytes_token_embd` | `output.weight`, `token_embd.weight` |
 | `bytes_lazy_tables` | tensors the catalog marks as streamable (for example `per_layer_token_embd`) |
 | `kv_bytes_per_token` | `2 × attention_layers × n_head_kv × head_dim × bytes(kv_type)` |
