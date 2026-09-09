@@ -420,7 +420,11 @@ def _write_facts_atomically(path: Path, text: str) -> None:
     """
     tmp_path = path.with_name(f"{path.name}.tmp")
     try:
-        tmp_path.write_text(text, encoding="utf-8")
+        # newline="\n" so a facts file is byte-identical wherever it was refreshed.
+        # Python otherwise writes the host's line ending, which would make every line
+        # of a Windows contributor's refresh differ from a Linux one with no fact
+        # having changed at all.
+        tmp_path.write_text(text, encoding="utf-8", newline="\n")
         os.replace(tmp_path, path)
     except OSError as exc:
         with suppress(OSError):
