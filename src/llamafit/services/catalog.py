@@ -93,6 +93,11 @@ class ModelSummary(BaseModel):
         largest_quant_bytes: The size of the largest quant whose size is known, or
             ``None`` when no quant's size has been filled in yet.
         is_local: Whether one of this model's quant files is already on disk.
+        quality_baseline: The curator's editorial quality score, from
+            ``model.quality.baseline``. This is the score before any
+            quantisation penalty; phase 1C subtracts from it to reach the score
+            a recommendation will actually show, so this field alone is not
+            that score.
     """
 
     id: str
@@ -106,6 +111,7 @@ class ModelSummary(BaseModel):
     quant_names: list[str]
     largest_quant_bytes: int | None
     is_local: bool
+    quality_baseline: int
 
 
 def summarise(model: CatalogModel, local_files: Sequence[LocalModel] = ()) -> ModelSummary:
@@ -136,6 +142,7 @@ def summarise(model: CatalogModel, local_files: Sequence[LocalModel] = ()) -> Mo
         quant_names=quant_names,
         largest_quant_bytes=max(sizes) if sizes else None,
         is_local=is_local,
+        quality_baseline=model.quality.baseline,
     )
 
 

@@ -165,6 +165,20 @@ def test_summarise_reports_quant_names_and_the_largest_known_size() -> None:
     assert summary.largest_quant_bytes == 2000
 
 
+def test_summarise_carries_the_quality_baseline_and_matches_the_sort_order() -> None:
+    high = minimal(id="high", quality={"baseline": 90})
+    tie_b = minimal(id="tie-b", quality={"baseline": 80})
+    tie_a = minimal(id="tie-a", quality={"baseline": 80})
+    low = minimal(id="low", quality={"baseline": 10})
+    catalog = _catalog(tie_b, low, high, tie_a)
+
+    result = filter_models(catalog, ModelFilters())
+    summaries = [summarise(m) for m in result]
+
+    assert [s.quality_baseline for s in summaries] == [90, 80, 80, 10]
+    assert sorted(summaries, key=lambda s: (-s.quality_baseline, s.id)) == summaries
+
+
 def test_summarise_reports_no_size_when_no_quant_size_is_known() -> None:
     model = minimal(sources=[ModelSource(repo="acme/model-gguf", quants=[Quant(name="Q4_K_M")])])
 
