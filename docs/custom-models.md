@@ -12,8 +12,12 @@ the bundled catalog every time LlamaFit runs.
 | macOS | `~/Library/Application Support/llamafit/custom_models.yaml` |
 | Linux | `~/.local/share/llamafit/custom_models.yaml` |
 
-`LLAMAFIT_CUSTOM_MODELS` points to any other path, and `LLAMAFIT_HOME` moves the whole data
-directory. `llamafit catalog show --custom-path` prints the path in use.
+`LLAMAFIT_CUSTOM_MODELS` names any other path, and `LLAMAFIT_HOME` moves the whole data
+directory, putting the file at `<LLAMAFIT_HOME>/data/custom_models.yaml`. No command prints the
+path in use; the table above and those two variables are the whole rule.
+
+The file does not have to exist. When it does, `llamafit catalog validate` checks it along with
+the bundled files, and every command loads it.
 
 ## Format
 
@@ -38,20 +42,31 @@ entries:
       kind: gguf
       trust: community
       quants:
-        - {name: Q4_K_M, files: [my-model-7b-Q4_K_M.gguf]}
+        - {name: Q4_K_M}
 ```
 
-Run `llamafit catalog refresh --model my-org-model-7b` to fill sizes, checksums and GGUF facts
-from Hugging Face. Local files that are not on Hugging Face can be described with
-`kind: local` and a `path`; LlamaFit reads the GGUF header from the file directly:
+A quant needs only its `name`, and an extra only its `file`. `llamafit catalog refresh --model
+my-org-model-7b` fills in the file names, sizes, checksums, bits per weight and GGUF facts, and
+writes them to a `.facts.json` file beside your YAML rather than into it — the same split the
+bundled catalog uses, described in [catalog.md](catalog.md#where-the-facts-live). A quant name
+must not be claimed by two of a model's sources, because that file keys on the name alone.
+
+A file that is not on Hugging Face is described with `kind: local` and the path to the GGUF
+file:
 
 ```yaml
   sources:
     - kind: local
       path: D:/models/my-model-7b-Q4_K_M.gguf
       quants:
-        - {name: Q4_K_M, files: [my-model-7b-Q4_K_M.gguf]}
+        - {name: Q4_K_M}
 ```
+
+Such an entry is accepted and validated, but nothing reads the file yet: `refresh` queries
+`gguf` sources only, so a local source's size and GGUF facts stay empty until a later phase
+reads it from disk. `repo_path`, which narrows a `gguf` source to one directory inside its
+repository, is refused on a `local` source, and `path` is refused on a `gguf` one; each kind
+takes its own field.
 
 ## Precedence
 
