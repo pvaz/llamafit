@@ -16,10 +16,17 @@ the program reads.
 
 ## What LlamaFit speaks today
 
-| Language | Catalog |
-|---|---|
-| English | none needed; it is the language the messages are written in |
-| Portuguese (Portugal) | `pt_PT.po` |
+| Language | Catalog | Reviewed by a native speaker |
+|---|---|---|
+| English | none needed; the messages are written in it | — |
+| Portuguese (Portugal) | `pt_PT.po` | **not yet** |
+
+`pt_PT.po` was written alongside the machinery that reads it, to prove that machinery
+works on a real catalog, and it has had no second reader. By the standard this page sets
+below, that is not enough, and the file says so at the top. It ships because a first
+catalog is what makes everything else testable, not because it has met the bar. If you
+read European Portuguese, going through it line by line is the most useful contribution
+you can make here.
 
 ## How the language is chosen
 
@@ -32,14 +39,26 @@ Most explicit first:
 
 Both `pt` and `pt_PT` are accepted. A request without a region takes the most specific
 catalog for that language, so `pt` gets `pt_PT`. A request with a region takes the
-region-less catalog when there is one, so `pt_PT` would get `pt`. One region never stands
-in for another: `pt_BR` gets English, not `pt_PT`, because European and Brazilian
-Portuguese are different translations and quietly serving the wrong one is worse than
-serving English.
+region-less catalog when there is one, so `pt_PT` would get `pt`.
 
-Asking for a language LlamaFit does not have falls back to English **and says so**, once.
-An operating system set to a language LlamaFit does not have simply gets English: that is
-not somebody asking, and repeating it on every run would be noise.
+One region's catalog will stand in for another's when that is all there is: `pt_BR` gets
+`pt_PT`. European and Brazilian Portuguese are not the same translation, but the
+difference is a long way short of the difference between Portuguese and English, so
+LlamaFit serves what it has and **says once** which variety the reader is getting:
+
+```
+LlamaFit has no pt_BR translation, so it is using the Portuguese (Portugal) one.
+Contribute a pt_BR catalog: docs/translations.md says how.
+```
+
+The name in that sentence comes from the catalog's own `Language-Team` header, which is
+why the header is required.
+
+Asking for a language LlamaFit does not have at all falls back to English **and says so**,
+once. An operating system set to such a language simply gets English with no remark: that
+is not somebody asking, and repeating it on every run would be noise. A substitution is
+different, and is announced whatever asked for it — including the operating system —
+because the reader deserves to know why some of the wording looks foreign.
 
 Where the operating system's locale comes from differs by platform. On Linux and macOS it
 is `LANGUAGE` (a colon-separated list of preferences), then `LC_ALL`, `LC_MESSAGES` and
@@ -110,11 +129,16 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
 
 ## The rule about machine translation
 
-**An unreviewed machine translation is not accepted.** A catalog is only added when
+**An unreviewed machine translation is not accepted.** A catalog counts as reviewed when
 somebody who reads the language has read every line of it. This is the same rule the
-project applies to every other number and fact it ships: nothing goes in that nobody has
-checked. A partly finished catalog that a person has read is welcome; a complete one that
-nobody has is not.
+project applies to every other number and fact it ships: nothing is presented as checked
+that nobody has checked. A partly finished catalog that a person has read is welcome; a
+complete one that nobody has is not.
+
+The rule is about the *claim*, not only about the file. `pt_PT.po` is in the repository
+and is not yet reviewed — and it says so, at the top of the file and in the table above,
+because the failure this rule exists to prevent is a confident claim with nothing behind
+it. Ship what you have, label it honestly, and ask for a reader.
 
 ## Running the extractor
 
@@ -122,8 +146,9 @@ nobody has is not.
 python scripts/gen_messages.py
 ```
 
-It reads the syntax tree of every source, finds each call to `_()` and `ngettext()`, and
-rewrites `messages.pot`. Give it paths to read something else.
+It reads the syntax tree of every source, finds each call to `_()`, `ngettext()`,
+`lazy_gettext()` and `lazy_ngettext()`, and rewrites `messages.pot`. Give it paths to read
+something else.
 
 It refuses to write anything when a call passes something that is not a literal string:
 
@@ -150,7 +175,7 @@ The translation machinery under `src/llamafit/i18n/` is not extracted from itsel
 messages stay in English on purpose: a sentence saying LlamaFit does not speak a language
 cannot be written in the language it does not speak.
 
-## Calling the two functions
+## Calling the functions
 
 ```python
 from llamafit.i18n import _, ngettext
@@ -159,13 +184,43 @@ _("No GPU detected")
 ngettext("%(count)d module", "%(count)d modules", count) % {"count": count}
 ```
 
-Both take literal strings so the extractor can find them. Use named placeholders
+All of them take literal strings so the extractor can find them. Use named placeholders
 (`%(count)d`) rather than positional ones, so a translator can move them.
 
-Translation happens when the function is called, not when the module is imported. A
-message stored in a module-level constant is translated once, in whatever language was
-active at import time, which is usually English. Call the function where the message is
-used.
+### Anything built at import time needs the deferred pair
+
+`_()` translates at the moment it is called. A module-level constant, a dictionary of
+hints, or an argument to a decorator is built while the module is imported — before any
+interface has chosen a language — so `_()` there freezes the message in English for the
+life of the process, silently. Nothing raises, the interface simply comes out half
+translated, and nobody goes looking.
+
+`lazy_gettext` and `lazy_ngettext` defer the lookup to the moment the text is rendered:
+
+```python
+from llamafit.i18n import lazy_gettext
+
+# built at import time, translated when it is shown
+PROBE_HINTS = {
+    "nvidia-smi": lazy_gettext("Install or repair the NVIDIA driver."),
+}
+```
+
+The result is a `LazyString`, not a `str`. It renders, formats, compares, sorts,
+concatenates, indexes and forwards every string method to the text it currently resolves
+to, so it works in an f-string, in `%` formatting, and anywhere a string method is called
+on it. It deliberately is **not** a `str` subclass: one of those would carry a frozen
+English buffer that C-level fast paths such as `str.join` would use in preference to any
+override, producing another silent English message. A separate type raises `TypeError`
+instead, at the call site — where wrapping it in `str()` is the right fix anyway, because
+that call site is the render moment:
+
+```python
+", ".join(str(hint) for hint in hints)
+```
+
+The extractor reads `lazy_gettext` and `lazy_ngettext` exactly like the eager pair, so a
+deferred message reaches the template like any other.
 
 An interface chooses the language once, at start-up, and says so when the request could
 not be met:
