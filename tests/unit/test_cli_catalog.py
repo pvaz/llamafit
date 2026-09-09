@@ -417,6 +417,52 @@ def test_catalog_refresh_reports_an_error_and_exits_1(monkeypatch: pytest.Monkey
     assert "network down" in result.output
 
 
+def test_catalog_refresh_does_not_repeat_a_repo_name_and_adds_a_hint(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    repo = "acme/coder-gguf"
+    failed = RefreshResult(
+        model_id="coder-with-tools",
+        file="x.yaml",
+        changed=False,
+        fields=[],
+        error=f"{repo}: Hugging Face returned 404 while listing files for {repo}.",
+    )
+    monkeypatch.setattr("llamafit.cli.catalog_cmd.refresh_file", lambda *a, **k: [failed])
+    result = runner.invoke(app, ["catalog", "refresh"])
+
+    assert result.exit_code == 1
+    assert result.output.count(repo) == 1  # the repo name appears once, not twice
+    assert "Hint" in result.output
+    assert "network" in result.output.lower()
+
+
+def test_catalog_refresh_groups_an_identical_warning_across_models(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    shared_warning = "facts.json could not be parsed; recorded facts were left as they were"
+    affected = [
+        SimpleNamespace(
+            model_id=model_id,
+            file="x.yaml",
+            changed=False,
+            fields=[],
+            error=None,
+            warnings=[shared_warning],
+        )
+        for model_id in ("coder-with-tools", "coder-only", "chat-model")
+    ]
+    monkeypatch.setattr("llamafit.cli.catalog_cmd.refresh_file", lambda *a, **k: affected)
+
+    result = runner.invoke(app, ["catalog", "refresh"])
+
+    assert result.exit_code == 0, result.output
+    assert result.output.count(shared_warning) == 1  # said once, not once per model
+    assert "3 models" in result.output
+    for model_id in ("coder-with-tools", "coder-only", "chat-model"):
+        assert model_id in result.output  # each affected model is still named
+
+
 def test_catalog_refresh_json_is_the_result_list(monkeypatch: pytest.MonkeyPatch) -> None:
     changed = RefreshResult(model_id="coder-with-tools", file="x.yaml", changed=True, fields=["a"])
     monkeypatch.setattr("llamafit.cli.catalog_cmd.refresh_file", lambda *a, **k: [changed])
