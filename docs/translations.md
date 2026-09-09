@@ -3,11 +3,17 @@
 LlamaFit's messages are written in English. Any of them can be translated, and the
 translation is read at runtime from a plain text file in this repository.
 
-> **Status: the machinery is in place and no message goes through it yet.** Every string
-> `llamafit` prints today is an untranslated literal, and no command offers a `--language`
-> option, so LlamaFit comes out in English whatever the operating system says. This page is
-> the contract messages move to, and it already applies to any new one. It is not a claim that
-> the interface is translated.
+> **Status: the interface goes through the layer.** Every string `llamafit` prints is
+> wrapped, `--language` is a global option, and the language is chosen once at start-up from
+> the option, the environment, the operating system's locale, then English. What is *not* a
+> claim is that any given language is finished or reviewed: the table below says which
+> catalogs exist and which have had a second reader.
+>
+> Three kinds of text stay English on purpose, and each says why where it lives: the
+> translation layer's own messages (`src/llamafit/i18n/`, below), the per-field diagnostics
+> `catalog validate` and `catalog refresh` print about a YAML file, and identifiers — command
+> names, flags, paths, backend names, capability and use-case ids, and the catalog's own
+> data.
 
 The format is GNU gettext, the one every translation tool already speaks. There is no new
 dependency and no compiled `.mo` file: the `.po` file a translator edits is the exact file
@@ -22,22 +28,69 @@ the program reads.
 
 ## What LlamaFit speaks today
 
+Thirty-seven catalogs, and **not one of them has been read by a native speaker.** Every
+line of that column says the same thing on purpose: it is the honest state of the set, not
+a formatting accident, and the rule further down this page is what it is measured against.
+
 | Language | Catalog | Reviewed by a native speaker |
 |---|---|---|
 | English | none needed; the messages are written in it | — |
+| Arabic | `ar.po` | **not yet** |
+| Bengali | `bn.po` | **not yet** |
+| Bulgarian | `bg.po` | **not yet** |
+| Catalan | `ca.po` | **not yet** |
+| Chinese (Simplified) | `zh_CN.po` | **not yet** |
+| Chinese (Traditional) | `zh_TW.po` | **not yet** |
+| Croatian | `hr.po` | **not yet** |
+| Czech | `cs.po` | **not yet** |
+| Danish | `da.po` | **not yet** |
+| Dutch | `nl.po` | **not yet** |
+| Finnish | `fi.po` | **not yet** |
+| French | `fr.po` | **not yet** |
+| German | `de.po` | **not yet** |
+| Greek | `el.po` | **not yet** |
+| Hebrew | `he.po` | **not yet** |
+| Hindi | `hi.po` | **not yet** |
+| Hungarian | `hu.po` | **not yet** |
+| Indonesian | `id.po` | **not yet** |
+| Italian | `it.po` | **not yet** |
+| Japanese | `ja.po` | **not yet** |
+| Korean | `ko.po` | **not yet** |
+| Malay | `ms.po` | **not yet** |
+| Norwegian Bokmål | `nb.po` | **not yet** |
+| Polish | `pl.po` | **not yet** |
+| Portuguese (Brazil) | `pt_BR.po` | **not yet** |
 | Portuguese (Portugal) | `pt_PT.po` | **not yet** |
+| Romanian | `ro.po` | **not yet** |
+| Russian | `ru.po` | **not yet** |
+| Serbian (Cyrillic) | `sr.po` | **not yet** |
+| Spanish (Spain) | `es.po` | **not yet** |
+| Swedish | `sv.po` | **not yet** |
+| Tamil | `ta.po` | **not yet** |
+| Thai | `th.po` | **not yet** |
+| Turkish | `tr.po` | **not yet** |
+| Ukrainian | `uk.po` | **not yet** |
+| Urdu | `ur.po` | **not yet** |
+| Vietnamese | `vi.po` | **not yet** |
 
-`pt_PT.po` was written alongside the machinery that reads it, to prove that machinery
-works on a real catalog, and it has had no second reader. By the standard this page sets
+`pt_PT.po` was written alongside the machinery that reads it and grew with the sweep that
+wrapped the interface, and it has had no second reader. By the standard this page sets
 below, that is not enough, and the file says so at the top. It ships because a first
 catalog is what makes everything else testable, not because it has met the bar. If you
 read European Portuguese, going through it line by line is the most useful contribution
 you can make here.
 
+The other thirty-six were written in one pass each, from the template, and every one of
+them says so at the top of the file too. The most useful thing anybody can do with this
+page is take one language off that list. Reading a catalog line by line is a bigger
+contribution than adding the thirty-eighth.
+
 ## How the language is chosen
 
-This is what `set_language` does when an interface calls it — which none does yet. Most
-explicit first:
+This is what `set_language` does, and the command-line interface calls it once at
+start-up, from the `--language` callback. The option is eager, so it is read before Click
+renders anything and `--language pt_PT --help` comes out in Portuguese too. Most explicit
+first:
 
 1. the `--language` option;
 2. the `LLAMAFIT_LANGUAGE` environment variable;
@@ -123,8 +176,10 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
 
 4. Translate. Leave a `msgstr` empty rather than guessing: an empty translation falls back
    to the English message, so an unfinished catalog degrades to English and never shows a
-   blank line. A `msgstr` holding only spaces, tabs or newlines counts as empty too, and
-   the completeness check still lists it as a message your language needs.
+   blank line. A `msgstr` holding only spaces, tabs or newlines falls back the same way,
+   because three spaces reach a screen as a blank line and not as a sentence. The three
+   punctuation entries below are the exception, and the only one: for those a space is
+   the translation.
 
 5. Run the tests. `tests/unit/test_i18n_catalogs.py` checks every catalog: it must parse,
    it must declare its plural rule and the right language, it must not translate a message
@@ -157,11 +212,67 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
   Anything else is refused with the line number.
 - **A `msgctxt` says where the message is used**, and it changes what you translate. See
   below.
+- **A `#.` line above an entry is a note from the code**, written for you by whoever wrote
+  the call. It says what the message alone cannot: that an entry is punctuation rather than
+  prose, say. Read those first; there are not many.
 - **Style follows the English.** A message is a short sentence with a subject and a verb; a
   hint is an action the reader can take. Command names, flags, file paths, `llama.cpp`,
   `numpy` and the like are not translated.
 - **Keep the meaning, not the word order.** If your language wants the number at the end of
   the sentence, put it at the end.
+
+### Three entries are punctuation, not words
+
+Numbers are written the English way and then repunctuated from the catalog, so a language
+says how it writes a number by translating three entries rather than by anyone shipping a
+locale database:
+
+| Context | English | What to write |
+|---|---|---|
+| `thousands separator` | `,` | What goes between groups of three digits: `32,768`, `32.768`, `32 768` |
+| `decimal separator` | `.` | What goes before the fraction: `127.8`, `127,8` |
+| `parameter count` | `B` | Leave as `B`; see below |
+
+This is not cosmetic. English writes a model's context as `32,768`; a reader whose language
+groups with a point reads that as a fraction and is told the model holds thirty-two tokens.
+
+**A space is an answer here.** These three entries are read with `pgettext_literal`, which
+takes the `msgstr` exactly as you wrote it, so a language that groups digits with a space —
+French, Russian, Swedish, Polish, Czech, Finnish, Hungarian, Bulgarian, Ukrainian,
+Norwegian — says so by writing that space. Everywhere else in the catalog a translation of
+nothing but whitespace still counts as untranslated, because a half-finished sentence must
+degrade to English and never to a blank line; that rule is off for these three and for
+nothing else.
+
+Write a **no-break space** (U+00A0) rather than an ordinary one, and say so in a `#` comment
+above the entry — an invisible character with no note beside it is the next reader's bug.
+The shipped catalogs use U+00A0 even where CLDR asks for the narrow no-break space U+202F,
+French included, because many terminal fonts have no glyph for U+202F and would drop it or
+draw a box.
+
+**An empty translation still means untranslated**, and falls back to the English character
+rather than to nothing. That is the one way to say nothing here.
+
+**`parameter count` stays `B` in every language, and it is not the word *billion*.** It is
+domain vocabulary: the model's own name carries it. The file is `Qwen3-27B`, the vendor
+announces a 27B model, every article about it says 27B, and this cell sits in the same table
+row as that identifier. Localise it and one row disagrees with itself — `27bi` beside
+`Qwen3-27B` — and an abbreviation that means a thousand million in your language may well be
+read as a million or as a million million by somebody who has spent the day reading model
+names. Your language's actual word for a thousand million belongs in prose, not here.
+
+All thirty-seven catalogs write `B`, each with a `#` comment saying it was decided rather
+than skipped. The entry exists for the language whose readers genuinely would not recognise
+`B`; if that is yours, write what they do use and say in a comment why. Write something
+either way — an empty `msgstr` prints the same `B` and then reads as one message short in
+every completeness report from now on.
+
+**These entries hold a character, not a grouping rule.** LlamaFit groups digits in threes
+everywhere, so Hindi and Urdu come out as `3,276,800` rather than on the South Asian pattern
+their readers use, `32,76,800`. That is a known limitation and not something this entry can
+fix: it is one separator, and where the separators go is decided in the code. Say so in an
+issue if it matters to your language — the fix is a grouping pattern per language, and it
+has to be made once for all of them.
 
 ### When a message has a context
 
@@ -217,8 +328,23 @@ python scripts/gen_messages.py
 ```
 
 It reads the syntax tree of every source, finds each call to `_()`, `ngettext()`,
-`pgettext()`, `npgettext()` and their four `lazy_` counterparts, and rewrites
-`messages.pot`. Give it paths to read something else.
+`pgettext()`, `pgettext_literal()`, `npgettext()` and the four `lazy_` counterparts, and
+rewrites `messages.pot`. Give it paths to read something else.
+
+### Leaving a note for the translator
+
+A comment block touching a call, whose first line opens with `Translators:`, is copied into
+the template as `#.` lines:
+
+```python
+# Translators: this is punctuation, not prose. It is what your language puts
+# between a number's groups of three digits: English writes 32,768.
+return pgettext("thousands separator", ",")
+```
+
+Only a marked block is copied, so a comment written for whoever maintains the code stays in
+the code. A blank line, or any code, ends the block. Use it when the message alone cannot
+tell a translator what to do — and prefer fixing the message when it can.
 
 It refuses to write anything when a call passes something that is not a literal string:
 
@@ -275,6 +401,10 @@ pgettext("GPU", "none detected")
 pgettext("backends", "none detected")
 npgettext("GPU", "%(count)d device", "%(count)d devices", count) % {"count": count}
 ```
+
+`pgettext_literal` is `pgettext` for the three entries above that hold punctuation rather
+than prose: same lookup, except that a translation of nothing but whitespace is a
+translation. Nothing else in the catalog is read that way.
 
 `lazy_pgettext` and `lazy_npgettext` are the deferred pair, for anything built at import
 time.

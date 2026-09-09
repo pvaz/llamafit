@@ -20,6 +20,7 @@ from typing import BinaryIO, Protocol
 import httpx
 
 from llamafit.errors import CatalogError, NetworkError
+from llamafit.i18n import _
 
 
 class ByteSource(Protocol):
@@ -71,8 +72,8 @@ class LocalSource:
             return handle.read(length)
         except OSError as exc:
             raise CatalogError(
-                f"could not read {self.path}: {exc}",
-                hint="Check that the file exists and is readable.",
+                _("could not read %(path)s: %(error)s") % {"path": self.path, "error": exc},
+                hint=_("Check that the file exists and is readable."),
             ) from exc
 
     def size(self) -> int | None:
@@ -85,8 +86,8 @@ class LocalSource:
             return self.path.stat().st_size
         except OSError as exc:
             raise CatalogError(
-                f"could not read {self.path}: {exc}",
-                hint="Check that the file exists and is readable.",
+                _("could not read %(path)s: %(error)s") % {"path": self.path, "error": exc},
+                hint=_("Check that the file exists and is readable."),
             ) from exc
 
     def _open(self) -> BinaryIO:
@@ -196,17 +197,20 @@ class HttpRangeSource:
                 response = client.get(self.url, headers=headers, follow_redirects=True)
         except httpx.HTTPError as exc:
             raise NetworkError(
-                f"could not fetch {self.url}: {exc}",
-                hint="Check your network connection and that the URL is reachable.",
+                _("could not fetch %(url)s: %(error)s") % {"url": self.url, "error": exc},
+                hint=_("Check your network connection and that the URL is reachable."),
             ) from exc
         if response.status_code != 206:
             # A redirect (for example to a content-delivery network) that ends in a
             # full 200 response instead of an honoured range is not usable: reading
             # it as if it were the header would silently pull in the whole file.
             raise NetworkError(
-                f"{self.url} returned HTTP {response.status_code} instead of 206 Partial "
-                "Content; the server may not support range requests.",
-                hint="Confirm the URL points at a downloadable GGUF file.",
+                _(
+                    "%(url)s returned HTTP %(status)d instead of 206 Partial Content; "
+                    "the server may not support range requests."
+                )
+                % {"url": self.url, "status": response.status_code},
+                hint=_("Confirm the URL points at a downloadable GGUF file."),
             )
         content_range = response.headers.get("content-range", "")
         total = content_range.rsplit("/", 1)[-1] if "/" in content_range else ""

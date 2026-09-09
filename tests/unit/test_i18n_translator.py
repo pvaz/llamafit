@@ -10,8 +10,10 @@ from rich.errors import MarkupError
 from rich.text import Text
 
 from llamafit.i18n import translator
+from llamafit.i18n.catalogs import available_languages, load_language
 from llamafit.i18n.detect import FixedLocale
 from llamafit.i18n.po import parse_po
+from llamafit.i18n.tags import SOURCE_LANGUAGE
 from llamafit.i18n.translator import (
     CatalogTranslator,
     EnglishTranslator,
@@ -22,6 +24,7 @@ from llamafit.i18n.translator import (
     ngettext,
     npgettext,
     pgettext,
+    pgettext_literal,
     set_language,
     set_translator,
 )
@@ -150,6 +153,19 @@ def test_a_translator_can_be_installed_directly() -> None:
     assert gettext("No GPU detected") == "Nenhuma GPU detetada"
 
 
+def test_the_literal_lookup_goes_through_the_active_translator() -> None:
+    catalog = CATALOG + '\nmsgctxt "thousands separator"\nmsgid ","\nmsgstr "\u00a0"\n'
+    assert pgettext_literal("thousands separator", ",") == ","
+    set_translator(CatalogTranslator("xx", parse_po(catalog)))
+    assert pgettext_literal("thousands separator", ",") == "\u00a0"
+    # And the ordinary lookup is left exactly as it was: whitespace is still blank there.
+    assert pgettext("thousands separator", ",") == ","
+
+
+def test_english_answers_the_literal_lookup_with_the_message_it_was_given() -> None:
+    assert EnglishTranslator().pgettext_literal("thousands separator", ",") == ","
+
+
 def test_the_wrapped_messages_go_through_the_active_translator(tmp_path: Path) -> None:
     assert messages.no_gpu_detected() == "No GPU detected"
     set_language("pt_PT", env={}, available=("en", "pt_PT"), directory=_catalog_dir(tmp_path))
@@ -171,21 +187,41 @@ def test_the_packaged_portuguese_catalog_is_what_ships() -> None:
     assert messages.skip_measurement() == "Skip the RAM bandwidth measurement."
 
 
+def _a_region_that_will_never_ship() -> str:
+    """A request for a region nobody has, built from whatever ships today.
+
+    Naming ``pt_BR`` here would stop testing substitution the day a real ``pt_BR.po``
+    lands, because the request would then be met exactly and the notice would rightly
+    disappear. ``ZZ`` is user-assigned in ISO 3166 and can never be a shipped region.
+
+    It has to be a region of a language whose own catalog names a region: a request with a
+    region served by a region-less catalog is not a substitution, it is the documented
+    exact-enough match, and there is nothing for it to announce.
+    """
+    regioned = next((tag for tag in available_languages() if "_" in tag), None)
+    if regioned is None:
+        pytest.skip("no shipped catalog names a region, so no substitution can happen")
+    return f"{regioned.split('_')[0]}_ZZ"
+
+
 def test_a_substitution_notice_calls_the_catalog_what_the_catalog_calls_itself() -> None:
-    choice = set_language("pt_BR", env={})
-    assert choice.language == "pt_PT"
+    requested = _a_region_that_will_never_ship()
+    choice = set_language(requested, env={})
+    assert choice.language != SOURCE_LANGUAGE
+    # The name in the sentence is the serving catalog's own header, not one this test knows.
+    team = load_language(choice.language).headers["Language-Team"]
     assert choice.notice == (
-        "LlamaFit has no pt_BR translation, so it is using the Portuguese (Portugal) one."
+        f"LlamaFit has no {requested} translation, so it is using the {team} one."
     )
-    assert choice.hint == "Contribute a pt_BR catalog: docs/translations.md says how."
-    assert messages.no_gpu_detected() == "Nenhuma GPU detetada"
+    assert choice.hint == f"Contribute a {requested} catalog: docs/translations.md says how."
 
 
 def test_a_substitution_is_announced_once_like_any_other_notice() -> None:
-    first = set_language("pt_BR", env={})
-    again = set_language("pt_BR", env={})
+    requested = _a_region_that_will_never_ship()
+    first = set_language(requested, env={})
+    again = set_language(requested, env={})
     assert first.notice is not None
-    assert again.language == "pt_PT"
+    assert again.language == first.language
     assert again.notice is None
     assert again.hint is None
 

@@ -13,6 +13,7 @@ from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Protocol, TypeVar
 
+from llamafit.i18n import _
 from llamafit.logging import get_logger
 from llamafit.models.host import Probe
 
@@ -52,7 +53,7 @@ class SubprocessRunner:
         """Run ``argv``; a missing program or a timeout is reported, not raised."""
         args = list(argv)
         if not args:
-            return CommandResult(args, None, "", "", 0, error="empty command")
+            return CommandResult(args, None, "", "", 0, error=_("empty command"))
         start = time.perf_counter()
         _log.debug("running %s", " ".join(args))
         try:
@@ -67,7 +68,12 @@ class SubprocessRunner:
             )
         except FileNotFoundError:
             return CommandResult(
-                args, None, "", "", _elapsed_ms(start), error=f"{args[0]}: not found"
+                args,
+                None,
+                "",
+                "",
+                _elapsed_ms(start),
+                error=_("%(program)s: not found") % {"program": args[0]},
             )
         except subprocess.TimeoutExpired:
             return CommandResult(
@@ -76,10 +82,18 @@ class SubprocessRunner:
                 "",
                 "",
                 _elapsed_ms(start),
-                error=f"{args[0]}: timed out after {timeout}s",
+                error=_("%(program)s: timed out after %(seconds)ss")
+                % {"program": args[0], "seconds": timeout},
             )
         except OSError as exc:
-            return CommandResult(args, None, "", "", _elapsed_ms(start), error=f"{args[0]}: {exc}")
+            return CommandResult(
+                args,
+                None,
+                "",
+                "",
+                _elapsed_ms(start),
+                error=_("%(program)s: %(error)s") % {"program": args[0], "error": exc},
+            )
         return CommandResult(
             args,
             completed.returncode,
@@ -101,12 +115,16 @@ class FakeRunner:
         args = list(argv)
         self.calls.append(args)
         if not args:
-            return CommandResult(args, None, "", "", 0, error="empty command")
+            return CommandResult(args, None, "", "", 0, error=_("empty command"))
         response = self.responses.get(" ".join(args))
         if response is None:
             response = self.responses.get(args[0])
         if response is None:
-            return CommandResult(args, None, "", "", 0, error=f"{args[0]}: not found")
+            # The same two messages the real runner produces, so a recorded machine
+            # reads exactly like the machine it was recorded from, in every language.
+            return CommandResult(
+                args, None, "", "", 0, error=_("%(program)s: not found") % {"program": args[0]}
+            )
         if isinstance(response, CommandResult):
             return response
         return CommandResult(args, 0, response, "", 0)
@@ -130,8 +148,11 @@ def probe(
         _log.debug("probe %s failed: %s", name, result.error)
         return None, Probe(name=name, ok=False, duration_ms=result.duration_ms, error=result.error)
     if result.returncode != 0:
-        detail = result.stderr.strip() or result.stdout.strip() or "no output"
-        error = f"exit code {result.returncode}: {detail}"
+        detail = result.stderr.strip() or result.stdout.strip() or _("no output")
+        error = _("exit code %(code)d: %(detail)s") % {
+            "code": result.returncode,
+            "detail": detail,
+        }
         _log.debug("probe %s failed: %s", name, error)
         return None, Probe(name=name, ok=False, duration_ms=result.duration_ms, error=error)
     try:

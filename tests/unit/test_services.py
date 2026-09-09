@@ -200,3 +200,33 @@ def test_vendor_probe_failure_still_warns_when_no_gpu_was_detected() -> None:
     probes = [Probe(name="nvidia-smi", ok=False, duration_ms=1, error="nvidia-smi: not found")]
     diagnosis = diagnose(report_with(llamacpp, gpus=[], probes=probes))
     assert any(f.title.startswith("Probe nvidia-smi") for f in diagnosis.findings)
+
+
+def test_unreadable_memory_totals_are_an_error_not_a_missing_detail() -> None:
+    # psutil failing leaves the totals at zero, and every budget LlamaFit will compute
+    # starts from them, so the machine cannot be sized at all until this is fixed.
+    report = report_with(LlamaCpp(installed=True, path="D:/llama.cpp", backends=["cuda"]))
+    report.host.memory.total_bytes = 0
+    diagnosis = diagnose(report)
+    errors = [f for f in diagnosis.findings if f.level == "error"]
+    assert errors and "Memory size unknown" in errors[0].title
+    assert errors[0].hint and "psutil" in errors[0].hint
+    assert diagnosis.worst_level == "error"
+
+
+def test_a_machine_whose_memory_was_read_says_nothing_about_it() -> None:
+    diagnosis = diagnose(
+        report_with(LlamaCpp(installed=True, path="D:/llama.cpp", backends=["cuda"]))
+    )
+    assert not [f for f in diagnosis.findings if "Memory size unknown" in f.title]
+
+
+def test_the_probe_hints_are_deferred_so_a_language_chosen_later_still_reaches_them() -> None:
+    # The table is filled while the module is imported, before any interface has chosen a
+    # language. Eager values would be English for the life of the process, silently.
+    from llamafit.i18n import LazyString
+    from llamafit.services.doctor import PROBE_HINTS
+
+    assert PROBE_HINTS
+    for hint in PROBE_HINTS.values():
+        assert isinstance(hint, LazyString)

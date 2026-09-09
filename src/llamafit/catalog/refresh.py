@@ -54,6 +54,7 @@ from llamafit.catalog.loader import (
 )
 from llamafit.errors import CatalogError, LlamaFitError
 from llamafit.gguf import bits_per_weight
+from llamafit.i18n import _, ngettext
 from llamafit.models.catalog import MAX_BPW, CatalogModel, Extra, ModelSource, Quant
 from llamafit.models.gguf import GgufFacts
 
@@ -430,8 +431,8 @@ def _write_facts_atomically(path: Path, text: str) -> None:
         with suppress(OSError):
             tmp_path.unlink()
         raise CatalogError(
-            f"could not write {path}: {exc}",
-            hint="Check that the directory is writable and has room.",
+            _("could not write %(path)s: %(error)s") % {"path": path, "error": exc},
+            hint=_("Check that the directory is writable and has room."),
         ) from exc
 
 
@@ -535,18 +536,26 @@ def refresh_file(
     curated, stale = _split_by_file(problems, facts_path)
     if curated:
         details = "; ".join(f"{p.location}: {p.message}" for p in curated)
+        counted = ngettext(
+            "%(path)s has %(count)d problem and cannot be refreshed",
+            "%(path)s has %(count)d problems and cannot be refreshed",
+            len(curated),
+        ) % {"path": path, "count": len(curated)}
         raise CatalogError(
-            f"{path} has {len(curated)} problem(s) and cannot be refreshed: {details}",
-            hint="Run `llamafit catalog validate` and fix the file first.",
+            f"{counted}: {details}",
+            hint=_("Run `llamafit catalog validate` and fix the file first."),
         )
 
     lost = [p for p in stale if p.model_id != only and discards_recorded_facts(p)]
     if only is not None and lost:
         details = "; ".join(_lost_facts_detail(p) for p in lost)
         raise CatalogError(
-            f"{facts_path} could not be read in full, so refreshing only {only!r} would drop "
-            f"facts it records for models this run leaves alone: {details}",
-            hint="Run `llamafit catalog refresh` without --model to rebuild the whole file.",
+            _(
+                "%(path)s could not be read in full, so refreshing only %(model)s would "
+                "drop facts it records for models this run leaves alone: %(details)s"
+            )
+            % {"path": facts_path, "model": repr(only), "details": details},
+            hint=_("Run `llamafit catalog refresh` without --model to rebuild the whole file."),
         )
 
     considered = {model.id for model in models if only is None or model.id == only}

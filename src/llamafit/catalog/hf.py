@@ -19,6 +19,7 @@ import httpx
 
 from llamafit import __version__
 from llamafit.errors import NetworkError
+from llamafit.i18n import _
 from llamafit.models.catalog import ExtraRole
 
 _SHARD_RE = re.compile(r"-(\d+)-of-(\d+)\.gguf$")
@@ -49,7 +50,10 @@ def _could_be_a_quant(file: RepoFile, extra_files: Collection[str]) -> bool:
     """
     if not file.path.endswith(".gguf"):
         return False
-    _, _, name = file.path.rpartition("/")
+    # Named rather than thrown away as `_`: this module imports the translator
+    # under that name, and a throwaway inside a function rebinds it to a string
+    # that is not callable at the next translated call, silently until then.
+    _head, _slash, name = file.path.rpartition("/")
     if file.path in extra_files or name in extra_files:
         return False
     return _EXTRA_ROLE_RE.match(name) is None
@@ -64,7 +68,7 @@ def _is_whole_set(ordered: Sequence[tuple[int, RepoFile]], total: int) -> bool:
     usually genuinely different files. Summing them would record a size half again too
     large; choosing between them would be guessing which one a curator meant.
     """
-    return [index for index, _ in ordered] == list(range(1, total + 1))
+    return [index for index, _file in ordered] == list(range(1, total + 1))
 
 
 def _select_shard_set(files: Sequence[RepoFile]) -> list[RepoFile]:
@@ -99,7 +103,7 @@ def _select_shard_set(files: Sequence[RepoFile]) -> list[RepoFile]:
     """
     shard_groups: dict[int, list[tuple[int, RepoFile]]] = {}
     for file in files:
-        _, _, filename = file.path.rpartition("/")
+        _head, _slash, filename = file.path.rpartition("/")
         match = _SHARD_RE.search(filename)
         if match:
             index, total = int(match.group(1)), int(match.group(2))
@@ -109,7 +113,7 @@ def _select_shard_set(files: Sequence[RepoFile]) -> list[RepoFile]:
         for total in sorted(shard_groups, reverse=True):
             ordered = sorted(shard_groups[total], key=lambda pair: (pair[0], pair[1].path))
             if _is_whole_set(ordered, total):
-                return [file for _, file in ordered]
+                return [file for _index, file in ordered]
         return []
 
     if len(files) > 1:
@@ -186,21 +190,24 @@ class HttpHfClient:
             response = self._client.get(url, headers=headers, follow_redirects=True)
             if response.status_code != 200:
                 raise NetworkError(
-                    f"Hugging Face returned {response.status_code} while listing files for {repo}.",
-                    hint="Check that the repository id is correct and public.",
+                    _("Hugging Face returned %(status)d while listing files for %(repo)s.")
+                    % {"status": response.status_code, "repo": repo},
+                    hint=_("Check that the repository id is correct and public."),
                 )
             data: Any = response.json()
         except (httpx.HTTPError, ValueError) as exc:
             raise NetworkError(
-                f"Could not read the file listing for {repo} from Hugging Face.",
-                hint="Check your network connection and try again.",
+                _("Could not read the file listing for %(repo)s from Hugging Face.")
+                % {"repo": repo},
+                hint=_("Check your network connection and try again."),
             ) from exc
 
         siblings = data.get("siblings") if isinstance(data, dict) else None
         if not isinstance(siblings, list):
             raise NetworkError(
-                f"Hugging Face's response for {repo} did not include a file listing.",
-                hint="Check that the repository id is correct and public.",
+                _("Hugging Face's response for %(repo)s did not include a file listing.")
+                % {"repo": repo},
+                hint=_("Check that the repository id is correct and public."),
             )
 
         files: list[RepoFile] = []

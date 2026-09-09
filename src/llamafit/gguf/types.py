@@ -84,7 +84,9 @@ def tensor_bytes(dims: Sequence[int], type_id: int) -> int:
     Raises:
         KeyError: If the type id is not in the table.
     """
-    _, block_elements, block_bytes = GGML_TYPES[type_id]
+    # Named rather than `_`: nothing here calls the translator today, and the
+    # next person to wrap a message in this file must not have to notice first.
+    _name, block_elements, block_bytes = GGML_TYPES[type_id]
     elements = 1
     for dim in dims:
         elements *= dim
@@ -98,7 +100,7 @@ def is_misaligned(dims: Sequence[int], type_id: int) -> bool:
     Raises:
         KeyError: If the type id is not in the table.
     """
-    _, block_elements, _ = GGML_TYPES[type_id]
+    _name, block_elements, _block_bytes = GGML_TYPES[type_id]
     elements = 1
     for dim in dims:
         elements *= dim

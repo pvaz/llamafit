@@ -6,31 +6,54 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from llamafit.i18n import LazyString, _, lazy_gettext, pgettext
 from llamafit.models.report import SystemReport
-from llamafit.units import format_bytes
+from llamafit.units import format_bytes, localise_number
 
 Level = Literal["ok", "warn", "error"]
 _ORDER: dict[Level, int] = {"ok": 0, "warn": 1, "error": 2}
 
-PROBE_HINTS: dict[str, str] = {
-    "nvidia-smi": "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be "
-    "on PATH.",
-    "rocm-smi": "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is "
-    "listed by name only.",
-    "wmi-video": "PowerShell could not list video controllers; run from a normal user session.",
-    "lspci": "Install pciutils to list GPUs by name when no vendor tool is available.",
-    "memory-modules": "DDR type and speed were not readable; on Linux run once with sudo "
-    "(dmidecode) or accept the measured bandwidth instead.",
-    "cpuinfo": "py-cpuinfo failed; the CPU model and instruction sets are unknown.",
-    "cpu-cores": "psutil could not count the CPU cores; thread choice falls back to one core. "
-    "Reinstall psutil with `pip install --force-reinstall psutil`.",
-    "memory-totals": "psutil could not read the memory totals; budgets cannot be computed "
-    "until this works. Reinstall psutil with `pip install --force-reinstall psutil`.",
-    "sysctl-perflevel": "Could not read performance-core count from sysctl.",
-    "llama-server --version": "llama-server exists but did not report a version; the binary "
-    "may be broken.",
-    "system-profiler": "system_profiler failed; GPU information is unavailable.",
+PROBE_HINTS: dict[str, LazyString] = {
+    "nvidia-smi": lazy_gettext(
+        "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
+    ),
+    "rocm-smi": lazy_gettext(
+        "Install ROCm (Linux) to expose AMD VRAM figures; without it the GPU is "
+        "listed by name only."
+    ),
+    "wmi-video": lazy_gettext(
+        "PowerShell could not list video controllers; run from a normal user session."
+    ),
+    "lspci": lazy_gettext(
+        "Install pciutils to list GPUs by name when no vendor tool is available."
+    ),
+    "memory-modules": lazy_gettext(
+        "DDR type and speed were not readable; on Linux run once with sudo "
+        "(dmidecode) or accept the measured bandwidth instead."
+    ),
+    "cpuinfo": lazy_gettext("py-cpuinfo failed; the CPU model and instruction sets are unknown."),
+    "cpu-cores": lazy_gettext(
+        "psutil could not count the CPU cores; thread choice falls back to one core. "
+        "Reinstall psutil with `pip install --force-reinstall psutil`."
+    ),
+    "memory-totals": lazy_gettext(
+        "psutil could not read the memory totals; budgets cannot be computed "
+        "until this works. Reinstall psutil with `pip install --force-reinstall psutil`."
+    ),
+    "sysctl-perflevel": lazy_gettext("Could not read performance-core count from sysctl."),
+    "llama-server --version": lazy_gettext(
+        "llama-server exists but did not report a version; the binary may be broken."
+    ),
+    "system-profiler": lazy_gettext("system_profiler failed; GPU information is unavailable."),
 }
+"""What would unlock each probe, deferred because this table is built at import time.
+
+An eager ``_()`` here would look right and be wrong: the dictionary is filled while the
+module loads, before any interface has chosen a language, so every hint would be English
+for the life of the process and nothing anywhere would say so. The values are
+``LazyString``, not ``str``, so every read of one passes through :func:`_hint` or an
+explicit ``str()`` before it reaches a pydantic field.
+"""
 
 _BACKEND_FOR_VENDOR = {
     "nvidia": ("cuda", "CUDA"),
@@ -40,9 +63,9 @@ _BACKEND_FOR_VENDOR = {
 }
 _VRAM_HINT_PROBE = {"nvidia": "nvidia-smi", "amd": "rocm-smi"}
 _VENDOR_PROBE = {"nvidia-smi": "nvidia", "rocm-smi": "amd", "system-profiler": "apple"}
-_GENERIC_VRAM_HINT = (
-    "No vendor tool reported this GPU's memory size; record it in a hardware profile "
-    "so budgets can be computed for this machine."
+_GENERIC_VRAM_HINT = lazy_gettext(
+    "No vendor tool reported the GPU's memory size; record the size in a hardware "
+    "profile so budgets can be computed for this machine."
 )
 _LOW_DISK_BYTES = 20 * 1024**3
 
@@ -69,6 +92,18 @@ class Diagnosis(BaseModel):
         return next(level for level, rank in _ORDER.items() if rank == worst)
 
 
+def _hint(probe_name: str, fallback: LazyString | None = None) -> str | None:
+    """One probe's hint as text, resolved now, in the language now installed.
+
+    ``Finding.hint`` is a ``str`` and a :class:`LazyString` is deliberately not one, so
+    the conversion has to happen somewhere. Here is the right somewhere: a diagnosis is
+    built after the language has been chosen, which is exactly the render moment the
+    deferred form was waiting for.
+    """
+    hint = PROBE_HINTS.get(probe_name, fallback)
+    return None if hint is None else str(hint)
+
+
 def diagnose(report: SystemReport) -> Diagnosis:
     """Apply the diagnostic rules to a report."""
     findings: list[Finding] = []
@@ -78,21 +113,43 @@ def diagnose(report: SystemReport) -> Diagnosis:
         findings.append(
             Finding(
                 level="ok",
-                title="llama.cpp installed",
-                detail=f"build {llamacpp.build or 'unknown'} at {llamacpp.path}, "
-                f"backends: {', '.join(llamacpp.backends) or 'none detected'}",
+                title=_("llama.cpp installed"),
+                detail=_("build %(build)s at %(path)s, backends: %(backends)s")
+                % {
+                    "build": llamacpp.build or pgettext("llama.cpp build", "unknown"),
+                    "path": llamacpp.path,
+                    "backends": ", ".join(llamacpp.backends)
+                    or pgettext("backends", "none detected"),
+                },
             )
         )
     else:
         findings.append(
             Finding(
                 level="error",
-                title="llama.cpp not found",
-                detail="; ".join(llamacpp.problems) or "no llama-server binary was found",
-                hint="Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install "
-                "llama.cpp`); until then download a release from "
-                "https://github.com/ggml-org/llama.cpp/releases and put its bin "
-                "directory on PATH or in LLAMA_CPP_PATH.",
+                title=_("llama.cpp not found"),
+                detail="; ".join(llamacpp.problems) or _("no llama-server binary was found"),
+                hint=_(
+                    "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install "
+                    "llama.cpp`); until then download a release from "
+                    "https://github.com/ggml-org/llama.cpp/releases and put its bin "
+                    "directory on PATH or in LLAMA_CPP_PATH."
+                ),
+            )
+        )
+
+    # An unreadable memory total is not a missing detail: every budget LlamaFit will
+    # compute starts from it, so the machine cannot be sized at all until it is fixed.
+    if host.memory.total_bytes <= 0:
+        findings.append(
+            Finding(
+                level="error",
+                title=_("Memory size unknown"),
+                detail=_(
+                    "LlamaFit could not read this machine's memory totals, "
+                    "so it cannot work out what will fit."
+                ),
+                hint=_hint("memory-totals"),
             )
         )
 
@@ -107,28 +164,33 @@ def diagnose(report: SystemReport) -> Diagnosis:
             findings.append(
                 Finding(
                     level="warn",
-                    title=f"{gpu.name}: no {expected[1]} backend in llama.cpp",
-                    detail=f"llama.cpp was built with: {', '.join(llamacpp.backends) or 'unknown'}",
-                    hint=f"Install a llama.cpp build with the {expected[1]} or Vulkan backend "
-                    f"to use this GPU.",
+                    title=_("%(gpu)s: no %(backend)s backend in llama.cpp")
+                    % {"gpu": gpu.name, "backend": expected[1]},
+                    detail=_("llama.cpp was built with: %(backends)s")
+                    % {"backends": ", ".join(llamacpp.backends) or pgettext("backends", "unknown")},
+                    hint=_(
+                        "Install a llama.cpp build with the %(backend)s or Vulkan backend "
+                        "to use %(gpu)s."
+                    )
+                    % {"backend": expected[1], "gpu": gpu.name},
                 )
             )
         if gpu.vram_total_bytes is None and not host.unified_memory:
             findings.append(
                 Finding(
                     level="warn",
-                    title=f"{gpu.name}: VRAM size unknown",
-                    detail="the vendor tool that reports memory was not available",
-                    hint=PROBE_HINTS.get(_VRAM_HINT_PROBE.get(gpu.vendor, ""), _GENERIC_VRAM_HINT),
+                    title=_("%(gpu)s: VRAM size unknown") % {"gpu": gpu.name},
+                    detail=_("the vendor tool that reports memory was not available"),
+                    hint=_hint(_VRAM_HINT_PROBE.get(gpu.vendor, ""), _GENERIC_VRAM_HINT),
                 )
             )
     if not host.gpus:
         findings.append(
             Finding(
                 level="warn",
-                title="No GPU detected",
-                detail="models will run on the CPU only",
-                hint="If a GPU is present, check that its driver tools are installed.",
+                title=_("No GPU detected"),
+                detail=_("models will run on the CPU only"),
+                hint=_("If a GPU is present, check that its driver tools are installed."),
             )
         )
 
@@ -136,9 +198,13 @@ def diagnose(report: SystemReport) -> Diagnosis:
         findings.append(
             Finding(
                 level="warn",
-                title="RAM bandwidth assumed",
-                detail=f"using {host.memory.bandwidth_gbps} GB/s as a default",
-                hint="Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure it.",
+                title=_("RAM bandwidth assumed"),
+                detail=_("using %(gbps)s GB/s as a default")
+                % {"gbps": localise_number(str(host.memory.bandwidth_gbps))},
+                hint=_(
+                    "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure "
+                    "the RAM bandwidth."
+                ),
             )
         )
 
@@ -152,9 +218,9 @@ def diagnose(report: SystemReport) -> Diagnosis:
         findings.append(
             Finding(
                 level="warn",
-                title=f"Probe {probe.name} failed",
-                detail=probe.error or "unknown error",
-                hint=PROBE_HINTS.get(probe.name),
+                title=_("Probe %(probe)s failed") % {"probe": probe.name},
+                detail=probe.error or _("unknown error"),
+                hint=_hint(probe.name),
             )
         )
 
@@ -162,8 +228,12 @@ def diagnose(report: SystemReport) -> Diagnosis:
         findings.append(
             Finding(
                 level="ok",
-                title=f"llama-server running at {server.url}",
-                detail=f"model {server.model or 'unknown'}, context {server.n_ctx or 'unknown'}",
+                title=_("llama-server running at %(url)s") % {"url": server.url},
+                detail=_("model %(model)s, context %(context)s")
+                % {
+                    "model": server.model or pgettext("model name", "unknown"),
+                    "context": server.n_ctx or pgettext("context length", "unknown"),
+                },
             )
         )
 
@@ -172,10 +242,12 @@ def diagnose(report: SystemReport) -> Diagnosis:
             findings.append(
                 Finding(
                     level="warn",
-                    title=f"Low disk space on {disk.path}",
-                    detail=f"{format_bytes(disk.free_bytes)} free",
-                    hint="Most useful models need 5 to 120 GB; free space or change the "
-                    "downloads directory.",
+                    title=_("Low disk space on %(path)s") % {"path": disk.path},
+                    detail=_("%(size)s free") % {"size": format_bytes(disk.free_bytes)},
+                    hint=_(
+                        "Most useful models need 5 to 120 GB; free space or change the "
+                        "downloads directory."
+                    ),
                 )
             )
 

@@ -30,6 +30,7 @@ from llamafit.cli.app import CliState, app
 from llamafit.cli.render import render_catalog_list, render_model_facts, render_quants
 from llamafit.errors import CatalogError
 from llamafit.gguf.cache import HeaderCache, read_facts
+from llamafit.i18n import _, lazy_gettext, ngettext
 from llamafit.models.catalog import Capability, Catalog, CatalogModel, UseCase
 from llamafit.paths import get_paths
 from llamafit.services.catalog import ModelFilters, describe, filter_models, summarise
@@ -38,7 +39,11 @@ _VALID_CAPABILITIES = get_args(Capability)
 _VALID_USE_CASES = get_args(UseCase)
 
 catalog_app = typer.Typer(
-    name="catalog", help="Maintain the catalog: validate its files, refresh volatile fields."
+    name="catalog",
+    help=cast(
+        str,
+        lazy_gettext("Maintain the catalog: validate its files, refresh volatile fields."),
+    ),
 )
 app.add_typer(catalog_app, name="catalog")
 
@@ -47,15 +52,31 @@ app.add_typer(catalog_app, name="catalog")
 # ``Path``) as safe to call in a default position, even though Typer only ever reads these
 # once, at import time, the same as any other default. A singleton sidesteps the warning
 # without arguing with it.
-_USE_CASE_OPTION: str | None = typer.Option(None, "--use-case", help="Keep only this use case.")
+#
+# Every help= below is deferred for the same reason: these are built while the module is
+# imported, long before any language is chosen, so an eager _() would freeze them in
+# English for the life of the process without anything failing.
+_USE_CASE_OPTION: str | None = typer.Option(
+    None, "--use-case", help=cast(str, lazy_gettext("Keep only this use case."))
+)
 _CAPABILITY_OPTION: list[str] = typer.Option(
-    [], "--capability", help="Keep only models with this capability (repeatable)."
+    [],
+    "--capability",
+    help=cast(str, lazy_gettext("Keep only models with this capability (repeatable).")),
 )
 _LICENSE_OPTION: list[str] = typer.Option(
-    [], "--license", help="Keep only these licence identifiers (repeatable)."
+    [],
+    "--license",
+    help=cast(str, lazy_gettext("Keep only these licence identifiers (repeatable).")),
 )
 _VALIDATE_FILE_ARGUMENT: Path | None = typer.Argument(
-    None, help="Validate only this file instead of the bundled catalog and custom overrides."
+    None,
+    help=cast(
+        str,
+        lazy_gettext(
+            "Validate only this file instead of the bundled catalog and custom overrides."
+        ),
+    ),
 )
 
 
@@ -83,7 +104,10 @@ def _closest_ids(
         return length
 
     scored = [(prefix_len(candidate), candidate) for candidate in catalog_ids]
-    best = max((score for score, _ in scored), default=0)
+    # Named rather than thrown away as `_`: this module imports the translator under
+    # that name, and a throwaway inside a function rebinds it to a string with nothing
+    # to warn you until the next translated call in the same function is not callable.
+    best = max((score for score, _candidate in scored), default=0)
     if best < min_prefix:
         return []
     return sorted(candidate for score, candidate in scored if score == best)[:limit]
@@ -104,11 +128,13 @@ def _find_model(catalog: Catalog, model_id: str) -> CatalogModel:
         return model
     suggestions = _closest_ids(sorted(catalog.by_id), normalized)
     hint = (
-        f"Did you mean: {', '.join(suggestions)}?"
+        _("Did you mean: %(ids)s?") % {"ids": ", ".join(suggestions)}
         if suggestions
-        else "Run `llamafit list` to see every model id."
+        else _("Run `llamafit list` to see every model id.")
     )
-    raise CatalogError(f"no model named {model_id!r} in the catalog", hint=hint)
+    raise CatalogError(
+        _("no model named %(id)s in the catalog") % {"id": repr(model_id)}, hint=hint
+    )
 
 
 def _load_catalog(state: CliState) -> Catalog:
@@ -124,12 +150,16 @@ def _load_catalog(state: CliState) -> Catalog:
     """
     catalog, problems = load_catalog()
     if problems:
-        word = "problem" if len(problems) == 1 else "problems"
         stderr = Console(stderr=True, no_color=state.no_color, highlight=False)
         stderr.print(
             Text(
-                f"{len(problems)} catalog {word} found; "
-                "run `llamafit catalog validate` for details.",
+                ngettext(
+                    "%(count)d catalog problem found; run `llamafit catalog validate` for details.",
+                    "%(count)d catalog problems found; "
+                    "run `llamafit catalog validate` for details.",
+                    len(problems),
+                )
+                % {"count": len(problems)},
                 style="yellow",
             )
         )
@@ -151,8 +181,10 @@ def _print_list(ctx: typer.Context, filters: ModelFilters, limit: int | None) ->
     console = state.console
     if not summaries:
         console.print(
-            "No models matched. Try a broader --use-case, --capability, --license, "
-            "--vendor or --search."
+            _(
+                "No models matched. Try a broader --use-case, --capability, --license, "
+                "--vendor or --search."
+            )
         )
         return
     console.print(render_catalog_list(summaries, console_width=console.width))
@@ -180,14 +212,19 @@ def _build_filters(
     """
     if use_case is not None and use_case not in _VALID_USE_CASES:
         raise CatalogError(
-            f"invalid --use-case {use_case!r}",
-            hint=f"Valid use cases: {', '.join(_VALID_USE_CASES)}",
+            _("invalid --use-case %(value)s") % {"value": repr(use_case)},
+            hint=_("Valid use cases: %(values)s") % {"values": ", ".join(_VALID_USE_CASES)},
         )
     invalid_capabilities = [value for value in capability if value not in _VALID_CAPABILITIES]
     if invalid_capabilities:
         raise CatalogError(
-            f"invalid --capability value(s): {', '.join(invalid_capabilities)}",
-            hint=f"Valid capabilities: {', '.join(_VALID_CAPABILITIES)}",
+            ngettext(
+                "invalid --capability value: %(values)s",
+                "invalid --capability values: %(values)s",
+                len(invalid_capabilities),
+            )
+            % {"values": ", ".join(invalid_capabilities)},
+            hint=_("Valid capabilities: %(values)s") % {"values": ", ".join(_VALID_CAPABILITIES)},
         )
     return ModelFilters(
         use_case=cast("UseCase | None", use_case),
@@ -198,25 +235,44 @@ def _build_filters(
     )
 
 
-@app.command(name="list")
+@app.command(
+    name="list",
+    help=cast(
+        str,
+        lazy_gettext(
+            "List the model catalog, narrowed by any filters given.\n\n"
+            "The table shows at most three capabilities per model, plus a +N marker for "
+            "the rest, and is sorted by the Quality column shown; info or --json has "
+            "every capability."
+        ),
+    ),
+)
 def list_command(
     ctx: typer.Context,
     use_case: str | None = _USE_CASE_OPTION,
     capability: list[str] = _CAPABILITY_OPTION,
     license_: list[str] = _LICENSE_OPTION,
     vendor: str | None = typer.Option(
-        None, "--vendor", help="Keep only this vendor, case-insensitive."
+        None,
+        "--vendor",
+        help=cast(str, lazy_gettext("Keep only this vendor, case-insensitive.")),
     ),
     search: str | None = typer.Option(
-        None, "--search", help="Case-insensitive substring match on id, name, vendor or family."
+        None,
+        "--search",
+        help=cast(
+            str,
+            lazy_gettext("Case-insensitive substring match on id, name, vendor or family."),
+        ),
     ),
-    limit: int | None = typer.Option(None, "--limit", min=1, help="Show at most this many."),
+    limit: int | None = typer.Option(
+        None, "--limit", min=1, help=cast(str, lazy_gettext("Show at most this many."))
+    ),
 ) -> None:
     """List the model catalog, narrowed by any filters given.
 
-    The table shows at most three capabilities per model, plus a +N marker for
-    the rest, and is sorted by the Quality column shown; info or --json has
-    every capability.
+    The help a reader sees is the ``help=`` argument above, not this docstring: Typer
+    reads a docstring as a literal, which no wrapper can translate.
     """
     filters = _build_filters(
         use_case=use_case, capability=capability, license_=license_, vendor=vendor, search=search
@@ -224,19 +280,30 @@ def list_command(
     _print_list(ctx, filters, limit)
 
 
-@app.command(name="search")
+@app.command(
+    name="search",
+    help=cast(str, lazy_gettext("Shorthand for llamafit list --search TEXT.")),
+)
 def search_command(
     ctx: typer.Context,
-    text: str = typer.Argument(..., help="Text to match against id, name, vendor or family."),
+    text: str = typer.Argument(
+        ...,
+        help=cast(str, lazy_gettext("Text to match against id, name, vendor or family.")),
+    ),
 ) -> None:
     """Shorthand for llamafit list --search TEXT."""
     _print_list(ctx, ModelFilters(search=text), limit=None)
 
 
-@app.command(name="info")
+@app.command(
+    name="info",
+    help=cast(str, lazy_gettext("Show one model's facts, sources and every quant it publishes.")),
+)
 def info_command(
     ctx: typer.Context,
-    model_id: str = typer.Argument(..., metavar="MODEL", help="A catalog model id."),
+    model_id: str = typer.Argument(
+        ..., metavar="MODEL", help=cast(str, lazy_gettext("A catalog model id."))
+    ),
 ) -> None:
     """Show one model's facts, sources and every quant it publishes."""
     state: CliState = ctx.obj
@@ -262,7 +329,15 @@ def _default_catalog_paths() -> list[Path]:
     return paths
 
 
-@catalog_app.command("validate")
+@catalog_app.command(
+    "validate",
+    help=cast(
+        str,
+        lazy_gettext(
+            "Validate catalog YAML files against the schema, printing one line per problem."
+        ),
+    ),
+)
 def validate_command(
     ctx: typer.Context,
     file: Path | None = _VALIDATE_FILE_ARGUMENT,
@@ -276,7 +351,14 @@ def validate_command(
     else:
         console = state.console
         if not problems:
-            console.print(f"{len(paths)} file(s) checked, no problems found.")
+            console.print(
+                ngettext(
+                    "%(count)d file checked, no problems found.",
+                    "%(count)d files checked, no problems found.",
+                    len(paths),
+                )
+                % {"count": len(paths)}
+            )
         for problem in problems:
             where = f" ({problem.model_id})" if problem.model_id else ""
             console.print(Text(f"{problem.file}: {problem.location}{where}: {problem.message}"))
@@ -299,15 +381,34 @@ def _dedupe_repeated_prefix(message: str) -> str:
     return message
 
 
-@catalog_app.command("refresh")
+@catalog_app.command(
+    "refresh",
+    help=cast(
+        str,
+        lazy_gettext(
+            "Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."
+        ),
+    ),
+)
 def refresh_command(
     ctx: typer.Context,
-    model: str | None = typer.Option(None, "--model", help="Refresh only this model id."),
-    dry_run: bool = typer.Option(False, "--dry-run", help="Compute the refresh but write nothing."),
+    model: str | None = typer.Option(
+        None, "--model", help=cast(str, lazy_gettext("Refresh only this model id."))
+    ),
+    dry_run: bool = typer.Option(
+        False,
+        "--dry-run",
+        help=cast(str, lazy_gettext("Compute the refresh but write nothing.")),
+    ),
     check: bool = typer.Option(
         False,
         "--check",
-        help="Exit 1 if anything would change; changes nothing, for a scheduled CI job.",
+        help=cast(
+            str,
+            lazy_gettext(
+                "Exit 1 if anything would change; changes nothing, for a scheduled CI job."
+            ),
+        ),
     ),
 ) -> None:
     """Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."""
@@ -348,12 +449,26 @@ def refresh_command(
                 warned_by_text.setdefault(warning, []).append(result.model_id)
         for warning, model_ids in warned_by_text.items():
             if len(model_ids) == 1:
-                console.print(Text(f"{model_ids[0]}: warning: {warning}", style="yellow"))
-            else:
-                affected = ", ".join(model_ids)
                 console.print(
                     Text(
-                        f"warning: {warning} ({len(model_ids)} models: {affected})",
+                        _("%(model)s: warning: %(warning)s")
+                        % {"model": model_ids[0], "warning": warning},
+                        style="yellow",
+                    )
+                )
+            else:
+                console.print(
+                    Text(
+                        ngettext(
+                            "warning: %(warning)s (%(count)d model: %(models)s)",
+                            "warning: %(warning)s (%(count)d models: %(models)s)",
+                            len(model_ids),
+                        )
+                        % {
+                            "warning": warning,
+                            "count": len(model_ids),
+                            "models": ", ".join(model_ids),
+                        },
                         style="yellow",
                     )
                 )
@@ -362,7 +477,13 @@ def refresh_command(
         for result in results:
             if result.error:
                 message = _dedupe_repeated_prefix(result.error)
-                console.print(Text(f"{result.model_id}: error: {message}", style="red"))
+                console.print(
+                    Text(
+                        _("%(model)s: error: %(error)s")
+                        % {"model": result.model_id, "error": message},
+                        style="red",
+                    )
+                )
                 printed = True
             elif result.changed:
                 console.print(Text(f"{result.model_id}: {', '.join(result.fields)}"))
@@ -370,13 +491,18 @@ def refresh_command(
         if any(r.error for r in results):
             console.print(
                 Text(
-                    "Hint: refresh needs network access to Hugging Face; check your "
-                    "connection and that the repository id is correct.",
+                    _("Hint: %(hint)s")
+                    % {
+                        "hint": _(
+                            "refresh needs network access to Hugging Face; check your "
+                            "connection and that the repository id is correct."
+                        )
+                    },
                     style="dim",
                 )
             )
         if not printed:
-            console.print("No changes.")
+            console.print(_("No changes."))
 
     if any(r.error for r in results) or (check and any(r.changed for r in results)):
         raise typer.Exit(code=1)
@@ -395,11 +521,23 @@ def _dump_one(model: CatalogModel) -> str:
     return yaml.safe_dump(data, sort_keys=False, indent=2, allow_unicode=True, width=100)
 
 
-@catalog_app.command("show")
+@catalog_app.command(
+    "show",
+    help=cast(
+        str,
+        lazy_gettext(
+            "Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."
+        ),
+    ),
+)
 def show_command(
     ctx: typer.Context,
-    model_id: str = typer.Argument(..., metavar="MODEL", help="A catalog model id."),
-    yaml_output: bool = typer.Option(False, "--yaml", help="Print YAML instead of JSON."),
+    model_id: str = typer.Argument(
+        ..., metavar="MODEL", help=cast(str, lazy_gettext("A catalog model id."))
+    ),
+    yaml_output: bool = typer.Option(
+        False, "--yaml", help=cast(str, lazy_gettext("Print YAML instead of JSON."))
+    ),
 ) -> None:
     """Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."""
     catalog = _load_catalog(ctx.obj)
