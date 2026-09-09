@@ -96,7 +96,12 @@ class GgufFacts(_Strict):
         bytes_token_embd: Bytes of the token embedding tensor.
         bytes_lazy_tables: Bytes of tensors that can be loaded lazily rather
             than kept resident, such as per-layer embedding tables.
-        bytes_total: Total bytes of every tensor in the file.
+        bytes_global_weights: Total bytes of tensors that belong to none of
+            the other buckets: not per-block, not the token embedding, the
+            output head or a lazy table, for example ``output_norm.weight``.
+        bytes_total: Total bytes of every tensor in the file. Always equal to
+            the sum of every other ``bytes_*`` field, so the taxonomy above
+            accounts for the whole file.
         kv_bytes_per_token_f16: Bytes of KV cache needed per token at f16
             precision, or ``None`` when it cannot be computed.
         recurrent_state_bytes: Bytes of fixed recurrent/SSM state, for hybrid
@@ -120,6 +125,7 @@ class GgufFacts(_Strict):
     bytes_output_head: int = 0
     bytes_token_embd: int = 0
     bytes_lazy_tables: int = 0
+    bytes_global_weights: int = 0
     bytes_total: int = 0
     kv_bytes_per_token_f16: int | None = None
     recurrent_state_bytes: int | None = None
