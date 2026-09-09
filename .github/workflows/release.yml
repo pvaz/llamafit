@@ -191,7 +191,14 @@ jobs:
         with:
           name: dist
           path: dist
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      # Pinned to a commit, unlike every other action in this repository, and left
+      # that way on purpose. A moving tag is a fair trade for an action that builds or
+      # tests: the worst a bad version can do is break a run. This one holds the identity
+      # token that can upload under the project's own name on PyPI, so a compromised
+      # version of it is not a broken run, it is a poisoned package that users install.
+      # dc37677 is v1.14.2. To update: read the release notes, then repin to the commit
+      # the new tag points at — do not "tidy" this back to release/v1.
+      - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
         with:
           repository-url: https://test.pypi.org/legacy/
           # TestPyPI refuses a version it already has, and a rehearsal repeats the same
@@ -214,7 +221,14 @@ jobs:
         with:
           name: dist
           path: dist
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      # Pinned to a commit, unlike every other action in this repository, and left
+      # that way on purpose. A moving tag is a fair trade for an action that builds or
+      # tests: the worst a bad version can do is break a run. This one holds the identity
+      # token that can upload under the project's own name on PyPI, so a compromised
+      # version of it is not a broken run, it is a poisoned package that users install.
+      # dc37677 is v1.14.2. To update: read the release notes, then repin to the commit
+      # the new tag points at — do not "tidy" this back to release/v1.
+      - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
 
   github-release:
     name: GitHub release
