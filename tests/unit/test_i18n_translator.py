@@ -286,6 +286,29 @@ def test_a_catalog_that_holds_another_language_falls_back_to_english(tmp_path: P
     assert current_language() == "en"
     assert choice.notice == "LlamaFit could not read its pt_PT translation, so it is using English."
     assert _("No GPU detected") == "No GPU detected"
+    # The hint is the one the catalog error carries: "reinstall LlamaFit" is nonsense
+    # advice about a file the reader edited themselves.
+    assert choice.hint == (
+        "Rename the file to de.po if the header is right, or set the header to pt_PT if "
+        "the name is."
+    )
+
+
+def test_a_broken_catalog_hints_at_the_file_and_a_missing_one_at_the_install(
+    tmp_path: Path,
+) -> None:
+    broken = tmp_path / "broken"
+    broken.mkdir()
+    _catalog_dir(broken, text='msgid "a"\nmsgstr "b\\z"\n')
+    assert set_language("pt_PT", env={}, available=("en", "pt_PT"), directory=broken).hint == (
+        "Correct the .po file, then check it with `msgfmt --check`."
+    )
+    translator.reset()
+    missing = tmp_path / "empty"
+    missing.mkdir()
+    assert set_language("pt_PT", env={}, available=("en", "pt_PT"), directory=missing).hint == (
+        "Reinstall LlamaFit, or report the file the log names."
+    )
 
 
 BROKEN = CATALOG + '\nmsgid "%(count)d file"\nmsgstr "%s ficheiros"\n'
