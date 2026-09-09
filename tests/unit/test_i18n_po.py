@@ -15,6 +15,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\\n"
 """
 
+HEADER_BYTES = b"\xef\xbb\xbf" + HEADER.encode()
+"""HEADER as a Windows editor saves it: a byte order mark, then the same text."""
+
 POLISH_HEADER = """
 msgid ""
 msgstr ""
@@ -59,7 +62,7 @@ def test_embedded_quotes_tabs_and_newlines_survive() -> None:
 def test_an_empty_translation_falls_back_to_english_not_to_a_blank_line() -> None:
     catalog = parse_po(HEADER + '\nmsgid "Skip the measurement."\nmsgstr ""\n')
     assert catalog.gettext("Skip the measurement.") == "Skip the measurement."
-    assert catalog.untranslated() == ("Skip the measurement.",)
+    assert catalog.untranslated() == ((None, "Skip the measurement."),)
 
 
 def test_a_message_the_catalog_never_heard_of_comes_back_unchanged() -> None:
@@ -149,16 +152,21 @@ msgstr[0] "%(count)d plik"
     assert catalog.ngettext("%(count)d file", "%(count)d files", 5) == "%(count)d files"
 
 
-def test_a_catalog_without_plural_forms_still_works_on_english_rules() -> None:
-    catalog = parse_po('msgid ""\nmsgstr ""\n"Language: pt_PT\\n"\n')
-    assert catalog.plural_forms is None
-    assert catalog.plural_rule.nplurals == 2
-    assert catalog.plural_rule.index(1) == 0
-    assert catalog.plural_rule.index(2) == 1
+def test_a_header_that_declares_no_plural_rule_is_refused() -> None:
+    # The one input that used to come back quietly wrong instead of raising: a three-form
+    # language silently inherited English's rule, and its reader met real words in the
+    # wrong grammar with nothing anywhere to say so.
+    with pytest.raises(PoSyntaxError, match="declares no Plural-Forms"):
+        parse_po('msgid ""\nmsgstr ""\n"Language: pt_PT\\n"\n')
+
+
+def test_a_file_with_no_header_at_all_is_refused_and_says_which_part_is_missing() -> None:
+    with pytest.raises(PoSyntaxError, match="no header entry"):
+        parse_po('msgid "a"\nmsgstr "A"\n')
 
 
 def test_entries_do_not_need_a_blank_line_between_them() -> None:
-    catalog = parse_po('msgid "a"\nmsgstr "A"\nmsgid "b"\nmsgstr "B"\n')
+    catalog = parse_po(HEADER + 'msgid "a"\nmsgstr "A"\nmsgid "b"\nmsgstr "B"\n')
     assert (catalog.gettext("a"), catalog.gettext("b")) == ("A", "B")
 
 
@@ -167,7 +175,19 @@ def test_entries_do_not_need_a_blank_line_between_them() -> None:
     [
         ('msgid "a"\nmsgstr "b\n', "expected a double-quoted string"),
         ('"orphan"\n', "a string continues nothing"),
-        ('msgctxt "menu"\nmsgid "Open"\nmsgstr "Abrir"\n', "unknown keyword 'msgctxt'"),
+        # msgctxt used to be the worked example of a keyword the reader refuses.
+        ('msgtext "a"\nmsgid "b"\n', "unknown keyword 'msgtext'"),
+        ('123 "a"\n', "unknown keyword '123 \"a\"'"),
+        ('msgctxt "menu"\nmsgctxt "file"\nmsgid "Open"\n', "already has a msgctxt"),
+        (
+            'msgid "Open"\nmsgctxt "menu"\nmsgstr "Abrir"\n',
+            "a msgctxt must come before its msgid",
+        ),
+        (
+            'msgctxt "menu"\nmsgid "Open"\nmsgstr "A"\n\n'
+            'msgctxt "menu"\nmsgid "Open"\nmsgstr "B"\n',
+            "duplicate message 'Open' in context 'menu'",
+        ),
         ('msgid\nmsgstr "b"\n', "expected a string after msgid"),
         ('msgid "a"\nmsgid "b"\nmsgstr "c"\n', "already has a msgid"),
         ('msgid "a"\nmsgstr "A"\n\nmsgid "a"\nmsgstr "B"\n', "duplicate message 'a'"),
@@ -209,7 +229,8 @@ def test_a_syntax_error_is_a_llamafit_error_the_cli_can_render() -> None:
 def test_reading_a_file_uses_utf8_whatever_the_platform_default_is(tmp_path: Path) -> None:
     path = tmp_path / "pt_PT.po"
     path.write_bytes(
-        b'msgid ""\nmsgstr ""\n"Language: pt_PT\\n"\n\n'
+        b'msgid ""\nmsgstr ""\n"Language: pt_PT\\n"\n'
+        b'"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n\n'
         b'msgid "No GPU detected"\nmsgstr "Nenhuma GPU detetada"\n'
     )
     assert read_po(path).gettext("No GPU detected") == "Nenhuma GPU detetada"
@@ -236,7 +257,7 @@ def test_a_second_msgid_plural_in_one_entry_is_refused() -> None:
 
 def test_an_entry_with_no_translation_at_all_is_untranslated() -> None:
     catalog = parse_po(HEADER + '\nmsgid "%(count)d file"\nmsgid_plural "%(count)d files"\n')
-    entry = catalog.messages["%(count)d file"]
+    entry = catalog.messages[None, "%(count)d file"]
     assert entry.translations == ()
     assert not entry.translated
     assert catalog.gettext("%(count)d file") == "%(count)d file"
@@ -244,6 +265,168 @@ def test_an_entry_with_no_translation_at_all_is_untranslated() -> None:
 
 
 def test_a_header_line_without_a_colon_is_ignored() -> None:
-    catalog = parse_po('msgid ""\nmsgstr ""\n"not a header line\\n"\n"Language: pt_PT\\n"\n')
+    catalog = parse_po(
+        'msgid ""\nmsgstr ""\n"not a header line\\n"\n"Language: pt_PT\\n"\n'
+        '"Plural-Forms: nplurals=2; plural=(n != 1);\\n"\n'
+    )
     assert catalog.language == "pt_PT"
     assert "not a header line" not in catalog.headers
+
+
+def test_a_context_and_no_context_are_two_entries_translated_differently() -> None:
+    catalog = parse_po(
+        HEADER
+        + """
+msgid "none detected"
+msgstr "nenhum"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "nenhuma detetada"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "nenhum detetado"
+"""
+    )
+    assert catalog.pgettext("GPU", "none detected") == "nenhuma detetada"
+    assert catalog.pgettext("backends", "none detected") == "nenhum detetado"
+    assert catalog.gettext("none detected") == "nenhum"
+    assert len(catalog.messages) == 3
+
+
+def test_a_context_nobody_wrote_falls_back_to_english_rather_than_the_plain_entry() -> None:
+    # The plain entry is a different sentence, not a looser version of this one.
+    catalog = parse_po(HEADER + '\nmsgid "unknown"\nmsgstr "desconhecido"\n')
+    assert catalog.gettext("unknown") == "desconhecido"
+    assert catalog.pgettext("memory bandwidth", "unknown") == "unknown"
+
+
+def test_a_message_with_no_context_is_not_found_under_an_empty_one() -> None:
+    catalog = parse_po(HEADER + '\nmsgid "unknown"\nmsgstr "desconhecido"\n')
+    assert catalog.messages[None, "unknown"].context is None
+    assert catalog.pgettext("", "unknown") == "unknown"
+
+
+def test_an_empty_msgctxt_is_a_context_of_its_own_not_the_absence_of_one() -> None:
+    catalog = parse_po(
+        HEADER
+        + """
+msgid "unknown"
+msgstr "sem contexto"
+
+msgctxt ""
+msgid "unknown"
+msgstr "contexto vazio"
+"""
+    )
+    assert catalog.gettext("unknown") == "sem contexto"
+    assert catalog.pgettext("", "unknown") == "contexto vazio"
+
+
+def test_a_contextual_plural_picks_the_form_its_count_selects() -> None:
+    catalog = parse_po(
+        HEADER
+        + """
+msgctxt "GPU"
+msgid "%(count)d device"
+msgid_plural "%(count)d devices"
+msgstr[0] "%(count)d placa"
+msgstr[1] "%(count)d placas"
+"""
+    )
+    assert catalog.npgettext("GPU", "%(count)d device", "%(count)d devices", 1) == "%(count)d placa"
+    assert (
+        catalog.npgettext("GPU", "%(count)d device", "%(count)d devices", 4) == "%(count)d placas"
+    )
+    assert catalog.ngettext("%(count)d device", "%(count)d devices", 4) == "%(count)d devices"
+    assert (
+        catalog.npgettext("CPU", "%(count)d device", "%(count)d devices", 1) == "%(count)d device"
+    )
+
+
+def test_a_msgctxt_starts_a_new_entry_with_no_blank_line_before_it() -> None:
+    catalog = parse_po(
+        HEADER + '\nmsgctxt "a"\nmsgid "x"\nmsgstr "A"\nmsgctxt "b"\nmsgid "x"\nmsgstr "B"\n'
+    )
+    assert (catalog.pgettext("a", "x"), catalog.pgettext("b", "x")) == ("A", "B")
+
+
+def test_a_context_split_over_adjacent_lines_is_one_context() -> None:
+    catalog = parse_po(
+        HEADER + '\nmsgctxt ""\n"memory "\n"bandwidth"\nmsgid "unknown"\nmsgstr "desconhecida"\n'
+    )
+    assert catalog.pgettext("memory bandwidth", "unknown") == "desconhecida"
+
+
+def test_an_entry_carries_the_context_it_was_filed_under() -> None:
+    catalog = parse_po(HEADER + '\nmsgctxt "GPU"\nmsgid "none detected"\nmsgstr "nenhuma"\n')
+    entry = catalog.messages["GPU", "none detected"]
+    assert (entry.context, entry.msgid) == ("GPU", "none detected")
+    assert entry.key == ("GPU", "none detected")
+
+
+def test_an_empty_msgid_with_a_context_is_a_message_not_the_header() -> None:
+    # The header is the entry with an empty msgid and nothing else; a msgctxt makes it
+    # an ordinary entry, so a catalog whose header grew one has no header at all.
+    catalog = parse_po(HEADER + '\nmsgctxt "odd"\nmsgid ""\nmsgstr "x"\n')
+    assert catalog.language == "pt_PT"
+    assert catalog.pgettext("odd", "") == "x"
+
+
+def test_a_translation_that_is_only_whitespace_counts_as_no_translation() -> None:
+    # A space, a tab, a newline and a non-breaking space: all of them reach a screen as
+    # a blank line, and all of them look like a finished translation in the file.
+    catalog = parse_po(HEADER + '\nmsgid "unknown"\nmsgstr " \\t\\n\u00a0"\n')
+    assert catalog.gettext("unknown") == "unknown"
+    assert catalog.untranslated() == ((None, "unknown"),)
+    assert not catalog.messages[None, "unknown"].translated
+
+
+def test_a_blank_plural_form_falls_back_like_an_empty_one() -> None:
+    catalog = parse_po(
+        HEADER
+        + """
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d modulo"
+msgstr[1] "   "
+"""
+    )
+    assert catalog.ngettext("%(count)d module", "%(count)d modules", 1) == "%(count)d modulo"
+    assert catalog.ngettext("%(count)d module", "%(count)d modules", 7) == "%(count)d modules"
+
+
+def test_a_translation_that_is_only_partly_whitespace_is_kept_exactly() -> None:
+    # Only a translation that is nothing but whitespace is absent. One that ends in a
+    # space is a translation, and the space is the translator's, so it survives.
+    catalog = parse_po(HEADER + '\nmsgid "Language: "\nmsgstr "Idioma: "\n')
+    assert catalog.gettext("Language: ") == "Idioma: "
+    assert catalog.untranslated() == ()
+
+
+def test_a_catalog_saved_with_a_byte_order_mark_is_read(tmp_path: Path) -> None:
+    # What Notepad and a good few other Windows editors write by default. Refusing it
+    # reported an unknown keyword whose name held an invisible character.
+    path = tmp_path / "pt_PT.po"
+    path.write_bytes(
+        b"" + HEADER_BYTES + b'\nmsgid "No GPU detected"\nmsgstr "Nenhuma GPU detetada"\n'
+    )
+    assert read_po(path).gettext("No GPU detected") == "Nenhuma GPU detetada"
+
+
+def test_a_catalog_saved_without_one_reads_exactly_the_same(tmp_path: Path) -> None:
+    marked, plain = tmp_path / "a.po", tmp_path / "b.po"
+    body = HEADER_BYTES[3:] + b'\nmsgid "No GPU detected"\nmsgstr "Nenhuma GPU detetada"\n'
+    marked.write_bytes(b"\xef\xbb\xbf" + body)
+    plain.write_bytes(body)
+    assert read_po(marked).messages.keys() == read_po(plain).messages.keys()
+    assert read_po(marked).headers == read_po(plain).headers
+
+
+def test_parsed_text_that_still_carries_a_mark_is_read_too() -> None:
+    # read_po strips it through the encoding; a caller that decoded the bytes itself, as
+    # the packaging test does, hands the mark straight to the parser.
+    catalog = parse_po("\ufeff" + HEADER + '\nmsgid "unknown"\nmsgstr "desconhecido"\n')
+    assert catalog.gettext("unknown") == "desconhecido"
+    assert catalog.language == "pt_PT"

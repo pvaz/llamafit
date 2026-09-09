@@ -1,9 +1,13 @@
 """The active translator: choosing a language, and what the two functions then return."""
 
+import io
 from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
+from rich.console import Console
+from rich.errors import MarkupError
+from rich.text import Text
 
 from llamafit.i18n import translator
 from llamafit.i18n.detect import FixedLocale
@@ -16,6 +20,8 @@ from llamafit.i18n.translator import (
     get_translator,
     gettext,
     ngettext,
+    npgettext,
+    pgettext,
     set_language,
     set_translator,
 )
@@ -123,7 +129,9 @@ def test_a_missing_catalog_falls_back_to_english_and_says_so(tmp_path: Path) -> 
 
 
 def test_a_malformed_catalog_falls_back_to_english_and_says_so(tmp_path: Path) -> None:
-    directory = _catalog_dir(tmp_path, text='msgctxt "menu"\nmsgid "a"\nmsgstr "b"\n')
+    # msgctxt used to be the malformed example here; it is a supported keyword now, so
+    # this asks for something the reader will always refuse.
+    directory = _catalog_dir(tmp_path, text='msgid "a"\nmsgstr "b\\z"\n')
     choice = set_language("pt_PT", env={}, available=("en", "pt_PT"), directory=directory)
     assert choice.language == "en"
     assert choice.notice is not None
@@ -190,3 +198,156 @@ def test_a_catalog_with_no_language_team_keeps_the_tag_in_the_notice(tmp_path: P
     )
     assert choice.language == "pt_PT"
     assert choice.notice == "LlamaFit has no pt_BR translation, so it is using the pt_PT one."
+
+
+def test_a_context_gives_one_english_word_two_portuguese_genders() -> None:
+    set_language("pt_PT", env={})
+    assert messages.no_gpu_row() == "nenhuma detetada"
+    assert messages.no_backends_row() == "nenhum detetado"
+    assert messages.bandwidth_unknown() == "desconhecida"
+    assert messages.bits_per_weight_unknown() == "desconhecido"
+
+
+def test_english_answers_a_contextual_lookup_with_the_message_itself() -> None:
+    assert isinstance(get_translator(), EnglishTranslator)
+    assert pgettext("GPU", "none detected") == "none detected"
+    assert npgettext("GPU", "%(count)d device", "%(count)d devices", 1) == "%(count)d device"
+    assert npgettext("GPU", "%(count)d device", "%(count)d devices", 3) == "%(count)d devices"
+
+
+def test_a_contextual_lookup_goes_through_the_installed_catalog(tmp_path: Path) -> None:
+    text = CATALOG + '\nmsgctxt "GPU"\nmsgid "none detected"\nmsgstr "nenhuma detetada"\n'
+    set_language("pt_PT", env={}, available=("en", "pt_PT"), directory=_catalog_dir(tmp_path, text))
+    assert pgettext("GPU", "none detected") == "nenhuma detetada"
+    assert pgettext("backends", "none detected") == "none detected"
+
+
+def test_a_contextual_counting_message_goes_through_the_installed_catalog(tmp_path: Path) -> None:
+    text = CATALOG + (
+        '\nmsgctxt "GPU"\nmsgid "%(count)d device"\nmsgid_plural "%(count)d devices"\n'
+        'msgstr[0] "%(count)d placa"\nmsgstr[1] "%(count)d placas"\n'
+    )
+    set_language("pt_PT", env={}, available=("en", "pt_PT"), directory=_catalog_dir(tmp_path, text))
+    assert npgettext("GPU", "%(count)d device", "%(count)d devices", 1) == "%(count)d placa"
+    assert npgettext("GPU", "%(count)d device", "%(count)d devices", 9) == "%(count)d placas"
+
+
+def _with_team(team: str) -> str:
+    """CATALOG, plus a Language-Team header saying whatever a catalog's author wrote."""
+    return CATALOG.replace(
+        '"Language: pt_PT\\n"', '"Language: pt_PT\\n"\n"Language-Team: ' + team + '\\n"'
+    )
+
+
+@pytest.mark.parametrize("team", ["Portuguese [/PT]", "Portuguese [bold] (Portugal)"])
+def test_a_team_name_with_a_bracket_tag_survives_being_printed(tmp_path: Path, team: str) -> None:
+    # The notice quotes the catalog's own Language-Team header, which is data from a file.
+    # console.print reads square brackets as markup: the first of these raises MarkupError
+    # at start-up and the second silently eats the tag, so the notice loses words. Text()
+    # is what the documented example passes, and this is what says so.
+    directory = _catalog_dir(tmp_path, _with_team(team))
+    choice = set_language("pt_BR", env={}, available=("en", "pt_PT"), directory=directory)
+    assert choice.notice is not None
+    assert team in choice.notice
+
+    console = Console(file=io.StringIO(), no_color=True, width=200)
+    console.print(Text(choice.notice))
+    assert team in console.file.getvalue()  # type: ignore[union-attr]
+
+
+def test_printing_the_notice_as_markup_is_what_the_example_avoids(tmp_path: Path) -> None:
+    # Asserted rather than assumed: if Rich ever stopped treating a bracket as markup the
+    # advice above would be obsolete, and this test is what would say so.
+    directory = _catalog_dir(tmp_path, _with_team("Portuguese [/PT]"))
+    choice = set_language("pt_BR", env={}, available=("en", "pt_PT"), directory=directory)
+    assert choice.notice is not None
+    console = Console(file=io.StringIO(), no_color=True, width=200)
+    with pytest.raises(MarkupError):
+        console.print(choice.notice)
+
+
+def test_a_team_name_with_no_brackets_is_untouched_either_way(tmp_path: Path) -> None:
+    directory = _catalog_dir(tmp_path, _with_team("Portuguese (Portugal)"))
+    choice = set_language("pt_BR", env={}, available=("en", "pt_PT"), directory=directory)
+    assert choice.notice == (
+        "LlamaFit has no pt_BR translation, so it is using the Portuguese (Portugal) one."
+    )
+
+
+def test_a_catalog_that_holds_another_language_falls_back_to_english(tmp_path: Path) -> None:
+    # The failure this branch exists to remove, in its last hiding place: before this,
+    # current_language() said pt_PT and every message came out in German.
+    directory = _catalog_dir(
+        tmp_path,
+        text=CATALOG.replace('"Language: pt_PT\\n"', '"Language: de\\n"'),
+    )
+    choice = set_language("pt_PT", env={}, available=("en", "pt_PT"), directory=directory)
+    assert choice.language == "en"
+    assert current_language() == "en"
+    assert choice.notice == "LlamaFit could not read its pt_PT translation, so it is using English."
+    assert _("No GPU detected") == "No GPU detected"
+    # The hint is the one the catalog error carries: "reinstall LlamaFit" is nonsense
+    # advice about a file the reader edited themselves.
+    assert choice.hint == (
+        "Rename the file to de.po if the header is right, or set the header to pt_PT if "
+        "the name is."
+    )
+
+
+def test_a_broken_catalog_hints_at_the_file_and_a_missing_one_at_the_install(
+    tmp_path: Path,
+) -> None:
+    broken = tmp_path / "broken"
+    broken.mkdir()
+    _catalog_dir(broken, text='msgid "a"\nmsgstr "b\\z"\n')
+    assert set_language("pt_PT", env={}, available=("en", "pt_PT"), directory=broken).hint == (
+        "Correct the .po file, then check it with `msgfmt --check`."
+    )
+    translator.reset()
+    missing = tmp_path / "empty"
+    missing.mkdir()
+    assert set_language("pt_PT", env={}, available=("en", "pt_PT"), directory=missing).hint == (
+        "Reinstall LlamaFit, or report the file the log names."
+    )
+
+
+BROKEN = CATALOG + '\nmsgid "%(count)d file"\nmsgstr "%s ficheiros"\n'
+
+
+def test_a_translation_the_reader_had_to_drop_is_english_and_is_said_out_loud(
+    tmp_path: Path,
+) -> None:
+    # Before this the sentence reached the user as "{'count': 3} ficheiros"; %-formatting
+    # a positional conversion with a dictionary substitutes the dictionary itself.
+    choice = set_language(
+        "pt_PT", env={}, available=("en", "pt_PT"), directory=_catalog_dir(tmp_path, BROKEN)
+    )
+    assert choice.language == "pt_PT"
+    assert _("%(count)d file") % {"count": 3} == "3 file"
+    assert choice.notice == (
+        "LlamaFit could not use 1 message in its pt_PT translation, so those are in English."
+    )
+    assert choice.hint is not None
+    assert "--verbose" in choice.hint
+
+
+def test_a_catalog_with_nothing_wrong_says_nothing(tmp_path: Path) -> None:
+    choice = set_language(
+        "pt_PT", env={}, available=("en", "pt_PT"), directory=_catalog_dir(tmp_path)
+    )
+    assert choice.notice is None
+    assert choice.hint is None
+
+
+def test_a_substitution_notice_is_not_replaced_by_the_unusable_one(tmp_path: Path) -> None:
+    # A reader being served another region's translation needs to hear that first; the
+    # dropped messages are in the log either way.
+    text = BROKEN.replace(
+        '"Language: pt_PT\\n"', '"Language: pt_PT\\n"\n"Language-Team: Portuguese (Portugal)\\n"'
+    )
+    choice = set_language(
+        "pt_BR", env={}, available=("en", "pt_PT"), directory=_catalog_dir(tmp_path, text)
+    )
+    assert choice.notice == (
+        "LlamaFit has no pt_BR translation, so it is using the Portuguese (Portugal) one."
+    )
