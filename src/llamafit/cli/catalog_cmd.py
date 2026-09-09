@@ -341,13 +341,10 @@ def refresh_command(
         # Grouped by text rather than printed once per model: a facts file that
         # fails to parse loses the same recorded facts for every model that reads
         # it, and five identical lines tell a reader less than one line and a
-        # count. ``warnings`` is read defensively: it is not yet a field of the
-        # ``RefreshResult`` this branch was built against, but is landing in a
-        # sibling change and should start printing the moment it exists, without
-        # another edit here.
+        # count.
         warned_by_text: dict[str, list[str]] = {}
         for result in results:
-            for warning in getattr(result, "warnings", []):
+            for warning in result.warnings:
                 warned_by_text.setdefault(warning, []).append(result.model_id)
         for warning, model_ids in warned_by_text.items():
             if len(model_ids) == 1:
