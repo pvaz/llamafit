@@ -1,10 +1,18 @@
-"""Find ``llama-server`` instances already running on this machine."""
+"""Find ``llama-server`` instances already running on this machine.
+
+The initial ``/health`` check on each candidate port uses ``HEALTH_TIMEOUT_S``: a
+real ``llama-server`` on loopback answers in milliseconds, and most candidate
+ports have nothing listening, so a short timeout keeps probing all of them fast.
+The follow-up ``/v1/models`` and ``/props`` calls, made only after a port has
+already answered ``/health``, use the longer ``DETAIL_TIMEOUT_S`` so a slow but
+real server is not mistaken for a dead one.
+"""
 
 from __future__ import annotations
 
 import time
 from collections.abc import Iterable, Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Protocol
 
 import httpx
@@ -13,6 +21,8 @@ from llamafit.models.host import Probe
 from llamafit.models.llamacpp import RunningServer
 
 DEFAULT_PORTS = [8080, 8081, 8098]
+HEALTH_TIMEOUT_S = 0.3
+DETAIL_TIMEOUT_S = 1.5
 
 
 class HttpClient(Protocol):
@@ -39,12 +49,14 @@ class HttpxClient:
 
 @dataclass
 class FakeHttp:
-    """Canned JSON responses keyed by URL."""
+    """Canned JSON responses keyed by URL; records every call for assertions."""
 
     responses: Mapping[str, Any]
+    calls: list[tuple[str, float]] = field(default_factory=list)
 
     def get_json(self, url: str, *, timeout: float = 1.5) -> Any | None:
-        """Return the canned response or ``None``."""
+        """Return the canned response or ``None``, recording ``(url, timeout)``."""
+        self.calls.append((url, timeout))
         return self.responses.get(url)
 
 
@@ -82,7 +94,7 @@ def _discover(http: HttpClient, ports: Iterable[int]) -> list[tuple[RunningServe
     for port in ports:
         start = time.perf_counter()
         base = f"http://127.0.0.1:{port}"
-        health = http.get_json(f"{base}/health")
+        health = http.get_json(f"{base}/health", timeout=HEALTH_TIMEOUT_S)
         duration = int((time.perf_counter() - start) * 1000)
         if not isinstance(health, dict) or health.get("status") != "ok":
             results.append(
@@ -99,7 +111,7 @@ def _discover(http: HttpClient, ports: Iterable[int]) -> list[tuple[RunningServe
             continue
         try:
             model: str | None = None
-            models = http.get_json(f"{base}/v1/models")
+            models = http.get_json(f"{base}/v1/models", timeout=DETAIL_TIMEOUT_S)
             if isinstance(models, dict):
                 data = models.get("data")
                 if isinstance(data, list) and data and isinstance(data[0], dict):
@@ -108,7 +120,7 @@ def _discover(http: HttpClient, ports: Iterable[int]) -> list[tuple[RunningServe
 
             n_ctx: int | None = None
             build: str | None = None
-            props = http.get_json(f"{base}/props")
+            props = http.get_json(f"{base}/props", timeout=DETAIL_TIMEOUT_S)
             if isinstance(props, dict):
                 settings = props.get("default_generation_settings")
                 if isinstance(settings, dict) and settings.get("n_ctx") is not None:

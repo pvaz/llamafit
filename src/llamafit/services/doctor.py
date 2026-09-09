@@ -39,6 +39,7 @@ _BACKEND_FOR_VENDOR = {
     "intel": ("sycl", "SYCL"),
 }
 _VRAM_HINT_PROBE = {"nvidia": "nvidia-smi", "amd": "rocm-smi"}
+_VENDOR_PROBE = {"nvidia-smi": "nvidia", "rocm-smi": "amd", "system-profiler": "apple"}
 _GENERIC_VRAM_HINT = (
     "No vendor tool reported this GPU's memory size; record it in a hardware profile "
     "so budgets can be computed for this machine."
@@ -141,16 +142,21 @@ def diagnose(report: SystemReport) -> Diagnosis:
             )
         )
 
+    vendors = {g.vendor for g in host.gpus}
     for probe in [*host.probes, *llamacpp.probes]:
-        if not probe.ok and not probe.name.startswith("server:"):
-            findings.append(
-                Finding(
-                    level="warn",
-                    title=f"Probe {probe.name} failed",
-                    detail=probe.error or "unknown error",
-                    hint=PROBE_HINTS.get(probe.name),
-                )
+        if probe.ok or probe.name.startswith("server:"):
+            continue
+        vendor = _VENDOR_PROBE.get(probe.name)
+        if vendor is not None and host.gpus and vendor not in vendors:
+            continue
+        findings.append(
+            Finding(
+                level="warn",
+                title=f"Probe {probe.name} failed",
+                detail=probe.error or "unknown error",
+                hint=PROBE_HINTS.get(probe.name),
             )
+        )
 
     for server in llamacpp.running_servers:
         findings.append(

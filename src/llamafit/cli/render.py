@@ -67,8 +67,9 @@ def render_host(host: Host) -> Table:
         table.add_row("Memory pool", "unified (GPU shares system memory)")
     for disk in host.disks:
         table.add_row(
-            f"Disk {disk.path}",
-            f"{format_bytes(disk.free_bytes)} free of {format_bytes(disk.total_bytes)}",
+            "Disk",
+            f"{disk.path}: {format_bytes(disk.free_bytes)} free of "
+            f"{format_bytes(disk.total_bytes)}",
         )
     return table
 

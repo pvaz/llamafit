@@ -153,3 +153,17 @@ def test_intel_gpu_warns_about_sycl_and_avoids_the_rocm_hint() -> None:
 def test_worst_level_of_no_findings_is_ok() -> None:
     llamacpp = LlamaCpp(installed=True, path="x", build=10867, backends=["cuda", "cpu"])
     assert Diagnosis(report=report_with(llamacpp), findings=[]).worst_level == "ok"
+
+
+def test_vendor_probe_failure_is_silent_when_that_vendor_is_absent() -> None:
+    llamacpp = LlamaCpp(installed=True, path="x", build=10867, backends=["cuda", "cpu"])
+    probes = [Probe(name="rocm-smi", ok=False, duration_ms=1, error="rocm-smi: not found")]
+    diagnosis = diagnose(report_with(llamacpp, probes=probes))
+    assert not any(f.title.startswith("Probe rocm-smi") for f in diagnosis.findings)
+
+
+def test_vendor_probe_failure_still_warns_when_no_gpu_was_detected() -> None:
+    llamacpp = LlamaCpp(installed=True, path="x", build=10867, backends=["cpu"])
+    probes = [Probe(name="nvidia-smi", ok=False, duration_ms=1, error="nvidia-smi: not found")]
+    diagnosis = diagnose(report_with(llamacpp, gpus=[], probes=probes))
+    assert any(f.title.startswith("Probe nvidia-smi") for f in diagnosis.findings)
