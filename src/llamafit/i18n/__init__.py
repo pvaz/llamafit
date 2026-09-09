@@ -1,11 +1,18 @@
 """Translation: choose the user's language and read its catalog at runtime.
 
-Call sites use two functions and nothing else::
+Call sites use two functions::
 
     from llamafit.i18n import _, ngettext
 
     _("No GPU detected")
     ngettext("%(count)d module", "%(count)d modules", n) % {"count": n}
+
+and a deferred pair for anything built while a module is imported, which happens before a
+language has been chosen::
+
+    from llamafit.i18n import lazy_gettext
+
+    PROBE_HINTS = {"nvidia-smi": lazy_gettext("Install or repair the NVIDIA driver.")}
 
 An interface chooses the language once at start-up::
 
@@ -29,6 +36,7 @@ from llamafit.i18n.catalogs import (
     load_language,
 )
 from llamafit.i18n.detect import FixedLocale, LocaleProvider, SystemLocale, windows_ui_language
+from llamafit.i18n.lazy import LazyString, lazy_gettext, lazy_ngettext
 from llamafit.i18n.plurals import (
     DEFAULT_PLURAL_FORMS,
     PluralFormsError,
@@ -36,8 +44,13 @@ from llamafit.i18n.plurals import (
     parse_plural_forms,
 )
 from llamafit.i18n.po import Message, PoCatalog, PoSyntaxError, parse_po, read_po
-from llamafit.i18n.select import LANGUAGE_ENV_VAR, LanguageChoice, resolve_language
-from llamafit.i18n.tags import SOURCE_LANGUAGE, match, normalise
+from llamafit.i18n.select import (
+    LANGUAGE_ENV_VAR,
+    LanguageChoice,
+    resolve_language,
+    substitution_notice,
+)
+from llamafit.i18n.tags import SOURCE_LANGUAGE, is_substitution, match, normalise
 from llamafit.i18n.translator import (
     CatalogTranslator,
     EnglishTranslator,
@@ -62,6 +75,7 @@ __all__ = [
     "EnglishTranslator",
     "FixedLocale",
     "LanguageChoice",
+    "LazyString",
     "LocaleProvider",
     "Message",
     "PluralFormsError",
@@ -77,6 +91,9 @@ __all__ = [
     "current_language",
     "get_translator",
     "gettext",
+    "is_substitution",
+    "lazy_gettext",
+    "lazy_ngettext",
     "load_language",
     "match",
     "ngettext",
@@ -88,5 +105,6 @@ __all__ = [
     "resolve_language",
     "set_language",
     "set_translator",
+    "substitution_notice",
     "windows_ui_language",
 ]

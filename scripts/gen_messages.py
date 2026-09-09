@@ -25,11 +25,15 @@ from llamafit.i18n import DEFAULT_PLURAL_FORMS, TEMPLATE_NAME
 
 ROOT = Path(__file__).resolve().parents[1]
 
-SINGULAR_NAMES = frozenset({"_", "gettext"})
+SINGULAR_NAMES = frozenset({"_", "gettext", "lazy_gettext"})
 """Names that translate one message; the first argument is the ``msgid``."""
 
-PLURAL_NAMES = frozenset({"ngettext"})
-"""Names that translate a counting message; the first two arguments are the forms."""
+PLURAL_NAMES = frozenset({"ngettext", "lazy_ngettext"})
+"""Names that translate a counting message; the first two arguments are the forms.
+
+The ``lazy_`` pair defers the lookup to render time but holds the same literals, so a
+message wrapped for a module-level constant is extracted like any other.
+"""
 
 SOURCE_ROOTS: tuple[Path, ...] = (
     ROOT / "src" / "llamafit",
