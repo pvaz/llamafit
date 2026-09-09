@@ -222,6 +222,32 @@ that call site is the render moment:
 The extractor reads `lazy_gettext` and `lazy_ngettext` exactly like the eager pair, so a
 deferred message reaches the template like any other.
 
+### At a Typer boundary
+
+A deferred message works as a Typer `help=` string: the decorator runs at import time, the
+language is chosen afterwards, and the help still comes out translated.
+`tests/unit/test_i18n_lazy.py` asserts that rather than assuming it, so the suite says so
+if a future Typer or Click stops rendering help late.
+
+Typer declares `help` as `str | None`, though, so mypy rejects a `LazyString` there. Say
+what you mean at the call site:
+
+```python
+from typing import cast
+
+no_measure: bool = typer.Option(
+    False,
+    "--no-measure",
+    # Typer only ever renders this, so a lazy message is safe here; it is not a str,
+    # and the cast is what says so out loud.
+    help=cast(str, lazy_gettext("Skip the RAM bandwidth measurement.")),
+)
+```
+
+A command's help text is the exception nothing can fix: Typer takes it from the function's
+docstring, and a docstring is a literal, not a call, so no wrapper can reach it. A command
+whose help has to be translatable needs an explicit `help=` argument on the decorator.
+
 An interface chooses the language once, at start-up, and says so when the request could
 not be met:
 

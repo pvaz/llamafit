@@ -148,3 +148,44 @@ def test_it_is_not_a_string_so_a_silent_english_leak_is_impossible() -> None:
 def test_an_unknown_attribute_still_fails_as_a_string_would() -> None:
     with pytest.raises(AttributeError):
         lazy_gettext("No GPU detected").no_such_method()
+
+
+def test_a_typer_help_string_built_by_the_decorator_still_follows_the_language() -> None:
+    # The decorator runs at import time, so this is the case the eager form loses. It is
+    # asserted rather than assumed: Click could normalise help text when the decorator
+    # runs, which would render the message to English there and then. It does not, and
+    # this test is what says so if that ever changes.
+    import typer
+    from typer.testing import CliRunner
+
+    app = typer.Typer()
+    help_text = lazy_gettext("If a GPU is present, check that its driver tools are installed.")
+
+    @app.command()
+    def demo(check: bool = typer.Option(False, "--check", help=help_text)) -> None:
+        """A command."""
+
+    _portuguese()
+    result = CliRunner().invoke(app, ["--help"])
+    assert result.exit_code == 0
+    assert "Se existir uma GPU" in result.output
+
+
+def test_a_command_docstring_cannot_be_deferred_at_all() -> None:
+    # Typer takes a command's help from its docstring, and a docstring is a literal, not
+    # a call: no wrapper can reach it. A command whose help must be translatable needs an
+    # explicit help= argument. This is a limit of the approach, recorded so the sweep
+    # meets it here rather than in review.
+    import typer
+    from typer.testing import CliRunner
+
+    app = typer.Typer()
+
+    @app.command()
+    def demo() -> None:
+        """No GPU detected"""
+
+    _portuguese()
+    result = CliRunner().invoke(app, ["--help"])
+    assert "No GPU detected" in result.output
+    assert "Nenhuma GPU detetada" not in result.output
