@@ -1,0 +1,98 @@
+# European Portuguese translation of LlamaFit.
+# This file is distributed under the same licence as LlamaFit.
+#
+# NOT YET REVIEWED BY A NATIVE SPEAKER. It was written alongside the machinery that
+# reads it, to prove that machinery works on a real catalog, and it has had no second
+# reader. By the standard docs/translations.md sets for every other language, that is
+# not enough: please read it line by line and correct it in a pull request.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: llamafit 0.1.0a1\n"
+"Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt_PT\n"
+"Language-Team: Portuguese (Portugal)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "llama.cpp installed"
+msgstr "llama.cpp instalado"
+
+msgid "llama.cpp not found"
+msgstr "llama.cpp não encontrado"
+
+msgid "No GPU detected"
+msgstr "Nenhuma GPU detetada"
+
+msgid "models will run on the CPU only"
+msgstr "os modelos vão correr apenas no CPU"
+
+msgid "If a GPU is present, check that its driver tools are installed."
+msgstr "Se existir uma GPU, verifique se as ferramentas do controlador estão instaladas."
+
+msgid "RAM bandwidth assumed"
+msgstr "Largura de banda da RAM assumida"
+
+# "it" in the English is the RAM bandwidth, which the message does not name. A
+# translator reads this line on its own, so the Portuguese names it.
+msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure it."
+msgstr ""
+"Instale o numpy (`pip install llamafit[fast]`) para o LlamaFit poder medir a "
+"largura de banda da RAM."
+
+msgid "the vendor tool that reports memory was not available"
+msgstr "a ferramenta do fabricante que indica a memória não estava disponível"
+
+msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
+msgstr ""
+"A maioria dos modelos úteis precisa de 5 a 120 GB; liberte espaço ou mude a "
+"pasta das transferências."
+
+# Portuguese does not agree with itself about either of the next four. "unknown" is the
+# memory bandwidth, "a largura de banda", feminine, and a quant's bits per weight, "os
+# bits", masculine. "none detected" is the GPU row, "a GPU", feminine, and the Backends
+# row, "os backends", masculine. Each row therefore carries its own context, and each
+# context gets the gender its own noun asks for.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "desconhecida"
+
+msgctxt "bits per weight"
+msgid "unknown"
+msgstr "desconhecido"
+
+msgctxt "GPU"
+msgid "none detected"
+msgstr "nenhuma detetada"
+
+msgctxt "backends"
+msgid "none detected"
+msgstr "nenhum detetado"
+
+msgid "no server"
+msgstr "sem servidor"
+
+msgid "Run again with --verbose for the full traceback."
+msgstr "Execute novamente com --verbose para ver o rastreio completo."
+
+# Deliberately untranslated, so the suite can prove that an empty msgstr falls back to
+# English instead of showing the user a blank line.
+msgid "Skip the RAM bandwidth measurement."
+msgstr ""
+
+msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
+msgstr ""
+"O LlamaFit não conseguiu ler os totais de memória desta máquina, por isso não "
+"consegue calcular o que cabe."
+
+msgid "%(count)d module"
+msgid_plural "%(count)d modules"
+msgstr[0] "%(count)d módulo"
+msgstr[1] "%(count)d módulos"
+
+msgid "the catalog has %(count)d problem"
+msgid_plural "the catalog has %(count)d problems"
+msgstr[0] "o catálogo tem %(count)d problema"
+msgstr[1] "o catálogo tem %(count)d problemas"

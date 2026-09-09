@@ -1,0 +1,30 @@
+# Weekly check that the committed catalog facts still match what the repositories publish.
+#
+# It reaches the Hugging Face API, so it deliberately has no `pull_request` trigger: a flaky
+# network or a repository that is briefly unavailable must never fail somebody's unrelated
+# change. It reports and nothing more — no issue, no pull request, no commit. A red run means
+# `llamafit catalog refresh` is due, and a person runs it.
+name: Catalog
+
+on:
+  schedule:
+    - cron: "17 5 * * 1" # Mondays, 05:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freshness:
+    name: catalog refresh --check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install
+        run: python -m pip install --upgrade pip && pip install -e .
+      - name: Check the committed facts against Hugging Face
+        run: llamafit catalog refresh --check

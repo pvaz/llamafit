@@ -38,6 +38,7 @@ Rules that keep it that way:
 |---|---|---|
 | `models` | every data structure, as pydantic models | nothing internal |
 | `errors`, `units`, `paths`, `logging`, `constants` | foundation | `models` |
+| `i18n` | choose a language and translate a message; see [translations.md](translations.md) | nothing internal |
 | `hardware` | host detection: CPU, memory, bandwidth, GPUs, disks; `scan()` | foundation |
 | `hwprofile` | hardware profiles: load, match, validate, simulate | foundation |
 | `llamacpp` | find the installation, read version and backends, discover servers; later install and launch | `hardware.runner` |
