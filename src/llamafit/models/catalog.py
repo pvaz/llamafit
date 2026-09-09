@@ -23,7 +23,7 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from llamafit.models.gguf import GgufFacts
+from llamafit.models.gguf import ByteSize, GgufFacts
 
 _ID_RE = re.compile(r"^[a-z0-9][a-z0-9.\-]*$")
 
@@ -33,9 +33,6 @@ MAX_BPW = 32.0
 Anything above this is not a quantisation but a wrong number — a size that belongs to
 some other file, or a parameter count that is wrong.
 """
-
-ByteSize = Annotated[int, Field(ge=0)]
-"""A size in bytes. Never negative, whoever supplied it."""
 
 BitsPerWeight = Annotated[float, Field(gt=0, le=MAX_BPW, allow_inf_nan=False)]
 """Bits per weight: above zero, no wider than :data:`MAX_BPW`, and finite.

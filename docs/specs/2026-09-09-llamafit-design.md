@@ -317,6 +317,8 @@ From the header LlamaFit derives, per quant:
 
 Tensor sizes come from the tensor info table (dimensions and type), so they are exact for the file, not estimates.
 
+The facts carry only the bounds real headers satisfy: every count and every byte figure is a non-negative whole number, and the byte buckets sum exactly to `bytes_total`. Nothing narrower is asserted. The same model backs the reader, so a bound argued from reasoning rather than from files would reject a model that runs — Gemma 3 alone breaks `n_embd = n_head × head_dim` (5,376 against 32 × 128), and a split model's metadata shard legitimately reports zero bytes.
+
 ## 8. Memory budget
 
 ### 8.1 Definitions
