@@ -7,6 +7,7 @@ import re
 from typing import Any
 
 from llamafit.hardware.runner import Runner, probe
+from llamafit.i18n import _
 from llamafit.models.host import Backend, Gpu, OsName, Probe, Vendor
 
 _NVIDIA_CMD = [
@@ -93,7 +94,7 @@ def parse_nvidia_smi(out: str) -> list[Gpu]:
             )
         )
     if not gpus:
-        raise ValueError("nvidia-smi returned no GPUs")
+        raise ValueError(_("nvidia-smi returned no GPUs"))
     return gpus
 
 
@@ -117,7 +118,7 @@ def parse_rocm_smi(out: str) -> list[Gpu]:
             )
         )
     if not gpus:
-        raise ValueError("rocm-smi returned no cards")
+        raise ValueError(_("rocm-smi returned no cards"))
     return gpus
 
 
@@ -135,7 +136,7 @@ def parse_system_profiler(out: str) -> list[Gpu]:
         for i, item in enumerate(items)
     ]
     if not gpus:
-        raise ValueError("system_profiler returned no displays")
+        raise ValueError(_("system_profiler returned no displays"))
     return gpus
 
 
@@ -150,7 +151,7 @@ def parse_wmi_video(out: str) -> list[Gpu]:
         name = str(item.get("Name", ""))
         gpus.append(Gpu(index=i, vendor=vendor_from_name(name), name=name))
     if not gpus:
-        raise ValueError("WMI returned no video controllers")
+        raise ValueError(_("WMI returned no video controllers"))
     return gpus
 
 
@@ -173,7 +174,7 @@ def parse_lspci(out: str) -> list[Gpu]:
     for i, line in enumerate(ln for ln in out.splitlines() if re.search(r"VGA|3D controller", ln)):
         gpus.append(Gpu(index=i, vendor=vendor_from_name(line), name=_lspci_name(line)))
     if not gpus:
-        raise ValueError("lspci found no display controllers")
+        raise ValueError(_("lspci found no display controllers"))
     return gpus
 
 
