@@ -44,13 +44,23 @@ for the desktop.
 Instead of a size class per model, LlamaFit reads the header of each GGUF file, locally or
 over HTTP with range requests that fetch only the header, and derives:
 
-- **bytes of expert weights** (tensor names containing `_exps`), **bytes of attention and
-  everything else**, **bytes of the output head and embeddings**, and bytes of any table the
-  catalog marks as streamable from disk;
-- **KV cache per token**: `2 × attention_layers × kv_heads × head_size × bytes(kv_type)`. For
-  hybrid architectures only the full-attention layers count; the linear-attention layers keep
-  a small fixed recurrent state instead;
-- vocabulary size, layer count, expert count and experts used per token.
+- **bytes of expert weights** (tensor names containing `_exps`), **bytes of every other tensor
+  in a block** — attention projections, feed-forward weights and norms alike, which is nearly
+  the whole file on a dense model — **bytes of the output head and of the token embedding**,
+  and bytes of any table the catalog marks as streamable from disk. Every tensor lands in
+  exactly one of these buckets, and they sum to the file's total;
+- **KV cache per token**: the key cache and the value cache are sized separately, each from its
+  own head dimension (`attention_layers × kv_heads × key_length` and the same with
+  `value_length`), each rounded up to a whole number of blocks of its KV type, and then added.
+  llama.cpp allocates them as two tensors, so doubling the key cache is not what it does, and
+  rounding down would report a cache smaller than the one allocated — the direction that tells
+  somebody a model fits when it does not. For hybrid architectures only the full-attention
+  layers count; the linear-attention layers keep a small fixed recurrent state instead;
+- vocabulary size, layer count, expert count and experts used per token;
+- the context length the file itself declares and, where the architecture declares one, the
+  sliding attention window. Both are recorded and neither is used yet: the file's context is
+  what it permits rather than what the vendor supports, and a sliding window shortens the cache
+  on only some layers, which the header does not identify.
 
 These come from the tensor table in the header, so they are exact for the file on disk.
 

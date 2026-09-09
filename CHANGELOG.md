@@ -22,6 +22,23 @@ the changelog says so when they do.
 - llama.cpp detection: binaries, build, backends, local GGUF files, running servers.
 - `llamafit system` and `llamafit doctor` with Rich tables, `--json`, hints and exit codes.
 - Documentation: CLI reference, platform support, development guide, contributing guide.
+- Model catalog: curated YAML per model family, with parameters, architecture, context,
+  capabilities, licence, published benchmark scores and the Hugging Face repositories that
+  publish the GGUF files. The volatile fields live in a generated `<family>.facts.json` beside
+  each file, so nothing ever rewrites hand-written YAML.
+- GGUF header reader for local files and for remote URLs over HTTP range requests, and the
+  architecture facts derived from a header: layer, head and vocabulary counts, expert counts,
+  the byte breakdown by tensor class, KV bytes per token, the declared context length and
+  sliding window. A quant published as several shards is read as a set, not from its first file.
+- `llamafit list` and `llamafit search`: browse the catalog, filtered by use case, capability,
+  licence, vendor or text.
+- `llamafit info <model>`: one model in full, with every quant it publishes and the GGUF facts
+  read from it.
+- `llamafit catalog validate|refresh|show`: check the catalog files, fill their volatile fields
+  from Hugging Face without downloading any weights (`--dry-run`, `--check` and `--model`), and
+  print one entry as JSON or YAML.
+- Custom models: entries in `custom_models.yaml` are merged with the bundled catalog, an entry
+  whose id matches a bundled one replacing it.
 
 ### Fixed
 - RAM bandwidth now measures sequential read throughput, not a copy: a copy moves each

@@ -20,14 +20,26 @@ NumPy for the bandwidth measurement.
 ```
 ruff check . && ruff format --check .
 mypy
-pytest --cov -m "not hardware"
-llamafit catalog validate            # once the catalog exists (phase 1B)
+pytest --cov -m "not hardware and not network"
+llamafit catalog validate            # local: the bundled catalog and your custom models file
 ```
 
-`.github/workflows/ci.yml` runs them on Ubuntu, macOS and Windows with Python 3.10 and 3.13.
-It is the only workflow in the repository. Tests marked
-`hardware` need a real machine (they measure bandwidth or run vendor tools); run them locally
-with `pytest -m hardware`. Coverage must stay at or above 85 percent.
+`.github/workflows/ci.yml` runs the first three on Ubuntu, macOS and Windows with Python 3.10
+and 3.13. Tests marked `hardware` need a real machine (they measure bandwidth or run vendor
+tools) and tests marked `network` reach the internet; CI skips both, so run them locally with
+`pytest -m hardware` and `pytest -m network`. Coverage must stay at or above 85 percent.
+
+On Ubuntu with Python 3.13 the same workflow adds one more step: it regenerates the catalog
+JSON schema and `MODELS.md` and fails if either differs from what is committed. When it does,
+run `python scripts/gen_schema.py` and `python scripts/gen_models_md.py` and commit what they
+write. `llamafit catalog validate` is not a CI step of its own; the test suite loads the
+bundled catalog and fails on any problem it finds.
+
+`.github/workflows/catalog.yml` is the other workflow. Once a week it runs `llamafit catalog
+refresh --check`, which exits non-zero when a repository has published something the committed
+facts files do not record. It needs the network, so it never runs on a pull request: a flaky
+connection must not fail somebody's unrelated change. It opens no issue and no pull request —
+a red run is the notification, and a `catalog refresh` is the answer.
 
 ## How detection is tested without hardware
 
@@ -70,6 +82,7 @@ Runtime dependencies, with the reason each earns its place:
 | `psutil` | memory totals and core counts everywhere |
 | `py-cpuinfo` | CPU model and instruction sets everywhere |
 | `httpx` | Hugging Face metadata, running-server discovery, downloads |
+| `pyyaml` | the catalog: reading the curated `<family>.yaml` files, and printing one entry back with `catalog show --yaml` |
 | `numpy` | a faster, more accurate memory-bandwidth measurement; optional extra `fast`, and part of `dev` so CI exercises it |
 
 Planned, not installed and not yet declared in `pyproject.toml`; each arrives with the phase
@@ -77,11 +90,22 @@ that needs it, together with the extra it belongs to:
 
 | Package | Why | Phase |
 |---|---|---|
-| `pyyaml` | the catalog | 1B |
 | `textual` | the terminal dashboard | 1D |
 | `fastapi`, `uvicorn` | the JSON API and static dashboard | 1D |
 
 Adding a dependency means adding a row here with a reason, in the same pull request.
+
+## Messages and translations
+
+Messages to the user go through a small gettext layer in `src/llamafit/i18n/`, with GNU
+`.po` catalogs under `src/llamafit/data/locale/` and `scripts/gen_messages.py` to regenerate
+the template. [translations.md](translations.md) documents the format, how a language is
+chosen, and what a translator needs to know.
+
+The machinery is in place; no interface message goes through it yet, so `llamafit` is English
+everywhere today. Read that page before you write a message that will one day be translated:
+anything built at import time needs `lazy_gettext` rather than `_()`, and the extractor
+refuses a message that is not a literal string.
 
 ## Style
 
