@@ -11,6 +11,159 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: src/llamafit/bench/calibrate.py:393
+msgid "nothing measured touches this term, so there is no equation it appears in"
+msgstr ""
+
+#: src/llamafit/bench/calibrate.py:395
+msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
+msgstr ""
+
+#: src/llamafit/bench/calibrate.py:401
+msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
+msgstr ""
+
+#: src/llamafit/bench/calibrate.py:406
+msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr ""
+
+#: src/llamafit/bench/calibrate.py:411
+msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr ""
+
+#: src/llamafit/bench/calibrate.py:415
+msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
+msgstr ""
+
+#: src/llamafit/bench/compare.py:100
+msgid "generation (llama-bench)"
+msgstr ""
+
+#: src/llamafit/bench/compare.py:101
+msgid "prompt (llama-bench)"
+msgstr ""
+
+#: src/llamafit/bench/compare.py:102
+msgid "generation, first request"
+msgstr ""
+
+#: src/llamafit/bench/compare.py:103
+msgid "generation, 1K prompt"
+msgstr ""
+
+#: src/llamafit/bench/compare.py:104
+msgid "prompt, 1K request"
+msgstr ""
+
+#: src/llamafit/bench/compare.py:105
+msgid "peak VRAM"
+msgstr ""
+
+#: src/llamafit/bench/fingerprint.py:115
+msgid "no graphics card"
+msgstr ""
+
+#: src/llamafit/bench/fingerprint.py:117
+msgid "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+msgstr ""
+
+#: src/llamafit/bench/fingerprint.py:229
+msgid "%(flag)s was asked for as %(wanted)s but the run reports %(actual)s"
+msgstr ""
+
+#: src/llamafit/bench/paging.py:145
+msgid "The card was full and generation came in below three fifths of the estimate: the driver was paging to system memory, which does not fail and does not appear in the log."
+msgstr ""
+
+#: src/llamafit/bench/paging.py:151
+msgid "Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page."
+msgstr ""
+
+#: src/llamafit/bench/paging.py:156
+msgid "The card was full, which a good plan is meant to be, and the speed was close enough to the estimate that nothing was paging."
+msgstr ""
+
+#: src/llamafit/bench/paging.py:161
+msgid "No VRAM reading was taken during the run, so this configuration has not been cleared of paging; it has only not been checked."
+msgstr ""
+
+#: src/llamafit/bench/paging.py:166
+msgid "The card's total memory is unknown, so a reading of what was in use says nothing about how close to full it was."
+msgstr ""
+
+#: src/llamafit/bench/paging.py:170
+msgid "There was no estimate to compare the measured speed against, so the second half of the signature could not be tested."
+msgstr ""
+
+#: src/llamafit/bench/parse.py:167
+msgid "llama-bench did not produce JSON"
+msgstr ""
+
+#: src/llamafit/bench/parse.py:171
+msgid "llama-bench JSON is not a list of results"
+msgstr ""
+
+#: src/llamafit/bench/parse.py:180
+msgid "llama-bench JSON held no readable results"
+msgstr ""
+
+#: src/llamafit/bench/parse.py:245
+msgid "no llama-bench result rows found"
+msgstr ""
+
+#: src/llamafit/bench/run.py:206
+msgid "could not open %(path)s for the server log"
+msgstr ""
+
+#: src/llamafit/bench/run.py:214
+msgid "could not start llama-server"
+msgstr ""
+
+#: src/llamafit/bench/run.py:488
+#: src/llamafit/hardware/runner.py:172
+msgid "no output"
+msgstr ""
+
+#: src/llamafit/bench/run.py:490
+msgid "llama-bench exited with code %(code)d: %(detail)s"
+msgstr ""
+
+#: src/llamafit/bench/run.py:504
+msgid "llama-bench output could not be read: %(error)s"
+msgstr ""
+
+#: src/llamafit/bench/run.py:917
+msgid "llama-server did not become healthy"
+msgstr ""
+
+#: src/llamafit/bench/run.py:918
+msgid "Its whole output is in the log file `bench` named; the end says why."
+msgstr ""
+
+#: src/llamafit/bench/store.py:150
+msgid "%(path)s was written by a newer LlamaFit (benchmark format %(found)d, this build reads %(known)d)"
+msgstr ""
+
+#: src/llamafit/bench/store.py:155
+msgid "Upgrade LlamaFit, or move the file aside to start a new one."
+msgstr ""
+
+#: src/llamafit/bench/store.py:203
+msgid "a benchmark cannot be recorded against a simulated machine"
+msgstr ""
+
+#: src/llamafit/bench/store.py:204
+msgid "Run `llamafit bench` on the machine itself, without --profile."
+msgstr ""
+
+#: src/llamafit/bench/store.py:209
+msgid "the run did not use the settings it was given: %(problems)s"
+msgstr ""
+
+#: src/llamafit/bench/store.py:211
+msgid "Nothing was stored. A result filed under flags it was not taken with would be believed later by everything that reads it."
+msgstr ""
+
 #: src/llamafit/budget/budget.py:140
 msgid "a conservative default; nobody has measured this card's backend overhead"
 msgstr ""
@@ -2008,10 +2161,6 @@ msgstr ""
 #: src/llamafit/hardware/runner.py:147
 #: src/llamafit/hardware/runner.py:98
 msgid "%(program)s: not found"
-msgstr ""
-
-#: src/llamafit/hardware/runner.py:172
-msgid "no output"
 msgstr ""
 
 #: src/llamafit/hardware/runner.py:173
