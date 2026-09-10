@@ -41,6 +41,14 @@ typed fields beside them, which is what those are for.
 A pipeline that needs the prose to stay put should pass `--language en`, which pins it
 whatever the machine's locale says.
 
+**No direction marks, ever.** The tables put Unicode isolates around identifiers when the
+language is written right to left, so that `--verbose` inside an Arabic sentence does not
+reach a reader as `verbose--`. `--json` gets none of them: the marks are added by the
+renderer at the last moment, and the services that build the JSON never see one, so
+`llamafit --language ar --json doctor` differs from the English one in its words and in
+nothing else. [translations.md](translations.md#right-to-left-languages) explains what the
+tables do and how far it goes.
+
 ## Exit codes
 
 | Code | Meaning |

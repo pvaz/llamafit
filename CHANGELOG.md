@@ -172,5 +172,17 @@ the changelog says so when they do.
   Japanese heading is two characters and four columns wide, and a Devanagari one counts
   combining marks that occupy no column at all, so a budget in characters admitted columns
   it had no room for.
+- Arabic, Hebrew and Urdu no longer show a command flag backwards. A leading hyphen is
+  direction-neutral, so `--verbose` inside a right-to-left sentence was drawn as
+  `verbose--`, and a reader who retyped what they saw got a command that does not run.
+  Every value the code treats as an identifier — a flag, a command name, a path, a model or
+  repository id, a URL, a size with its unit — is now wrapped in Unicode isolates as it is
+  interpolated; an identifier a translator kept verbatim inside prose is isolated by the
+  renderer; each line holding a right-to-left letter is given an explicit base direction,
+  which keeps a sentence's final full stop with the sentence; and a table's columns and
+  alignments are mirrored so the first column is the first one read. Nothing changes for a
+  left-to-right language, nothing was added to any catalog, and `--json` receives no
+  direction mark in any language. `docs/translations.md` records what this cannot fix and
+  which terminals act on it.
 
 [Unreleased]: https://github.com/pvaz/llamafit/commits/main
