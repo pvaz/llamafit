@@ -404,9 +404,11 @@ The two rules meet as follows, because read separately they are not monotonic: a
 
 ### 9.2 Search order
 
+**Context is a constraint before it is a preference.** A placement below the user's minimum context is not a worse answer, it is not an answer, and is dropped. Among those that meet the minimum, a faster mode wins over a larger context. Both halves matter: without the constraint the planner recommends a 125B model CPU-only at 262144 tokens, which works and runs at about a token a second; without the preference it offers a small context on the card when a slower mode would have given the user what they asked for.
+
 For a candidate, the planner evaluates in this order and keeps the first verdict better than Too Tight, continuing to find the best one when several fit:
 
-1. `gpu` at the requested context; then with KV `q8_0` if allowed; then at half context down to the user's minimum.
+1. `gpu` at the requested context; then with KV `q8_0` if allowed; then down the context ladder of section 9.3 to the user's minimum. **Candidate contexts come from that ladder, not from halving.** Halving cannot reach 40960, which is the context the reference machine's own best measured configuration runs at, so a planner that halves cannot reproduce the best configuration anybody has actually measured on the machine it was tuned for.
 2. `moe-offload` (MoE models only) with all routed experts in RAM; then progressively fewer experts on CPU while VRAM allows.
 3. `hybrid` with the largest `-ngl` that fits.
 4. `cpu`.
@@ -419,7 +421,7 @@ The planner reports `max_context_fit` for the chosen mode and a tier table (16K,
 
 ### 9.4 Threads
 
-`-t` is the number of performance cores (or physical cores when the OS does not distinguish); `-tb` equals `-t`. On hybrid Intel parts efficiency cores are excluded because measured generation is slower with them.
+`-t` is the number of *threads* the performance cores provide, which on a part with simultaneous multithreading is twice the number of those cores; `-tb` equals `-t`. On hybrid Intel parts the efficiency cores are excluded, because measured generation is slower with them, but excluding them is not the same as counting cores rather than threads: on the reference machine the measured optimum is 16, which is the eight performance cores' thread count, and it is about four percent faster than 8. An earlier revision of this section conflated the two and gave up that four percent for no reason.
 
 ### 9.5 Flag rendering
 
