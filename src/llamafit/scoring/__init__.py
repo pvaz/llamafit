@@ -22,12 +22,22 @@ from llamafit.scoring.context_score import DEFAULT_CONTEXT, context_score, reque
 from llamafit.scoring.fit_score import fit_score, fit_score_for, worst_pool_utilisation
 from llamafit.scoring.rank import evaluate, evaluate_and_rank, rank
 from llamafit.scoring.speed_score import TARGET_TPS, prompt_penalty, speed_score, target_tps
-from llamafit.scoring.weights import DEFAULT_WEIGHTS, PARTS, USE_CASES, weights_for
+from llamafit.scoring.weights import (
+    DEFAULT_WEIGHTS,
+    PARTS,
+    PREFERENCE_SHIFT,
+    PREFERENCES,
+    USE_CASES,
+    shift_preference,
+    weights_for,
+)
 
 __all__ = [
     "DEFAULT_CONTEXT",
     "DEFAULT_WEIGHTS",
     "PARTS",
+    "PREFERENCES",
+    "PREFERENCE_SHIFT",
     "TARGET_TPS",
     "USE_CASES",
     "context_score",
@@ -38,6 +48,7 @@ __all__ = [
     "prompt_penalty",
     "rank",
     "requested_context",
+    "shift_preference",
     "speed_score",
     "target_tps",
     "weights_for",

@@ -15,31 +15,31 @@ from __future__ import annotations
 import dataclasses
 import functools
 import json
-from collections.abc import Sequence
 from pathlib import Path
-from typing import cast, get_args
+from typing import cast
 
 import httpx
 import typer
 import yaml
-from rich.console import Console
 from rich.text import Text
 
 from llamafit.catalog.hf import HttpHfClient
-from llamafit.catalog.loader import bundled_catalog_dir, custom_models_path, load_catalog
+from llamafit.catalog.loader import bundled_catalog_dir, custom_models_path
 from llamafit.catalog.refresh import RefreshResult, refresh_file
 from llamafit.catalog.validate import validate_files
 from llamafit.cli.app import CliState, app
+from llamafit.cli.common import (
+    check_capabilities,
+    check_use_case,
+    find_model,
+    load_catalog_or_warn,
+)
 from llamafit.cli.render import render_catalog_list, render_model_facts, render_quants
-from llamafit.errors import CatalogError
 from llamafit.gguf.cache import HeaderCache, read_facts
 from llamafit.i18n import _, lazy_gettext, ngettext
-from llamafit.models.catalog import Capability, Catalog, CatalogModel, UseCase
+from llamafit.models.catalog import CatalogModel
 from llamafit.paths import get_paths
 from llamafit.services.catalog import ModelFilters, describe, filter_models, summarise
-
-_VALID_CAPABILITIES = get_args(Capability)
-_VALID_USE_CASES = get_args(UseCase)
 
 catalog_app = typer.Typer(
     name="catalog",
@@ -83,96 +83,10 @@ _VALIDATE_FILE_ARGUMENT: Path | None = typer.Argument(
 )
 
 
-def _closest_ids(
-    catalog_ids: Sequence[str], target: str, *, min_prefix: int = 2, limit: int = 3
-) -> list[str]:
-    """The catalog ids that share the longest prefix with ``target``.
-
-    "Closest" is deliberately narrow: the longest common prefix, case-insensitive,
-    counted from the first character. A typo like ``qwen3-coder`` for
-    ``qwen3-coder-next`` shares an eleven-character prefix and is an obvious match;
-    unrelated input shares nothing worth naming. Below ``min_prefix`` characters of
-    overlap, nothing is suggested at all, so nonsense input gets an honest "not
-    found" instead of a handful of unrelated ids picked only because they had to
-    come from somewhere. At most ``limit`` ids are returned, alphabetically, so a
-    genuine tie does not turn one bad guess into a wall of suggestions.
-    """
-
-    def prefix_len(candidate: str) -> int:
-        length = 0
-        for a, b in zip(target.casefold(), candidate.casefold(), strict=False):
-            if a != b:
-                break
-            length += 1
-        return length
-
-    scored = [(prefix_len(candidate), candidate) for candidate in catalog_ids]
-    # Named rather than thrown away as `_`: this module imports the translator under
-    # that name, and a throwaway inside a function rebinds it to a string with nothing
-    # to warn you until the next translated call in the same function is not callable.
-    best = max((score for score, _candidate in scored), default=0)
-    if best < min_prefix:
-        return []
-    return sorted(candidate for score, candidate in scored if score == best)[:limit]
-
-
-def _find_model(catalog: Catalog, model_id: str) -> CatalogModel:
-    """The model with ``model_id``, or a :class:`CatalogError` naming close ids instead.
-
-    An id is a name, not a password: matching strips surrounding whitespace (from
-    a pasted value) and folds case, so ``" QWEN3-CODER-NEXT"`` finds
-    ``qwen3-coder-next`` the same way the closest-id suggestion already would.
-    Every catalog id is lowercase by construction, so folding the input is enough;
-    no separate case-insensitive index is needed.
-    """
-    normalized = model_id.strip().casefold()
-    model = catalog.by_id.get(normalized)
-    if model is not None:
-        return model
-    suggestions = _closest_ids(sorted(catalog.by_id), normalized)
-    hint = (
-        _("Did you mean: %(ids)s?") % {"ids": ", ".join(suggestions)}
-        if suggestions
-        else _("Run `llamafit list` to see every model id.")
-    )
-    raise CatalogError(
-        _("no model named %(id)s in the catalog") % {"id": repr(model_id)}, hint=hint
-    )
-
-
-def _load_catalog(state: CliState) -> Catalog:
-    """Load the catalog, warning to stderr once when any file had a problem.
-
-    A user who adds a model to their custom catalog and mistypes a field would
-    otherwise just be told the model does not exist, with a hint pointing at
-    ``list``, which silently does not show it either: the loader already knows
-    exactly what went wrong, and this is the one place every command reaches it
-    from. The warning is one line, not fatal, and never dumped into a table:
-    browsing keeps working with whatever loaded, and ``catalog validate`` is
-    where the detail lives.
-    """
-    catalog, problems = load_catalog()
-    if problems:
-        stderr = Console(stderr=True, no_color=state.no_color, highlight=False)
-        stderr.print(
-            Text(
-                ngettext(
-                    "%(count)d catalog problem found; run `llamafit catalog validate` for details.",
-                    "%(count)d catalog problems found; "
-                    "run `llamafit catalog validate` for details.",
-                    len(problems),
-                )
-                % {"count": len(problems)},
-                style="yellow",
-            )
-        )
-    return catalog
-
-
 def _print_list(ctx: typer.Context, filters: ModelFilters, limit: int | None) -> None:
     """Filter the catalog, summarise the results, and print them as a table or as JSON."""
     state: CliState = ctx.obj
-    catalog = _load_catalog(state)
+    catalog = load_catalog_or_warn(state)
     models = filter_models(catalog, filters)
     if limit is not None:
         models = models[:limit]
@@ -203,35 +117,12 @@ def _build_filters(
 ) -> ModelFilters:
     """Build filters from raw CLI values, rejecting an unknown use case or capability by name.
 
-    Typer can enumerate a single ``Literal`` option's choices itself, but doing
-    that for ``--use-case`` would make an unknown value a bare Click usage error:
-    a different exit code and no list of what would have worked, for the same
-    kind of mistake ``--capability`` already reports as a clean, listed
-    :class:`CatalogError`. Typer also cannot enumerate a ``list[Literal[...]]``
-    option at all (a list of a "complex" sub-type is one of the few shapes it
-    refuses outright), so ``--capability`` has to be validated by hand regardless;
-    checking ``--use-case`` the same way here, instead of leaning on Typer for it,
-    means the two now fail alike.
+    Both checks live in :mod:`llamafit.cli.common`, because ``recommend`` takes the same
+    two values and a typo has to fail the same way whichever command met it.
     """
-    if use_case is not None and use_case not in _VALID_USE_CASES:
-        raise CatalogError(
-            _("invalid --use-case %(value)s") % {"value": repr(use_case)},
-            hint=_("Valid use cases: %(values)s") % {"values": ", ".join(_VALID_USE_CASES)},
-        )
-    invalid_capabilities = [value for value in capability if value not in _VALID_CAPABILITIES]
-    if invalid_capabilities:
-        raise CatalogError(
-            ngettext(
-                "invalid --capability value: %(values)s",
-                "invalid --capability values: %(values)s",
-                len(invalid_capabilities),
-            )
-            % {"values": ", ".join(invalid_capabilities)},
-            hint=_("Valid capabilities: %(values)s") % {"values": ", ".join(_VALID_CAPABILITIES)},
-        )
     return ModelFilters(
-        use_case=cast("UseCase | None", use_case),
-        capabilities=cast("list[Capability]", capability),
+        use_case=None if use_case is None else check_use_case(use_case),
+        capabilities=list(check_capabilities(capability)),
         licenses=license_,
         vendor=vendor,
         search=search,
@@ -310,8 +201,8 @@ def info_command(
 ) -> None:
     """Show one model's facts, sources and every quant it publishes."""
     state: CliState = ctx.obj
-    catalog = _load_catalog(state)
-    model = _find_model(catalog, model_id)
+    catalog = load_catalog_or_warn(state)
+    model = find_model(catalog, model_id)
     detail = describe(model)
     if state.json_output:
         typer.echo(detail.model_dump_json(indent=2, by_alias=True))
@@ -417,8 +308,8 @@ def refresh_command(
     """Refresh file names, sizes, checksums and GGUF facts for the catalog from Hugging Face."""
     state: CliState = ctx.obj
     if model is not None:
-        catalog = _load_catalog(state)
-        _find_model(catalog, model)
+        catalog = load_catalog_or_warn(state)
+        find_model(catalog, model)
 
     results: list[RefreshResult] = []
     with httpx.Client(follow_redirects=True) as client:
@@ -543,8 +434,8 @@ def show_command(
     ),
 ) -> None:
     """Print one model's raw catalog entry, as JSON by default or as YAML with --yaml."""
-    catalog = _load_catalog(ctx.obj)
-    model = _find_model(catalog, model_id)
+    catalog = load_catalog_or_warn(ctx.obj)
+    model = find_model(catalog, model_id)
     if yaml_output:
         typer.echo(_dump_one(model))
     else:
