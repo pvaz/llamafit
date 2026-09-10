@@ -44,6 +44,30 @@
       trust: official
       quants:
         - { name: Q8_0 }
+  measured:
+    # Two runs made to identify the speed estimator's constants rather than to
+    # recommend this model. A small dense model is the only way to isolate a pool:
+    # the traffic is exactly its block weights, nothing else competes, and running
+    # it first entirely in system memory and then entirely on the card separates
+    # two efficiencies that four larger measurements together could not.
+    - profile: "rtx4060-8gb-ddr5-128gb, everything in system memory"
+      quant: Q8_0
+      gen_tps: 78.0
+      pp_tps: 2924
+      context: 128
+      flags: "-ngl 0 -t 8"
+      llama_cpp_build: 10867
+      date: 2026-09-10
+      source: docs/calibration/2026-09-09-reference-machine.md
+    - profile: "rtx4060-8gb-ddr5-128gb, everything on the card"
+      quant: Q8_0
+      gen_tps: 279.5
+      pp_tps: 21734
+      context: 128
+      flags: "-ngl 99"
+      llama_cpp_build: 10867
+      date: 2026-09-10
+      source: docs/calibration/2026-09-09-reference-machine.md
 
 - id: qwen3.8-flash-next
   name: Qwen3.8-Flash-Next
