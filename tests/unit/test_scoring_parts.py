@@ -35,6 +35,8 @@ from llamafit.scoring.speed_score import (
     TARGET_TPS,
     VERY_SLOW_PROMPT_PENALTY,
     floor_tps,
+    keeps_up_with_reader,
+    observed_tps,
     prompt_penalty,
     speed_ramp,
     speed_score,
@@ -367,6 +369,70 @@ def test_an_embedding_run_is_scored_on_how_fast_it_reads() -> None:
     # It generates nothing, so a generation figure would score every model at zero.
     assert speed_score(speed(0.0, 200.0), "embedding") == 100.0
     assert speed_score(speed(0.0, 100.0), "embedding") == pytest.approx(50.0)
+
+
+# --- speed: the floor as a test and not only as a score --------------------------
+
+
+@pytest.mark.parametrize("use_case", ["chat", "general", "coding", "reasoning", "multimodal"])
+def test_a_model_slower_than_its_reader_does_not_keep_up(use_case: str) -> None:
+    """The whole claim in one line: below the floor is a different kind of tool."""
+    assert not keeps_up_with_reader(speed(READING_TPS - 0.1, 500.0), use_case)
+
+
+@pytest.mark.parametrize("use_case", ["chat", "general", "coding", "reasoning", "multimodal"])
+def test_exactly_reading_speed_still_keeps_up(use_case: str) -> None:
+    """The boundary falls on the side that keeps a candidate.
+
+    A model generating at exactly the rate a person reads is keeping up, by the plain
+    meaning of the words. It scores zero, because zero is where the ramp starts, and it
+    stays on the board, because exclusion is the stronger claim and takes the stricter
+    test.
+    """
+    assert keeps_up_with_reader(speed(READING_TPS, 500.0), use_case)
+    assert speed_score(speed(READING_TPS, 500.0), use_case) == 0.0
+
+
+def test_a_throughput_job_has_nobody_to_fall_behind() -> None:
+    """No reader, no floor, and so no speed at which an embedding stops being worth running."""
+    assert keeps_up_with_reader(speed(0.0, 0.001), "embedding")
+    assert keeps_up_with_reader(speed(0.0, 0.0), "embedding")
+
+
+def test_the_floor_and_the_score_read_the_same_figure_off_an_estimate() -> None:
+    """An embedding is judged on its prompt rate by both, and everything else on generation.
+
+    A board that excluded a model on one figure and then scored it on the other would be
+    disagreeing with itself about which number mattered, with only one of the two on
+    screen.
+    """
+    embedding = speed(gen_tps=0.0, pp_tps=800.0)
+    assert observed_tps(embedding, "embedding") == 800.0
+    assert keeps_up_with_reader(embedding, "embedding")
+    assert speed_score(embedding, "embedding") == 100.0
+
+    interactive = speed(gen_tps=2.1, pp_tps=800.0)
+    assert observed_tps(interactive, "general") == 2.1
+    assert not keeps_up_with_reader(interactive, "general")
+    assert speed_score(interactive, "general") == 0.0
+
+
+def test_keeping_up_is_a_question_about_the_machine_and_not_about_the_weights() -> None:
+    """The same estimate answers the same way for every use case that has a reader.
+
+    The target moves between use cases and the floor does not, so a model fast enough to
+    read along with in a chat is fast enough to read along with while reasoning. What
+    changes is only how good the experience is, which is the score's job.
+    """
+    just_over = speed(READING_TPS + 0.1, 500.0)
+    assert all(keeps_up_with_reader(just_over, case) for case in TARGET_TPS if case != "embedding")
+
+
+def test_an_unknown_use_case_is_named_by_the_floor_test_too() -> None:
+    with pytest.raises(ConfigError, match="unknown use case"):
+        keeps_up_with_reader(speed(10.0, 500.0), "vibes")
+    with pytest.raises(ConfigError, match="unknown use case"):
+        observed_tps(speed(10.0, 500.0), "vibes")
 
 
 def test_an_unknown_use_case_is_named_rather_than_raising_a_key_error() -> None:
