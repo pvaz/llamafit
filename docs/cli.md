@@ -1,7 +1,7 @@
 # Command-line reference
 
 LlamaFit is one executable, `llamafit`, with subcommands. Every command accepts the global
-options that have shipped — the table marks the ones that arrive with a later phase — and every
+options below, and every
 command can print JSON instead of tables so scripts can consume it. The JSON is the serialised
 data model of the command's result; the tables show the same data.
 
@@ -18,9 +18,49 @@ built, and their flags may still change. The [roadmap](../ROADMAP.md) says what 
 | `--no-color` | Disable colours; useful when piping into files. |
 | `--language TAG` | Speak this language, for example `pt_PT`. It is read before anything is rendered, so `--language pt_PT --help` comes out in Portuguese too. Without it LlamaFit reads `LLAMAFIT_LANGUAGE`, then the operating system's locale, then falls back to English. A language it does not have falls back to English and names the ones it does have; a request served by another region's catalog says so. The notice goes to stderr, so `--json` stays machine-readable. See [translations.md](translations.md). |
 | `--version` | Print the version and exit. |
-| `--profile NAME\|FILE` | Score against a hardware profile instead of the live scan. The profiles ship now (`llamafit hardware`); the flag arrives with the commands that score, in phase 1C. |
-| `--memory SIZE`, `--ram SIZE`, `--cpu-cores N` | Override single values of the scan for a what-if (phase 1C, as above). Sizes accept `8G`, `7.5GiB`, `512M`. |
-| `--max-context N` | Cap the context used for budgets and scores (phase 1C). |
+| `--profile NAME\|FILE` | Answer for the machine a hardware profile describes instead of this one. Nothing about this machine is probed. `llamafit hardware list` names the profiles you have; a path to a `.json` file works too. |
+| `--memory SIZE`, `--ram SIZE`, `--cpu-cores N` | Substitute one pool of the live scan for a what-if: the card's memory, the system memory, the physical core count. Everything else stays as scanned. Sizes accept `8G`, `7.5GiB`, `512M`. |
+| `--max-context N` | Plan, report and score no context longer than this. It is not a machine; see below. |
+
+### The four flags that replace a machine
+
+`--profile`, `--memory`, `--ram` and `--cpu-cores` change *what the answer is about*.
+Whatever they produce is marked, and marked in the data rather than only in a heading:
+
+- The `Host` carries a `simulation` object naming the profile, its file and the pools that
+  were overridden, and a `simulated` boolean computed from it.
+- `recommend`, `fit` and `plan` carry the same two fields on their own documents, because
+  a board carries no host and a script reading `--json` would otherwise have nothing to
+  read. `"simulated": false` on a scan is part of the promise: absence is not evidence.
+- On the terminal the first line above the table is red, says `SIMULATED`, and says which
+  profile or which pools, before the reader meets a figure.
+
+They apply to `system`, `fit`, `recommend`, `plan` and `preset`, and to `llamafit` with no
+arguments, which opens the dashboard already simulating that machine with its badge
+showing. `doctor` **refuses** them: every line it prints is a probe that ran on the machine
+LlamaFit is running on, a profile carries no probes, and a report about this machine under
+a heading claiming another's would be worse than an error. `bench` refuses a simulated
+machine for the same reason — a benchmark measures what it runs on. The commands that read
+no machine at all (`list`, `search`, `info`, `catalog`, `hardware`, `llamacpp`, `install`,
+`serve`) ignore them.
+
+`llamafit --profile NAME system` is the shortest way to see what a profile becomes; it is
+`llamafit hardware show NAME --as-host` with this machine's llama.cpp printed beside it.
+The llama.cpp half is never substituted, because the binary and the GGUF files on this
+disk are real whichever machine the numbers describe.
+
+### `--max-context` is not a machine
+
+It caps the context, so it belongs with `--min-context` rather than with the four above,
+and it changes the question rather than the subject. It caps four things at once, which is
+the only way it can be honest: the context the planner sizes for, the ladder
+`plan` prints for a launch script to choose from, the largest context reported
+(`max_context_fit`), and the context the section 11.2 score is measured against. A ceiling
+below `--min-context` is refused by name rather than answered with "this model is too
+short", which would blame the model for the request.
+
+The web API spells it `max_context` on `/api/v1/models` and `/api/v1/models/top`, where it
+sits beside `min_context` for the same reason.
 
 ### What `--json` does and does not translate
 
@@ -73,7 +113,7 @@ Host
   OS         windows Windows-11-10.0.26200-SP0 (x86_64)
   CPU        Intel(R) Core(TM) i9-14900KF; 24 cores / 32 threads, 8 performance cores; avx2
   Memory     127.8 GiB total, 100.8 GiB available; DDR5 4200 MT/s, 4 modules, 2 channels; bandwidth 57.3 GB/s (measured)
-  GPU 0      NVIDIA GeForce RTX 4060 (cuda); 8.0 GiB VRAM, 7.2 GiB free; 272.0 GB/s and 15.0 TFLOPS fp16 (spec), driver 610.88
+  GPU 0      NVIDIA GeForce RTX 4060 (cuda); 8.0 GiB VRAM, 7.2 GiB free; 272.0 GB/s and 60.4 TFLOPS fp16 (spec), driver 610.88
   Disk       C:\Dev\Projectos Pessoais\2026\llamafit: 355.6 GiB free of 1.8 TiB
   Disk       D:\llama.cpp\bin: 417.9 GiB free of 1.8 TiB
 

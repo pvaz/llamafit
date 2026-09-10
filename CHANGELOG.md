@@ -320,6 +320,33 @@ the changelog says so when they do.
   sentence saying so is a band above the table that does not scroll away rather than a caption
   under it. When rows disagree about how their speeds were arrived at, the label is a column
   beside each figure and a terminal too narrow for the pair shows neither.
+- **Section 13.1's five global flags now exist**: `--profile`, `--memory`, `--ram`,
+  `--cpu-cores` and `--max-context`. The first four ask what a machine that is not this one
+  would run -- a card somebody is thinking of buying, or the twenty identical machines a
+  model is being chosen for from a build server that is none of them -- and `--profile`
+  answers without probing this machine at all, which is what makes it work on a machine
+  whose graphics driver hangs a probe. They apply to `system`, `fit`, `recommend`, `plan`
+  and `preset`, and to `llamafit` with no arguments, which opens the dashboard already
+  simulating that machine with its badge showing. `doctor` refuses them rather than printing
+  this machine's probes under a heading claiming another's, and `bench` refuses a simulated
+  machine because a benchmark measures what it runs on.
+- **A board, a fit listing and a plan now say in their own JSON that they are not about this
+  machine.** A `Host` has carried `simulation` and `simulated` since profiles landed, but a
+  board carries no host, so a program reading `--json` had nothing to read: the red
+  `SIMULATED` line above the table is no use to a script. `Board`, `FitBoard` and
+  `PlanReport` carry the same two fields, set from the host they were computed against, with
+  `simulated` computed from `simulation` so neither can drift or be left out. `"simulated":
+  false` on a scan is part of the promise, because absence is not evidence. On the terminal
+  the banner is the first line above each of the three, and `fit`'s own heading stops reading
+  "Fit on this machine" one line under "they are not this machine".
+- `--max-context` caps every context the run will size for, offer or score against: the
+  planner's search, the context ladder a launch script chooses from, the largest context
+  reported, and the denominator section 11.2's score is measured against. It is not a host
+  property and does not sit with the four above -- it changes the question, not the subject --
+  so it lives on `Needs` beside `--min-context`, and a ceiling below that floor is refused by
+  name rather than answered with "this model is too short", which would blame the model for
+  the request. The web API gains the `max_context` query parameter section 13.3 always
+  promised, beside `min_context`.
 
 ### Changed
 - **The placement planner steps down section 9.3's context ladder instead of halving.**
@@ -366,6 +393,28 @@ the changelog says so when they do.
   until somebody who reads them fills them in. `--capability` still takes the English id.
 
 ### Fixed
+- **Section 10.2 of the specification described a prompt-processing formula that has not
+  been the one running since the tensor-throughput correction.** It showed one compute term
+  charged wholly to the graphics card; the code splits it by the share of the layers each
+  device holds and applies the card's efficiency only to the card's half. The section now
+  says what runs, including where the CPU's rate came from -- 0.44 TFLOP/s per performance
+  core, from Qwen3-0.6B Q8_0 at `-ngl 0 -t 8` reaching 2,924 prompt tokens per second, which
+  is 3.51 TFLOP/s across eight of them -- and that it is effective rather than a peak and is
+  not scaled by `eff_pp` a second time. `docs/calibration/2026-09-09-reference-machine.md`
+  records the two prompt figures the constants are fitted to and retires the superseded
+  pair, `eff_pp` 0.30 and the invented `CPU_FP16_TFLOPS_PER_CORE` 0.05, the way it already
+  retires the per-layer overhead and the 0.36 scattered efficiency: named, explained, with
+  the run they came from kept. `docs/how-it-works.md` carried the superseded generation
+  formula too -- one system-memory efficiency and a 0.2 ms per-layer overhead -- and now
+  carries the one in force.
+- One verdict was called `roomy` in the board's column and `Comfortable:` in the sentence
+  explaining it, which asked a reader to work out that two words were one verdict and asked
+  thirty-seven translators to keep two unrelated words in step. Every other verdict opens its
+  sentence with the word in the column; this one now does too, and its six translations
+  already did.
+- The web dashboard's string table carried `any`, which nothing asked for and whose source
+  gave a translator no way to know what it qualified, so six languages left it in English.
+  It is gone, and with it the entry in each of those six catalogs.
 - **The fit score's left-hand slope reads the model, not the pool.** Section 11.3 has a
   slope that penalises a model far smaller than the machine, precisely so the tool does not
   always recommend the smallest safe option — and it did not work, because it was measured
