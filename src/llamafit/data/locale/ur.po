@@ -251,6 +251,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "نامعلوم"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr ""
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr ""
+
+msgctxt "model capability"
+msgid "vision"
+msgstr ""
+
+msgctxt "model capability"
+msgid "tools"
+msgstr ""
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr ""
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr ""
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr ""
+
+msgctxt "model capability"
+msgid "audio"
+msgstr ""
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s اور %(compute)s TFLOPS fp16"
 
@@ -260,31 +292,29 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "مشین"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "OS"
-msgstr "OS"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d کور / %(logical)d تھریڈ"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d پرفارمنس کور"
 msgstr[1] "%(count)d پرفارمنس کور"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "isa نامعلوم"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -298,6 +328,54 @@ msgid "%(count)d channel"
 msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d چینل"
 msgstr[1] "%(count)d چینل"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "قسم نامعلوم"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (تفصیلات)"
+
+msgid "driver %(driver)s"
+msgstr "ڈرائیور %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "کوئی تفصیلات نہیں"
+
+msgid "Host"
+msgstr "مشین"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa نامعلوم"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -316,9 +394,6 @@ msgstr "میموری"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "کل %(total)s، دستیاب %(available)s؛ %(details)s؛ بینڈوتھ %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "قسم نامعلوم"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -329,23 +404,15 @@ msgstr "کوئی نہیں ملا"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM، %(free)s خالی"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM نامعلوم"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (تفصیلات)"
-
-msgid "driver %(driver)s"
-msgstr "ڈرائیور %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "کوئی تفصیلات نہیں"
 
 msgid "Memory pool"
 msgstr "میموری پول"
@@ -372,6 +439,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "build نامعلوم"
 
@@ -394,6 +462,7 @@ msgstr "چل رہا ہے"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s، context %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "ماڈل نامعلوم"
 
@@ -420,6 +489,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "ٹھیک"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "کوئی سرور نہیں"
 
@@ -436,26 +506,31 @@ msgstr "درجہ"
 msgid "finding"
 msgstr "مشاہدہ"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "معیار*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "معیار"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "پیرام"
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Context"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "صلاحیتیں"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "معیار ادارتی بنیاد ہے، quantisation کے کسی بھی نقصان سے پہلے کا؛ اس کے پیچھے موجود، ماخذ سمیت بینچ مارک دیکھنے کے لیے `llamafit info <model>` چلائیں۔"
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "mixture-of-experts ماڈل کے لیے پیرام کل/فعال ارب میں ہے، اور جب دونوں برابر ہوں تو ایک ہی عدد۔"
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "ماڈل"
@@ -478,23 +553,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "پیرامیٹر"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "کل %(total)sB، فعال %(active)sB"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "طریقہ غیر متعین"
 
 msgid "%(tokens)s tokens native"
 msgstr "اصل طور پر %(tokens)s ٹوکن"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr "، %(method)s کے ذریعے بڑھا کر %(tokens)s"
-
-msgid "unspecified method"
-msgstr "طریقہ غیر متعین"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Context"
 
 msgid "Architecture"
 msgstr "آرکیٹیکچر"
 
 msgid "Notes"
 msgstr "نوٹس"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "صلاحیتیں"
 
 msgid "Use cases"
 msgstr "استعمال کی اقسام"
@@ -508,6 +592,7 @@ msgstr "بینچ مارک"
 msgid "Source %(index)d"
 msgstr "ماخذ %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "ابھی تک نہیں پڑھا گیا"
 
@@ -516,15 +601,24 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d پرت"
 msgstr[1] "%(count)d پرتیں"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d expert"
-msgstr[1] "%(count)d/%(used)d expert"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d expert"
 msgstr[1] "%(count)d expert"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d expert"
+msgstr[1] "%(count)d/%(used)d expert"
 
 msgid "Quants"
 msgstr "Quants"

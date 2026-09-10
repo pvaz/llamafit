@@ -237,6 +237,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "未知"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr ""
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr ""
+
+msgctxt "model capability"
+msgid "vision"
+msgstr ""
+
+msgctxt "model capability"
+msgid "tools"
+msgstr ""
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr ""
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr ""
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr ""
+
+msgctxt "model capability"
+msgid "audio"
+msgstr ""
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s，%(compute)s TFLOPS fp16"
 
@@ -246,30 +278,26 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "主機"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
 
-msgid "OS"
-msgstr "系統"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s（%(arch)s）"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d 核心 / %(logical)d 執行緒"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d 個效能核心"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s；%(cores)s；%(isa)s"
-
-msgid "isa unknown"
-msgstr "指令集未知"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -281,6 +309,54 @@ msgstr[0] "%(count)d 條記憶體模組"
 msgid "%(count)d channel"
 msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d 個通道"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "類型未知"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s（規格表）"
+
+msgid "driver %(driver)s"
+msgstr "驅動程式 %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "沒有規格資料"
+
+msgid "Host"
+msgstr "主機"
+
+msgid "OS"
+msgstr "系統"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s（%(arch)s）"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s；%(cores)s；%(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "指令集未知"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s（%(source)s）"
@@ -298,9 +374,6 @@ msgstr "記憶體"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "共 %(total)s，可用 %(available)s；%(details)s；頻寬 %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "類型未知"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -311,23 +384,15 @@ msgstr "未偵測到"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "VRAM %(total)s，可用 %(free)s"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM 未知"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s（規格表）"
-
-msgid "driver %(driver)s"
-msgstr "驅動程式 %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s（%(backend)s）；%(vram)s；%(specs)s"
-
-msgid "no specs"
-msgstr "沒有規格資料"
 
 msgid "Memory pool"
 msgstr "記憶體集區"
@@ -354,6 +419,7 @@ msgstr "b%(build)d（%(commit)s）"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "建置版本未知"
 
@@ -376,6 +442,7 @@ msgstr "執行中"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s：%(model)s，上下文 %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "模型未知"
 
@@ -402,6 +469,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "正常"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "沒有服務"
 
@@ -421,26 +489,31 @@ msgstr "說明"
 # These five are the list table's column headings, and the table is laid out for
 # an 80-column terminal. A Chinese character takes two terminal columns, so the
 # headings are kept as short as the meaning allows.
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "品質*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "品質"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "參數"
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "上下文"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "能力"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "品質是編輯給定的基準分，還沒有計入任何量化造成的損失；執行 `llamafit info <model>` 可以看到支撐它的、註明出處的基準測試。"
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "對混合專家模型，參數這一欄是總量/啟用量（單位：十億）；兩者相等時只顯示一個數字。"
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "模型"
@@ -463,23 +536,32 @@ msgstr "%(spdx)s（%(url)s）"
 msgid "Parameters"
 msgstr "參數量"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "共 %(total)sB，啟用 %(active)sB"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "方法未說明"
 
 msgid "%(tokens)s tokens native"
 msgstr "原生 %(tokens)s tokens"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr "，透過 %(method)s 擴充到 %(tokens)s"
-
-msgid "unspecified method"
-msgstr "方法未說明"
+msgctxt "table row label"
+msgid "Context"
+msgstr "上下文"
 
 msgid "Architecture"
 msgstr "架構"
 
 msgid "Notes"
 msgstr "備註"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "能力"
 
 msgid "Use cases"
 msgstr "使用情境"
@@ -493,6 +575,7 @@ msgstr "基準測試"
 msgid "Source %(index)d"
 msgstr "來源 %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "尚未讀取"
 
@@ -500,13 +583,22 @@ msgid "%(count)d layer"
 msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d 層"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d 個專家"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d 個專家"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d 個專家"
 
 msgid "Quants"
 msgstr "量化版本"

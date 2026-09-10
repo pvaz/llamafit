@@ -92,7 +92,7 @@ def no_backends_row() -> str:
 
 
 def no_server() -> str:
-    return _("no server")
+    return pgettext("probe result", "no server")
 
 
 def run_verbose() -> str:

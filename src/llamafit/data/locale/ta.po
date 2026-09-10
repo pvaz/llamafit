@@ -247,6 +247,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "தெரியவில்லை"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr ""
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr ""
+
+msgctxt "model capability"
+msgid "vision"
+msgstr ""
+
+msgctxt "model capability"
+msgid "tools"
+msgstr ""
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr ""
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr ""
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr ""
+
+msgctxt "model capability"
+msgid "audio"
+msgstr ""
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s மற்றும் %(compute)s TFLOPS fp16"
 
@@ -256,31 +288,29 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "இயந்திரம்"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "OS"
-msgstr "OS"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d கோர் / %(logical)d இழை"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d செயல்திறன் கோர்"
 msgstr[1] "%(count)d செயல்திறன் கோர்கள்"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "isa தெரியவில்லை"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -294,6 +324,54 @@ msgid "%(count)d channel"
 msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d சேனல்"
 msgstr[1] "%(count)d சேனல்கள்"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "வகை தெரியவில்லை"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (விவரக்குறிப்பு)"
+
+msgid "driver %(driver)s"
+msgstr "இயக்கி %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "விவரக்குறிப்பு இல்லை"
+
+msgid "Host"
+msgstr "இயந்திரம்"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa தெரியவில்லை"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -312,9 +390,6 @@ msgstr "நினைவகம்"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "மொத்தம் %(total)s, கிடைப்பது %(available)s; %(details)s; bandwidth %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "வகை தெரியவில்லை"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -325,23 +400,15 @@ msgstr "எதுவும் கண்டறியப்படவில்ல�
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM, %(free)s காலி"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM தெரியவில்லை"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (விவரக்குறிப்பு)"
-
-msgid "driver %(driver)s"
-msgstr "இயக்கி %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "விவரக்குறிப்பு இல்லை"
 
 msgid "Memory pool"
 msgstr "நினைவகத் தொகுப்பு"
@@ -368,6 +435,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "build தெரியவில்லை"
 
@@ -390,6 +458,7 @@ msgstr "இயங்குகிறது"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, context %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "மாடல் தெரியவில்லை"
 
@@ -416,6 +485,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "சரி"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "சேவையகம் இல்லை"
 
@@ -432,26 +502,31 @@ msgstr "நிலை"
 msgid "finding"
 msgstr "கண்டறிதல்"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "தரம்*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "தரம்"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "Params"
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Context"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "திறன்கள்"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "தரம் என்பது ஆசிரியக் குழுவின் அடிப்படை மதிப்பீடு, எந்த quantisation இழப்பும் கணக்கில் வருவதற்கு முன்; அதற்குப் பின்னால் உள்ள, மூலம் குறிப்பிடப்பட்ட benchmark-களைப் பார்க்க `llamafit info <model>` ஐ இயக்கவும்."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "Params என்பது mixture-of-experts மாடலுக்கான மொத்த/செயலிலுள்ள பில்லியன்கள், இரண்டும் சமமாக இருக்கும்போது ஒரே எண்."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "மாடல்கள்"
@@ -474,23 +549,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "அளவுருக்கள்"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "மொத்தம் %(total)sB, செயலில் %(active)sB"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "முறை குறிப்பிடப்படவில்லை"
 
 msgid "%(tokens)s tokens native"
 msgstr "இயல்பாக %(tokens)s டோக்கன்கள்"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", %(method)s மூலம் %(tokens)s ஆக நீட்டிக்கப்பட்டது"
-
-msgid "unspecified method"
-msgstr "முறை குறிப்பிடப்படவில்லை"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Context"
 
 msgid "Architecture"
 msgstr "கட்டமைப்பு"
 
 msgid "Notes"
 msgstr "குறிப்புகள்"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "திறன்கள்"
 
 msgid "Use cases"
 msgstr "பயன்பாட்டு வகைகள்"
@@ -504,6 +588,7 @@ msgstr "Benchmark"
 msgid "Source %(index)d"
 msgstr "மூலம் %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "இன்னும் படிக்கப்படவில்லை"
 
@@ -512,15 +597,24 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d அடுக்கு"
 msgstr[1] "%(count)d அடுக்குகள்"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d expert"
-msgstr[1] "%(count)d/%(used)d expert-கள்"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d expert"
 msgstr[1] "%(count)d expert-கள்"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d expert"
+msgstr[1] "%(count)d/%(used)d expert-கள்"
 
 msgid "Quants"
 msgstr "Quants"

@@ -258,6 +258,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "לא ידוע"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr ""
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr ""
+
+msgctxt "model capability"
+msgid "vision"
+msgstr ""
+
+msgctxt "model capability"
+msgid "tools"
+msgstr ""
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr ""
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr ""
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr ""
+
+msgctxt "model capability"
+msgid "audio"
+msgstr ""
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s ו-%(compute)s TFLOPS fp16"
 
@@ -267,17 +299,20 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "מארח"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
-msgid "OS"
-msgstr "מערכת הפעלה"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d ליבות / %(logical)d תהליכונים"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -285,14 +320,11 @@ msgstr[0] "%(count)d ליבת ביצועים"
 msgstr[1] "%(count)d ליבות ביצועים"
 msgstr[2] "%(count)d ליבות ביצועים"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "ערכת ההוראות לא ידועה"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -308,6 +340,54 @@ msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d ערוץ"
 msgstr[1] "%(count)d ערוצים"
 msgstr[2] "%(count)d ערוצים"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "הסוג לא ידוע"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (לפי המפרט)"
+
+msgid "driver %(driver)s"
+msgstr "מנהל התקן %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "אין מפרט"
+
+msgid "Host"
+msgstr "מארח"
+
+msgid "OS"
+msgstr "מערכת הפעלה"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "ערכת ההוראות לא ידועה"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -325,9 +405,6 @@ msgstr "זיכרון"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "%(total)s בסך הכול, %(available)s פנויים; %(details)s; רוחב פס %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "הסוג לא ידוע"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -338,23 +415,15 @@ msgstr "לא זוהה אף כרטיס"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM, מתוכם %(free)s פנויים"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM לא ידוע"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (לפי המפרט)"
-
-msgid "driver %(driver)s"
-msgstr "מנהל התקן %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "אין מפרט"
 
 msgid "Memory pool"
 msgstr "מאגר זיכרון"
@@ -381,6 +450,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "בנייה לא ידועה"
 
@@ -403,6 +473,7 @@ msgstr "פועל"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, הקשר %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "מודל לא ידוע"
 
@@ -429,6 +500,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "תקין"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "אין שרת"
 
@@ -445,26 +517,31 @@ msgstr "רמה"
 msgid "finding"
 msgstr "ממצא"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "מזהה"
 
-msgid "Quality*"
-msgstr "איכות*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "איכות"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "פרמטרים"
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "הקשר"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "יכולות"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "האיכות היא הבסיס העריכתי, לפני כל קנס על קוונטיזציה; הרץ `llamafit info <model>` כדי לראות את מבחני הביצועים המתועדים שמאחוריה."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "פרמטרים הוא סך הכול/פעילים במיליארדים במודל תערובת מומחים, או מספר אחד כששניהם שווים."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "מודלים"
@@ -487,23 +564,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "פרמטרים"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "%(total)sB בסך הכול, %(active)sB פעילים"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "שיטה לא צוינה"
 
 msgid "%(tokens)s tokens native"
 msgstr "%(tokens)s אסימונים במקור"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", %(tokens)s בהרחבה באמצעות %(method)s"
-
-msgid "unspecified method"
-msgstr "שיטה לא צוינה"
+msgctxt "table row label"
+msgid "Context"
+msgstr "הקשר"
 
 msgid "Architecture"
 msgstr "ארכיטקטורה"
 
 msgid "Notes"
 msgstr "הערות"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "יכולות"
 
 msgid "Use cases"
 msgstr "מקרי שימוש"
@@ -517,6 +603,7 @@ msgstr "מבחן ביצועים"
 msgid "Source %(index)d"
 msgstr "מקור %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "טרם נקרא"
 
@@ -526,17 +613,26 @@ msgstr[0] "%(count)d שכבה"
 msgstr[1] "%(count)d שכבות"
 msgstr[2] "%(count)d שכבות"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d מומחה"
-msgstr[1] "%(count)d/%(used)d מומחים"
-msgstr[2] "%(count)d/%(used)d מומחים"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d מומחה"
 msgstr[1] "%(count)d מומחים"
 msgstr[2] "%(count)d מומחים"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d מומחה"
+msgstr[1] "%(count)d/%(used)d מומחים"
+msgstr[2] "%(count)d/%(used)d מומחים"
 
 msgid "Quants"
 msgstr "קוונטיזציות"

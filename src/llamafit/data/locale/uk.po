@@ -246,6 +246,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "невідомо"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr ""
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr ""
+
+msgctxt "model capability"
+msgid "vision"
+msgstr ""
+
+msgctxt "model capability"
+msgid "tools"
+msgstr ""
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr ""
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr ""
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr ""
+
+msgctxt "model capability"
+msgid "audio"
+msgstr ""
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s і %(compute)s TFLOPS fp16"
 
@@ -255,20 +287,20 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Машина"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
-msgid "OS"
-msgstr "ОС"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-# The English has no plural forms here, so a Ukrainian noun after the number could only
-# ever agree for some counts. The count is put after the noun, where the genitive is right
-# for every number: "ядер: 2 / потоків: 4".
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "ядер: %(physical)d / потоків: %(logical)d"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -276,14 +308,11 @@ msgstr[0] "%(count)d продуктивне ядро"
 msgstr[1] "%(count)d продуктивних ядра"
 msgstr[2] "%(count)d продуктивних ядер"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "isa невідомий"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -299,6 +328,54 @@ msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d канал"
 msgstr[1] "%(count)d канали"
 msgstr[2] "%(count)d каналів"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "тип невідомий"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (за специфікацією)"
+
+msgid "driver %(driver)s"
+msgstr "драйвер %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "немає даних специфікації"
+
+msgid "Host"
+msgstr "Машина"
+
+msgid "OS"
+msgstr "ОС"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa невідомий"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -316,9 +393,6 @@ msgstr "Пам'ять"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "усього %(total)s, доступно %(available)s; %(details)s; пропускна здатність %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "тип невідомий"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -329,23 +403,15 @@ msgstr "не виявлено"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM, вільно %(free)s"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM невідома"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (за специфікацією)"
-
-msgid "driver %(driver)s"
-msgstr "драйвер %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "немає даних специфікації"
 
 msgid "Memory pool"
 msgstr "Пул пам'яті"
@@ -372,6 +438,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "збірка невідома"
 
@@ -394,6 +461,7 @@ msgstr "Запущено"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, контекст %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "модель невідома"
 
@@ -420,6 +488,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "успішно"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "немає сервера"
 
@@ -436,26 +505,31 @@ msgstr "рівень"
 msgid "finding"
 msgstr "висновок"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "Якість*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Якість"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "Парам."
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Контекст"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Можливості"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "«Якість» — це редакційна базова оцінка, до будь-яких втрат від квантування; виконайте `llamafit info <model>`, щоб побачити тести з посиланням на джерела, які за нею стоять."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "«Парам.» — це загальна/активна кількість мільярдів для моделі із сумішшю експертів або одне число, коли вони збігаються."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Моделі"
@@ -478,23 +552,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Параметри"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "усього %(total)sB, активних %(active)sB"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "метод не вказано"
 
 msgid "%(tokens)s tokens native"
 msgstr "нативно %(tokens)s токенів"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", розширення до %(tokens)s через %(method)s"
-
-msgid "unspecified method"
-msgstr "метод не вказано"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Контекст"
 
 msgid "Architecture"
 msgstr "Архітектура"
 
 msgid "Notes"
 msgstr "Примітки"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Можливості"
 
 msgid "Use cases"
 msgstr "Сценарії використання"
@@ -508,6 +591,7 @@ msgstr "Бенчмарк"
 msgid "Source %(index)d"
 msgstr "Джерело %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "ще не прочитано"
 
@@ -517,6 +601,21 @@ msgstr[0] "%(count)d шар"
 msgstr[1] "%(count)d шари"
 msgstr[2] "%(count)d шарів"
 
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d експерт"
+msgstr[1] "%(count)d експерти"
+msgstr[2] "%(count)d експертів"
+
 # The form is chosen by %(count)d, the total number of experts, even though %(used)d is the
 # number the reader's eye lands on just before the noun.
 msgid "%(count)d/%(used)d expert"
@@ -524,12 +623,6 @@ msgid_plural "%(count)d/%(used)d experts"
 msgstr[0] "%(count)d/%(used)d експерт"
 msgstr[1] "%(count)d/%(used)d експерти"
 msgstr[2] "%(count)d/%(used)d експертів"
-
-msgid "%(count)d expert"
-msgid_plural "%(count)d experts"
-msgstr[0] "%(count)d експерт"
-msgstr[1] "%(count)d експерти"
-msgstr[2] "%(count)d експертів"
 
 msgid "Quants"
 msgstr "Квантування"

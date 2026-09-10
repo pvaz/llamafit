@@ -246,6 +246,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "nieznana"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr ""
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr ""
+
+msgctxt "model capability"
+msgid "vision"
+msgstr ""
+
+msgctxt "model capability"
+msgid "tools"
+msgstr ""
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr ""
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr ""
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr ""
+
+msgctxt "model capability"
+msgid "audio"
+msgstr ""
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s i %(compute)s TFLOPS fp16"
 
@@ -255,19 +287,20 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Maszyna"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
-msgid "OS"
-msgstr "System"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-# The English has no plural forms here, so a Polish noun after the number could only ever
-# agree for some counts. The count is put after the noun instead: "rdzenie: 2 / wątki: 4".
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "rdzenie: %(physical)d / wątki: %(logical)d"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -275,14 +308,11 @@ msgstr[0] "%(count)d rdzeń wydajnościowy"
 msgstr[1] "%(count)d rdzenie wydajnościowe"
 msgstr[2] "%(count)d rdzeni wydajnościowych"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "isa nieznana"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -298,6 +328,54 @@ msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d kanał"
 msgstr[1] "%(count)d kanały"
 msgstr[2] "%(count)d kanałów"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "typ nieznany"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (ze specyfikacji)"
+
+msgid "driver %(driver)s"
+msgstr "sterownik %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "brak danych ze specyfikacji"
+
+msgid "Host"
+msgstr "Maszyna"
+
+msgid "OS"
+msgstr "System"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa nieznana"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -315,9 +393,6 @@ msgstr "Pamięć"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "łącznie %(total)s, dostępne %(available)s; %(details)s; przepustowość %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "typ nieznany"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -328,23 +403,15 @@ msgstr "nie wykryto"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM, wolne %(free)s"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM nieznany"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (ze specyfikacji)"
-
-msgid "driver %(driver)s"
-msgstr "sterownik %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "brak danych ze specyfikacji"
 
 msgid "Memory pool"
 msgstr "Pula pamięci"
@@ -371,6 +438,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "nieznana kompilacja"
 
@@ -393,6 +461,7 @@ msgstr "Uruchomiony"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, kontekst %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "nieznany model"
 
@@ -419,6 +488,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "ok"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "brak serwera"
 
@@ -435,26 +505,31 @@ msgstr "poziom"
 msgid "finding"
 msgstr "wniosek"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "Jakość*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Jakość"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "Param."
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Kontekst"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Możliwości"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "Jakość to redakcyjna wartość bazowa, przed jakąkolwiek karą za kwantyzację; uruchom `llamafit info <model>`, aby zobaczyć stojące za nią testy wraz ze źródłami."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "Param. to łączna/aktywna liczba miliardów dla modelu z mieszaniną ekspertów albo jedna liczba, gdy są równe."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Modele"
@@ -477,23 +552,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Parametry"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "łącznie %(total)sB, aktywnie %(active)sB"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "metoda nieokreślona"
 
 msgid "%(tokens)s tokens native"
 msgstr "natywnie %(tokens)s tokenów"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", rozszerzony do %(tokens)s przez %(method)s"
-
-msgid "unspecified method"
-msgstr "metoda nieokreślona"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Kontekst"
 
 msgid "Architecture"
 msgstr "Architektura"
 
 msgid "Notes"
 msgstr "Uwagi"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Możliwości"
 
 msgid "Use cases"
 msgstr "Zastosowania"
@@ -507,6 +591,7 @@ msgstr "Benchmark"
 msgid "Source %(index)d"
 msgstr "Źródło %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "jeszcze nieodczytane"
 
@@ -516,6 +601,21 @@ msgstr[0] "%(count)d warstwa"
 msgstr[1] "%(count)d warstwy"
 msgstr[2] "%(count)d warstw"
 
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d ekspert"
+msgstr[1] "%(count)d eksperci"
+msgstr[2] "%(count)d ekspertów"
+
 # The form is chosen by %(count)d, the total number of experts, even though %(used)d is the
 # number the reader's eye lands on just before the noun.
 msgid "%(count)d/%(used)d expert"
@@ -523,12 +623,6 @@ msgid_plural "%(count)d/%(used)d experts"
 msgstr[0] "%(count)d/%(used)d ekspert"
 msgstr[1] "%(count)d/%(used)d eksperci"
 msgstr[2] "%(count)d/%(used)d ekspertów"
-
-msgid "%(count)d expert"
-msgid_plural "%(count)d experts"
-msgstr[0] "%(count)d ekspert"
-msgstr[1] "%(count)d eksperci"
-msgstr[2] "%(count)d ekspertów"
 
 msgid "Quants"
 msgstr "Kwantyzacje"
