@@ -278,6 +278,7 @@ the command the program exists for, and it scans the machine to answer.
 | `--require CAP` (repeatable) | Capability the model must have: `coding`, `thinking`, `vision`, `tools`, `multilingual`, `long-context`, `embeddings`, `audio`. A model without it is excluded, by name. |
 | `--prefer balanced\|quality\|speed` | Moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights. Write the four numbers into the config file for that. |
 | `--min-context N` | Exclude candidates that cannot hold at least this many tokens. |
+| `--min-tps N` | Exclude candidates generating fewer tokens per second than this, in place of the speed a person reads at (about 6). `--min-tps 0` says nobody is waiting on the tokens — a batch run — and excludes nothing for being slow. Whatever the figure, the board says under itself which one it used and every excluded row names it. |
 | `--max-download SIZE` | Exclude larger downloads. Sizes look like `40G`, `7.5GiB`, `512M`. |
 | `--license SPDX` (repeatable) | Licences the request will accept. A model with another one is excluded and still shown, with the licence it actually has. |
 | `--limit N` | Show at most this many rows. Defaults to 10. |

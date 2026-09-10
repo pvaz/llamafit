@@ -107,6 +107,15 @@ def _number(value: float, digits: int = 1) -> str:
     return isolate(localise_number(f"{value:,.{digits}f}"))
 
 
+def _tps(value: float) -> str:
+    """A tokens-per-second figure, whole when it is whole, as one directional island.
+
+    Six reads better in a sentence than 6.0, and a figure somebody typed as 7.5 has to
+    keep its fraction or the caption would name a boundary that is not the one in force.
+    """
+    return _number(value, 0 if value == int(value) else 1)
+
+
 def _percent(share: float | None) -> str:
     """A utilisation as a percentage, or the word for one nobody could compute."""
     if share is None:
@@ -880,6 +889,34 @@ def _board_cells(row: BoardRow, included: Sequence[str]) -> list[Cell]:
     return cells
 
 
+def _min_tps_caption(min_tps: float | None) -> str | None:
+    """Say that this request moved section 11.4's speed floor, when it did.
+
+    Silence is the default and means the floor is the one the specification derived from
+    reading rates. A request that relaxed it has to say so on the board itself: the whole
+    point of the exclusion is that a board must not quietly offer something nobody can
+    wait for, and a board that quietly stopped applying the rule would fail in exactly the
+    same way, only harder to notice.
+
+    Args:
+        min_tps: What the request asked for, or ``None`` when it asked for nothing.
+
+    Returns:
+        The sentence to print under the table, or ``None`` when there is nothing to say.
+    """
+    if min_tps is None:
+        return None
+    if min_tps <= 0.0:
+        return _(
+            "--min-tps 0: nobody is waiting on these tokens, so nothing was excluded for "
+            "generating more slowly than a person reads."
+        )
+    return _(
+        "--min-tps %(tps)s: this board wanted at least that many tokens per second, and "
+        "anything slower is excluded below rather than ranked here."
+    ) % {"tps": _tps(min_tps)}
+
+
 def _board_captions(board: Board) -> list[RenderableType]:
     """What the board's numbers are, said once under the table rather than per row."""
     labels = {row.candidate.speed.confidence for row in board.rows if row.candidate.speed}
@@ -905,6 +942,9 @@ def _board_captions(board: Board) -> list[RenderableType]:
             "requested": _context(board.requested_context),
         }
     captions: list[RenderableType] = [_cell(first)]
+    floor = _min_tps_caption(board.needs.min_tps)
+    if floor is not None:
+        captions.append(_cell(floor))
     if len(labels) == 1:
         captions.append(_cell(confidence_sentence(next(iter(labels)))))
     captions.append(

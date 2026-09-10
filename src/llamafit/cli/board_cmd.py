@@ -95,6 +95,20 @@ _MIN_FIT_OPTION: str = typer.Option(
     "--min-fit",
     help=cast(str, lazy_gettext("The worst verdict to list: comfortable, fits or tight.")),
 )
+# Optional, so it is a module-level singleton for the reason the block above gives: ruff's
+# B008 does not read ``float | None`` in a default position as safe to call.
+_MIN_TPS_OPTION: float | None = typer.Option(
+    None,
+    "--min-tps",
+    min=0.0,
+    help=cast(
+        str,
+        lazy_gettext(
+            "Exclude candidates generating fewer tokens per second than this, in place of "
+            "the speed a person reads at. Pass 0 when nobody is waiting on the tokens."
+        ),
+    ),
+)
 
 
 def _check_min_fit(value: str) -> Verdict:
@@ -147,6 +161,7 @@ def recommend_command(
             lazy_gettext("Exclude candidates that cannot hold at least this many tokens."),
         ),
     ),
+    min_tps: float | None = _MIN_TPS_OPTION,
     limit: int = typer.Option(
         10, "--limit", min=1, help=cast(str, lazy_gettext("Show at most this many rows."))
     ),
@@ -180,6 +195,7 @@ def recommend_command(
         use_case=check_use_case(use_case),
         capabilities=check_capabilities(require, option="--require"),
         min_context=min_context,
+        min_tps=min_tps,
         max_download_bytes=(
             None if max_download is None else check_size(max_download, option="--max-download")
         ),
