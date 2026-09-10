@@ -354,7 +354,10 @@ def test_the_slow_model_is_not_dropped_from_the_board_it_is_moved_to_the_end(
     board = evaluate_and_rank(entries(catalog), Needs(use_case="general"))
     assert "gemma-3-27b-it" in ids(board)
     assert ids(board)[-1] == "gemma-3-27b-it"
-    assert ids(board)[0] == "llama-3.1-8b-instruct"
+    # Not which model leads: that is a fact about the catalog and moves when a curator
+    # corrects an entry. What this test is named for is that the slow one is last and
+    # still there, so the claim to make about the leader is that it is not the slow one.
+    assert ids(board)[0] != "gemma-3-27b-it"
 
 
 def test_a_request_with_nobody_waiting_ranks_the_model_it_would_have_excluded(

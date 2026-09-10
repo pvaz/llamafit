@@ -88,7 +88,12 @@
       an image/video encoder.
   context: { native: 262144, extended: 1048576, extended_method: yarn }
   capabilities: [coding, thinking, vision, tools, multilingual, long-context]
-  use_cases: [coding, reasoning, multimodal]
+  # general and chat were missing, and their absence was a curation slip rather than a
+  # judgement: this is the vendor's flagship instruction-tuned model, not a specialist.
+  # The omission was visible from the outside, because a general request on the reference
+  # machine excluded the two strongest models in the catalog and returned the two weakest.
+  # A specialist stays a specialist: Qwen3-Coder-Next is coding only and keeps it.
+  use_cases: [coding, reasoning, multimodal, general, chat]
   quality:
     baseline: 84
     benchmarks:
