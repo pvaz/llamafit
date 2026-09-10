@@ -9,21 +9,27 @@ is worth (:mod:`llamafit.quality.alignment`), clamped to the common 0 to 100 sca
 
 Every part is kept in the :class:`~llamafit.models.plan.QualityBreakdown` that comes back,
 because a quality of 90 that cannot be expanded into "85 from the curator, minus 3 for a
-dynamic four-bit quant, plus 8 for matching a coding request that also wants tools" is a
-number the reader has to take on faith.
+dynamic four-bit quant, plus 5 because coding is the job it was built for" is a number the
+reader has to take on faith.
 """
 
 from __future__ import annotations
 
 from llamafit.models.catalog import CatalogModel
 from llamafit.models.plan import Needs, QualityBreakdown
-from llamafit.quality.alignment import alignment_bonus, missing_capabilities, primary_use_case
+from llamafit.quality.alignment import (
+    alignment_bonus,
+    declares_use_case,
+    missing_capabilities,
+    primary_use_case,
+)
 from llamafit.quality.baseline import baseline_for
 from llamafit.quality.quant_penalty import penalty_for
 
 __all__ = [
     "alignment_bonus",
     "baseline_for",
+    "declares_use_case",
     "missing_capabilities",
     "penalty_for",
     "primary_use_case",
