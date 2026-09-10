@@ -3,8 +3,8 @@
 Three numbers come out of here, and each one is a raw bandwidth multiplied by the fraction
 of it the corresponding access pattern actually reaches: the graphics card's, system
 memory's for a contiguous read, and system memory's for a scattered one. The last is
-:data:`~llamafit.constants.EFF_RAM_SCATTERED`, and it is roughly half the other, which is
-the whole reason this module reports three figures instead of two.
+:data:`~llamafit.constants.EFF_RAM_SCATTERED`, and it is meaningfully below the other,
+which is the whole reason this module reports three figures instead of two.
 
 When a pool's bandwidth could not be established, section 10.1's per-backend fallback
 stands in for the raw figure -- not for the effective one. A fallback is a conservative

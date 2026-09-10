@@ -150,12 +150,13 @@ def test_active_expert_bytes_is_zero_without_routed_experts() -> None:
     assert active_expert_bytes(dense_facts()) == 0
 
 
-def test_system_memory_has_two_bandwidths_and_the_scattered_one_is_about_half() -> None:
+def test_system_memory_has_two_bandwidths_and_a_scatter_costs_a_fifth_of_them() -> None:
     bandwidths = resolve_bandwidths(reference_host())
     assert bandwidths.ram_gbps == 57.0
     assert bandwidths.sequential == pytest.approx(57.0 * EFF_RAM_SEQUENTIAL * 1e9)
     assert bandwidths.scattered == pytest.approx(57.0 * EFF_RAM_SCATTERED * 1e9)
-    assert bandwidths.scattered / bandwidths.sequential == pytest.approx(0.514, abs=0.01)
+    assert bandwidths.scattered < bandwidths.sequential
+    assert bandwidths.scattered / bandwidths.sequential == pytest.approx(0.81, abs=0.01)
     assert bandwidths.device == pytest.approx(272.0 * EFF_VRAM * 1e9)
     assert not bandwidths.assumed
 
@@ -236,7 +237,7 @@ def test_the_expert_read_dominates_an_expert_offload_token() -> None:
 def test_the_notes_name_the_scattered_efficiency_and_say_why() -> None:
     estimate = estimate_speed(placement(), moe_facts(), reference_host(), active_params=3e9)
     joined = " ".join(estimate.notes)
-    assert "0.36" in joined
+    assert "0.57" in joined
     assert "scatter of small blocks" in joined
     assert "57 GB/s" in joined
 
@@ -548,3 +549,18 @@ def test_the_weaker_of_the_two_labels_stands_for_both_numbers() -> None:
     assert estimate.confidence == "estimated"
     assert estimate.measured_on is None
     assert "Generation is a benchmark of this configuration" in " ".join(estimate.notes)
+
+
+def test_the_overhead_does_not_grow_with_the_layer_count() -> None:
+    shallow = estimate_speed(placement(), moe_facts(n_layer=8), reference_host(), active_params=3e9)
+    deep = estimate_speed(placement(), moe_facts(n_layer=96), reference_host(), active_params=3e9)
+    assert shallow.overhead_seconds_per_token == pytest.approx(
+        deep.overhead_seconds_per_token, rel=0.02
+    )
+
+
+def test_the_token_embedding_table_is_never_charged_to_a_token() -> None:
+    facts = moe_facts(bytes_token_embd=9 * GB)
+    traffic = per_token_traffic(placement(), facts, working_context=0)
+    assert facts.bytes_token_embd == 9 * GB
+    assert traffic.total_bytes == 2 * GB + 1 * GB + active_expert_bytes(facts)

@@ -7,9 +7,11 @@ figure, or a run on the reference machine recorded in
 word. A measurement taken on a real host supersedes the constant for that host, and the
 estimate built from it is relabelled accordingly (section 10.3).
 
-The one constant that decides whether a recommendation is right or twice as fast as the
-truth is :data:`EFF_RAM_SCATTERED`. Read its docstring before changing anything in this
-file.
+The three efficiencies below are not independent guesses. They were identified together
+from four measurements on the reference machine, two of which exist only to isolate a pool:
+the same small dense model run entirely in system memory and entirely on the card, where
+the traffic is exactly its block weights and nothing else competes. Changing one of them
+without re-deriving the others against all four runs will make the estimator worse.
 """
 
 from __future__ import annotations
@@ -17,70 +19,78 @@ from __future__ import annotations
 from typing import Final
 
 # --- Generation: how much of a pool's bandwidth the decode loop actually reaches -----
+#
+# The four runs, all on the reference machine (RTX 4060 rated 272 GB/s, DDR5 measuring 57
+# GB/s sequential read). The traffic column excludes the token embedding table, of which a
+# token reads one row:
+#
+#   Qwen3-0.6B Q8_0, -ngl 0        0.47 GB, system memory, contiguous   78.0 tok/s
+#   Qwen3-0.6B Q8_0, -ngl 99       0.47 GB, card                       279.5 tok/s
+#   Qwen3-Coder-Next UD-Q4_K_XL    2.36 GB card, 0.916 GB scattered     23.0 tok/s
+#   Qwen3.8-Flash-Next UD-Q4_K_XL  4.83 GB card, 1.504 GB scattered     13.9 tok/s
 
-EFF_VRAM: Final = 0.60
-"""Fraction of a card's peak bandwidth a generation kernel reaches.
+EFF_VRAM: Final = 0.67
+"""Fraction of a card's peak bandwidth a generation kernel reaches (section 10.1).
 
-Section 10.1: the fraction decode kernels reach on consumer GPUs in published
-llama-bench results. Not measured on the reference machine, where the graphics card
-carries the smaller half of the traffic and the figure could not be isolated.
+From the second run above: 0.47 GB at 279.5 tokens per second is 3.58 ms a token, and less
+the 1 ms fixed overhead that is 182 GB/s of a 272 GB/s card. A small dense model held
+entirely on the card is the only run in which the card carries all of the traffic, which is
+what makes it the run that settles this figure.
 """
 
 EFF_RAM_SEQUENTIAL: Final = 0.70
 """Fraction of measured read bandwidth a *contiguous* weight read reaches (section 10.1).
 
-A dense model's weights are laid out in the order they are used, so a layer's read is one
-long run and the memory system gets to stream. This is the efficiency for every read from
-system memory that is not a routed expert: dense block weights on the CPU, an output head
-left in RAM, a KV cache the graphics card does not hold.
+From the first run above: 0.47 GB at 78.0 tokens per second is 12.8 ms a token, and less
+the 1 ms overhead that is 40 GB/s of a measured 57. A dense model's weights are laid out in
+the order they are used, so a layer's read is one long run and the memory system gets to
+stream. This is the efficiency for every read from system memory that is not a routed
+expert: block weights on the CPU, an output head left in RAM, a KV cache the card does not
+hold.
 """
 
-EFF_RAM_SCATTERED: Final = 0.36
+EFF_RAM_SCATTERED: Final = 0.57
 """Fraction of measured read bandwidth a *routed expert* read reaches (section 10.1).
 
-**System memory has two effective bandwidths, not one, and the difference is a factor of
-two.** Each token selects a different handful of experts, so a layer's read is a scatter
-of small blocks across tens of gigabytes and the memory system never gets to stream.
-Treating a routed expert set like a dense weight matrix makes every mixture-of-experts
-model look about twice as fast as it runs.
+**System memory has two effective bandwidths, not one.** Each token selects a different
+handful of experts, so a layer's read is a scatter of small blocks across tens of gigabytes
+and the memory system never gets to stream. A contiguous read of the same bytes reaches
+0.70; charging a routed expert set the contiguous rate overstates a mixture-of-experts
+model by about a seventh of its whole token, which is not a rounding error but is not the
+factor of two an earlier revision claimed either.
 
-Derived on the reference machine from two models whose per-token expert traffic differs by
-64 percent:
+With :data:`EFF_VRAM` and :data:`FIXED_OVERHEAD_S` already settled by the two dense runs,
+the two expert models give this figure independently, out of the time left once their card
+traffic and overhead are accounted for:
 
-===================================  =================  ========  =========
-Model                                Active expert/tok  Measured  Effective
-===================================  =================  ========  =========
-Qwen3-Coder-Next UD-Q4_K_XL          0.916 GB           23.0 t/s  21.1 GB/s
-Qwen3.8-Flash-Next UD-Q4_K_XL        1.504 GB           13.9 t/s  20.9 GB/s
-===================================  =================  ========  =========
+===============================  =================  =========  =========
+Model                            Active expert/tok  Remainder  Effective
+===============================  =================  =========  =========
+Qwen3-Coder-Next UD-Q4_K_XL      0.916 GB           29.5 ms    0.54
+Qwen3.8-Flash-Next UD-Q4_K_XL    1.504 GB           44.3 ms    0.59
+===============================  =================  =========  =========
 
-Against a measured sequential read of 55 to 60 GB/s on the same machine, that is 0.36. The
-two agree to within one percent while the traffic they carry differs by more than half,
-which is what makes it a constant of the access pattern rather than a fit to one model.
+Nine percent apart while carrying 64 percent different traffic, which is what makes it a
+property of the access pattern rather than a fit to one model.
 
-**Known caveat, recorded rather than silently corrected.** The two effective figures above
-were obtained by dividing the expert traffic by the *whole* token time, so they already
-contain the graphics-card term and the per-layer overheads that
-:func:`llamafit.speed.estimate_speed` then adds separately. Using 0.36 inside the full
-four-term formula therefore counts a token's time roughly 1.6 times over and lands about
-37 percent below both measurements; see
-``.superpowers/sdd/2026-09-09-phase1b-catalog-and-gguf-facts/speed-report.md`` for the
-arithmetic. The constant is kept exactly as section 10.1 states it, because it is the
-specification's number and because the relative ordering it produces is right to within a
-few percent; the absolute level is what a phase 3 host measurement is for.
+**An earlier revision of section 10.1 gave 0.36 and was wrong.** That figure was the expert
+traffic divided by the *whole* token time, which already contains the card traffic and the
+overhead the formula then adds again: used as a coefficient inside the sum it alone
+exceeded the measured token, and the estimator built on it came out 42 percent low. An
+apparent end-to-end rate and a coefficient inside a sum of terms are not the same quantity.
 """
 
-LAYER_OVERHEAD_S: Final = 0.000_20
-"""Fixed cost per transformer block per token, in seconds (section 10.1).
+FIXED_OVERHEAD_S: Final = 0.001
+"""Everything a token costs that is not a byte moved, in seconds (section 10.1).
 
-0.20 ms, from the residual between a bandwidth-only prediction and measured generation on
-the reference machine. It stands for everything that is not a byte moved: kernel launches,
-the synchronisation between the graphics card and the CPU threads computing the experts,
-and the small per-block tensors the traffic model does not itemise.
+One millisecond, the intercept the two dense runs share: sampling, the graph launch, and
+the small tensors the traffic model does not itemise.
+
+**It is not per layer.** The specification carried 0.20 ms per transformer block, which for
+a 28-layer model is 5.6 ms against a whole measured token of 3.58 ms -- not merely too
+large but impossible, and it imposed a ceiling near 105 tokens per second on any model of
+that depth, however small.
 """
-
-SAMPLING_OVERHEAD_S: Final = 0.001
-"""Fixed cost per token for sampling, in seconds (section 10.1)."""
 
 DEFAULT_WORKING_CONTEXT: Final = 8192
 """Context the KV-cache read is sized for when nobody says otherwise (section 10.1).
