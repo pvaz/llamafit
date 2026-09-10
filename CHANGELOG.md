@@ -167,6 +167,36 @@ the changelog says so when they do.
   which was being computed and thrown away, so the ladder no longer has to guess.
 - `--prefer balanced|quality|speed` moves a tenth of the weight between quality and speed
   (section 12.1), capped by what the other part has to give so no weight goes below nothing.
+- `llamafit serve`: a JSON API and a browser dashboard, on this machine only. The API calls the
+  same service functions the commands call and hands back the identical
+  `model_dump_json(by_alias=True)` that `--json` prints, so the two cannot disagree — a test
+  runs both and compares the documents. `/health`, `/api/v1/system`, `/scan`, `/doctor`,
+  `/models`, `/models/top`, `/models/{id}`, `/plan`, `/profiles`, `/catalog/schema`,
+  `/catalog/problems` and `/ui`, with query parameters that mirror `recommend`'s options and
+  are refused, by name, when they are not ones LlamaFit knows.
+- The dashboard itself: the board with every row expanding into the score, the speed, the
+  budget and the context ladder behind it, a Needs form that re-ranks it, the machine with
+  every finding `doctor` reports, a plan with a copyable command line, and simulation against
+  a hardware profile or a substituted pool. Plain HTML, CSS and JavaScript served from the
+  package — no build step, no package manager, no framework, and nothing fetched from the
+  internet when the page opens, so it works offline and opening it tells nobody. It says once,
+  under the header, that nothing has been benchmarked on this machine and every speed on it is
+  therefore a computed estimate.
+- The dashboard is translated. It holds no words of its own: `GET /api/v1/ui` serves every
+  label, built by the same gettext calls the rest of LlamaFit uses and extracted by
+  `scripts/gen_messages.py` like any other message, so filling in a `.po` file translates the
+  page too. The words for verdicts, run modes, confidence labels, memory pools and budget
+  components are imported from the terminal's own renderer rather than written again.
+- The server binds to loopback by refusal rather than by default: `serve()` will not bind
+  elsewhere unless the caller says separately that it means to, which the command line says
+  only when `--host` was actually typed, and it prints what that exposes first. The `Host`
+  header is checked, so a website cannot point a name of its own at `127.0.0.1` and read the
+  API through a visitor's browser; there are no CORS headers; and the `profile` parameter takes
+  a profile's name rather than a path, so a request cannot ask the server to open a file.
+- `fastapi` and `uvicorn` as the optional `web` extra, with their rows in
+  `docs/development.md`: somebody who only wants the command line should not have to install a
+  web server, and `llamafit serve` without them says so and gives the line that fixes it.
+
 ### Changed
 - **The placement planner steps down section 9.3's context ladder instead of halving.**
   Section 9.2 says so in as many words, and the difference is not cosmetic: from 40,960

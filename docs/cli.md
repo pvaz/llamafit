@@ -379,11 +379,27 @@ the problems, whichever the subcommand is about. A host built from a profile car
 `"simulated": true` and a `simulation` object naming the profile and its file, so a script
 can tell a what-if from a scan without reading a heading.
 
-### `llamafit serve` — phase 1D
+### `llamafit serve`
 
-Start the web dashboard and JSON API. Options: `--host 127.0.0.1`, `--port 8765`, `--open`
-(open the browser). Binding to any host other than loopback prints a warning; there is no
-authentication. See [web.md](web.md).
+Start the web dashboard and JSON API on this machine.
+
+```
+llamafit serve                     # http://127.0.0.1:8765
+llamafit serve --port 9000 --open  # another port, and open the browser
+```
+
+| Option | What it does |
+|---|---|
+| `--host ADDRESS` | Bind somewhere other than `127.0.0.1`. Anything but loopback puts the dashboard on your network, where there is no password and no login; the consequence is printed before the server starts. Leaving the flag alone is what keeps the server on this machine — the address is not merely defaulted to loopback, it is refused elsewhere unless the flag was actually typed. |
+| `--port N` | Listen on this port. Default 8765. |
+| `--open` | Open the page in your browser once the server is up. |
+
+It needs the `web` extra: `pip install "llamafit[web]"`. Without it the command says so and
+gives you that line.
+
+The dashboard speaks the language `--language` chose, like everything else, and its numbers
+carry the same labels the tables above use. See [web.md](web.md) for the API, the safety
+rules and what the page does about languages.
 
 ### `llamafit` (no command) — phase 1D
 
