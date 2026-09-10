@@ -2,18 +2,26 @@
 
 from __future__ import annotations
 
+from typing import get_args
+
 import pytest
 
 from llamafit.catalog.loader import load_catalog
-from llamafit.models.catalog import Catalog, CatalogModel
+from llamafit.models.catalog import (
+    CAPABILITY_FOR_USE_CASE,
+    Capability,
+    Catalog,
+    CatalogModel,
+    UseCase,
+)
 from llamafit.models.plan import Needs
 from llamafit.quality import (
     alignment_bonus,
     baseline_for,
-    declares_use_case,
     missing_capabilities,
     penalty_for,
     primary_use_case,
+    required_capability,
     score_quality,
 )
 from llamafit.quality.alignment import PRIMARY_USE_CASE_BONUS
@@ -147,13 +155,49 @@ def test_the_whole_bonus_is_five_points_or_none(catalog: Catalog) -> None:
             )
 
 
-def test_a_model_declares_the_jobs_it_offers_itself_for(catalog: Catalog) -> None:
+def test_asking_for_a_job_asks_for_the_ability_behind_it() -> None:
+    assert required_capability("coding") == "coding"
+    assert required_capability("reasoning") == "thinking"
+    assert required_capability("multimodal") == "vision"
+    assert required_capability("embedding") == "embeddings"
+
+
+def test_the_two_unspecialised_jobs_ask_for_nothing() -> None:
+    # Not an omission: general and chat are the absence of a specialisation, so there is
+    # no ability a model could lack that would make it unfit to be talked to. This is what
+    # keeps a coding model on a general board instead of hiding the best answer.
+    assert required_capability("general") is None
+    assert required_capability("chat") is None
+
+
+def test_every_use_case_has_been_decided_about() -> None:
+    # A use case with no entry would silently require nothing, which is the most permissive
+    # answer available and the least likely to be the one anybody meant.
+    assert set(CAPABILITY_FOR_USE_CASE) == set(get_args(UseCase))
+
+
+def test_every_requirement_is_a_capability_the_catalog_can_express() -> None:
+    known: set[str] = set(get_args(Capability))
+    for needed in CAPABILITY_FOR_USE_CASE.values():
+        assert needed is None or needed in known
+
+
+def test_a_job_nobody_defined_requires_nothing_rather_than_everything() -> None:
+    # A typo is caught by check_use_case, which names the six. Inventing a requirement for
+    # it here would empty a board for a reason no reader could act on.
+    assert required_capability("codign") is None
+
+
+def test_the_capability_a_job_asks_for_is_read_off_the_model_not_its_use_cases(
+    catalog: Catalog,
+) -> None:
     llama = model_of(catalog, "llama-3.1-8b-instruct")
-    assert declares_use_case(llama, "chat")
-    assert declares_use_case(llama, "reasoning")
-    # Its entry says general, chat and reasoning. It does not claim to code, and a coding
-    # request must not come back with it.
-    assert not declares_use_case(llama, "coding")
+    # Its entry offers itself for reasoning and never for coding. Neither claim decides
+    # anything: what decides is that it cannot code and cannot think, both facts about the
+    # weights, and both are what a coding or reasoning request will be told.
+    assert "reasoning" in llama.use_cases
+    assert required_capability("coding") not in llama.capabilities
+    assert required_capability("reasoning") not in llama.capabilities
 
 
 def test_the_breakdown_keeps_all_three_parts_and_their_sum(catalog: Catalog) -> None:

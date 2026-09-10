@@ -15,14 +15,21 @@ the bounds a real file has to satisfy: a size is never negative, bits per weight
 finite number no wider than an unquantised weight, and a quant with checksums has one
 per file. A curator's typo is caught when the catalog loads rather than when a memory
 budget is computed from it.
+
+The vocabularies live here too, and one relation between them: :data:`CAPABILITY_FOR_USE_CASE`
+says what asking for a job asks of a model. It is beside :data:`UseCase` rather than beside
+the scoring that reads it, so that whoever adds a seventh use case meets the question in the
+same breath as the answer.
 """
 
 from __future__ import annotations
 
 import datetime
 import re
+from collections.abc import Mapping
 from functools import cached_property
-from typing import Annotated, Literal
+from types import MappingProxyType
+from typing import Annotated, Literal, get_args
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -49,6 +56,46 @@ Capability = Literal[
     "coding", "thinking", "vision", "tools", "multilingual", "long-context", "embeddings", "audio"
 ]
 UseCase = Literal["general", "coding", "reasoning", "chat", "multimodal", "embedding"]
+
+CAPABILITY_FOR_USE_CASE: Mapping[str, Capability | None] = MappingProxyType(
+    {
+        "general": None,
+        "coding": "coding",
+        "reasoning": "thinking",
+        "chat": None,
+        "multimodal": "vision",
+        "embedding": "embeddings",
+    }
+)
+"""What asking for each job asks of a model, in the vocabulary of :data:`Capability`.
+
+The two vocabularies above say different kinds of thing and this table is the bridge
+between them. ``use_cases`` is what a model is *for*, which is a curator's emphasis:
+writing *coding* first says the entry's baseline was set against coding work. ``capabilities``
+is what a model can *do*, which is a fact about the weights. A request names a job, and the
+job is only worth turning into a requirement where there is a fact behind it — so a coding
+request asks for the coding capability, a reasoning one for thinking, a multimodal one for
+vision, an embedding one for embeddings.
+
+``general`` and ``chat`` require nothing, and the ``None`` is an answer rather than a gap.
+They are the absence of a specialisation rather than a specialisation of their own: there
+is no ability a model could lack that would make it unfit to hold a conversation, and a
+model built for one job is a perfectly reasonable thing to ask about another. Anything that
+runs can be talked to.
+
+The table is exhaustive on purpose. A use case with no entry would quietly require nothing,
+which is the most permissive answer available and the least likely to be the one anybody
+meant, so the check below refuses to import this module until somebody has decided about
+every member of :data:`UseCase` — and ``None`` counts as deciding.
+"""
+
+_UNDECIDED = set(get_args(UseCase)) ^ set(CAPABILITY_FOR_USE_CASE)
+if _UNDECIDED:  # pragma: no cover - a developer error, caught the moment it is written
+    raise RuntimeError(
+        f"CAPABILITY_FOR_USE_CASE and UseCase disagree about {sorted(_UNDECIDED)}: "
+        "every use case needs a decision about the capability it requires, and None is one."
+    )
+
 ArchClass = Literal["dense", "moe", "dense-hybrid", "moe-hybrid"]
 Trust = Literal["official", "unsloth", "bartowski", "community"]
 ExtraRole = Literal["mmproj", "mtp", "draft", "lora"]
