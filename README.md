@@ -1,5 +1,11 @@
 # LlamaFit
 
+[![CI](https://github.com/pvaz/llamafit/actions/workflows/ci.yml/badge.svg)](https://github.com/pvaz/llamafit/actions/workflows/ci.yml)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![Platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](docs/platform-support.md)
+[![Languages](https://img.shields.io/badge/interface-37%20languages-brightgreen.svg)](docs/translations.md)
+
 **Find, size, install and verify open-weight LLMs for llama.cpp on your own machine.**
 
 LlamaFit scans your computer, keeps a curated catalog of GGUF models, computes exact memory
@@ -8,16 +14,42 @@ vision, tool calling, long context), and turns the winner into a working `llama-
 configuration. Then it installs llama.cpp and the model, writes tuned launch scripts, measures
 the real speed, and uses those measurements to sharpen its own estimates.
 
-It works on Windows, macOS and Linux, installs with `pip`, and never uses a language model to
-do any of this: every number is computed, labelled with how it was obtained, and explainable.
+It works on Windows, macOS and Linux, installs with `pip`, speaks 37 languages, and never uses
+a language model to do any of this: every number is computed, labelled with how it was
+obtained, and explainable.
 
-> **Status: phase 1A (host scan and diagnostics) and phase 1B (the model catalog) are done.**
-> `llamafit system`, `llamafit doctor`, `llamafit list`, `search`, `info` and the `catalog`
-> commands work on Windows, macOS and Linux. Memory budgets, scoring, the terminal dashboard
-> and the web dashboard follow. The design is in
-> [`docs/specs/`](docs/specs/2026-09-09-llamafit-design.md) and the implementation plans are in
-> [`docs/plans/`](docs/plans/).
-> Watch the repository or read the [roadmap](ROADMAP.md) to see what lands when.
+```console
+$ llamafit list
+                                       Models
+┌───────────────────────┬──────────┬────────┬─────────┬─────────────────────────────┐
+│ ID                    │ Quality* │ Params │ Context │ Capabilities                │
+├───────────────────────┼──────────┼────────┼─────────┼─────────────────────────────┤
+│ qwen3-coder-next      │       85 │  80/3B │    256K │ coding, tools, long-context │
+│ qwen3.8-flash-next    │       84 │ 125/6B │    256K │ coding, thinking, vision +3 │
+│ gemma-3-27b-it        │       74 │    27B │    128K │ vision, multilingual +2     │
+│ llama-3.1-8b-instruct │       62 │     8B │    128K │ tools, multilingual +1      │
+│ qwen3-0.6b            │       35 │   0.6B │     32K │ coding, tools, multilingual │
+└───────────────────────┴──────────┴────────┴─────────┴─────────────────────────────┘
+  Quality is the editorial baseline, before any quantisation penalty; run `llamafit
+ info <model>` for the sourced benchmarks behind it. Params is total/active billions
+         for a mixture-of-experts model, or one number when they are equal.
+```
+
+> **Status.** The host scan, the diagnostics, the model catalog and its commands ship and are
+> tested on three operating systems. The memory budget, the placement planner, the speed
+> estimator and the ranking are being built now. The terminal and web dashboards, the
+> installer and the benchmark verifier follow. See the [roadmap](ROADMAP.md); the design is
+> in [`docs/specs/`](docs/specs/2026-09-09-llamafit-design.md).
+
+## How it differs
+
+| | The usual approach | LlamaFit |
+|---|---|---|
+| **Memory** | one RAM and VRAM minimum per model | per-component budget from the file's own tensor table: weights by class, cache per 1K tokens, compute buffer by micro-batch, projector |
+| **Result** | "you need 16 GB" | a runnable `llama-server` command line and launch scripts |
+| **Speed** | a guess, or numbers from someone else's machine | computed from your measured bandwidth, then checked against real benchmarks on your machine |
+| **Honesty** | one confident number | every figure labelled measured, calibrated or estimated, and expandable into its inputs |
+| **Failure** | silence | names the case where the driver pages to system memory and the server starts anyway at half speed |
 
 ## Why
 
@@ -113,6 +145,17 @@ llamafit --json system          # the same as JSON for scripts
 
 Sizes and GGUF facts read `unknown` until `llamafit catalog refresh` fills them in from
 Hugging Face; nothing is downloaded but file metadata and headers.
+
+## Your language
+
+The interface ships in 37 languages, chosen with `--language`, the `LLAMAFIT_LANGUAGE`
+variable, or your operating system's own setting, in that order. Ask for one that is not
+there and LlamaFit falls back to English **and says so**, because quietly ignoring what you
+asked for is its own kind of bug.
+
+No catalog has been read by a native speaker, and every one of them says so at the top and
+asks for that review. Correcting a line of your own language is the easiest useful
+contribution this project has: see [docs/translations.md](docs/translations.md).
 
 ## Documentation
 
