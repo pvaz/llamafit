@@ -39,7 +39,7 @@ def test_the_planner_reaches_the_reference_machines_own_winning_configuration() 
     assert placement.gpu_layers == 99
     assert placement.cpu_moe_layers == 48
     assert placement.shared_experts_pool == "ram"
-    assert placement.threads == 8
+    assert placement.threads == 16
     assert placement.budget.verdict == "tight"
 
     args = command_line(placement, model, LaunchOptions(model_path="M.gguf"))
