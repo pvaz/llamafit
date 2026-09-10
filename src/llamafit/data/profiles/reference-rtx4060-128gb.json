@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "name": "reference-rtx4060-128gb",
+  "description": "Reference machine: RTX 4060 8 GB, i9-14900KF, 128 GiB DDR5-4200, Windows 11",
+  "provenance": "The machine every constant in llamafit/constants.py was fitted to and every `measured` block in the bundled catalog was taken on, so that a stranger can reproduce the documentation's numbers without it. CPU, memory sizes, GPU name, VRAM and driver are the recorded probe output in tests/fixtures/reference_machine.py, captured 2026-09-09; the memory type, speed and channel count are from docs/calibration/2026-09-09-reference-machine.md, which also records the llama.cpp build and every run the constants come from. The 57.0 GB/s figure is the NumPy read benchmark on that machine (llamafit/hardware/bandwidth.py and constants.py; a live run on the day reported 57.3, and 57.0 is the figure the estimator was derived against). The card's 272 GB/s and 15 TFLOPS are deliberately absent: they are vendor specifications and come from the bundled GPU table, which is the same source a live scan uses. No calibration block: this machine's fitted constants are in llamafit/constants.py, where they are applied, and a second copy here would be a copy nothing reads and nothing keeps in step.",
+  "recorded_at": "2026-09-09T20:00:00Z",
+  "match": {
+    "gpu_name_contains": "RTX 4060",
+    "cpu_model_contains": "i9-14900KF",
+    "total_ram_min": "100GiB"
+  },
+  "os": "windows",
+  "os_version": "Windows-11-10.0.26200-SP0",
+  "arch": "x86_64",
+  "cpu": {
+    "model": "Intel(R) Core(TM) i9-14900KF",
+    "physical_cores": 24,
+    "logical_cores": 32,
+    "performance_cores": 8,
+    "isa": ["avx2"]
+  },
+  "memory": {
+    "total": "128GiB",
+    "available": "100GiB",
+    "type": "DDR5",
+    "speed_mts": 4200,
+    "modules": 2,
+    "channels": 2,
+    "bandwidth_gbps": 57.0,
+    "bandwidth_source": "measured"
+  },
+  "gpus": [
+    {
+      "vendor": "nvidia",
+      "name": "NVIDIA GeForce RTX 4060",
+      "vram_total": "8188MiB",
+      "vram_used": "550MiB",
+      "backend_hint": "cuda",
+      "driver": "610.88"
+    }
+  ],
+  "unified_memory": false,
+  "backends": ["cuda", "cpu"]
+}
