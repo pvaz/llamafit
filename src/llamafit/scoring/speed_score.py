@@ -54,12 +54,29 @@ same machine, carried there by quality and fit. Eight percent is not what a pers
 three and a half minutes for a five-hundred-token answer is getting. They are getting none
 of it, and the curve now says so.
 
-**And what that costs.** Every model below the floor scores zero, so on a machine where
-nothing reaches six tokens per second the speed column stops separating candidates at all
-and the board is ordered by quality, fit and context. That is the right answer to the
-wrong question — when nothing is interactive, "which is fastest" is not what a person
-needs settling, "which is worth the wait" is — but it is a real change in behaviour on a
-slow machine and not a free one.
+**Below the floor is not a low score. It is a different kind of tool.** A model that
+generates more slowly than its reader reads is not a worse interactive model; it is a
+batch one, and section 11.4 keeps it off an interactive board altogether rather than
+ranking it last. :func:`keeps_up_with_reader` is that test, and
+:mod:`~llamafit.scoring.rank` is where it is applied — as an exclusion carrying its
+reason and its number, the way every other thing this program refuses is.
+
+Scoring a candidate zero was the strongest statement this module could make on its own,
+and it was not strong enough. Quality, fit and context together outweigh what a perfect
+speed score contributes at a quarter of the weight, so a candidate can lead a board while
+its speed column reads exactly nothing — which on the reference machine is what
+happened, Gemma 3 27B at 2.1 tokens per second finishing above Llama 3.1 8B at 10.2 with a
+speed score of zero. No weighting fixes that, because the arithmetic was never the defect:
+a candidate that cannot do the job at all was allowed to compete for it. Section 11.1
+already made this argument about a model whose entry does not claim the use case and
+reached the same answer.
+
+**And what that costs.** On a machine where nothing reaches six tokens per second, the
+ranked half of an interactive board is empty and every candidate appears in the excluded
+half with its speed. That is a real change and not a free one. It is also the true answer:
+what the old behaviour did on such a machine was order the candidates by quality and fit
+and present the winner as a recommendation, which on a slow laptop means offering somebody
+a five-gigabyte download that will answer at a token and a half a second.
 
 Coding and reasoning carry a prompt-processing modifier on top: ten points off below 100
 prompt tokens per second, twenty below 40. These are the two use cases that begin by
@@ -105,7 +122,14 @@ that they need it to be, and that is the target's job.
 """
 
 THROUGHPUT_ONLY = frozenset({"embedding"})
-"""Use cases nobody reads the output of, which therefore have no reading floor."""
+"""Use cases nobody reads the output of, which therefore have no reading floor.
+
+This set decides two things now, and they are the same thing said twice: which figure the
+score reads, generation or prompt, and whether there is a reader who can be left behind.
+A use case in here has no floor, so :func:`keeps_up_with_reader` is true of it at any
+speed and section 11.4's exclusion can never apply to it. There is no person waiting on
+the tokens, so there is no rate below which the waiting stops being worth it.
+"""
 
 PROMPT_SENSITIVE = frozenset({"coding", "reasoning"})
 """The use cases that begin with a long prompt and so are scored on reading it, too."""
@@ -152,6 +176,52 @@ def floor_tps(use_case: str) -> float:
         ConfigError: If the use case is not one of the six.
     """
     return 0.0 if check_use_case(use_case) in THROUGHPUT_ONLY else READING_TPS
+
+
+def observed_tps(speed: SpeedEstimate, use_case: str) -> float:
+    """Return the figure this use case is actually judged on.
+
+    Args:
+        speed: The estimate for this placement.
+        use_case: What the request asked for.
+
+    Returns:
+        Prompt throughput for a :data:`THROUGHPUT_ONLY` job, which generates nothing at
+        all, and generation throughput for everything else.
+
+    Raises:
+        ConfigError: If the use case is not one of the six.
+
+    It is one line, and it is a function so that the score and the exclusion cannot read
+    different numbers off the same estimate. A board that excluded an embedding model on
+    its generation rate and then scored it on its prompt rate would be disagreeing with
+    itself about which figure mattered, and only one of the two would be on screen.
+    """
+    return speed.pp_tps if check_use_case(use_case) in THROUGHPUT_ONLY else speed.gen_tps
+
+
+def keeps_up_with_reader(speed: SpeedEstimate, use_case: str) -> bool:
+    """Whether this estimate is at least as fast as the person waiting on it.
+
+    Args:
+        speed: The estimate for this placement.
+        use_case: What the request asked for.
+
+    Returns:
+        True when there is no reader to fall behind — a :data:`THROUGHPUT_ONLY` job —
+        and otherwise whether :func:`observed_tps` reaches :func:`floor_tps`.
+
+    Raises:
+        ConfigError: If the use case is not one of the six.
+
+    The comparison is not strict: a model generating at exactly reading speed is keeping
+    up, by the plain meaning of the words, and stays on the board with a speed score of
+    zero. Exclusion is the stronger claim of the two and takes the stricter test, so the
+    boundary case falls on the side that keeps a candidate rather than the side that
+    removes it.
+    """
+    floor = floor_tps(use_case)
+    return floor <= 0.0 or observed_tps(speed, use_case) >= floor
 
 
 def speed_ramp(observed: float, floor: float, target: float) -> float:
@@ -212,7 +282,7 @@ def speed_score(speed: SpeedEstimate, use_case: str) -> float:
         ConfigError: If the use case is not one of the six.
     """
     checked = check_use_case(use_case)
-    # An embedding run generates nothing, so the figure that matters is how fast it reads.
-    observed = speed.pp_tps if checked in THROUGHPUT_ONLY else speed.gen_tps
-    reached = speed_ramp(max(0.0, observed), floor_tps(checked), TARGET_TPS[checked])
+    reached = speed_ramp(
+        max(0.0, observed_tps(speed, checked)), floor_tps(checked), TARGET_TPS[checked]
+    )
     return max(0.0, reached - prompt_penalty(speed.pp_tps, checked))
