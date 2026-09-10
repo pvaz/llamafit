@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """Turn a parsed GGUF header into the facts a memory budget needs.
 
 Every number here is read from the file, not estimated: tensor sizes come from the

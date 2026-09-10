@@ -647,7 +647,8 @@ Responses are the JSON of the same pydantic models the CLI prints, so `--json` a
 llamafit/
   pyproject.toml            hatchling build, entry point `llamafit`, dependency groups (tui, web, dev)
   README.md                 what it is, one-minute quick start, how it works in five lines, roadmap, screenshots
-  LICENSE (MIT)  NOTICE     llama.cpp and model-weight license notes
+  LICENSE (AGPL-3.0-or-later)  NOTICE   llama.cpp and model-weight license notes
+  CLA.md                    contributor licence agreement
   CHANGELOG.md  CONTRIBUTING.md  CODE_OF_CONDUCT.md  SECURITY.md
   MODELS.md                 generated from the catalog by scripts/gen_models_md.py
   .github/workflows/ci.yml  release.yml (PyPI trusted publishing)  ISSUE_TEMPLATE/  PULL_REQUEST_TEMPLATE.md
@@ -678,7 +679,7 @@ Style: ruff (line length 100, isort rules), mypy strict, docstrings on every pub
 | Web stack | FastAPI plus static HTML/JS | pip-only, one API shared with the TUI |
 | Console | Textual TUI plus `--json` CLI | dashboard parity with the web UI |
 | Positioning | advisor, installer, verifier for llama.cpp | nothing else takes a machine from scan to a verified running server |
-| License | MIT | the same license as llama.cpp, simplest for contributors |
+| License | AGPL-3.0-or-later, with a contributor licence agreement | improvements to a tool whose value is checkable numbers should come back; section 13 reaches the phase 1D web dashboard, which a plain GPL would not, because a hosted service distributes nothing. The CLA keeps a commercial licence possible alongside it. (Was MIT until 2026-09-10.) |
 | Python floor | 3.10 | pattern matching and modern typing without excluding current distributions |
 | Catalog format | YAML per family with JSON schema, primary sources only | reviewable diffs, human editing, no inherited errors |
 | Default port | 8765 | unassigned locally, easy to remember |

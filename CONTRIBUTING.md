@@ -26,6 +26,36 @@ if your change disagrees with it, the specification is what to discuss, not the 
 Work happens in phases with written plans in `docs/plans/`. Each plan is a list of
 small tasks with tests; picking a task from the current plan is the easiest way in.
 
+## Licence and the contributor agreement
+
+LlamaFit is under the **GNU Affero General Public License, version 3 or later**. Your
+contribution is published under it too, and every new file under `src/llamafit/` carries the
+three-line header the licence asks for:
+
+```python
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
+```
+
+Copy it verbatim into any source file you add. Tests, scripts and data files do not carry it.
+
+On top of that, contributions are covered by the **[contributor licence agreement](CLA.md)**.
+You keep your copyright; you grant the owner a licence broad enough that LlamaFit can also be
+offered commercially to people who cannot accept the AGPL. Read [CLA.md](CLA.md) once — it is
+short — and then put this line in the description of your first pull request:
+
+```
+I have read CLA.md and I agree to it, for this and my future contributions to LlamaFit.
+```
+
+One line, once. It covers your later pull requests. If a term in it does not work for you,
+open an issue and say so before you write the code.
+
+If your contribution contains anything you did not write yourself — a snippet, a data table, an
+algorithm from a paper — say so in the pull request and name its source and its licence, so it
+can be checked against the AGPL before it lands.
+
 ## Setting up
 
 ```
@@ -53,6 +83,8 @@ More in [`docs/development.md`](docs/development.md).
 4. **One topic.** A catalog fix and a refactor are two pull requests.
 5. **Sources.** Any number in data files or documentation has a link. "I remember" is not a
    source.
+6. **The contributor agreement**, once. The line from [CLA.md](CLA.md) in the description of
+   your first pull request, and the AGPL header on any new file under `src/llamafit/`.
 
 ## Style
 

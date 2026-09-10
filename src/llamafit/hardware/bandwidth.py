@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """RAM bandwidth: measure sequential read throughput, otherwise estimate or assume.
 
 llama.cpp streams weights out of RAM during generation and writes almost nothing back, so

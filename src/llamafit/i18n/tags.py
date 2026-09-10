@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """Language tags: putting them in one shape and matching a request to a catalog.
 
 Nothing here reads a file or asks the operating system anything; it is string algebra
