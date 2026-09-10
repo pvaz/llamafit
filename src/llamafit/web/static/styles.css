@@ -199,26 +199,58 @@ table { border-collapse: collapse; width: 100%; }
    this an unusually long one runs under the next column instead of stopping. */
 #board-table .name { width: 15rem; overflow: hidden; text-overflow: ellipsis; }
 #board-table .quant { width: 7.5rem; }
-#board-table .size { width: 4.6rem; }
-#board-table .score { width: 4.4rem; }
+#board-table .size { width: 5rem; }
+#board-table .score { width: 7rem; }
 #board-table .qual { width: 3.4rem; }
 #board-table .tps { width: 4.4rem; }
-#board-table .pmt { width: 4.4rem; }
+/* Wide enough for its own heading. A clipped heading is a column nobody can name. */
+#board-table .pmt { width: 6.6rem; }
 #board-table .how { width: 6rem; }
 #board-table .mode { width: 8rem; }
-#board-table .vram { width: 4.6rem; }
-#board-table .ram { width: 4.6rem; }
+#board-table .vram { width: 5rem; }
+#board-table .ram { width: 5rem; }
 #board-table .fit { width: 5.6rem; }
 #board-table .ctx { width: 4rem; }
 
-/* Fifty rows means the headings scroll away, so they stay. A border on a sticky cell of
-   a collapsed table does not paint reliably; an inset shadow does. */
-#board-table th {
+/* Sixty rows means the headings scroll away, so they stay -- and so does the row of
+   filter boxes under them, which is no use at all once it has scrolled off. A border on
+   a sticky cell of a collapsed table does not paint reliably; an inset shadow does. */
+#board-table thead tr:first-child th {
   position: sticky;
   top: 0;
+  z-index: 2;
+  background: var(--ground);
+}
+
+#board-table tr.sieve th {
+  position: sticky;
+  top: 1.75rem;
+  z-index: 2;
+  padding-block: 0 0.35rem;
   background: var(--ground);
   box-shadow: inset 0 -1px 0 var(--rule);
 }
+
+/* The boxes are the quietest controls on the page until something is typed into one.
+   A filter nobody can see they left on is a board lying about the catalog. */
+#board-table tr.sieve input {
+  width: 100%;
+  padding: 0.1rem 0.25rem;
+  border-color: var(--rule);
+  background: none;
+  font-size: 0.8rem;
+  color: var(--ink-dim);
+}
+
+#board-table tr.sieve input:not(:placeholder-shown) {
+  border-color: var(--speed);
+  color: var(--ink-bright);
+}
+
+/* A heading is a control now: all thirteen sort, and the one in force says which way. */
+#board-table th[data-sort] { cursor: pointer; user-select: none; }
+#board-table th[aria-sort]::after { content: " ↓"; }
+#board-table th[aria-sort="ascending"]::after { content: " ↑"; }
 
 /* A candidate that was not ranked is in the same list, one row like any other, quieter,
    with every figure it has. Only the conclusion differs: where a ranked row prints a
@@ -227,7 +259,7 @@ table { border-collapse: collapse; width: 100%; }
 tr.out td { color: var(--ink-faint); }
 tr.out .name { color: var(--ink-dim); }
 tr.out td.tps, tr.out td.fit { color: inherit; font-weight: 400; }
-td.why { overflow: hidden; text-overflow: ellipsis; font-size: 0.85rem; }
+td.why { overflow: hidden; text-overflow: ellipsis; font-size: 0.85rem; text-align: start; }
 caption { text-align: start; padding-bottom: 0.4rem; font-size: 0.85rem; }
 
 th,
@@ -295,23 +327,46 @@ form {
   margin: 0.5rem 0 0;
 }
 
-/* The request lives above its answer and never moves. Its controls are narrow because
-   they are choices from short lists, and the space they save is the list's. */
+/* The request lives above its answer and never moves. One band, not a form: the controls
+   sit on a line and take the width they need, because five boxes stretched evenly across
+   a wide window put a hand's width between a label and the thing it labels. Their space
+   is the list's, so they are as small as a pointer can still hit. */
 form.controls {
-  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-  gap: 0.5rem 1.1rem;
+  display: flex;
+  flex-wrap: wrap;
   align-items: end;
-  max-width: 76rem;
-  margin: 0 0 0.75rem;
+  gap: 0.45rem 1rem;
+  max-width: none;
+  margin: 0 0 0.5rem;
 }
 
-form.controls fieldset, .switches { grid-column: 1 / -1; }
+form.controls > label { flex: 0 0 auto; }
+form.controls select, form.controls input { padding: 0.2rem 0.35rem; }
+form.controls input[type="number"] { width: 5.5rem; }
+form.controls input[type="text"] { width: 7rem; }
+form.controls fieldset { flex: 1 1 20rem; min-width: 14rem; }
+form.controls .switches { flex: 0 0 auto; }
+form.controls > label > span, form.controls legend { font-size: 0.75rem; }
+
+/* The capabilities are a row of switches, not a paragraph of checkboxes: eight of them
+   with a legend above took four lines of a band that has to stay one. */
+.checks label {
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  color: var(--ink-dim);
+  cursor: pointer;
+}
+
+.checks label:hover { border-color: var(--ink-faint); color: var(--ink); }
+.checks label:has(:checked) { border-color: var(--speed); color: var(--ink-bright); }
 
 .switches {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem 1.5rem;
+  gap: 0.4rem 1rem;
 }
 
 /* The machine, and the machine to pretend this is instead: a line each, folded away. */
@@ -352,8 +407,8 @@ form label.check {
 
 fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 legend { font-size: 0.85rem; padding: 0 0 0.3rem; }
-.checks { display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; color: var(--ink); }
-.checks label { display: flex; align-items: center; gap: 0.35rem; }
+.checks { display: flex; flex-wrap: wrap; gap: 0.3rem; color: var(--ink); }
+.checks label { display: flex; align-items: center; gap: 0.3rem; }
 
 /* A control is something a pointer has to hit, which is what a border is for. */
 input,
