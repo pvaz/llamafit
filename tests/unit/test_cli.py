@@ -65,7 +65,7 @@ def fake_report() -> SystemReport:
 
 @pytest.fixture(autouse=True)
 def patch_scan(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("llamafit.cli.system_cmd.scan_system", lambda **kwargs: fake_report())
+    monkeypatch.setattr("llamafit.cli.common.scan", lambda **kwargs: fake_report())
     monkeypatch.setattr("llamafit.cli.doctor_cmd.scan_system", lambda **kwargs: fake_report())
 
 
@@ -302,7 +302,7 @@ def test_another_regions_catalog_says_which_variety_the_reader_is_getting() -> N
 def test_the_notice_never_lands_in_the_json_on_stdout(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    monkeypatch.setattr("llamafit.cli.system_cmd.scan_system", lambda **kwargs: fake_report())
+    monkeypatch.setattr("llamafit.cli.common.scan", lambda **kwargs: fake_report())
     requested = _a_region_that_will_never_ship()
     result = runner.invoke(app, ["--language", requested, "--json", "system"])
     assert result.exit_code == 0

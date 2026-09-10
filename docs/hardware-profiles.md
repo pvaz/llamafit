@@ -37,6 +37,22 @@ before a reader has met a single figure.
 This is at the data level on purpose. Every service takes a `Host`, so a mark on the `Host`
 is the only mark that reaches all of them.
 
+A board and a plan are not hosts, and they are what a script usually reads. So `recommend`,
+`fit` and `plan` carry the same two fields on their own documents, set from the host they
+were computed against:
+
+```json
+{
+  "rows": ["..."],
+  "simulation": {"profile": "reference-rtx4060-128gb", "path": "...", "overrides": []},
+  "simulated": true
+}
+```
+
+Without them a program reading `llamafit --profile X --json recommend` would have nothing
+at all to go on: no host, no heading, no colour. `"simulated": false` on a scan is part of
+the same promise, because absence is not evidence.
+
 ## Format
 
 JSON, one machine per file, named for the profile inside it (`--profile NAME` looks for
@@ -189,18 +205,26 @@ Beyond the schema, `validate` reports three things a single file cannot see on i
 two files both claim, a GPU figure that contradicts the bundled specification table, and
 `match` rules that would never recognise the machine the profile itself describes.
 
-From phase 1C the scoring commands take the profile:
+The scoring commands take the profile as a global option, before the command:
 
 ```
-llamafit recommend --profile reference-rtx4060-128gb
-llamafit recommend --profile ./my-machine.json
+llamafit --profile reference-rtx4060-128gb recommend
+llamafit --profile ./my-machine.json fit
+llamafit --profile reference-rtx4060-128gb system      # the Host, with this machine's llama.cpp
 ```
+
+Naming a profile means this machine is never probed at all: a run scoring against somebody
+else's machine has no business reading this one's, and on a machine whose graphics driver
+hangs a probe the profile has to work anyway. `system`, `fit`, `recommend`, `plan` and
+`preset` honour it; `doctor` refuses it, because every line it prints is a probe that ran
+here and a profile has none.
 
 and single-value overrides work on top of the live scan or a profile:
 
 ```
-llamafit recommend --memory 24G                # pretend the GPU has 24 GB
-llamafit recommend --ram 64G --cpu-cores 8
+llamafit --memory 24G recommend                # pretend the GPU has 24 GB
+llamafit --ram 64G --cpu-cores 8 fit
+llamafit --profile fleet-node --memory 24G plan qwen3-coder-next
 ```
 
 An override keeps everything else the scan knows and moves one figure, because somebody asking

@@ -21,7 +21,7 @@ from __future__ import annotations
 from datetime import date
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 ByteSize = Annotated[int, Field(ge=0)]
 """A size in bytes. Never negative, whoever supplied it."""
@@ -307,6 +307,11 @@ class Needs(BaseModel):
             waiting on the tokens, which is the batch case: no candidate is then
             excluded for being slow. See :func:`~llamafit.scoring.speed_score.floor_tps`.
         requested_context: What to size for, defaulting by use case.
+        max_context: A ceiling on every context this request sizes for, reports or
+            scores against, or ``None`` for the model's own native length. It stands
+            beside ``min_context`` and not beside the simulation options: a substituted
+            machine changes what the arithmetic runs on, and this changes the question
+            being asked of it.
         allow_kv_quant: Whether the cache may be quantised to buy context.
         max_download_bytes: A ceiling on what the user is willing to fetch.
 
@@ -314,6 +319,11 @@ class Needs(BaseModel):
     things: unset is "use the figure the specification derived from reading rates", zero
     is "there is no such figure for this request". A single number could not carry both,
     and a default of zero would have quietly turned the exclusion off for everybody.
+
+    A ``max_context`` below ``min_context`` is refused here rather than at each
+    interface. No machine and no model could satisfy it, and the planner would otherwise
+    answer it with "this model holds fewer tokens than you asked for", which names the
+    wrong culprit.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -323,5 +333,15 @@ class Needs(BaseModel):
     min_context: int = Field(default=0, ge=0)
     min_tps: float | None = Field(default=None, ge=0)
     requested_context: int | None = None
+    max_context: int | None = Field(default=None, ge=1)
     allow_kv_quant: bool = True
     max_download_bytes: ByteSize | None = None
+
+    @model_validator(mode="after")
+    def _ceiling_above_floor(self) -> Needs:
+        """Refuse a context ceiling below the context floor."""
+        if self.max_context is not None and self.max_context < self.min_context:
+            raise ValueError(
+                f"max_context {self.max_context} is below min_context {self.min_context}"
+            )
+        return self

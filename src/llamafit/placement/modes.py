@@ -31,7 +31,15 @@ from llamafit.constants import (
 from llamafit.models.catalog import CatalogModel, Extra, Quant
 from llamafit.models.gguf import GgufFacts
 from llamafit.models.host import Cpu, Host
-from llamafit.models.plan import Budget, ContextTier, Placement, Pool, RunMode, Verdict
+from llamafit.models.plan import (
+    Budget,
+    ContextTier,
+    Needs,
+    Placement,
+    Pool,
+    RunMode,
+    Verdict,
+)
 
 ACCEPTABLE_VERDICTS: frozenset[Verdict] = frozenset({"comfortable", "fits", "tight"})
 """The verdicts a placement may be recommended with (section 9.2).
@@ -262,6 +270,28 @@ def native_context(model: CatalogModel) -> int:
     could not actually reach would be planning a configuration nobody can launch.
     """
     return model.context.native
+
+
+def context_ceiling(model: CatalogModel, needs: Needs | None = None) -> int:
+    """The longest context this request will size for, report or score against.
+
+    Args:
+        model: The catalog entry, whose native length is the model's own limit.
+        needs: What the user asked for. ``max_context`` lowers the limit; nothing raises
+            it, because a context the model does not support is not one this program
+            will offer.
+
+    Returns:
+        The smaller of the model's native length and the request's ceiling.
+
+    One function rather than a ``min`` at each call site, because the ceiling is read in
+    four places -- the search, the context ladder, the largest context that fits, and the
+    score's denominator -- and a cap honoured in three of them would print a table whose
+    rungs stop at the cap above a figure that does not.
+    """
+    native = native_context(model)
+    ceiling = native if needs is None or needs.max_context is None else needs.max_context
+    return min(native, ceiling)
 
 
 def has_gpu(host: Host) -> bool:

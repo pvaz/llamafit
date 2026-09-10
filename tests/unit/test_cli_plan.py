@@ -31,7 +31,7 @@ def flat(output: str) -> str:
 @pytest.fixture(autouse=True)
 def fixed_machine(monkeypatch: pytest.MonkeyPatch) -> None:
     """Every command sees the reference machine, never the one running the tests."""
-    monkeypatch.setattr("llamafit.cli.plan_cmd.scan", lambda **_kwargs: report())
+    monkeypatch.setattr("llamafit.cli.common.scan", lambda **_kwargs: report())
 
 
 def test_the_plan_ends_in_a_command_line_that_names_the_planned_flags() -> None:
@@ -124,7 +124,7 @@ def test_a_file_already_on_disk_is_the_one_the_command_line_names(
     _model, quant = model_and_quant("qwen3-coder-next")
     bare = quant.files[0].rsplit("/", 1)[-1]
     monkeypatch.setattr(
-        "llamafit.cli.plan_cmd.scan",
+        "llamafit.cli.common.scan",
         lambda **_kw: report(local_models=[LocalModel(path=f"/models/{bare}", bytes=1)]),
     )
     result = runner.invoke(app, ["--json", "plan", "qwen3-coder-next"])
@@ -137,7 +137,7 @@ def test_a_machine_with_no_room_says_so_instead_of_printing_a_plan_that_cannot_r
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     tiny = machine(vram_total=None, ram_total=4 * GIB, ram_available=2 * GIB)
-    monkeypatch.setattr("llamafit.cli.plan_cmd.scan", lambda **_kw: report(host=tiny))
+    monkeypatch.setattr("llamafit.cli.common.scan", lambda **_kw: report(host=tiny))
     result = runner.invoke(app, ["--language", "en", "plan", "qwen3.8-flash-next"])
     assert result.exit_code == 0, result.output
     assert "nowhere" in flat(result.output)

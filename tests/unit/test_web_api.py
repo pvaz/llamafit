@@ -291,7 +291,7 @@ def test_the_api_and_the_command_line_return_the_same_board(
     client: TestClient, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """Section 13.3's promise, checked rather than asserted in a docstring."""
-    monkeypatch.setattr("llamafit.cli.board_cmd.scan", fake_report)
+    monkeypatch.setattr("llamafit.cli.common.scan", lambda **_kwargs: fake_report())
     result = runner.invoke(cli_app, ["--json", "recommend", "--use-case", "coding", "--limit", "5"])
     assert result.exit_code == 0, result.output
     from_command = json.loads(result.stdout)
@@ -302,7 +302,7 @@ def test_the_api_and_the_command_line_return_the_same_board(
 def test_the_api_and_the_command_line_return_the_same_plan(
     client: TestClient, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr("llamafit.cli.plan_cmd.scan", fake_report)
+    monkeypatch.setattr("llamafit.cli.common.scan", lambda **_kwargs: fake_report())
     result = runner.invoke(cli_app, ["--json", "plan", "qwen3-coder-next"])
     assert result.exit_code == 0, result.output
     from_command = json.loads(result.stdout)
