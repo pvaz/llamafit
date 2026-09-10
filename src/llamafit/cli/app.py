@@ -180,6 +180,7 @@ from llamafit.cli import (  # noqa: E402  (registers commands on import)
     hardware_cmd,
     install_cmd,
     plan_cmd,
+    preset_cmd,
     serve_cmd,
     system_cmd,
 )
@@ -194,6 +195,7 @@ __all__ = [
     "install_cmd",
     "main",
     "plan_cmd",
+    "preset_cmd",
     "serve_cmd",
     "system_cmd",
 ]
