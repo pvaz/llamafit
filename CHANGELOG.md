@@ -78,6 +78,34 @@ the changelog says so when they do.
 - `llamafit.services.plan`: the join between the memory budget and the placement search, which
   is what lets the planner run against real models on a real machine rather than only against
   an injected fake.
+- Hardware profiles: a machine described in a JSON file instead of probed, so LlamaFit can
+  answer for a machine that is not this one -- a card somebody is thinking of buying, or the
+  twenty identical machines a model is being chosen for from a build server that is none of
+  them. A profile becomes the same `Host` a scan produces, so every service downstream takes
+  it without knowing which it got, and single-value overrides substitute one pool of the live
+  scan for a what-if. A simulated host cannot be mistaken for a measured one: it carries a
+  `simulation` object naming the profile, its file and the pools that were overridden, and a
+  `simulated` flag computed from it, so the fact reaches a `--json` consumer as a field rather
+  than only a reader as a heading. On the terminal it is the first row of the host table, in
+  red, before any figure.
+- `llamafit hardware list|show|validate|path`: the profiles LlamaFit can reach, one profile
+  with the `provenance` line that says where its figures came from, the host a profile stands
+  in for (`show --as-host`), a check that follows the catalog's habit of returning problems
+  rather than raising, and the directory your own profiles go in (`LLAMAFIT_PROFILES`
+  overrides it). Beyond the schema, `validate` reports a name two files claim, a GPU figure
+  that contradicts the bundled specification table, and match rules that would never
+  recognise the machine the profile itself describes. The published JSON schema is generated
+  from the model beside the catalog's, at `data/schema/hwprofile.schema.json`.
+- One bundled profile, `reference-rtx4060-128gb`: the machine every estimator constant was
+  fitted to and every `measured` block in the catalog was taken on, so a stranger can
+  reproduce the documentation's numbers without owning it. A test holds it to that -- the host
+  it produces is compared field for field against the reference machine the speed tests use,
+  and the estimator reads the same effective bandwidths off both. Nothing aspirational is
+  bundled: a profile with an invented memory bandwidth reads exactly like a measured one to
+  everything downstream, so a profile must state where each figure came from, a memory
+  bandwidth is refused without the label saying whether it was measured, estimated or assumed,
+  and a card's bandwidth and compute figures are left out so they come from the bundled
+  specification table rather than from a second copy that can drift.
 - Context tier table: what each of ten context lengths costs on the card for the chosen
   placement, so a launch script can pick the largest one that fits the free VRAM it actually
   sees at the moment it starts, and a recommendation survives a browser being opened.
