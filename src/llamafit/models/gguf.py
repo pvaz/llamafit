@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """Data models for a GGUF file's header and the facts derived from it.
 
 ``GgufHeader`` mirrors what the GGUF reader parses directly from a file's byte

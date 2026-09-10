@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """Find ``llama-server`` instances already running on this machine.
 
 The initial ``/health`` check on each candidate port uses ``HEALTH_TIMEOUT_S``. On some

@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """The shape of a catalog entry: what LlamaFit knows about a model before it reads its files.
 
 A :class:`CatalogModel` is everything curated by hand about one model: its identity,
