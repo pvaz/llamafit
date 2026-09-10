@@ -636,8 +636,10 @@ msgstr "Пропуска измерването на пропускателна�
 msgid "Command: %(command)s"
 msgstr "Команда: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "отрязана заглавна част на GGUF: очакваха се %(wanted)d байта при отместване %(offset)d, получени са %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Файлът може още да се изтегля или на този URL адрес да няма GGUF файл."
@@ -660,6 +662,11 @@ msgstr "неподдържана версия на GGUF %(version)d при от�
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit поддържа версии на GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "тези GGUF файлове не са един разделен модел: те се разминават за '%(key)s' и обявяват %(values)s"
 
@@ -672,14 +679,16 @@ msgstr "няма заглавна част на GGUF, от която да се 
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Подайте файла на модела или всички части на разделен модел."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d от %(total)d GGUF файла нямат ключ '%(key)s', затова мястото им в разделен модел не може да бъде установено"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Подайте един неразделен файл самостоятелно или всички части на един разделен модел."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "непълен набор от части: моделът обявява %(declared)d части, а са пристигнали %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Подайте всички части на разделения модел."
@@ -696,8 +705,13 @@ msgstr "непълен набор от части: очакваше се %(key)s
 msgid "Pass each shard of the split model exactly once."
 msgstr "Подайте всяка част на разделения модел точно веднъж."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "непълен набор от части: моделът обявява %(declared)d тензора, а неговите %(shards)d части съдържат общо %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "не можа да се прочете %(path)s: %(error)s"
@@ -742,11 +756,13 @@ msgstr "няма запълнени модули памет"
 msgid "no SPMemoryDataType"
 msgstr "няма SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "празна команда"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: времето изтече след %(seconds)s с"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -873,6 +889,7 @@ msgstr "Инсталирайте numpy (`pip install llamafit[fast]`), за да
 msgid "Probe %(probe)s failed"
 msgstr "Проверката %(probe)s се провали"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "неизвестна грешка"
 

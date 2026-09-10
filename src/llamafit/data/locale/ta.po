@@ -644,8 +644,10 @@ msgstr "RAM bandwidth அளவீட்டைத் தவிர்க்கு
 msgid "Command: %(command)s"
 msgstr "கட்டளை: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "துண்டிக்கப்பட்ட GGUF header: offset %(offset)d இல் %(wanted)d bytes தேவைப்பட்டன, கிடைத்தது %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "கோப்பு இன்னும் பதிவிறங்கிக்கொண்டிருக்கலாம், அல்லது அந்த URL ஒரு GGUF கோப்பாக இல்லாமல் இருக்கலாம்."
@@ -668,6 +670,11 @@ msgstr "offset 4 இல் ஆதரிக்கப்படாத GGUF பத�
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit GGUF-இன் %(versions)s பதிப்புகளை ஆதரிக்கிறது."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "இந்த GGUF கோப்புகள் ஒரே split மாடலைச் சேர்ந்தவை அல்ல: '%(key)s' குறித்து அவை ஒத்துப்போகவில்லை, %(values)s என அறிவிக்கின்றன"
 
@@ -680,14 +687,16 @@ msgstr "தகவல்களைப் படிக்க GGUF header எது�
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "மாடலின் கோப்பைக் கொடுக்கவும், அல்லது ஒரு split மாடலின் ஒவ்வொரு shard ஐயும் கொடுக்கவும்."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(total)d GGUF கோப்புகளில் %(count)d கோப்புகளில் '%(key)s' key இல்லை, எனவே split மாடலில் அவற்றின் இடத்தை நிர்ணயிக்க முடியவில்லை"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "பிரிக்கப்படாத ஒரே கோப்பைத் தனியாகக் கொடுக்கவும், அல்லது ஒரே split மாடலின் ஒவ்வொரு shard ஐயும் கொடுக்கவும்."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "முழுமையற்ற shard தொகுப்பு: மாடல் %(declared)d shard-களை அறிவிக்கிறது, வந்தவை %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "split மாடலின் ஒவ்வொரு shard ஐயும் கொடுக்கவும்."
@@ -704,8 +713,13 @@ msgstr "முழுமையற்ற shard தொகுப்பு: %(key)s 0
 msgid "Pass each shard of the split model exactly once."
 msgstr "split மாடலின் ஒவ்வொரு shard ஐயும் சரியாக ஒரு முறை கொடுக்கவும்."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "முழுமையற்ற shard தொகுப்பு: மாடல் %(declared)d tensor-களை அறிவிக்கிறது, அதன் %(shards)d shard-கள் சேர்ந்து %(held)d ஐக் கொண்டுள்ளன"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "%(path)s ஐப் படிக்க முடியவில்லை: %(error)s"
@@ -750,11 +764,13 @@ msgstr "நிரப்பப்பட்ட நினைவகத் தொக�
 msgid "no SPMemoryDataType"
 msgstr "SPMemoryDataType இல்லை"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "காலியான கட்டளை"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: %(seconds)ss க்குப் பிறகு நேரம் முடிந்தது"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -881,6 +897,7 @@ msgstr "LlamaFit ஆல் RAM bandwidth ஐ அளக்க முடியு�
 msgid "Probe %(probe)s failed"
 msgstr "%(probe)s சோதனை தோல்வியடைந்தது"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "தெரியாத பிழை"
 

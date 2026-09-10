@@ -638,8 +638,10 @@ msgstr "Παραλείπει τη μέτρηση του εύρους ζώνης 
 msgid "Command: %(command)s"
 msgstr "Εντολή: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "περικομμένη κεφαλίδα GGUF: αναμένονταν %(wanted)d bytes στη θέση %(offset)d, ελήφθησαν %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Το αρχείο μπορεί να κατεβαίνει ακόμη, ή το URL μπορεί να μην είναι αρχείο GGUF."
@@ -662,6 +664,11 @@ msgstr "μη υποστηριζόμενη έκδοση GGUF %(version)d στη �
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "Το LlamaFit υποστηρίζει τις εκδόσεις GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "αυτά τα αρχεία GGUF δεν είναι ένα διαιρεμένο μοντέλο: διαφωνούν ως προς το '%(key)s', δηλώνοντας %(values)s"
 
@@ -674,14 +681,16 @@ msgstr "δεν υπάρχει κεφαλίδα GGUF από την οποία ν�
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Δώστε το αρχείο του μοντέλου, ή κάθε τμήμα ενός διαιρεμένου μοντέλου."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d από %(total)d αρχεία GGUF δεν φέρουν το κλειδί '%(key)s', οπότε δεν μπορεί να προσδιοριστεί η θέση τους σε ένα διαιρεμένο μοντέλο"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Δώστε ένα μόνο αδιαίρετο αρχείο, ή κάθε τμήμα ενός διαιρεμένου μοντέλου."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "ελλιπές σύνολο τμημάτων: το μοντέλο δηλώνει %(declared)d τμήματα και έφτασαν %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Δώστε κάθε τμήμα του διαιρεμένου μοντέλου."
@@ -698,8 +707,13 @@ msgstr "ελλιπές σύνολο τμημάτων: αναμενόταν %(key
 msgid "Pass each shard of the split model exactly once."
 msgstr "Δώστε κάθε τμήμα του διαιρεμένου μοντέλου ακριβώς μία φορά."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "ελλιπές σύνολο τμημάτων: το μοντέλο δηλώνει %(declared)d τανυστές και τα %(shards)d τμήματά του κρατούν συνολικά %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "δεν ήταν δυνατή η ανάγνωση του %(path)s: %(error)s"
@@ -744,11 +758,13 @@ msgstr "καμία κατειλημμένη μονάδα μνήμης"
 msgid "no SPMemoryDataType"
 msgstr "χωρίς SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "κενή εντολή"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: έληξε το χρονικό όριο μετά από %(seconds)s δευτερόλεπτα"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -875,6 +891,7 @@ msgstr "Εγκαταστήστε το numpy (`pip install llamafit[fast]`) ώσ�
 msgid "Probe %(probe)s failed"
 msgstr "Η ανίχνευση %(probe)s απέτυχε"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "άγνωστο σφάλμα"
 

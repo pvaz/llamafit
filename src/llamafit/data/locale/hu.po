@@ -647,8 +647,10 @@ msgstr "A RAM sávszélesség-mérésének kihagyása."
 msgid "Command: %(command)s"
 msgstr "Parancs: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "csonka GGUF fejléc: a(z) %(offset)d eltolásnál %(wanted)d bájt kellett volna, %(got)d érkezett"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Lehet, hogy a fájl még töltődik le, vagy hogy az URL nem GGUF fájlra mutat."
@@ -671,6 +673,11 @@ msgstr "nem támogatott GGUF verzió: %(version)d a 4 eltolásnál"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "A LlamaFit a következő GGUF verziókat támogatja: %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "ezek a GGUF fájlok nem egyetlen felosztott modellt alkotnak: nem értenek egyet a(z) '%(key)s' kulcsról, ezt jelentik: %(values)s"
 
@@ -683,14 +690,16 @@ msgstr "nincs GGUF fejléc, amelyből adatokat lehetne olvasni"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Adja meg a modell fájlját, vagy egy felosztott modell összes részét."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(total)d GGUF fájlból %(count)d nem hordozza a(z) '%(key)s' kulcsot, ezért nem állapítható meg a helyük a felosztott modellben"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Adjon meg egyetlen, fel nem osztott fájlt önmagában, vagy egyetlen felosztott modell összes részét."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "hiányos részhalmaz: a modell %(declared)d részt jelent be, és %(arrived)d érkezett meg (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Adja meg a felosztott modell összes részét."
@@ -707,8 +716,13 @@ msgstr "hiányos részhalmaz: %(key)s 0-tól %(last)d-ig kellett volna, %(number
 msgid "Pass each shard of the split model exactly once."
 msgstr "A felosztott modell minden részét pontosan egyszer adja meg."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "hiányos részhalmaz: a modell %(declared)d tenzort jelent be, a %(shards)d része pedig összesen %(held)d tenzort tartalmaz"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "nem sikerült beolvasni a(z) %(path)s fájlt: %(error)s"
@@ -753,11 +767,13 @@ msgstr "nincs behelyezett memóriamodul"
 msgid "no SPMemoryDataType"
 msgstr "nincs SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "üres parancs"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: időtúllépés %(seconds)s másodperc után"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -884,6 +900,7 @@ msgstr "Telepítse a numpy csomagot (`pip install llamafit[fast]`), hogy a Llama
 msgid "Probe %(probe)s failed"
 msgstr "A(z) %(probe)s próba sikertelen"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "ismeretlen hiba"
 

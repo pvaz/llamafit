@@ -641,8 +641,10 @@ msgstr "Omite la medición del ancho de banda de la RAM."
 msgid "Command: %(command)s"
 msgstr "Comando: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "cabecera GGUF truncada: esperaba %(wanted)d bytes en la posición %(offset)d y obtuvo %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "El archivo puede seguir descargándose, o la URL puede no ser un archivo GGUF."
@@ -665,6 +667,11 @@ msgstr "versión de GGUF no admitida %(version)d en la posición 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit admite las versiones de GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "estos archivos GGUF no son un solo modelo dividido: discrepan en '%(key)s' y declaran %(values)s"
 
@@ -677,14 +684,16 @@ msgstr "no hay ninguna cabecera GGUF de la que leer los datos"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Indique el archivo del modelo, o todos los fragmentos de un modelo dividido."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d de %(total)d archivos GGUF no llevan la clave '%(key)s', así que no se puede determinar su lugar en un modelo dividido"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Indique un único archivo sin dividir por sí solo, o todos los fragmentos de un mismo modelo dividido."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "conjunto de fragmentos incompleto: el modelo declara %(declared)d fragmentos y han llegado %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Indique todos los fragmentos del modelo dividido."
@@ -701,8 +710,13 @@ msgstr "conjunto de fragmentos incompleto: se esperaba %(key)s de 0 a %(last)d y
 msgid "Pass each shard of the split model exactly once."
 msgstr "Indique cada fragmento del modelo dividido exactamente una vez."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "conjunto de fragmentos incompleto: el modelo declara %(declared)d tensores y sus %(shards)d fragmentos contienen %(held)d entre todos"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "no se pudo leer %(path)s: %(error)s"
@@ -747,11 +761,13 @@ msgstr "ningún módulo de memoria ocupado"
 msgid "no SPMemoryDataType"
 msgstr "sin SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "comando vacío"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: se agotó el tiempo tras %(seconds)ss"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -878,6 +894,7 @@ msgstr "Instale numpy (`pip install llamafit[fast]`) para que LlamaFit pueda med
 msgid "Probe %(probe)s failed"
 msgstr "La comprobación %(probe)s falló"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "error desconocido"
 

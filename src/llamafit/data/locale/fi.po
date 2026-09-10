@@ -648,8 +648,10 @@ msgstr "Ohittaa RAM-muistin kaistanleveyden mittauksen."
 msgid "Command: %(command)s"
 msgstr "Komento: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "katkennut GGUF-otsake: odotettiin %(wanted)d tavua kohdassa %(offset)d, saatiin %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Tiedosto saattaa olla vielä latautumassa, tai osoite ei osoita GGUF-tiedostoon."
@@ -672,6 +674,11 @@ msgstr "GGUF-versiota %(version)d ei tueta, kohdassa 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit tukee GGUF-versioita %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "nämä GGUF-tiedostot eivät ole yksi jaettu malli: ne ovat eri mieltä avaimesta '%(key)s' ja ilmoittavat %(values)s"
 
@@ -687,14 +694,16 @@ msgstr "ei GGUF-otsaketta, josta lukea tiedot"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Anna mallin tiedosto tai jaetun mallin kaikki osat."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(total)d GGUF-tiedostosta %(count)d ei sisällä avainta '%(key)s', joten niiden paikkaa jaetussa mallissa ei voi määrittää"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Anna joko yksi jakamaton tiedosto yksinään tai yhden jaetun mallin kaikki osat."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "epätäydellinen osajoukko: malli ilmoittaa %(declared)d osaa, ja niitä saapui %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Anna jaetun mallin kaikki osat."
@@ -711,8 +720,13 @@ msgstr "epätäydellinen osajoukko: odotettiin avaimen %(key)s arvoja 0-%(last)d
 msgid "Pass each shard of the split model exactly once."
 msgstr "Anna jaetun mallin jokainen osa täsmälleen kerran."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "epätäydellinen osajoukko: malli ilmoittaa %(declared)d tensoria, ja sen %(shards)d osaa sisältävät yhteensä %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "tiedostoa %(path)s ei voitu lukea: %(error)s"
@@ -757,11 +771,13 @@ msgstr "ei käytössä olevia muistimoduuleja"
 msgid "no SPMemoryDataType"
 msgstr "ei SPMemoryDataType-tietoa"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "tyhjä komento"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: aikakatkaisu %(seconds)ss kuluttua"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -888,6 +904,7 @@ msgstr "Asenna numpy (`pip install llamafit[fast]`), jotta LlamaFit voi mitata R
 msgid "Probe %(probe)s failed"
 msgstr "Testi %(probe)s epäonnistui"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "tuntematon virhe"
 

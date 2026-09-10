@@ -659,8 +659,11 @@ msgstr "Sare peste măsurarea lățimii de bandă a memoriei RAM."
 msgid "Command: %(command)s"
 msgstr "Comandă: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "antet GGUF trunchiat: se așteptau %(wanted)d octeți la poziția %(offset)d, s-au primit %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Fișierul poate fi încă în curs de descărcare sau URL-ul poate să nu fie un fișier GGUF."
@@ -683,6 +686,12 @@ msgstr "versiune GGUF neacceptată %(version)d la poziția 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit acceptă versiunile GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "aceste fișiere GGUF nu formează un singur model împărțit: nu sunt de acord asupra '%(key)s' și declară %(values)s"
 
@@ -695,14 +704,17 @@ msgstr "niciun antet GGUF din care să se citească caracteristicile"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Dați fișierul modelului sau fiecare fragment al unui model împărțit."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d din %(total)d fișiere GGUF nu au cheia '%(key)s', așa că locul lor într-un model împărțit nu poate fi stabilit"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Dați un singur fișier neîmpărțit de unul singur sau fiecare fragment al unui singur model împărțit."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "set de fragmente incomplet: modelul declară %(declared)d fragmente și au sosit %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Dați fiecare fragment al modelului împărțit."
@@ -719,8 +731,14 @@ msgstr "set de fragmente incomplet: se așteptau %(key)s de la 0 la %(last)d, s-
 msgid "Pass each shard of the split model exactly once."
 msgstr "Dați fiecare fragment al modelului împărțit exact o dată."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "set de fragmente incomplet: modelul declară %(declared)d tensori, iar cele %(shards)d fragmente ale lui conțin %(held)d în total"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "nu s-a putut citi %(path)s: %(error)s"
@@ -765,11 +783,14 @@ msgstr "niciun modul de memorie ocupat"
 msgid "no SPMemoryDataType"
 msgstr "fără SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "empty command"
 msgstr "comandă goală"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: timpul a expirat după %(seconds)ss"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -896,6 +917,7 @@ msgstr "Instalați numpy (`pip install llamafit[fast]`) pentru ca LlamaFit să p
 msgid "Probe %(probe)s failed"
 msgstr "Verificarea %(probe)s a eșuat"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "eroare necunoscută"
 

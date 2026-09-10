@@ -632,8 +632,9 @@ msgstr "Melewati pengukuran bandwidth RAM."
 msgid "Command: %(command)s"
 msgstr "Perintah: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "header GGUF terpotong: butuh %(wanted)d byte pada offset %(offset)d, dapat %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "File itu mungkin masih diunduh, atau URL-nya mungkin bukan file GGUF."
@@ -656,6 +657,10 @@ msgstr "versi GGUF %(version)d tidak didukung, pada offset 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit mendukung GGUF versi %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "file GGUF ini bukan satu model split: semuanya tidak sepakat soal '%(key)s', dan menyatakan %(values)s"
 
@@ -668,14 +673,15 @@ msgstr "tidak ada header GGUF untuk membaca fakta"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Berikan file model itu, atau setiap shard dari sebuah model split."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d dari %(total)d file GGUF tidak memuat kunci '%(key)s', sehingga tempatnya dalam sebuah model split tidak dapat ditentukan"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Berikan satu file utuh tanpa split, atau setiap shard dari satu model split."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "kumpulan shard tidak lengkap: model menyatakan %(declared)d shard dan yang tiba %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Berikan setiap shard dari model split itu."
@@ -692,8 +698,12 @@ msgstr "kumpulan shard tidak lengkap: diharapkan %(key)s 0 sampai %(last)d, dapa
 msgid "Pass each shard of the split model exactly once."
 msgstr "Berikan setiap shard dari model split itu tepat sekali."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "kumpulan shard tidak lengkap: model menyatakan %(declared)d tensor sedangkan %(shards)d shard-nya bersama-sama memuat %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "tidak dapat membaca %(path)s: %(error)s"
@@ -738,11 +748,12 @@ msgstr "tidak ada modul memori yang terisi"
 msgid "no SPMemoryDataType"
 msgstr "tidak ada SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+
 msgid "empty command"
 msgstr "perintah kosong"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: waktu habis setelah %(seconds)ss"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -869,6 +880,7 @@ msgstr "Pasang numpy (`pip install llamafit[fast]`) agar LlamaFit dapat mengukur
 msgid "Probe %(probe)s failed"
 msgstr "Pemeriksaan %(probe)s gagal"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "kesalahan tidak diketahui"
 

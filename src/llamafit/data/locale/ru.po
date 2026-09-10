@@ -652,8 +652,11 @@ msgstr "Не измерять пропускную способность ОЗУ
 msgid "Command: %(command)s"
 msgstr "Команда: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "усечённый заголовок GGUF: ожидалось %(wanted)d байт по смещению %(offset)d, получено %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Файл, возможно, ещё загружается, или по этому URL находится не файл GGUF."
@@ -676,6 +679,12 @@ msgstr "неподдерживаемая версия GGUF %(version)d по см
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit поддерживает версии GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "эти файлы GGUF не являются одной разделённой моделью: они расходятся в '%(key)s', объявляя %(values)s"
 
@@ -688,14 +697,17 @@ msgstr "нет заголовка GGUF, из которого можно про�
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Передайте файл модели или все части разделённой модели."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "в %(count)d из %(total)d файлов GGUF нет ключа '%(key)s', поэтому их место в разделённой модели определить нельзя"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Передайте либо один неразделённый файл отдельно, либо все части одной разделённой модели."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "неполный набор частей: модель объявляет %(declared)d частей, а получено %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Передайте все части разделённой модели."
@@ -712,8 +724,14 @@ msgstr "неполный набор частей: ожидалось %(key)s о�
 msgid "Pass each shard of the split model exactly once."
 msgstr "Передайте каждую часть разделённой модели ровно один раз."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "неполный набор частей: модель объявляет %(declared)d тензоров, а её %(shards)d частей содержат в сумме %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "не удалось прочитать %(path)s: %(error)s"
@@ -758,11 +776,14 @@ msgstr "нет заполненных модулей памяти"
 msgid "no SPMemoryDataType"
 msgstr "нет SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "empty command"
 msgstr "пустая команда"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: время ожидания истекло через %(seconds)s с"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -889,6 +910,7 @@ msgstr "Установите numpy (`pip install llamafit[fast]`), чтобы Ll
 msgid "Probe %(probe)s failed"
 msgstr "Проверка %(probe)s не удалась"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "неизвестная ошибка"
 

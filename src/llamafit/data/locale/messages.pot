@@ -809,89 +809,105 @@ msgid "Command: %(command)s"
 msgstr ""
 
 #: src/llamafit/gguf/reader.py:72
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr ""
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
-#: src/llamafit/gguf/reader.py:77
+#: src/llamafit/gguf/reader.py:80
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:113
+#: src/llamafit/gguf/reader.py:116
 msgid "unknown GGUF value type %(type)d at offset %(offset)d"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:115
+#: src/llamafit/gguf/reader.py:118
 msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:136
+#: src/llamafit/gguf/reader.py:139
 msgid "not a GGUF file: bad magic %(magic)s at offset 0"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:137
+#: src/llamafit/gguf/reader.py:140
 msgid "Check that this file is actually a .gguf model."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:142
+#: src/llamafit/gguf/reader.py:145
 msgid "unsupported GGUF version %(version)d at offset 4"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:143
+#: src/llamafit/gguf/reader.py:146
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:235
+#: src/llamafit/gguf/reader.py:203
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/gguf/reader.py:248
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:240
+#: src/llamafit/gguf/reader.py:253
 msgid "Pass the shards of one model, not of several."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:295
+#: src/llamafit/gguf/reader.py:308
 msgid "no GGUF header to read facts from"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:296
+#: src/llamafit/gguf/reader.py:309
 msgid "Pass the model's file, or every shard of a split model."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:311
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr ""
+#: src/llamafit/gguf/reader.py:324
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
-#: src/llamafit/gguf/reader.py:316
+#: src/llamafit/gguf/reader.py:332
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:325
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
+#: src/llamafit/gguf/reader.py:341
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:335
-#: src/llamafit/gguf/reader.py:371
+#: src/llamafit/gguf/reader.py:351
+#: src/llamafit/gguf/reader.py:388
 msgid "Pass every shard of the split model."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:341
+#: src/llamafit/gguf/reader.py:357
 msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:346
+#: src/llamafit/gguf/reader.py:362
 msgid "Pass every shard of the split model, including the first."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:350
+#: src/llamafit/gguf/reader.py:366
 msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:352
+#: src/llamafit/gguf/reader.py:368
 msgid "Pass each shard of the split model exactly once."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:362
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
+#: src/llamafit/gguf/reader.py:378
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
 msgstr ""
+
+#: src/llamafit/gguf/reader.py:383
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/llamafit/gguf/source.py:75
 #: src/llamafit/gguf/source.py:89
@@ -954,29 +970,31 @@ msgstr ""
 msgid "no SPMemoryDataType"
 msgstr ""
 
-#: src/llamafit/hardware/runner.py:56
-#: src/llamafit/hardware/runner.py:118
+#: src/llamafit/hardware/runner.py:53
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/hardware/runner.py:75
+#: src/llamafit/hardware/runner.py:136
 msgid "empty command"
 msgstr ""
 
-#: src/llamafit/hardware/runner.py:85
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr ""
-
-#: src/llamafit/hardware/runner.py:95
+#: src/llamafit/hardware/runner.py:113
 msgid "%(program)s: %(error)s"
 msgstr ""
 
-#: src/llamafit/hardware/runner.py:126
-#: src/llamafit/hardware/runner.py:76
+#: src/llamafit/hardware/runner.py:144
+#: src/llamafit/hardware/runner.py:95
 msgid "%(program)s: not found"
 msgstr ""
 
-#: src/llamafit/hardware/runner.py:151
+#: src/llamafit/hardware/runner.py:169
 msgid "no output"
 msgstr ""
 
-#: src/llamafit/hardware/runner.py:152
+#: src/llamafit/hardware/runner.py:170
 msgid "exit code %(code)d: %(detail)s"
 msgstr ""
 
@@ -1131,6 +1149,7 @@ msgid "Probe %(probe)s failed"
 msgstr ""
 
 #: src/llamafit/services/doctor.py:222
+msgctxt "probe error"
 msgid "unknown error"
 msgstr ""
 

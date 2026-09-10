@@ -655,8 +655,11 @@ msgstr "Preskače mjerenje propusnosti RAM-a."
 msgid "Command: %(command)s"
 msgstr "Naredba: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "skraćeno GGUF zaglavlje: očekivano je %(wanted)d bajtova na odmaku %(offset)d, primljeno %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Datoteka se možda još preuzima ili URL možda ne upućuje na GGUF datoteku."
@@ -679,6 +682,12 @@ msgstr "nepodržana GGUF inačica %(version)d na odmaku 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit podržava GGUF inačice %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "ove GGUF datoteke nisu jedan podijeljeni model: ne slažu se oko '%(key)s' i navode %(values)s"
 
@@ -691,14 +700,17 @@ msgstr "nema GGUF zaglavlja iz kojeg bi se pročitali podaci"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Predajte datoteku modela ili svaki dio podijeljenog modela."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d od %(total)d GGUF datoteka ne nosi ključ '%(key)s', pa se njihovo mjesto u podijeljenom modelu ne može utvrditi"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Predajte jednu nepodijeljenu datoteku samu za sebe ili svaki dio jednog podijeljenog modela."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "nepotpun skup dijelova: model navodi %(declared)d dijelova, a stiglo ih je %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Predajte svaki dio podijeljenog modela."
@@ -715,8 +727,14 @@ msgstr "nepotpun skup dijelova: očekivalo se %(key)s od 0 do %(last)d, primljen
 msgid "Pass each shard of the split model exactly once."
 msgstr "Predajte svaki dio podijeljenog modela točno jedanput."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "nepotpun skup dijelova: model navodi %(declared)d tenzora, a njegovih %(shards)d dijelova zajedno drži %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "nije bilo moguće pročitati %(path)s: %(error)s"
@@ -761,11 +779,14 @@ msgstr "nema popunjenih memorijskih modula"
 msgid "no SPMemoryDataType"
 msgstr "nema SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "empty command"
 msgstr "prazna naredba"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: isteklo je vrijeme nakon %(seconds)s sekundi"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -892,6 +913,7 @@ msgstr "Instalirajte numpy (`pip install llamafit[fast]`) kako bi LlamaFit mogao
 msgid "Probe %(probe)s failed"
 msgstr "Provjera %(probe)s nije uspjela"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "nepoznata pogreška"
 

@@ -624,8 +624,9 @@ msgstr "ข้ามการวัดแบนด์วิดท์ของ RA
 msgid "Command: %(command)s"
 msgstr "คำสั่ง: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "ส่วนหัว GGUF ถูกตัดขาด: ต้องการ %(wanted)d ไบต์ที่ออฟเซ็ต %(offset)d แต่ได้ %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "ไฟล์อาจยังดาวน์โหลดไม่เสร็จ หรือ URL อาจไม่ใช่ไฟล์ GGUF"
@@ -648,6 +649,10 @@ msgstr "ไม่รองรับ GGUF เวอร์ชัน %(version)d �
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit รองรับ GGUF เวอร์ชัน %(versions)s"
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "ไฟล์ GGUF เหล่านี้ไม่ได้เป็นโมเดลที่แบ่งชาร์ดชุดเดียวกัน: ค่า '%(key)s' ไม่ตรงกัน โดยประกาศเป็น %(values)s"
 
@@ -660,14 +665,15 @@ msgstr "ไม่มีส่วนหัว GGUF ให้อ่านข้อ
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "ส่งไฟล์ของโมเดล หรือชาร์ดทุกชิ้นของโมเดลที่แบ่งชาร์ด"
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "ไฟล์ GGUF %(count)d จาก %(total)d ไฟล์ไม่มีคีย์ '%(key)s' จึงระบุตำแหน่งของไฟล์เหล่านั้นในโมเดลที่แบ่งชาร์ดไม่ได้"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "ส่งไฟล์เดี่ยวที่ไม่ได้แบ่งชาร์ดเพียงไฟล์เดียว หรือชาร์ดทุกชิ้นของโมเดลที่แบ่งชาร์ดชุดเดียว"
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "ชาร์ดไม่ครบ: โมเดลประกาศไว้ %(declared)d ชาร์ด แต่มาถึง %(arrived)d ชาร์ด (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "ส่งชาร์ดทุกชิ้นของโมเดลที่แบ่งชาร์ด"
@@ -684,8 +690,12 @@ msgstr "ชาร์ดไม่ครบ: ต้องการ %(key)s ตั�
 msgid "Pass each shard of the split model exactly once."
 msgstr "ส่งชาร์ดแต่ละชิ้นของโมเดลที่แบ่งชาร์ดเพียงครั้งเดียว"
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "ชาร์ดไม่ครบ: โมเดลประกาศเทนเซอร์ไว้ %(declared)d ตัว แต่ชาร์ด %(shards)d ชิ้นรวมกันมีเพียง %(held)d ตัว"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "อ่าน %(path)s ไม่ได้: %(error)s"
@@ -730,11 +740,12 @@ msgstr "ไม่มีโมดูลหน่วยความจำที่
 msgid "no SPMemoryDataType"
 msgstr "ไม่มี SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+
 msgid "empty command"
 msgstr "คำสั่งว่างเปล่า"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: หมดเวลาหลังจาก %(seconds)s วินาที"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -861,6 +872,7 @@ msgstr "ติดตั้ง numpy (`pip install llamafit[fast]`) เพื่�
 msgid "Probe %(probe)s failed"
 msgstr "การตรวจสอบ %(probe)s ล้มเหลว"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "ข้อผิดพลาดที่ไม่ทราบสาเหตุ"
 

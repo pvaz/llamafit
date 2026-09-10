@@ -636,8 +636,10 @@ msgstr "Omet el mesurament de l'amplada de banda de la RAM."
 msgid "Command: %(command)s"
 msgstr "Ordre: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "capçalera GGUF truncada: s'esperaven %(wanted)d bytes a la posició %(offset)d i se n'han obtingut %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Pot ser que el fitxer encara s'estigui baixant, o que l'URL no sigui un fitxer GGUF."
@@ -660,6 +662,11 @@ msgstr "versió de GGUF no admesa %(version)d a la posició 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit admet les versions de GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "aquests fitxers GGUF no són un sol model dividit: no coincideixen en '%(key)s' i declaren %(values)s"
 
@@ -672,14 +679,16 @@ msgstr "no hi ha cap capçalera GGUF d'on llegir les dades"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Indiqueu el fitxer del model, o tots els fragments d'un model dividit."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d de %(total)d fitxers GGUF no tenen la clau '%(key)s', de manera que no es pot establir el seu lloc en un model dividit"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Indiqueu un únic fitxer sense dividir tot sol, o tots els fragments d'un mateix model dividit."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "conjunt de fragments incomplet: el model declara %(declared)d fragments i n'han arribat %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Indiqueu tots els fragments del model dividit."
@@ -696,8 +705,13 @@ msgstr "conjunt de fragments incomplet: s'esperava %(key)s de 0 a %(last)d i s'h
 msgid "Pass each shard of the split model exactly once."
 msgstr "Indiqueu cada fragment del model dividit exactament una vegada."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "conjunt de fragments incomplet: el model declara %(declared)d tensors i els seus %(shards)d fragments en contenen %(held)d entre tots"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "no s'ha pogut llegir %(path)s: %(error)s"
@@ -742,11 +756,13 @@ msgstr "cap mòdul de memòria ocupat"
 msgid "no SPMemoryDataType"
 msgstr "sense SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "ordre buida"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: s'ha esgotat el temps després de %(seconds)ss"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -873,6 +889,7 @@ msgstr "Instal·leu numpy (`pip install llamafit[fast]`) perquè LlamaFit pugui 
 msgid "Probe %(probe)s failed"
 msgstr "La comprovació %(probe)s ha fallat"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "error desconegut"
 

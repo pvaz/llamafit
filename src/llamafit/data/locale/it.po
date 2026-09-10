@@ -639,8 +639,10 @@ msgstr "Salta la misurazione della larghezza di banda della RAM."
 msgid "Command: %(command)s"
 msgstr "Comando: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "intestazione GGUF troncata: attesi %(wanted)d byte alla posizione %(offset)d, ottenuti %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Il file potrebbe essere ancora in scaricamento, oppure l'URL potrebbe non essere un file GGUF."
@@ -663,6 +665,11 @@ msgstr "versione GGUF non supportata %(version)d alla posizione 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit supporta le versioni GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "questi file GGUF non sono un unico modello suddiviso: non concordano su '%(key)s' e dichiarano %(values)s"
 
@@ -675,14 +682,16 @@ msgstr "nessuna intestazione GGUF da cui leggere le caratteristiche"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Passare il file del modello, oppure ogni frammento di un modello suddiviso."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d file GGUF su %(total)d non hanno la chiave '%(key)s', quindi non è possibile stabilire il loro posto in un modello suddiviso"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Passare un singolo file non suddiviso da solo, oppure ogni frammento di un unico modello suddiviso."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "insieme di frammenti incompleto: il modello dichiara %(declared)d frammenti e ne sono arrivati %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Passare ogni frammento del modello suddiviso."
@@ -699,8 +708,13 @@ msgstr "insieme di frammenti incompleto: attesi %(key)s da 0 a %(last)d, ottenut
 msgid "Pass each shard of the split model exactly once."
 msgstr "Passare ogni frammento del modello suddiviso esattamente una volta."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "insieme di frammenti incompleto: il modello dichiara %(declared)d tensori e i suoi %(shards)d frammenti ne contengono %(held)d in tutto"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "non è stato possibile leggere %(path)s: %(error)s"
@@ -745,11 +759,13 @@ msgstr "nessun modulo di memoria popolato"
 msgid "no SPMemoryDataType"
 msgstr "nessun SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "comando vuoto"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: tempo scaduto dopo %(seconds)ss"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -876,6 +892,7 @@ msgstr "Installare numpy (`pip install llamafit[fast]`) perché LlamaFit possa m
 msgid "Probe %(probe)s failed"
 msgstr "Verifica %(probe)s non riuscita"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "errore sconosciuto"
 

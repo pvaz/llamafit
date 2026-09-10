@@ -624,8 +624,9 @@ msgstr "RAM 帯域幅の実測を省略します。"
 msgid "Command: %(command)s"
 msgstr "コマンド: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "GGUF ヘッダーが途中で切れています: オフセット %(offset)d で %(wanted)d バイト必要ですが、%(got)d バイトしかありません"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "ファイルがまだダウンロード中か、URL が GGUF ファイルではない可能性があります。"
@@ -648,6 +649,10 @@ msgstr "対応していない GGUF バージョン %(version)d です（オフ�
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit が対応している GGUF バージョンは %(versions)s です。"
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "これらの GGUF ファイルは 1 つの分割モデルではありません: '%(key)s' の値が一致せず、%(values)s と宣言されています"
 
@@ -660,14 +665,15 @@ msgstr "情報を読み取る GGUF ヘッダーがありません"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "モデルのファイル、または分割モデルのすべてのシャードを渡してください。"
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(total)d 個の GGUF ファイルのうち %(count)d 個に '%(key)s' キーがないため、分割モデル内での位置を特定できません"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "分割されていないファイルを 1 つだけ渡すか、1 つの分割モデルのすべてのシャードを渡してください。"
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "シャードが揃っていません: モデルは %(declared)d 個のシャードを宣言していますが、届いたのは %(arrived)d 個です（%(key)s %(numbers)s）"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "分割モデルのすべてのシャードを渡してください。"
@@ -684,8 +690,12 @@ msgstr "シャードが揃っていません: %(key)s は 0 から %(last)d を�
 msgid "Pass each shard of the split model exactly once."
 msgstr "分割モデルの各シャードは 1 回だけ渡してください。"
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "シャードが揃っていません: モデルは %(declared)d 個のテンソルを宣言していますが、%(shards)d 個のシャード全体で %(held)d 個しかありません"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "%(path)s を読み取れませんでした: %(error)s"
@@ -730,11 +740,12 @@ msgstr "実装されているメモリモジュールがありません"
 msgid "no SPMemoryDataType"
 msgstr "SPMemoryDataType がありません"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+
 msgid "empty command"
 msgstr "コマンドが空です"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: %(seconds)s 秒でタイムアウトしました"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -861,6 +872,7 @@ msgstr "LlamaFit が RAM 帯域幅を実測できるよう、numpy をインス�
 msgid "Probe %(probe)s failed"
 msgstr "プローブ %(probe)s が失敗しました"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "不明なエラー"
 

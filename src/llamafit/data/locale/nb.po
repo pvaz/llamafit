@@ -637,8 +637,10 @@ msgstr "Hopper over målingen av RAM-båndbredden."
 msgid "Command: %(command)s"
 msgstr "Kommando: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "avkuttet GGUF-header: ventet %(wanted)d byte på posisjon %(offset)d, fikk %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Filen lastes kanskje fortsatt ned, eller adressen peker ikke på en GGUF-fil."
@@ -661,6 +663,11 @@ msgstr "GGUF-versjon %(version)d støttes ikke, på posisjon 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit støtter GGUF-versjonene %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "disse GGUF-filene er ikke én oppdelt modell: de er uenige om '%(key)s' og oppgir %(values)s"
 
@@ -675,14 +682,16 @@ msgstr "ingen GGUF-header å lese fakta fra"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Oppgi filen til modellen, eller hver shard i en oppdelt modell."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d av %(total)d GGUF-filer mangler nøkkelen '%(key)s', så plassen deres i en oppdelt modell kan ikke fastslås"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Oppgi enten én udelt fil alene, eller hver shard i én oppdelt modell."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "ufullstendig sett med shards: modellen oppgir %(declared)d shards, og %(arrived)d kom fram (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Oppgi hver shard i den oppdelte modellen."
@@ -699,8 +708,13 @@ msgstr "ufullstendig sett med shards: ventet %(key)s 0 til %(last)d, fikk %(numb
 msgid "Pass each shard of the split model exactly once."
 msgstr "Oppgi hver shard i den oppdelte modellen nøyaktig én gang."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "ufullstendig sett med shards: modellen oppgir %(declared)d tensorer, og de %(shards)d shardene rommer %(held)d til sammen"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "klarte ikke å lese %(path)s: %(error)s"
@@ -745,11 +759,13 @@ msgstr "ingen minnemoduler i bruk"
 msgid "no SPMemoryDataType"
 msgstr "ingen SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "tom kommando"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: tiden gikk ut etter %(seconds)ss"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -876,6 +892,7 @@ msgstr "Installer numpy (`pip install llamafit[fast]`) slik at LlamaFit kan mål
 msgid "Probe %(probe)s failed"
 msgstr "Testen %(probe)s mislyktes"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "ukjent feil"
 

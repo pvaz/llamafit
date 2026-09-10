@@ -637,8 +637,10 @@ msgstr "Pula a medição da largura de banda da RAM."
 msgid "Command: %(command)s"
 msgstr "Comando: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "cabeçalho GGUF truncado: esperava %(wanted)d bytes na posição %(offset)d, recebeu %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "O arquivo ainda pode estar sendo baixado, ou a URL pode não ser um arquivo GGUF."
@@ -661,6 +663,11 @@ msgstr "versão GGUF não suportada %(version)d na posição 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "O LlamaFit suporta as versões GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "estes arquivos GGUF não são um só modelo dividido: discordam sobre '%(key)s', declarando %(values)s"
 
@@ -673,14 +680,16 @@ msgstr "não há nenhum cabeçalho GGUF de onde ler os fatos"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Passe o arquivo do modelo, ou todos os fragmentos de um modelo dividido."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d de %(total)d arquivos GGUF não têm a chave '%(key)s', portanto não é possível determinar o lugar deles em um modelo dividido"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Passe um único arquivo não dividido sozinho, ou todos os fragmentos de um só modelo dividido."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "conjunto de fragmentos incompleto: o modelo declara %(declared)d fragmentos e chegaram %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Passe todos os fragmentos do modelo dividido."
@@ -697,8 +706,13 @@ msgstr "conjunto de fragmentos incompleto: esperava %(key)s de 0 a %(last)d, rec
 msgid "Pass each shard of the split model exactly once."
 msgstr "Passe cada fragmento do modelo dividido exatamente uma vez."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "conjunto de fragmentos incompleto: o modelo declara %(declared)d tensores e seus %(shards)d fragmentos contêm %(held)d ao todo"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "não foi possível ler %(path)s: %(error)s"
@@ -743,11 +757,13 @@ msgstr "nenhum módulo de memória ocupado"
 msgid "no SPMemoryDataType"
 msgstr "sem SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "comando vazio"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: tempo esgotado após %(seconds)ss"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -874,6 +890,7 @@ msgstr "Instale o numpy (`pip install llamafit[fast]`) para o LlamaFit poder med
 msgid "Probe %(probe)s failed"
 msgstr "A sondagem %(probe)s falhou"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "erro desconhecido"
 
