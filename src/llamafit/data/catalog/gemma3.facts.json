@@ -1,6 +1,174 @@
 {
   "models": {
+    "gemma-3-12b-it": {
+      "extras": {
+        "mmproj-google_gemma-3-12b-it-f16.gguf": {
+          "bytes": 854200224,
+          "sha256": "30c02d056410848227001830866e0a269fcc28aaf8ca971bded494003de9f5a5"
+        }
+      },
+      "quants": {
+        "Q4_K_M": {
+          "bpw": 4.87,
+          "bytes": 7300575264,
+          "files": [
+            "google_gemma-3-12b-it-Q4_K_M.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "gemma3",
+            "attention_layers": 48,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 6468255744,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 15360,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 0,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 825753600,
+            "bytes_total": 7294024704,
+            "context_length": 131072,
+            "has_shared_experts": false,
+            "head_dim": 256,
+            "kv_bytes_per_token_f16": 393216,
+            "n_embd": 3840,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 16,
+            "n_head_kv": 8,
+            "n_layer": 48,
+            "n_vocab": 262144,
+            "recurrent_state_bytes": null,
+            "sliding_window": 1024,
+            "value_head_dim": 256
+          },
+          "sha256": [
+            "fc57f67efa46d711c346e587cbef7d049e95f3df8db2eb2271153343ef0acc7b"
+          ]
+        },
+        "Q6_K": {
+          "bpw": 6.44,
+          "bytes": 9660608544,
+          "files": [
+            "google_gemma-3-12b-it-Q6_K.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "gemma3",
+            "attention_layers": 48,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 8828289024,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 15360,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 0,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 825753600,
+            "bytes_total": 9654057984,
+            "context_length": 131072,
+            "has_shared_experts": false,
+            "head_dim": 256,
+            "kv_bytes_per_token_f16": 393216,
+            "n_embd": 3840,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 16,
+            "n_head_kv": 8,
+            "n_layer": 48,
+            "n_vocab": 262144,
+            "recurrent_state_bytes": null,
+            "sliding_window": 1024,
+            "value_head_dim": 256
+          },
+          "sha256": [
+            "a1385c0fd73b8fcb560bf55f9e1870346292a096476a2b9372aa04bd0aeae1d0"
+          ]
+        }
+      }
+    },
+    "gemma-3-1b-it": {
+      "quants": {
+        "Q4_K_M": {
+          "bpw": 6.45,
+          "bytes": 806058496,
+          "files": [
+            "google_gemma-3-1b-it-Q4_K_M.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "gemma3",
+            "attention_layers": 26,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 478656256,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 4608,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 0,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 320864256,
+            "bytes_total": 799525120,
+            "context_length": 32768,
+            "has_shared_experts": false,
+            "head_dim": 256,
+            "kv_bytes_per_token_f16": 26624,
+            "n_embd": 1152,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 4,
+            "n_head_kv": 1,
+            "n_layer": 26,
+            "n_vocab": 262144,
+            "recurrent_state_bytes": null,
+            "sliding_window": 512,
+            "value_head_dim": 256
+          },
+          "sha256": [
+            "12bf0fff8815d5f73a3c9b586bd8fee8e7b248c935de70dec367679873d0f29d"
+          ]
+        },
+        "Q8_0": {
+          "bpw": 8.55,
+          "bytes": 1069306624,
+          "files": [
+            "google_gemma-3-1b-it-Q8_0.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "gemma3",
+            "attention_layers": 26,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 741904384,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 4608,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 0,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 320864256,
+            "bytes_total": 1062773248,
+            "context_length": 32768,
+            "has_shared_experts": false,
+            "head_dim": 256,
+            "kv_bytes_per_token_f16": 26624,
+            "n_embd": 1152,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 4,
+            "n_head_kv": 1,
+            "n_layer": 26,
+            "n_vocab": 262144,
+            "recurrent_state_bytes": null,
+            "sliding_window": 512,
+            "value_head_dim": 256
+          },
+          "sha256": [
+            "375e12a4a18929a641f9744b060d4a7cf4e279530750555828ec0c117870bc96"
+          ]
+        }
+      }
+    },
     "gemma-3-27b-it": {
+      "extras": {
+        "mmproj-google_gemma-3-27b-it-f16.gguf": {
+          "bytes": 857739168,
+          "sha256": "54cb61c842fe49ac3c89bc1a614a2778163eb49f3dec2b90ff688b4c0392cb48"
+        }
+      },
       "quants": {
         "Q4_K_M": {
           "bpw": 4.9,
@@ -17,6 +185,7 @@
             "bytes_global_weights": 21504,
             "bytes_lazy_tables": 0,
             "bytes_output_head": 0,
+            "bytes_shared_expert_weights": 0,
             "bytes_token_embd": 1156055040,
             "bytes_total": 16539843584,
             "context_length": 131072,
@@ -39,8 +208,92 @@
           ]
         }
       }
+    },
+    "gemma-3-4b-it": {
+      "extras": {
+        "mmproj-google_gemma-3-4b-it-f16.gguf": {
+          "bytes": 851251104,
+          "sha256": "8c0fb064b019a6972856aaae2c7e4792858af3ca4561be2dbf649123ba6c40cb"
+        }
+      },
+      "quants": {
+        "Q4_K_M": {
+          "bpw": 4.98,
+          "bytes": 2489758112,
+          "files": [
+            "google_gemma-3-4b-it-Q4_K_M.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "gemma3",
+            "attention_layers": 34,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 1932705792,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 10240,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 0,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 550502400,
+            "bytes_total": 2483218432,
+            "context_length": 131072,
+            "has_shared_experts": false,
+            "head_dim": 256,
+            "kv_bytes_per_token_f16": 139264,
+            "n_embd": 2560,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 8,
+            "n_head_kv": 4,
+            "n_layer": 34,
+            "n_vocab": 262144,
+            "recurrent_state_bytes": null,
+            "sliding_window": 1024,
+            "value_head_dim": 256
+          },
+          "sha256": [
+            "4996030242583a40aa151ff93f49ed787ac8c25e4120c3ae4588b2e2a7d1ae94"
+          ]
+        },
+        "Q8_0": {
+          "bpw": 8.26,
+          "bytes": 4130226592,
+          "files": [
+            "google_gemma-3-4b-it-Q8_0.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "gemma3",
+            "attention_layers": 34,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 3410644992,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 10240,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 0,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 713031680,
+            "bytes_total": 4123686912,
+            "context_length": 131072,
+            "has_shared_experts": false,
+            "head_dim": 256,
+            "kv_bytes_per_token_f16": 139264,
+            "n_embd": 2560,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 8,
+            "n_head_kv": 4,
+            "n_layer": 34,
+            "n_vocab": 262144,
+            "recurrent_state_bytes": null,
+            "sliding_window": 1024,
+            "value_head_dim": 256
+          },
+          "sha256": [
+            "0bce184b82f70ef6f1fb12c8d4984844baaa0bad0f4aae7150e443f803c4f509"
+          ]
+        }
+      }
     }
   },
-  "refreshed_at": "2026-09-09T20:48:29.788660+00:00",
+  "refreshed_at": "2026-09-10T17:52:36.291011+00:00",
   "schema_version": 1
 }
