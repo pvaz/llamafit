@@ -13,12 +13,12 @@ the machine beyond reading it.
 
 | Part | Delivers | Done when |
 |---|---|---|
-| **1A foundation and host scan** | package, CI, error handling, host detection (CPU, memory, bandwidth, GPUs, disks), llama.cpp detection (binaries, build, backends, local models, running servers), `llamafit system`, `llamafit doctor` | tests green on three operating systems; the reference machine's scan is reproduced from recorded fixtures |
-| **1B catalog and GGUF facts** | YAML catalog with schema validation, GGUF header reader for local files and remote URLs, `refresh` from the Hugging Face API, custom model overrides, `list`, `search`, `info`, `catalog validate`, `catalog refresh` | the first catalog covers the current open-weight families with sources for every number; `info` shows exact per-quant facts |
-| **1C budget, placement, speed and scoring** | memory budget by component, placement search with context tiers, speed estimator, quality and context scores, composite ranking, explanations, hardware profiles and simulation, `fit`, `recommend`, `plan`, `hardware` | the reference machine's board places the two measured models where the measurements say, within tolerance |
-| **1D interfaces** | Textual terminal dashboard (Board, Needs, Host, Plan, Simulate), FastAPI JSON API and static web dashboard on localhost, `serve` | both interfaces show the same data as the CLI's `--json` |
+| **1A foundation and host scan** — done | package, CI, error handling, host detection (CPU, memory, bandwidth, GPUs, disks), llama.cpp detection (binaries, build, backends, local models, running servers), `llamafit system`, `llamafit doctor` | tests green on three operating systems; the reference machine's scan is reproduced from recorded fixtures |
+| **1B catalog and GGUF facts** — done | YAML catalog with schema validation, GGUF header reader for local files and remote URLs, `refresh` from the Hugging Face API, custom model overrides, `list`, `search`, `info`, `catalog validate`, `catalog refresh` | the first catalog covers the current open-weight families with sources for every number; `info` shows exact per-quant facts |
+| **1C budget, placement, speed and scoring** — done | memory budget by component, placement search with context tiers, speed estimator, quality and context scores, composite ranking, explanations, hardware profiles and simulation, `fit`, `recommend`, `plan`, `hardware` | the reference machine's board places the two measured models where the measurements say, within tolerance |
+| **1D interfaces** — being built | Textual terminal dashboard (Board, Needs, Host, Plan, Simulate), FastAPI JSON API and static web dashboard on localhost, `serve` | both interfaces show the same data as the CLI's `--json` |
 
-## Phase 2 — installer
+## Phase 2 — installer (being built)
 
 The tool makes the recommendation run.
 
@@ -34,7 +34,7 @@ The tool makes the recommendation run.
 Done when a fresh Windows, macOS and Linux virtual machine goes from nothing to a running
 server through LlamaFit alone.
 
-## Phase 3 — verifier
+## Phase 3 — verifier (being built)
 
 The tool checks its own work and learns from the machine.
 
