@@ -16,7 +16,7 @@ question mark, because a person who does not know a program can do something doe
 to ask it whether it can.
 
 The **second says what a speed is**. Nothing has been benchmarked on any machine yet, so
-every figure in the ``Gen/s`` column came out of a formula on default constants, and that
+every figure in the ``Tok/s`` column came out of a formula on default constants, and that
 sentence stays on the screen instead of sitting under the table where the eye does not go.
 
 The **third says what is on the screen**: how many of how many, in what order, under which

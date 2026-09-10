@@ -16,7 +16,7 @@ Two rules are this file's own.
 sort is a way of looking at an answer; it is not a second opinion about it, and a table
 that renumbered itself would quietly claim it was.
 
-**A speed never appears without its label.** ``Gen/s`` and ``How`` are admitted to the
+**A speed never appears without its label.** ``Tok/s`` and ``How`` are admitted to the
 table together or not at all, so a narrow terminal loses the pair rather than keeping the
 figure and dropping the word that says what kind of figure it is. The command line can drop
 the label because it prints a sentence under the table saying the same thing; this screen
@@ -192,7 +192,7 @@ def heading(column: Column) -> str:
         "model": pgettext("column heading", "Model"),
         "quant": pgettext("column heading", "Quant"),
         "score": pgettext("column heading", "Score"),
-        "gen": pgettext("column heading", "Gen/s"),
+        "gen": pgettext("column heading", "Tok/s"),
         "confidence": pgettext("column heading", "How"),
         "verdict": pgettext("column heading", "Fit"),
         "mode": pgettext("column heading", "Runs"),

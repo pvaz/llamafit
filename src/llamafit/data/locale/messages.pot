@@ -2479,7 +2479,7 @@ msgid "Recommended"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:816
-#: src/llamafit/cli/render_board.py:1060
+#: src/llamafit/cli/render_board.py:1089
 #: src/llamafit/tui/board_view.py:191
 #: src/llamafit/web/strings.py:171
 msgctxt "column heading"
@@ -2487,11 +2487,11 @@ msgid "#"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:818
-#: src/llamafit/cli/render_board.py:1062
-#: src/llamafit/cli/render_board.py:986
-#: src/llamafit/cli/render_board.py:1120
+#: src/llamafit/cli/render_board.py:1091
+#: src/llamafit/cli/render_board.py:1015
+#: src/llamafit/cli/render_board.py:1154
 #: src/llamafit/cli/render_board.py:762
-#: src/llamafit/cli/render_board.py:1051
+#: src/llamafit/cli/render_board.py:1080
 #: src/llamafit/tui/board_view.py:192
 #: src/llamafit/web/strings.py:172
 msgctxt "column heading"
@@ -2499,9 +2499,9 @@ msgid "Model"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:823
-#: src/llamafit/cli/render_board.py:1067
-#: src/llamafit/cli/render_board.py:987
-#: src/llamafit/cli/render_board.py:1121
+#: src/llamafit/cli/render_board.py:1096
+#: src/llamafit/cli/render_board.py:1016
+#: src/llamafit/cli/render_board.py:1155
 #: src/llamafit/cli/render_board.py:767
 #: src/llamafit/tui/board_view.py:193
 #: src/llamafit/web/strings.py:173
@@ -2522,7 +2522,7 @@ msgstr ""
 #: src/llamafit/tui/board_view.py:195
 #: src/llamafit/web/strings.py:175
 msgctxt "column heading"
-msgid "Gen/s"
+msgid "Tok/s"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:828
@@ -2533,7 +2533,7 @@ msgid "How"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:829
-#: src/llamafit/cli/render_board.py:1068
+#: src/llamafit/cli/render_board.py:1097
 #: src/llamafit/tui/board_view.py:197
 #: src/llamafit/web/strings.py:177
 msgctxt "column heading"
@@ -2541,7 +2541,7 @@ msgid "Fit"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:830
-#: src/llamafit/cli/render_board.py:1073
+#: src/llamafit/cli/render_board.py:1102
 #: src/llamafit/tui/board_view.py:198
 #: src/llamafit/web/strings.py:178
 msgctxt "column heading"
@@ -2549,7 +2549,7 @@ msgid "Runs"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:831
-#: src/llamafit/cli/render_board.py:1074
+#: src/llamafit/cli/render_board.py:1103
 #: src/llamafit/tui/board_view.py:199
 #: src/llamafit/web/strings.py:179
 msgctxt "column heading"
@@ -2564,7 +2564,7 @@ msgid "Qual"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:833
-#: src/llamafit/cli/render_board.py:1075
+#: src/llamafit/cli/render_board.py:1104
 #: src/llamafit/tui/board_view.py:201
 #: src/llamafit/web/strings.py:184
 msgctxt "column heading"
@@ -2587,7 +2587,7 @@ msgid "Size"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:836
-#: src/llamafit/cli/render_board.py:1076
+#: src/llamafit/cli/render_board.py:1105
 #: src/llamafit/tui/board_view.py:204
 #: src/llamafit/web/strings.py:187
 msgctxt "column heading"
@@ -2602,100 +2602,104 @@ msgstr ""
 msgid "--min-tps %(tps)s: this board wanted at least that many tokens per second, and anything slower is excluded below rather than ranked here."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:933
+#: src/llamafit/cli/render_board.py:946
+msgid "Showing the best %(shown)s of %(total)s that qualified; --limit sets how many, and the rest are neither worse-behaved nor hidden, only further down."
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:959
 #: src/llamafit/web/strings.py:258
 msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:943
+#: src/llamafit/cli/render_board.py:969
 #: src/llamafit/web/strings.py:263
 msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:961
+#: src/llamafit/cli/render_board.py:990
 #: src/llamafit/web/strings.py:268
 msgid "Weights: %(weights)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:982
+#: src/llamafit/cli/render_board.py:1011
 #: src/llamafit/web/strings.py:246
 msgid "Not ranked"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:988
-#: src/llamafit/cli/render_board.py:1122
+#: src/llamafit/cli/render_board.py:1017
+#: src/llamafit/cli/render_board.py:1156
 #: src/llamafit/web/strings.py:191
 msgctxt "column heading"
 msgid "Why not"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1013
+#: src/llamafit/cli/render_board.py:1042
 msgid "%(rank)s. %(name)s %(quant)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1057
+#: src/llamafit/cli/render_board.py:1086
 msgid "Fit on the simulated machine"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1057
+#: src/llamafit/cli/render_board.py:1086
 msgid "Fit on this machine"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1101
+#: src/llamafit/cli/render_board.py:1131
 msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1116
+#: src/llamafit/cli/render_board.py:1150
 msgid "Not placed"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1137
+#: src/llamafit/cli/render_board.py:1171
 msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1156
+#: src/llamafit/cli/render_board.py:1190
 msgid "This reaches the %(target)s tokens per second asked for."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1160
+#: src/llamafit/cli/render_board.py:1194
 msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1168
+#: src/llamafit/cli/render_board.py:1202
 msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1188
+#: src/llamafit/cli/render_board.py:1222
 #: src/llamafit/tui/explain.py:43
 msgid "%(name)s %(quant)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1199
+#: src/llamafit/cli/render_board.py:1233
 #: src/llamafit/web/strings.py:315
 msgid "Memory budget"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1205
+#: src/llamafit/cli/render_board.py:1239
 #: src/llamafit/web/strings.py:325
 msgid "The %(context)s tokens asked for would have cost"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1223
+#: src/llamafit/cli/render_board.py:1257
 #: src/llamafit/web/strings.py:311
 msgid "Command line"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1237
+#: src/llamafit/cli/render_board.py:1271
 #: src/llamafit/web/strings.py:320
 msgid "Model file: %(path)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1239
+#: src/llamafit/cli/render_board.py:1273
 #: src/llamafit/web/strings.py:321
 msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1248
+#: src/llamafit/cli/render_board.py:1282
 msgid "%(shown)d of %(total)d candidate shown."
 msgid_plural "%(shown)d of %(total)d candidates shown."
 msgstr[0] ""
@@ -3893,11 +3897,11 @@ msgstr ""
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr ""
 
-#: src/llamafit/services/recommend.py:428
+#: src/llamafit/services/recommend.py:435
 msgid "licensed %(spdx)s, which this request does not allow"
 msgstr ""
 
-#: src/llamafit/services/recommend.py:539
+#: src/llamafit/services/recommend.py:551
 msgid "no placement of it fits this machine at any context"
 msgstr ""
 

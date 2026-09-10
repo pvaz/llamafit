@@ -550,7 +550,7 @@ def render_measurements(measurements: Sequence[Measured]) -> Group | None:
         table,
         [
             {"header": pgettext("column heading", "Run")},
-            {"header": pgettext("column heading", "Gen/s"), "justify": "right", "no_wrap": True},
+            {"header": pgettext("column heading", "Tok/s"), "justify": "right", "no_wrap": True},
             {"header": pgettext("column heading", "Prompt/s"), "justify": "right", "no_wrap": True},
             {"header": pgettext("column heading", "Context"), "justify": "right", "no_wrap": True},
             {"header": pgettext("column heading", "Date"), "no_wrap": True},
@@ -824,7 +824,7 @@ def render_board(board: Board, *, console_width: int = 80) -> Group:
         {"header": pgettext("column heading", "Score"), "justify": "right", "no_wrap": True},
     ]
     headings = {
-        "gen": pgettext("column heading", "Gen/s"),
+        "gen": pgettext("column heading", "Tok/s"),
         "confidence": pgettext("column heading", "How"),
         "verdict": pgettext("column heading", "Fit"),
         "mode": pgettext("column heading", "Runs"),
@@ -926,6 +926,32 @@ def _min_tps_caption(min_tps: float | None) -> str | None:
     ) % {"tps": _tps(min_tps)}
 
 
+def _truncation_caption(shown: int, ranked_total: int) -> str | None:
+    """Say that a limit cut the list, when it did.
+
+    A limit that says nothing is a limit that hides the catalog. With five models nothing
+    was ever cut and the sentence never appeared; with fifty, the default keeps ten and a
+    reader who is not told has no reason to believe the other forty exist. The point of
+    ranking a catalog is to offer choices, including the ones the reader will turn down.
+
+    Args:
+        shown: How many rows the table actually drew.
+        ranked_total: How many qualified before the slice.
+
+    Returns:
+        The sentence to print under the table, or ``None`` when nothing was cut.
+    """
+    if ranked_total <= shown:
+        return None
+    return _(
+        "Showing the best %(shown)s of %(total)s that qualified; --limit sets how many, "
+        "and the rest are neither worse-behaved nor hidden, only further down."
+    ) % {
+        "shown": isolate(localise_number(str(shown))),
+        "total": isolate(localise_number(str(ranked_total))),
+    }
+
+
 def _board_captions(board: Board) -> list[RenderableType]:
     """What the board's numbers are, said once under the table rather than per row."""
     labels = {row.candidate.speed.confidence for row in board.rows if row.candidate.speed}
@@ -951,6 +977,9 @@ def _board_captions(board: Board) -> list[RenderableType]:
             "requested": _context(board.requested_context),
         }
     captions: list[RenderableType] = [_cell(first)]
+    cut = _truncation_caption(len(board.rows), board.ranked_total)
+    if cut is not None:
+        captions.append(_cell(cut))
     floor = _min_tps_caption(board.needs.min_tps)
     if floor is not None:
         captions.append(_cell(floor))
@@ -1097,16 +1126,21 @@ def render_fit(board: FitBoard, *, console_width: int = 80) -> Group:
         elif optional:
             cells += ["", "", "", ""]
         _add_row(table, *cells)
-    caption = _cell(
-        _(
-            "Sized for %(context)s tokens. The context column is the largest each one holds "
-            "in the mode shown."
+    captions: list[RenderableType] = [
+        _cell(
+            _(
+                "Sized for %(context)s tokens. The context column is the largest each one "
+                "holds in the mode shown."
+            )
+            % {"context": _context(board.planned_context)}
         )
-        % {"context": _context(board.planned_context)}
-    )
+    ]
+    cut = _truncation_caption(len(board.rows), board.ranked_total)
+    if cut is not None:
+        captions.append(_cell(cut))
     banner = render_simulation(board.simulation)
     parts: list[RenderableType] = [] if banner is None else [banner]
-    return Group(*parts, table, caption)
+    return Group(*parts, table, *captions)
 
 
 def render_fit_excluded(rows: Sequence[FitRow]) -> Group | None:

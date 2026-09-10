@@ -85,6 +85,22 @@ def test_a_limit_cuts_the_board_and_never_the_reasons() -> None:
     assert data["excluded"]
 
 
+def test_a_cut_board_says_how_many_it_cut() -> None:
+    """A limit that hides the rest of the catalog without saying so is a limit that lies."""
+    whole = json.loads(runner.invoke(app, ["--json", "recommend", "--use-case", "coding"]).output)
+    assert whole["ranked_total"] > 1, "this test needs a catalog with more than one ranked row"
+
+    result = runner.invoke(
+        app, ["--language", "en", "recommend", "--use-case", "coding", "--limit", "1"]
+    )
+    assert f"of {whole['ranked_total']} that qualified" in flat(result.output)
+
+
+def test_an_uncut_board_says_nothing_about_a_limit() -> None:
+    result = runner.invoke(app, ["--language", "en", "recommend", "--use-case", "coding"])
+    assert "that qualified" not in flat(result.output)
+
+
 def test_a_licence_filter_leaves_the_refused_model_visible() -> None:
     result = runner.invoke(
         app, ["--json", "recommend", "--use-case", "coding", "--license", "Apache-2.0"]
@@ -231,3 +247,4 @@ def test_fit_limits_rows_without_hiding_the_unplaceable_ones(
     data = json.loads(result.output)
     assert len(data["rows"]) <= 1
     assert data["excluded"]
+    assert data["ranked_total"] >= len(data["rows"])

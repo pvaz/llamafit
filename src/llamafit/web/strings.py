@@ -172,7 +172,7 @@ def column_headings() -> dict[str, str]:
         "model": pgettext("column heading", "Model"),
         "quant": pgettext("column heading", "Quant"),
         "score": pgettext("column heading", "Score"),
-        "gen": pgettext("column heading", "Gen/s"),
+        "gen": pgettext("column heading", "Tok/s"),
         "confidence": pgettext("column heading", "How"),
         "verdict": pgettext("column heading", "Fit"),
         "mode": pgettext("column heading", "Runs"),

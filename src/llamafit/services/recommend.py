@@ -124,6 +124,10 @@ class Board(BaseModel):
         working_context: The context every speed was estimated at, so the column
             compares like with like.
         rows: The ranked candidates, best first.
+        ranked_total: How many candidates qualified, before ``--limit`` cut the list.
+            Equal to ``len(rows)`` when nothing was cut. It is carried rather than
+            inferred because the slice happens inside the builder and nothing downstream
+            could otherwise tell a short catalog from a truncated board.
         excluded: The candidates that were not ranked, each carrying its reason.
         simulation: What was substituted for the machine these rows were computed on, or
             ``None`` when they were computed on the machine the reader is sitting at.
@@ -137,6 +141,7 @@ class Board(BaseModel):
     planned_context: int
     working_context: int
     rows: list[BoardRow] = Field(default_factory=list)
+    ranked_total: int = 0
     excluded: list[BoardRow] = Field(default_factory=list)
     simulation: Simulation | None = None
 
@@ -194,6 +199,7 @@ class FitBoard(BaseModel):
     Attributes:
         planned_context: The context every placement was sized for.
         rows: The ranked models, best fit first.
+        ranked_total: How many models qualified, before ``--limit`` cut the list.
         excluded: The ones with no placement at all, each carrying its reason.
         simulation: What was substituted for the machine these rows were computed on, or
             ``None`` when they were computed on the machine the reader is sitting at.
@@ -203,6 +209,7 @@ class FitBoard(BaseModel):
 
     planned_context: int
     rows: list[FitRow] = Field(default_factory=list)
+    ranked_total: int = 0
     excluded: list[FitRow] = Field(default_factory=list)
     simulation: Simulation | None = None
 
@@ -464,6 +471,10 @@ def build_board(
     if not all_quants:
         scored = _best_per_model(scored)
         excluded = _best_per_model(excluded)
+    # Counted before the slice, because after it there is nothing left to count. A reader
+    # shown ten of fifty has to be told there are fifty, or a limit becomes a way of
+    # hiding the catalog from the person the catalog is for.
+    ranked_total = len(scored)
     if limit is not None:
         scored = scored[:limit]
     for position, row in enumerate(scored, start=1):
@@ -476,6 +487,7 @@ def build_board(
         planned_context=planned_context(needs),
         working_context=DEFAULT_WORKING_CONTEXT,
         rows=scored,
+        ranked_total=ranked_total,
         excluded=excluded,
         simulation=host.simulation,
     )
@@ -546,6 +558,7 @@ def build_fit_board(
         rows = _best_per_model(rows)
         excluded = _best_per_model(excluded)
     kept = [row for row in rows if _passes_fit_filters(row, min_fit=min_fit, perfect=perfect)]
+    ranked_total = len(kept)
     if limit is not None:
         kept = kept[:limit]
     for position, row in enumerate(kept, start=1):
@@ -553,6 +566,7 @@ def build_fit_board(
     return FitBoard(
         planned_context=planned_context(needs),
         rows=kept,
+        ranked_total=ranked_total,
         excluded=excluded,
         simulation=host.simulation,
     )
