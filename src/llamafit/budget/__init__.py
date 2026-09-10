@@ -8,15 +8,22 @@ buffers nobody can read off a header, and :mod:`~llamafit.budget.projector` pric
 
 from llamafit.budget.budget import compute, pool_verdict, utilisation
 from llamafit.budget.compute_buffer import batch_for, compute_buffer_bytes, output_buffer_bytes
-from llamafit.budget.kv import KV_TYPES, kv_cache_bytes
+from llamafit.budget.kv import (
+    KV_TYPES,
+    derived_kv_cache_bytes,
+    kv_cache_bytes,
+    unaccounted_kv_cache_bytes,
+)
 
 __all__ = [
     "KV_TYPES",
     "batch_for",
     "compute",
     "compute_buffer_bytes",
+    "derived_kv_cache_bytes",
     "kv_cache_bytes",
     "output_buffer_bytes",
     "pool_verdict",
+    "unaccounted_kv_cache_bytes",
     "utilisation",
 ]

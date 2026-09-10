@@ -56,12 +56,33 @@ def _line(component: str, pool: Pool, size: int, note: str | None = None) -> Bud
     return BudgetLine(component=component, pool=pool, bytes=size, exact=True, note=note)
 
 
+SHARED_EXPERT_BUCKET = "bytes_shared_expert_weights"
+"""The GGUF facts field holding the always-on shared experts' bytes, once it exists.
+
+A shared expert runs for every token, so it belongs with the attention weights on the card
+even when the routed experts are in system memory -- and moving it off the card is worth a
+measured 239 MiB on Qwen3.8-Flash-Next, which is what ``-ot ffn_.*_shexp=CPU`` does in the
+configuration that won on the reference machine. Until those bytes are a bucket of their
+own they are inside ``bytes_dense_block_weights`` and cannot be moved, so this reads the
+bucket by name and finds nothing until the facts carry one. When they do, no other change
+is needed here: a bucket has to be carved out of the dense one to keep the byte buckets
+summing to the file, so there is nothing to subtract.
+"""
+
+
+def shared_expert_bytes(facts: GgufFacts) -> int:
+    """Bytes of always-on shared experts, or zero while the facts do not report them."""
+    value = getattr(facts, SHARED_EXPERT_BUCKET, 0)
+    return value if isinstance(value, int) and not isinstance(value, bool) else 0
+
+
 def weight_lines(
     facts: GgufFacts,
     *,
     gpu_layers: int,
     cpu_moe_layers: int = 0,
     stream_lazy_tables: bool = True,
+    shared_experts_pool: Pool | None = None,
 ) -> tuple[BudgetLine, ...]:
     """Every weight tensor of a model, in the pool llama.cpp would put it in.
 
@@ -75,6 +96,9 @@ def weight_lines(
             disk as they are needed rather than held in memory. They are marked precisely
             because llama.cpp can stream them, so this defaults to true; passing false
             charges them to system memory instead.
+        shared_experts_pool: Where the always-on shared experts go, which is what an
+            ``-ot ffn_.*_shexp=CPU`` override decides. ``None`` leaves them with their
+            layers, which is what happens without the override.
 
     Returns:
         One line per bucket and pool, skipping the buckets this model has none of.
@@ -92,6 +116,19 @@ def weight_lines(
         lines.append(_line("dense-weights", "vram", dense_vram, dense_note))
     if dense_ram:
         lines.append(_line("dense-weights", "ram", dense_ram, dense_note))
+
+    shared = shared_expert_bytes(facts)
+    if shared:
+        shared_note = _("always-on experts, which run for every token")
+        if shared_experts_pool is None:
+            shared_vram, shared_ram = split_by_layers(shared, on_gpu, n_layer)
+        else:
+            on_card = shared_experts_pool == "vram"
+            shared_vram, shared_ram = (shared, 0) if on_card else (0, shared)
+        if shared_vram:
+            lines.append(_line("shared-expert-weights", "vram", shared_vram, shared_note))
+        if shared_ram:
+            lines.append(_line("shared-expert-weights", "ram", shared_ram, shared_note))
 
     expert_layers_on_gpu = max(on_gpu - min(max(cpu_moe_layers, 0), n_layer), 0)
     expert_vram, expert_ram = split_by_layers(

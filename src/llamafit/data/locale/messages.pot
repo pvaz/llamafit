@@ -11,59 +11,67 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/llamafit/budget/budget.py:153
+#: src/llamafit/budget/budget.py:155
 msgid "A hybrid placement has to say how many layers are on the graphics card."
 msgstr ""
 
-#: src/llamafit/budget/budget.py:154
+#: src/llamafit/budget/budget.py:156
 msgid "Pass gpu_layers, which is what -ngl would be."
 msgstr ""
 
-#: src/llamafit/budget/budget.py:208
+#: src/llamafit/budget/budget.py:215
 msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
 msgstr ""
 
-#: src/llamafit/budget/budget.py:210
+#: src/llamafit/budget/budget.py:217
 msgid "Run `llamafit catalog refresh` to read the file's header."
 msgstr ""
 
-#: src/llamafit/budget/budget.py:247
+#: src/llamafit/budget/budget.py:255
 msgid "what the GPU backend costs before it allocates anything"
 msgstr ""
 
-#: src/llamafit/budget/budget.py:256
+#: src/llamafit/budget/budget.py:264
 msgid "the server process before any model buffer"
 msgstr ""
 
-#: src/llamafit/budget/compute_buffer.py:121
+#: src/llamafit/budget/compute_buffer.py:120
 msgid "fitted to one machine's measurements; the least certain line here"
 msgstr ""
 
-#: src/llamafit/budget/compute_buffer.py:132
+#: src/llamafit/budget/compute_buffer.py:131
 msgid "room for one logit per vocabulary entry per token of the batch"
 msgstr ""
 
-#: src/llamafit/budget/kv.py:46
+#: src/llamafit/budget/kv.py:55
 msgid "LlamaFit cannot size a %(kv_type)s key-value cache."
 msgstr ""
 
-#: src/llamafit/budget/kv.py:47
+#: src/llamafit/budget/kv.py:56
 msgid "Use one of: %(types)s."
 msgstr ""
 
-#: src/llamafit/budget/kv.py:52
+#: src/llamafit/budget/kv.py:61
 msgid "This model's file does not say how large its key-value cache is per token."
 msgstr ""
 
-#: src/llamafit/budget/kv.py:53
+#: src/llamafit/budget/kv.py:62
 msgid "Refresh the catalog so the file's header is read again."
 msgstr ""
 
-#: src/llamafit/budget/kv.py:89
+#: src/llamafit/budget/kv.py:160
 msgid "the attention-layer count was assumed, not counted"
 msgstr ""
 
-#: src/llamafit/budget/kv.py:101
+#: src/llamafit/budget/kv.py:163
+msgid "%(arch)s allocates more cache than its header describes; see the line below"
+msgstr ""
+
+#: src/llamafit/budget/kv.py:180
+msgid "what %(arch)s allocates beyond its header, measured rather than derived"
+msgstr ""
+
+#: src/llamafit/budget/kv.py:189
 msgid "from the architecture's state dimensions; it does not grow with context"
 msgstr ""
 
@@ -75,27 +83,31 @@ msgstr ""
 msgid "the projector's own compute space, measured at 248 MiB"
 msgstr ""
 
-#: src/llamafit/budget/weights.py:90
+#: src/llamafit/budget/weights.py:114
 msgid "attention projections, feed-forward weights, norms and any shared experts"
 msgstr ""
 
-#: src/llamafit/budget/weights.py:108
+#: src/llamafit/budget/weights.py:122
+msgid "always-on experts, which run for every token"
+msgstr ""
+
+#: src/llamafit/budget/weights.py:145
 msgid "routed experts, read across the bus once per micro-batch"
 msgstr ""
 
-#: src/llamafit/budget/weights.py:119
+#: src/llamafit/budget/weights.py:156
 msgid "this model ties its output projection to its embedding table"
 msgstr ""
 
-#: src/llamafit/budget/weights.py:121
+#: src/llamafit/budget/weights.py:158
 msgid "llama.cpp keeps the embedding table in memory even at full offload"
 msgstr ""
 
-#: src/llamafit/budget/weights.py:136
+#: src/llamafit/budget/weights.py:173
 msgid "streamed from disk as it is needed, not held in memory"
 msgstr ""
 
-#: src/llamafit/budget/weights.py:138
+#: src/llamafit/budget/weights.py:175
 msgid "held in memory, since streaming from disk was turned off"
 msgstr ""
 

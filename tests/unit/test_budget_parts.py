@@ -7,6 +7,7 @@ the weight split is checked against the file's own tensor table.
 
 import pytest
 
+from llamafit.budget import weights as weights_module
 from llamafit.budget.compute_buffer import (
     batch_for,
     buffer_lines,
@@ -14,9 +15,15 @@ from llamafit.budget.compute_buffer import (
     fit_for,
     output_buffer_bytes,
 )
-from llamafit.budget.kv import KV_TYPES, cache_lines, kv_cache_bytes
+from llamafit.budget.kv import (
+    KV_TYPES,
+    cache_lines,
+    derived_kv_cache_bytes,
+    kv_cache_bytes,
+    unaccounted_kv_cache_bytes,
+)
 from llamafit.budget.projector import projector_lines
-from llamafit.budget.weights import split_by_layers, weight_lines
+from llamafit.budget.weights import shared_expert_bytes, split_by_layers, weight_lines
 from llamafit.catalog import load_catalog
 from llamafit.constants import MIB, PROJECTOR_COMPUTE_BYTES
 from llamafit.errors import BudgetError
@@ -127,6 +134,37 @@ def test_a_model_with_no_streamable_table_has_no_such_line() -> None:
     ]
 
 
+def test_shared_experts_stay_in_the_dense_bucket_until_the_facts_split_them_out() -> None:
+    facts = facts_for("qwen3.8-flash-next")
+    assert facts.has_shared_experts is True
+    assert shared_expert_bytes(facts) == 0, "no bucket carries them yet"
+    assert not [
+        line
+        for line in weight_lines(facts, gpu_layers=99)
+        if line.component == "shared-expert-weights"
+    ]
+
+
+def test_a_shared_expert_bucket_becomes_a_line_an_override_can_move(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """What `-ot ffn_.*_shexp=CPU` will do once the facts carry those bytes separately."""
+    facts = facts_for("qwen3.8-flash-next")
+    monkeypatch.setattr(weights_module, "shared_expert_bytes", lambda _: 239 * MIB)
+
+    with_their_layers = {
+        (line.component, line.pool): line.bytes_ for line in weight_lines(facts, gpu_layers=99)
+    }
+    assert with_their_layers[("shared-expert-weights", "vram")] == 239 * MIB
+
+    moved = {
+        (line.component, line.pool): line.bytes_
+        for line in weight_lines(facts, gpu_layers=99, shared_experts_pool="ram")
+    }
+    assert moved[("shared-expert-weights", "ram")] == 239 * MIB
+    assert ("shared-expert-weights", "vram") not in moved
+
+
 @pytest.mark.parametrize("kv_type", KV_TYPES)
 def test_the_cache_grows_in_proportion_to_the_context(kv_type: str) -> None:
     facts = facts_for("qwen3.8-flash-next")
@@ -159,25 +197,76 @@ def test_the_cache_and_the_state_follow_their_layers() -> None:
         line.component: line.pool
         for line in cache_lines(facts, context=32768, kv_type="f16", gpu_layers=99)
     }
-    assert on_card == {"kv-cache": "vram", "recurrent-state": "vram"}
+    assert on_card == {
+        "kv-cache": "vram",
+        "kv-cache-unaccounted": "vram",
+        "recurrent-state": "vram",
+    }
 
     in_memory = {
         line.component: line.pool
         for line in cache_lines(facts, context=32768, kv_type="f16", gpu_layers=0)
     }
-    assert in_memory == {"kv-cache": "ram", "recurrent-state": "ram"}
+    assert in_memory == {
+        "kv-cache": "ram",
+        "kv-cache-unaccounted": "ram",
+        "recurrent-state": "ram",
+    }
 
 
-def test_the_recurrent_state_is_modelled_and_the_cache_is_not() -> None:
+def test_the_recurrent_state_is_modelled_and_a_derivable_cache_is_not() -> None:
+    lines = {
+        line.component: line
+        for line in cache_lines(
+            facts_for("qwen3-coder-next"), context=32768, kv_type="f16", gpu_layers=99
+        )
+    }
+    assert lines["kv-cache"].exact is True
+    assert "kv-cache-unaccounted" not in lines, "nothing was measured beyond this file's shape"
+    assert lines["recurrent-state"].exact is False
+
+
+def test_the_flash_next_recurrent_state_matches_what_llama_server_reported() -> None:
     lines = {
         line.component: line
         for line in cache_lines(
             facts_for("qwen3.8-flash-next"), context=32768, kv_type="f16", gpu_layers=99
         )
     }
-    assert lines["kv-cache"].exact is True
-    assert lines["recurrent-state"].exact is False
     assert abs(lines["recurrent-state"].bytes_ - 113 * MIB) < MIB, "llama.cpp reported 113 MiB"
+
+
+def test_a_cache_the_header_cannot_account_for_is_named_rather_than_dropped() -> None:
+    """llama-server allocated 1,056 MiB where the shape accounts for 768."""
+    facts = facts_for("qwen3.8-flash-next")
+    lines = {
+        line.component: line
+        for line in cache_lines(facts, context=32768, kv_type="f16", gpu_layers=99)
+    }
+    derived, extra = lines["kv-cache"], lines["kv-cache-unaccounted"]
+    assert derived.bytes_ == 768 * MIB
+    assert extra.bytes_ == 288 * MIB
+    assert derived.bytes_ + extra.bytes_ == 1056 * MIB
+
+    assert derived.exact is False, "a figure known to be short is not an exact figure"
+    assert extra.exact is False
+    assert "qwen4exp" in (derived.note or "") and "qwen4exp" in (extra.note or "")
+
+
+def test_the_unaccounted_cache_grows_with_the_context_and_is_zero_elsewhere() -> None:
+    flash = facts_for("qwen3.8-flash-next")
+    assert unaccounted_kv_cache_bytes(flash, context=1024) == 9 * MIB
+    assert unaccounted_kv_cache_bytes(flash, context=131072) == 9 * 128 * MIB
+    assert unaccounted_kv_cache_bytes(flash, context=0) == 0
+    assert unaccounted_kv_cache_bytes(facts_for("llama-3.1-8b-instruct"), context=32768) == 0
+
+
+def test_the_cache_a_caller_asks_for_is_all_of_it() -> None:
+    facts = facts_for("qwen3.8-flash-next")
+    derived = derived_kv_cache_bytes(facts, context=32768, kv_type="f16")
+    extra = unaccounted_kv_cache_bytes(facts, context=32768)
+    assert kv_cache_bytes(facts, context=32768, kv_type="f16") == derived + extra
+    assert extra > 0, "this is the architecture that has one"
 
 
 def test_an_assumed_attention_layer_count_makes_the_cache_line_inexact() -> None:

@@ -101,11 +101,10 @@ def buffer_lines(
         n_vocab: The model's vocabulary size, which is what the output buffer scales with.
         batch: What ``-b`` would be, defaulting to :func:`batch_for` of the micro-batch.
         projector_on_gpu: Whether the vision projector is offloaded.
-        pool: Where the compute buffer lives. Section 8.1 puts it on the card, which is
-            where it is for every placement that has a layer there; a placement with
-            nothing on the card runs its graph in system memory instead, and charging that
-            arena to a card that is doing nothing would report a processor-only run
-            needing VRAM it never touches.
+        pool: Where the compute buffer lives, which is with the layers whose graph runs in
+            it: the card for any placement that has a layer there, and system memory for
+            one that has none. Charging the arena to a card that is doing nothing would
+            report a processor-only run needing VRAM it never touches.
 
     Returns:
         The two lines, both modelled.
