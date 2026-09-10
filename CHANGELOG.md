@@ -30,6 +30,21 @@ the changelog says so when they do.
   architecture facts derived from a header: layer, head and vocabulary counts, expert counts,
   the byte breakdown by tensor class, KV bytes per token, the declared context length and
   sliding window. A quant published as several shards is read as a set, not from its first file.
+- Memory budget: for a model, a quant, a placement and a context, what every component needs
+  and which pool it lands in — weights prorated by the layers on the card, the key-value cache
+  and the recurrent state, the compute and output buffers, the vision projector and the two
+  fixed overheads. Every line says whether its bytes came from the file's own tensor table or
+  from a fitted formula, because a budget that presented both in one voice would lend the
+  measured figures' authority to the modelled ones. A configuration that needs more than the
+  card has free is reported as paging rather than as failing: an NVIDIA driver does not refuse
+  the allocation, it pages to system memory and the speed collapses while the server starts and
+  looks healthy, and that is the failure a person cannot see for themselves. Attention and the
+  cache on the card with the experts in system memory is judged like any other placement.
+  Where an architecture allocates memory its GGUF header does not describe — Qwen3.8-Flash-Next
+  allocates about 9 MiB of cache per 1,024 tokens beyond the shapes it declares, 27 percent of
+  its cache at 32K and 1.1 GB at 128K — the budget carries it on a line naming the architecture
+  and the component rather than leaving it out. Reporting less memory than a configuration will
+  use is the one way of being wrong that turns into "this fits" when it does not.
 - `llamafit list` and `llamafit search`: browse the catalog, filtered by use case, capability,
   licence, vendor or text.
 - `llamafit info <model>`: one model in full, with every quant it publishes and the GGUF facts
