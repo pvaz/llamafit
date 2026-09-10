@@ -137,9 +137,16 @@ def test_a_board_that_did_not_move_the_speed_floor_says_nothing_about_it() -> No
 
 
 def test_a_batch_request_ranks_the_model_the_reading_floor_removes() -> None:
-    """The board a person with nobody waiting gets: the slow model is on it."""
-    plain = json.loads(runner.invoke(app, ["--json", "recommend"]).output)
-    batch = json.loads(runner.invoke(app, ["--json", "recommend", "--min-tps", "0"]).output)
+    """The board a person with nobody waiting gets: the slow model is on it.
+
+    Both boards ask for every row. The default limit is a display choice and would
+    otherwise decide this test as the catalog grows: a slow model is ranked last by
+    construction, so the first ten rows are exactly where it will not be.
+    """
+    plain = json.loads(runner.invoke(app, ["--json", "recommend", "--limit", "500"]).output)
+    batch = json.loads(
+        runner.invoke(app, ["--json", "recommend", "--min-tps", "0", "--limit", "500"]).output
+    )
     assert "gemma-3-27b-it" in {row["model_id"] for row in plain["excluded"]}
     assert "gemma-3-27b-it" in {row["model_id"] for row in batch["rows"]}
     assert batch["needs"]["min_tps"] == 0.0
