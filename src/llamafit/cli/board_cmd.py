@@ -241,8 +241,8 @@ def fit_command(
         help=cast(
             str,
             lazy_gettext(
-                "Only the configurations that use the machine well: between half and four "
-                "fifths of the tightest pool."
+                "Only the configurations that use the machine well: at least half its "
+                "memory held in weights, and no pool past four fifths."
             ),
         ),
     ),

@@ -49,7 +49,12 @@ from llamafit.models.plan import (
     QualityBreakdown,
     SpeedEstimate,
 )
-from llamafit.scoring.fit_score import IDEAL_HIGH, IDEAL_LOW, worst_pool_utilisation
+from llamafit.scoring.fit_score import (
+    IDEAL_HIGH,
+    IDEAL_LOW,
+    resident_model_bytes,
+    worst_pool_utilisation,
+)
 from llamafit.scoring.speed_score import prompt_penalty, target_tps
 from llamafit.services.plan import PlanReport, TargetCheck
 from llamafit.services.recommend import Board, BoardRow, FitBoard, FitRow
@@ -618,11 +623,19 @@ def _speed_sentence(speed: SpeedEstimate, use_case: str) -> str:
 
 
 def _fit_sentence(budget: Budget) -> str:
-    """Which pool is tightest and how full it is, which is the whole of the fit score."""
+    """The two questions the fit score asks, and this candidate's answer to each.
+
+    Section 11.3 scores the worse of them, so a reader shown only one number would have no
+    way to tell which of the two took the points off. Both are named: how much of the
+    machine's memory the model itself holds, and how full the tightest pool ended up.
+    """
     return _(
-        "The tightest pool is %(share)s full; the score is highest between %(low)s and "
-        "%(high)s, and falls away at both ends."
+        "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool "
+        "is %(share)s full. The score wants at least %(low)s of the memory taken and no "
+        "more than %(high)s of any one pool."
     ) % {
+        "weights": isolate(format_bytes(resident_model_bytes(budget))),
+        "memory": isolate(format_bytes(budget.vram_available + budget.ram_available)),
         "share": _percent(worst_pool_utilisation(budget)),
         "low": _percent(IDEAL_LOW),
         "high": _percent(IDEAL_HIGH),
