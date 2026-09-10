@@ -30,10 +30,13 @@ from llamafit.scoring.fit_score import (
     worst_pool_utilisation,
 )
 from llamafit.scoring.speed_score import (
+    READING_TPS,
     SLOW_PROMPT_PENALTY,
     TARGET_TPS,
     VERY_SLOW_PROMPT_PENALTY,
+    floor_tps,
     prompt_penalty,
+    speed_ramp,
     speed_score,
     target_tps,
 )
@@ -267,10 +270,62 @@ def test_the_targets_are_the_ones_the_specification_names() -> None:
 
 @pytest.mark.parametrize(
     ("gen_tps", "expected"),
-    [(0.0, 0.0), (10.0, 50.0), (19.9, 99.5), (20.0, 100.0), (20.1, 100.0), (200.0, 100.0)],
+    [
+        (0.0, 0.0),
+        (2.1, 0.0),
+        (5.9, 0.0),
+        (READING_TPS, 0.0),
+        # log2(10/6) / log2(20/6) and log2(12/6) / log2(20/6): the doublings covered.
+        (10.0, 42.43),
+        (12.0, 57.57),
+        (19.9, 99.58),
+        (20.0, 100.0),
+        (20.1, 100.0),
+        (200.0, 100.0),
+    ],
 )
-def test_speed_is_scored_up_to_the_target_and_no_further(gen_tps: float, expected: float) -> None:
-    assert speed_score(speed(gen_tps, 500.0), "coding") == pytest.approx(expected)
+def test_speed_is_scored_between_the_reading_floor_and_the_target(
+    gen_tps: float, expected: float
+) -> None:
+    assert speed_score(speed(gen_tps, 500.0), "coding") == pytest.approx(expected, abs=0.01)
+
+
+def test_a_model_nobody_can_wait_for_scores_nothing_rather_than_a_fraction() -> None:
+    """The defect this shape exists to fix, at the numbers it was found at.
+
+    Gemma 3 27B at 2.1 tokens per second scored 8.4 out of 100 for a general request under
+    a straight line to zero, and finished above Llama 3.1 8B at 9.7 on the same machine.
+    Two tokens a second is not eight percent of a good experience.
+    """
+    unusable = speed_score(speed(2.1, 83.0), "general")
+    usable = speed_score(speed(9.7, 281.0), "general")
+    assert unusable == 0.0
+    assert usable > 30.0
+
+
+def test_the_floor_is_the_readers_and_does_not_move_with_the_use_case() -> None:
+    """Every use case a person reads shares one floor; only the target moves."""
+    reading = {case: floor_tps(case) for case in TARGET_TPS if case != "embedding"}
+    assert set(reading.values()) == {READING_TPS}
+    assert all(speed_score(speed(READING_TPS, 500.0), case) == 0.0 for case in reading)
+
+
+def test_a_throughput_job_has_no_reading_floor() -> None:
+    """Nobody reads an embedding, so there is no speed at which the experience stops."""
+    assert floor_tps("embedding") == 0.0
+    assert speed_score(speed(0.0, 12.0), "embedding") == pytest.approx(6.0)
+
+
+def test_the_ramp_is_linear_in_doublings_and_not_in_tokens_per_second() -> None:
+    """Halfway in doublings, not halfway in tokens: the whole of the shape's claim.
+
+    Six to twelve tokens per second is one doubling of a floor-to-target span of two and a
+    bit, and twelve to twenty-five is the rest. A straight line would put the halfway mark
+    at 15.5 instead, pricing the step out of unusability the same as the step from
+    twenty-one to twenty-five.
+    """
+    assert speed_ramp(6.0 * 2**1.0, 6.0, 6.0 * 2**2.0) == pytest.approx(50.0)
+    assert speed_ramp(15.5, 6.0, 25.0) > 60.0
 
 
 @pytest.mark.parametrize(
