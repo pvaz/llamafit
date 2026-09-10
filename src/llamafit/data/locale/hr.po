@@ -251,6 +251,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "nepoznata"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr "programiranje"
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr "razmišljanje"
+
+msgctxt "model capability"
+msgid "vision"
+msgstr "vid"
+
+msgctxt "model capability"
+msgid "tools"
+msgstr "alati"
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr "višejezičnost"
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr "dugi kontekst"
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr "embeddingi"
+
+msgctxt "model capability"
+msgid "audio"
+msgstr "zvuk"
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s i %(compute)s TFLOPS fp16"
 
@@ -260,19 +292,20 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Računalo"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
-msgid "OS"
-msgstr "OS"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-# Not a counted message, so Croatian cannot agree with either number: the genitive
-# plural is what most counts want and it is what all of them get.
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d jezgri / %(logical)d dretvi"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -280,14 +313,11 @@ msgstr[0] "%(count)d jezgra performansi"
 msgstr[1] "%(count)d jezgre performansi"
 msgstr[2] "%(count)d jezgri performansi"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "skup instrukcija nepoznat"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -303,6 +333,54 @@ msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d kanal"
 msgstr[1] "%(count)d kanala"
 msgstr[2] "%(count)d kanala"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "vrsta nepoznata"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (prema specifikaciji)"
+
+msgid "driver %(driver)s"
+msgstr "upravljački program %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "bez specifikacija"
+
+msgid "Host"
+msgstr "Računalo"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "skup instrukcija nepoznat"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -320,9 +398,6 @@ msgstr "Memorija"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "%(total)s ukupno, %(available)s dostupno; %(details)s; propusnost %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "vrsta nepoznata"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -333,23 +408,15 @@ msgstr "nijedna nije otkrivena"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM, %(free)s slobodno"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM nepoznat"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (prema specifikaciji)"
-
-msgid "driver %(driver)s"
-msgstr "upravljački program %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "bez specifikacija"
 
 msgid "Memory pool"
 msgstr "Spremnik memorije"
@@ -376,6 +443,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "nepoznata gradnja"
 
@@ -398,6 +466,7 @@ msgstr "Radi"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, kontekst %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "nepoznat model"
 
@@ -424,6 +493,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "u redu"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "nema poslužitelja"
 
@@ -440,26 +510,31 @@ msgstr "razina"
 msgid "finding"
 msgstr "nalaz"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "Kvaliteta*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Kvaliteta"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "Param."
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Kontekst"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Mogućnosti"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "Kvaliteta je uredničko polazište, prije ikakve kazne zbog kvantizacije; pokrenite `llamafit info <model>` za mjerila s izvorima koja stoje iza nje."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "Param. je ukupan/aktivan broj parametara u milijardama za model mješavine stručnjaka, ili jedan broj kada su jednaki."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Modeli"
@@ -482,23 +557,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Parametri"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "%(total)sB ukupno, %(active)sB aktivno"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "metoda nije navedena"
 
 msgid "%(tokens)s tokens native"
 msgstr "%(tokens)s tokena izvorno"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", %(tokens)s prošireno pomoću %(method)s"
-
-msgid "unspecified method"
-msgstr "metoda nije navedena"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Kontekst"
 
 msgid "Architecture"
 msgstr "Arhitektura"
 
 msgid "Notes"
 msgstr "Napomene"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Mogućnosti"
 
 msgid "Use cases"
 msgstr "Slučajevi uporabe"
@@ -512,6 +596,7 @@ msgstr "Mjerilo"
 msgid "Source %(index)d"
 msgstr "Izvor %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "još nije pročitano"
 
@@ -521,17 +606,26 @@ msgstr[0] "%(count)d sloj"
 msgstr[1] "%(count)d sloja"
 msgstr[2] "%(count)d slojeva"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d stručnjak"
-msgstr[1] "%(count)d/%(used)d stručnjaka"
-msgstr[2] "%(count)d/%(used)d stručnjaka"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d stručnjak"
 msgstr[1] "%(count)d stručnjaka"
 msgstr[2] "%(count)d stručnjaka"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d stručnjak"
+msgstr[1] "%(count)d/%(used)d stručnjaka"
+msgstr[2] "%(count)d/%(used)d stručnjaka"
 
 msgid "Quants"
 msgstr "Kvantizacije"
@@ -561,8 +655,11 @@ msgstr "Preskače mjerenje propusnosti RAM-a."
 msgid "Command: %(command)s"
 msgstr "Naredba: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "skraćeno GGUF zaglavlje: očekivano je %(wanted)d bajtova na odmaku %(offset)d, primljeno %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Datoteka se možda još preuzima ili URL možda ne upućuje na GGUF datoteku."
@@ -585,6 +682,12 @@ msgstr "nepodržana GGUF inačica %(version)d na odmaku 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit podržava GGUF inačice %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "ove GGUF datoteke nisu jedan podijeljeni model: ne slažu se oko '%(key)s' i navode %(values)s"
 
@@ -597,14 +700,17 @@ msgstr "nema GGUF zaglavlja iz kojeg bi se pročitali podaci"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Predajte datoteku modela ili svaki dio podijeljenog modela."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d od %(total)d GGUF datoteka ne nosi ključ '%(key)s', pa se njihovo mjesto u podijeljenom modelu ne može utvrditi"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Predajte jednu nepodijeljenu datoteku samu za sebe ili svaki dio jednog podijeljenog modela."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "nepotpun skup dijelova: model navodi %(declared)d dijelova, a stiglo ih je %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Predajte svaki dio podijeljenog modela."
@@ -621,8 +727,14 @@ msgstr "nepotpun skup dijelova: očekivalo se %(key)s od 0 do %(last)d, primljen
 msgid "Pass each shard of the split model exactly once."
 msgstr "Predajte svaki dio podijeljenog modela točno jedanput."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "nepotpun skup dijelova: model navodi %(declared)d tenzora, a njegovih %(shards)d dijelova zajedno drži %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "nije bilo moguće pročitati %(path)s: %(error)s"
@@ -667,11 +779,14 @@ msgstr "nema popunjenih memorijskih modula"
 msgid "no SPMemoryDataType"
 msgstr "nema SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "empty command"
 msgstr "prazna naredba"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: isteklo je vrijeme nakon %(seconds)s sekundi"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -798,6 +913,7 @@ msgstr "Instalirajte numpy (`pip install llamafit[fast]`) kako bi LlamaFit mogao
 msgid "Probe %(probe)s failed"
 msgstr "Provjera %(probe)s nije uspjela"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "nepoznata pogreška"
 

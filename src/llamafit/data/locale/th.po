@@ -236,6 +236,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "ไม่ทราบ"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr ""
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr ""
+
+msgctxt "model capability"
+msgid "vision"
+msgstr ""
+
+msgctxt "model capability"
+msgid "tools"
+msgstr ""
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr ""
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr ""
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr ""
+
+msgctxt "model capability"
+msgid "audio"
+msgstr ""
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s และ %(compute)s TFLOPS fp16"
 
@@ -245,30 +277,26 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "โฮสต์"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
 
-msgid "OS"
-msgstr "ระบบปฏิบัติการ"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d คอร์ / %(logical)d เธรด"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "คอร์ประสิทธิภาพ %(count)d คอร์"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "ไม่ทราบชุดคำสั่ง"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -280,6 +308,54 @@ msgstr[0] "%(count)d โมดูล"
 msgid "%(count)d channel"
 msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d ช่อง"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "ไม่ทราบชนิด"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (ตามสเปก)"
+
+msgid "driver %(driver)s"
+msgstr "ไดรเวอร์ %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "ไม่มีสเปก"
+
+msgid "Host"
+msgstr "โฮสต์"
+
+msgid "OS"
+msgstr "ระบบปฏิบัติการ"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "ไม่ทราบชุดคำสั่ง"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -297,9 +373,6 @@ msgstr "หน่วยความจำ"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "ทั้งหมด %(total)s, ว่าง %(available)s; %(details)s; แบนด์วิดท์ %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "ไม่ทราบชนิด"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -310,23 +383,15 @@ msgstr "ไม่พบ"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "VRAM %(total)s, ว่าง %(free)s"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "ไม่ทราบ VRAM"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (ตามสเปก)"
-
-msgid "driver %(driver)s"
-msgstr "ไดรเวอร์ %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "ไม่มีสเปก"
 
 msgid "Memory pool"
 msgstr "พูลหน่วยความจำ"
@@ -353,6 +418,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "ไม่ทราบบิลด์"
 
@@ -375,6 +441,7 @@ msgstr "กำลังทำงาน"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, คอนเท็กซ์ %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "ไม่ทราบโมเดล"
 
@@ -401,6 +468,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "ผ่าน"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "ไม่มีเซิร์ฟเวอร์"
 
@@ -417,26 +485,31 @@ msgstr "ระดับ"
 msgid "finding"
 msgstr "รายละเอียด"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "คุณภาพ*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "คุณภาพ"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "พารามิเตอร์"
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "คอนเท็กซ์"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "ความสามารถ"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "คุณภาพคือค่าพื้นฐานที่กองบรรณาธิการกำหนด ก่อนหักผลจากการควอนไทซ์; รัน `llamafit info <model>` เพื่อดูผลทดสอบมาตรฐานพร้อมแหล่งอ้างอิงที่อยู่เบื้องหลัง"
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "สำหรับโมเดลแบบผสมผู้เชี่ยวชาญ พารามิเตอร์คือค่าทั้งหมด/ที่ทำงานจริง หน่วยพันล้าน หรือเป็นตัวเลขเดียวเมื่อทั้งสองค่าเท่ากัน"
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "โมเดล"
@@ -459,23 +532,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "พารามิเตอร์"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "ทั้งหมด %(total)sB, ทำงานจริง %(active)sB"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "ไม่ระบุวิธี"
 
 msgid "%(tokens)s tokens native"
 msgstr "%(tokens)s โทเค็นตามต้นฉบับ"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", ขยายเป็น %(tokens)s ด้วย %(method)s"
-
-msgid "unspecified method"
-msgstr "ไม่ระบุวิธี"
+msgctxt "table row label"
+msgid "Context"
+msgstr "คอนเท็กซ์"
 
 msgid "Architecture"
 msgstr "สถาปัตยกรรม"
 
 msgid "Notes"
 msgstr "หมายเหตุ"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "ความสามารถ"
 
 msgid "Use cases"
 msgstr "กรณีใช้งาน"
@@ -489,6 +571,7 @@ msgstr "ผลทดสอบมาตรฐาน"
 msgid "Source %(index)d"
 msgstr "แหล่งที่มา %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "ยังไม่ได้อ่าน"
 
@@ -496,13 +579,22 @@ msgid "%(count)d layer"
 msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d เลเยอร์"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "ผู้เชี่ยวชาญ %(count)d/%(used)d"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "ผู้เชี่ยวชาญ %(count)d"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "ผู้เชี่ยวชาญ %(count)d/%(used)d"
 
 msgid "Quants"
 msgstr "ไฟล์ควอนไทซ์"
@@ -532,8 +624,9 @@ msgstr "ข้ามการวัดแบนด์วิดท์ของ RA
 msgid "Command: %(command)s"
 msgstr "คำสั่ง: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "ส่วนหัว GGUF ถูกตัดขาด: ต้องการ %(wanted)d ไบต์ที่ออฟเซ็ต %(offset)d แต่ได้ %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "ไฟล์อาจยังดาวน์โหลดไม่เสร็จ หรือ URL อาจไม่ใช่ไฟล์ GGUF"
@@ -556,6 +649,10 @@ msgstr "ไม่รองรับ GGUF เวอร์ชัน %(version)d �
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit รองรับ GGUF เวอร์ชัน %(versions)s"
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "ไฟล์ GGUF เหล่านี้ไม่ได้เป็นโมเดลที่แบ่งชาร์ดชุดเดียวกัน: ค่า '%(key)s' ไม่ตรงกัน โดยประกาศเป็น %(values)s"
 
@@ -568,14 +665,15 @@ msgstr "ไม่มีส่วนหัว GGUF ให้อ่านข้อ
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "ส่งไฟล์ของโมเดล หรือชาร์ดทุกชิ้นของโมเดลที่แบ่งชาร์ด"
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "ไฟล์ GGUF %(count)d จาก %(total)d ไฟล์ไม่มีคีย์ '%(key)s' จึงระบุตำแหน่งของไฟล์เหล่านั้นในโมเดลที่แบ่งชาร์ดไม่ได้"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "ส่งไฟล์เดี่ยวที่ไม่ได้แบ่งชาร์ดเพียงไฟล์เดียว หรือชาร์ดทุกชิ้นของโมเดลที่แบ่งชาร์ดชุดเดียว"
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "ชาร์ดไม่ครบ: โมเดลประกาศไว้ %(declared)d ชาร์ด แต่มาถึง %(arrived)d ชาร์ด (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "ส่งชาร์ดทุกชิ้นของโมเดลที่แบ่งชาร์ด"
@@ -592,8 +690,12 @@ msgstr "ชาร์ดไม่ครบ: ต้องการ %(key)s ตั�
 msgid "Pass each shard of the split model exactly once."
 msgstr "ส่งชาร์ดแต่ละชิ้นของโมเดลที่แบ่งชาร์ดเพียงครั้งเดียว"
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "ชาร์ดไม่ครบ: โมเดลประกาศเทนเซอร์ไว้ %(declared)d ตัว แต่ชาร์ด %(shards)d ชิ้นรวมกันมีเพียง %(held)d ตัว"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "อ่าน %(path)s ไม่ได้: %(error)s"
@@ -638,11 +740,12 @@ msgstr "ไม่มีโมดูลหน่วยความจำที่
 msgid "no SPMemoryDataType"
 msgstr "ไม่มี SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+
 msgid "empty command"
 msgstr "คำสั่งว่างเปล่า"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: หมดเวลาหลังจาก %(seconds)s วินาที"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -769,6 +872,7 @@ msgstr "ติดตั้ง numpy (`pip install llamafit[fast]`) เพื่�
 msgid "Probe %(probe)s failed"
 msgstr "การตรวจสอบ %(probe)s ล้มเหลว"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "ข้อผิดพลาดที่ไม่ทราบสาเหตุ"
 

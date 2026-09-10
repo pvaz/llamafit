@@ -237,6 +237,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "desconhecida"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr "programação"
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr "raciocínio"
+
+msgctxt "model capability"
+msgid "vision"
+msgstr "visão"
+
+msgctxt "model capability"
+msgid "tools"
+msgstr "ferramentas"
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr "multilingue"
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr "contexto longo"
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr "embeddings"
+
+msgctxt "model capability"
+msgid "audio"
+msgstr "áudio"
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s e %(compute)s TFLOPS fp16"
 
@@ -246,31 +278,29 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Máquina"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "OS"
-msgstr "SO"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d núcleos / %(logical)d threads"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d núcleo de desempenho"
 msgstr[1] "%(count)d núcleos de desempenho"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "isa desconhecido"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -284,6 +314,54 @@ msgid "%(count)d channel"
 msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d canal"
 msgstr[1] "%(count)d canais"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "tipo desconhecido"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (especificação)"
+
+msgid "driver %(driver)s"
+msgstr "controlador %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "sem especificações"
+
+msgid "Host"
+msgstr "Máquina"
+
+msgid "OS"
+msgstr "SO"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa desconhecido"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -303,9 +381,6 @@ msgstr "Memória"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "%(total)s no total, %(available)s disponíveis; %(details)s; largura de banda %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "tipo desconhecido"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -316,23 +391,15 @@ msgstr "nenhuma detetada"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s de VRAM, %(free)s livres"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM desconhecida"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (especificação)"
-
-msgid "driver %(driver)s"
-msgstr "controlador %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "sem especificações"
 
 msgid "Memory pool"
 msgstr "Reserva de memória"
@@ -359,6 +426,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "compilação desconhecida"
 
@@ -381,6 +449,7 @@ msgstr "Em execução"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, contexto %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "modelo desconhecido"
 
@@ -407,6 +476,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "ok"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "sem servidor"
 
@@ -423,26 +493,31 @@ msgstr "nível"
 msgid "finding"
 msgstr "conclusão"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "Qualidade*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Qualidade"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "Parâm."
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Contexto"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Capacidades"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "A qualidade é a base editorial, antes de qualquer penalização por quantização; execute `llamafit info <model>` para ver os testes de referência, com fonte, que a sustentam."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "Parâm. é o total/ativo em milhares de milhões para um modelo de mistura de peritos, ou um único número quando são iguais."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Modelos"
@@ -465,23 +540,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Parâmetros"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "%(total)sB no total, %(active)sB ativos"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "método não especificado"
 
 msgid "%(tokens)s tokens native"
 msgstr "%(tokens)s tokens nativos"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", %(tokens)s estendido através de %(method)s"
-
-msgid "unspecified method"
-msgstr "método não especificado"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Contexto"
 
 msgid "Architecture"
 msgstr "Arquitetura"
 
 msgid "Notes"
 msgstr "Notas"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Capacidades"
 
 msgid "Use cases"
 msgstr "Casos de uso"
@@ -495,6 +579,7 @@ msgstr "Teste de referência"
 msgid "Source %(index)d"
 msgstr "Fonte %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "ainda não lido"
 
@@ -503,15 +588,24 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d camada"
 msgstr[1] "%(count)d camadas"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d perito"
-msgstr[1] "%(count)d/%(used)d peritos"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d perito"
 msgstr[1] "%(count)d peritos"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d perito"
+msgstr[1] "%(count)d/%(used)d peritos"
 
 msgid "Quants"
 msgstr "Quantizações"
@@ -543,8 +637,10 @@ msgstr ""
 msgid "Command: %(command)s"
 msgstr "Comando: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "cabeçalho GGUF truncado: esperava %(wanted)d bytes na posição %(offset)d, recebeu %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "O ficheiro pode ainda estar a ser transferido, ou o URL pode não ser um ficheiro GGUF."
@@ -567,6 +663,11 @@ msgstr "versão GGUF não suportada %(version)d na posição 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "O LlamaFit suporta as versões GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "estes ficheiros GGUF não são um só modelo dividido: discordam sobre '%(key)s', declarando %(values)s"
 
@@ -579,14 +680,16 @@ msgstr "não há nenhum cabeçalho GGUF de onde ler os factos"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Indique o ficheiro do modelo, ou todos os fragmentos de um modelo dividido."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d de %(total)d ficheiros GGUF não têm a chave '%(key)s', por isso não é possível determinar o lugar deles num modelo dividido"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Indique um único ficheiro não dividido sozinho, ou todos os fragmentos de um só modelo dividido."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "conjunto de fragmentos incompleto: o modelo declara %(declared)d fragmentos e chegaram %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Indique todos os fragmentos do modelo dividido."
@@ -603,8 +706,13 @@ msgstr "conjunto de fragmentos incompleto: esperava %(key)s de 0 a %(last)d, rec
 msgid "Pass each shard of the split model exactly once."
 msgstr "Indique cada fragmento do modelo dividido exatamente uma vez."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "conjunto de fragmentos incompleto: o modelo declara %(declared)d tensores e os seus %(shards)d fragmentos têm %(held)d ao todo"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "não foi possível ler %(path)s: %(error)s"
@@ -649,11 +757,13 @@ msgstr "nenhum módulo de memória preenchido"
 msgid "no SPMemoryDataType"
 msgstr "sem SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "comando vazio"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: esgotou o tempo ao fim de %(seconds)ss"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -780,6 +890,7 @@ msgstr "Instale o numpy (`pip install llamafit[fast]`) para o LlamaFit poder med
 msgid "Probe %(probe)s failed"
 msgstr "A sondagem %(probe)s falhou"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "erro desconhecido"
 

@@ -18,7 +18,7 @@ from collections.abc import Sequence
 from llamafit.errors import CatalogError
 from llamafit.gguf.source import ByteSource
 from llamafit.gguf.types import ValueType, is_misaligned, tensor_bytes, type_name
-from llamafit.i18n import _
+from llamafit.i18n import _, ngettext
 from llamafit.models.gguf import GgufHeader, TensorInfo
 
 _MAGIC = b"GGUF"
@@ -72,9 +72,12 @@ class _Cursor:
         chunk = self._buffer[start : start + length]
         if len(chunk) < length:
             raise CatalogError(
-                _(
+                ngettext(
+                    "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, "
+                    "got %(got)d",
                     "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, "
-                    "got %(got)d"
+                    "got %(got)d",
+                    length,
                 )
                 % {"wanted": length, "offset": self.offset, "got": len(chunk)},
                 hint=_("The file may still be downloading, or the URL may not be a GGUF file."),
@@ -191,6 +194,16 @@ def read_header(source: ByteSource) -> GgufHeader:
         tensors=tensors,
         header_bytes=cursor.offset,
     )
+
+
+def _shards(count: int) -> str:
+    """A number of shards as a counted phrase, for a sentence that already counts something else.
+
+    A ``.po`` entry selects its form on one number, and these messages carry two or three.
+    Building the counted noun on its own lets each of them agree with the number it stands
+    next to, instead of one of the two nouns inheriting a form chosen for the other.
+    """
+    return ngettext("%(count)d shard", "%(count)d shards", count) % {"count": count}
 
 
 def _metadata_int(header: GgufHeader, key: str) -> int | None:
@@ -311,9 +324,12 @@ def merge_shard_headers(headers: Sequence[GgufHeader]) -> GgufHeader:
             numbered.append((shard_no, header))
     if unnumbered:
         raise CatalogError(
-            _(
-                "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their "
-                "place in a split model cannot be established"
+            ngettext(
+                "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so "
+                "its place in a split model cannot be established",
+                "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so "
+                "their place in a split model cannot be established",
+                unnumbered,
             )
             % {"count": unnumbered, "total": len(headers), "key": _SPLIT_NO},
             hint=_("Pass a single unsplit file on its own, or every shard of one split model."),
@@ -326,11 +342,11 @@ def merge_shard_headers(headers: Sequence[GgufHeader]) -> GgufHeader:
     if declared_shards is not None and declared_shards != len(numbered):
         raise CatalogError(
             _(
-                "incomplete shard set: the model declares %(declared)d shards and "
-                "%(arrived)d arrived (%(key)s %(numbers)s)"
+                "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived "
+                "(%(key)s %(numbers)s)"
             )
             % {
-                "declared": declared_shards,
+                "shards": _shards(declared_shards),
                 "arrived": len(numbered),
                 "key": _SPLIT_NO,
                 "numbers": shard_numbers,
@@ -363,12 +379,13 @@ def merge_shard_headers(headers: Sequence[GgufHeader]) -> GgufHeader:
     if declared_tensors is not None and declared_tensors != len(tensors):
         raise CatalogError(
             _(
-                "incomplete shard set: the model declares %(declared)d tensors and its "
-                "%(shards)d shards hold %(held)d between them"
+                "incomplete shard set: the model declares %(tensors)s and its %(shards)s "
+                "hold %(held)d between them"
             )
             % {
-                "declared": declared_tensors,
-                "shards": len(numbered),
+                "tensors": ngettext("%(count)d tensor", "%(count)d tensors", declared_tensors)
+                % {"count": declared_tensors},
+                "shards": _shards(len(numbered)),
                 "held": len(tensors),
             },
             hint=_("Pass every shard of the split model."),

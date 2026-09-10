@@ -237,6 +237,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "알 수 없음"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr "코딩"
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr "사고"
+
+msgctxt "model capability"
+msgid "vision"
+msgstr "비전"
+
+msgctxt "model capability"
+msgid "tools"
+msgstr "도구"
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr "다국어"
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr "긴 컨텍스트"
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr "임베딩"
+
+msgctxt "model capability"
+msgid "audio"
+msgstr "오디오"
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s, %(compute)s TFLOPS fp16"
 
@@ -246,30 +278,26 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "호스트"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
 
-msgid "OS"
-msgstr "OS"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s(%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d코어 / %(logical)d스레드"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "성능 코어 %(count)d개"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "명령어 집합 알 수 없음"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -281,6 +309,54 @@ msgstr[0] "모듈 %(count)d개"
 msgid "%(count)d channel"
 msgid_plural "%(count)d channels"
 msgstr[0] "채널 %(count)d개"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "종류 알 수 없음"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s(사양표)"
+
+msgid "driver %(driver)s"
+msgstr "드라이버 %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "사양 없음"
+
+msgid "Host"
+msgstr "호스트"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s(%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "명령어 집합 알 수 없음"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s(%(source)s)"
@@ -298,9 +374,6 @@ msgstr "메모리"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "전체 %(total)s, 사용 가능 %(available)s; %(details)s; 대역폭 %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "종류 알 수 없음"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -311,23 +384,15 @@ msgstr "감지되지 않음"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "VRAM %(total)s, 여유 %(free)s"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM 알 수 없음"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s(사양표)"
-
-msgid "driver %(driver)s"
-msgstr "드라이버 %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s(%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "사양 없음"
 
 msgid "Memory pool"
 msgstr "메모리 풀"
@@ -354,6 +419,7 @@ msgstr "b%(build)d(%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "빌드 알 수 없음"
 
@@ -376,6 +442,7 @@ msgstr "실행 중"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, 컨텍스트 %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "모델 알 수 없음"
 
@@ -402,6 +469,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "정상"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "서버 없음"
 
@@ -421,26 +489,31 @@ msgstr "내용"
 # These five are the list table's column headings, and the table is laid out for
 # an 80-column terminal. A Hangul syllable takes two terminal columns, so the
 # headings are kept as short as the meaning allows.
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "품질*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "품질"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "매개변수"
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "컨텍스트"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "기능"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "품질은 양자화에 따른 손실을 반영하기 전의 편집 기준값입니다. 근거가 되는 출처 있는 벤치마크는 `llamafit info <model>`에서 확인하세요."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "매개변수는 전문가 혼합(MoE) 모델에서는 전체/활성 값(10억 단위)이고, 두 값이 같으면 숫자 하나입니다."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "모델"
@@ -463,23 +536,32 @@ msgstr "%(spdx)s(%(url)s)"
 msgid "Parameters"
 msgstr "매개변수"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "전체 %(total)sB, 활성 %(active)sB"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "방식 미지정"
 
 msgid "%(tokens)s tokens native"
 msgstr "네이티브 %(tokens)s 토큰"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", %(method)s로 %(tokens)s까지 확장"
-
-msgid "unspecified method"
-msgstr "방식 미지정"
+msgctxt "table row label"
+msgid "Context"
+msgstr "컨텍스트"
 
 msgid "Architecture"
 msgstr "아키텍처"
 
 msgid "Notes"
 msgstr "비고"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "기능"
 
 msgid "Use cases"
 msgstr "사용 사례"
@@ -493,6 +575,7 @@ msgstr "벤치마크"
 msgid "Source %(index)d"
 msgstr "출처 %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "아직 읽지 않음"
 
@@ -500,13 +583,22 @@ msgid "%(count)d layer"
 msgid_plural "%(count)d layers"
 msgstr[0] "레이어 %(count)d개"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "전문가 %(count)d/%(used)d개"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "전문가 %(count)d개"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "전문가 %(count)d/%(used)d개"
 
 msgid "Quants"
 msgstr "양자화"
@@ -536,8 +628,9 @@ msgstr "RAM 대역폭 실측을 건너뜁니다."
 msgid "Command: %(command)s"
 msgstr "명령: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "GGUF 헤더가 잘렸습니다: 오프셋 %(offset)d에서 %(wanted)d바이트가 필요한데 %(got)d바이트만 있습니다"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "파일이 아직 내려받는 중이거나, URL이 GGUF 파일이 아닐 수 있습니다."
@@ -560,6 +653,10 @@ msgstr "지원하지 않는 GGUF 버전 %(version)d입니다(오프셋 4)"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit이 지원하는 GGUF 버전은 %(versions)s입니다."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "이 GGUF 파일들은 하나의 분할 모델이 아닙니다: '%(key)s' 값이 서로 달라 %(values)s로 선언되어 있습니다"
 
@@ -572,14 +669,15 @@ msgstr "정보를 읽을 GGUF 헤더가 없습니다"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "모델 파일이나 분할 모델의 모든 샤드를 넘기세요."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "GGUF 파일 %(total)d개 중 %(count)d개에 '%(key)s' 키가 없어서 분할 모델에서의 자리를 정할 수 없습니다"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "분할되지 않은 파일 하나만 넘기거나, 한 분할 모델의 모든 샤드를 넘기세요."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "샤드가 부족합니다: 모델은 샤드 %(declared)d개를 선언했는데 %(arrived)d개가 도착했습니다(%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "분할 모델의 모든 샤드를 넘기세요."
@@ -596,8 +694,12 @@ msgstr "샤드가 부족합니다: %(key)s가 0부터 %(last)d까지여야 하�
 msgid "Pass each shard of the split model exactly once."
 msgstr "분할 모델의 각 샤드를 정확히 한 번씩만 넘기세요."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "샤드가 부족합니다: 모델은 텐서 %(declared)d개를 선언했는데 샤드 %(shards)d개를 합쳐 %(held)d개만 들어 있습니다"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "%(path)s를 읽을 수 없습니다: %(error)s"
@@ -642,11 +744,12 @@ msgstr "장착된 메모리 모듈이 없습니다"
 msgid "no SPMemoryDataType"
 msgstr "SPMemoryDataType이 없습니다"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+
 msgid "empty command"
 msgstr "빈 명령"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: %(seconds)s초 후 시간 초과"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -773,6 +876,7 @@ msgstr "LlamaFit이 RAM 대역폭을 실측할 수 있도록 numpy를 설치하�
 msgid "Probe %(probe)s failed"
 msgstr "프로브 %(probe)s 실패"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "알 수 없는 오류"
 

@@ -238,6 +238,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "неизвестна"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr "програмиране"
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr "мислене"
+
+msgctxt "model capability"
+msgid "vision"
+msgstr "зрение"
+
+msgctxt "model capability"
+msgid "tools"
+msgstr "инструменти"
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr "многоезичен"
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr "дълъг контекст"
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr "ембединги"
+
+msgctxt "model capability"
+msgid "audio"
+msgstr "аудио"
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s и %(compute)s TFLOPS fp16"
 
@@ -247,33 +279,29 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Машина"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "OS"
-msgstr "ОС"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-# The English has no plural forms here, so a Bulgarian noun after the number could only
-# ever agree for some counts. The count is put after the noun instead: "ядра: 2 / нишки: 4".
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "ядра: %(physical)d / нишки: %(logical)d"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d производително ядро"
 msgstr[1] "%(count)d производителни ядра"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "isa неизвестна"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -287,6 +315,54 @@ msgid "%(count)d channel"
 msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d канал"
 msgstr[1] "%(count)d канала"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "неизвестен тип"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (по спецификация)"
+
+msgid "driver %(driver)s"
+msgstr "драйвер %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "няма данни от спецификация"
+
+msgid "Host"
+msgstr "Машина"
+
+msgid "OS"
+msgstr "ОС"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa неизвестна"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -304,9 +380,6 @@ msgstr "Памет"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "общо %(total)s, налични %(available)s; %(details)s; пропускателна способност %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "неизвестен тип"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -317,23 +390,15 @@ msgstr "не е открит"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM, свободни %(free)s"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM неизвестна"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (по спецификация)"
-
-msgid "driver %(driver)s"
-msgstr "драйвер %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "няма данни от спецификация"
 
 msgid "Memory pool"
 msgstr "Пул памет"
@@ -360,6 +425,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "неизвестна компилация"
 
@@ -382,6 +448,7 @@ msgstr "Работи"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, контекст %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "неизвестен модел"
 
@@ -408,6 +475,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "успешно"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "няма сървър"
 
@@ -424,26 +492,31 @@ msgstr "ниво"
 msgid "finding"
 msgstr "констатация"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "Качество*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Качество"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "Парам."
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Контекст"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Възможности"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "„Качество“ е редакционната базова оценка, преди каквато и да е загуба от квантизация; изпълнете `llamafit info <model>`, за да видите тестовете с посочени източници, които стоят зад нея."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "„Парам.“ е общият/активният брой милиарди за модел със смес от експерти или едно число, когато двете съвпадат."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Модели"
@@ -466,23 +539,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Параметри"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "общо %(total)sB, активни %(active)sB"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "неуточнен метод"
 
 msgid "%(tokens)s tokens native"
 msgstr "нативно %(tokens)s токена"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", разширен до %(tokens)s чрез %(method)s"
-
-msgid "unspecified method"
-msgstr "неуточнен метод"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Контекст"
 
 msgid "Architecture"
 msgstr "Архитектура"
 
 msgid "Notes"
 msgstr "Бележки"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Възможности"
 
 msgid "Use cases"
 msgstr "Случаи на употреба"
@@ -496,6 +578,7 @@ msgstr "Бенчмарк"
 msgid "Source %(index)d"
 msgstr "Източник %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "още не е прочетено"
 
@@ -504,17 +587,26 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d слой"
 msgstr[1] "%(count)d слоя"
 
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d експерт"
+msgstr[1] "%(count)d експерти"
+
 # The form is chosen by %(count)d, the total number of experts, even though %(used)d is the
 # number the reader's eye lands on just before the noun.
 msgid "%(count)d/%(used)d expert"
 msgid_plural "%(count)d/%(used)d experts"
 msgstr[0] "%(count)d/%(used)d експерт"
 msgstr[1] "%(count)d/%(used)d експерти"
-
-msgid "%(count)d expert"
-msgid_plural "%(count)d experts"
-msgstr[0] "%(count)d експерт"
-msgstr[1] "%(count)d експерти"
 
 msgid "Quants"
 msgstr "Квантизации"
@@ -544,8 +636,10 @@ msgstr "Пропуска измерването на пропускателна�
 msgid "Command: %(command)s"
 msgstr "Команда: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "отрязана заглавна част на GGUF: очакваха се %(wanted)d байта при отместване %(offset)d, получени са %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Файлът може още да се изтегля или на този URL адрес да няма GGUF файл."
@@ -568,6 +662,11 @@ msgstr "неподдържана версия на GGUF %(version)d при от�
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit поддържа версии на GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "тези GGUF файлове не са един разделен модел: те се разминават за '%(key)s' и обявяват %(values)s"
 
@@ -580,14 +679,16 @@ msgstr "няма заглавна част на GGUF, от която да се 
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Подайте файла на модела или всички части на разделен модел."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d от %(total)d GGUF файла нямат ключ '%(key)s', затова мястото им в разделен модел не може да бъде установено"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Подайте един неразделен файл самостоятелно или всички части на един разделен модел."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "непълен набор от части: моделът обявява %(declared)d части, а са пристигнали %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Подайте всички части на разделения модел."
@@ -604,8 +705,13 @@ msgstr "непълен набор от части: очакваше се %(key)s
 msgid "Pass each shard of the split model exactly once."
 msgstr "Подайте всяка част на разделения модел точно веднъж."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "непълен набор от части: моделът обявява %(declared)d тензора, а неговите %(shards)d части съдържат общо %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "не можа да се прочете %(path)s: %(error)s"
@@ -650,11 +756,13 @@ msgstr "няма запълнени модули памет"
 msgid "no SPMemoryDataType"
 msgstr "няма SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "празна команда"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: времето изтече след %(seconds)s с"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -781,6 +889,7 @@ msgstr "Инсталирайте numpy (`pip install llamafit[fast]`), за да
 msgid "Probe %(probe)s failed"
 msgstr "Проверката %(probe)s се провали"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "неизвестна грешка"
 

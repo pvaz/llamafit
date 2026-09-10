@@ -8,16 +8,22 @@ right ones: by the time a table is drawn the language has been chosen. Nothing o
 page is a module-level constant holding a message, which is the shape that would need the
 deferred pair.
 
-Two habits run through the file. A counted noun goes through :func:`ngettext` rather than
-an ``s`` bolted onto a word, because a suffix is an English rule that most languages do
-not share. A word short enough for two rows to share — *unknown*, *none detected*, *ok* —
-carries a :func:`pgettext` context naming its row, because the Portuguese for it is
-inflected and one translation cannot be right in both places.
+Three habits run through the file. A counted noun goes through :func:`ngettext` rather
+than an ``s`` bolted onto a word, because a suffix is an English rule that most languages
+do not share, and every count that a noun has to agree with gets an entry of its own: one
+entry can select on one number, so two numbers in one sentence means one of the two nouns
+is left to guess. A word short enough for two rows to share — *unknown*, *none detected*,
+*ok* — carries a :func:`pgettext` context naming its row, because the Portuguese for it
+is inflected and one translation cannot be right in both places. And a line assembled
+from optional pieces is written out as one whole message per shape rather than joined
+with a separator in Python: four of the languages here punctuate a list four different
+ways, and a translator can move a word across a join they can see and not across one
+they never do.
 """
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 
 from rich.cells import cell_len
 from rich.table import Table
@@ -26,7 +32,7 @@ from rich.text import Text
 from llamafit.i18n import _, ngettext, pgettext
 from llamafit.models.catalog import CatalogModel
 from llamafit.models.gguf import GgufFacts
-from llamafit.models.host import Host, Probe, Source
+from llamafit.models.host import Cpu, Gpu, Host, Memory, Probe, Source
 from llamafit.models.llamacpp import LlamaCpp
 from llamafit.services.catalog import ModelSummary, QuantDetail
 from llamafit.services.doctor import Finding
@@ -60,6 +66,36 @@ def _bandwidth_source_label(source: Source) -> str:
     return labels.get(source, source)
 
 
+def _capability_label(capability: str) -> str:
+    """One of a model's capabilities, in the reader's language.
+
+    These are ordinary words — *coding*, *vision*, *audio* — and a reader meets them as
+    words, not as identifiers: they are the answer to "what is this model for", which is
+    the question the table exists to answer. They reach the catalog as enum values, which
+    is why they were English everywhere for as long as they were, and why each one is
+    written out here as its own literal call rather than looked up from the enum: the
+    extractor reads the syntax tree, so a message it can find is a message somebody can
+    translate.
+
+    A name the enum grows before this table does comes back unchanged, in English, rather
+    than disappearing from the row.
+
+    ``--capability`` still takes the English identifier, and the hint on a mistyped one
+    lists those, so nothing here is a value a reader has to type back.
+    """
+    labels = {
+        "coding": pgettext("model capability", "coding"),
+        "thinking": pgettext("model capability", "thinking"),
+        "vision": pgettext("model capability", "vision"),
+        "tools": pgettext("model capability", "tools"),
+        "multilingual": pgettext("model capability", "multilingual"),
+        "long-context": pgettext("model capability", "long-context"),
+        "embeddings": pgettext("model capability", "embeddings"),
+        "audio": pgettext("model capability", "audio"),
+    }
+    return labels.get(capability, capability)
+
+
 def _from_table(bandwidth_gbps: float | None, compute_tflops_fp16: float | None) -> str:
     """The specification-table figures a GPU has, as one phrase in the reader's language.
 
@@ -74,6 +110,122 @@ def _from_table(bandwidth_gbps: float | None, compute_tflops_fp16: float | None)
     if bandwidth_gbps:
         return _("%(bandwidth)s GB/s") % {"bandwidth": localise_number(str(bandwidth_gbps))}
     return _("%(compute)s TFLOPS fp16") % {"compute": localise_number(str(compute_tflops_fp16))}
+
+
+def _cores(cpu: Cpu) -> str:
+    """What the CPU offers, as one whole phrase in the reader's language.
+
+    Cores, threads and performance cores are three counted nouns, and a ``.po`` entry
+    selects its form on one number: a single message carrying all three would leave two
+    of the nouns agreeing with a count that is not theirs, which in Czech or Russian is
+    the difference between a word and a misspelling. Each count therefore gets its own
+    counted entry, and the two shapes the row can take are written out whole.
+    """
+    cores = ngettext("%(count)d core", "%(count)d cores", cpu.physical_cores) % {
+        "count": cpu.physical_cores
+    }
+    threads = ngettext("%(count)d thread", "%(count)d threads", cpu.logical_cores) % {
+        "count": cpu.logical_cores
+    }
+    if not cpu.performance_cores:
+        return _("%(cores)s / %(threads)s") % {"cores": cores, "threads": threads}
+    performance = ngettext(
+        "%(count)d performance core",
+        "%(count)d performance cores",
+        cpu.performance_cores,
+    ) % {"count": cpu.performance_cores}
+    return _("%(cores)s / %(threads)s, %(performance)s") % {
+        "cores": cores,
+        "threads": threads,
+        "performance": performance,
+    }
+
+
+def _memory_kind(memory: Memory) -> str | None:
+    """What the memory is, as one whole phrase, or ``None`` when nothing is known.
+
+    The type is data read off the machine — ``DDR5``, ``LPDDR5X`` — so it is never
+    translated; the sentence it sits in is. The three shapes are written out rather than
+    joined, the same way :func:`_from_table` writes out its three.
+    """
+    if memory.type and memory.speed_mts:
+        return _("%(type)s at %(speed)d MT/s") % {"type": memory.type, "speed": memory.speed_mts}
+    if memory.type:
+        return memory.type
+    if memory.speed_mts:
+        return _("%(speed)d MT/s") % {"speed": memory.speed_mts}
+    return None
+
+
+def _memory_details(memory: Memory) -> str:
+    """The middle of the memory row: what the modules are and how many there are.
+
+    Every shape is a message of its own. The alternative — building a list and joining it
+    with ``", "`` — hands the translator three fragments and keeps the punctuation between
+    them in Python, where Japanese cannot reach it to write ``、``, Arabic cannot reach it
+    to write ``، ``, and no language can put a conjunction before the last item.
+
+    The module and channel counts stay two counted entries rather than one message holding
+    both numbers, so each noun agrees with the count next to it; what varies between the
+    shapes is the sentence they are set into.
+    """
+    kind = _memory_kind(memory)
+    modules = (
+        ngettext("%(count)d module", "%(count)d modules", memory.modules)
+        % {"count": memory.modules}
+        if memory.modules
+        else None
+    )
+    channels = (
+        ngettext("%(count)d channel", "%(count)d channels", memory.channels)
+        % {"count": memory.channels}
+        if memory.channels
+        else None
+    )
+    if kind and modules and channels:
+        return _("%(kind)s, %(modules)s across %(channels)s") % {
+            "kind": kind,
+            "modules": modules,
+            "channels": channels,
+        }
+    if kind and modules:
+        return _("%(kind)s, %(modules)s") % {"kind": kind, "modules": modules}
+    if kind and channels:
+        return _("%(kind)s, %(channels)s") % {"kind": kind, "channels": channels}
+    if kind:
+        return kind
+    if modules and channels:
+        return _("%(modules)s across %(channels)s") % {"modules": modules, "channels": channels}
+    if modules:
+        return modules
+    if channels:
+        return channels
+    return pgettext("memory type", "type unknown")
+
+
+def _gpu_specs(gpu: Gpu) -> str:
+    """The bundled specification figures and the driver, as one whole phrase.
+
+    Bandwidth and compute come from the bundled specification table, not from this
+    machine, so they are labelled: no number reaches the user without its source. The four
+    shapes are written out, because the comma between the two halves is punctuation a
+    language chooses and not punctuation this file does.
+    """
+    from_table = (
+        _from_table(gpu.bandwidth_gbps, gpu.compute_tflops_fp16)
+        if gpu.bandwidth_gbps or gpu.compute_tflops_fp16
+        else None
+    )
+    if from_table and gpu.driver:
+        return _("%(specs)s (spec), driver %(driver)s") % {
+            "specs": from_table,
+            "driver": gpu.driver,
+        }
+    if from_table:
+        return _("%(specs)s (spec)") % {"specs": from_table}
+    if gpu.driver:
+        return _("driver %(driver)s") % {"driver": gpu.driver}
+    return pgettext("GPU specifications", "no specs")
 
 
 def render_host(host: Host) -> Table:
@@ -92,49 +244,18 @@ def render_host(host: Host) -> Table:
             % {"os": host.os, "version": host.os_version, "arch": host.arch}
         ),
     )
-    cores = _("%(physical)d cores / %(logical)d threads") % {
-        "physical": host.cpu.physical_cores,
-        "logical": host.cpu.logical_cores,
-    }
-    if host.cpu.performance_cores:
-        cores += ", " + ngettext(
-            "%(count)d performance core",
-            "%(count)d performance cores",
-            host.cpu.performance_cores,
-        ) % {"count": host.cpu.performance_cores}
     table.add_row(
         _("CPU"),
         Text(
             _("%(model)s; %(cores)s; %(isa)s")
             % {
                 "model": host.cpu.model,
-                "cores": cores,
-                "isa": " ".join(host.cpu.isa) or _("isa unknown"),
+                "cores": _cores(host.cpu),
+                "isa": " ".join(host.cpu.isa) or pgettext("CPU instruction sets", "isa unknown"),
             }
         ),
     )
     mem = host.memory
-    details = ", ".join(
-        x
-        for x in (
-            " ".join(
-                y
-                for y in (
-                    mem.type,
-                    _("%(speed)d MT/s") % {"speed": mem.speed_mts} if mem.speed_mts else None,
-                )
-                if y
-            ),
-            ngettext("%(count)d module", "%(count)d modules", mem.modules) % {"count": mem.modules}
-            if mem.modules
-            else None,
-            ngettext("%(count)d channel", "%(count)d channels", mem.channels)
-            % {"count": mem.channels}
-            if mem.channels
-            else None,
-        )
-        if x
-    )
     bandwidth = (
         _("%(gbps)s GB/s (%(source)s)")
         % {
@@ -151,7 +272,7 @@ def render_host(host: Host) -> Table:
             % {
                 "total": format_bytes(mem.total_bytes),
                 "available": format_bytes(mem.available_bytes),
-                "details": details or _("type unknown"),
+                "details": _memory_details(mem),
                 "bandwidth": bandwidth,
             }
         ),
@@ -166,20 +287,7 @@ def render_host(host: Host) -> Table:
                 "free": format_bytes(gpu.vram_free_bytes),
             }
             if gpu.vram_total_bytes
-            else _("VRAM unknown")
-        )
-        # Bandwidth and compute come from the bundled specification table, not from this
-        # machine, so they are labelled: no number reaches the user without its source.
-        specs = ", ".join(
-            x
-            for x in (
-                _("%(specs)s (spec)")
-                % {"specs": _from_table(gpu.bandwidth_gbps, gpu.compute_tflops_fp16)}
-                if gpu.bandwidth_gbps or gpu.compute_tflops_fp16
-                else None,
-                _("driver %(driver)s") % {"driver": gpu.driver} if gpu.driver else None,
-            )
-            if x
+            else pgettext("GPU VRAM", "VRAM unknown")
         )
         table.add_row(
             _("GPU %(index)d") % {"index": gpu.index},
@@ -189,7 +297,7 @@ def render_host(host: Host) -> Table:
                     "name": gpu.name,
                     "backend": gpu.backend_hint,
                     "vram": vram,
-                    "specs": specs or _("no specs"),
+                    "specs": _gpu_specs(gpu),
                 }
             ),
         )
@@ -226,7 +334,7 @@ def render_llamacpp(llamacpp: LlamaCpp) -> Table:
         elif llamacpp.build:
             build = _("b%(build)d") % {"build": llamacpp.build}
         else:
-            build = _("unknown build")
+            build = pgettext("llama.cpp build", "unknown build")
         table.add_row(
             _("Installed"),
             Text(_("yes, %(build)s at %(path)s") % {"build": build, "path": llamacpp.path}),
@@ -243,7 +351,7 @@ def render_llamacpp(llamacpp: LlamaCpp) -> Table:
                 _("%(url)s: %(model)s, context %(context)s")
                 % {
                     "url": server.url,
-                    "model": server.model or _("unknown model"),
+                    "model": server.model or pgettext("model name", "unknown model"),
                     "context": server.n_ctx or pgettext("context length", "unknown"),
                 }
             ),
@@ -267,7 +375,7 @@ def render_probes(probes: Iterable[Probe]) -> Table:
         if probe.ok:
             status = Text(pgettext("probe result", "ok"), style="green")
         elif probe.name.startswith("server:"):
-            status = Text(_("no server"), style="dim")
+            status = Text(pgettext("probe result", "no server"), style="dim")
         else:
             status = Text(pgettext("probe result", "failed"), style="yellow")
             if probe.error:
@@ -322,13 +430,14 @@ def _fmt_capabilities(capabilities: Sequence[str], *, width: int, limit: int = 3
     marker will not fit, the marker alone is shown. Empty input is the only case
     with no marker and no items.
 
-    A capability name is a catalog identifier, the same word ``--capability`` is typed
-    with, so it is never translated.
+    A capability name reaches a reader as a word and goes through
+    :func:`_capability_label`, so the widths measured here are the widths of the
+    translated names and not of the catalog's identifiers.
 
     ``width`` is a count of terminal cells, so the fit is measured with ``cell_len`` and
     not with ``len``: a Japanese character is one of those and two of these.
     """
-    eligible = list(capabilities[:limit])
+    eligible = [_capability_label(name) for name in capabilities[:limit]]
     total = len(capabilities)
     for shown_count in range(len(eligible), 0, -1):
         shown = eligible[:shown_count]
@@ -363,42 +472,64 @@ _ID_COLUMN_MAX_WIDTH = 28
 _COLUMN_OVERHEAD = 3
 _TABLE_OVERHEAD = 1
 
+_FOOTNOTE_MARKER = "*"
+"""What marks the quality heading as having a footnote under the table.
+
+It is punctuation and not a word, so it is not part of any message: a translator who met
+it inside one would have to decide whether it is theirs to keep, and a heading that lost
+it would point at a caption for no visible reason.
+"""
+
 
 def _list_headings() -> dict[str, str]:
-    """The list table's column headings, translated once and read twice.
+    """The list table's column headings, translated once and read three times.
 
-    :func:`_column_budget` measures these and :func:`render_catalog_list` prints them,
-    and the two have to agree: a heading measured in English and printed in Portuguese
-    would give a column a width its own title does not fit into.
+    :func:`_column_budget` measures these, :func:`render_catalog_list` prints them and
+    :func:`_table_caption` names two of them, and all three have to agree: a heading
+    measured in English and printed in Portuguese would give a column a width its own
+    title does not fit into, and a caption that spelled the word out a second time would
+    be a second entry a translator has to keep in step by hand, with nothing checking.
 
-    Two of these share a message with a row label in :func:`render_model_facts`:
-    ``Context`` and ``Capabilities``. A heading has a width budget and a row label has
-    none, so one translation has to serve both, and a language whose full word is long is
-    forced to choose between a heading that crowds the table and a label that reads
-    clipped. Each wants its own ``pgettext`` context so a translator can answer twice.
-    That changes two message ids, which orphans work already under way in other catalogs,
-    so it waits for the consolidated English round rather than being fixed here.
+    Each carries a ``column heading`` context. Two of them — ``Context`` and
+    ``Capabilities`` — are also row labels in :func:`render_model_facts`, where there is
+    no width budget at all; one entry serving both jobs forces a language whose full word
+    is long to choose between a heading that crowds the table and a label that reads
+    clipped. With a context on each, a translator answers the two questions separately.
     """
     return {
-        "id": _("ID"),
-        "quality": _("Quality*"),
-        "params": _("Params"),
-        "context": _("Context"),
-        "capabilities": _("Capabilities"),
+        "id": pgettext("column heading", "ID"),
+        "quality": pgettext("column heading", "Quality"),
+        "params": pgettext("column heading", "Params"),
+        "context": pgettext("column heading", "Context"),
+        "capabilities": pgettext("column heading", "Capabilities"),
     }
 
 
+def _quality_heading(headings: Mapping[str, str]) -> str:
+    """The quality column's heading with its footnote marker, as printed and as measured."""
+    return f"{headings['quality']}{_FOOTNOTE_MARKER}"
+
+
 def _table_caption(included: Sequence[str]) -> str | None:
-    """The footnote explaining whichever of quality and params is shown, or none."""
+    """The footnote explaining whichever of quality and params is shown, or none.
+
+    Each caption is handed the heading it is about rather than spelling it out, so the
+    heading has one source. Written out twice, the two would drift the first time a
+    translator shortened a heading to fit the column and left the caption naming the
+    longer word, and nothing in the build would notice.
+    """
+    headings = _list_headings()
     captions = {
         "quality": _(
-            "Quality is the editorial baseline, before any quantisation penalty; "
+            "%(heading)s is the editorial baseline, before any quantisation penalty; "
             "run `llamafit info <model>` for the sourced benchmarks behind it."
-        ),
+        )
+        % {"heading": headings["quality"]},
         "params": _(
-            "Params is total/active billions for a mixture-of-experts model, "
+            "%(heading)s is total/active billions for a mixture-of-experts model, "
             "or one number when they are equal."
-        ),
+        )
+        % {"heading": headings["params"]},
     }
     parts = [caption for name, caption in captions.items() if name in included]
     return " ".join(parts) if parts else None
@@ -452,7 +583,10 @@ def _column_budget(
     # even when there are no rows, and a short heading never lets a column shrink
     # smaller than its own name.
     quality_width = max(
-        [cell_len(headings["quality"]), *(cell_len(str(s.quality_baseline)) for s in summaries)]
+        [
+            cell_len(_quality_heading(headings)),
+            *(cell_len(str(s.quality_baseline)) for s in summaries),
+        ]
     )
     params_width = max(
         [
@@ -522,7 +656,7 @@ def render_catalog_list(summaries: Sequence[ModelSummary], *, console_width: int
     )
     table.add_column(headings["id"], style="bold", max_width=id_width, overflow="fold")
     if "quality" in included:
-        table.add_column(headings["quality"], justify="right", no_wrap=True)
+        table.add_column(_quality_heading(headings), justify="right", no_wrap=True)
     if "params" in included:
         table.add_column(headings["params"], justify="right", no_wrap=True)
     if "context" in included:
@@ -564,41 +698,40 @@ def render_model_facts(model: CatalogModel) -> Table:
         _("Licence"),
         Text(_("%(spdx)s (%(url)s)") % {"spdx": model.license.spdx, "url": model.license.url}),
     )
+    # The B is the suffix a parameter count carries in the model's own name, and it is the
+    # one `billions_suffix` hands out, so the two tables that print a parameter count
+    # print the same mark. Welded to the placeholder it was neither: a language that
+    # answered that entry got its suffix in the list table and the English one here.
     table.add_row(
         _("Parameters"),
         Text(
-            _("%(total)sB total, %(active)sB active")
+            _("%(total)s total, %(active)s active")
             % {
-                "total": _fmt_billions(model.params.total_b),
-                "active": _fmt_billions(model.params.active_b),
+                "total": f"{_fmt_billions(model.params.total_b)}{billions_suffix()}",
+                "active": f"{_fmt_billions(model.params.active_b)}{billions_suffix()}",
             }
         ),
     )
-    context = _("%(tokens)s tokens native") % {"tokens": format_grouped(model.context.native)}
     if model.context.extended:
-        # This second message is a fragment: it opens with a comma and continues the one
-        # above rather than standing on its own, which is exactly what a translator cannot
-        # work with. It should be two whole alternative sentences. It is deliberately left
-        # alone for now: catalogs are being translated against the committed template, and
-        # changing a message id orphans that work silently, with a green build. Fix it once
-        # they have landed, not helpfully in passing.
-        context += _(", %(tokens)s extended via %(method)s") % {
-            "tokens": format_grouped(model.context.extended),
-            "method": model.context.extended_method or _("unspecified method"),
+        context = _("%(tokens)s tokens native, %(extended)s extended via %(method)s") % {
+            "tokens": format_grouped(model.context.native),
+            "extended": format_grouped(model.context.extended),
+            "method": model.context.extended_method
+            or pgettext("context extension method", "unspecified method"),
         }
-    # This label and the Capabilities one below are the same messages as two of the list
-    # table's column headings, where they have a width budget that this table does not.
-    # See _list_headings: each wants its own context so a translator can give a short
-    # heading and a full label, and that waits for the consolidated English round because
-    # it moves two message ids.
-    table.add_row(_("Context"), Text(context))
+    else:
+        context = _("%(tokens)s tokens native") % {"tokens": format_grouped(model.context.native)}
+    table.add_row(pgettext("table row label", "Context"), Text(context))
     table.add_row(
         _("Architecture"),
         Text(f"{model.architecture.class_}, gguf_arch={model.architecture.gguf_arch}"),
     )
     if model.architecture.notes:
         table.add_row(_("Notes"), Text(model.architecture.notes))
-    table.add_row(_("Capabilities"), Text(", ".join(model.capabilities)))
+    table.add_row(
+        pgettext("table row label", "Capabilities"),
+        Text(", ".join(_capability_label(name) for name in model.capabilities)),
+    )
     table.add_row(_("Use cases"), Text(", ".join(model.use_cases)))
     table.add_row(_("Quality baseline"), str(model.quality.baseline))
     for benchmark in model.quality.benchmarks:
@@ -616,27 +749,51 @@ def render_model_facts(model: CatalogModel) -> Table:
 
 
 def _facts_summary(facts: GgufFacts | None) -> str:
-    """A one-line summary of a quant's architecture facts, or a note that none are known yet."""
+    """A one-line summary of a quant's architecture facts, or a note that none are known yet.
+
+    The architecture is data — ``qwen3moe``, ``llama`` — and never translated. The layer
+    and expert counts are counted entries, and the shapes they can combine into are
+    written out rather than joined, for the same reason :func:`_memory_details` writes
+    its out: the comma is punctuation a language chooses.
+    """
     if facts is None:
-        return _("not read yet")
-    parts = [facts.arch]
-    if facts.n_layer is not None:
-        parts.append(
-            ngettext("%(count)d layer", "%(count)d layers", facts.n_layer)
-            % {"count": facts.n_layer}
-        )
-    if facts.n_expert:
-        if facts.n_expert_used is not None:
-            parts.append(
-                ngettext("%(count)d/%(used)d expert", "%(count)d/%(used)d experts", facts.n_expert)
-                % {"count": facts.n_expert, "used": facts.n_expert_used}
-            )
-        else:
-            parts.append(
-                ngettext("%(count)d expert", "%(count)d experts", facts.n_expert)
-                % {"count": facts.n_expert}
-            )
-    return ", ".join(parts)
+        return pgettext("GGUF facts", "not read yet")
+    layers = (
+        ngettext("%(count)d layer", "%(count)d layers", facts.n_layer) % {"count": facts.n_layer}
+        if facts.n_layer is not None
+        else None
+    )
+    experts = _experts(facts)
+    if layers and experts:
+        return _("%(arch)s, %(layers)s, %(experts)s") % {
+            "arch": facts.arch,
+            "layers": layers,
+            "experts": experts,
+        }
+    if layers:
+        return _("%(arch)s, %(layers)s") % {"arch": facts.arch, "layers": layers}
+    if experts:
+        return _("%(arch)s, %(experts)s") % {"arch": facts.arch, "experts": experts}
+    return facts.arch
+
+
+def _experts(facts: GgufFacts) -> str | None:
+    """How many experts the model has, and how many of them each token uses.
+
+    The form is selected on the count the noun stands next to, which for the ratio is the
+    *used* count and not the total: Russian and Polish inflect *experts* to agree with the
+    numeral immediately before it, so ``128/2 эксперта`` and ``128/5 экспертов`` take
+    different forms even though the total is 128 in both.
+    """
+    if not facts.n_expert:
+        return None
+    if facts.n_expert_used is None:
+        return ngettext("%(count)d expert", "%(count)d experts", facts.n_expert) % {
+            "count": facts.n_expert
+        }
+    return ngettext(
+        "%(count)d/%(used)d expert", "%(count)d/%(used)d experts", facts.n_expert_used
+    ) % {"count": facts.n_expert, "used": facts.n_expert_used}
 
 
 def render_quants(quants: Sequence[QuantDetail]) -> Table:

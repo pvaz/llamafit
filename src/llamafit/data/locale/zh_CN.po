@@ -233,6 +233,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "未知"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr "编程"
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr "思考"
+
+msgctxt "model capability"
+msgid "vision"
+msgstr "视觉"
+
+msgctxt "model capability"
+msgid "tools"
+msgstr "工具"
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr "多语言"
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr "长上下文"
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr "嵌入"
+
+msgctxt "model capability"
+msgid "audio"
+msgstr "音频"
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s，%(compute)s TFLOPS fp16"
 
@@ -242,30 +274,26 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "主机"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
 
-msgid "OS"
-msgstr "系统"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s（%(arch)s）"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d 核 / %(logical)d 线程"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d 个性能核"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s；%(cores)s；%(isa)s"
-
-msgid "isa unknown"
-msgstr "指令集未知"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -277,6 +305,54 @@ msgstr[0] "%(count)d 条内存"
 msgid "%(count)d channel"
 msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d 个通道"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "类型未知"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s（规格表）"
+
+msgid "driver %(driver)s"
+msgstr "驱动 %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "无规格数据"
+
+msgid "Host"
+msgstr "主机"
+
+msgid "OS"
+msgstr "系统"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s（%(arch)s）"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s；%(cores)s；%(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "指令集未知"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s（%(source)s）"
@@ -294,9 +370,6 @@ msgstr "内存"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "共 %(total)s，可用 %(available)s；%(details)s；带宽 %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "类型未知"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -307,23 +380,15 @@ msgstr "未检测到"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "显存 %(total)s，可用 %(free)s"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "显存未知"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s（规格表）"
-
-msgid "driver %(driver)s"
-msgstr "驱动 %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s（%(backend)s）；%(vram)s；%(specs)s"
-
-msgid "no specs"
-msgstr "无规格数据"
 
 msgid "Memory pool"
 msgstr "内存池"
@@ -350,6 +415,7 @@ msgstr "b%(build)d（%(commit)s）"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "构建版本未知"
 
@@ -372,6 +438,7 @@ msgstr "运行中"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s：%(model)s，上下文 %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "模型未知"
 
@@ -398,6 +465,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "正常"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "无服务"
 
@@ -417,26 +485,31 @@ msgstr "说明"
 # These five are the list table's column headings, and the table is laid out for
 # an 80-column terminal. A Chinese character takes two terminal columns, so the
 # headings are kept as short as the meaning allows.
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "质量*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "质量"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "参数"
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "上下文"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "能力"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "质量是编辑给出的基准分，未计入任何量化带来的损失；运行 `llamafit info <model>` 可以看到支撑它的、注明出处的基准测试。"
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "对混合专家模型，参数一列是总量/激活量（单位：十亿）；两者相等时只显示一个数字。"
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "模型"
@@ -459,23 +532,32 @@ msgstr "%(spdx)s（%(url)s）"
 msgid "Parameters"
 msgstr "参数量"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "共 %(total)sB，激活 %(active)sB"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "方法未说明"
 
 msgid "%(tokens)s tokens native"
 msgstr "原生 %(tokens)s tokens"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr "，通过 %(method)s 扩展到 %(tokens)s"
-
-msgid "unspecified method"
-msgstr "方法未说明"
+msgctxt "table row label"
+msgid "Context"
+msgstr "上下文"
 
 msgid "Architecture"
 msgstr "架构"
 
 msgid "Notes"
 msgstr "备注"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "能力"
 
 msgid "Use cases"
 msgstr "使用场景"
@@ -489,6 +571,7 @@ msgstr "基准测试"
 msgid "Source %(index)d"
 msgstr "来源 %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "尚未读取"
 
@@ -496,13 +579,22 @@ msgid "%(count)d layer"
 msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d 层"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d 个专家"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d 个专家"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d 个专家"
 
 msgid "Quants"
 msgstr "量化版本"
@@ -532,8 +624,9 @@ msgstr "跳过内存带宽实测。"
 msgid "Command: %(command)s"
 msgstr "命令：%(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "GGUF 头部被截断：在偏移 %(offset)d 处需要 %(wanted)d 字节，实际只有 %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "该文件可能还在下载中，或者这个 URL 并不是 GGUF 文件。"
@@ -556,6 +649,10 @@ msgstr "不支持的 GGUF 版本 %(version)d（偏移 4）"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit 支持的 GGUF 版本是 %(versions)s。"
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "这些 GGUF 文件不是同一个分片模型：它们对 '%(key)s' 的说法不一致，分别声明为 %(values)s"
 
@@ -568,14 +665,15 @@ msgstr "没有可以读取信息的 GGUF 头部"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "请传入模型的文件，或者分片模型的全部分片。"
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(total)d 个 GGUF 文件里有 %(count)d 个没有 '%(key)s' 键，因此无法确定它们在分片模型中的位置"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "请单独传入一个未分片的文件，或者同一个分片模型的全部分片。"
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "分片不完整：模型声明有 %(declared)d 个分片，实际到了 %(arrived)d 个（%(key)s %(numbers)s）"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "请传入分片模型的全部分片。"
@@ -592,8 +690,12 @@ msgstr "分片不完整：期望 %(key)s 从 0 到 %(last)d，实际得到 %(num
 msgid "Pass each shard of the split model exactly once."
 msgstr "分片模型的每个分片请只传入一次。"
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "分片不完整：模型声明有 %(declared)d 个张量，而它的 %(shards)d 个分片加起来只有 %(held)d 个"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "无法读取 %(path)s：%(error)s"
@@ -638,11 +740,12 @@ msgstr "没有已插入的内存条"
 msgid "no SPMemoryDataType"
 msgstr "没有 SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+
 msgid "empty command"
 msgstr "命令为空"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s：%(seconds)s 秒后超时"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s：%(error)s"
@@ -769,6 +872,7 @@ msgstr "请安装 numpy（`pip install llamafit[fast]`），让 LlamaFit 能够�
 msgid "Probe %(probe)s failed"
 msgstr "探测 %(probe)s 失败"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "未知错误"
 
