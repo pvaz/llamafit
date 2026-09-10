@@ -17,7 +17,7 @@ standard error and prints what `llamafit recommend` would print instead.
 │ Speeds are section 10's formula on its default constants. Nothing has been            │
 │ benchmarked on this machine yet, so no figure here is a measurement.                  │
 │ 3 of 3 shown, by score, showing every candidate.                                      │
-│  #  Model                  Quant       Score  Gen/s  Fit    Runs   Ctx    Have        │
+│  #  Model                  Quant       Score  Tok/s  Fit    Runs   Ctx    Have        │
 │  1  qwen3-coder-next       UD-Q4_K_XL   91.2   23.4  fits   split  262K   no          │
 │  2  qwen3.8-flash-next     UD-Q4_K_XL   84.0   14.1  tight  split   40K   no          │
 ├──────────────────────────────────────────────────────────────────────────────────────┤
