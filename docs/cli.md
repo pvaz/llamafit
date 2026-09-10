@@ -301,10 +301,12 @@ Weights: quality 0.40, speed 0.20, fit 0.20, context 0.20.
 
                                   Not ranked
  Model                   Quant    Why not
- gemma-3-27b-it          Q4_K_M   not a coding model; its entry lists general, multimodal,
-                                  chat, so ask for one of those
- llama-3.1-8b-instruct   Q4_K_M   not a coding model; its entry lists general, chat,
-                                  reasoning, so ask for one of those
+ gemma-3-27b-it          Q4_K_M   no coding capability, which coding needs; ask for a
+                                  different use case, or add it to the entry when the
+                                  model really has it
+ llama-3.1-8b-instruct   Q4_K_M   no coding capability, which coding needs; ask for a
+                                  different use case, or add it to the entry when the
+                                  model really has it
 ```
 
 Which columns appear depends on the width of the terminal. The rank, model, quantisation and
@@ -313,9 +315,17 @@ quality, card, prompt/s, download size, RAM, each only while its whole content f
 that cannot fit is dropped rather than shrunk.
 
 **No row is ever dropped for failing.** A candidate the request excludes appears under **Not
-ranked** with the reason: the job its entry does not offer, the capability it lacks, the
-licence it carries, the download it exceeds, or the memory it needs. A shorter list would say
-none of that.
+ranked** with the reason: the capability the job needs and it lacks, a capability the request
+named itself, the licence it carries, the download it exceeds, or the memory it needs. A
+shorter list would say none of that.
+
+**A model is filtered on what it can do, never on what it is offered for.** `use_cases` is the
+curator's emphasis and sets the primary-use-case bonus; `capabilities` is what the weights can
+actually do, and only that carries a filter. Asking for coding asks for the coding capability,
+reasoning for thinking, multimodal for vision, embedding for embeddings; `general` and `chat`
+ask for nothing, so a model built for one job is ranked on its merits for either of those. The
+`--use-case` filter on `llamafit list` is a different thing: there you are browsing the catalog
+and asking to see what an entry offers itself for.
 
 **Nothing is labelled `measured`.** Section 10.3 reserves that word for a benchmark taken on
 *this* machine, and phase 3's `bench` is what will store one. A catalog entry's own `measured`
