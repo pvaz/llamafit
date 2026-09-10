@@ -1,0 +1,242 @@
+# The Qwen3.5 generation: Alibaba's February 2026 open-weight range, from a 2B that fits
+# any card to a 122B mixture of experts for a machine with a lot of system memory. Every
+# model here is a single set of weights that is natively vision-language and can think or
+# answer directly, so one entry covers what earlier generations split between a text model
+# and a -VL model.
+#
+# Primary sources used for this file:
+#   - qwen3.5-2b model card:         https://huggingface.co/Qwen/Qwen3.5-2B
+#   - qwen3.5-4b model card:         https://huggingface.co/Qwen/Qwen3.5-4B
+#   - qwen3.5-9b model card:         https://huggingface.co/Qwen/Qwen3.5-9B
+#   - qwen3.5-122b-a10b model card:  https://huggingface.co/Qwen/Qwen3.5-122B-A10B
+#   - GGUF repositories:             https://huggingface.co/unsloth/Qwen3.5-2B-GGUF
+#                                    https://huggingface.co/unsloth/Qwen3.5-4B-GGUF
+#                                    https://huggingface.co/unsloth/Qwen3.5-9B-GGUF
+#                                    https://huggingface.co/unsloth/Qwen3.5-122B-A10B-GGUF
+#
+# Every benchmark below is from the post-trained (instruction-tuned) checkpoint's own model
+# card, which is the only checkpoint these repositories publish weights for under these
+# names; the base checkpoints live in separate -Base repositories and none of their tables
+# are used here.
+#
+# release_date is the date the vendor's Hugging Face repository was created, which is the
+# only publication date this repository can verify from a primary source. Announcements
+# typically follow it by a day or two.
+#
+# llama_cpp.kv_types_allowed is deliberately absent on every entry. These are Gated DeltaNet
+# hybrids and neither the vendor nor llama.cpp documents which KV cache types they accept;
+# an empty list means the curator recorded nothing rather than that nothing works, which is
+# the honest state of knowledge here. Whoever measures it can fill it in.
+
+- id: qwen3.5-2b
+  name: Qwen3.5-2B
+  vendor: Alibaba Qwen
+  family: qwen3.5
+  release_date: 2026-02-28
+  license:
+    spdx: Apache-2.0
+    url: "https://huggingface.co/Qwen/Qwen3.5-2B/blob/main/LICENSE"
+  params: { total_b: 2, active_b: 2 }
+  architecture:
+    class: dense-hybrid
+    gguf_arch: qwen35
+    notes: >-
+      24 layers in 6 blocks of three Gated DeltaNet layers to one Gated Attention layer,
+      hidden dimension 2,048, tied output embedding, with a vision encoder in the same
+      weights. Three of every four layers use linear attention, so the KV cache stays
+      small at long context where a plain transformer of this size would not.
+  context: { native: 262144 }
+  # No coding capability: the model card publishes no coding benchmark for this size at
+  # all, and the vendor names prototyping, fine-tuning and research as the intended uses.
+  # Claiming coding here would put a 2B model in front of people asking for a coding model.
+  capabilities: [thinking, vision, tools, multilingual, long-context]
+  use_cases: [general, chat, multimodal]
+  quality:
+    baseline: 60
+    benchmarks:
+      # Thinking-mode figures from the model card's own tables. The card also publishes
+      # non-thinking figures (MMLU-Pro 55.3); the thinking numbers are quoted because
+      # thinking is the mode the sampling block below is set up for.
+      - name: MMLU-Pro (thinking)
+        score: 66.5
+        source: "https://huggingface.co/Qwen/Qwen3.5-2B"
+      - name: GPQA (thinking)
+        score: 51.6
+        source: "https://huggingface.co/Qwen/Qwen3.5-2B"
+      - name: MMMU
+        score: 64.2
+        source: "https://huggingface.co/Qwen/Qwen3.5-2B"
+      - name: IFEval (thinking)
+        score: 78.6
+        source: "https://huggingface.co/Qwen/Qwen3.5-2B"
+  # This size is the one Qwen3.5 model that answers directly unless asked to think, so the
+  # card's non-thinking text defaults are the ones recorded.
+  sampling: { temp: 1.0, top_p: 1.0, top_k: 20, min_p: 0.0, presence_penalty: 2.0, repeat_penalty: 1.0 }
+  chat_template: { reasoning_format: deepseek, thinking_toggle: enable_thinking }
+  sources:
+    - repo: unsloth/Qwen3.5-2B-GGUF
+      kind: gguf
+      trust: unsloth
+      # Two rungs only. The whole model is under 3 GB at any width, so a smaller quant
+      # saves nothing anybody would notice, and eight-bit is the rung worth having: a 2B
+      # model has the least accuracy to spare and Q8_0 costs 0.7 GB more than the four-bit.
+      quants:
+        - { name: UD-Q4_K_XL }
+        - { name: Q8_0 }
+      extras:
+        # The entry declares vision, so the projector has to be declared with it or a plan
+        # charges nothing for the bytes that make vision work.
+        - { role: mmproj, file: mmproj-F16.gguf }
+
+- id: qwen3.5-4b
+  name: Qwen3.5-4B
+  vendor: Alibaba Qwen
+  family: qwen3.5
+  release_date: 2026-02-27
+  license:
+    spdx: Apache-2.0
+    url: "https://huggingface.co/Qwen/Qwen3.5-4B/blob/main/LICENSE"
+  params: { total_b: 4, active_b: 4 }
+  architecture:
+    class: dense-hybrid
+    gguf_arch: qwen35
+    notes: >-
+      32 layers in 8 blocks of three Gated DeltaNet layers to one Gated Attention layer,
+      hidden dimension 2,560, tied output embedding, with a vision encoder in the same
+      weights. The smallest model in this file that carries published coding scores.
+  context: { native: 262144, extended: 1010000, extended_method: yarn }
+  capabilities: [coding, thinking, vision, tools, multilingual, long-context]
+  use_cases: [general, chat, reasoning, multimodal, coding]
+  quality:
+    baseline: 76
+    benchmarks:
+      - name: MMLU-Pro
+        score: 79.1
+        source: "https://huggingface.co/Qwen/Qwen3.5-4B"
+      - name: GPQA Diamond
+        score: 76.2
+        source: "https://huggingface.co/Qwen/Qwen3.5-4B"
+      - name: LiveCodeBench v6
+        score: 55.8
+        source: "https://huggingface.co/Qwen/Qwen3.5-4B"
+      - name: MMMU
+        score: 77.6
+        source: "https://huggingface.co/Qwen/Qwen3.5-4B"
+  sampling: { temp: 1.0, top_p: 0.95, top_k: 20, min_p: 0.0, presence_penalty: 1.5, repeat_penalty: 1.0 }
+  chat_template: { reasoning_format: deepseek, thinking_toggle: enable_thinking }
+  sources:
+    - repo: unsloth/Qwen3.5-4B-GGUF
+      kind: gguf
+      trust: unsloth
+      # Four-bit for the common case and eight-bit where the accuracy matters; at this size
+      # eight-bit still fits a 6 GB card, so no smaller rung earns its place.
+      quants:
+        - { name: UD-Q4_K_XL }
+        - { name: Q8_0 }
+      extras:
+        - { role: mmproj, file: mmproj-F16.gguf }
+
+- id: qwen3.5-9b
+  name: Qwen3.5-9B
+  vendor: Alibaba Qwen
+  family: qwen3.5
+  release_date: 2026-02-27
+  license:
+    spdx: Apache-2.0
+    url: "https://huggingface.co/Qwen/Qwen3.5-9B/blob/main/LICENSE"
+  params: { total_b: 9, active_b: 9 }
+  architecture:
+    class: dense-hybrid
+    gguf_arch: qwen35
+    notes: >-
+      32 layers in 8 blocks of three Gated DeltaNet layers to one Gated Attention layer,
+      hidden dimension 4,096, untied output embedding, with a vision encoder in the same
+      weights. The largest Qwen3.5 dense model whose four-bit weights fit an 8 GB card.
+  context: { native: 262144, extended: 1010000, extended_method: yarn }
+  capabilities: [coding, thinking, vision, tools, multilingual, long-context]
+  use_cases: [general, chat, reasoning, multimodal, coding]
+  quality:
+    baseline: 79
+    benchmarks:
+      - name: MMLU-Pro
+        score: 82.5
+        source: "https://huggingface.co/Qwen/Qwen3.5-9B"
+      - name: GPQA Diamond
+        score: 81.7
+        source: "https://huggingface.co/Qwen/Qwen3.5-9B"
+      - name: LiveCodeBench v6
+        score: 65.6
+        source: "https://huggingface.co/Qwen/Qwen3.5-9B"
+      - name: MMMU
+        score: 78.4
+        source: "https://huggingface.co/Qwen/Qwen3.5-9B"
+      - name: LongBench v2
+        score: 55.2
+        source: "https://huggingface.co/Qwen/Qwen3.5-9B"
+  sampling: { temp: 1.0, top_p: 0.95, top_k: 20, min_p: 0.0, presence_penalty: 1.5, repeat_penalty: 1.0 }
+  chat_template: { reasoning_format: deepseek, thinking_toggle: enable_thinking }
+  sources:
+    - repo: unsloth/Qwen3.5-9B-GGUF
+      kind: gguf
+      trust: unsloth
+      # Four-bit is the rung that leaves room for context on an 8 GB card; eight-bit is
+      # for a 12 GB card or a partial offload, and is where this size stops losing anything.
+      quants:
+        - { name: UD-Q4_K_XL }
+        - { name: Q8_0 }
+      extras:
+        - { role: mmproj, file: mmproj-F16.gguf }
+
+- id: qwen3.5-122b-a10b
+  name: Qwen3.5-122B-A10B
+  vendor: Alibaba Qwen
+  family: qwen3.5
+  release_date: 2026-02-24
+  license:
+    spdx: Apache-2.0
+    url: "https://huggingface.co/Qwen/Qwen3.5-122B-A10B/blob/main/LICENSE"
+  params: { total_b: 122, active_b: 10 }
+  architecture:
+    class: moe-hybrid
+    gguf_arch: qwen35moe
+    notes: >-
+      48 layers in 12 blocks of three Gated DeltaNet layers to one Gated Attention layer,
+      256 experts with 8 routed and 1 shared active per token, hidden dimension 3,072. Its
+      10B active parameters buy more per token than the 3B of Qwen3.6-35B-A3B, at three and
+      a half times the resident weight, which is the trade a large-memory machine is for.
+  context: { native: 262144, extended: 1010000, extended_method: yarn }
+  capabilities: [coding, thinking, vision, tools, multilingual, long-context]
+  use_cases: [general, chat, reasoning, multimodal, coding]
+  quality:
+    baseline: 81
+    benchmarks:
+      - name: MMLU-Pro
+        score: 86.7
+        source: "https://huggingface.co/Qwen/Qwen3.5-122B-A10B"
+      - name: GPQA Diamond
+        score: 86.6
+        source: "https://huggingface.co/Qwen/Qwen3.5-122B-A10B"
+      - name: SWE-bench Verified
+        score: 72.0
+        source: "https://huggingface.co/Qwen/Qwen3.5-122B-A10B"
+      - name: LiveCodeBench v6
+        score: 78.9
+        source: "https://huggingface.co/Qwen/Qwen3.5-122B-A10B"
+      - name: Terminal Bench 2
+        score: 49.4
+        source: "https://huggingface.co/Qwen/Qwen3.5-122B-A10B"
+  sampling: { temp: 1.0, top_p: 0.95, top_k: 20, min_p: 0.0, presence_penalty: 1.5, repeat_penalty: 1.0 }
+  chat_template: { reasoning_format: deepseek, thinking_toggle: enable_thinking }
+  sources:
+    - repo: unsloth/Qwen3.5-122B-A10B-GGUF
+      kind: gguf
+      trust: unsloth
+      # This is the size where a smaller rung earns its place: four-bit is roughly 77 GB of
+      # download and three-bit roughly 57 GB, which is the difference between needing a
+      # 96 GB machine and fitting one comfortably. Two-bit is the rung for 64 GB.
+      quants:
+        - { name: UD-Q2_K_XL }
+        - { name: UD-Q3_K_XL }
+        - { name: UD-Q4_K_XL }
+      extras:
+        - { role: mmproj, file: mmproj-F16.gguf }

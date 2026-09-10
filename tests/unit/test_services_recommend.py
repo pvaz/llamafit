@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from llamafit.models.llamacpp import LocalModel
 from llamafit.models.plan import Needs
-from llamafit.scoring import DEFAULT_WEIGHTS
+from llamafit.scoring import DEFAULT_WEIGHTS, READING_TPS
 from llamafit.services.recommend import (
     PERFECT_FIT,
     best_quant,
@@ -67,14 +67,18 @@ def test_a_model_that_cannot_do_the_job_is_excluded_and_says_so() -> None:
 def test_a_model_built_for_another_job_still_competes_for_this_one() -> None:
     """A coding model on a general board, which the use-case gate used to hide.
 
-    Qwen3-Coder-Next lists coding and nothing else, and on this machine it is the fastest
-    thing that fits. General asks for no capability, so the entry's emphasis costs it
-    nothing and it is ranked on its merits.
+    Qwen3-Coder-Next lists coding and nothing else. General asks for no capability, so
+    the entry's emphasis costs it nothing and it is ranked on its merits.
+
+    What is asserted is that it competes, not where it lands. Its position is a fact
+    about how large the catalog happens to be that day, and a generalist added later
+    outranking it is the tool working, not a regression. What must never come back is
+    the model being absent from the board entirely, which is what the use-case gate did.
     """
     board = build_board(catalog(), reference_host(), Needs(use_case="general"))
     assert catalog().by_id["qwen3-coder-next"].use_cases == ["coding"]
     assert "qwen3-coder-next" in ids(board.rows)
-    assert board.rows[0].model_id == "qwen3-coder-next"
+    assert "qwen3-coder-next" not in ids(board.excluded)
 
 
 def test_nothing_is_dropped_even_when_the_limit_is_one() -> None:
@@ -113,13 +117,20 @@ def test_the_general_board_no_longer_leads_with_a_model_slower_than_its_reader()
     second above Llama 3.1 8B at 34, carried there by quality and fit while its speed
     score read exactly zero. The row is still on the page; it is on the half of the page
     that says why.
+
+    What is asserted is the defect, not the winner. Which entry leads a general board is
+    a fact about how large the catalog happens to be that day, and pinning an id here
+    made every model added afterwards look like a regression; what has to stay true is
+    that whatever leads is something its reader can keep up with.
     """
     board = build_board(catalog(), reference_host(), Needs(use_case="general"))
     assert board.rows, "something on this machine should be readable"
     # Which model leads is a fact about the catalog and moves when a curator changes an
-    # entry. What this test is named for is that the slow one leads nothing and is not on
-    # the ranked half at all.
-    assert board.rows[0].model_id != "gemma-3-27b-it"
+    # entry. What has to stay true is that whatever leads is something its reader can
+    # keep up with; the line below says the slow one is not even on the ranked half.
+    leader = board.rows[0].candidate.speed
+    assert leader is not None, "the leading row is scored on a speed, not on quality alone"
+    assert leader.gen_tps >= READING_TPS
     assert "gemma-3-27b-it" not in ids(board.rows)
 
     slow = next(row for row in board.excluded if row.model_id == "gemma-3-27b-it")

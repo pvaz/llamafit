@@ -1,0 +1,75 @@
+# The Qwen3.6 generation: Alibaba's April 2026 refresh of the Qwen3.5 architecture, aimed
+# at agentic coding and at keeping reasoning context across turns. Only the mixture-of-
+# experts variant is carried here; the dense Qwen3.6-27B it shipped beside is superseded by
+# Qwen3.8-27B, which is the same shape and better on every published benchmark.
+#
+# Primary sources used for this file:
+#   - Model card:       https://huggingface.co/Qwen/Qwen3.6-35B-A3B
+#   - GGUF repository:  https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF
+#
+# Benchmarks are from the post-trained checkpoint's own model card; the -Base checkpoint's
+# tables are not used. release_date is the date the vendor's Hugging Face repository was
+# created, the only publication date verifiable from a primary source.
+#
+# llama_cpp.kv_types_allowed is deliberately absent: this is a Gated DeltaNet hybrid and
+# nothing the vendor or llama.cpp publishes says which KV cache types it accepts. An empty
+# list records that nobody has measured it, not that nothing works.
+
+- id: qwen3.6-35b-a3b
+  name: Qwen3.6-35B-A3B
+  vendor: Alibaba Qwen
+  family: qwen3.6
+  release_date: 2026-04-15
+  license:
+    spdx: Apache-2.0
+    url: "https://huggingface.co/Qwen/Qwen3.6-35B-A3B/blob/main/LICENSE"
+  params: { total_b: 35, active_b: 3 }
+  architecture:
+    class: moe-hybrid
+    gguf_arch: qwen35moe
+    notes: >-
+      40 layers in 10 blocks of three Gated DeltaNet layers to one Gated Attention layer,
+      256 experts with 8 routed and 1 shared active per token, hidden dimension 2,048. It
+      holds 35B parameters but computes with 3B of them, so against the dense Qwen3.8-27B
+      it needs more memory resident and generates several times faster per token.
+  context: { native: 262144, extended: 1010000, extended_method: yarn }
+  capabilities: [coding, thinking, vision, tools, multilingual, long-context]
+  use_cases: [general, coding, chat, reasoning, multimodal]
+  quality:
+    baseline: 80
+    benchmarks:
+      - name: SWE-bench Verified
+        score: 73.4
+        source: "https://huggingface.co/Qwen/Qwen3.6-35B-A3B"
+      - name: Terminal-Bench 2.0
+        score: 51.5
+        source: "https://huggingface.co/Qwen/Qwen3.6-35B-A3B"
+      - name: GPQA
+        score: 86.0
+        source: "https://huggingface.co/Qwen/Qwen3.6-35B-A3B"
+      - name: MMLU-Pro
+        score: 85.2
+        source: "https://huggingface.co/Qwen/Qwen3.6-35B-A3B"
+      - name: LiveCodeBench v6
+        score: 80.4
+        source: "https://huggingface.co/Qwen/Qwen3.6-35B-A3B"
+      - name: MMMU
+        score: 81.7
+        source: "https://huggingface.co/Qwen/Qwen3.6-35B-A3B"
+  sampling: { temp: 1.0, top_p: 0.95, top_k: 20, min_p: 0.0, presence_penalty: 1.5, repeat_penalty: 1.0 }
+  chat_template: { reasoning_format: deepseek, thinking_toggle: enable_thinking }
+  sources:
+    - repo: unsloth/Qwen3.6-35B-A3B-GGUF
+      kind: gguf
+      trust: unsloth
+      # Three rungs, because at 35B the spread matters: four-bit is the everyday choice at
+      # roughly 22 GB, three-bit takes it to roughly 17 GB for a machine that has to keep
+      # more of it off the disk, and six-bit is for a machine with the memory to spare.
+      quants:
+        - { name: UD-Q3_K_XL }
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q6_K_XL }
+      extras:
+        # The entry declares vision, so the projector is declared with it: without this the
+        # plan is short by the best part of a gigabyte for anyone who wants images.
+        - { role: mmproj, file: mmproj-F16.gguf }

@@ -1,0 +1,96 @@
+# Qwen3.8-27B, the dense model of Alibaba's August 2026 generation: the strongest thing in
+# this catalog that a single 24 GB card can hold at four bits, and the counterpart to the
+# Qwen3.8-Flash-Next entry in qwen3.yaml, which is the same generation as a large mixture
+# of experts.
+#
+# Primary sources used for this file:
+#   - Model card:       https://huggingface.co/Qwen/Qwen3.8-27B
+#   - Licence:          https://huggingface.co/Qwen/Qwen3.8-27B/blob/main/LICENSE
+#   - GGUF repository:  https://huggingface.co/unsloth/Qwen3.8-27B-GGUF
+#
+# Benchmarks are from the post-trained checkpoint's own model card, whose tables carry the
+# evaluation conditions beside them: SWE-bench Pro, DeepSWE 1.1 and QwenSWEBench are run
+# with the Claude Code harness at temp=1.0, top_p=0.95 and a 256K context window, and the
+# card notes that problematic SWE-bench Pro tasks were corrected and every baseline
+# re-evaluated on the refined benchmark, so the number is not comparable to a score quoted
+# from the unrefined set.
+#
+# release_date is the date the vendor's Hugging Face repository was created, the only
+# publication date verifiable from a primary source.
+#
+# The architecture note says 64 layers because that is what the model card says, and the
+# refreshed GGUF facts beside this file say 65: the converted file counts the multi-token-
+# prediction head as a block of its own. Both numbers are right about their own subject and
+# neither is a typo for the other.
+#
+# llama_cpp.kv_types_allowed is deliberately absent: this is a Gated DeltaNet hybrid and
+# nothing published says which KV cache types it accepts. An empty list records that nobody
+# has measured it, not that nothing works.
+
+- id: qwen3.8-27b
+  name: Qwen3.8-27B
+  vendor: Alibaba Qwen
+  family: qwen3.8
+  release_date: 2026-08-05
+  license:
+    spdx: Apache-2.0
+    url: "https://huggingface.co/Qwen/Qwen3.8-27B/blob/main/LICENSE"
+  params: { total_b: 27, active_b: 27 }
+  architecture:
+    class: dense-hybrid
+    gguf_arch: qwen35
+    notes: >-
+      64 layers in 16 blocks of three Gated DeltaNet layers to one Gated Attention layer,
+      hidden dimension 5,120, with a vision encoder and a multi-token-prediction head. Every
+      one of its 27B parameters runs on every token, which is why it needs less memory than
+      Qwen3.6-35B-A3B and generates more slowly for it.
+  context: { native: 262144, extended: 1000000, extended_method: yarn }
+  capabilities: [coding, thinking, vision, tools, multilingual, long-context]
+  # general and chat are listed as well as coding: this is the vendor's flagship dense
+  # instruction-tuned model and it answers ordinary requests, whatever its blog title says.
+  # Omitting them would hide the best dense model in the catalog from the commonest request
+  # there is, which is a mistake this repository has already made once.
+  use_cases: [general, coding, chat, reasoning, multimodal]
+  quality:
+    baseline: 83
+    benchmarks:
+      - name: SWE-bench Pro
+        score: 61.7
+        source: "https://huggingface.co/Qwen/Qwen3.8-27B"
+      - name: Terminal Bench 2.1 (Terminus)
+        score: 73.0
+        source: "https://huggingface.co/Qwen/Qwen3.8-27B"
+      - name: GPQA Diamond
+        score: 89.2
+        source: "https://huggingface.co/Qwen/Qwen3.8-27B"
+      - name: LiveCodeBench v6
+        score: 90.3
+        source: "https://huggingface.co/Qwen/Qwen3.8-27B"
+      - name: IFBench
+        score: 79.5
+        source: "https://huggingface.co/Qwen/Qwen3.8-27B"
+      - name: RealWorldQA
+        score: 85.9
+        source: "https://huggingface.co/Qwen/Qwen3.8-27B"
+  # The card's thinking-mode set; thinking is on by default for this model. Its non-thinking
+  # set differs (temp 0.7, top_p 0.80, presence_penalty 1.5) and is not what is recorded.
+  sampling: { temp: 1.0, top_p: 0.95, top_k: 20, min_p: 0.0, presence_penalty: 0.0, repeat_penalty: 1.0 }
+  chat_template: { reasoning_format: deepseek, thinking_toggle: enable_thinking }
+  sources:
+    - repo: unsloth/Qwen3.8-27B-GGUF
+      kind: gguf
+      trust: unsloth
+      # Three rungs. Four-bit at roughly 18 GB is the everyday choice and wants a 24 GB
+      # card; three-bit at roughly 13 GB is what puts this model on a 16 GB card at all,
+      # which is the reason a smaller rung is here; six-bit is for a machine that can hold
+      # 25 GB and would rather not give anything up.
+      quants:
+        - { name: UD-Q3_K_XL }
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q6_K_XL }
+      extras:
+        # The projector, because the entry declares vision and its bytes have to be charged
+        # to a pool; and the multi-token-prediction draft weights, because a plan that turns
+        # speculative decoding on has to know what they cost.
+        - { role: mmproj, file: mmproj-F16.gguf }
+        - { role: mtp, file: MTP/mtp-Qwen3.8-27B-Q4_0.gguf }
