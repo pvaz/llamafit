@@ -1,0 +1,40 @@
+- generic [ref=f1e1]:
+  - banner [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - heading "LlamaFit" [level=1] [ref=f1e4]
+      - paragraph [ref=f1e5]: What runs here, how fast, and with which settings.
+    - paragraph [ref=f1e6]: windows Windows-11-10.0.26200-SP0 (x86_64) · Intel(R) Core(TM) i9-14900KF · 127,8 GiB · NVIDIA GeForce RTX 4060 8,0 GiB
+  - paragraph [ref=f1e7]: Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement.
+  - navigation [ref=f1e8]:
+    - button "Board" [ref=f1e9] [cursor=pointer]
+    - button "Needs" [ref=f1e10] [cursor=pointer]
+    - button "Máquina" [ref=f1e11] [cursor=pointer]
+    - button "Plan" [active] [ref=f1e12] [cursor=pointer]
+    - button "Simulate" [ref=f1e13] [cursor=pointer]
+  - main [ref=f1e14]:
+    - generic [ref=f1e54]:
+      - generic [ref=f1e55]:
+        - generic [ref=f1e56]: Model
+        - combobox "Model" [ref=f1e57]:
+          - option "qwen3-0.6b" [selected]
+          - option "llama-3.1-8b-instruct"
+          - option "gemma-3-27b-it"
+          - option "qwen3-coder-next"
+          - option "qwen3.8-flash-next"
+      - generic [ref=f1e58]:
+        - generic [ref=f1e59]: Quantisation
+        - textbox "Quantisation" [ref=f1e60]
+      - generic [ref=f1e61]:
+        - generic [ref=f1e62]: Context
+        - spinbutton "Context" [ref=f1e63]
+      - generic [ref=f1e64]:
+        - generic [ref=f1e65]: Micro-batch
+        - spinbutton "Micro-batch" [ref=f1e66]
+      - generic [ref=f1e67]:
+        - checkbox "Keep the vision projector" [checked] [ref=f1e68]
+        - generic [ref=f1e69]: Keep the vision projector
+      - button "Plan it" [ref=f1e71] [cursor=pointer]
+  - contentinfo [ref=f1e20]:
+    - link "Source code (AGPL-3.0-or-later)" [ref=f1e21] [cursor=pointer]:
+      - /url: https://github.com/pvaz/llamafit
+    - generic [ref=f1e22]: This dashboard is served from your own machine and sends nothing anywhere.
