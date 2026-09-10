@@ -222,6 +222,88 @@ the changelog says so when they do.
 - `fastapi` and `uvicorn` as the optional `web` extra, with their rows in
   `docs/development.md`: somebody who only wants the command line should not have to install a
   web server, and `llamafit serve` without them says so and gives the line that fixes it.
+- `llamafit install model <id>`: the parallel, resumable model downloader (section 15.2).
+  The files are tens or hundreds of gigabytes, so everything about it is about doing it once.
+  Before a socket is opened it prints the model, the quantisation, the repository, every file
+  it will fetch, what the set weighs, where it is going, how much is already there and what
+  would be left on the volume afterwards; in a terminal it then asks, and outside one it does
+  not, because there is nobody there to answer. The disk is checked against the catalog's own
+  byte count first and the run refused with the shortfall named, since a hundred-gigabyte
+  download that fills a volume at ninety percent has cost hours and left nothing behind. Each
+  file is cut into 32 MiB chunks fetched by a pool of workers into a part file created at its
+  final size, with a sidecar recording each chunk only once its last byte is written, so an
+  interruption at eighty gigabytes continues rather than restarts — a test proves it by
+  interrupting a transfer and then refusing, from the server side, to serve a byte that was
+  already on disk. Every file is checked against the SHA-256 the catalog holds before it is
+  moved into place, and one that does not match is deleted along with its part file and its
+  record, because a model that downloaded wrong does not fail loudly: it loads and answers
+  nonsense. A quant with no checksums in the catalog is refused outright unless
+  `--allow-unverified` says so in as many words. A split model is one thing: every shard and
+  every extra the entry declares are planned together under one total, and the manifest that
+  means "this model is installed" is written only once all of them have arrived and been
+  checked, so nobody ends up with three files of four and no warning. A server that answers a
+  range request with the whole body is caught before a byte is written and that file restarts
+  as one sequential stream; a server that rate-limits is waited for and given one fewer
+  connection, permanently, rather than retried harder. `--limit-rate` is one token bucket
+  shared by every worker, and `--workers` defaults to eight rather than the specification's
+  sixteen, because the line is somebody's home connection and they did not ask for their
+  video call to stop working. `Ctrl+C` sets a flag the workers read between pieces instead of
+  raising into whichever one was running, and the last line says the run can be carried on.
+- `llamafit install history`: what has been downloaded, when, how big it was and whether it
+  finished, carrying the sentence a failed run gave at the time.
+- **Launch presets: `llamafit preset <model>` writes a script that chooses its context when
+  it runs.** A plan is a command line somebody has to paste; a preset is a file they can
+  double-click, and it is what makes a recommendation survive contact with a real desktop. The
+  plan behind it was computed while the machine was idle and the script runs when a browser
+  has taken a gigabyte of the card, so the script does not carry a context: it carries section
+  9.3's ladder — every rung with what it costs the card — reads how much is free at start
+  time, keeps 256 MiB back for the desktop, and takes the largest rung that still fits. This
+  is the failure the project was born from: a configuration over the card does not fail on an
+  NVIDIA driver, it pages into system memory and runs at a fraction of its speed for weeks
+  while `/health` answers and the log looks healthy. The ladder never climbs above the planned
+  context, because the planner weighed system memory and the user's request too and the script
+  can measure only the card, and when not even the smallest rung fits the script stops with
+  exit code 4 rather than starting something that would page.
+- Free card memory is read with the tool that ships with the driver: `nvidia-smi` on every
+  platform, amdgpu's sysfs files on Linux, `vm_stat` on Apple silicon, where the graphics
+  memory is the system memory. A card with no such tool — AMD or Intel on Windows, Intel on
+  Linux — makes the script say so once in its header rather than apologise on every run, and a
+  probe that answers with something that is not a number falls back to the planned context and
+  says out loud that it did.
+- A preset is three files: `start-<id>.cmd` or `start-<id>.sh` for the machine that asked,
+  `models-<id>.ini` for a llama.cpp router, and `README-<id>.md` with the endpoints and the
+  ladder. The router section says in its own comments that it is the one artifact that cannot
+  run the ladder, since a router starts a model with no shell in between.
+- **A file you have edited is never overwritten.** Each generated file carries a checksum of
+  itself, and one whose checksum no longer matches is kept and named, with `--force` the only
+  way to replace it — and `--force` says which files it discarded. A file that has lost its
+  stamp altogether counts as edited, because both a hand-written and a hand-cut file are
+  somebody's work.
+- `llamafit launch <model>` runs the preset **script** rather than a command line rebuilt for
+  the occasion, so the ladder still chooses and hand edits still apply; it waits for
+  `/health`, prints the endpoints, and `--stop` stops the server and everything it started. A
+  server already answering is reported rather than joined by a second one, and what was
+  started is remembered by process id *and* start time so `--stop` cannot aim at whatever
+  inherited a recycled id.
+- `llamafit` with no arguments opens the terminal dashboard (section 13.2), and prints the
+  board `llamafit recommend` would print when there is no terminal to draw one in. Five
+  screens over one scan and one catalog: **Board**, the ranked table with the explanation
+  under it; **Needs**, section 12.1's request as a form that offers the six use cases, the
+  eight capabilities and the licences the catalog actually carries, so nobody has to know a
+  value before they can type it; **Host**, `system` and `doctor` on one page, probe by probe;
+  **Plan**, the budget, the context ladder, the flags and the command line, with `+` and `-`
+  stepping along the ladder the planner produced rather than a step the screen invented; and
+  **Simulate**, section 4.4's overrides and profiles, with `SIMULATED` in the header for as
+  long as the figures are about another machine.
+- The dashboard shows the command line's own renderables rather than a second drawing of the
+  same facts, so section 12.3's promise that the two interfaces show the same explanation is
+  kept by construction. The explanation is open by default: on a terminal it costs a page per
+  row and sits behind `--explain`, and on a screen it costs nothing.
+- No speed on the dashboard appears without saying what kind of number it is. Nothing has been
+  benchmarked on any machine yet, so every figure is a formula on default constants, and the
+  sentence saying so is a band above the table that does not scroll away rather than a caption
+  under it. When rows disagree about how their speeds were arrived at, the label is a column
+  beside each figure and a terminal too narrow for the pair shows neither.
 
 ### Changed
 - **The placement planner steps down section 9.3's context ladder instead of halving.**

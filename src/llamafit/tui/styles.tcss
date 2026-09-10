@@ -1,0 +1,39 @@
+/* LlamaFit. Copyright (C) 2026 Paulo Vaz.
+   SPDX-License-Identifier: AGPL-3.0-or-later
+   This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
+
+   The application's own layout. Everything that belongs to one widget lives in that
+   widget's DEFAULT_CSS, next to the code that draws it; what is here is the arrangement
+   of the five screens and the two bands that never scroll.
+
+   Colour is never the only carrier of meaning anywhere in this dashboard. A verdict is a
+   word before it is a colour, the simulated badge says SIMULATED, and the band that says
+   what a speed is says it in a sentence. A terminal with no colour shows the same facts. */
+
+Screen {
+    layers: base;
+}
+
+#app-problem {
+    height: auto;
+    padding: 0 1;
+    color: $text;
+    background: $error;
+}
+
+/* The key bar wraps rather than being clipped. A key nobody can see is a key that does
+   not exist, and at eighty columns the board's ten keys do not fit on one line. */
+#key-bar {
+    height: auto;
+    padding: 0 1;
+    color: $text-muted;
+    background: $panel;
+}
+
+TabbedContent {
+    height: 1fr;
+}
+
+TabPane {
+    padding: 0;
+}

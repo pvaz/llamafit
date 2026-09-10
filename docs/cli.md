@@ -414,16 +414,21 @@ The dashboard speaks the language `--language` chose, like everything else, and 
 carry the same labels the tables above use. See [web.md](web.md) for the API, the safety
 rules and what the page does about languages.
 
-### `llamafit` (no command) — phase 1D
+### `llamafit` (no command) — shipped
 
-Today it prints the help and exits. From phase 1D it opens the terminal dashboard, and in a
-non-interactive terminal behaves like `recommend`. See [tui.md](tui.md).
+Opens the terminal dashboard: the board, the request as a form, the machine, the plan for a
+chosen row and the simulation controls, over one scan and one catalog. It is what somebody
+who has just installed LlamaFit meets, so nothing on it has to be found out from a flag.
+
+Where there is no terminal to draw one in — a pipe, a redirect, a CI job — it says so on
+standard error and prints exactly what `llamafit recommend` would print, with the same
+defaults, read off that command rather than repeated here. See [tui.md](tui.md).
 
 ### `llamafit install` — phase 2
 
-The `install` group puts what LlamaFit needs onto the machine. `llamafit install llama.cpp`
-has shipped; `llamafit install model <id> [--quant NAME] [--dir PATH] [--workers N] [--yes]`
-is still to come.
+The `install` group puts onto the machine what it takes to run a model: llama.cpp itself,
+and the weights. Both commands have shipped, and both keep the same rule — the whole plan
+is printed, and only then is the question asked.
 
 #### `llamafit install llama.cpp` — phase 2, shipped
 
@@ -479,19 +484,160 @@ run. Your `PATH` is never changed unless you ask with `--add-to-path` and then a
 **Exit codes.** `0` on success or after a dry run; `1` when you decline, when the directory is
 not LlamaFit's, when a volume has no room, or when an archive fails its checksum.
 
-### `llamafit preset <model>` — phase 2
+#### `llamafit install model <id>` — phase 2, shipped
 
-Write launch scripts and a router preset section for a plan. Options: `--dir PATH`,
-`--port N`, `--quant NAME`, `--context N`.
+Download a model's weights from the repository the catalog names, resuming anything an
+earlier run left behind and checking every file against the SHA-256 the catalog holds.
 
-### `llamafit launch <model>` — phase 2
+```
+llamafit install model <id> [--quant NAME] [--dir PATH] [--workers N] [--limit-rate RATE]
+                            [--yes] [--dry-run] [--no-extras] [--recheck]
+                            [--allow-unverified]
+llamafit install history [--limit N]
+```
 
-Run a preset, wait for `/health`, print the endpoints; `--stop` stops a server LlamaFit started.
+Before a socket is opened it prints the model, the quantisation, the repository, every
+file it will fetch, what the set weighs, where it is going, how much is already there and
+what would be left on the volume afterwards. In a terminal it then asks; outside one it
+does not, because there is nobody there to answer.
 
-### `llamafit bench [model]` — phase 3
+| Option | Effect |
+|---|---|
+| `--quant NAME` | Fetch this quantisation instead of the first the catalog publishes. |
+| `--dir PATH` | Put the files here instead of under the downloads directory. |
+| `--workers N` | Requests in flight, 1 to 32. The default is 8: the specification's 16–32 will take every bit of a domestic connection, and nobody asked for their video call to stop working. |
+| `--limit-rate RATE` | A ceiling in bytes per second — `5M`, `500K` — shared across every worker, so the figure is the figure whatever `--workers` says. |
+| `--yes`, `-y` | Do not ask before starting. |
+| `--dry-run` | Print the plan and the disk arithmetic, fetch nothing. Needs no network. |
+| `--no-extras` | Weights only: no vision projector, no draft model. |
+| `--recheck` | Re-read files that are already here and hash them against the catalog. |
+| `--allow-unverified` | Fetch files the catalog holds no checksum for. Refused by default, because a model that downloaded wrong does not fail loudly — it answers nonsense. |
 
-Measure generation and prompt throughput at the planned flags, store the result, and print
-estimated versus measured. Options: `--all`, `--quant NAME`, `--context N`, `--json`.
+What is on disk while a download is running: `<name>.gguf.part`, created at the file's
+final size, and `<name>.gguf.part.state`, a small JSON record of which chunks have
+arrived. A chunk is recorded only once its last byte is written, so `Ctrl+C` or a dropped
+connection costs at most one chunk and the next run continues rather than restarts. When
+every file of a model has arrived and been checked, `llamafit-install.json` is written
+into the directory; its presence is what "this model is installed" means, and a directory
+holding three shards of four does not have one.
+
+A file whose checksum does not match is deleted along with its part file and its record,
+and the command exits 1. Nothing that could be resumed into the wrong bytes is kept.
+
+`install history` lists what has been downloaded, newest first, finished or not.
+`--json` gives the plan (with `--dry-run`), the outcome, or the history records.
+
+### `llamafit preset` — phase 2, shipped
+
+`llamafit preset <model>`: turn the plan for one model into files you can run and edit. A
+plan is a command line somebody has to paste; a preset is a script they can double-click,
+and it is what makes a recommendation survive contact with a real desktop.
+
+Three files are written, into LlamaFit's own presets directory unless `--dir` says otherwise:
+
+| File | What it is |
+|---|---|
+| `start-<id>.cmd` or `start-<id>.sh` | the launch script, for this operating system |
+| `models-<id>.ini` | a section for a llama.cpp router's `models.ini` |
+| `README-<id>.md` | the endpoints, the context ladder, and what changes when the machine does |
+
+| Option | Effect |
+|---|---|
+| `--dir PATH` | Write the files here instead of in the presets directory. |
+| `--port N` | Bind this port instead of llama.cpp's default 8080. |
+| `--quant NAME` | Plan this quantisation instead of the one that scores best on this machine. |
+| `--context N` | Size for this many tokens. It becomes the **top** of the ladder; the script never goes above it. |
+| `--force` | Overwrite files you have edited, saying which ones it discarded. |
+
+**The script chooses its context when it runs.** The plan behind it was computed while the
+machine was idle; it runs when a browser has taken a gigabyte of the card. A configuration
+that asks for more card memory than is free does not fail on an NVIDIA driver — it starts,
+pages the overflow into system memory, and runs at a fraction of its speed while `/health`
+answers and the log looks healthy. So the script carries section 9.3's ladder rather than a
+number: it reads how much card memory is free, keeps 256 MiB back for the desktop, and takes
+the largest rung that still fits. It never goes *above* the planned context, because the
+planner weighed system memory and your request too and the script can only measure the card.
+
+How free memory is read, and what happens when it cannot be:
+
+| Machine | How | When it cannot |
+|---|---|---|
+| NVIDIA, any OS | `nvidia-smi --query-gpu=memory.free` | says so, uses the planned context, warns that it may page |
+| AMD on Linux | `/sys/class/drm/card*/device/mem_info_vram_{total,used}` | same |
+| Apple silicon | `vm_stat` free, inactive and speculative pages | same |
+| AMD or Intel on Windows, Intel on Linux | nothing a script can ask | the script's header says so once, rather than warning on every run |
+
+Exit codes of the generated script: **0** as llama-server exited, **3** the model file or
+llama.cpp is not where the script expects it, **4** not even the smallest rung fits the free
+card memory, so it stopped rather than page. `LLAMAFIT_CONTEXT` overrules the ladder for one
+run.
+
+**A file you have edited is never overwritten.** Each file carries a checksum of itself; a
+file whose checksum no longer matches has been changed, and LlamaFit keeps it and names it.
+`--force` replaces it and says that it did.
+
+### `llamafit launch` — phase 2, shipped
+
+`llamafit launch <model>`: run the model's preset **script** — not a command line rebuilt
+for the occasion, so the ladder still chooses the context and your own edits still apply —
+wait for `/health`, and print the endpoints. If no preset exists yet, one is written first.
+
+| Option | Effect |
+|---|---|
+| `--dir PATH` | Look for the preset here. |
+| `--port N` | The port to expect; otherwise the one the script itself names, which is what makes a hand-edited port work. |
+| `--timeout N` | Seconds to wait for `/health`. The default of 180 is set by how long reading twenty gigabytes of weights takes. |
+| `--stop` | Stop the server LlamaFit started for this model, and everything it started. |
+
+A server already answering on that endpoint is reported rather than joined by a second one.
+What was started is remembered by process id **and start time**, so `--stop` cannot aim at
+whatever inherited a recycled id.
+
+### `llamafit bench` — phase 3, shipped
+
+`llamafit bench <model>`: measure the model on this machine at the flags `plan` would launch
+it with, and print the measurement beside the estimate. It runs `llama-bench` for a prompt
+row and a generation row, then starts a real `llama-server` and asks it three fixed
+questions — a short prompt on a cold server, a thousand-token prompt on a warm one, and a
+tool call — recording the throughput each reports about itself, the time to first token, the
+peak VRAM during the run and the buffer sizes from the server's log.
+
+| Option | Effect |
+|---|---|
+| `--quant NAME` | Benchmark this quantisation instead of the planned one. |
+| `--context N` | Size for this many tokens. |
+| `--ub N` | Set the micro-batch by hand; the whole budget is rebuilt around it. |
+| `--sweep` | Measure prompt processing at every micro-batch of the ladder. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all. |
+| `--no-server` | Run `llama-bench` only. Gives up the paging check, the buffer sizes and the tool-call test. |
+| `--no-store` | Print the result without writing it to the database, so no estimate is relabelled. |
+| `--dry-run` | Print the two command lines and run nothing. |
+| `--calibrate` | Fit the estimator's constants to this machine from every stored result, and name the ones the measurements do not determine. Works on its own, with no model. |
+| `--show` | List what this machine has already measured, and stop. |
+
+The last column of the table is the point of the command. A tool that measured a model and
+then showed only the measurement would leave you better informed about that model and no
+better informed about the next one, so the estimate stays on the page — and the estimate
+shown is the one made *before* the run, never one recomputed afterwards from a database that
+by then contains the answer.
+
+**The paging check** has three states and not two: it fires when peak VRAM was within three
+percent of the card's total **and** generation came in below three fifths of the estimate
+(section 16.4), it clears a card that stayed well short of full, and it says *unchecked* when
+there was no vendor tool, no card total or no estimate. A configuration nobody could check
+has not been cleared.
+
+**A result is refused rather than stored** when the run did not do what it was told — a
+context llama.cpp clamped, a micro-batch it did not use — and when the host is a simulated
+one. The flags a stored result hands out are built from what the tool reported about itself
+rather than from the command line it was given, so a micro-batch sweep's rows are each filed
+under the size that row actually ran at.
+
+**`--calibrate` fits only what the data determines.** Four measurements pinned four constants
+on the reference machine and two would not have pinned three, so a constant whose column is
+empty, whose configurations are too few, or whose fit comes out impossible is refused by name
+with the reason. `layer_overhead_ms` is never fitted at all: section 10.1 removed the
+per-layer term, so a number fitted for it would be read by nothing. See
+[benchmarking.md](benchmarking.md).
 
 ## Environment variables
 

@@ -24,9 +24,11 @@ from typing import NamedTuple
 
 import pytest
 
+from llamafit.constants import EFF_PP
 from llamafit.models.plan import Placement, Pool, RunMode
 from llamafit.speed import (
     Formula,
+    card_share_of_compute,
     estimate_speed,
     formula_estimate,
     per_token_traffic,
@@ -296,24 +298,79 @@ def test_prompt_processing_is_half_the_truth_for_a_model_that_fits_in_memory() -
     assert 0.40 < formula_for(CODER).pp_tps / CODER.pp_tps < 0.55
 
 
-def test_prompt_processing_is_an_order_out_on_a_small_dense_model() -> None:
-    """The compute term's peak figure is wrong, and the small dense runs make it visible.
+def test_prompt_processing_reproduces_the_two_runs_that_identify_its_two_rates() -> None:
+    """Nothing streams for a small dense model, so each run reads one constant off directly.
 
-    Nothing streams for a dense model held on the card, so the whole prompt formula is
-    ``2 x active_params x ub / (tflops_fp16 x eff_pp)`` and a measurement reads the product
-    of those two constants off directly. Qwen3-0.6B managed 21,734 prompt tokens per
-    second, which is 26 TFLOP/s -- more than the 15 the bundled table gives this card, so
-    no efficiency below one can reach it. The table's figure is the RTX 4060's fp32 shader
-    throughput rather than what its tensor cores do with fp16, and ``EFF_PP`` has been
-    absorbing the difference on the models where the streaming term hid it.
+    Held entirely on the card, the whole prompt formula is
+    ``2 x active_params x ub / (tflops_fp16 x eff_pp)``; held entirely in system memory it
+    is ``2 x active_params x ub / cpu_pp_flops``. Same file, same day, same machine, and a
+    factor of seven between them -- which is the reason the compute term is split by where
+    the layers are rather than charged to the card whatever the placement says.
 
-    Section 10.1 was settled by four runs chosen to isolate its pools; section 10.2 has had
-    no such treatment, and this is what that costs. Recorded rather than refitted to a
-    single point, which is the mistake that produced the 0.36.
+    Both are fits to one point each, so agreeing here is not evidence that the constants
+    generalise. It is only evidence that they were not derived one way and spent another.
     """
-    predicted = formula_for(DENSE_ON_CARD).pp_tps
-    assert predicted < DENSE_ON_CARD.pp_tps * 0.25
-    assert 2 * 0.6e9 * DENSE_ON_CARD.pp_tps / 1e12 > 15.0
+    assert formula_for(DENSE_ON_CARD).pp_tps == pytest.approx(21734.0, rel=0.02)
+    assert formula_for(DENSE_IN_RAM).pp_tps == pytest.approx(2924.0, rel=0.02)
+    assert DENSE_ON_CARD.pp_tps / DENSE_IN_RAM.pp_tps > 7
+
+
+def test_the_table_figure_the_card_rate_is_fitted_against_can_actually_be_reached() -> None:
+    """The check that condemned the previous pair, applied to the new one.
+
+    21,734 prompt tokens per second at ``2 x 0.6e9`` per token is 26.1 TFLOP/s achieved.
+    The bundled table used to rate this card at 15 TFLOPS -- its fp32 shader throughput --
+    so no efficiency at or below one could reach the measurement, and ``EFF_PP`` had been
+    absorbing the difference wherever the streaming term hid it. The table now carries the
+    card's dense fp16 matrix throughput instead.
+    """
+    achieved = 2 * DENSE_ON_CARD.active_params * DENSE_ON_CARD.pp_tps
+    peak = resolve_bandwidths(reference_host()).compute_flops
+    assert peak == pytest.approx(60.4e12)
+    assert 0.0 < achieved / peak < 1.0
+    assert achieved / peak == pytest.approx(EFF_PP, rel=0.02)
+
+
+def test_prompt_arithmetic_is_charged_to_whichever_device_holds_the_layer() -> None:
+    """A hybrid placement multiplies most of its matrices on the CPU, and pays CPU rates.
+
+    Gemma 3 27B gets nine of its sixty-two layers onto this machine's card. Charging the
+    whole prompt to the card put it near 480 tokens per second, which needs about 22
+    TFLOP/s out of a CPU that has been measured at 3.5 -- impossible in exactly the way
+    the 15 TFLOPS figure was, and reachable only by a term that had forgotten where the
+    weights are.
+    """
+    facts = catalog_facts("gemma-3-27b-it", "Q4_K_M")
+    assert facts.n_layer == 62
+    hybrid = placement(mode="hybrid", gpu_layers=9, cpu_moe_layers=None, micro_batch=2048)
+    bandwidths = resolve_bandwidths(reference_host())
+    share = card_share_of_compute(hybrid, facts.n_layer or 0, card_flops=bandwidths.compute_flops)
+    assert share == pytest.approx(9 / 62)
+
+    predicted = formula_estimate(
+        hybrid,
+        facts,
+        bandwidths,
+        working_context=8192,
+        micro_batch=2048,
+        active_params=27e9,
+    )
+    ceiling = 2 * 27e9 * predicted.pp_tps
+    assert ceiling < bandwidths.cpu_compute_flops + bandwidths.compute_flops * EFF_PP
+    assert predicted.pp_tps < 120.0
+    assert "charged to the CPU" in " ".join(predicted.notes)
+
+
+def test_a_placement_with_every_layer_on_the_card_pays_no_cpu_rate_at_all() -> None:
+    """And says nothing about the CPU, because there is nothing to say."""
+    formula = formula_for(DENSE_ON_CARD)
+    assert not any("charged to the CPU" in note for note in formula.notes)
+    facts = catalog_facts(DENSE_ON_CARD.model_id, DENSE_ON_CARD.quant)
+    bandwidths = resolve_bandwidths(reference_host())
+    share = card_share_of_compute(
+        placement_for(DENSE_ON_CARD), facts.n_layer or 0, card_flops=bandwidths.compute_flops
+    )
+    assert share == 1.0
 
 
 def test_a_prompt_benchmark_from_another_micro_batch_is_only_as_good_as_its_anchor() -> None:

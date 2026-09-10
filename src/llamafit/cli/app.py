@@ -142,7 +142,7 @@ def _root(
     """LlamaFit command-line interface."""
     ctx.obj = CliState(json_output=json_output, verbose=verbose, no_color=no_color)
     if ctx.invoked_subcommand is None:
-        typer.echo(ctx.get_help())
+        open_dashboard(ctx)
 
 
 def main() -> None:
@@ -174,26 +174,32 @@ def main() -> None:
 
 
 from llamafit.cli import (  # noqa: E402  (registers commands on import)
+    bench_cmd,
     board_cmd,
     catalog_cmd,
     doctor_cmd,
     hardware_cmd,
     install_cmd,
     plan_cmd,
+    preset_cmd,
     serve_cmd,
     system_cmd,
 )
+from llamafit.tui.entry import open_dashboard  # noqa: E402  (`llamafit` with no arguments)
 
 __all__ = [
     "CliState",
     "app",
+    "bench_cmd",
     "board_cmd",
     "catalog_cmd",
     "doctor_cmd",
     "hardware_cmd",
     "install_cmd",
     "main",
+    "open_dashboard",
     "plan_cmd",
+    "preset_cmd",
     "serve_cmd",
     "system_cmd",
 ]

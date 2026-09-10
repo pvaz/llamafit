@@ -29,7 +29,15 @@ from llamafit.scoring.fit_score import (
     worst_pool_utilisation,
 )
 from llamafit.scoring.rank import evaluate, evaluate_and_rank, rank
-from llamafit.scoring.speed_score import TARGET_TPS, prompt_penalty, speed_score, target_tps
+from llamafit.scoring.speed_score import (
+    READING_TPS,
+    TARGET_TPS,
+    floor_tps,
+    prompt_penalty,
+    speed_ramp,
+    speed_score,
+    target_tps,
+)
 from llamafit.scoring.weights import (
     DEFAULT_WEIGHTS,
     PARTS,
@@ -46,6 +54,7 @@ __all__ = [
     "PARTS",
     "PREFERENCES",
     "PREFERENCE_SHIFT",
+    "READING_TPS",
     "TARGET_TPS",
     "USE_CASES",
     "capacity_score",
@@ -55,12 +64,14 @@ __all__ = [
     "evaluate_and_rank",
     "fit_score",
     "fit_score_for",
+    "floor_tps",
     "model_share",
     "prompt_penalty",
     "rank",
     "requested_context",
     "resident_model_bytes",
     "shift_preference",
+    "speed_ramp",
     "speed_score",
     "target_tps",
     "weights_for",

@@ -2,11 +2,17 @@ from datetime import date
 
 import pytest
 
-from llamafit.constants import EFF_RAM_SCATTERED, EFF_RAM_SEQUENTIAL, EFF_VRAM
+from llamafit.constants import (
+    CPU_PP_TFLOPS_PER_CORE,
+    EFF_RAM_SCATTERED,
+    EFF_RAM_SEQUENTIAL,
+    EFF_VRAM,
+)
 from llamafit.models.catalog import Measured
 from llamafit.models.gguf import GgufFacts
 from llamafit.speed import (
     active_expert_bytes,
+    card_share_of_compute,
     estimate_speed,
     formula_estimate,
     kv_bytes_per_token,
@@ -137,6 +143,30 @@ def test_facts_with_no_layer_count_put_everything_in_system_memory() -> None:
     assert traffic.sequential_bytes > 0
 
 
+@pytest.mark.parametrize(
+    ("n_layer", "gpu_layers", "card_flops", "expected"),
+    [
+        (48, 12, 1e13, 0.25),
+        (48, 99, 1e13, 1.0),
+        (48, 0, 1e13, 0.0),
+        # No layer count to divide by: all or nothing on whether -ngl offloads anything.
+        (0, 99, 1e13, 1.0),
+        (0, 0, 1e13, 0.0),
+        # No card figure at all, so there is no card side to charge arithmetic to.
+        (48, 99, 0.0, 0.0),
+    ],
+)
+def test_the_prompt_compute_share_follows_the_layers(
+    n_layer: int, gpu_layers: int, card_flops: float, expected: float
+) -> None:
+    share = card_share_of_compute(
+        placement(mode="hybrid", gpu_layers=gpu_layers, cpu_moe_layers=None),
+        n_layer,
+        card_flops=card_flops,
+    )
+    assert share == pytest.approx(expected)
+
+
 def test_a_micro_batch_of_256_touches_nearly_every_expert() -> None:
     facts = moe_facts()
     assert streamed_expert_fraction(facts, 256) > 0.99
@@ -194,8 +224,21 @@ def test_a_card_the_table_does_not_know_falls_back_by_backend() -> None:
 def test_a_machine_with_no_card_estimates_prompt_compute_on_the_cpu() -> None:
     bandwidths = resolve_bandwidths(reference_host(with_gpu=False))
     assert bandwidths.device is None
-    assert bandwidths.compute_flops == pytest.approx(8 * 0.05 * 1e12)
+    assert bandwidths.compute_flops == 0.0, "no card, so nothing to charge to a card"
+    assert bandwidths.cpu_compute_flops == pytest.approx(8 * CPU_PP_TFLOPS_PER_CORE * 1e12)
     assert bandwidths.assumed
+
+
+def test_the_cpu_prompt_rate_is_reported_whether_or_not_there_is_a_card() -> None:
+    """Because a hybrid placement leaves most of its layers on the CPU and still has one.
+
+    A single compute rate hid a category error: the prompt arithmetic of a model with
+    nine layers of sixty-two on the card was charged entirely to the card.
+    """
+    with_card = resolve_bandwidths(reference_host())
+    assert with_card.compute_flops == pytest.approx(60.4e12)
+    assert with_card.cpu_compute_flops == pytest.approx(8 * CPU_PP_TFLOPS_PER_CORE * 1e12)
+    assert not with_card.assumed
 
 
 def test_the_card_bandwidth_comes_from_the_bundled_table_when_the_probe_missed_it() -> None:
@@ -204,7 +247,7 @@ def test_the_card_bandwidth_comes_from_the_bundled_table_when_the_probe_missed_i
     host.gpus[0].compute_tflops_fp16 = None
     bandwidths = resolve_bandwidths(host)
     assert bandwidths.device_gbps == 272.0
-    assert bandwidths.compute_flops == pytest.approx(15e12)
+    assert bandwidths.compute_flops == pytest.approx(60.4e12)
     assert not bandwidths.assumed
 
 
