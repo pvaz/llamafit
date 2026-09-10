@@ -1,13 +1,13 @@
 # LlamaFit. Copyright (C) 2026 Paulo Vaz.
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
-"""Constants the memory budget is built from, each with the measurement it came from.
+"""Constants the budget, the placement planner and the estimator are built from.
 
 Nothing here is a round number chosen because it looked safe. Every value is either
-written down in section 8 of ``docs/specs/2026-09-09-llamafit-design.md`` or read out of
+written down in ``docs/specs/2026-09-09-llamafit-design.md`` or read out of
 ``docs/calibration/2026-09-09-reference-machine.md``, and the docstring under it says
-which, because a constant whose provenance has been lost cannot be argued with when a
-later measurement disagrees with it.
+which and cites the section or the run, because a constant whose provenance has been lost
+cannot be argued with when a later measurement disagrees with it.
 
 The distinction that matters most here is between the constants that describe a rule and
 the constants that were fitted to data. A reserve of 256 MiB is a policy: it is exactly as
@@ -15,6 +15,15 @@ right as the people who chose it. The compute-buffer table is a *model*, fitted 
 measurements on one graphics card with one llama.cpp build, and it will be wrong on
 another machine in ways nobody has measured yet. Every budget line built from the second
 kind is marked ``exact=False`` so a reader can tell them apart.
+
+Nothing measured here is meant to be the last word either. Phase 3 replaces the measured
+constants per host by calibration, and an estimate built on a calibrated figure is
+relabelled accordingly (section 10.3), so a constant here is the starting point rather
+than the answer.
+
+The file is one module in three sections -- the memory budget, the placement planner, and
+the speed estimator -- because a constant is shared across them often enough that keeping
+three files in step was worse than keeping one file long.
 """
 
 from __future__ import annotations
@@ -165,26 +174,6 @@ rather than refusing, so the configuration is named ``too-tight`` rather than re
 
 
 # --------------------------------------------------------------------------------------
-# From the placement work.
-# --------------------------------------------------------------------------------------
-
-"""Constants the estimator and the placement planner are built from, with their provenance.
-
-Every number here is written down once, with a comment saying where it came from, because
-a constant with no provenance is indistinguishable from a guess and nobody dares change
-it. Values measured on the reference machine cite
-``docs/calibration/2026-09-09-reference-machine.md``; values the design fixed cite the
-section of ``docs/specs/2026-09-09-llamafit-design.md`` that fixed them.
-
-Phase 3 replaces the measured ones per host by calibration, so a constant here is the
-starting point rather than the answer.
-"""
-
-
-MIB = 1024**2
-"""One mebibyte, so a size below can be written the way llama.cpp reports it."""
-
-# --------------------------------------------------------------------------------------
 # Placement planner (design section 9)
 # --------------------------------------------------------------------------------------
 
@@ -215,9 +204,6 @@ A larger micro-batch makes prompt processing faster and the compute buffer bigge
 reference machine measured 25, 50 and 77 prompt tokens per second at 512, 1024 and 2048
 for the same model, and 4096 was slower than 2048, which is why the ladder stops there.
 """
-
-MIN_BATCH_TOKENS = 2048
-"""The floor under the logical batch: ``b = max(2 x ub, 2048)`` (section 8.1)."""
 
 ALL_GPU_LAYERS = 99
 """What ``-ngl`` is when every layer goes to the card (section 9.1).
@@ -295,25 +281,14 @@ is launched have to be the same one.
 
 
 # --------------------------------------------------------------------------------------
-# From the speed work.
+# Speed estimator (design section 10)
 # --------------------------------------------------------------------------------------
 
-"""Constants the sizing and speed models are built from, each with its provenance.
-
-A constant with no source is a guess that has learned to look like a measurement, so every
-number here says where it came from: a section of the design specification, a published
-figure, or a run on the reference machine recorded in
-``docs/calibration/2026-09-09-reference-machine.md``. Nothing here is meant to be the last
-word. A measurement taken on a real host supersedes the constant for that host, and the
-estimate built from it is relabelled accordingly (section 10.3).
-
-The three efficiencies below are not independent guesses. They were identified together
-from four measurements on the reference machine, two of which exist only to isolate a pool:
-the same small dense model run entirely in system memory and entirely on the card, where
-the traffic is exactly its block weights and nothing else competes. Changing one of them
-without re-deriving the others against all four runs will make the estimator worse.
-"""
-
+# The three efficiencies below are not independent guesses. They were identified together
+# from four measurements on the reference machine, two of which exist only to isolate a
+# pool: the same small dense model run entirely in system memory and entirely on the card,
+# where the traffic is exactly its block weights and nothing else competes. Changing one of
+# them without re-deriving the others against all four runs will make the estimator worse.
 
 # --- Generation: how much of a pool's bandwidth the decode loop actually reaches -----
 #
