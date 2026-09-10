@@ -1,0 +1,134 @@
+# Sourced from Z.ai's Hugging Face model cards, the GLM-5 repository's own benchmark charts
+# and the GGUF-publishing repositories.
+# Primary sources used for this file:
+#   - glm-5.3 model card: https://huggingface.co/zai-org/GLM-5.3
+#   - glm-5.3-flash model card: https://huggingface.co/zai-org/GLM-5.3-Flash
+#   - Vendor repository and its benchmark charts: https://github.com/zai-org/GLM-5
+#   - GLM-5 technical report: https://arxiv.org/abs/2602.15763
+#   - GGUF repositories: https://huggingface.co/unsloth/GLM-5.3-GGUF
+#                        https://huggingface.co/unsloth/GLM-5.3-Flash-GGUF
+#
+# Release dates are the Hugging Face repository creation dates; neither model card states one.
+#
+# The two models carry different licences, which is easy to miss because they were published
+# on the same day under the same name: GLM-5.3 is under Z.ai's own GLM-5.3 licence, and
+# GLM-5.3-Flash is plain MIT. Both licence fields below were read from the repositories.
+- id: glm-5.3
+  name: GLM-5.3
+  vendor: Z.ai
+  family: glm
+  release_date: 2026-08-25
+  license:
+    # MIT-like in substance, with one condition worth knowing about: an operator of a
+    # Model-as-a-Service business whose group revenue passes 10 billion US dollars over any
+    # 12 months must pass a Z.ai security review before commercial use. Nothing in it
+    # restricts a person running the weights on their own machine.
+    spdx: glm-5.3
+    url: "https://huggingface.co/zai-org/GLM-5.3/blob/main/LICENSE"
+  params: { total_b: 744, active_b: 40 }
+  architecture:
+    class: moe
+    gguf_arch: glm-dsa
+    notes: >-
+      78 layers plus a multi-token-prediction head, 256 routed experts with 8 used per token
+      and 1 shared expert: 744B of weights, 40B of work per token. The name in the GGUF
+      header, glm-dsa, is for DeepSeek Sparse Attention, which is what the attention layers
+      use — a single key/value head with 576-wide keys, so the KV cache stays modest even
+      at the million-token context. Same base model as GLM-5.2; every difference is
+      post-training.
+  context: { native: 1048576 }
+  capabilities: [coding, thinking, tools, long-context]
+  use_cases: [coding, reasoning, general, chat]
+  quality:
+    baseline: 92
+    benchmarks:
+      # From the model card's own table. Z.ai's stated evaluation setting is the Claude Code
+      # 2.1.207 harness at max reasoning effort; the card's footnotes give the parameters
+      # for each row.
+      - name: Terminal Bench 2.1
+        score: 88.2
+        source: "https://huggingface.co/zai-org/GLM-5.3"
+      - name: Terminal Bench 3.0
+        score: 28.3
+        source: "https://huggingface.co/zai-org/GLM-5.3"
+      - name: DeepSWE (v1.1)
+        score: 66.9
+        source: "https://huggingface.co/zai-org/GLM-5.3"
+      - name: CyberGym
+        score: 84.5
+        source: "https://huggingface.co/zai-org/GLM-5.3"
+      - name: Toolathlon Verified
+        score: 73.0
+        source: "https://huggingface.co/zai-org/GLM-5.3"
+  sampling: { temp: 1.0, top_p: 0.95 }
+  chat_template: { reasoning_format: deepseek, thinking_toggle: reasoning_effort }
+  sources:
+    - repo: unsloth/GLM-5.3-GGUF
+      kind: gguf
+      trust: unsloth
+      # A two-bit for a workstation with a lot of system memory, the four-bit common case,
+      # and the eight-bit for a server. The repository publishes twelve.
+      quants:
+        - { name: UD-IQ2_M }
+        - { name: UD-Q4_K_XL }
+        - { name: Q8_0 }
+
+- id: glm-5.3-flash
+  name: GLM-5.3-Flash
+  vendor: Z.ai
+  family: glm
+  release_date: 2026-08-25
+  license:
+    spdx: MIT
+    url: "https://huggingface.co/zai-org/GLM-5.3-Flash/blob/main/LICENSE"
+  params: { total_b: 320, active_b: 18 }
+  architecture:
+    class: moe-hybrid
+    gguf_arch: glm5next
+    notes: >-
+      The first natively multimodal model in the GLM-5 series, and the first with a hybrid
+      attention stack: three linear-attention layers for every one DeepSeek-sparse-attention
+      layer, across 45 layers plus a multi-token-prediction head. 288 routed experts with 8
+      used per token and 1 shared, so 320B of weights against 18B of work per token. The
+      linear layers are why long context is cheap here — most layers carry a fixed-size
+      recurrent state instead of a growing KV cache — and the sparse layers are why it stays
+      accurate. Vision comes through a projector that must be downloaded separately.
+  context: { native: 1048576 }
+  capabilities: [coding, thinking, vision, tools, long-context]
+  use_cases: [coding, reasoning, multimodal, general, chat]
+  quality:
+    baseline: 89
+    benchmarks:
+      # Read from the vendor's own benchmark chart, resources/bench_53.png in the GLM-5
+      # repository, which is the figure embedded in the GLM-5.3-Flash model card. The card's
+      # footnotes give the harness and sampling parameters for each of these six.
+      - name: Terminal Bench 2.1
+        score: 84.3
+        source: "https://github.com/zai-org/GLM-5/blob/main/resources/bench_53.png"
+      - name: DeepSWE v1.1
+        score: 63.4
+        source: "https://github.com/zai-org/GLM-5/blob/main/resources/bench_53.png"
+      - name: AutomationBench v1.0.6
+        score: 48.8
+        source: "https://github.com/zai-org/GLM-5/blob/main/resources/bench_53.png"
+      - name: "Humanity's Last Exam (with tools)"
+        score: 55.3
+        source: "https://github.com/zai-org/GLM-5/blob/main/resources/bench_53.png"
+      - name: Agents' Last Exam
+        score: 26.3
+        source: "https://github.com/zai-org/GLM-5/blob/main/resources/bench_53.png"
+  sampling: { temp: 1.0, top_p: 0.95 }
+  chat_template: { reasoning_format: deepseek, thinking_toggle: reasoning_effort }
+  sources:
+    - repo: unsloth/GLM-5.3-Flash-GGUF
+      kind: gguf
+      trust: unsloth
+      quants:
+        - { name: UD-IQ2_XXS }
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q6_K_XL }
+      extras:
+        # The model declares vision, so the projector is declared with it: without this
+        # nothing charges its bytes to a memory pool and a plan comes out optimistic for
+        # anybody who actually wants to send it an image.
+        - { role: mmproj, file: mmproj-F16.gguf }

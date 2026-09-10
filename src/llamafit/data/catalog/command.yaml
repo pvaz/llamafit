@@ -1,0 +1,131 @@
+# Sourced from Cohere Labs' Hugging Face model cards, Cohere's release blog and the
+# GGUF-publishing repositories.
+# Primary sources used for this file:
+#   - command-a-plus model card: https://huggingface.co/CohereLabs/command-a-plus-05-2026-bf16
+#   - command-a-plus release blog: https://cohere.com/blog/command-a-plus
+#   - north-mini-code model card: https://huggingface.co/CohereLabs/North-Mini-Code-1.0
+#   - GGUF repositories: https://huggingface.co/bartowski/command-a-plus-05-2026-GGUF
+#                        https://huggingface.co/unsloth/North-Mini-Code-1.0-GGUF
+#
+# Release dates are the Hugging Face repository creation dates; neither model card states one,
+# and for Command A+ that date agrees with the 05-2026 stamped into its name.
+#
+# Both of these are Apache-2.0, which is a change from the Command series' history of
+# non-commercial terms and worth checking against the repository rather than remembering.
+# Cohere's reasoning model, command-a-reasoning-08-2025, is deliberately absent: it is gated
+# on Hugging Face and licensed CC-BY-NC-4.0, so it is neither freely downloadable nor
+# commercially usable, and this catalog does not carry entries a reader cannot install.
+- id: command-a-plus-05-2026
+  name: Command A+
+  vendor: Cohere
+  family: command
+  release_date: 2026-05-11
+  license:
+    spdx: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0"
+  params: { total_b: 218, active_b: 25 }
+  architecture:
+    class: moe
+    gguf_arch: cohere2moe
+    notes: >-
+      A decoder-only sparse mixture of experts over 32 layers: 128 experts with 8 used per
+      token alongside shared experts applied to everything, 218B of weights against 25B of
+      work per token.
+      Attention interleaves sliding-window layers carrying rotary embeddings with global
+      layers carrying none, three to one, which is what keeps a 128K context affordable.
+      Cohere's own note is that the four-bit build shows negligible quality loss against
+      full precision, so the four-bit here is not a compromise. The model accepts image
+      input, but the GGUF conversion published for llama.cpp is text-only — no vision
+      projector accompanies it — so `vision` is deliberately absent from the capabilities
+      below.
+  # The card documents 128K of input; the converted GGUF declares 200,000 and llama.cpp
+  # will honour that, so this is the conservative figure of the two.
+  context: { native: 131072 }
+  capabilities: [coding, thinking, tools, multilingual, long-context]
+  use_cases: [general, chat, reasoning, coding]
+  quality:
+    baseline: 76
+    benchmarks:
+      # From Cohere's release blog. The multimodal rows were measured on the full model,
+      # which accepts images; they are reported here because they are what Cohere published
+      # about this checkpoint, and the text-only GGUF cannot reproduce them.
+      - name: "Tau-squared-Bench Telecom"
+        score: 85.0
+        source: "https://cohere.com/blog/command-a-plus"
+      - name: MMMU
+        score: 75.1
+        source: "https://cohere.com/blog/command-a-plus"
+      - name: MathVista
+        score: 80.6
+        source: "https://cohere.com/blog/command-a-plus"
+      - name: MMMU Pro
+        score: 63.0
+        source: "https://cohere.com/blog/command-a-plus"
+      - name: Terminal-Bench Hard
+        score: 25.0
+        source: "https://cohere.com/blog/command-a-plus"
+  sampling: { temp: 0.6, top_p: 0.95 }
+  sources:
+    - repo: bartowski/command-a-plus-05-2026-GGUF
+      kind: gguf
+      trust: bartowski
+      # A two-bit for a workstation that wants the whole thing resident, the four-bit
+      # Cohere says loses almost nothing, and an eight-bit for a machine with room. The
+      # repository publishes twenty-six.
+      quants:
+        - { name: IQ2_M }
+        - { name: Q4_K_M }
+        - { name: Q8_0 }
+
+- id: north-mini-code-1.0
+  name: North Mini Code 1.0
+  vendor: Cohere
+  family: command
+  release_date: 2026-06-05
+  license:
+    spdx: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0"
+  params: { total_b: 30, active_b: 3 }
+  architecture:
+    class: moe
+    gguf_arch: cohere2moe
+    notes: >-
+      49 layers, 128 experts with 8 used per token, and the same three-to-one interleaving
+      of sliding-window and full attention as Command A+: 30B of weights, 3B of work per
+      token. A coding and agentic-software-engineering specialist rather than a general
+      assistant, and at this size and sparsity one of the few models in this group that a
+      single consumer card with ordinary system memory behind it can serve at a useful
+      speed. 256K of context and up to 64K of output.
+  context: { native: 262144 }
+  capabilities: [coding, thinking, tools, long-context]
+  use_cases: [coding]
+  quality:
+    baseline: 78
+    benchmarks:
+      # From the evaluation table published in the model card. Cohere reports the average
+      # of three seeds at temperature 1.0 and top_p 0.95, with the harness named per row in
+      # the card's footnotes.
+      - name: SWE-Bench Verified
+        score: 67.6
+        source: "https://huggingface.co/CohereLabs/North-Mini-Code-1.0"
+      - name: SWE-Bench Pro
+        score: 40.2
+        source: "https://huggingface.co/CohereLabs/North-Mini-Code-1.0"
+      - name: Terminal-Bench v2
+        score: 36.0
+        source: "https://huggingface.co/CohereLabs/North-Mini-Code-1.0"
+      - name: Terminal-Bench Hard
+        score: 31.1
+        source: "https://huggingface.co/CohereLabs/North-Mini-Code-1.0"
+      - name: LiveCodeBench v6
+        score: 70.3
+        source: "https://huggingface.co/CohereLabs/North-Mini-Code-1.0"
+  sampling: { temp: 1.0, top_p: 0.95 }
+  sources:
+    - repo: unsloth/North-Mini-Code-1.0-GGUF
+      kind: gguf
+      trust: unsloth
+      quants:
+        - { name: UD-Q2_K_XL }
+        - { name: UD-Q4_K_XL }
+        - { name: Q8_0 }

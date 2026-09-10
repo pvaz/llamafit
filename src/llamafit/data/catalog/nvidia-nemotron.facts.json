@@ -1,0 +1,545 @@
+{
+  "models": {
+    "nemotron-3-nano-30b-a3b": {
+      "quants": {
+        "Q8_0": {
+          "bpw": 8.96,
+          "bytes": 33585495840,
+          "files": [
+            "Nemotron-3-Nano-30B-A3B-Q8_0.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "nemotron_h_moe",
+            "attention_layers": 6,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 1130504448,
+            "bytes_expert_weights": 31210733568,
+            "bytes_global_weights": 10752,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 374341632,
+            "bytes_shared_expert_weights": 487667712,
+            "bytes_token_embd": 374341632,
+            "bytes_total": 33577599744,
+            "context_length": 1048576,
+            "has_shared_experts": true,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 98304,
+            "n_embd": 2688,
+            "n_expert": 128,
+            "n_expert_used": 6,
+            "n_head": 32,
+            "n_head_kv": 32,
+            "n_layer": 52,
+            "n_vocab": 131072,
+            "recurrent_state_bytes": 99860480,
+            "sliding_window": null,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "433a9c0d39c6c3434204797b30991c4d147c0f25328690d60862ec39e2a92188"
+          ]
+        },
+        "UD-Q2_K_XL": {
+          "bpw": 5.31,
+          "bytes": 19919660832,
+          "files": [
+            "Nemotron-3-Nano-30B-A3B-UD-Q2_K_XL.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "nemotron_h_moe",
+            "attention_layers": 6,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 614150400,
+            "bytes_expert_weights": 18279432192,
+            "bytes_global_weights": 10752,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 374341632,
+            "bytes_shared_expert_weights": 401608704,
+            "bytes_token_embd": 242221056,
+            "bytes_total": 19911764736,
+            "context_length": 1048576,
+            "has_shared_experts": true,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 98304,
+            "n_embd": 2688,
+            "n_expert": 128,
+            "n_expert_used": 6,
+            "n_head": 32,
+            "n_head_kv": 32,
+            "n_layer": 52,
+            "n_vocab": 131072,
+            "recurrent_state_bytes": 99860480,
+            "sliding_window": null,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "401ac37140bf460b4d9502972dc258ce758b2c67d61af979e9a03f1ee6c3d1a3"
+          ]
+        },
+        "UD-Q4_K_XL": {
+          "bpw": 6.09,
+          "bytes": 22833947424,
+          "files": [
+            "Nemotron-3-Nano-30B-A3B-UD-Q4_K_XL.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "nemotron_h_moe",
+            "attention_layers": 6,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 734637312,
+            "bytes_expert_weights": 21073231872,
+            "bytes_global_weights": 10752,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 374341632,
+            "bytes_shared_expert_weights": 401608704,
+            "bytes_token_embd": 242221056,
+            "bytes_total": 22826051328,
+            "context_length": 1048576,
+            "has_shared_experts": true,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 98304,
+            "n_embd": 2688,
+            "n_expert": 128,
+            "n_expert_used": 6,
+            "n_head": 32,
+            "n_head_kv": 32,
+            "n_layer": 52,
+            "n_vocab": 131072,
+            "recurrent_state_bytes": 99860480,
+            "sliding_window": null,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "627f5b04aedc97f967332f331bd75b7a4ed2f33ca83e6ee74b44235cc1887890"
+          ]
+        }
+      }
+    },
+    "nemotron-3-nano-4b": {
+      "quants": {
+        "Q4_K_M": {
+          "bpw": 5.8,
+          "bytes": 2900295712,
+          "files": [
+            "NVIDIA-Nemotron-3-Nano-4B-Q4_K_M.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "nemotron_h",
+            "attention_layers": 4,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 2173073280,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 12544,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 436731904,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 282591232,
+            "bytes_total": 2892408960,
+            "context_length": 1048576,
+            "has_shared_experts": false,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 81920,
+            "n_embd": 3136,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 40,
+            "n_head_kv": 40,
+            "n_layer": 42,
+            "n_vocab": 131072,
+            "recurrent_state_bytes": 153858048,
+            "sliding_window": null,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "e515c9ceb10ae503db22a201fade92167f757510d1247a65987f8b6ae9e296e7"
+          ]
+        },
+        "Q8_0": {
+          "bpw": 8.47,
+          "bytes": 4233679008,
+          "files": [
+            "NVIDIA-Nemotron-3-Nano-4B-Q8_0.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "nemotron_h",
+            "attention_layers": 4,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 3352315904,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 12544,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 436731904,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 436731904,
+            "bytes_total": 4225792256,
+            "context_length": 1048576,
+            "has_shared_experts": false,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 81920,
+            "n_embd": 3136,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 40,
+            "n_head_kv": 40,
+            "n_layer": 42,
+            "n_vocab": 131072,
+            "recurrent_state_bytes": 153858048,
+            "sliding_window": null,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "81d4c5931c42f34789267445139dbdb196073760b99e11fbc7067fa2d2d7d629"
+          ]
+        }
+      }
+    },
+    "nemotron-3-super-120b-a12b": {
+      "quants": {
+        "UD-Q2_K_XL": {
+          "bpw": 3.64,
+          "bytes": 54656091968,
+          "files": [
+            "UD-Q2_K_XL/NVIDIA-Nemotron-3-Super-120B-A12B-UD-Q2_K_XL-00001-of-00003.gguf",
+            "UD-Q2_K_XL/NVIDIA-Nemotron-3-Super-120B-A12B-UD-Q2_K_XL-00002-of-00003.gguf",
+            "UD-Q2_K_XL/NVIDIA-Nemotron-3-Super-120B-A12B-UD-Q2_K_XL-00003-of-00003.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "nemotron_h_moe",
+            "attention_layers": 8,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 4504793088,
+            "bytes_expert_weights": 48135929856,
+            "bytes_global_weights": 16384,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 301989888,
+            "bytes_shared_expert_weights": 1336344576,
+            "bytes_token_embd": 369098752,
+            "bytes_total": 54648172544,
+            "context_length": 1048576,
+            "has_shared_experts": true,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 131072,
+            "n_embd": 4096,
+            "n_expert": 512,
+            "n_expert_used": 22,
+            "n_head": 32,
+            "n_head_kv": 32,
+            "n_layer": 88,
+            "n_vocab": 131072,
+            "recurrent_state_bytes": 345374720,
+            "sliding_window": null,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "ef957212ca6995530fad069e3182a63b29cf1e2761810ff8115f950680bb5210",
+            "0a348697baa7251a735d10b45a89384f165fe04790a58f9435e751233bb8f713",
+            "3220cf78b16e8610d97ff2dbbb8c0b4c23712060441ee4bfa025a14b5bcd6ab4"
+          ]
+        },
+        "UD-Q4_K_XL": {
+          "bpw": 5.59,
+          "bytes": 83777308512,
+          "files": [
+            "UD-Q4_K_XL/NVIDIA-Nemotron-3-Super-120B-A12B-UD-Q4_K_XL-00001-of-00003.gguf",
+            "UD-Q4_K_XL/NVIDIA-Nemotron-3-Super-120B-A12B-UD-Q4_K_XL-00002-of-00003.gguf",
+            "UD-Q4_K_XL/NVIDIA-Nemotron-3-Super-120B-A12B-UD-Q4_K_XL-00003-of-00003.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "nemotron_h_moe",
+            "attention_layers": 8,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 5671038976,
+            "bytes_expert_weights": 75044487168,
+            "bytes_global_weights": 16384,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 570425344,
+            "bytes_shared_expert_weights": 1912995840,
+            "bytes_token_embd": 570425344,
+            "bytes_total": 83769389056,
+            "context_length": 1048576,
+            "has_shared_experts": true,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 131072,
+            "n_embd": 4096,
+            "n_expert": 512,
+            "n_expert_used": 22,
+            "n_head": 32,
+            "n_head_kv": 32,
+            "n_layer": 88,
+            "n_vocab": 131072,
+            "recurrent_state_bytes": 345374720,
+            "sliding_window": null,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "f22083eb6b15acb52905308ab083e8b0cc38897005cc45e8881abd164580aac2",
+            "a53810e8e9c2baf8e2598c4c503c10e0b9361ced72313d441e2f6f5e93b33de3",
+            "276c72d16eeaef4404a32747f054292e11484ee20988b1446846a0cdb6049ea5"
+          ]
+        },
+        "UD-Q8_K_XL": {
+          "bpw": 8.83,
+          "bytes": 132485760992,
+          "files": [
+            "UD-Q8_K_XL/NVIDIA-Nemotron-3-Super-120B-A12B-UD-Q8_K_XL-00001-of-00004.gguf",
+            "UD-Q8_K_XL/NVIDIA-Nemotron-3-Super-120B-A12B-UD-Q8_K_XL-00002-of-00004.gguf",
+            "UD-Q8_K_XL/NVIDIA-Nemotron-3-Super-120B-A12B-UD-Q8_K_XL-00003-of-00004.gguf",
+            "UD-Q8_K_XL/NVIDIA-Nemotron-3-Super-120B-A12B-UD-Q8_K_XL-00004-of-00004.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "nemotron_h_moe",
+            "attention_layers": 8,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 5671038976,
+            "bytes_expert_weights": 123752939520,
+            "bytes_global_weights": 16384,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 570425344,
+            "bytes_shared_expert_weights": 1912995840,
+            "bytes_token_embd": 570425344,
+            "bytes_total": 132477841408,
+            "context_length": 1048576,
+            "has_shared_experts": true,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 131072,
+            "n_embd": 4096,
+            "n_expert": 512,
+            "n_expert_used": 22,
+            "n_head": 32,
+            "n_head_kv": 32,
+            "n_layer": 88,
+            "n_vocab": 131072,
+            "recurrent_state_bytes": 345374720,
+            "sliding_window": null,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "7efc3a9c77a65929897e2fed1d1d670d514297508485f80996e77004f5e81332",
+            "dfd8124f740de3618c26e43b34496b84e001443c655ea48629dd004d333529c5",
+            "7cdcdf39659a9918867a9e0de8378a80014e8bebff9036ca8be136b3a8c7f70f",
+            "a47d16eb68c2280eed1fbda5135e8425a479db07a1c0bfb4ffa3f8b230c67523"
+          ]
+        }
+      }
+    },
+    "nemotron-3-ultra-550b-a55b": {
+      "quants": {
+        "UD-IQ2_M": {
+          "bpw": 2.82,
+          "bytes": 193960558080,
+          "files": [
+            "UD-IQ2_M/NVIDIA-Nemotron-3-Ultra-550B-A55B-UD-IQ2_M-00001-of-00005.gguf",
+            "UD-IQ2_M/NVIDIA-Nemotron-3-Ultra-550B-A55B-UD-IQ2_M-00002-of-00005.gguf",
+            "UD-IQ2_M/NVIDIA-Nemotron-3-Ultra-550B-A55B-UD-IQ2_M-00003-of-00005.gguf",
+            "UD-IQ2_M/NVIDIA-Nemotron-3-Ultra-550B-A55B-UD-IQ2_M-00004-of-00005.gguf",
+            "UD-IQ2_M/NVIDIA-Nemotron-3-Ultra-550B-A55B-UD-IQ2_M-00005-of-00005.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "nemotron_h_moe",
+            "attention_layers": 12,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 20287438848,
+            "bytes_expert_weights": 166220267520,
+            "bytes_global_weights": 32768,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 603979776,
+            "bytes_shared_expert_weights": 6102712320,
+            "bytes_token_embd": 738197504,
+            "bytes_total": 193952628736,
+            "context_length": 1048576,
+            "has_shared_experts": true,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 393216,
+            "n_embd": 8192,
+            "n_expert": 512,
+            "n_expert_used": 22,
+            "n_head": 64,
+            "n_head_kv": 64,
+            "n_layer": 108,
+            "n_vocab": 131072,
+            "recurrent_state_bytes": 826540032,
+            "sliding_window": null,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "2bf2b9be56ec99860d0e148ecd3f37183eab69db23d228768e16de1e0d50a624",
+            "beb82f2d201f0afc95b5100ae277df675dd79e88e715f8078ed91de55f9b82af",
+            "2ebe1e24474024ac2175efd645eb766b8a63810bcada612b901569c56cf54fa6",
+            "8ad99b703033da9097e2ddfe5b4cc4b159d1fa2ac51fa7051874eaefb038b8ec",
+            "2480b33eb014a863fe8e47e9a4867ffc6486141878395f7f6d567c7ee58f75f9"
+          ]
+        },
+        "UD-Q4_K_XL": {
+          "bpw": 5.24,
+          "bytes": 360156577728,
+          "files": [
+            "UD-Q4_K_XL/NVIDIA-Nemotron-3-Ultra-550B-A55B-UD-Q4_K_XL-00001-of-00009.gguf",
+            "UD-Q4_K_XL/NVIDIA-Nemotron-3-Ultra-550B-A55B-UD-Q4_K_XL-00002-of-00009.gguf",
+            "UD-Q4_K_XL/NVIDIA-Nemotron-3-Ultra-550B-A55B-UD-Q4_K_XL-00003-of-00009.gguf",
+            "UD-Q4_K_XL/NVIDIA-Nemotron-3-Ultra-550B-A55B-UD-Q4_K_XL-00004-of-00009.gguf",
+            "UD-Q4_K_XL/NVIDIA-Nemotron-3-Ultra-550B-A55B-UD-Q4_K_XL-00005-of-00009.gguf",
+            "UD-Q4_K_XL/NVIDIA-Nemotron-3-Ultra-550B-A55B-UD-Q4_K_XL-00006-of-00009.gguf",
+            "UD-Q4_K_XL/NVIDIA-Nemotron-3-Ultra-550B-A55B-UD-Q4_K_XL-00007-of-00009.gguf",
+            "UD-Q4_K_XL/NVIDIA-Nemotron-3-Ultra-550B-A55B-UD-Q4_K_XL-00008-of-00009.gguf",
+            "UD-Q4_K_XL/NVIDIA-Nemotron-3-Ultra-550B-A55B-UD-Q4_K_XL-00009-of-00009.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "nemotron_h_moe",
+            "attention_layers": 12,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 25803866112,
+            "bytes_expert_weights": 323506667520,
+            "bytes_global_weights": 32768,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 1140850688,
+            "bytes_shared_expert_weights": 8556380160,
+            "bytes_token_embd": 1140850688,
+            "bytes_total": 360148647936,
+            "context_length": 1048576,
+            "has_shared_experts": true,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 393216,
+            "n_embd": 8192,
+            "n_expert": 512,
+            "n_expert_used": 22,
+            "n_head": 64,
+            "n_head_kv": 64,
+            "n_layer": 108,
+            "n_vocab": 131072,
+            "recurrent_state_bytes": 826540032,
+            "sliding_window": null,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "bb1758a8954a30bc025eb390dab77ff06b189886c9c04e8c56e7f476a89cae22",
+            "4ab00e49296245aaec45acc0070a4ef7e8d27d4b73e9e3831613b3a42f6550e7",
+            "9c6259d5a531a79f8c473547a7feb8f7249dc1df8d6bef96766e4bc4add76a87",
+            "1d6d7c4cef65e30cc270b55a0c44ca1166d3ec1e18e11ad250ec5f6cca7522b6",
+            "93ce1c860ecf65a9badd6ac77e75be94d357925d0792b4631ab5d476c60317d8",
+            "d0b6ac173d3505ca29c560c962ac740880bd55c2282e01076849a2b48a2077b3",
+            "5137d12e1eb144d53ea23fc8b6ba8a40578d3bce799c5dcfe8a313fa43784563",
+            "0e3db252285e932c526732a41b6be63ed7cbc255f4b24b9992759c8ee6c0a370",
+            "0ed7aff0772384f35320c4291480bd5307d2342b3321ba3a63c78fab8e520899"
+          ]
+        }
+      }
+    },
+    "nemotron-3.5-lightning-30b-a3b": {
+      "quants": {
+        "UD-IQ2_M": {
+          "bpw": 5.18,
+          "bytes": 19432070208,
+          "files": [
+            "NVIDIA-Nemotron-3.5-Lightning-30B-A3B-UD-IQ2_M.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "nemotron_h_moe",
+            "attention_layers": 7,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 1057144064,
+            "bytes_expert_weights": 17401380864,
+            "bytes_global_weights": 10752,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 264241152,
+            "bytes_shared_expert_weights": 437154816,
+            "bytes_token_embd": 264241152,
+            "bytes_total": 19424172800,
+            "context_length": 1048576,
+            "has_shared_experts": true,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 114688,
+            "n_embd": 2688,
+            "n_expert": 128,
+            "n_expert_used": 6,
+            "n_head": 32,
+            "n_head_kv": 32,
+            "n_layer": 53,
+            "n_vocab": 131072,
+            "recurrent_state_bytes": 99860480,
+            "sliding_window": null,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "55fee4ce435f6b7d40df4247d85de01b10b3cbf1f8ba3bb11174699657de80e1"
+          ]
+        },
+        "UD-Q4_K_XL": {
+          "bpw": 6.8,
+          "bytes": 25505724480,
+          "files": [
+            "NVIDIA-Nemotron-3.5-Lightning-30B-A3B-UD-Q4_K_XL.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "nemotron_h_moe",
+            "attention_layers": 7,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 1171459328,
+            "bytes_expert_weights": 23068803072,
+            "bytes_global_weights": 10752,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 374341632,
+            "bytes_shared_expert_weights": 508870656,
+            "bytes_token_embd": 374341632,
+            "bytes_total": 25497827072,
+            "context_length": 1048576,
+            "has_shared_experts": true,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 114688,
+            "n_embd": 2688,
+            "n_expert": 128,
+            "n_expert_used": 6,
+            "n_head": 32,
+            "n_head_kv": 32,
+            "n_layer": 53,
+            "n_vocab": 131072,
+            "recurrent_state_bytes": 99860480,
+            "sliding_window": null,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "112bf957489a497c18f60bf8bd44ee1dfa05e87368b8ed7f68998a4e38f275c9"
+          ]
+        },
+        "UD-Q8_K_XL": {
+          "bpw": 10.3,
+          "bytes": 38615380032,
+          "files": [
+            "NVIDIA-Nemotron-3.5-Lightning-30B-A3B-UD-Q8_K_XL.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "nemotron_h_moe",
+            "attention_layers": 7,
+            "attention_layers_source": "tensors",
+            "bytes_dense_block_weights": 1171459328,
+            "bytes_expert_weights": 36159750144,
+            "bytes_global_weights": 10752,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 374341632,
+            "bytes_shared_expert_weights": 527579136,
+            "bytes_token_embd": 374341632,
+            "bytes_total": 38607482624,
+            "context_length": 1048576,
+            "has_shared_experts": true,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 114688,
+            "n_embd": 2688,
+            "n_expert": 128,
+            "n_expert_used": 6,
+            "n_head": 32,
+            "n_head_kv": 32,
+            "n_layer": 53,
+            "n_vocab": 131072,
+            "recurrent_state_bytes": 99860480,
+            "sliding_window": null,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "48140cfb8bb6a38553275d334345f2638c119d979ab8b6d4afdc4b62d26d8219"
+          ]
+        }
+      }
+    }
+  },
+  "refreshed_at": "2026-09-10T18:02:54.677988+00:00",
+  "schema_version": 1
+}
