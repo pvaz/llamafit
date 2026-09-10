@@ -338,7 +338,11 @@ class Measured(_Strict):
         gen_tps: Generation speed, in tokens per second.
         pp_tps: Prompt processing speed, in tokens per second.
         context: Context length in use during the measurement, in tokens.
-        flags: The llama.cpp flags used, quoted exactly.
+        flags: The llama.cpp flags used, quoted exactly and in full -- not the delta from
+            a base line written down somewhere else. The speed estimator reads these to
+            decide whether a run describes a given placement, and a run that never names
+            ``-ngl`` describes none, so an abbreviated entry costs its own row the one
+            label it could have earned.
         llama_cpp_build: The llama.cpp build number used.
         peak_vram_gb: Peak VRAM used, in gigabytes.
         date: The date of the measurement.
