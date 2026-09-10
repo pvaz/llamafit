@@ -38,7 +38,7 @@ const asked = {
   max_download: "",
   all_quants: false,
   vision: true,
-  limit: 10,
+  limit: 50,
   sort: "score",
   profile: "",
   memory: "",
@@ -194,26 +194,46 @@ function table(columns, rows, options = {}) {
     columns.map((column) =>
       el("th", {
         text: column.heading,
-        class: column.number ? "number" : column.wrap ? "wrap" : null,
+        class:
+          [column.number ? "number" : column.wrap ? "wrap" : "", column.cell || ""]
+            .filter(Boolean)
+            .join(" ") || null,
         scope: "col",
         "data-sort": column.sort || null,
+        "aria-sort": column.sort && column.sort === options.sorted ? "descending" : null,
       }),
     ),
   );
-  const body = rows.map((row) =>
-    el(
-      "tr",
-      row.attrs || {},
-      columns.map((column) =>
-        el("td", {
-          text: row.cells[column.key] === undefined ? "" : row.cells[column.key],
-          class: [column.number ? "number" : column.wrap ? "wrap" : "", row.classes?.[column.key] || ""]
+  const body = rows.map((row) => {
+    // A row may stop early and give the rest of its width to one cell. That is how a
+    // candidate that was never ranked says why in the same list as the ones that were,
+    // on the same line, without a column of its own that every other row would pay for.
+    const upto = row.span ? columns.slice(0, row.span.at) : columns;
+    const cells = upto.map((column) =>
+      el("td", {
+        text: row.cells[column.key] === undefined ? "" : row.cells[column.key],
+        class:
+          [
+            column.number ? "number" : column.wrap ? "wrap" : "",
+            column.cell || "",
+            row.classes?.[column.key] || "",
+          ]
             .filter(Boolean)
             .join(" ") || null,
+      }),
+    );
+    if (row.span) {
+      cells.push(
+        el("td", {
+          text: row.span.text,
+          title: row.span.text,
+          class: row.span.class || null,
+          colspan: columns.length - row.span.at,
         }),
-      ),
-    ),
-  );
+      );
+    }
+    return el("tr", row.attrs || {}, cells);
+  });
   const parts = [el("thead", {}, head), el("tbody", {}, body)];
   if (options.caption) parts.unshift(el("caption", { text: options.caption }));
   return el("table", {}, parts);
@@ -231,22 +251,30 @@ function facts(pairs) {
 
 // ---------------------------------------------------------------- the board
 
+// Seven columns, which are the first seven of the priority the terminal's board already
+// worked out in llamafit/cli/render_board.py and llamafit/tui/board_view.py: the four a
+// row cannot be told apart or acted on without, then how fast it runs, then whether it
+// fits, then how much context it holds. The six the terminal admits after those --
+// `Runs`, `Qual`, `Card`, `Prompt tok/s`, `Size` and `RAM` -- are all still on this page,
+// inside the row, where the figure that produced them is. A browser has room for all
+// fourteen and that is exactly the trap: fourteen columns of one weight is a table with
+// no answer in it, and the answer is the reason somebody opened this.
 const BOARD_COLUMNS = [
-  { key: "rank", name: "rank", number: true },
-  { key: "model", name: "model" },
-  { key: "quant", name: "quant" },
-  { key: "score", name: "score", number: true, sort: "score" },
-  { key: "gen", name: "gen", number: true, sort: "speed" },
-  { key: "confidence", name: "confidence" },
-  { key: "verdict", name: "verdict" },
-  { key: "mode", name: "mode" },
-  { key: "context", name: "context", number: true, sort: "context" },
-  { key: "quality", name: "quality", number: true, sort: "quality" },
-  { key: "vram", name: "vram", number: true },
-  { key: "prompt", name: "prompt", number: true },
-  { key: "size", name: "size", number: true, sort: "size" },
-  { key: "ram", name: "ram", number: true },
+  { key: "rank", name: "rank", number: true, cell: "rank" },
+  { key: "model", name: "model", cell: "name" },
+  { key: "quant", name: "quant", cell: "quant" },
+  { key: "score", name: "score", number: true, sort: "score", cell: "score" },
+  { key: "gen", name: "gen", number: true, sort: "speed", cell: "tps" },
+  { key: "confidence", name: "confidence", cell: "how" },
+  { key: "verdict", name: "verdict", cell: "fit" },
+  { key: "context", name: "context", number: true, sort: "context", cell: "ctx" },
 ];
+
+/** Where an unranked row stops and its reason begins: after the three that identify it. */
+const IDENTITY_COLUMNS = 3;
+
+/** The columns actually drawn, kept so an expanded row knows how wide to be. */
+let drawnColumns = BOARD_COLUMNS;
 
 /** One board row's cells, read straight off the document the API returned. */
 function boardCells(row) {
@@ -263,39 +291,68 @@ function boardCells(row) {
     gen: speed ? number(speed.gen_tps) : "",
     confidence: speed ? label("confidence", speed.confidence) : "",
     verdict: budget ? label("verdict", budget.verdict) : "",
-    mode: placement ? label("mode", placement.mode) : "",
     context: placement ? context(placement.max_context_fit) : "",
-    quality: score ? number(score.quality, 0) : "",
-    vram: budget ? bytes(budget.vram_required) : "",
-    prompt: speed ? number(speed.pp_tps, 0) : "",
-    size: bytes(row.download_bytes),
-    ram: budget ? bytes(budget.ram_required) : "",
   };
 }
 
-/** Draw the ranked board, its captions, and the candidates that did not qualify. */
+/** Whether every row's speed was arrived at the same way, so one sentence covers them.
+ *
+ * The terminal's rule, and for the terminal's reason: when the labels differ, no sentence
+ * above the table is true of all of them and the word has to sit beside the figure. When
+ * they agree, the sentence under the header says it once, in full, and the column would
+ * be the same word repeated down the page.
+ */
+function oneConfidence() {
+  const labels = board.rows.filter((row) => row.candidate.speed);
+  return new Set(labels.map((row) => row.candidate.speed.confidence)).size <= 1;
+}
+
+/** Every candidate this request produced: the ranked ones, then the ones that were not.
+ *
+ * One list rather than two tables. A second table of failures is a second page to find
+ * and lose your place in, and the reason a candidate was refused is the most useful
+ * sentence on this page -- it is the one that says what to change about the request. An
+ * unranked row keeps the three columns that identify it, aligned with every other row,
+ * and spends the rest of its width on that sentence instead of on figures it has none
+ * of. Ranked first and unranked after, because a candidate with no score has no place
+ * in an order made of scores.
+ */
+function boardRows() {
+  const ranked = board.rows.map((row) => ({
+    cells: boardCells(row),
+    attrs: { class: "row", "data-model": row.model_id, "data-quant": row.quant },
+    classes: {
+      verdict:
+        row.candidate.placement && `verdict-${row.candidate.placement.budget.verdict}`,
+    },
+  }));
+  const rest = board.excluded.map((row) => ({
+    cells: boardCells(row),
+    attrs: { class: "row out", "data-model": row.model_id, "data-quant": row.quant },
+    span: { at: IDENTITY_COLUMNS, text: row.candidate.excluded_because || "", class: "why" },
+  }));
+  return ranked.concat(rest);
+}
+
+/** Draw the one list, and the captions saying what the figures in it are. */
 function renderBoard() {
   const target = document.getElementById("board-table");
-  if (!board.rows.length) {
-    fill(target, el("p", { text: t("board.empty") }));
+  const empty = document.getElementById("board-empty");
+  empty.textContent = t("board.empty");
+  empty.hidden = board.rows.length > 0;
+  const rows = boardRows();
+  if (!rows.length) {
+    fill(target, el("p", { class: "muted", text: t("app.none") }));
   } else {
-    const columns = BOARD_COLUMNS.map((column) => ({ ...column, heading: col(column.name) }));
-    const rows = board.rows.map((row) => ({
-      cells: boardCells(row),
-      attrs: { class: "row", "data-model": row.model_id, "data-quant": row.quant },
-      classes: {
-        verdict:
-          row.candidate.placement &&
-          `verdict-${row.candidate.placement.budget.verdict}`,
-      },
-    }));
-    const drawn = table(columns, rows);
+    drawnColumns = BOARD_COLUMNS.filter(
+      (column) => column.name !== "confidence" || !oneConfidence(),
+    );
+    const columns = drawnColumns.map((column) => ({ ...column, heading: col(column.name) }));
+    const drawn = table(columns, rows, { sorted: asked.sort });
     drawn.addEventListener("click", onBoardClick);
     fill(target, drawn);
   }
   renderCaptions();
-  renderExcluded();
-  fillModelChoices();
 }
 
 /** What the board's numbers are, said once under the table rather than on every row. */
@@ -316,26 +373,6 @@ function renderCaptions() {
   ]);
 }
 
-/** The candidates that were not ranked, each with the reason it was not. */
-function renderExcluded() {
-  const columns = [
-    { key: "model", heading: col("model") },
-    { key: "quant", heading: col("quant") },
-    { key: "why", heading: col("why_not"), wrap: true },
-  ];
-  const rows = board.excluded.map((row) => ({
-    cells: {
-      model: row.model_id,
-      quant: row.quant,
-      why: row.candidate.excluded_because || "",
-    },
-  }));
-  fill(
-    document.getElementById("board-excluded"),
-    rows.length ? table(columns, rows) : el("p", { class: "muted", text: t("app.none") }),
-  );
-}
-
 /** Expand a row into what produced it, or sort the board by a column heading. */
 function onBoardClick(event) {
   const heading = event.target.closest("th[data-sort]");
@@ -351,16 +388,38 @@ function onBoardClick(event) {
     open.remove();
     return;
   }
-  const found = board.rows.find(
-    (candidate) =>
-      candidate.model_id === row.dataset.model && candidate.quant === row.dataset.quant,
-  );
+  const found = board.rows
+    .concat(board.excluded)
+    .find(
+      (candidate) =>
+        candidate.model_id === row.dataset.model && candidate.quant === row.dataset.quant,
+    );
   if (!found) return;
-  const cell = el("td", { colspan: BOARD_COLUMNS.length }, explanation(found));
+  const cell = el("td", { colspan: drawnColumns.length }, explanation(found));
   row.after(el("tr", { class: "detail" }, cell));
 }
 
-/** One row expanded: the score with its parts, the speed, the budget and the ladder. */
+/** What the board no longer spends a column on, said once for the row it belongs to.
+ *
+ * How it runs and what it would cost to fetch were two of fourteen columns. They are
+ * facts about one row, not figures to scan a board by, and this is where a reader is
+ * already looking when they want them.
+ */
+function aboutBlock(row) {
+  const placement = row.candidate.placement;
+  const pairs = [
+    [col("mode"), placement ? label("mode", placement.mode) : ""],
+    [col("size"), bytes(row.download_bytes)],
+  ];
+  const parts = [facts(pairs)];
+  if (row.local_path) {
+    parts.push(el("p", { class: "muted", text: t("board.installed") }));
+    parts.push(el("p", { class: "muted", text: row.local_path }));
+  }
+  return el("div", {}, parts);
+}
+
+/** One row expanded: what it is, the score with its parts, the speed, budget and ladder. */
 function explanation(row) {
   const candidate = row.candidate;
   const parts = [];
@@ -371,12 +430,10 @@ function explanation(row) {
     parts.push(tiersBlock(candidate.placement));
   }
   const grid = el("div", { class: "detail-grid" }, parts);
-  const act = el("button", { type: "button", text: t("board.plan_this") });
-  act.addEventListener("click", () => planFor(row.model_id, row.quant));
-  const extras = [grid, el("div", { class: "actions" }, act)];
+  const extras = [aboutBlock(row), grid, planBlock(row)];
   if (candidate.placement && candidate.placement.notes.length) {
     extras.splice(
-      1,
+      2,
       0,
       el(
         "div",
@@ -391,6 +448,44 @@ function explanation(row) {
     extras.push(el("p", { text: candidate.excluded_because }));
   }
   return extras;
+}
+
+/** Planning one model, where the model is: inside its own row rather than on a screen
+ * of its own that asks a person to pick it out of a list a second time.
+ *
+ * The two fields are the ones a plan takes that the request above the list does not.
+ * Everything else -- the machine, or the machine being pretended at -- comes from what
+ * the page is already showing, so the command that comes back is a command for the
+ * board a person is looking at.
+ */
+function planBlock(row) {
+  const output = el("div", {});
+  const size = el("input", { type: "number", min: 1, step: 1024 });
+  const batch = el("input", { type: "number", min: 1 });
+  const field = (word, input) => el("label", {}, [el("span", { text: word }), input]);
+  const act = el("button", { type: "button", text: t("board.plan_this") });
+  act.addEventListener("click", async () => {
+    const body = {
+      model: row.model_id,
+      quant: row.quant,
+      vision: asked.vision,
+      context: Number(size.value) || null,
+      ub: Number(batch.value) || null,
+    };
+    for (const name of ["profile", "memory", "ram", "cpu_cores"]) {
+      if (asked[name]) body[name] = name === "cpu_cores" ? Number(asked[name]) : asked[name];
+    }
+    const plan = await working(output, () =>
+      api(`${API}/plan`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }),
+    );
+    if (plan) renderPlan(plan, output, row);
+  });
+  const controls = [field(t("plan.context"), size), field(t("plan.micro_batch"), batch), act];
+  return el("div", { class: "plan" }, [el("div", { class: "actions" }, controls), output]);
 }
 
 /** The composite score expanded into its four parts, their weights and what each added. */
@@ -492,7 +587,7 @@ function budgetBlock(budget) {
     .map((line) =>
       el("p", { class: "muted", text: `${label("component", line.component)}: ${line.note}` }),
     );
-  return el("div", {}, [
+  return el("div", { class: "wide" }, [
     el("h3", { text: t("plan.budget") }),
     el("div", { class: "scroll" }, table(columns, rows)),
     ...totals,
@@ -636,7 +731,7 @@ async function loadDoctor() {
   const diagnosis = await working(null, () => api(`${API}/doctor`));
   if (!diagnosis) return;
   const nodes = diagnosis.findings.map((finding) =>
-    el("div", { class: `notice ${finding.level === "ok" ? "" : finding.level}` }, [
+    el("div", { class: `finding ${finding.level === "ok" ? "" : finding.level}` }, [
       el("strong", { text: finding.title }),
       el("p", { text: finding.detail }),
       finding.hint ? el("p", { class: "muted", text: `${t("app.hint")}: ${finding.hint}` }) : null,
@@ -654,7 +749,7 @@ async function loadCatalogProblems() {
   banner.hidden = false;
 }
 
-/** The hardware profiles this machine has, for the Simulate panel's list. */
+/** The hardware profiles this machine has, for the machine-to-pretend list. */
 async function loadProfiles() {
   const profiles = await api(`${API}/profiles`).catch(() => []);
   const select = document.getElementById("simulate-profile");
@@ -664,66 +759,27 @@ async function loadProfiles() {
   ]);
 }
 
-/** Offer the board's models on the Plan panel, so nothing has to be typed. */
-function fillModelChoices() {
-  const select = document.getElementById("plan-model");
-  const chosen = select.value;
-  const ids = [...new Set(board.rows.concat(board.excluded).map((row) => row.model_id))];
-  fill(select, ids.map((id) => el("option", { value: id, text: id })));
-  if (ids.includes(chosen)) select.value = chosen;
-}
+/** Everything `llamafit plan` prints that the row above does not already say.
 
-/** Plan one model and show the budget, the ladder and the command line. */
-async function planFor(modelId, quant) {
-  show("plan");
-  const form = document.getElementById("plan-form");
-  form.elements.model.value = modelId;
-  if (quant) form.elements.quant.value = quant;
-  await submitPlan();
-}
-
-/** Send the Plan form and draw what came back. */
-async function submitPlan() {
-  const form = document.getElementById("plan-form");
-  const body = {
-    model: form.elements.model.value,
-    quant: form.elements.quant.value || null,
-    context: Number(form.elements.context.value) || null,
-    ub: Number(form.elements.ub.value) || null,
-    vision: form.elements.vision.checked,
-  };
-  for (const name of ["profile", "memory", "ram", "cpu_cores"]) {
-    if (asked[name]) body[name] = name === "cpu_cores" ? Number(asked[name]) : asked[name];
-  }
-  if (!body.model) {
-    fill(document.getElementById("plan-output"), el("p", { text: t("plan.pick_first") }));
-    return;
-  }
-  const plan = await working(document.getElementById("plan-output"), () =>
-    api(`${API}/plan`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    }),
-  );
-  if (!plan) return;
-  renderPlan(plan);
-}
-
-/** Everything `llamafit plan` prints, laid out for a browser. */
-function renderPlan(plan) {
+ * A plan asked for at the board's own context repeats the row's speed, budget and
+ * ladder exactly, so those are drawn only when the two fields above changed the
+ * question and the answer is a different one. What is always new is the file, the
+ * notes and the command line.
+ */
+function renderPlan(plan, target, row) {
   const fileLine = plan.model_present
     ? format(t("plan.file_here"), { path: plan.model_path })
     : format(t("plan.file_missing"), {
         path: plan.model_path,
         size: bytes(plan.download_bytes),
       });
-  const parts = [
-    el("h2", { text: `${plan.name} ${plan.quant}` }),
-    el("p", { text: fileLine }),
-  ];
-  if (plan.speed) parts.push(speedBlock(plan.speed, plan.placement.context));
-  parts.push(budgetBlock(plan.placement.budget));
+  const planned = row.candidate.placement;
+  const same = planned && planned.context === plan.placement.context;
+  const parts = [el("h3", { text: t("panel.plan") }), el("p", { text: fileLine })];
+  if (!same) {
+    if (plan.speed) parts.push(speedBlock(plan.speed, plan.placement.context));
+    parts.push(budgetBlock(plan.placement.budget));
+  }
   if (plan.requested_budget) {
     parts.push(
       el("h3", {
@@ -732,9 +788,9 @@ function renderPlan(plan) {
     );
     parts.push(budgetBlock(plan.requested_budget));
   }
-  const tiers = tiersBlock(plan.placement);
+  const tiers = same ? null : tiersBlock(plan.placement);
   if (tiers) parts.push(tiers);
-  if (plan.placement.notes.length) {
+  if (!same && plan.placement.notes.length) {
     parts.push(el("h3", { text: t("plan.notes") }));
     for (const note of plan.placement.notes) parts.push(el("p", { class: "muted", text: note }));
   }
@@ -750,17 +806,7 @@ function renderPlan(plan) {
     }
   });
   parts.push(el("div", { class: "actions" }, copy));
-  fill(document.getElementById("plan-output"), parts);
-}
-
-/** Show one panel and mark its tab as the current one. */
-function show(name) {
-  for (const panel of document.querySelectorAll(".panel")) {
-    panel.hidden = panel.id !== `panel-${name}`;
-  }
-  for (const tab of document.querySelectorAll("#tabs button")) {
-    tab.setAttribute("aria-current", String(tab.dataset.panel === name));
-  }
+  fill(target, parts);
 }
 
 // ---------------------------------------------------------------- start-up
@@ -775,6 +821,8 @@ function applyStrings() {
   document.getElementById("estimate-notice").textContent = ui.estimate_notice;
   document.getElementById("sim-badge").textContent = t("simulate.badge");
   document.getElementById("source-link").href = ui.source_url;
+  // How a size may be written, kept off the controls row but still on the field.
+  document.querySelector('[name="max_download"]').title = t("simulate.sizes");
 }
 
 /** Fill the two choice lists whose options are values rather than sentences. */
@@ -799,29 +847,37 @@ function fillChoices() {
   );
 }
 
+/** Read the request off its controls and ask the server again.
+ *
+ * There is no Apply button. Every control re-asks the moment it changes, because the
+ * question and its answer are on one screen now, and a person who can see both should
+ * not have to tell the page to put them together.
+ */
+function readNeeds() {
+  const form = document.getElementById("needs-form");
+  asked.use_case = form.elements.use_case.value;
+  asked.require = [...form.querySelectorAll('input[name="require"]:checked')].map(
+    (input) => input.value,
+  );
+  asked.prefer = form.elements.prefer.value;
+  asked.min_context = Number(form.elements.min_context.value) || 0;
+  asked.max_download = form.elements.max_download.value.trim();
+  asked.all_quants = form.elements.all_quants.checked;
+  asked.vision = form.elements.vision.checked;
+  asked.limit = Number(form.elements.limit.value) || 50;
+  return loadBoard();
+}
+
 /** Wire every control up once, then ask the server for the first answer. */
 function listen() {
-  document.getElementById("tabs").addEventListener("click", (event) => {
-    const tab = event.target.closest("button[data-panel]");
-    if (tab) show(tab.dataset.panel);
-  });
-
-  document.getElementById("needs-form").addEventListener("submit", (event) => {
+  const needs = document.getElementById("needs-form");
+  needs.addEventListener("change", readNeeds);
+  needs.addEventListener("submit", (event) => {
     event.preventDefault();
-    const form = event.currentTarget;
-    asked.use_case = form.elements.use_case.value;
-    asked.require = [...form.querySelectorAll('input[name="require"]:checked')].map(
-      (input) => input.value,
-    );
-    asked.prefer = form.elements.prefer.value;
-    asked.min_context = Number(form.elements.min_context.value) || 0;
-    asked.max_download = form.elements.max_download.value.trim();
-    asked.all_quants = form.elements.all_quants.checked;
-    asked.vision = form.elements.vision.checked;
-    asked.limit = Number(form.elements.limit.value) || 10;
-    show("board");
-    loadBoard();
+    readNeeds();
   });
+  // A reset restores the fields after the event, so the request is read on the next turn.
+  needs.addEventListener("reset", () => setTimeout(readNeeds, 0));
 
   document.getElementById("simulate-form").addEventListener("submit", (event) => {
     event.preventDefault();
@@ -836,7 +892,6 @@ function listen() {
       asked.ram ||
       asked.cpu_cores
     );
-    show("board");
     loadBoard();
   });
 
@@ -845,11 +900,6 @@ function listen() {
     Object.assign(asked, { profile: "", memory: "", ram: "", cpu_cores: "" });
     document.getElementById("sim-badge").hidden = true;
     loadBoard();
-  });
-
-  document.getElementById("plan-form").addEventListener("submit", (event) => {
-    event.preventDefault();
-    submitPlan();
   });
 
   document.getElementById("rescan").addEventListener("click", () => loadSystem(true));
@@ -861,11 +911,13 @@ async function boot() {
   applyStrings();
   fillChoices();
   listen();
-  show("board");
   loadCatalogProblems();
   loadProfiles();
   await loadSystem();
-  await loadBoard();
+  // The first board is read off the controls rather than off the defaults beside them: a
+  // browser may restore a form on reload, and a request the controls do not show is a
+  // request nobody made.
+  await readNeeds();
 }
 
 boot().catch((error) => {

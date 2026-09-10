@@ -322,6 +322,30 @@ the changelog says so when they do.
   beside each figure and a terminal too narrow for the pair shows neither.
 
 ### Changed
+- **`Gen/s` is now `Tok/s`, in the command line, the terminal dashboard and the browser.**
+  `Gen/s` was an abbreviation of something the reader had to already know, and the figure it
+  named is the one the whole tool exists to produce; a person looking for tokens per second
+  did not find the column. It is one catalog entry read by all three interfaces, so it was
+  renamed in all three at once. The prompt-throughput column, `PP/s` on the board and
+  `Prompt/s` in the measurements table, is now `Prompt tok/s` in both: two figures that are
+  both tokens per second, sitting side by side, cannot have only one of them say so.
+- **The browser dashboard is one page.** Board, Needs, Host, Plan and Simulate were five tabs
+  and are now a machine on a line, a row of controls that is always visible, and a list. Every
+  control re-asks the server as it changes rather than waiting for an Apply button. A plan
+  belongs to a model, so it is built inside the row that names one; the machine and the
+  machine to simulate are disclosures behind the line, not screens.
+- **The list is seven columns and carries the candidates that were not ranked.** It kept the
+  first seven of the priority the terminal's board had already settled twice, and moved
+  `Runs`, `Qual`, `Card`, `Prompt tok/s`, `Size` and `RAM` into the row, which opens onto them.
+  A candidate that did not qualify is a row in the same list, quieter, keeping the columns
+  that identify it and spending the rest of its width on the reason it was refused; the whole
+  reason is in the row when it is opened. Fourteen columns of one weight was a table that hid
+  its own answer.
+- **The dashboard is dark, and does not follow the viewer's theme.** One palette, whose
+  neutrals carry a constant blue bias rather than being flat grey, and colour on two things
+  only: how fast a configuration runs, and whether it fits. Borders, fills, radii and shadows
+  are spent on the three things that are separate objects — an expanded row, a block of text
+  to copy, and a control a pointer has to hit — and everything else is separated by space.
 - **The placement planner steps down section 9.3's context ladder instead of halving.**
   Section 9.2 says so in as many words, and the difference is not cosmetic: from 40,960
   tokens, halving reaches 20,480 and then the floor and never 32,768 or 24,576, so on the

@@ -45,13 +45,34 @@ before.
 
 ## The dashboard
 
-The same five panels as the [terminal dashboard](tui.md), laid out for a browser: **Board**
-with the ranked table, each row expanding into the score, the speed, the memory budget and
-the context ladder behind it; **Needs** as a form that re-ranks the board; **Host** with the
-machine, the llama.cpp installation and every finding `doctor` reports; **Plan** with the
-budget, the tiers and a copyable command line; **Simulate** with a hardware profile or an
-override of VRAM, RAM or cores, and a `SIMULATED` badge everywhere while one is in force.
-Phase 2 adds Downloads with progress; phase 3 adds Benchmarks.
+One page, not the [terminal dashboard](tui.md)'s five screens. The machine is a line
+under the title; the request is a row of controls that never scrolls out of reach; the
+list is everything else. Changing a control re-asks the server at once, so a person
+watches the list answer rather than filling in a form and pressing a button to find out.
+
+The list carries seven columns -- `#`, `Model`, `Quant`, `Score`, `Tok/s`, `Fit` and
+`Ctx` -- and an eighth, `How`, only when the rows disagree about how their speeds were
+arrived at. They are the first seven of the priority the terminal's board already works
+out in `_board_columns` and `board_view.MIXED_ORDER`. What the terminal admits after
+those -- `Runs`, `Qual`, `Card`, `Prompt tok/s`, `Size` and `RAM` -- is inside the row,
+which opens into the score with its parts, the speed with where a token's time goes, the
+memory budget line by line, the context ladder, and the command line to run it. A browser
+has room for all fourteen columns and that is the trap: fourteen columns of one weight is
+a table with no answer in it.
+
+A candidate that was not ranked is a row in that same list, quieter, keeping the three
+columns that identify it and spending the rest of its width on the reason it was refused.
+That sentence is the most useful one on the page, because it is the one that says what to
+change about the request; it is cut to a line so that fifty rows stay fifty rows, and the
+whole of it is in the row when the row is opened.
+
+Behind the machine's line are two disclosures: **Host**, with the machine, the llama.cpp
+installation and every finding `doctor` reports, and **Simulate**, with a hardware profile
+or an override of VRAM, RAM or cores, and a `SIMULATED` badge while one is in force.
+Phase 2 adds downloads with progress; phase 3 adds benchmarks.
+
+Colour marks two things and nothing else: how fast it runs, and whether it fits. The page
+is dark and does not follow the viewer's theme.
 
 It is plain HTML, CSS and JavaScript served from the package. There is no build step, no
 package manager and no framework: it calls the API below and renders the JSON.
