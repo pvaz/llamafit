@@ -199,11 +199,45 @@ function table(columns, rows, options = {}) {
             .filter(Boolean)
             .join(" ") || null,
         scope: "col",
-        "data-sort": column.sort || null,
-        "aria-sort": column.sort && column.sort === options.sorted ? "descending" : null,
+        "data-sort": options.sortable ? column.key : column.sort || null,
+        "aria-sort":
+          options.sorted === column.key
+            ? options.sortDown
+              ? "descending"
+              : "ascending"
+            : null,
       }),
     ),
   );
+  // A row of boxes under the headings, one per column that can be narrowed. It is part
+  // of the table so the box sits exactly under the column it narrows and moves with it
+  // when the table scrolls sideways; a separate bar above would drift the moment a
+  // heading changed width.
+  const sieve = options.filters
+    ? el(
+        "tr",
+        { class: "sieve" },
+        columns.map((column) =>
+          el(
+            "th",
+            { class: column.cell || null },
+            column.filter
+              ? el("input", {
+                  type: "text",
+                  value: options.filters[column.key] || "",
+                  "data-filter": column.key,
+                  "aria-label": column.heading,
+                  // A symbol rather than a word: the box is four characters wide and
+                  // "at least" is not, and the two signs mean the same in every language
+                  // this page speaks. The byte columns say their unit, because a bare 8
+                  // under Size could be eight of anything.
+                  placeholder: hint(column),
+                })
+              : [],
+          ),
+        ),
+      )
+    : null;
   const body = rows.map((row) => {
     const cells = columns.map((column) =>
       el("td", {
@@ -220,9 +254,17 @@ function table(columns, rows, options = {}) {
     );
     return el("tr", row.attrs || {}, cells);
   });
-  const parts = [el("thead", {}, head), el("tbody", {}, body)];
+  const parts = [el("thead", {}, sieve ? [head, sieve] : head), el("tbody", {}, body)];
   if (options.caption) parts.unshift(el("caption", { text: options.caption }));
   return el("table", {}, parts);
+}
+
+/** What to put in a column's filter box when it is empty, or "" for a text column. */
+function hint(column) {
+  if (column.filter === "text") return "";
+  const sign = column.filter === "min" ? "≥" : "≤";
+  const scale = column.cell === "size" || column.cell === "vram" || column.cell === "ram";
+  return scale ? `${sign} GiB` : sign;
 }
 
 /** A two-column list of facts, for the host and for a plan's files. */
@@ -237,14 +279,6 @@ function facts(pairs) {
 
 // ---------------------------------------------------------------- the board
 
-// Seven columns, which are the first seven of the priority the terminal's board already
-// worked out in llamafit/cli/render_board.py and llamafit/tui/board_view.py: the four a
-// row cannot be told apart or acted on without, then how fast it runs, then whether it
-// fits, then how much context it holds. The six the terminal admits after those --
-// `Runs`, `Qual`, `Card`, `Prompt tok/s`, `Size` and `RAM` -- are all still on this page,
-// inside the row, where the figure that produced them is. A browser has room for all
-// fourteen and that is exactly the trap: fourteen columns of one weight is a table with
-// no answer in it, and the answer is the reason somebody opened this.
 /* Thirteen columns, and the width they cost is the point of the page.
  *
  * An earlier draft kept seven and put the rest inside the row, which made every
@@ -256,20 +290,35 @@ function facts(pairs) {
  */
 const BOARD_COLUMNS = [
   { key: "rank", name: "rank", number: true, cell: "rank" },
-  { key: "model", name: "model", cell: "name" },
-  { key: "quant", name: "quant", cell: "quant" },
-  { key: "size", name: "size", number: true, cell: "size" },
-  { key: "score", name: "score", number: true, sort: "score", cell: "score" },
-  { key: "quality", name: "quality", number: true, cell: "qual" },
-  { key: "gen", name: "gen", number: true, sort: "speed", cell: "tps" },
-  { key: "prompt", name: "prompt", number: true, cell: "pmt" },
-  { key: "confidence", name: "confidence", cell: "how" },
-  { key: "mode", name: "mode", cell: "mode" },
-  { key: "vram", name: "vram", number: true, cell: "vram" },
-  { key: "ram", name: "ram", number: true, cell: "ram" },
-  { key: "verdict", name: "verdict", cell: "fit" },
-  { key: "context", name: "context", number: true, sort: "context", cell: "ctx" },
+  { key: "model", name: "model", cell: "name", filter: "text" },
+  { key: "quant", name: "quant", cell: "quant", filter: "text" },
+  { key: "size", name: "size", number: true, cell: "size", filter: "max" },
+  { key: "score", name: "score", number: true, cell: "score", filter: "min" },
+  { key: "quality", name: "quality", number: true, cell: "qual", filter: "min" },
+  { key: "gen", name: "gen", number: true, cell: "tps", filter: "min" },
+  { key: "prompt", name: "prompt", number: true, cell: "pmt", filter: "min" },
+  { key: "confidence", name: "confidence", cell: "how", filter: "text" },
+  { key: "mode", name: "mode", cell: "mode", filter: "text" },
+  { key: "vram", name: "vram", number: true, cell: "vram", filter: "max" },
+  { key: "ram", name: "ram", number: true, cell: "ram", filter: "max" },
+  { key: "verdict", name: "verdict", cell: "fit", filter: "text" },
+  { key: "context", name: "context", number: true, cell: "ctx", filter: "min" },
 ];
+
+/* How the board is put in order and cut down, here rather than at the server.
+ *
+ * The server ranks; the browser arranges. Once the rows have arrived, sorting and
+ * filtering them is a few hundred comparisons and the answer appears while the key is
+ * still down -- and every column can take part, including the ones the API has no sort
+ * for. Asking the server would mean a round trip per keystroke to reorder a list it
+ * already sent.
+ *
+ * `sortBy` is the column key, `sortDown` its direction, and `filters` maps a column key
+ * to what was typed under its heading. A text filter matches anywhere in the cell as
+ * shown, so a person filters by what they can see; `min` and `max` compare against the
+ * underlying number, so "4" under Tok/s means four tokens a second and not the string.
+ */
+const view = { sortBy: null, sortDown: true, filters: {} };
 
 /** The columns actually drawn, kept so an expanded row knows how wide to be. */
 let drawnColumns = BOARD_COLUMNS;
@@ -294,7 +343,7 @@ function boardCells(row) {
     quant: row.quant,
     size: row.download_bytes ? bytes(row.download_bytes) : "",
     score: score ? number(score.total) : candidate.excluded_tag || "",
-    quality: candidate.quality ? number(candidate.quality.total, 0) : "",
+    quality: candidate.quality ? number(candidate.quality.quality, 0) : "",
     gen: speed ? number(speed.gen_tps) : "",
     prompt: speed ? number(speed.pp_tps, 0) : "",
     confidence: speed ? label("confidence", speed.confidence) : "",
@@ -303,6 +352,30 @@ function boardCells(row) {
     ram: budget ? bytes(budget.ram_required) : "",
     verdict: budget ? label("verdict", budget.verdict) : "",
     context: placement ? context(placement.max_context_fit) : "",
+  };
+}
+
+/** What each numeric column sorts and filters by, which is never the text in the cell.
+ *
+ * "12,4" and "1,2 GiB" are shaped by the reader's language, and their punctuation is not
+ * arithmetic: read back out of the cell they would sort as words. The figure the cell was
+ * made from is kept beside it instead.
+ */
+function boardValues(row) {
+  const candidate = row.candidate;
+  const placement = candidate.placement;
+  const budget = placement && placement.budget;
+  const speed = candidate.speed;
+  return {
+    rank: row.rank,
+    size: row.download_bytes,
+    score: candidate.score && candidate.score.total,
+    quality: candidate.quality && candidate.quality.quality,
+    gen: speed && speed.gen_tps,
+    prompt: speed && speed.pp_tps,
+    vram: budget && budget.vram_required,
+    ram: budget && budget.ram_required,
+    context: placement && placement.max_context_fit,
   };
 }
 
@@ -330,6 +403,7 @@ function oneConfidence() {
 function boardRows() {
   const ranked = board.rows.map((row) => ({
     cells: boardCells(row),
+    values: boardValues(row),
     attrs: { class: "row", "data-model": row.model_id, "data-quant": row.quant },
     classes: {
       verdict:
@@ -338,6 +412,7 @@ function boardRows() {
   }));
   const rest = board.excluded.map((row) => ({
     cells: boardCells(row),
+    values: boardValues(row),
     attrs: {
       class: "row out",
       "data-model": row.model_id,
@@ -352,7 +427,66 @@ function boardRows() {
         row.candidate.placement && `verdict-${row.candidate.placement.budget.verdict}`,
     },
   }));
-  return ranked.concat(rest);
+  return arrange(ranked.concat(rest));
+}
+
+/** Cut the rows down to what the column filters allow, then put them in the asked order.
+ *
+ * Ranked and unranked stay apart when nothing has been sorted: the board's own order is
+ * an order, and scattering the ones that cannot run through it would lose it. The moment
+ * a column is chosen the two mix, because "sort by speed" means all of them.
+ */
+function arrange(rows) {
+  const kept = rows.filter((row) =>
+    BOARD_COLUMNS.every((column) => allows(column, row, view.filters[column.key])),
+  );
+  if (!view.sortBy) return kept;
+  const column = BOARD_COLUMNS.find((item) => item.key === view.sortBy);
+  const direction = view.sortDown ? -1 : 1;
+  return kept.slice().sort((left, right) => {
+    // A row with no value in this column sorts last whichever way the column points. A
+    // blank is not a small number, and letting the direction move it puts a column of
+    // blanks at the top of the board every time somebody sorts ascending.
+    const missing = blank(column, left) - blank(column, right);
+    return missing || direction * compare(column, left, right);
+  });
+}
+
+/** 1 when this row has nothing to show in this column, 0 when it has something. */
+function blank(column, row) {
+  const value = column.number ? row.values[column.key] : row.cells[column.key];
+  return value === null || value === undefined || value === "" ? 1 : 0;
+}
+
+/** Whether one row survives one column's filter. An empty filter allows everything. */
+function allows(column, row, wanted) {
+  if (!wanted) return true;
+  if (column.filter === "text") {
+    return String(row.cells[column.key] || "")
+      .toLowerCase()
+      .includes(wanted.toLowerCase());
+  }
+  const limit = Number(wanted.replace(",", "."));
+  if (Number.isNaN(limit)) return true;
+  const value = row.values[column.key];
+  // A row with no figure at all is not hidden by a threshold on it: it has not failed
+  // the test, it was never given one, and hiding it would be the board quietly deciding.
+  if (value === null || value === undefined) return true;
+  const scale = column.cell === "size" || column.cell === "vram" || column.cell === "ram";
+  return column.filter === "min"
+    ? value >= (scale ? limit * 1024 ** 3 : limit)
+    : value <= (scale ? limit * 1024 ** 3 : limit);
+}
+
+/** Order two rows by one column: by its number where it has one, by its text otherwise. */
+function compare(column, left, right) {
+  if (column.number) {
+    return (left.values[column.key] || 0) - (right.values[column.key] || 0);
+  }
+  return String(left.cells[column.key] || "").localeCompare(
+    String(right.cells[column.key] || ""),
+    ui.language,
+  );
 }
 
 /** Draw the one list, and the captions saying what the figures in it are. */
@@ -369,8 +503,14 @@ function renderBoard() {
       (column) => column.name !== "confidence" || !oneConfidence(),
     );
     const columns = drawnColumns.map((column) => ({ ...column, heading: col(column.name) }));
-    const drawn = table(columns, rows, { sorted: asked.sort });
+    const drawn = table(columns, rows, {
+      sortable: true,
+      sorted: view.sortBy,
+      sortDown: view.sortDown,
+      filters: view.filters,
+    });
     drawn.addEventListener("click", onBoardClick);
+    drawn.addEventListener("input", onFilterInput);
     fill(target, drawn);
   }
   renderCaptions();
@@ -404,17 +544,42 @@ function renderCaptions() {
   captions.push(el("p", { text: format(t("board.weights"), { weights }) }));
   fill(document.getElementById("board-captions"), captions);
   document.getElementById("board-count").textContent = format(t("app.showing"), {
-    shown: number(board.rows.length + board.excluded.length, 0),
+    shown: number(boardRows().length, 0),
     total: number(board.ranked_total + board.excluded.length, 0),
   });
 }
 
+/** Narrow one column, redrawing the list without asking the server again.
+ *
+ * The cursor goes back where it was: the table is rebuilt on every keystroke, so without
+ * this the box the person is typing into stops existing between one letter and the next.
+ */
+function onFilterInput(event) {
+  const box = event.target.closest("input[data-filter]");
+  if (!box) return;
+  const key = box.dataset.filter;
+  const at = box.selectionStart;
+  view.filters[key] = box.value;
+  renderBoard();
+  const again = document.querySelector(`input[data-filter="${key}"]`);
+  if (again) {
+    again.focus();
+    again.setSelectionRange(at, at);
+  }
+}
+
 /** Expand a row into what produced it, or sort the board by a column heading. */
 function onBoardClick(event) {
+  if (event.target.closest("tr.sieve")) return;
   const heading = event.target.closest("th[data-sort]");
   if (heading) {
-    asked.sort = heading.dataset.sort;
-    loadBoard();
+    // The same heading again turns the column round; a different one starts at the end a
+    // person means when they pick it -- largest first for a figure, A to Z for a word.
+    const key = heading.dataset.sort;
+    const column = BOARD_COLUMNS.find((item) => item.key === key);
+    view.sortDown = view.sortBy === key ? !view.sortDown : Boolean(column && column.number);
+    view.sortBy = key;
+    renderBoard();
     return;
   }
   const row = event.target.closest("tr.row");
