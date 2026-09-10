@@ -1,0 +1,340 @@
+/*
+ * LlamaFit. Copyright (C) 2026 Paulo Vaz.
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
+ *
+ * No @import and no font file: everything the page draws with is already on the machine.
+ * A stylesheet that pulled a font from somewhere would break with the network unplugged
+ * and would tell that somewhere every time this dashboard was opened.
+ *
+ * Colours are named after what they mean rather than after what they look like, and the
+ * dark theme swaps the values rather than the rules. The verdict colours are the
+ * terminal's own -- green while a configuration runs well, yellow when it is tight, red
+ * once the driver starts paging -- so a row that reads as trouble in one interface reads
+ * as trouble in the other.
+ */
+
+:root {
+  color-scheme: light dark;
+  --page: #fbfbfa;
+  --ink: #1a1a19;
+  --muted: #63635e;
+  --line: #d8d8d2;
+  --raised: #ffffff;
+  --accent: #2f5d50;
+  --ok: #1f6f43;
+  --warn: #8a5a00;
+  --error: #a12a20;
+  --notice: #eef2f0;
+  --radius: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #16171a;
+    --ink: #e8e8e4;
+    --muted: #9a9a93;
+    --line: #33353a;
+    --raised: #1e2024;
+    --accent: #7fc3ae;
+    --ok: #6fce9b;
+    --warn: #e0b357;
+    --error: #f0857c;
+    --notice: #22262a;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 1rem clamp(0.75rem, 3vw, 2.5rem) 3rem;
+  background: var(--page);
+  color: var(--ink);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.05rem;
+  margin: 1.5rem 0 0.5rem;
+  font-weight: 600;
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.75rem;
+}
+
+.muted {
+  color: var(--muted);
+  margin: 0.25rem 0;
+}
+
+.badge {
+  margin-inline-start: 0.6rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius);
+  background: var(--error);
+  color: var(--page);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  vertical-align: middle;
+}
+
+.notice {
+  margin: 0.85rem 0;
+  padding: 0.6rem 0.8rem;
+  border-inline-start: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--notice);
+}
+
+.notice.warn {
+  border-inline-start-color: var(--warn);
+}
+
+.notice.error {
+  border-inline-start-color: var(--error);
+  color: var(--error);
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.tabs button {
+  border: 1px solid var(--line);
+  background: var(--raised);
+  color: var(--ink);
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font: inherit;
+}
+
+.tabs button[aria-current="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--raised);
+  color: var(--ink);
+}
+
+button[type="submit"] {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.scroll {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 34rem;
+}
+
+caption {
+  text-align: start;
+  color: var(--muted);
+  padding-bottom: 0.3rem;
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.35rem 0.6rem;
+  text-align: start;
+  white-space: nowrap;
+}
+
+th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+th[data-sort] {
+  cursor: pointer;
+}
+
+td.wrap,
+th.wrap {
+  white-space: normal;
+  min-width: 12rem;
+}
+
+td.number,
+th.number {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+tr.row {
+  cursor: pointer;
+}
+
+tr.row:hover td {
+  background: var(--notice);
+}
+
+tr.detail > td {
+  white-space: normal;
+  background: var(--notice);
+}
+
+.verdict-comfortable,
+.verdict-fits {
+  color: var(--ok);
+}
+
+.verdict-tight {
+  color: var(--warn);
+}
+
+.verdict-too-tight,
+.verdict-does-not-fit {
+  color: var(--error);
+}
+
+.captions p {
+  color: var(--muted);
+  margin: 0.35rem 0;
+}
+
+.detail-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+}
+
+form {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  align-items: end;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+form label {
+  display: grid;
+  gap: 0.25rem;
+}
+
+form label.check {
+  grid-auto-flow: column;
+  justify-content: start;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+fieldset {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  margin: 0;
+}
+
+legend {
+  color: var(--muted);
+  padding: 0 0.3rem;
+}
+
+.checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.9rem;
+}
+
+.checks label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+input,
+select {
+  font: inherit;
+  color: var(--ink);
+  background: var(--page);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.35rem 0.45rem;
+  min-width: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  grid-column: 1 / -1;
+}
+
+pre {
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.7rem;
+  overflow-x: auto;
+  margin: 0.4rem 0;
+}
+
+dl.facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.2rem 1rem;
+  margin: 0;
+}
+
+dl.facts dt {
+  color: var(--muted);
+}
+
+dl.facts dd {
+  margin: 0;
+}
+
+footer {
+  margin-top: 2.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+}
+
+a {
+  color: var(--accent);
+}
+
+@media (max-width: 40rem) {
+  form {
+    grid-template-columns: 1fr;
+  }
+}
