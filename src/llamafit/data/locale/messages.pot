@@ -1045,6 +1045,54 @@ msgstr ""
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr ""
 
+#: src/llamafit/speed/bandwidths.py:89
+msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
+msgstr ""
+
+#: src/llamafit/speed/bandwidths.py:108
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
+msgstr ""
+
+#: src/llamafit/speed/bandwidths.py:119
+msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:153
+msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:166
+msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:178
+msgid "No active parameter count was supplied; it was inferred from the weight bytes."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:346
+msgid "No placement of this model on this machine could run it."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:398
+msgid "Generation is a benchmark of this configuration, not a prediction."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:405
+msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:420
+msgid "Prompt processing is a benchmark of this configuration."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:427
+msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:436
+msgid "This figure assumes nothing pages: a placement this tight often does, silently."
+msgstr ""
+
 #. Translators: this is punctuation, not prose. It is what your language puts between
 #. a number's groups of three digits: English writes 32,768, German 32.768 and French
 #. 32 768. Write the character your readers expect. A space is a character like any
