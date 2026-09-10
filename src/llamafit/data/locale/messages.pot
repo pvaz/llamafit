@@ -11,6 +11,94 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: src/llamafit/budget/budget.py:153
+msgid "A hybrid placement has to say how many layers are on the graphics card."
+msgstr ""
+
+#: src/llamafit/budget/budget.py:154
+msgid "Pass gpu_layers, which is what -ngl would be."
+msgstr ""
+
+#: src/llamafit/budget/budget.py:208
+msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
+msgstr ""
+
+#: src/llamafit/budget/budget.py:210
+msgid "Run `llamafit catalog refresh` to read the file's header."
+msgstr ""
+
+#: src/llamafit/budget/budget.py:247
+msgid "what the GPU backend costs before it allocates anything"
+msgstr ""
+
+#: src/llamafit/budget/budget.py:256
+msgid "the server process before any model buffer"
+msgstr ""
+
+#: src/llamafit/budget/compute_buffer.py:121
+msgid "fitted to one machine's measurements; the least certain line here"
+msgstr ""
+
+#: src/llamafit/budget/compute_buffer.py:132
+msgid "room for one logit per vocabulary entry per token of the batch"
+msgstr ""
+
+#: src/llamafit/budget/kv.py:46
+msgid "LlamaFit cannot size a %(kv_type)s key-value cache."
+msgstr ""
+
+#: src/llamafit/budget/kv.py:47
+msgid "Use one of: %(types)s."
+msgstr ""
+
+#: src/llamafit/budget/kv.py:52
+msgid "This model's file does not say how large its key-value cache is per token."
+msgstr ""
+
+#: src/llamafit/budget/kv.py:53
+msgid "Refresh the catalog so the file's header is read again."
+msgstr ""
+
+#: src/llamafit/budget/kv.py:89
+msgid "the attention-layer count was assumed, not counted"
+msgstr ""
+
+#: src/llamafit/budget/kv.py:101
+msgid "from the architecture's state dimensions; it does not grow with context"
+msgstr ""
+
+#: src/llamafit/budget/projector.py:45
+msgid "the projector file itself"
+msgstr ""
+
+#: src/llamafit/budget/projector.py:55
+msgid "the projector's own compute space, measured at 248 MiB"
+msgstr ""
+
+#: src/llamafit/budget/weights.py:90
+msgid "attention projections, feed-forward weights, norms and any shared experts"
+msgstr ""
+
+#: src/llamafit/budget/weights.py:108
+msgid "routed experts, read across the bus once per micro-batch"
+msgstr ""
+
+#: src/llamafit/budget/weights.py:119
+msgid "this model ties its output projection to its embedding table"
+msgstr ""
+
+#: src/llamafit/budget/weights.py:121
+msgid "llama.cpp keeps the embedding table in memory even at full offload"
+msgstr ""
+
+#: src/llamafit/budget/weights.py:136
+msgid "streamed from disk as it is needed, not held in memory"
+msgstr ""
+
+#: src/llamafit/budget/weights.py:138
+msgid "held in memory, since streaming from disk was turned off"
+msgstr ""
+
 #: src/llamafit/catalog/hf.py:193
 msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
 msgstr ""
