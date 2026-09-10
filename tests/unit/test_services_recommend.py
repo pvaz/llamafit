@@ -91,6 +91,40 @@ def test_the_catalogs_own_runs_are_offered_separately_rather_than_as_the_estimat
 # --- the request's own filters --------------------------------------------------------
 
 
+def test_the_general_board_no_longer_leads_with_a_model_slower_than_its_reader() -> None:
+    """The whole defect, at the service that produces the answer a person reads.
+
+    On the reference machine a general request used to put Gemma 3 27B at 2.3 tokens per
+    second above Llama 3.1 8B at 34, carried there by quality and fit while its speed
+    score read exactly zero. The row is still on the page; it is on the half of the page
+    that says why.
+    """
+    board = build_board(catalog(), reference_host(), Needs(use_case="general"))
+    assert board.rows, "something on this machine should be readable"
+    assert board.rows[0].model_id == "llama-3.1-8b-instruct"
+    assert "gemma-3-27b-it" not in ids(board.rows)
+
+    slow = next(row for row in board.excluded if row.model_id == "gemma-3-27b-it")
+    assert "a person reads at" in (slow.candidate.excluded_because or "")
+    assert slow.candidate.speed is not None, "the excluded row keeps the number it was judged on"
+    assert slow.candidate.placement is not None
+
+
+def test_the_same_model_is_ranked_on_a_machine_that_can_actually_run_it() -> None:
+    """The rule is a fact about a machine, not a verdict on a model.
+
+    Gemma 3 27B is excluded from the reference machine's general board for running at
+    two and a half tokens per second there. Given a card that holds it, the same entry
+    at the same quantisation reaches nine and is ranked, which is what stops this from
+    being a rule fitted to one board.
+    """
+    roomy = machine(vram_total=32 * GIB, ram_total=64 * GIB, ram_available=48 * GIB)
+    board = build_board(catalog(), roomy, Needs(use_case="general"))
+    ranked = next(row for row in board.rows if row.model_id == "gemma-3-27b-it")
+    assert ranked.candidate.speed is not None
+    assert ranked.candidate.speed.gen_tps > 6.0
+
+
 def test_a_required_capability_excludes_by_name() -> None:
     board = build_board(
         catalog(), reference_host(), Needs(use_case="coding", capabilities=("vision",))
