@@ -102,6 +102,7 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
     bytes_lazy_tables = 0
     bytes_expert_weights = 0
     bytes_dense_block_weights = 0
+    bytes_shared_expert_weights = 0
     bytes_global_weights = 0
     has_shared_experts = False
     full_attention_blocks: set[int] = set()
@@ -116,6 +117,12 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
             bytes_output_head += tensor.bytes_
         elif "_exps" in tensor.name:
             bytes_expert_weights += tensor.bytes_
+        elif "_shexp" in tensor.name:
+            # Carved out of the dense block bucket rather than added beside it, so the
+            # buckets still partition the file. A shared expert runs for every token,
+            # unlike a routed one, but it can be sent to the other pool on its own with
+            # a tensor override, and a placement cannot cost a move it cannot measure.
+            bytes_shared_expert_weights += tensor.bytes_
         elif _BLOCK_RE.match(tensor.name):
             bytes_dense_block_weights += tensor.bytes_
         else:
@@ -156,6 +163,7 @@ def derive_facts(header: GgufHeader, *, lazy_tensor_names: Sequence[str] = ()) -
         n_expert=n_expert,
         n_expert_used=n_expert_used,
         has_shared_experts=has_shared_experts,
+        bytes_shared_expert_weights=bytes_shared_expert_weights,
         bytes_expert_weights=bytes_expert_weights,
         bytes_dense_block_weights=bytes_dense_block_weights,
         bytes_output_head=bytes_output_head,

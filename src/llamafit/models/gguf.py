@@ -163,6 +163,14 @@ class GgufFacts(_Strict):
     has_shared_experts: bool = False
     bytes_expert_weights: ByteSize = 0
     bytes_dense_block_weights: ByteSize = 0
+    bytes_shared_expert_weights: ByteSize = 0
+    """Bytes of shared-expert tensors, which run for every token unlike routed ones.
+
+    Carved out of :attr:`bytes_dense_block_weights` rather than counted beside it, so the
+    buckets still partition the file. It has its own bucket because a placement can send
+    just these to the other pool with a tensor override, and the reference machine's own
+    best measured configuration does exactly that; a budget cannot cost a move it cannot
+    measure. Zero for a model with no shared experts, never absent."""
     bytes_output_head: ByteSize = 0
     bytes_token_embd: ByteSize = 0
     bytes_lazy_tables: ByteSize = 0
@@ -186,6 +194,7 @@ class GgufFacts(_Strict):
         buckets = (
             self.bytes_expert_weights
             + self.bytes_dense_block_weights
+            + self.bytes_shared_expert_weights
             + self.bytes_output_head
             + self.bytes_token_embd
             + self.bytes_lazy_tables
