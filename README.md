@@ -144,9 +144,48 @@ Catalog entries, hardware fixtures, GPU table rows, translations, bug reports an
 documentation are all welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md); catalog rules are
 in [docs/catalog.md](docs/catalog.md) and translation rules in
 [docs/translations.md](docs/translations.md). Please read the
-[code of conduct](CODE_OF_CONDUCT.md).
+[code of conduct](CODE_OF_CONDUCT.md) and the [contributor licence agreement](CLA.md), which a
+pull request confirms in one line.
 
 ## License
 
-MIT, see [LICENSE](LICENSE). Third-party notes are in [NOTICE](NOTICE). Model weights are not
-part of this project and keep their own licenses, which the catalog records.
+LlamaFit is free software under the **GNU Affero General Public License, version 3 or later**
+(`AGPL-3.0-or-later`). The full text is in [LICENSE](LICENSE).
+
+### What that means if you just want to use it
+
+Nothing. Using LlamaFit costs nothing and requires nothing: run it on any machine, on any
+number of machines, at home or at work, for a hobby or for money, script it, wrap it, put it
+in your pipeline. You owe no notice, no payment and no publication. The AGPL places
+obligations on *giving the software to other people*, not on using it, and the reports, launch
+scripts and JSON it produces are yours.
+
+| What you do | What you owe |
+|---|---|
+| Run it, anywhere, for anything, including commercially | nothing |
+| Modify it and keep the modification to yourself | nothing |
+| Give it to someone else, modified or not | the source, under this same licence |
+| Run a **modified** version as a network service others use | that modified source, offered to those users |
+
+Model weights are not part of this project. They are downloaded from the repositories the
+catalog names and keep their own licences, which the catalog records; the AGPL says nothing
+about them.
+
+### Why AGPL and not GPL or MIT
+
+Phase 1D adds a web dashboard, and a hosted dashboard is exactly what a plain GPL does not
+reach: someone could take LlamaFit, sharpen the estimator, run it as a service, and never
+publish a line, because they never *distribute* anything. Section 13 of the AGPL — the network
+clause — closes that gap: if people interact with a modified LlamaFit over a network, they are
+entitled to its source. LlamaFit's whole value is numbers that can be checked and corrected,
+so corrections should come back to the people relying on them. MIT asked for nothing; this
+project asks for that one thing and nothing more.
+
+### Commercial licensing
+
+The AGPL is not workable for everybody. The copyright holder can also license LlamaFit on
+other terms, which is possible because contributors grant the rights described in
+[CLA.md](CLA.md). Open an issue to ask.
+
+Third-party notes are in [NOTICE](NOTICE); every runtime dependency is under a permissive
+licence that combines with the AGPL.
