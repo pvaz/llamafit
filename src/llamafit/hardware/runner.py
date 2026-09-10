@@ -13,9 +13,10 @@ from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Protocol, TypeVar
 
-from llamafit.i18n import _
+from llamafit.i18n import _, ngettext
 from llamafit.logging import get_logger
 from llamafit.models.host import Probe
+from llamafit.units import localise_number
 
 T = TypeVar("T")
 _log = get_logger("hardware.runner")
@@ -36,6 +37,24 @@ class CommandResult:
     def ok(self) -> bool:
         """True when the command ran and exited with status 0."""
         return self.error is None and self.returncode == 0
+
+
+def _timed_out(program: str, seconds: float) -> str:
+    """The message a command that ran out of time reports.
+
+    The unit is a word in the sentence and not a letter welded to the number. Welded, a
+    language that spells *seconds* out had to decide on its own whether it was allowed to
+    drop the ``s``, and in Arabic or Hebrew that trailing Latin letter sat at the seam
+    between two writing directions with nothing saying which side it belonged to.
+
+    A timeout is a duration and not a count of things, so it can be fractional. The form
+    is selected on the nearest whole second, while the number printed is the exact one.
+    """
+    return ngettext(
+        "%(program)s: timed out after %(seconds)s second",
+        "%(program)s: timed out after %(seconds)s seconds",
+        round(seconds),
+    ) % {"program": program, "seconds": localise_number(f"{seconds:g}")}
 
 
 class Runner(Protocol):
@@ -82,8 +101,7 @@ class SubprocessRunner:
                 "",
                 "",
                 _elapsed_ms(start),
-                error=_("%(program)s: timed out after %(seconds)ss")
-                % {"program": args[0], "seconds": timeout},
+                error=_timed_out(args[0], timeout),
             )
         except OSError as exc:
             return CommandResult(

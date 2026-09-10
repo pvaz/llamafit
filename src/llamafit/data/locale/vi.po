@@ -621,8 +621,9 @@ msgstr "Bỏ qua bước đo băng thông RAM."
 msgid "Command: %(command)s"
 msgstr "Lệnh: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "phần đầu GGUF bị cắt cụt: cần %(wanted)d byte tại vị trí %(offset)d, chỉ có %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Tệp có thể vẫn đang tải về, hoặc URL không trỏ tới một tệp GGUF."
@@ -645,6 +646,10 @@ msgstr "phiên bản GGUF %(version)d không được hỗ trợ, tại vị tr�
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit hỗ trợ các phiên bản GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "các tệp GGUF này không thuộc cùng một mô hình chia mảnh: chúng khai báo '%(key)s' khác nhau, là %(values)s"
 
@@ -657,14 +662,15 @@ msgstr "không có phần đầu GGUF để đọc dữ kiện"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Hãy đưa vào tệp của mô hình, hoặc mọi mảnh của một mô hình chia mảnh."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d trong %(total)d tệp GGUF không có khóa '%(key)s', nên không xác định được vị trí của chúng trong mô hình chia mảnh"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Hãy đưa vào một tệp không chia mảnh riêng lẻ, hoặc mọi mảnh của một mô hình chia mảnh."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "bộ mảnh chưa đủ: mô hình khai báo %(declared)d mảnh mà chỉ có %(arrived)d mảnh tới (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Hãy đưa vào mọi mảnh của mô hình chia mảnh."
@@ -681,8 +687,12 @@ msgstr "bộ mảnh chưa đủ: cần %(key)s từ 0 đến %(last)d, nhận đ
 msgid "Pass each shard of the split model exactly once."
 msgstr "Hãy đưa mỗi mảnh của mô hình chia mảnh đúng một lần."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "bộ mảnh chưa đủ: mô hình khai báo %(declared)d tensor mà %(shards)d mảnh của nó gộp lại chỉ có %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "không đọc được %(path)s: %(error)s"
@@ -727,11 +737,12 @@ msgstr "không có thanh nhớ nào được gắn"
 msgid "no SPMemoryDataType"
 msgstr "không có SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+
 msgid "empty command"
 msgstr "lệnh rỗng"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: quá hạn sau %(seconds)ss"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -858,6 +869,7 @@ msgstr "Hãy cài numpy (`pip install llamafit[fast]`) để LlamaFit đo đư�
 msgid "Probe %(probe)s failed"
 msgstr "Phép dò %(probe)s thất bại"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "lỗi không rõ"
 

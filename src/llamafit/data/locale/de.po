@@ -643,8 +643,10 @@ msgstr "Überspringt die Messung der RAM-Bandbreite."
 msgid "Command: %(command)s"
 msgstr "Befehl: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "abgeschnittener GGUF-Header: %(wanted)d Bytes an Position %(offset)d erwartet, %(got)d erhalten"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Die Datei wird vielleicht noch heruntergeladen, oder die URL zeigt nicht auf eine GGUF-Datei."
@@ -667,6 +669,11 @@ msgstr "nicht unterstützte GGUF-Version %(version)d an Position 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit unterstützt die GGUF-Versionen %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "diese GGUF-Dateien sind kein einzelnes aufgeteiltes Modell: sie sind sich über '%(key)s' nicht einig und geben %(values)s an"
 
@@ -681,14 +688,16 @@ msgstr "kein GGUF-Header, aus dem sich Angaben lesen lassen"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Übergeben Sie die Datei des Modells oder jeden Shard eines aufgeteilten Modells."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d von %(total)d GGUF-Dateien haben keinen Schlüssel '%(key)s', deshalb lässt sich ihr Platz in einem aufgeteilten Modell nicht bestimmen"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Übergeben Sie entweder eine einzelne, nicht aufgeteilte Datei allein oder jeden Shard eines aufgeteilten Modells."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "unvollständiger Satz von Shards: das Modell gibt %(declared)d Shards an, angekommen sind %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Übergeben Sie jeden Shard des aufgeteilten Modells."
@@ -705,8 +714,13 @@ msgstr "unvollständiger Satz von Shards: erwartet wurde %(key)s 0 bis %(last)d,
 msgid "Pass each shard of the split model exactly once."
 msgstr "Übergeben Sie jeden Shard des aufgeteilten Modells genau einmal."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "unvollständiger Satz von Shards: das Modell gibt %(declared)d Tensoren an, und seine %(shards)d Shards enthalten zusammen %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "%(path)s konnte nicht gelesen werden: %(error)s"
@@ -751,11 +765,13 @@ msgstr "keine bestückten Speichermodule"
 msgid "no SPMemoryDataType"
 msgstr "kein SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "leerer Befehl"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: Zeitüberschreitung nach %(seconds)ss"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -882,6 +898,7 @@ msgstr "Installieren Sie numpy (`pip install llamafit[fast]`), damit LlamaFit di
 msgid "Probe %(probe)s failed"
 msgstr "Prüfung %(probe)s fehlgeschlagen"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "unbekannter Fehler"
 

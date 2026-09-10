@@ -662,8 +662,11 @@ msgstr "דילוג על מדידת רוחב הפס של ה-RAM."
 msgid "Command: %(command)s"
 msgstr "פקודה: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "כותרת GGUF קטועה: ציפינו ל-%(wanted)d בתים בהיסט %(offset)d, והתקבלו %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "ייתכן שהקובץ עדיין יורד, או שכתובת ה-URL אינה של קובץ GGUF."
@@ -686,6 +689,12 @@ msgstr "גרסת GGUF לא נתמכת %(version)d בהיסט 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit תומך בגרסאות GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "קובצי ה-GGUF האלה אינם מודל מפוצל אחד: הם חלוקים על '%(key)s' ומצהירים %(values)s"
 
@@ -698,14 +707,17 @@ msgstr "אין כותרת GGUF שאפשר לקרוא ממנה עובדות"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "העבר את קובץ המודל, או את כל המקטעים של מודל מפוצל."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d מתוך %(total)d קובצי GGUF אינם נושאים את המפתח '%(key)s', ולכן לא ניתן לקבוע את מקומם במודל מפוצל"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "העבר קובץ אחד לא מפוצל בפני עצמו, או את כל המקטעים של מודל מפוצל אחד."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "מערך המקטעים חסר: המודל מצהיר על %(declared)d מקטעים, והגיעו %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "העבר את כל המקטעים של המודל המפוצל."
@@ -722,8 +734,14 @@ msgstr "מערך המקטעים חסר: ציפינו ל-%(key)s מ-0 עד %(last
 msgid "Pass each shard of the split model exactly once."
 msgstr "העבר כל מקטע של המודל המפוצל בדיוק פעם אחת."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "מערך המקטעים חסר: המודל מצהיר על %(declared)d טנזורים, ו-%(shards)d המקטעים שלו מחזיקים יחד %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "לא ניתן היה לקרוא את %(path)s: %(error)s"
@@ -768,11 +786,14 @@ msgstr "אין מודולי זיכרון מאוכלסים"
 msgid "no SPMemoryDataType"
 msgstr "אין SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "empty command"
 msgstr "פקודה ריקה"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: תם הזמן לאחר %(seconds)s שניות"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -899,6 +920,7 @@ msgstr "התקן numpy (`pip install llamafit[fast]`) כדי ש-LlamaFit יוכ�
 msgid "Probe %(probe)s failed"
 msgstr "הבדיקה %(probe)s נכשלה"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "שגיאה לא ידועה"
 

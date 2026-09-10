@@ -640,8 +640,10 @@ msgstr "RAM bant genişliği ölçümünü atlar."
 msgid "Command: %(command)s"
 msgstr "Komut: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "kesik GGUF başlığı: %(offset)d konumunda %(wanted)d bayt bekleniyordu, %(got)d alındı"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Dosya hâlâ iniyor olabilir veya URL bir GGUF dosyasına ait olmayabilir."
@@ -664,6 +666,11 @@ msgstr "4 konumunda desteklenmeyen GGUF sürümü %(version)d"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit şu GGUF sürümlerini destekler: %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "bu GGUF dosyaları tek bir bölünmüş model değil: '%(key)s' konusunda ayrışıyor ve %(values)s bildiriyorlar"
 
@@ -676,14 +683,16 @@ msgstr "bilgilerin okunacağı bir GGUF başlığı yok"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Modelin dosyasını ya da bölünmüş bir modelin tüm parçalarını verin."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(total)d GGUF dosyasının %(count)d tanesi '%(key)s' anahtarını taşımıyor, bu yüzden bölünmüş bir modeldeki yerleri belirlenemiyor"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Bölünmemiş tek bir dosyayı kendi başına ya da tek bir bölünmüş modelin tüm parçalarını verin."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "eksik parça kümesi: model %(declared)d parça bildiriyor, %(arrived)d parça geldi (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Bölünmüş modelin tüm parçalarını verin."
@@ -700,8 +709,13 @@ msgstr "eksik parça kümesi: %(key)s 0 ile %(last)d arasında bekleniyordu, %(n
 msgid "Pass each shard of the split model exactly once."
 msgstr "Bölünmüş modelin her parçasını tam olarak bir kez verin."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "eksik parça kümesi: model %(declared)d tensör bildiriyor, %(shards)d parçası toplamda %(held)d tensör taşıyor"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "%(path)s okunamadı: %(error)s"
@@ -746,11 +760,13 @@ msgstr "dolu bellek modülü yok"
 msgid "no SPMemoryDataType"
 msgstr "SPMemoryDataType yok"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "boş komut"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: %(seconds)s saniye sonra zaman aşımına uğradı"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -877,6 +893,7 @@ msgstr "LlamaFit'in RAM bant genişliğini ölçebilmesi için numpy kurun (`pip
 msgid "Probe %(probe)s failed"
 msgstr "%(probe)s yoklaması başarısız oldu"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "bilinmeyen hata"
 

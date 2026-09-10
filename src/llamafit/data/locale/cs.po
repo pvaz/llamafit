@@ -650,8 +650,11 @@ msgstr "Vynechat měření propustnosti RAM."
 msgid "Command: %(command)s"
 msgstr "Příkaz: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "zkrácená hlavička GGUF: očekáváno %(wanted)d bajtů na offsetu %(offset)d, získáno %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Soubor se možná ještě stahuje, nebo na této URL není soubor GGUF."
@@ -674,6 +677,12 @@ msgstr "nepodporovaná verze GGUF %(version)d na offsetu 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit podporuje verze GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "tyto soubory GGUF nejsou jeden rozdělený model: neshodnou se na '%(key)s' a uvádějí %(values)s"
 
@@ -686,14 +695,17 @@ msgstr "není žádná hlavička GGUF, ze které by šlo přečíst údaje"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Předejte soubor modelu, nebo všechny části rozděleného modelu."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d z %(total)d souborů GGUF nemá klíč '%(key)s', takže jejich místo v rozděleném modelu nelze určit"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Předejte buď jeden nerozdělený soubor samostatně, nebo všechny části jednoho rozděleného modelu."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "neúplná sada částí: model uvádí %(declared)d částí a dorazilo %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Předejte všechny části rozděleného modelu."
@@ -710,8 +722,14 @@ msgstr "neúplná sada částí: očekáváno %(key)s od 0 do %(last)d, získán
 msgid "Pass each shard of the split model exactly once."
 msgstr "Předejte každou část rozděleného modelu právě jednou."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "neúplná sada částí: model uvádí %(declared)d tenzorů a jeho %(shards)d částí jich dohromady obsahuje %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "nepodařilo se přečíst %(path)s: %(error)s"
@@ -756,11 +774,14 @@ msgstr "žádné osazené paměťové moduly"
 msgid "no SPMemoryDataType"
 msgstr "žádný SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "empty command"
 msgstr "prázdný příkaz"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: vypršel časový limit po %(seconds)s s"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -887,6 +908,7 @@ msgstr "Nainstalujte numpy (`pip install llamafit[fast]`), aby LlamaFit mohl zm�
 msgid "Probe %(probe)s failed"
 msgstr "Sonda %(probe)s selhala"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "neznámá chyba"
 

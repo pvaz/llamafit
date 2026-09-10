@@ -637,8 +637,10 @@ msgstr "Hoppa över mätningen av RAM-bandbredden."
 msgid "Command: %(command)s"
 msgstr "Kommando: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "avhuggen GGUF-header: %(wanted)d byte väntades på position %(offset)d, %(got)d kom"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Filen kanske fortfarande hämtas, eller så pekar adressen inte på en GGUF-fil."
@@ -661,6 +663,11 @@ msgstr "GGUF-version %(version)d stöds inte, på position 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit stöder GGUF-versionerna %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "de här GGUF-filerna är inte en enda uppdelad modell: de är oense om '%(key)s' och anger %(values)s"
 
@@ -675,14 +682,16 @@ msgstr "ingen GGUF-header att läsa fakta ur"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Ange modellens fil, eller varje shard i en uppdelad modell."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d av %(total)d GGUF-filer saknar nyckeln '%(key)s', så deras plats i en uppdelad modell går inte att fastställa"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Ange antingen en enda odelad fil för sig, eller varje shard i en uppdelad modell."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "ofullständig uppsättning shards: modellen anger %(declared)d shards och %(arrived)d kom fram (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Ange varje shard i den uppdelade modellen."
@@ -699,8 +708,13 @@ msgstr "ofullständig uppsättning shards: väntade %(key)s 0 till %(last)d, fic
 msgid "Pass each shard of the split model exactly once."
 msgstr "Ange varje shard i den uppdelade modellen exakt en gång."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "ofullständig uppsättning shards: modellen anger %(declared)d tensorer och dess %(shards)d shards rymmer %(held)d tillsammans"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "det gick inte att läsa %(path)s: %(error)s"
@@ -745,11 +759,13 @@ msgstr "inga bestyckade minnesmoduler"
 msgid "no SPMemoryDataType"
 msgstr "ingen SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "tomt kommando"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: tiden gick ut efter %(seconds)ss"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -876,6 +892,7 @@ msgstr "Installera numpy (`pip install llamafit[fast]`) så att LlamaFit kan mä
 msgid "Probe %(probe)s failed"
 msgstr "Testet %(probe)s misslyckades"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "okänt fel"
 

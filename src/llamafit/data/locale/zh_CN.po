@@ -624,8 +624,9 @@ msgstr "跳过内存带宽实测。"
 msgid "Command: %(command)s"
 msgstr "命令：%(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "GGUF 头部被截断：在偏移 %(offset)d 处需要 %(wanted)d 字节，实际只有 %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "该文件可能还在下载中，或者这个 URL 并不是 GGUF 文件。"
@@ -648,6 +649,10 @@ msgstr "不支持的 GGUF 版本 %(version)d（偏移 4）"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit 支持的 GGUF 版本是 %(versions)s。"
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "这些 GGUF 文件不是同一个分片模型：它们对 '%(key)s' 的说法不一致，分别声明为 %(values)s"
 
@@ -660,14 +665,15 @@ msgstr "没有可以读取信息的 GGUF 头部"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "请传入模型的文件，或者分片模型的全部分片。"
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(total)d 个 GGUF 文件里有 %(count)d 个没有 '%(key)s' 键，因此无法确定它们在分片模型中的位置"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "请单独传入一个未分片的文件，或者同一个分片模型的全部分片。"
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "分片不完整：模型声明有 %(declared)d 个分片，实际到了 %(arrived)d 个（%(key)s %(numbers)s）"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "请传入分片模型的全部分片。"
@@ -684,8 +690,12 @@ msgstr "分片不完整：期望 %(key)s 从 0 到 %(last)d，实际得到 %(num
 msgid "Pass each shard of the split model exactly once."
 msgstr "分片模型的每个分片请只传入一次。"
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "分片不完整：模型声明有 %(declared)d 个张量，而它的 %(shards)d 个分片加起来只有 %(held)d 个"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "无法读取 %(path)s：%(error)s"
@@ -730,11 +740,12 @@ msgstr "没有已插入的内存条"
 msgid "no SPMemoryDataType"
 msgstr "没有 SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+
 msgid "empty command"
 msgstr "命令为空"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s：%(seconds)s 秒后超时"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s：%(error)s"
@@ -861,6 +872,7 @@ msgstr "请安装 numpy（`pip install llamafit[fast]`），让 LlamaFit 能够�
 msgid "Probe %(probe)s failed"
 msgstr "探测 %(probe)s 失败"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "未知错误"
 

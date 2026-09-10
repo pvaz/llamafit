@@ -640,8 +640,10 @@ msgstr "RAM बैंडविड्थ का मापन छोड़ दे�
 msgid "Command: %(command)s"
 msgstr "कमांड: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "कटा हुआ GGUF हेडर: offset %(offset)d पर %(wanted)d बाइट चाहिए थे, मिले %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "फ़ाइल अभी डाउनलोड हो रही हो सकती है, या URL किसी GGUF फ़ाइल का न हो।"
@@ -664,6 +666,11 @@ msgstr "offset 4 पर असमर्थित GGUF संस्करण %(ve
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit GGUF के %(versions)s संस्करण समर्थित करता है।"
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "ये GGUF फ़ाइलें एक ही split मॉडल की नहीं हैं: '%(key)s' पर इनमें मतभेद है, ये %(values)s घोषित करती हैं"
 
@@ -676,14 +683,16 @@ msgstr "तथ्य पढ़ने के लिए कोई GGUF हेड�
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "मॉडल की फ़ाइल दें, या split मॉडल का हर shard दें।"
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(total)d में से %(count)d GGUF फ़ाइलों में '%(key)s' कुंजी नहीं है, इसलिए split मॉडल में उनका स्थान तय नहीं हो सकता"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "या तो एक अकेली बिना-split फ़ाइल दें, या एक ही split मॉडल का हर shard दें।"
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "अधूरा shard समूह: मॉडल %(declared)d shard घोषित करता है और आए %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "split मॉडल का हर shard दें।"
@@ -700,8 +709,13 @@ msgstr "अधूरा shard समूह: %(key)s 0 से %(last)d तक अ
 msgid "Pass each shard of the split model exactly once."
 msgstr "split मॉडल का हर shard ठीक एक बार दें।"
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "अधूरा shard समूह: मॉडल %(declared)d टेंसर घोषित करता है और उसके %(shards)d shard मिलकर %(held)d रखते हैं"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "%(path)s नहीं पढ़ा जा सका: %(error)s"
@@ -746,11 +760,13 @@ msgstr "कोई भरा हुआ मेमोरी मॉड्यूल �
 msgid "no SPMemoryDataType"
 msgstr "कोई SPMemoryDataType नहीं"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "खाली कमांड"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: %(seconds)ss के बाद समय समाप्त"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -877,6 +893,7 @@ msgstr "numpy स्थापित करें (`pip install llamafit[fast]`) 
 msgid "Probe %(probe)s failed"
 msgstr "जाँच %(probe)s विफल रही"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "अज्ञात त्रुटि"
 
