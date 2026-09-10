@@ -90,24 +90,36 @@ def test_the_fixture_speeds_are_the_catalogs_own_measurements(catalog: Catalog) 
 
 
 def test_the_same_board_reorders_when_the_request_changes(catalog: Catalog) -> None:
-    # Chat weights speed at 0.40 and quality at 0.25, so the small fast model that came
-    # third for coding comes first here. The weights are the answer, not a decoration.
+    # Two models offer themselves for chat, and the faster of them wins a use case that
+    # weights speed at 0.40. The request is what decides, not a fixed order of merit.
     chat = evaluate_and_rank(entries(catalog), Needs(use_case="chat"))
     assert ids(chat)[0] == "llama-3.1-8b-instruct"
     coding = evaluate_and_rank(entries(catalog), Needs(use_case="coding"))
     assert ids(coding)[0] == "qwen3-coder-next"
 
 
+def test_only_the_models_that_offer_themselves_for_the_job_compete(catalog: Catalog) -> None:
+    coding = evaluate_and_rank(entries(catalog), Needs(use_case="coding"))
+    ranked = [c.model_id for c in coding if c.score is not None]
+    assert ranked == ["qwen3-coder-next", "qwen3.8-flash-next", "qwen3-0.6b"]
+    # Llama 3.1 8B used to place second here on fit and a capped speed score, with a
+    # catalog entry that never claimed to code.
+    assert "llama-3.1-8b-instruct" not in ranked
+
+
 def test_overriding_the_weights_changes_the_order(catalog: Catalog) -> None:
     open_request = Needs(use_case="coding")
-    default = evaluate_and_rank(entries(catalog), open_request)
-    assert ids(default)[1] == "llama-3.1-8b-instruct"
-    quality_first = evaluate_and_rank(
+    assert ids(evaluate_and_rank(entries(catalog), open_request))[0] == "qwen3-coder-next"
+    # A user who cares about nothing but speed and headroom is told what that asks for,
+    # rather than being quietly given the project's opinion instead.
+    machine_first = evaluate_and_rank(
         entries(catalog),
         open_request,
-        weight_overrides={"coding": {"quality": 0.7, "speed": 0.1, "fit": 0.1, "context": 0.1}},
+        weight_overrides={
+            "coding": {"quality": 0.05, "speed": 0.475, "fit": 0.475, "context": 0.0}
+        },
     )
-    assert ids(quality_first)[:2] == ["qwen3-coder-next", "qwen3.8-flash-next"]
+    assert ids(machine_first)[0] == "qwen3-0.6b"
 
 
 # --- the parts stay visible --------------------------------------------------------
@@ -147,21 +159,34 @@ def test_the_quality_breakdown_expands_into_the_catalogs_own_numbers(
     assert candidate.quality is not None
     assert candidate.quality.baseline == 85.0
     assert candidate.quality.quant_penalty == 3.0
-    assert candidate.quality.alignment_bonus == 8.0
-    assert candidate.quality.quality == 90.0
+    assert candidate.quality.alignment_bonus == 5.0
+    assert candidate.quality.quality == 87.0
 
 
 # --- exclusions --------------------------------------------------------------------
 
 
-def test_a_model_without_a_required_capability_is_kept_with_its_reason(
+def test_a_model_that_does_not_offer_itself_for_the_job_is_kept_with_its_reason(
     catalog: Catalog,
 ) -> None:
     board = evaluate_and_rank(entries(catalog), CODING)
     excluded = {c.model_id: c for c in board if c.excluded_because}
     assert set(excluded) == {"gemma-3-27b-it", "llama-3.1-8b-instruct"}
-    reason = excluded["gemma-3-27b-it"].excluded_because or ""
-    assert "coding" in reason
+    reason = excluded["llama-3.1-8b-instruct"].excluded_because or ""
+    assert "not a coding model" in reason
+    # It names what the entry does say, so the reader can ask for one of those instead —
+    # or correct the entry, which is a one-line change to a curated file.
+    assert "general, chat, reasoning" in reason
+
+
+def test_a_model_without_a_required_capability_is_kept_with_its_reason(
+    catalog: Catalog,
+) -> None:
+    # Qwen3-Coder-Next is a coding model, so the use case lets it through; it cannot see.
+    needs = Needs(use_case="coding", capabilities=("vision",))
+    candidate = evaluate_one(catalog, "qwen3-coder-next", needs)
+    reason = candidate.excluded_because or ""
+    assert "no vision capability" in reason
     # The reason has to say what to change about the request, not merely that it failed.
     assert "drop it from the request" in reason
 
@@ -215,7 +240,7 @@ def test_an_unknown_quantisation_is_excluded_rather_than_scored_as_free(
 
 def test_a_model_with_nowhere_to_run_is_excluded_and_says_so(catalog: Catalog) -> None:
     model, quant, _, how_fast = one(catalog, "qwen3.8-flash-next")
-    candidate = evaluate(model, quant, Needs(), None, how_fast)
+    candidate = evaluate(model, quant, Needs(use_case="coding"), None, how_fast)
     assert "nowhere to put it" in (candidate.excluded_because or "")
     assert candidate.placement is None
 
@@ -223,14 +248,14 @@ def test_a_model_with_nowhere_to_run_is_excluded_and_says_so(catalog: Catalog) -
 def test_a_mode_llama_cpp_does_not_support_is_excluded(catalog: Catalog) -> None:
     model, quant, _, how_fast = one(catalog, "qwen3.8-flash-next")
     nowhere = placement(mode="unsupported", vram_required=0)
-    candidate = evaluate(model, quant, Needs(), nowhere, how_fast)
+    candidate = evaluate(model, quant, Needs(use_case="coding"), nowhere, how_fast)
     assert "no run mode" in (candidate.excluded_because or "")
 
 
 def test_a_budget_that_does_not_fit_is_excluded(catalog: Catalog) -> None:
     model, quant, _, how_fast = one(catalog, "qwen3.8-flash-next")
     too_big = placement(vram_required=int(9e9), verdict="does-not-fit")
-    candidate = evaluate(model, quant, Needs(), too_big, how_fast)
+    candidate = evaluate(model, quant, Needs(use_case="coding"), too_big, how_fast)
     assert "more memory than this machine has" in (candidate.excluded_because or "")
 
 
@@ -243,12 +268,12 @@ def test_a_candidate_with_no_speed_estimate_is_excluded(catalog: Catalog) -> Non
 def test_what_the_request_asked_for_is_reported_before_what_the_machine_can_do(
     catalog: Catalog,
 ) -> None:
-    # This candidate fails three ways at once. The capability is the one the reader can
-    # act on outright, so it is the one they are told about.
+    # This candidate fails four ways at once. The job it does not offer itself for is the
+    # broadest statement of why it is not here, so it is the one the reader is told.
     model, quant, _, _ = one(catalog, "gemma-3-27b-it")
     demanding = Needs(use_case="coding", capabilities=("coding",), min_context=131072)
     candidate = evaluate(model, quant, demanding, None, None)
-    assert "coding" in (candidate.excluded_because or "")
+    assert "not a coding model" in (candidate.excluded_because or "")
 
 
 # --- ordering ----------------------------------------------------------------------

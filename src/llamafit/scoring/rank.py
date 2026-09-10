@@ -7,10 +7,10 @@ Two rules shape the module.
 
 **Nothing disappears.** A candidate that fails a filter comes back with
 ``excluded_because`` set and its placement and speed still attached, and it is ranked last
-rather than dropped. A shorter list tells a person nothing. "Gemma 3 27B IT was excluded
-because it has no coding capability" tells them their request had a requirement in it, and
-what to change if they did not mean it — which is the difference between a tool that
-answers and one that merely responds.
+rather than dropped. A shorter list tells a person nothing. "Llama 3.1 8B was excluded
+because its entry lists general, chat and reasoning, not coding" tells them why a model
+they expected to see is missing, and what to change — the request, or the catalog entry —
+which is the difference between a tool that answers and one that merely responds.
 
 **Nothing is a bare number.** Every candidate that is scored carries the four parts, the
 weights that combined them and the total, because a ranking whose reason is invisible asks
@@ -31,7 +31,12 @@ from llamafit.models.plan import (
     ScoreBreakdown,
     SpeedEstimate,
 )
-from llamafit.quality import missing_capabilities, penalty_for, score_quality
+from llamafit.quality import (
+    declares_use_case,
+    missing_capabilities,
+    penalty_for,
+    score_quality,
+)
 from llamafit.scoring.context_score import context_score, requested_context
 from llamafit.scoring.fit_score import fit_score_for
 from llamafit.scoring.speed_score import speed_score
@@ -194,11 +199,20 @@ def _exclusion(
 
     The order of the checks is the order of what a person can do about them. What the
     request asked for comes first, because that is the part the reader controls outright:
-    a required capability, then the download ceiling they set. The machine comes second,
-    because "it does not fit" is only worth saying once it is clear the model was wanted
-    at all. Each reason names the thing to change, and only the first is reported —
-    a list of every way a candidate failed is a worse answer than the one that comes first.
+    the job itself, then a required capability, then the download ceiling they set. The
+    machine comes second, because "it does not fit" is only worth saying once it is clear
+    the model was wanted at all. Each reason names the thing to change, and only the first
+    is reported — a list of every way a candidate failed is a worse answer than the one
+    that comes first.
+
+    The job comes before the capability because it is the broader statement about the
+    same thing: a model whose entry does not offer itself for this work at all should not
+    be explained away by whichever capability it also happens to lack.
     """
+    if not declares_use_case(model, needs.use_case):
+        return _(
+            "not a %(use_case)s model; its entry lists %(use_cases)s, so ask for one of those"
+        ) % {"use_case": needs.use_case, "use_cases": ", ".join(model.use_cases)}
     missing = missing_capabilities(model, needs)
     if missing:
         return _("no %(capability)s capability; drop it from the request to see this model") % {

@@ -1,71 +1,42 @@
-"""What matching the request is worth, and what missing it costs.
+"""What matching the request is worth, and what not matching it costs.
 
 Two models with the same baseline are not equally good answers to the same question. A
 coding model asked to write code is being used for what it was built and measured on; the
-same model asked to describe an image is not. The alignment bonus is the small correction
-that says so, from section 11.1 of the design specification:
+same model asked to describe an image is not. Section 11.1 of the design specification
+draws the line in three places, and this module is all three:
 
-- ``+5`` when the model's primary use case is the one the request names.
-- ``+3`` for each required capability the model has beyond the one its use case already
-  implies.
-- the whole bonus capped at ``+10``.
-- a missing required capability is not a penalty at all: the candidate is excluded, and
-  :func:`missing_capabilities` is what says which one is missing so the exclusion can be
-  explained rather than merely applied.
-
-Two readings of the specification are settled here, and both are worth stating because
-neither is forced by the words alone.
+- a model whose ``use_cases`` do not include the one the request names is excluded, the
+  same way a missing required capability excludes one. A request for coding must not come
+  back with a model whose own entry says it is for general chat and reasoning.
+- a model missing a required capability is excluded, and :func:`missing_capabilities` says
+  which one, so the exclusion can be explained rather than merely applied.
+- among the models that are left, ``+5`` when the request names the model's *primary* use
+  case, and nothing when it merely lists it.
 
 The *primary* use case is the first one the catalog entry lists. An entry writes them in
 the curator's order of merit — ``use_cases: [coding, reasoning, multimodal]`` says this is
 a coding model that can also reason and see — so the head of the list is the job the
-baseline was set against. A model that lists a use case second gets no bonus for it, which
-is the intended sharpness: the bonus exists to separate a model built for the job from one
-that merely tolerates it.
+baseline was set against. This is the whole of the bonus, and it varies between candidates,
+which is the point: it separates a model built for the job from one that also does it.
 
-*Beyond the request's use case* means the capability the use case itself implies does not
-also earn three points. A coding request that requires the ``coding`` capability would
-otherwise pay for the same match twice, once through the ``+5`` and once through the
-``+3``. :data:`IMPLIED_CAPABILITY` is that mapping, and it is deliberately small: only
-four of the six use cases name a capability at all, because *general* and *chat* imply
-nothing a catalog entry records.
+An earlier reading of this section also gave ``+3`` per required capability. That term
+could not discriminate: a missing required capability excludes the candidate, so every
+candidate still standing has every required capability, and the bonus was the same number
+added to all of them. It looked like a judgement and was arithmetic on the length of the
+request. It is gone.
+
+Both exclusions have the same cheap fix when they are wrong. The catalog is curated by
+hand, so a model that really is good at something its entry does not claim is a one-line
+change to that entry, reviewed like any other.
 """
 
 from __future__ import annotations
-
-from collections.abc import Mapping
-from types import MappingProxyType
 
 from llamafit.models.catalog import CatalogModel, UseCase
 from llamafit.models.plan import Needs
 
 PRIMARY_USE_CASE_BONUS = 5.0
-"""What matching the model's primary use case is worth."""
-
-CAPABILITY_BONUS = 3.0
-"""What each required capability beyond the use case's own is worth."""
-
-MAX_ALIGNMENT_BONUS = 10.0
-"""The ceiling on the whole bonus.
-
-Without it a request naming five capabilities would hand fifteen points to every model
-that survived the capability filter, which is a fifth of the quality scale awarded for
-asking a longer question.
-"""
-
-IMPLIED_CAPABILITY: Mapping[str, str] = MappingProxyType(
-    {
-        "coding": "coding",
-        "reasoning": "thinking",
-        "multimodal": "vision",
-        "embedding": "embeddings",
-    }
-)
-"""The capability a use case already asks for, and so does not pay twice for.
-
-*general* and *chat* are absent on purpose. Neither corresponds to anything in the
-catalog's capability list, so for those requests every required capability counts.
-"""
+"""What matching the model's primary use case is worth, and the whole of the bonus."""
 
 
 def primary_use_case(model: CatalogModel) -> UseCase:
@@ -79,6 +50,22 @@ def primary_use_case(model: CatalogModel) -> UseCase:
         The first listed use case.
     """
     return model.use_cases[0]
+
+
+def declares_use_case(model: CatalogModel, use_case: str) -> bool:
+    """Say whether this model's entry offers itself for this job at all.
+
+    Args:
+        model: The catalog entry.
+        use_case: What the request asked for.
+
+    Returns:
+        True when ``use_case`` is among the entry's ``use_cases``, in any position. A
+        model that merely lists it competes; a model that does not is excluded rather
+        than ranked low, because a curated entry's declared purpose is meant to mean
+        something.
+    """
+    return use_case in model.use_cases
 
 
 def missing_capabilities(model: CatalogModel, needs: Needs) -> tuple[str, ...]:
@@ -98,24 +85,17 @@ def missing_capabilities(model: CatalogModel, needs: Needs) -> tuple[str, ...]:
 
 
 def alignment_bonus(model: CatalogModel, needs: Needs) -> float:
-    """Return what matching this request is worth to this model, from 0 to 10.
-
-    A model missing a required capability is excluded elsewhere rather than scored, so
-    this function assumes nothing about whether it clears that filter: every required
-    capability it does have counts, and one it does not simply earns nothing.
+    """Return what matching this request is worth to this model: five points, or none.
 
     Args:
         model: The catalog entry.
         needs: What the user asked for.
 
     Returns:
-        The bonus in points, from zero to :data:`MAX_ALIGNMENT_BONUS`.
+        :data:`PRIMARY_USE_CASE_BONUS` when the request names the job this model was
+        built for, and zero otherwise — including for a model that lists the use case
+        second or third, which is scored on its baseline alone.
     """
-    bonus = 0.0
     if primary_use_case(model) == needs.use_case:
-        bonus += PRIMARY_USE_CASE_BONUS
-    implied = IMPLIED_CAPABILITY.get(needs.use_case)
-    have = set(model.capabilities)
-    extra = [c for c in needs.capabilities if c != implied and c in have]
-    bonus += CAPABILITY_BONUS * len(extra)
-    return min(MAX_ALIGNMENT_BONUS, bonus)
+        return PRIMARY_USE_CASE_BONUS
+    return 0.0

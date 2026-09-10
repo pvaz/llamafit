@@ -10,16 +10,13 @@ from llamafit.models.plan import Needs
 from llamafit.quality import (
     alignment_bonus,
     baseline_for,
+    declares_use_case,
     missing_capabilities,
     penalty_for,
     primary_use_case,
     score_quality,
 )
-from llamafit.quality.alignment import (
-    CAPABILITY_BONUS,
-    MAX_ALIGNMENT_BONUS,
-    PRIMARY_USE_CASE_BONUS,
-)
+from llamafit.quality.alignment import PRIMARY_USE_CASE_BONUS
 from llamafit.quality.quant_penalty import FAMILY_PENALTIES
 
 
@@ -131,26 +128,32 @@ def test_a_use_case_a_model_merely_also_serves_earns_nothing(catalog: Catalog) -
     assert alignment_bonus(model_of(catalog, "gemma-3-27b-it"), Needs(use_case="chat")) == 0.0
 
 
-def test_the_capability_a_use_case_implies_is_not_paid_for_twice(catalog: Catalog) -> None:
+def test_the_bonus_does_not_count_capabilities_at_all(catalog: Catalog) -> None:
+    # A bonus counted over required capabilities is the same number for every candidate
+    # that survives the capability filter, because surviving it means having them all. It
+    # looked like a judgement and was arithmetic on the length of the request.
     coder = model_of(catalog, "qwen3-coder-next")
-    only_implied = Needs(use_case="coding", capabilities=("coding",))
-    assert alignment_bonus(coder, only_implied) == PRIMARY_USE_CASE_BONUS
-    with_tools = Needs(use_case="coding", capabilities=("coding", "tools"))
-    assert alignment_bonus(coder, with_tools) == PRIMARY_USE_CASE_BONUS + CAPABILITY_BONUS
+    bare = Needs(use_case="coding")
+    long_request = Needs(use_case="coding", capabilities=("coding", "tools", "long-context"))
+    assert alignment_bonus(coder, long_request) == alignment_bonus(coder, bare)
 
 
-def test_a_capability_the_model_lacks_earns_nothing(catalog: Catalog) -> None:
-    coder = model_of(catalog, "qwen3-coder-next")
-    assert alignment_bonus(coder, Needs(use_case="chat", capabilities=("vision",))) == 0.0
+def test_the_whole_bonus_is_five_points_or_none(catalog: Catalog) -> None:
+    for model in catalog.models:
+        for use_case in ("general", "coding", "reasoning", "chat", "multimodal", "embedding"):
+            assert alignment_bonus(model, Needs(use_case=use_case)) in (
+                0.0,
+                PRIMARY_USE_CASE_BONUS,
+            )
 
 
-def test_the_bonus_stops_at_ten_however_long_the_request(catalog: Catalog) -> None:
-    flash = model_of(catalog, "qwen3.8-flash-next")
-    long_request = Needs(
-        use_case="coding",
-        capabilities=("coding", "tools", "thinking", "vision", "multilingual"),
-    )
-    assert alignment_bonus(flash, long_request) == MAX_ALIGNMENT_BONUS
+def test_a_model_declares_the_jobs_it_offers_itself_for(catalog: Catalog) -> None:
+    llama = model_of(catalog, "llama-3.1-8b-instruct")
+    assert declares_use_case(llama, "chat")
+    assert declares_use_case(llama, "reasoning")
+    # Its entry says general, chat and reasoning. It does not claim to code, and a coding
+    # request must not come back with it.
+    assert not declares_use_case(llama, "coding")
 
 
 def test_the_breakdown_keeps_all_three_parts_and_their_sum(catalog: Catalog) -> None:
@@ -158,16 +161,15 @@ def test_the_breakdown_keeps_all_three_parts_and_their_sum(catalog: Catalog) -> 
     quality = score_quality(model_of(catalog, "qwen3-coder-next"), "UD-Q4_K_XL", needs)
     assert quality.baseline == 85.0
     assert quality.quant_penalty == 3.0
-    assert quality.alignment_bonus == 8.0
-    assert quality.quality == 90.0
+    assert quality.alignment_bonus == 5.0
+    assert quality.quality == 87.0
 
 
 def test_quality_is_clamped_to_the_scale_at_the_top(catalog: Catalog) -> None:
     flash = model_of(catalog, "qwen3.8-flash-next").model_copy(deep=True)
     flash.quality.baseline = 98
-    needs = Needs(use_case="coding", capabilities=("coding", "tools", "thinking", "vision"))
-    quality = score_quality(flash, "Q8_0", needs)
-    assert quality.alignment_bonus == MAX_ALIGNMENT_BONUS
+    quality = score_quality(flash, "Q8_0", Needs(use_case="coding"))
+    assert quality.alignment_bonus == PRIMARY_USE_CASE_BONUS
     assert quality.quality == 100.0
 
 
