@@ -174,7 +174,7 @@ def test_english_columns_are_still_in_the_order_they_were_written() -> None:
 
 @pytest.fixture(autouse=True)
 def patch_scan(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("llamafit.cli.system_cmd.scan_system", lambda **kwargs: fake_report())
+    monkeypatch.setattr("llamafit.cli.common.scan", lambda **kwargs: fake_report())
     monkeypatch.setattr("llamafit.cli.doctor_cmd.scan_system", lambda **kwargs: fake_report())
 
 

@@ -39,6 +39,7 @@ from rich.console import Group, RenderableType
 from rich.table import Table
 from rich.text import Text
 
+from llamafit.cli.render import render_simulation
 from llamafit.i18n import _, for_display, isolate, mirror_justify, ngettext, pgettext, reading_order
 from llamafit.models.catalog import Measured
 from llamafit.models.plan import (
@@ -154,6 +155,7 @@ def verdict_label(verdict: str) -> str:
     The long forms are section 8.3's own: Comfortable, Fits, Tight, Too Tight, Does Not
     Fit. These are the short forms a table can carry, and :func:`verdict_sentence` is what
     says what each of them means where there is room to say it.
+
     """
     labels = {
         "comfortable": pgettext("fit verdict", "roomy"),
@@ -841,7 +843,9 @@ def render_board(board: Board, *, console_width: int = 80) -> Group:
 
     for row in board.rows:
         _add_row(table, *_board_cells(row, included))
-    return Group(table, *_board_captions(board))
+    banner = render_simulation(board.simulation)
+    parts: list[RenderableType] = [] if banner is None else [banner]
+    return Group(*parts, table, *_board_captions(board))
 
 
 def _mixed_confidence(rows: Sequence[BoardRow]) -> bool:
@@ -1043,7 +1047,10 @@ def render_fit(board: FitBoard, *, console_width: int = 80) -> Group:
             + [cell_len(row.model_id) for row in board.rows]
         ),
     )
-    table = Table(title=for_display(_("Fit on this machine")))
+    # The heading is the one place the simulated banner would have been contradicted in
+    # its own words: "Fit on this machine" one line under "they are not this machine".
+    title = _("Fit on the simulated machine") if board.simulation else _("Fit on this machine")
+    table = Table(title=for_display(title))
     columns: list[Mapping[str, Any]] = [
         {"header": pgettext("column heading", "#"), "justify": "right", "no_wrap": True},
         {
@@ -1092,7 +1099,9 @@ def render_fit(board: FitBoard, *, console_width: int = 80) -> Group:
         )
         % {"context": _context(board.planned_context)}
     )
-    return Group(table, caption)
+    banner = render_simulation(board.simulation)
+    parts: list[RenderableType] = [] if banner is None else [banner]
+    return Group(*parts, table, caption)
 
 
 def render_fit_excluded(rows: Sequence[FitRow]) -> Group | None:
@@ -1166,7 +1175,9 @@ def render_plan(report: PlanReport) -> Group:
     a broken line.
     """
     placement = report.placement
-    pieces: list[RenderableType] = [
+    banner = render_simulation(report.simulation)
+    pieces: list[RenderableType] = [] if banner is None else [banner]
+    pieces += [
         Text(
             for_display(
                 _("%(name)s %(quant)s")

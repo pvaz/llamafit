@@ -33,7 +33,7 @@ def flat(output: str) -> str:
 def fixed_machine(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[FakeLauncher]:
     """Every command sees the reference machine, a fake process and a fake server."""
     monkeypatch.setenv("LLAMAFIT_HOME", str(tmp_path / "home"))
-    monkeypatch.setattr("llamafit.cli.preset_cmd.scan", lambda **_kwargs: report())
+    monkeypatch.setattr("llamafit.cli.common.scan", lambda **_kwargs: report())
     launcher = FakeLauncher()
     monkeypatch.setattr("llamafit.cli.preset_cmd.launcher", lambda: launcher)
     monkeypatch.setattr(
@@ -154,7 +154,7 @@ def test_a_model_that_fits_nowhere_gets_no_script_at_all(
     tiny = report().host.model_copy(
         update={"gpus": [], "memory": Memory(total_bytes=2 * 1024**3, available_bytes=1024**3)}
     )
-    monkeypatch.setattr("llamafit.cli.preset_cmd.scan", lambda **_kwargs: report(host=tiny))
+    monkeypatch.setattr("llamafit.cli.common.scan", lambda **_kwargs: report(host=tiny))
     result = runner.invoke(app, ["preset", "qwen3-coder-next", "--dir", str(tmp_path)])
     assert result.exit_code == 1
     assert isinstance(result.exception, BudgetError)

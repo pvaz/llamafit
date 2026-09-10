@@ -47,11 +47,51 @@ def interactive(stdin: object | None = None, stdout: object | None = None) -> bo
     return all(getattr(stream, "isatty", lambda: False)() for stream in streams)
 
 
-def run_dashboard() -> None:
-    """Open the dashboard and block until the reader quits it."""
+def run_dashboard(dashboard: object | None = None) -> None:
+    """Open the dashboard and block until the reader quits it.
+
+    Args:
+        dashboard: The :class:`~llamafit.tui.state.Dashboard` to open on, already seeded
+            with whatever the command line substituted, or ``None`` for a fresh one.
+    """
     from llamafit.tui.app import LlamaFitApp
 
-    LlamaFitApp().run()
+    LlamaFitApp(cast("Any", dashboard)).run()
+
+
+def seeded_dashboard(state: Any) -> Any:
+    """A dashboard seeded with section 13.1's global flags, so the screens open on them.
+
+    Args:
+        state: The :class:`~llamafit.cli.app.CliState` the root callback built.
+
+    Returns:
+        A :class:`~llamafit.tui.state.Dashboard`, or ``None`` when nothing was asked for
+        and the application should build its own.
+
+    ``llamafit --profile fleet-node`` opens the dashboard already simulating that machine,
+    with the ``SIMULATED`` badge showing, rather than opening on this one and asking the
+    reader to retype the profile into the Simulate screen. The sizes go through the
+    command line's own size checker, so ``--memory 24Q`` is refused in the same words
+    before a full-screen application is started over it.
+    """
+    from llamafit.cli.common import check_size, checked_max_context
+    from llamafit.models.plan import Needs
+    from llamafit.tui.state import Dashboard, Request, Substitution
+
+    substitution = Substitution(
+        profile=state.profile,
+        gpu_memory=None if state.memory is None else check_size(state.memory, option="--memory"),
+        ram=None if state.ram is None else check_size(state.ram, option="--ram"),
+        cpu_cores=state.cpu_cores,
+    )
+    ceiling = checked_max_context(state)
+    if not substitution.active and ceiling is None:
+        return None
+    return Dashboard(
+        request=Request(needs=Needs(max_context=ceiling)),
+        substitution=substitution,
+    )
 
 
 def open_dashboard(ctx: typer.Context) -> None:
@@ -62,7 +102,7 @@ def open_dashboard(ctx: typer.Context) -> None:
             fallback is invoked through.
     """
     if interactive():
-        run_dashboard()
+        run_dashboard(seeded_dashboard(ctx.obj))
         return
     console = Console(stderr=True, no_color=True, highlight=False)
     console.print(

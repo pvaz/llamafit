@@ -28,7 +28,7 @@ from rich.text import Text
 
 from llamafit import __version__
 from llamafit.cli.app import CliState, app
-from llamafit.cli.common import find_model, load_catalog_or_warn, scan
+from llamafit.cli.common import checked_max_context, find_model, load_catalog_or_warn, machine
 from llamafit.cli.plan_cmd import choose_quant
 from llamafit.constants import DEFAULT_SERVER_PORT
 from llamafit.errors import BudgetError, NotInstalledError
@@ -146,13 +146,17 @@ def spec_for(
     """
     catalog = load_catalog_or_warn(state)
     model = find_model(catalog, model_id)
-    report = scan()
+    report = machine(state)
     chosen = choose_quant(model, report.host, quant)
     planned = plan_report(
         model,
         chosen,
         report.host,
-        needs=Needs(use_case=model.use_cases[0], requested_context=context),
+        needs=Needs(
+            use_case=model.use_cases[0],
+            requested_context=context,
+            max_context=checked_max_context(state),
+        ),
         local_files=[local.path for local in report.llamacpp.local_models],
     )
     if planned.placement.mode == "unsupported":

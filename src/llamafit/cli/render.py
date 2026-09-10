@@ -201,6 +201,30 @@ def _simulation_note(simulation: Simulation) -> str:
     return _("these figures are not this machine")
 
 
+def render_simulation(simulation: Simulation | None) -> Text | None:
+    """One red line saying the figures under it are not this machine, or ``None``.
+
+    Args:
+        simulation: What was substituted, straight off whatever is about to be printed.
+
+    Returns:
+        The line, or ``None`` when nothing was substituted and there is nothing to say.
+
+    :func:`render_host` says this inside its own table, because a host is a table. A
+    board, a fit listing and a plan are not, and each of them is a page of numbers
+    computed *for* a machine rather than a description of one -- so the warning goes
+    above them, in the two messages the host already uses, before the reader meets a
+    figure. The serialised half of the same promise is the ``simulated`` field on each of
+    those documents; a red line is no use to a script.
+    """
+    if simulation is None:
+        return None
+    line = Text(for_display(_("SIMULATED")), style="bold red")
+    line.append("  ")
+    line.append(for_display(_simulation_note(simulation)), style="red")
+    return line
+
+
 def _capability_label(capability: str) -> str:
     """One of a model's capabilities, in the reader's language.
 

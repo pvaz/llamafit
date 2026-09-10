@@ -8,6 +8,15 @@ before Click renders anything: a help screen asked for in Portuguese comes out i
 Portuguese, which it could not if the language were chosen in the callback body that
 ``--help`` never reaches.
 
+Section 13.1's five substitution flags -- ``--profile``, ``--memory``, ``--ram``,
+``--cpu-cores`` and ``--max-context`` -- are global options here because they are
+questions about the *subject* of every answer rather than about any one command. The
+first four replace the machine; the fifth caps the context. Nothing in this module acts
+on them: they are stored on :class:`CliState` as typed and
+:mod:`llamafit.cli.common` turns them into a :class:`~llamafit.models.host.Host` and a
+:class:`~llamafit.models.plan.Needs`, so a command that never reads a machine cannot
+half-honour them.
+
 Every ``help=`` string on this page is deferred. A decorator runs while the module is
 imported, long before any language has been chosen, so an eager ``_()`` here would freeze
 the whole interface in English and nothing would fail. ``cast(str, ...)`` is what says out
@@ -48,16 +57,39 @@ app = typer.Typer(
 
 @dataclass
 class CliState:
-    """Options shared by every command, stored in ``ctx.obj``."""
+    """Options shared by every command, stored in ``ctx.obj``.
+
+    The five after ``no_color`` are section 13.1's substitution flags. They are kept here
+    exactly as typed -- strings for the two sizes, which nothing in this module is allowed
+    to parse -- and :mod:`llamafit.cli.common` turns them into a machine and a request.
+    ``app.py`` cannot import ``common``, which imports ``CliState`` from here, and putting
+    the arithmetic behind the import would be a cycle for the sake of five fields.
+    """
 
     json_output: bool = False
     verbose: bool = False
     no_color: bool = False
+    profile: str | None = None
+    memory: str | None = None
+    ram: str | None = None
+    cpu_cores: int | None = None
+    max_context: int | None = None
 
     @property
     def console(self) -> Console:
         """A console for normal output, respecting ``--no-color``."""
         return Console(no_color=self.no_color, highlight=False)
+
+    @property
+    def substituting(self) -> bool:
+        """Whether any machine other than this one was asked for.
+
+        ``--max-context`` is not one of these. It changes the question, not the machine,
+        so a command that reads this to refuse a stand-in machine must not refuse it too.
+        """
+        return any(
+            value is not None for value in (self.profile, self.memory, self.ram, self.cpu_cores)
+        )
 
 
 def _colours_off() -> bool:
@@ -117,6 +149,69 @@ def _root(
     no_color: bool = typer.Option(
         False, "--no-color", help=cast(str, lazy_gettext("Disable colours."))
     ),
+    profile: str | None = typer.Option(
+        None,
+        "--profile",
+        metavar="NAME|FILE",
+        help=cast(
+            str,
+            lazy_gettext(
+                "Answer for the machine this hardware profile describes instead of this one. "
+                "Nothing about this machine is probed, and every answer is marked as "
+                "simulated. `llamafit hardware list` names the profiles you have."
+            ),
+        ),
+    ),
+    memory: str | None = typer.Option(
+        None,
+        "--memory",
+        metavar="SIZE",
+        help=cast(
+            str,
+            lazy_gettext(
+                "Pretend the graphics card has this much memory, for example 24G. Everything "
+                "else stays as scanned, and every answer is marked as simulated."
+            ),
+        ),
+    ),
+    ram: str | None = typer.Option(
+        None,
+        "--ram",
+        metavar="SIZE",
+        help=cast(
+            str,
+            lazy_gettext(
+                "Pretend the machine has this much system memory, for example 128GiB. "
+                "Every answer is marked as simulated."
+            ),
+        ),
+    ),
+    cpu_cores: int | None = typer.Option(
+        None,
+        "--cpu-cores",
+        metavar="N",
+        min=1,
+        help=cast(
+            str,
+            lazy_gettext(
+                "Pretend the processor has this many physical cores. Every answer is "
+                "marked as simulated."
+            ),
+        ),
+    ),
+    max_context: int | None = typer.Option(
+        None,
+        "--max-context",
+        metavar="N",
+        min=1,
+        help=cast(
+            str,
+            lazy_gettext(
+                "Plan, report and score no context longer than this. It caps the model's "
+                "own length; it does not describe a machine."
+            ),
+        ),
+    ),
     language: str | None = typer.Option(
         None,
         "--language",
@@ -140,7 +235,16 @@ def _root(
     ),
 ) -> None:
     """LlamaFit command-line interface."""
-    ctx.obj = CliState(json_output=json_output, verbose=verbose, no_color=no_color)
+    ctx.obj = CliState(
+        json_output=json_output,
+        verbose=verbose,
+        no_color=no_color,
+        profile=profile,
+        memory=memory,
+        ram=ram,
+        cpu_cores=cpu_cores,
+        max_context=max_context,
+    )
     if ctx.invoked_subcommand is None:
         open_dashboard(ctx)
 

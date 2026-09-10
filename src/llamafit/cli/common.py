@@ -10,6 +10,13 @@ mistyped id that names the closest real ones, an unknown capability that lists t
 that exist, a catalog file with a problem in it that says which command will explain it.
 Those are the sentences a person actually meets, and they should not differ between two
 commands because two people wrote them.
+
+Section 13.1's substitution flags are turned into answers here too, for the same reason.
+:func:`machine` is the one place ``--profile``, ``--memory``, ``--ram`` and ``--cpu-cores``
+become a host, so no command can forget the rule that a substituted machine is marked as
+one; :func:`checked_max_context` is the one place ``--max-context`` becomes a ceiling; and
+:func:`refuse_substitution` is what a command says when it cannot honour the first four at
+all, rather than answering about the machine nobody asked about.
 """
 
 from __future__ import annotations
@@ -20,10 +27,13 @@ from typing import cast, get_args
 from rich.console import Console
 from rich.text import Text
 
+from llamafit import __version__
 from llamafit.catalog.loader import load_catalog
 from llamafit.cli.app import CliState
-from llamafit.errors import CatalogError
+from llamafit.errors import CatalogError, ConfigError
+from llamafit.hwprofile import resolve_host
 from llamafit.i18n import _, ngettext
+from llamafit.llamacpp import detect_llamacpp
 from llamafit.models.catalog import Capability, Catalog, CatalogModel, UseCase
 from llamafit.models.host import Host
 from llamafit.models.llamacpp import LocalModel
@@ -199,6 +209,124 @@ def scan(*, measure_bandwidth: bool = True) -> SystemReport:
     from one moment, or a plan can name a file the same run decided was missing.
     """
     return scan_system(measure_bandwidth=measure_bandwidth)
+
+
+def machine(state: CliState, *, measure_bandwidth: bool = True) -> SystemReport:
+    """The machine a command should answer about, after section 13.1's substitutions.
+
+    Args:
+        state: The global options, carrying ``--profile``, ``--memory``, ``--ram`` and
+            ``--cpu-cores`` exactly as they were typed.
+        measure_bandwidth: Whether the scan should time a memory copy.
+
+    Returns:
+        A :class:`~llamafit.models.report.SystemReport` whose ``host`` is the scan, a
+        profile, or either with pools substituted, and whose ``llamacpp`` is always this
+        machine's. Every substituted host carries
+        :class:`~llamafit.models.host.Simulation`, so ``--json`` says so without any
+        command having to remember to.
+
+    Raises:
+        ConfigError: The profile could not be found or read, a size is not a size, or an
+            override cannot apply to this machine.
+
+    **``--profile`` does not probe.** The scan is passed to ``resolve_host`` as a callable
+    it will not call when a profile was named, which is section 4.4's rule and not this
+    module's: a run scoring against somebody else's machine has no business reading this
+    one's, and on a machine whose graphics driver hangs a probe the profile has to work
+    anyway. llama.cpp is still detected, because the binary and the GGUF files on this
+    disk are what a rendered command line would launch whichever machine it was sized for.
+    """
+    scanned: SystemReport | None = None
+
+    def scan_host() -> Host:
+        nonlocal scanned
+        scanned = scan(measure_bandwidth=measure_bandwidth)
+        return scanned.host
+
+    host = resolve_host(
+        scan_host=scan_host,
+        profile=state.profile,
+        gpu_memory=None if state.memory is None else check_size(state.memory, option="--memory"),
+        ram=None if state.ram is None else check_size(state.ram, option="--ram"),
+        cpu_cores=state.cpu_cores,
+    )
+    if scanned is None:
+        return SystemReport(host=host, llamacpp=detect_llamacpp(), version=__version__)
+    return scanned.model_copy(update={"host": host})
+
+
+def check_context_ceiling(
+    max_context: int | None,
+    *,
+    min_context: int,
+    ceiling_option: str = "--max-context",
+    floor_option: str = "--min-context",
+) -> int | None:
+    """A context ceiling, refused by name when it is below the context floor.
+
+    Args:
+        max_context: The ceiling asked for, or ``None``.
+        min_context: The floor asked for.
+        ceiling_option: What to call the ceiling in the message. The command line spells
+            it ``--max-context`` and the API spells it ``max_context``, and an error must
+            name the one the reader typed.
+        floor_option: What to call the floor in the message.
+
+    Returns:
+        The ceiling unchanged, or ``None``.
+
+    Raises:
+        ConfigError: The ceiling is below the floor, which no machine and no model could
+            satisfy. :class:`~llamafit.models.plan.Needs` refuses the pair as well; this
+            exists so the sentence a person reads names the two options they typed rather
+            than the two fields they did not.
+    """
+    if max_context is not None and max_context < min_context:
+        raise ConfigError(
+            _("%(ceiling)s %(max)s is below %(floor)s %(min)s")
+            % {
+                "ceiling": ceiling_option,
+                "max": max_context,
+                "floor": floor_option,
+                "min": min_context,
+            },
+            hint=_("Raise %(ceiling)s, or lower %(floor)s.")
+            % {"ceiling": ceiling_option, "floor": floor_option},
+        )
+    return max_context
+
+
+def checked_max_context(state: CliState, *, min_context: int = 0) -> int | None:
+    """``--max-context`` as the planner's ceiling, checked against ``--min-context``."""
+    return check_context_ceiling(state.max_context, min_context=min_context)
+
+
+def refuse_substitution(state: CliState, *, command: str) -> None:
+    """Refuse a stand-in machine for a command whose whole subject is this one.
+
+    Args:
+        state: The global options.
+        command: What to name in the message, as the user typed it.
+
+    Raises:
+        ConfigError: A machine was substituted.
+
+    A flag that quietly does nothing is the failure this whole seam exists to prevent, so
+    a command that cannot honour the substitution says so instead of answering about the
+    machine the reader did not ask about. ``--max-context`` is not refused here: it caps a
+    context and every command that plans one can honour it.
+    """
+    if not state.substituting:
+        return
+    raise ConfigError(
+        _("`llamafit %(command)s` reports on the machine LlamaFit is running on")
+        % {"command": command},
+        hint=_(
+            "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a "
+            "profile describes, run `llamafit hardware show NAME --as-host`."
+        ),
+    )
 
 
 def host_of(report: SystemReport) -> Host:
