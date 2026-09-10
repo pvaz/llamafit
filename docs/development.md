@@ -13,7 +13,9 @@ pytest
 ```
 
 Python 3.10 or newer. The `dev` extra brings pytest, coverage, ruff and mypy; `fast` brings
-NumPy for the bandwidth measurement.
+NumPy for the bandwidth measurement; `web` brings FastAPI and uvicorn for `llamafit serve`.
+`dev` already contains everything the suite needs, `web` included, so `[dev]` alone is enough
+to run the checks.
 
 ## The checks CI runs
 
@@ -92,6 +94,8 @@ Runtime dependencies, with the reason each earns its place:
 | `httpx` | Hugging Face metadata, running-server discovery, downloads |
 | `pyyaml` | the catalog: reading the curated `<family>.yaml` files, and printing one entry back with `catalog show --yaml` |
 | `numpy` | a faster, more accurate memory-bandwidth measurement; optional extra `fast`, and part of `dev` so CI exercises it |
+| `fastapi` | the JSON API behind `llamafit serve`: it routes, parses query strings and validates request bodies against the pydantic models the project already has, so the API and `--json` serialise one set of models. Optional extra `web`, and part of `dev` so CI exercises it: somebody who only ever types `llamafit recommend` should not be made to install a web server |
+| `uvicorn` | the ASGI server that runs it; the only way to serve a FastAPI application without adding a second one. Optional extra `web`, and part of `dev` for the same reason |
 
 Planned, not installed and not yet declared in `pyproject.toml`; each arrives with the phase
 that needs it, together with the extra it belongs to:
@@ -99,7 +103,6 @@ that needs it, together with the extra it belongs to:
 | Package | Why | Phase |
 |---|---|---|
 | `textual` | the terminal dashboard | 1D |
-| `fastapi`, `uvicorn` | the JSON API and static dashboard | 1D |
 
 Adding a dependency means adding a row here with a reason, in the same pull request.
 
@@ -124,6 +127,11 @@ Conventions beyond the tools:
 - Detection code catches broadly and says so in a comment; everything else catches
   specifically.
 - No `print` outside `cli/`, `tui/`, `web/`.
+- The dashboard's HTML, CSS and JavaScript carry the same three-line copyright and licence
+  notice every Python module carries, in each language's own comment syntax; `test_web_static.py`
+  checks them the way `test_licensing.py` checks the modules, which only walks `*.py`.
+- Nothing on the dashboard is fetched from the internet when the page is opened — no font, no
+  script, no stylesheet. It ships in the package and works offline.
 - No number reaches the user without a source label.
 - Messages to the user are short sentences with a subject and a verb, and hints are actions.
 
