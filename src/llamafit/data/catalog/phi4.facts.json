@@ -1,0 +1,435 @@
+{
+  "models": {
+    "phi-4": {
+      "quants": {
+        "IQ3_M": {
+          "bpw": 3.77,
+          "bytes": 6913835200,
+          "files": [
+            "phi-4-IQ3_M.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "phi3",
+            "attention_layers": 40,
+            "attention_layers_source": "all-layers",
+            "bytes_dense_block_weights": 6268006400,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 20480,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 421478400,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 220774400,
+            "bytes_total": 6910279680,
+            "context_length": 16384,
+            "has_shared_experts": false,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 204800,
+            "n_embd": 5120,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 40,
+            "n_head_kv": 10,
+            "n_layer": 40,
+            "n_vocab": 100352,
+            "recurrent_state_bytes": null,
+            "sliding_window": 0,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "c9298fa6c9e927b257845a8057c74f2f4bd6bb7fbce35a0db933debdd777ae9a"
+          ]
+        },
+        "Q4_K": {
+          "bpw": 4.94,
+          "bytes": 9053114560,
+          "files": [
+            "phi-4-Q4_K.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "phi3",
+            "attention_layers": 40,
+            "attention_layers_source": "all-layers",
+            "bytes_dense_block_weights": 8339046400,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 20480,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 421478400,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 289013760,
+            "bytes_total": 9049559040,
+            "context_length": 16384,
+            "has_shared_experts": false,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 204800,
+            "n_embd": 5120,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 40,
+            "n_head_kv": 10,
+            "n_layer": 40,
+            "n_vocab": 100352,
+            "recurrent_state_bytes": null,
+            "sliding_window": 0,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "5652b9be0ea4ae2842130d04fe31bc869fcb99a2b7106c53b4e754a343fd688f"
+          ]
+        },
+        "Q6_K": {
+          "bpw": 6.56,
+          "bytes": 12030251200,
+          "files": [
+            "phi-4-Q6_K.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "phi3",
+            "attention_layers": 40,
+            "attention_layers_source": "all-layers",
+            "bytes_dense_block_weights": 11183718400,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 20480,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 421478400,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 421478400,
+            "bytes_total": 12026695680,
+            "context_length": 16384,
+            "has_shared_experts": false,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 204800,
+            "n_embd": 5120,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 40,
+            "n_head_kv": 10,
+            "n_layer": 40,
+            "n_vocab": 100352,
+            "recurrent_state_bytes": null,
+            "sliding_window": 0,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "a70147a8a8adb24d62a28e5038aca78c4c145a1c3043a38e8634738a9e6bbd93"
+          ]
+        }
+      }
+    },
+    "phi-4-mini-instruct": {
+      "quants": {
+        "Q4_K_M": {
+          "bpw": 5.19,
+          "bytes": 2491874688,
+          "files": [
+            "microsoft_Phi-4-mini-instruct-Q4_K_M.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "phi3",
+            "attention_layers": 32,
+            "attention_layers_source": "all-layers",
+            "bytes_dense_block_weights": 1979449344,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 12672,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 0,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 504161280,
+            "bytes_total": 2483623296,
+            "context_length": 131072,
+            "has_shared_experts": false,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 131072,
+            "n_embd": 3072,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 24,
+            "n_head_kv": 8,
+            "n_layer": 32,
+            "n_vocab": 200064,
+            "recurrent_state_bytes": null,
+            "sliding_window": 262144,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "01999f17c39cc3074afae5e9c539bc82d45f2dd7faa3917c66cbef76fce8c0c2"
+          ]
+        },
+        "Q8_0": {
+          "bpw": 8.51,
+          "bytes": 4084611456,
+          "files": [
+            "microsoft_Phi-4-mini-instruct-Q8_0.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "phi3",
+            "attention_layers": 32,
+            "attention_layers_source": "all-layers",
+            "bytes_dense_block_weights": 3423338496,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 12672,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 0,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 653008896,
+            "bytes_total": 4076360064,
+            "context_length": 131072,
+            "has_shared_experts": false,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 131072,
+            "n_embd": 3072,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 24,
+            "n_head_kv": 8,
+            "n_layer": 32,
+            "n_vocab": 200064,
+            "recurrent_state_bytes": null,
+            "sliding_window": 262144,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "a12f242c4ee379b9da91673e5d78b30bfacfe4fd86a0b2259d2ecad5d93cb6c7"
+          ]
+        }
+      }
+    },
+    "phi-4-reasoning-plus": {
+      "quants": {
+        "Q6_K": {
+          "bpw": 6.56,
+          "bytes": 12030253760,
+          "files": [
+            "Phi-4-reasoning-plus-Q6_K.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "phi3",
+            "attention_layers": 40,
+            "attention_layers_source": "all-layers",
+            "bytes_dense_block_weights": 11183718400,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 20480,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 421478400,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 421478400,
+            "bytes_total": 12026695680,
+            "context_length": 32768,
+            "has_shared_experts": false,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 204800,
+            "n_embd": 5120,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 40,
+            "n_head_kv": 10,
+            "n_layer": 40,
+            "n_vocab": 100352,
+            "recurrent_state_bytes": null,
+            "sliding_window": 0,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "2f441f46ca4c11bbd966f643d0fbff88277f2dd89ff44e2cac6088dd9bb4b5fb"
+          ]
+        },
+        "UD-Q3_K_XL": {
+          "bpw": 4.02,
+          "bytes": 7373142720,
+          "files": [
+            "Phi-4-reasoning-plus-UD-Q3_K_XL.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "phi3",
+            "attention_layers": 40,
+            "attention_layers_source": "all-layers",
+            "bytes_dense_block_weights": 6659072000,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 20480,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 421478400,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 289013760,
+            "bytes_total": 7369584640,
+            "context_length": 32768,
+            "has_shared_experts": false,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 204800,
+            "n_embd": 5120,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 40,
+            "n_head_kv": 10,
+            "n_layer": 40,
+            "n_vocab": 100352,
+            "recurrent_state_bytes": null,
+            "sliding_window": 0,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "c550c91f20934b8c1b08b77ae64569fe5619781fcf75880f93b66a335a9573da"
+          ]
+        },
+        "UD-Q4_K_XL": {
+          "bpw": 4.88,
+          "bytes": 8947337920,
+          "files": [
+            "Phi-4-reasoning-plus-UD-Q4_K_XL.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "phi3",
+            "attention_layers": 40,
+            "attention_layers_source": "all-layers",
+            "bytes_dense_block_weights": 8233267200,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 20480,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 421478400,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 289013760,
+            "bytes_total": 8943779840,
+            "context_length": 32768,
+            "has_shared_experts": false,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 204800,
+            "n_embd": 5120,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 40,
+            "n_head_kv": 10,
+            "n_layer": 40,
+            "n_vocab": 100352,
+            "recurrent_state_bytes": null,
+            "sliding_window": 0,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "94c78f1fd22afead98f2b1d60599563bc1ea8f68fd4f3db631356533fcb0251f"
+          ]
+        }
+      }
+    },
+    "phi-4-reasoning-vision-15b": {
+      "extras": {
+        "mmproj-microsoft.Phi-4-reasoning-vision-15B.f16.gguf": {
+          "bytes": 860462240,
+          "sha256": "95474b51a7168b9597dc730eaa9af9386b3628c65ee0527a0af99e478977003a"
+        }
+      },
+      "quants": {
+        "Q3_K_M": {
+          "bpw": 4.02,
+          "bytes": 7363271296,
+          "files": [
+            "microsoft.Phi-4-reasoning-vision-15B.f16.gguf.Q3_K_M.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "phi3",
+            "attention_layers": 40,
+            "attention_layers_source": "all-layers",
+            "bytes_dense_block_weights": 6717440000,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 20480,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 421478400,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 220774400,
+            "bytes_total": 7359713280,
+            "context_length": 32768,
+            "has_shared_experts": false,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 204800,
+            "n_embd": 5120,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 40,
+            "n_head_kv": 10,
+            "n_layer": 40,
+            "n_vocab": 100352,
+            "recurrent_state_bytes": null,
+            "sliding_window": 0,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "920275a9e291313fb37b14206473295a532e110b6defcd72e64e9d4ec73c9afe"
+          ]
+        },
+        "Q4_K_M": {
+          "bpw": 4.94,
+          "bytes": 9053117056,
+          "files": [
+            "microsoft.Phi-4-reasoning-vision-15B.f16.gguf.Q4_K_M.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "phi3",
+            "attention_layers": 40,
+            "attention_layers_source": "all-layers",
+            "bytes_dense_block_weights": 8339046400,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 20480,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 421478400,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 289013760,
+            "bytes_total": 9049559040,
+            "context_length": 32768,
+            "has_shared_experts": false,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 204800,
+            "n_embd": 5120,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 40,
+            "n_head_kv": 10,
+            "n_layer": 40,
+            "n_vocab": 100352,
+            "recurrent_state_bytes": null,
+            "sliding_window": 0,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "fdb1fdb3a13a30680ac2580b6355c2cf0c0df558dfa7fdeb49833bc1006cf3ed"
+          ]
+        },
+        "Q6_K": {
+          "bpw": 6.56,
+          "bytes": 12030253696,
+          "files": [
+            "microsoft.Phi-4-reasoning-vision-15B.f16.gguf.Q6_K.gguf"
+          ],
+          "gguf_facts": {
+            "arch": "phi3",
+            "attention_layers": 40,
+            "attention_layers_source": "all-layers",
+            "bytes_dense_block_weights": 11183718400,
+            "bytes_expert_weights": 0,
+            "bytes_global_weights": 20480,
+            "bytes_lazy_tables": 0,
+            "bytes_output_head": 421478400,
+            "bytes_shared_expert_weights": 0,
+            "bytes_token_embd": 421478400,
+            "bytes_total": 12026695680,
+            "context_length": 32768,
+            "has_shared_experts": false,
+            "head_dim": 128,
+            "kv_bytes_per_token_f16": 204800,
+            "n_embd": 5120,
+            "n_expert": null,
+            "n_expert_used": null,
+            "n_head": 40,
+            "n_head_kv": 10,
+            "n_layer": 40,
+            "n_vocab": 100352,
+            "recurrent_state_bytes": null,
+            "sliding_window": 0,
+            "value_head_dim": 128
+          },
+          "sha256": [
+            "99190225f0dee0c8cb97fda3ea74dc9cbc2bef79c63d0ecc82135a028d05e2de"
+          ]
+        }
+      }
+    }
+  },
+  "refreshed_at": "2026-09-10T17:59:08.312044+00:00",
+  "schema_version": 1
+}
