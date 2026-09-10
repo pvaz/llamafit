@@ -124,6 +124,14 @@ msgid "Could not read the file listing for %(repo)s from Hugging Face."
 msgstr ""
 
 #: src/llamafit/catalog/hf.py:205
+#: src/llamafit/llamacpp/install.py:503
+#: src/llamafit/llamacpp/install.py:438
+#: src/llamafit/llamacpp/install.py:428
+#: src/llamafit/llamacpp/releases.py:335
+#: src/llamafit/llamacpp/releases.py:350
+#: src/llamafit/llamacpp/releases.py:359
+#: src/llamafit/llamacpp/releases.py:315
+#: src/llamafit/llamacpp/releases.py:342
 msgid "Check your network connection and try again."
 msgstr ""
 
@@ -147,6 +155,7 @@ msgid "Run `llamafit catalog validate` for details."
 msgstr ""
 
 #: src/llamafit/catalog/refresh.py:437
+#: src/llamafit/llamacpp/install.py:678
 msgid "could not write %(path)s: %(error)s"
 msgstr ""
 
@@ -286,7 +295,7 @@ msgid ""
 msgstr ""
 
 #: src/llamafit/cli/board_cmd.py:243
-msgid "Only the configurations that use the machine well: between half and four fifths of the tightest pool."
+msgid "Only the configurations that use the machine well: at least half its memory held in weights, and no pool past four fifths."
 msgstr ""
 
 #: src/llamafit/cli/board_cmd.py:281
@@ -510,6 +519,198 @@ msgstr ""
 
 #: src/llamafit/cli/hardware_cmd.py:240
 msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:66
+msgid "Install what LlamaFit needs: llama.cpp, and later models."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:80
+msgid "Install this backend instead of the one chosen for your GPU: cuda, vulkan, hip, sycl, metal or cpu."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:91
+msgid "Install here instead of ~/.llamafit/llama.cpp."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:97
+msgid "Install this release tag, for example b6100, not the latest."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:107
+msgid "invalid --backend %(value)s"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:108
+msgid "Valid backends: %(values)s"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:155
+msgid "release %(tag)s publishes no %(backend)s build for %(os)s %(arch)s."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:157
+msgid "Leave --backend out and LlamaFit will choose a published one."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:160
+msgid "release %(tag)s publishes nothing for %(os)s %(arch)s."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:162
+msgid "Build llama.cpp from source; see the project's own instructions."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:241
+msgid "Release"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:243
+msgid "%(tag)s (build %(build)s)"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:248
+msgid "Backend"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:249
+msgid "Archive"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:251
+msgid "Also"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:253
+msgid "Download"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:255
+msgid "%(size)s (%(done)s already on disk)"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:265
+msgid "Checksum"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:267
+msgid "published, checked before anything is unpacked"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:269
+msgid "none published"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:273
+msgid "Install into"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:274
+msgid "Directory"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:277
+msgid "Free space"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:277
+msgid "Free space (cache)"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:279
+msgid "%(free)s on %(path)s, %(needed)s needed"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:295
+msgid "will be created"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:297
+msgid "exists and is empty"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:301
+msgid "holds %(tag)s, installed by LlamaFit; it will be replaced"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:304
+msgid "installed by LlamaFit; it will be replaced"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:305
+msgid "was not installed by LlamaFit"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:322
+msgid "Downloading"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:334
+msgid "Installed llama.cpp %(tag)s into %(path)s."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:340
+msgid "Replaced %(tag)s."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:343
+msgid "Backends found in it: %(backends)s"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:344
+#: src/llamafit/web/strings.py:343
+msgid "none"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:349
+msgid "Check it with `llamafit doctor`."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:374
+msgid "Change your PATH?"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:375
+msgid "PATH left alone."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:379
+msgid "PATH changed. Open a new terminal for it to take effect."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:388
+msgid ""
+"Download a published llama.cpp build and install it into ~/.llamafit/llama.cpp.\n"
+"\n"
+"The plan is printed before anything is written. The archive's checksum is verified before it is unpacked, an interrupted download continues where it stopped, and a directory LlamaFit did not create is never overwritten."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:406
+msgid "Offer to add the bin directory to your PATH, showing the undo first."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:414
+msgid "Install over a directory LlamaFit did not create. Ask yourself twice."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:422
+msgid "Install an archive that publishes no checksum. Nothing can be checked."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:426
+msgid "Print the plan and write nothing."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:429
+msgid "Do not ask; assume yes."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:469
+msgid "Install this?"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:470
+msgid "Nothing was written."
 msgstr ""
 
 #: src/llamafit/cli/plan_cmd.py:42
@@ -916,7 +1117,7 @@ msgid "unknown model"
 msgstr ""
 
 #: src/llamafit/cli/render.py:555
-#: src/llamafit/services/doctor.py:238
+#: src/llamafit/services/doctor.py:237
 msgctxt "context length"
 msgid "unknown"
 msgstr ""
@@ -985,8 +1186,8 @@ msgid "Params"
 msgstr ""
 
 #: src/llamafit/cli/render.py:726
-#: src/llamafit/cli/render_board.py:371
-#: src/llamafit/cli/render_board.py:481
+#: src/llamafit/cli/render_board.py:376
+#: src/llamafit/cli/render_board.py:539
 #: src/llamafit/web/strings.py:182
 msgctxt "column heading"
 msgid "Context"
@@ -1276,619 +1477,639 @@ msgstr ""
 msgid "recorded from %(source)s; this build stores it but does not apply it yet"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:108
+#: src/llamafit/cli/render_board.py:113
 msgctxt "utilisation"
 msgid "n/a"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:128
+#: src/llamafit/cli/render_board.py:133
 msgctxt "run mode"
 msgid "GPU"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:129
+#: src/llamafit/cli/render_board.py:134
 msgctxt "run mode"
 msgid "experts in RAM"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:130
+#: src/llamafit/cli/render_board.py:135
 msgctxt "run mode"
 msgid "split"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:131
+#: src/llamafit/cli/render_board.py:136
 msgctxt "run mode"
 msgid "CPU"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:132
+#: src/llamafit/cli/render_board.py:137
 msgctxt "run mode"
 msgid "nowhere"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:145
+#: src/llamafit/cli/render_board.py:150
 msgctxt "fit verdict"
 msgid "roomy"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:146
+#: src/llamafit/cli/render_board.py:151
 msgctxt "fit verdict"
 msgid "fits"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:147
+#: src/llamafit/cli/render_board.py:152
 msgctxt "fit verdict"
 msgid "tight"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:148
+#: src/llamafit/cli/render_board.py:153
 msgctxt "fit verdict"
 msgid "pages"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:149
+#: src/llamafit/cli/render_board.py:154
 msgctxt "fit verdict"
 msgid "no room"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:173
+#: src/llamafit/cli/render_board.py:178
 msgid "Comfortable: room for a longer context or a second model."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:174
+#: src/llamafit/cli/render_board.py:179
 msgid "Fits: the intended configuration runs as planned."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:175
+#: src/llamafit/cli/render_board.py:180
 msgid "Tight: it runs, but a browser or a second process can push it over."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:176
+#: src/llamafit/cli/render_board.py:181
 msgid "Pages: this needs more of the graphics card than is free. The driver will not refuse it — it moves the overflow to system memory, the server starts, the log looks healthy, and generation runs at a fraction of its speed with nothing saying why."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:182
+#: src/llamafit/cli/render_board.py:187
 msgid "No room: more memory than this machine has, with nothing to page to."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:190
+#: src/llamafit/cli/render_board.py:195
 msgctxt "confidence"
 msgid "measured"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:191
+#: src/llamafit/cli/render_board.py:196
 msgctxt "confidence"
 msgid "calibrated"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:192
+#: src/llamafit/cli/render_board.py:197
 msgctxt "confidence"
 msgid "estimated"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:193
+#: src/llamafit/cli/render_board.py:198
 msgctxt "confidence"
 msgid "no estimate"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:201
+#: src/llamafit/cli/render_board.py:206
 msgid "Speeds are benchmarks taken on this machine, not predictions."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:202
+#: src/llamafit/cli/render_board.py:207
 msgid "Speeds are section 10's formula corrected by benchmarks taken on this machine."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:205
+#: src/llamafit/cli/render_board.py:210
 msgid "Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:209
+#: src/llamafit/cli/render_board.py:214
 msgid "No speed could be estimated."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:217
+#: src/llamafit/cli/render_board.py:222
 msgctxt "memory pool"
 msgid "card"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:218
+#: src/llamafit/cli/render_board.py:223
 msgctxt "memory pool"
 msgid "system"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:219
+#: src/llamafit/cli/render_board.py:224
 msgctxt "memory pool"
 msgid "disk"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:232
+#: src/llamafit/cli/render_board.py:237
 msgctxt "budget component"
 msgid "dense weights"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:233
+#: src/llamafit/cli/render_board.py:238
 msgctxt "budget component"
 msgid "shared experts"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:234
+#: src/llamafit/cli/render_board.py:239
 msgctxt "budget component"
 msgid "routed experts"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:235
+#: src/llamafit/cli/render_board.py:240
 msgctxt "budget component"
 msgid "token embedding"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:236
+#: src/llamafit/cli/render_board.py:241
 msgctxt "budget component"
 msgid "output head"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:237
+#: src/llamafit/cli/render_board.py:242
 msgctxt "budget component"
 msgid "other weights"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:238
+#: src/llamafit/cli/render_board.py:243
 msgctxt "budget component"
 msgid "streamed tables"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:239
+#: src/llamafit/cli/render_board.py:244
 msgctxt "budget component"
 msgid "KV cache"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:240
+#: src/llamafit/cli/render_board.py:245
 msgctxt "budget component"
 msgid "KV cache, undeclared"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:241
+#: src/llamafit/cli/render_board.py:246
 msgctxt "budget component"
 msgid "recurrent state"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:242
+#: src/llamafit/cli/render_board.py:247
 msgctxt "budget component"
 msgid "compute buffer"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:243
+#: src/llamafit/cli/render_board.py:248
 msgctxt "budget component"
 msgid "output buffer"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:244
+#: src/llamafit/cli/render_board.py:249
 msgctxt "budget component"
 msgid "vision projector"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:245
+#: src/llamafit/cli/render_board.py:250
 msgctxt "budget component"
 msgid "vision compute"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:246
+#: src/llamafit/cli/render_board.py:251
 msgctxt "budget component"
 msgid "backend overhead"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:247
+#: src/llamafit/cli/render_board.py:252
 msgctxt "budget component"
 msgid "process overhead"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:255
+#: src/llamafit/cli/render_board.py:260
 msgctxt "budget line source"
 msgid "file"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:256
+#: src/llamafit/cli/render_board.py:261
 msgctxt "budget line source"
 msgid "formula"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:282
+#: src/llamafit/cli/render_board.py:287
 #: src/llamafit/web/strings.py:188
 msgctxt "column heading"
 msgid "Component"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:283
+#: src/llamafit/cli/render_board.py:288
 #: src/llamafit/web/strings.py:189
 msgctxt "column heading"
 msgid "Where"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:285
+#: src/llamafit/cli/render_board.py:290
 #: src/llamafit/web/strings.py:190
 msgctxt "column heading"
 msgid "From"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:303
+#: src/llamafit/cli/render_board.py:308
 #: src/llamafit/web/strings.py:278
 msgid "Card: %(required)s of %(available)s free, %(share)s used."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:311
+#: src/llamafit/cli/render_board.py:316
 #: src/llamafit/web/strings.py:279
 msgid "System memory: %(required)s of %(available)s free, %(share)s used."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:338
+#: src/llamafit/cli/render_board.py:343
 msgid "%(component)s: %(note)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:367
+#: src/llamafit/cli/render_board.py:372
 #: src/llamafit/web/strings.py:316
 msgid "Context tiers"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:373
+#: src/llamafit/cli/render_board.py:378
 #: src/llamafit/web/strings.py:195
 msgctxt "column heading"
 msgid "Card needs"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:377
+#: src/llamafit/cli/render_board.py:382
 #: src/llamafit/web/strings.py:196
 msgctxt "column heading"
 msgid "On this machine"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:388
+#: src/llamafit/cli/render_board.py:393
 #: src/llamafit/web/strings.py:274
 msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:411
+#: src/llamafit/cli/render_board.py:420
 #: src/llamafit/web/strings.py:270
 msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:429
+#: src/llamafit/cli/render_board.py:433
 #: src/llamafit/web/strings.py:197
 msgctxt "column heading"
 msgid "A token's time"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:431
-#: src/llamafit/web/strings.py:198
-msgctxt "column heading"
-msgid "Seconds"
-msgstr ""
-
 #: src/llamafit/cli/render_board.py:435
-#: src/llamafit/web/strings.py:199
-msgctxt "column heading"
-msgid "Share"
-msgstr ""
-
-#: src/llamafit/cli/render_board.py:439
 #: src/llamafit/web/strings.py:151
 msgctxt "token time"
 msgid "reading the card"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:440
+#: src/llamafit/cli/render_board.py:436
 #: src/llamafit/web/strings.py:152
 msgctxt "token time"
 msgid "reading system memory"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:441
+#: src/llamafit/cli/render_board.py:437
 #: src/llamafit/web/strings.py:153
 msgctxt "token time"
 msgid "everything else"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:457
+#: src/llamafit/cli/render_board.py:441
+msgctxt "column heading"
+msgid "A prompt token's time"
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:444
+msgctxt "prompt token time"
+msgid "doing the arithmetic"
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:448
+msgctxt "prompt token time"
+msgid "streaming the experts across the link"
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:452
+msgctxt "prompt token time"
+msgid "reading the experts from system memory"
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:482
+#: src/llamafit/web/strings.py:198
+msgctxt "column heading"
+msgid "Seconds"
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:486
+#: src/llamafit/web/strings.py:199
+msgctxt "column heading"
+msgid "Share"
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:515
 msgid "Measured on %(date)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:474
+#: src/llamafit/cli/render_board.py:532
 #: src/llamafit/web/strings.py:319
 msgid "Recorded elsewhere"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:478
+#: src/llamafit/cli/render_board.py:536
 #: src/llamafit/web/strings.py:200
 msgctxt "column heading"
 msgid "Run"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:480
+#: src/llamafit/cli/render_board.py:538
 #: src/llamafit/web/strings.py:201
 msgctxt "column heading"
 msgid "Prompt/s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:482
+#: src/llamafit/cli/render_board.py:540
 #: src/llamafit/web/strings.py:202
 msgctxt "column heading"
 msgid "Date"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:496
+#: src/llamafit/cli/render_board.py:554
 msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:508
+#: src/llamafit/cli/render_board.py:566
 msgid "%(profile)s: %(flags)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:524
+#: src/llamafit/cli/render_board.py:582
 msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:533
+#: src/llamafit/cli/render_board.py:591
 msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:552
+#: src/llamafit/cli/render_board.py:610
 msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:561
+#: src/llamafit/cli/render_board.py:619
 msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:569
-msgid "The tightest pool is %(share)s full; the score is highest between %(low)s and %(high)s, and falls away at both ends."
+#: src/llamafit/cli/render_board.py:632
+msgid "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool is %(share)s full. The score wants at least %(low)s of the memory taken and no more than %(high)s of any one pool."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:581
+#: src/llamafit/cli/render_board.py:647
 msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:610
+#: src/llamafit/cli/render_board.py:676
 #: src/llamafit/web/strings.py:269
 msgid "Score %(total)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:616
+#: src/llamafit/cli/render_board.py:682
 #: src/llamafit/web/strings.py:192
 msgctxt "column heading"
 msgid "Part"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:618
+#: src/llamafit/cli/render_board.py:684
 #: src/llamafit/web/strings.py:193
 msgctxt "column heading"
 msgid "Weight"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:619
+#: src/llamafit/cli/render_board.py:685
 #: src/llamafit/web/strings.py:194
 msgctxt "column heading"
 msgid "Adds"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:623
+#: src/llamafit/cli/render_board.py:689
 #: src/llamafit/web/strings.py:145
 msgctxt "score part"
 msgid "quality"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:624
+#: src/llamafit/cli/render_board.py:690
 #: src/llamafit/web/strings.py:146
 msgctxt "score part"
 msgid "speed"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:625
+#: src/llamafit/cli/render_board.py:691
 #: src/llamafit/web/strings.py:147
 msgctxt "score part"
 msgid "fit"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:626
+#: src/llamafit/cli/render_board.py:692
 #: src/llamafit/web/strings.py:148
 msgctxt "score part"
 msgid "context"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:732
+#: src/llamafit/cli/render_board.py:798
 #: src/llamafit/web/strings.py:245
 msgid "Recommended"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:734
-#: src/llamafit/cli/render_board.py:942
+#: src/llamafit/cli/render_board.py:800
+#: src/llamafit/cli/render_board.py:1008
 #: src/llamafit/web/strings.py:171
 msgctxt "column heading"
 msgid "#"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:736
-#: src/llamafit/cli/render_board.py:944
-#: src/llamafit/cli/render_board.py:871
-#: src/llamafit/cli/render_board.py:1000
-#: src/llamafit/cli/render_board.py:680
-#: src/llamafit/cli/render_board.py:936
+#: src/llamafit/cli/render_board.py:802
+#: src/llamafit/cli/render_board.py:1010
+#: src/llamafit/cli/render_board.py:937
+#: src/llamafit/cli/render_board.py:1066
+#: src/llamafit/cli/render_board.py:746
+#: src/llamafit/cli/render_board.py:1002
 #: src/llamafit/web/strings.py:172
 msgctxt "column heading"
 msgid "Model"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:741
-#: src/llamafit/cli/render_board.py:949
-#: src/llamafit/cli/render_board.py:872
-#: src/llamafit/cli/render_board.py:1001
-#: src/llamafit/cli/render_board.py:685
+#: src/llamafit/cli/render_board.py:807
+#: src/llamafit/cli/render_board.py:1015
+#: src/llamafit/cli/render_board.py:938
+#: src/llamafit/cli/render_board.py:1067
+#: src/llamafit/cli/render_board.py:751
 #: src/llamafit/web/strings.py:173
 msgctxt "column heading"
 msgid "Quant"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:742
-#: src/llamafit/cli/render_board.py:617
+#: src/llamafit/cli/render_board.py:808
+#: src/llamafit/cli/render_board.py:683
 #: src/llamafit/web/strings.py:174
 msgctxt "column heading"
 msgid "Score"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:745
-#: src/llamafit/cli/render_board.py:479
+#: src/llamafit/cli/render_board.py:811
+#: src/llamafit/cli/render_board.py:537
 #: src/llamafit/web/strings.py:175
 msgctxt "column heading"
 msgid "Gen/s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:746
+#: src/llamafit/cli/render_board.py:812
 #: src/llamafit/web/strings.py:176
 msgctxt "column heading"
 msgid "How"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:747
-#: src/llamafit/cli/render_board.py:950
+#: src/llamafit/cli/render_board.py:813
+#: src/llamafit/cli/render_board.py:1016
 #: src/llamafit/web/strings.py:177
 msgctxt "column heading"
 msgid "Fit"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:748
-#: src/llamafit/cli/render_board.py:955
+#: src/llamafit/cli/render_board.py:814
+#: src/llamafit/cli/render_board.py:1021
 #: src/llamafit/web/strings.py:178
 msgctxt "column heading"
 msgid "Runs"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:749
-#: src/llamafit/cli/render_board.py:956
+#: src/llamafit/cli/render_board.py:815
+#: src/llamafit/cli/render_board.py:1022
 #: src/llamafit/web/strings.py:179
 msgctxt "column heading"
 msgid "Ctx"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:750
+#: src/llamafit/cli/render_board.py:816
 #: src/llamafit/web/strings.py:183
 msgctxt "column heading"
 msgid "Qual"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:751
-#: src/llamafit/cli/render_board.py:957
+#: src/llamafit/cli/render_board.py:817
+#: src/llamafit/cli/render_board.py:1023
 #: src/llamafit/web/strings.py:184
 msgctxt "column heading"
 msgid "Card"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:752
+#: src/llamafit/cli/render_board.py:818
 #: src/llamafit/web/strings.py:185
 msgctxt "column heading"
 msgid "PP/s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:753
-#: src/llamafit/cli/render_board.py:284
+#: src/llamafit/cli/render_board.py:819
+#: src/llamafit/cli/render_board.py:289
 #: src/llamafit/web/strings.py:186
 msgctxt "column heading"
 msgid "Size"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:754
-#: src/llamafit/cli/render_board.py:958
+#: src/llamafit/cli/render_board.py:820
+#: src/llamafit/cli/render_board.py:1024
 #: src/llamafit/web/strings.py:187
 msgctxt "column heading"
 msgid "RAM"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:821
+#: src/llamafit/cli/render_board.py:887
 #: src/llamafit/web/strings.py:258
 msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:831
+#: src/llamafit/cli/render_board.py:897
 #: src/llamafit/web/strings.py:263
 msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:846
+#: src/llamafit/cli/render_board.py:912
 #: src/llamafit/web/strings.py:268
 msgid "Weights: %(weights)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:867
+#: src/llamafit/cli/render_board.py:933
 #: src/llamafit/web/strings.py:246
 msgid "Not ranked"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:873
-#: src/llamafit/cli/render_board.py:1002
+#: src/llamafit/cli/render_board.py:939
+#: src/llamafit/cli/render_board.py:1068
 #: src/llamafit/web/strings.py:191
 msgctxt "column heading"
 msgid "Why not"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:898
+#: src/llamafit/cli/render_board.py:964
 msgid "%(rank)s. %(name)s %(quant)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:940
+#: src/llamafit/cli/render_board.py:1006
 msgid "Fit on this machine"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:983
+#: src/llamafit/cli/render_board.py:1049
 msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:996
+#: src/llamafit/cli/render_board.py:1062
 msgid "Not placed"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1017
+#: src/llamafit/cli/render_board.py:1083
 msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1036
+#: src/llamafit/cli/render_board.py:1102
 msgid "This reaches the %(target)s tokens per second asked for."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1040
+#: src/llamafit/cli/render_board.py:1106
 msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1048
+#: src/llamafit/cli/render_board.py:1114
 msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1066
+#: src/llamafit/cli/render_board.py:1132
 msgid "%(name)s %(quant)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1077
+#: src/llamafit/cli/render_board.py:1143
 #: src/llamafit/web/strings.py:315
 msgid "Memory budget"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1083
+#: src/llamafit/cli/render_board.py:1149
 #: src/llamafit/web/strings.py:325
 msgid "The %(context)s tokens asked for would have cost"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1101
+#: src/llamafit/cli/render_board.py:1167
 #: src/llamafit/web/strings.py:311
 msgid "Command line"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1115
+#: src/llamafit/cli/render_board.py:1181
 #: src/llamafit/web/strings.py:320
 msgid "Model file: %(path)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1117
+#: src/llamafit/cli/render_board.py:1183
 #: src/llamafit/web/strings.py:321
 msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1126
+#: src/llamafit/cli/render_board.py:1192
 msgid "%(shown)d of %(total)d candidate shown."
 msgid_plural "%(shown)d of %(total)d candidates shown."
 msgstr[0] ""
@@ -2112,6 +2333,7 @@ msgid "%(program)s: not found"
 msgstr ""
 
 #: src/llamafit/hardware/runner.py:172
+#: src/llamafit/llamacpp/install.py:1320
 msgid "no output"
 msgstr ""
 
@@ -2173,6 +2395,219 @@ msgstr ""
 
 #: src/llamafit/llamacpp/detect.py:208
 msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:262
+msgid "%(path)s is a file, not a directory."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:273
+msgid "%(path)s cannot be read: %(error)s"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:281
+msgid "%(path)s has a marker file that cannot be read."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:284
+msgid "%(path)s already holds %(count)d file that LlamaFit did not install."
+msgid_plural "%(path)s already holds %(count)d files that LlamaFit did not install."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/llamacpp/install.py:502
+#: src/llamafit/llamacpp/install.py:426
+msgid "%(url)s returned HTTP %(status)d."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:582
+msgid "%(name)s has no published checksum, so it cannot be verified."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:584
+msgid "Pass --allow-unverified to install it anyway, knowing the archive is unchecked."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:608
+#: src/llamafit/llamacpp/install.py:437
+msgid "could not download %(url)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:609
+#: src/llamafit/llamacpp/install.py:523
+msgid "the connection was closed"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:610
+#: src/llamafit/llamacpp/install.py:666
+#: src/llamafit/llamacpp/install.py:465
+#: src/llamafit/llamacpp/install.py:524
+msgid "Run the command again; it continues from where it stopped."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:660
+#: src/llamafit/llamacpp/install.py:464
+#: src/llamafit/llamacpp/install.py:522
+msgid "the download of %(url)s stopped early: %(error)s"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:663
+msgid "%(got)s of %(want)s arrived"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:674
+msgid "the disk holding %(path)s is full."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:675
+msgid "Free some space and run the command again; the download resumes."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:679
+msgid "Check that the directory exists and is writable."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:701
+msgid "%(name)s did not match its published checksum and was discarded."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:703
+msgid "Nothing was unpacked. Run the command again: the archive arrived damaged, which a second download usually fixes."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:726
+msgid "%(archive)s contains %(name)s, which would be written outside the install directory."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:728
+msgid "Do not install this archive; report it to the llama.cpp project."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:760
+msgid "%(name)s is not an archive LlamaFit knows how to unpack."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:766
+msgid "%(name)s could not be unpacked: %(error)s"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:767
+msgid "Delete it and run the command again to download it afresh."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:821
+msgid "the archive holds no %(name)s."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:822
+#: src/llamafit/llamacpp/install.py:762
+msgid "Report this; the release layout has changed."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1029
+msgid "%(path)s was not installed by LlamaFit."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1030
+msgid "Pass --force to replace it, or --dir to install somewhere else. LlamaFit never overwrites an installation it did not create."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1039
+msgid "%(path)s has %(free)s free; this install needs %(needed)s."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1045
+msgid "Free some space, or pass --dir to install on another volume."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1124
+msgid "the %(backend)s libraries are not in the installed directory."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1129
+msgid "no ggml backend libraries were installed; the build may be a static one."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1240
+msgid "Your PATH could not be read, so it will not be changed."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1257
+msgid "Add %(path)s to your user PATH (HKCU\\Environment)."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1258
+msgid "To undo: run `setx PATH \"%(previous)s\"`, or remove the entry in System > About > Advanced system settings > Environment Variables."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1275
+#: src/llamafit/llamacpp/install.py:1249
+msgid "%(path)s is already on your PATH."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1276
+#: src/llamafit/llamacpp/install.py:1241
+#: src/llamafit/llamacpp/install.py:1250
+msgid "Nothing to undo."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1283
+msgid "Append a PATH line for %(path)s to %(file)s."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1285
+msgid "To undo: delete the two lines marked `%(mark)s` from %(file)s."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1319
+msgid "your PATH could not be changed: %(error)s"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1338
+msgid "To remove it later, delete %(path)s."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:281
+msgid "the most recent %(count)d llama.cpp releases hold no build."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:283
+msgid "Name one with `llamafit install llama.cpp --tag ...`."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:314
+msgid "could not reach GitHub at %(url)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:319
+msgid "GitHub refused the request for %(url)s: the rate limit is exhausted."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:321
+msgid "Wait for the limit to reset, or set GITHUB_TOKEN to a personal access token with no scopes."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:328
+#: src/llamafit/llamacpp/releases.py:457
+msgid "GitHub has no release at %(url)s."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:329
+#: src/llamafit/llamacpp/releases.py:459
+msgid "Check the tag with `llamafit install llama.cpp --tag ...`."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:333
+msgid "GitHub returned %(status)d for %(url)s."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:341
+msgid "GitHub's answer for %(url)s was not JSON."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:349
+#: src/llamafit/llamacpp/releases.py:358
+msgid "GitHub's answer did not describe a release."
 msgstr ""
 
 #: src/llamafit/llamacpp/server.py:120
@@ -2385,97 +2820,97 @@ msgid "no llama-server binary was found"
 msgstr ""
 
 #: src/llamafit/services/doctor.py:135
-msgid "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install llama.cpp`); until then download a release from https://github.com/ggml-org/llama.cpp/releases and put its bin directory on PATH or in LLAMA_CPP_PATH."
+msgid "Run `llamafit install llama.cpp`, which picks the right build for this machine, checks it against its published checksum, and never touches an installation LlamaFit did not create."
 msgstr ""
 
-#: src/llamafit/services/doctor.py:150
+#: src/llamafit/services/doctor.py:149
 msgid "Memory size unknown"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:151
+#: src/llamafit/services/doctor.py:150
 msgid "LlamaFit could not read this machine's memory totals, so it cannot work out what will fit."
 msgstr ""
 
-#: src/llamafit/services/doctor.py:170
+#: src/llamafit/services/doctor.py:169
 msgid "%(gpu)s: no %(backend)s backend in llama.cpp"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:172
+#: src/llamafit/services/doctor.py:171
 msgid "llama.cpp was built with: %(backends)s"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:173
+#: src/llamafit/services/doctor.py:172
 msgctxt "backends"
 msgid "unknown"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:174
+#: src/llamafit/services/doctor.py:173
 msgid "Install a llama.cpp build with the %(backend)s or Vulkan backend to use %(gpu)s."
 msgstr ""
 
-#: src/llamafit/services/doctor.py:185
+#: src/llamafit/services/doctor.py:184
 msgid "%(gpu)s: VRAM size unknown"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:186
+#: src/llamafit/services/doctor.py:185
 msgid "the vendor tool that reports memory was not available"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:194
+#: src/llamafit/services/doctor.py:193
 msgid "No GPU detected"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:195
+#: src/llamafit/services/doctor.py:194
 msgid "models will run on the CPU only"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:196
+#: src/llamafit/services/doctor.py:195
 msgid "If a GPU is present, check that its driver tools are installed."
 msgstr ""
 
-#: src/llamafit/services/doctor.py:204
+#: src/llamafit/services/doctor.py:203
 msgid "RAM bandwidth assumed"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:205
+#: src/llamafit/services/doctor.py:204
 msgid "using %(gbps)s GB/s as a default"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:207
+#: src/llamafit/services/doctor.py:206
 msgid "Install numpy (`pip install llamafit[fast]`) so LlamaFit can measure the RAM bandwidth."
 msgstr ""
 
-#: src/llamafit/services/doctor.py:224
+#: src/llamafit/services/doctor.py:223
 msgid "Probe %(probe)s failed"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:225
+#: src/llamafit/services/doctor.py:224
 msgctxt "probe error"
 msgid "unknown error"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:234
+#: src/llamafit/services/doctor.py:233
 msgid "llama-server running at %(url)s"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:235
+#: src/llamafit/services/doctor.py:234
 msgid "model %(model)s, context %(context)s"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:237
+#: src/llamafit/services/doctor.py:236
 msgctxt "model name"
 msgid "unknown"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:248
+#: src/llamafit/services/doctor.py:247
 msgid "Low disk space on %(path)s"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:249
+#: src/llamafit/services/doctor.py:248
 msgid "%(size)s free"
 msgstr ""
 
-#: src/llamafit/services/doctor.py:250
+#: src/llamafit/services/doctor.py:249
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr ""
 
@@ -2499,39 +2934,51 @@ msgstr ""
 msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:159
+#: src/llamafit/speed/estimate.py:182
 msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:172
+#: src/llamafit/speed/estimate.py:195
 msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:184
+#: src/llamafit/speed/estimate.py:207
 msgid "No active parameter count was supplied; it was inferred from the weight bytes."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:352
+#: src/llamafit/speed/estimate.py:219
+msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:230
+msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:465
 msgid "No placement of this model on this machine could run it."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:404
+#: src/llamafit/speed/estimate.py:519
 msgid "Generation is a benchmark of this configuration, not a prediction."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:411
+#: src/llamafit/speed/estimate.py:527
 msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:426
+#: src/llamafit/speed/estimate.py:542
 msgid "Prompt processing is a benchmark of this configuration."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:433
+#: src/llamafit/speed/estimate.py:550
 msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:442
+#: src/llamafit/speed/estimate.py:559
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:566
 msgid "This figure assumes nothing pages: a placement this tight often does, silently."
 msgstr ""
 
@@ -2783,10 +3230,6 @@ msgstr ""
 
 #: src/llamafit/web/strings.py:342
 msgid "Command"
-msgstr ""
-
-#: src/llamafit/web/strings.py:343
-msgid "none"
 msgstr ""
 
 #: src/llamafit/web/strings.py:344
