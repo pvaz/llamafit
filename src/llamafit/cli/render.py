@@ -10,17 +10,39 @@ an ``s`` bolted onto a word, because a suffix is an English rule that most langu
 not share. A word short enough for two rows to share — *unknown*, *none detected*, *ok* —
 carries a :func:`pgettext` context naming its row, because the Portuguese for it is
 inflected and one translation cannot be right in both places.
+
+A third habit is newer, and it is what makes this page readable in Arabic, Hebrew and
+Urdu. Every value that is not words — a flag, a command name, a path, a model or
+repository id, a URL, a size with its unit — goes through :func:`llamafit.i18n.isolate`
+on its way into a sentence, and every finished cell goes through
+:func:`llamafit.i18n.for_display`. The first makes each identifier a directional island,
+so a leading hyphen cannot drift and ``--verbose`` cannot reach a reader as ``verbose--``;
+the second fixes the line's base direction and catches the identifiers a translator had to
+keep verbatim inside prose. Columns and their alignment are mirrored the same way. All of
+it is inert for a left-to-right language, and none of it is anywhere near ``--json``: the
+marks are added here, at the last moment before Rich draws, and the services that build
+the machine-readable output never see one. :mod:`llamafit.i18n.bidi` explains the
+characters, and ``docs/translations.md`` is honest about which terminals act on them.
 """
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
+from typing import Any
 
 from rich.cells import cell_len
 from rich.table import Table
 from rich.text import Text
 
-from llamafit.i18n import _, ngettext, pgettext
+from llamafit.i18n import (
+    _,
+    for_display,
+    isolate,
+    mirror_justify,
+    ngettext,
+    pgettext,
+    reading_order,
+)
 from llamafit.models.catalog import CatalogModel
 from llamafit.models.gguf import GgufFacts
 from llamafit.models.host import Host, Probe, Source
@@ -30,6 +52,61 @@ from llamafit.services.doctor import Finding
 from llamafit.units import billions_suffix, format_bytes, format_grouped, localise_number
 
 _LEVEL_STYLE = {"ok": "green", "warn": "yellow", "error": "red"}
+
+Cell = str | Text
+"""What one cell of a table may be: markup-free text, or a plain string of labels."""
+
+
+def _cell(text: str) -> Text:
+    """One cell's finished text, prepared for the reader's writing direction.
+
+    ``Text`` rather than a markup string for the reason every other value here is: a
+    device name or a path may hold square brackets Rich would try to parse as a tag.
+    """
+    return Text(for_display(text))
+
+
+def _size(n: int | None) -> str:
+    """A byte size as one directional island, or the word for a size nobody could read.
+
+    ``format_bytes`` answers with a translated *unknown* when it is given ``None``, and
+    that is prose, not an identifier: isolating it would put a mark around a word in the
+    reader's own language for no reason. Only a real ``7.6 GiB`` becomes an island, which
+    is what keeps the figure and its unit from being parted in an Arabic sentence.
+    """
+    return isolate(format_bytes(n)) if n is not None else format_bytes(n)
+
+
+def _add_columns(table: Table, columns: Sequence[Mapping[str, Any]]) -> None:
+    """Add a table's columns in reading order, with their alignment mirrored to match.
+
+    Each mapping is the ``header`` plus whatever :meth:`rich.table.Table.add_column`
+    should be told about that column. For a right-to-left language the columns are added
+    last-read first, so the first one lands against the right edge, and a left-aligned
+    column becomes right-aligned so its padding falls after the last character rather than
+    before the first. Neither happens in a left-to-right language, where this is exactly
+    the sequence of ``add_column`` calls that was here before.
+
+    Args:
+        table: The table being built.
+        columns: The columns, in the order a reader meets them.
+    """
+    for column in reading_order(columns):
+        options = dict(column)
+        header = str(options.pop("header"))
+        options["justify"] = mirror_justify(str(options.get("justify", "left")))
+        table.add_column(for_display(header), **options)
+
+
+def _add_row(table: Table, *cells: Cell) -> None:
+    """Add one row, its cells in the same order :func:`_add_columns` put the columns.
+
+    A plain string is a row label this file wrote, so it is prepared for the writing
+    direction here rather than at thirty call sites; a ``Text`` has already been through
+    :func:`_cell` and is left alone.
+    """
+    prepared: list[Cell] = [c if isinstance(c, Text) else for_display(c) for c in cells]
+    table.add_row(*reading_order(prepared))
 
 
 def _level_label(level: str) -> str:
@@ -77,16 +154,22 @@ def render_host(host: Host) -> Table:
     """A two-column table with everything the scan found.
 
     Values are built as ``Text`` rather than markup strings: a device name or a path
-    may contain square brackets, which Rich would otherwise try to parse as a tag.
+    may contain square brackets, which Rich would otherwise try to parse as a tag. Each
+    of them is also isolated, because a device name, an architecture and a path are
+    identifiers, and an Arabic sentence lays one out backwards without a mark to say so.
     """
-    table = Table(title=_("Host"), show_header=False, box=None, pad_edge=False)
-    table.add_column("key", style="bold")
-    table.add_column("value")
-    table.add_row(
+    table = Table(title=for_display(_("Host")), show_header=False, box=None, pad_edge=False)
+    _add_columns(table, [{"header": "key", "style": "bold"}, {"header": "value"}])
+    _add_row(
+        table,
         _("OS"),
-        Text(
+        _cell(
             _("%(os)s %(version)s (%(arch)s)")
-            % {"os": host.os, "version": host.os_version, "arch": host.arch}
+            % {
+                "os": isolate(host.os),
+                "version": isolate(host.os_version),
+                "arch": isolate(host.arch),
+            }
         ),
     )
     cores = _("%(physical)d cores / %(logical)d threads") % {
@@ -99,14 +182,15 @@ def render_host(host: Host) -> Table:
             "%(count)d performance cores",
             host.cpu.performance_cores,
         ) % {"count": host.cpu.performance_cores}
-    table.add_row(
+    _add_row(
+        table,
         _("CPU"),
-        Text(
+        _cell(
             _("%(model)s; %(cores)s; %(isa)s")
             % {
-                "model": host.cpu.model,
+                "model": isolate(host.cpu.model),
                 "cores": cores,
-                "isa": " ".join(host.cpu.isa) or _("isa unknown"),
+                "isa": isolate(" ".join(host.cpu.isa)) if host.cpu.isa else _("isa unknown"),
             }
         ),
     )
@@ -117,7 +201,7 @@ def render_host(host: Host) -> Table:
             " ".join(
                 y
                 for y in (
-                    mem.type,
+                    isolate(mem.type) if mem.type else None,
                     _("%(speed)d MT/s") % {"speed": mem.speed_mts} if mem.speed_mts else None,
                 )
                 if y
@@ -141,26 +225,27 @@ def render_host(host: Host) -> Table:
         if mem.bandwidth_gbps
         else pgettext("memory bandwidth", "unknown")
     )
-    table.add_row(
+    _add_row(
+        table,
         _("Memory"),
-        Text(
+        _cell(
             _("%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s")
             % {
-                "total": format_bytes(mem.total_bytes),
-                "available": format_bytes(mem.available_bytes),
+                "total": _size(mem.total_bytes),
+                "available": _size(mem.available_bytes),
                 "details": details or _("type unknown"),
                 "bandwidth": bandwidth,
             }
         ),
     )
     if not host.gpus:
-        table.add_row(_("GPU"), pgettext("GPU", "none detected"))
+        _add_row(table, _("GPU"), pgettext("GPU", "none detected"))
     for gpu in host.gpus:
         vram = (
             _("%(total)s VRAM, %(free)s free")
             % {
-                "total": format_bytes(gpu.vram_total_bytes),
-                "free": format_bytes(gpu.vram_free_bytes),
+                "total": _size(gpu.vram_total_bytes),
+                "free": _size(gpu.vram_free_bytes),
             }
             if gpu.vram_total_bytes
             else _("VRAM unknown")
@@ -174,33 +259,35 @@ def render_host(host: Host) -> Table:
                 % {"specs": _from_table(gpu.bandwidth_gbps, gpu.compute_tflops_fp16)}
                 if gpu.bandwidth_gbps or gpu.compute_tflops_fp16
                 else None,
-                _("driver %(driver)s") % {"driver": gpu.driver} if gpu.driver else None,
+                _("driver %(driver)s") % {"driver": isolate(gpu.driver)} if gpu.driver else None,
             )
             if x
         )
-        table.add_row(
+        _add_row(
+            table,
             _("GPU %(index)d") % {"index": gpu.index},
-            Text(
+            _cell(
                 _("%(name)s (%(backend)s); %(vram)s; %(specs)s")
                 % {
-                    "name": gpu.name,
-                    "backend": gpu.backend_hint,
+                    "name": isolate(gpu.name),
+                    "backend": isolate(gpu.backend_hint),
                     "vram": vram,
                     "specs": specs or _("no specs"),
                 }
             ),
         )
     if host.unified_memory:
-        table.add_row(_("Memory pool"), _("unified (GPU shares system memory)"))
+        _add_row(table, _("Memory pool"), _("unified (GPU shares system memory)"))
     for disk in host.disks:
-        table.add_row(
+        _add_row(
+            table,
             _("Disk"),
-            Text(
+            _cell(
                 _("%(path)s: %(free)s free of %(total)s")
                 % {
-                    "path": disk.path,
-                    "free": format_bytes(disk.free_bytes),
-                    "total": format_bytes(disk.total_bytes),
+                    "path": isolate(disk.path),
+                    "free": _size(disk.free_bytes),
+                    "total": _size(disk.total_bytes),
                 }
             ),
         )
@@ -208,45 +295,58 @@ def render_host(host: Host) -> Table:
 
 
 def render_llamacpp(llamacpp: LlamaCpp) -> Table:
-    """A two-column table describing the installation, with paths never read as markup."""
+    """A two-column table describing the installation, with paths never read as markup.
+
+    The build number keeps its ``b`` un-isolated on purpose: the message glues the letter
+    to the digits, and isolating the digits alone would part ``b`` from ``10867`` and let
+    the two swap places in an Arabic line. See :func:`llamafit.i18n.isolate`.
+    """
     table = Table(title="llama.cpp", show_header=False, box=None, pad_edge=False)
-    table.add_column("key", style="bold")
-    table.add_column("value")
+    _add_columns(table, [{"header": "key", "style": "bold"}, {"header": "value"}])
     if not llamacpp.installed:
-        table.add_row(_("Installed"), pgettext("llama.cpp is installed", "no"))
+        _add_row(table, _("Installed"), pgettext("llama.cpp is installed", "no"))
     else:
         if llamacpp.build and llamacpp.commit:
             build = _("b%(build)d (%(commit)s)") % {
                 "build": llamacpp.build,
-                "commit": llamacpp.commit,
+                "commit": isolate(llamacpp.commit),
             }
         elif llamacpp.build:
             build = _("b%(build)d") % {"build": llamacpp.build}
         else:
             build = _("unknown build")
-        table.add_row(
+        _add_row(
+            table,
             _("Installed"),
-            Text(_("yes, %(build)s at %(path)s") % {"build": build, "path": llamacpp.path}),
+            _cell(
+                _("yes, %(build)s at %(path)s") % {"build": build, "path": isolate(llamacpp.path)}
+            ),
         )
-        table.add_row(
+        _add_row(
+            table,
             _("Backends"),
-            Text(", ".join(llamacpp.backends) or pgettext("backends", "none detected")),
+            _cell(
+                isolate(", ".join(llamacpp.backends))
+                if llamacpp.backends
+                else pgettext("backends", "none detected")
+            ),
         )
-        table.add_row(_("Local models"), str(len(llamacpp.local_models)))
+        _add_row(table, _("Local models"), str(len(llamacpp.local_models)))
     for server in llamacpp.running_servers:
-        table.add_row(
+        _add_row(
+            table,
             _("Running"),
-            Text(
+            _cell(
                 _("%(url)s: %(model)s, context %(context)s")
                 % {
-                    "url": server.url,
-                    "model": server.model or _("unknown model"),
+                    "url": isolate(server.url),
+                    "model": isolate(server.model) if server.model else _("unknown model"),
                     "context": server.n_ctx or pgettext("context length", "unknown"),
                 }
             ),
         )
     for problem in llamacpp.problems:
-        table.add_row(_("Problem"), Text(problem))
+        _add_row(table, _("Problem"), _cell(problem))
     return table
 
 
@@ -256,34 +356,55 @@ def render_probes(probes: Iterable[Probe]) -> Table:
     A ``server:<port>`` probe that found nothing is the ordinary case on a machine with no
     llama-server running, so it is shown dim rather than as a failure.
     """
-    table = Table(title=_("Probes"), box=None, pad_edge=False)
-    table.add_column(_("probe"), style="bold")
-    table.add_column(_("result"))
-    table.add_column(_("ms"), justify="right")
+    table = Table(title=for_display(_("Probes")), box=None, pad_edge=False)
+    _add_columns(
+        table,
+        [
+            {"header": _("probe"), "style": "bold"},
+            {"header": _("result")},
+            {"header": _("ms"), "justify": "right"},
+        ],
+    )
     for probe in probes:
         if probe.ok:
-            status = Text(pgettext("probe result", "ok"), style="green")
+            status = Text(for_display(pgettext("probe result", "ok")), style="green")
         elif probe.name.startswith("server:"):
-            status = Text(_("no server"), style="dim")
+            status = Text(for_display(_("no server")), style="dim")
         else:
-            status = Text(pgettext("probe result", "failed"), style="yellow")
+            status = Text(for_display(pgettext("probe result", "failed")), style="yellow")
             if probe.error:
-                status.append(f" {probe.error}")
-        table.add_row(probe.name, status, str(probe.duration_ms))
+                status.append(f" {for_display(probe.error)}")
+        # A probe name is an identifier and half of them carry a hyphen or a flag
+        # (`nvidia-smi`, `llama-server --version`), which is exactly what drifts.
+        _add_row(table, _cell(isolate(probe.name)), status, str(probe.duration_ms))
     return table
 
 
 def render_findings(findings: Iterable[Finding]) -> Table:
-    """Findings with level colouring and hints; the finding text is never parsed as markup."""
-    table = Table(title=_("Findings"), box=None, pad_edge=False)
-    table.add_column(_("level"))
-    table.add_column(_("finding"))
+    """Findings with level colouring and hints; the finding text is never parsed as markup.
+
+    A finding arrives here already written out: ``diagnose`` composed the sentence, and
+    the same object is what ``--json`` serialises, so nothing may be marked before this
+    point. The identifiers inside it are therefore the ones a translator kept verbatim in
+    their own sentence — ``--verbose``, a URL, a backticked command line — and
+    :func:`llamafit.i18n.for_display` is what finds them. The interpolated values a
+    finding carries (a path, a probe name, a GPU) cannot be reached from here at all; that
+    is written up in ``docs/translations.md`` rather than guessed at with a wider pattern.
+    """
+    table = Table(title=for_display(_("Findings")), box=None, pad_edge=False)
+    _add_columns(table, [{"header": _("level")}, {"header": _("finding")}])
     for finding in findings:
-        text = Text.assemble((finding.title, "bold"), "\n", finding.detail)
+        text = Text.assemble(
+            (for_display(finding.title), "bold"), "\n", for_display(finding.detail)
+        )
         if finding.hint:
             text.append("\n")
-            text.append(_("Hint: %(hint)s") % {"hint": finding.hint}, style="dim")
-        table.add_row(Text(_level_label(finding.level), style=_LEVEL_STYLE[finding.level]), text)
+            text.append(for_display(_("Hint: %(hint)s") % {"hint": finding.hint}), style="dim")
+        _add_row(
+            table,
+            Text(for_display(_level_label(finding.level)), style=_LEVEL_STYLE[finding.level]),
+            text,
+        )
     return table
 
 
@@ -504,6 +625,12 @@ def render_catalog_list(summaries: Sequence[ModelSummary], *, console_width: int
     ``console.print``, since a model name or id is never guaranteed free of
     characters Rich would try to parse as markup.
 
+    In a right-to-left language the columns are added in the reverse order and every
+    alignment is mirrored, so the id lands against the right edge where reading starts and
+    the ragged edge falls at the left where it ends. The budget above is untouched by
+    that: a column is the same width whichever end of the line it is drawn from, and the
+    marks that make each cell an island have no width at all.
+
     Args:
         summaries: The rows to render, already filtered and sorted.
         console_width: The console's width; defaults to 80, the narrowest width
@@ -512,32 +639,39 @@ def render_catalog_list(summaries: Sequence[ModelSummary], *, console_width: int
     id_width, included, capabilities_width = _column_budget(summaries, console_width)
     include_capabilities = capabilities_width >= 3  # room for at least a bare "+N" marker
     headings = _list_headings()
+    caption = _table_caption(included)
 
     table = Table(
-        title=_("Models"),
-        caption=_table_caption(included),
+        title=for_display(_("Models")),
+        caption=for_display(caption) if caption else None,
     )
-    table.add_column(headings["id"], style="bold", max_width=id_width, overflow="fold")
-    if "quality" in included:
-        table.add_column(headings["quality"], justify="right", no_wrap=True)
-    if "params" in included:
-        table.add_column(headings["params"], justify="right", no_wrap=True)
-    if "context" in included:
-        table.add_column(headings["context"], justify="right", no_wrap=True)
+    columns: list[Mapping[str, Any]] = [
+        {"header": headings["id"], "style": "bold", "max_width": id_width, "overflow": "fold"}
+    ]
+    for name in ("quality", "params", "context"):
+        if name in included:
+            columns.append({"header": headings[name], "justify": "right", "no_wrap": True})
     if include_capabilities:
-        table.add_column(headings["capabilities"], no_wrap=True)
+        columns.append({"header": headings["capabilities"], "no_wrap": True})
+    _add_columns(table, columns)
 
     for summary in summaries:
-        row: list[Text | str] = [Text(summary.id)]
+        # Every one of these is an identifier or a bare figure, never words: an id, a
+        # score, a `27/3B` pair, a `256K` context, a comma-separated list of capability
+        # names. Each is isolated so that neither the slash nor the `+N` marker can be
+        # drawn into the Arabic around it.
+        row: list[Cell] = [_cell(isolate(summary.id))]
         if "quality" in included:
-            row.append(str(summary.quality_baseline))
+            row.append(isolate(summary.quality_baseline))
         if "params" in included:
-            row.append(_fmt_params(summary.params_total_b, summary.params_active_b))
+            row.append(isolate(_fmt_params(summary.params_total_b, summary.params_active_b)))
         if "context" in included:
-            row.append(_fmt_context_compact(summary.context_native))
+            row.append(isolate(_fmt_context_compact(summary.context_native)))
         if include_capabilities:
-            row.append(Text(_fmt_capabilities(summary.capabilities, width=capabilities_width)))
-        table.add_row(*row)
+            row.append(
+                _cell(isolate(_fmt_capabilities(summary.capabilities, width=capabilities_width)))
+            )
+        _add_row(table, *row)
     return table
 
 
@@ -547,23 +681,40 @@ def render_model_facts(model: CatalogModel) -> Table:
     As with every other table here, catalog text (licence slug, architecture notes,
     a source's repository or path) is wrapped in ``Text`` rather than interpolated
     into a markup string. That text is data: it is shown as it was written and never
-    translated, and the row labels around it are what a reader's language reaches.
+    translated, and the row labels around it are what a reader's language reaches. Being
+    data is also what makes each of them an isolate: an id, a licence slug, a URL, a
+    release date and an architecture name are all Latin runs with a hyphen, a slash or a
+    dot in them, and every one of those is a character the algorithm would otherwise let
+    the surrounding Arabic claim.
+
+    The one row that keeps its figures bare is Parameters, where the message writes
+    ``%(total)sB``: the ``B`` is glued to the number outside the placeholder, and isolating
+    the number alone would separate the two. That, and the unit in the memory and GPU rows,
+    are the residue this pass cannot reach without moving a message id; see
+    ``docs/translations.md``.
     """
     table = Table(
-        title=Text(f"{model.name} ({model.id})"), show_header=False, box=None, pad_edge=False
+        title=Text(for_display(isolate(f"{model.name} ({model.id})"))),
+        show_header=False,
+        box=None,
+        pad_edge=False,
     )
-    table.add_column("key", style="bold")
-    table.add_column("value")
-    table.add_row(_("Vendor"), Text(model.vendor))
-    table.add_row(_("Family"), Text(model.family))
-    table.add_row(_("Release date"), str(model.release_date))
-    table.add_row(
+    _add_columns(table, [{"header": "key", "style": "bold"}, {"header": "value"}])
+    _add_row(table, _("Vendor"), _cell(isolate(model.vendor)))
+    _add_row(table, _("Family"), _cell(isolate(model.family)))
+    _add_row(table, _("Release date"), isolate(model.release_date))
+    _add_row(
+        table,
         _("Licence"),
-        Text(_("%(spdx)s (%(url)s)") % {"spdx": model.license.spdx, "url": model.license.url}),
+        _cell(
+            _("%(spdx)s (%(url)s)")
+            % {"spdx": isolate(model.license.spdx), "url": isolate(model.license.url)}
+        ),
     )
-    table.add_row(
+    _add_row(
+        table,
         _("Parameters"),
-        Text(
+        _cell(
             _("%(total)sB total, %(active)sB active")
             % {
                 "total": _fmt_billions(model.params.total_b),
@@ -571,7 +722,9 @@ def render_model_facts(model: CatalogModel) -> Table:
             }
         ),
     )
-    context = _("%(tokens)s tokens native") % {"tokens": format_grouped(model.context.native)}
+    context = _("%(tokens)s tokens native") % {
+        "tokens": isolate(format_grouped(model.context.native))
+    }
     if model.context.extended:
         # This second message is a fragment: it opens with a comma and continues the one
         # above rather than standing on its own, which is exactly what a translator cannot
@@ -580,34 +733,44 @@ def render_model_facts(model: CatalogModel) -> Table:
         # changing a message id orphans that work silently, with a green build. Fix it once
         # they have landed, not helpfully in passing.
         context += _(", %(tokens)s extended via %(method)s") % {
-            "tokens": format_grouped(model.context.extended),
-            "method": model.context.extended_method or _("unspecified method"),
+            "tokens": isolate(format_grouped(model.context.extended)),
+            "method": isolate(model.context.extended_method)
+            if model.context.extended_method
+            else _("unspecified method"),
         }
     # This label and the Capabilities one below are the same messages as two of the list
     # table's column headings, where they have a width budget that this table does not.
     # See _list_headings: each wants its own context so a translator can give a short
     # heading and a full label, and that waits for the consolidated English round because
     # it moves two message ids.
-    table.add_row(_("Context"), Text(context))
-    table.add_row(
+    _add_row(table, _("Context"), _cell(context))
+    _add_row(
+        table,
         _("Architecture"),
-        Text(f"{model.architecture.class_}, gguf_arch={model.architecture.gguf_arch}"),
+        _cell(isolate(f"{model.architecture.class_}, gguf_arch={model.architecture.gguf_arch}")),
     )
     if model.architecture.notes:
-        table.add_row(_("Notes"), Text(model.architecture.notes))
-    table.add_row(_("Capabilities"), Text(", ".join(model.capabilities)))
-    table.add_row(_("Use cases"), Text(", ".join(model.use_cases)))
-    table.add_row(_("Quality baseline"), str(model.quality.baseline))
+        _add_row(table, _("Notes"), _cell(model.architecture.notes))
+    _add_row(table, _("Capabilities"), _cell(isolate(", ".join(model.capabilities))))
+    _add_row(table, _("Use cases"), _cell(isolate(", ".join(model.use_cases))))
+    _add_row(table, _("Quality baseline"), str(model.quality.baseline))
     for benchmark in model.quality.benchmarks:
-        table.add_row(
+        _add_row(
+            table,
             _("Benchmark"),
-            Text(f"{benchmark.name}: {localise_number(str(benchmark.score))} ({benchmark.source})"),
+            _cell(
+                isolate(
+                    f"{benchmark.name}: {localise_number(str(benchmark.score))} "
+                    f"({benchmark.source})"
+                )
+            ),
         )
     for index, source in enumerate(model.sources):
         location = source.repo if source.kind == "gguf" else source.path
-        table.add_row(
+        _add_row(
+            table,
             _("Source %(index)d") % {"index": index + 1},
-            Text(f"{location} ({source.kind}, trust={source.trust})"),
+            _cell(isolate(f"{location} ({source.kind}, trust={source.trust})")),
         )
     return table
 
@@ -616,7 +779,10 @@ def _facts_summary(facts: GgufFacts | None) -> str:
     """A one-line summary of a quant's architecture facts, or a note that none are known yet."""
     if facts is None:
         return _("not read yet")
-    parts = [facts.arch]
+    # The architecture is a GGUF identifier (`qwen3moe`), so it is isolated; the expert
+    # pair is not, because `%(count)d/%(used)d` puts the slash between two placeholders
+    # and marking each number apart would be marking the slash out of the middle of them.
+    parts = [isolate(facts.arch)]
     if facts.n_layer is not None:
         parts.append(
             ngettext("%(count)d layer", "%(count)d layers", facts.n_layer)
@@ -644,18 +810,24 @@ def render_quants(quants: Sequence[QuantDetail]) -> Table:
     knowing something (``unknown``, ``not read yet``); a column that can only ever
     say ``no`` would not be.
     """
-    table = Table(title=_("Quants"))
-    table.add_column(_("Name"))
-    table.add_column(_("Size"), justify="right")
-    table.add_column(_("BPW"), justify="right")
-    table.add_column(_("Facts"))
+    table = Table(title=for_display(_("Quants")))
+    _add_columns(
+        table,
+        [
+            {"header": _("Name")},
+            {"header": _("Size"), "justify": "right"},
+            {"header": _("BPW"), "justify": "right"},
+            {"header": _("Facts")},
+        ],
+    )
     for quant in quants:
-        table.add_row(
-            Text(quant.name),
-            format_bytes(quant.bytes_),
-            localise_number(f"{quant.bpw:.2f}")
+        _add_row(
+            table,
+            _cell(isolate(quant.name)),
+            _size(quant.bytes_),
+            isolate(localise_number(f"{quant.bpw:.2f}"))
             if quant.bpw is not None
             else pgettext("bits per weight", "unknown"),
-            Text(_facts_summary(quant.facts)),
+            _cell(_facts_summary(quant.facts)),
         )
     return table
