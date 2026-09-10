@@ -78,7 +78,7 @@ def reference_host() -> Host:
                 vram_total_bytes=8188 * MIB,
                 vram_used_bytes=550 * MIB,
                 bandwidth_gbps=272.0,
-                compute_tflops_fp16=30.0,
+                compute_tflops_fp16=60.4,
                 backend_hint="cuda",
                 driver="610.88",
             )

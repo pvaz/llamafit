@@ -26,7 +26,7 @@ def test_scan_reference_machine() -> None:
     assert host.memory.bandwidth_source == "assumed", "no source reports the channel count"
     gpu = host.primary_gpu
     assert gpu is not None and gpu.name == "NVIDIA GeForce RTX 4060"
-    assert gpu.bandwidth_gbps == 272 and gpu.compute_tflops_fp16 == 15
+    assert gpu.bandwidth_gbps == 272 and gpu.compute_tflops_fp16 == 60.4
     assert host.vram_available_bytes == (8188 - 550) * 1024**2
     assert host.unified_memory is False
     assert host.disks, "the current working directory's disk is always reported"
