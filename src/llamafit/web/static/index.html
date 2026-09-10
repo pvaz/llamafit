@@ -1,0 +1,175 @@
+<!doctype html>
+<!--
+  LlamaFit. Copyright (C) 2026 Paulo Vaz.
+  SPDX-License-Identifier: AGPL-3.0-or-later
+  This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
+
+  There is no English in this file. Every visible word arrives from GET /api/v1/ui, which
+  builds it through the same gettext catalogs the command line reads, so the page speaks
+  whatever language LlamaFit was started in. A `data-t` attribute names the string to put
+  in an element; app.js fills them in before the page is shown.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <title>LlamaFit</title>
+    <!--
+      The icon is drawn here rather than fetched. A favicon file would be one more request,
+      and a favicon from anywhere but this machine would be a request off it.
+    -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%232f5d50'/%3E%3Cpath d='M4 11.5V4.5h1.6v5.6H9V11.5zm6.4 0V4.5H12v7z' fill='%23fff'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div class="title">
+        <h1>LlamaFit<span id="sim-badge" class="badge" hidden></span></h1>
+        <p id="subtitle" class="muted" data-t="app.subtitle"></p>
+      </div>
+      <p id="host-line" class="muted"></p>
+    </header>
+
+    <p id="estimate-notice" class="notice"></p>
+    <p id="catalog-problems" class="notice warn" hidden></p>
+    <p id="failure" class="notice error" hidden></p>
+
+    <nav class="tabs" id="tabs">
+      <button type="button" data-panel="board" data-t="panel.board"></button>
+      <button type="button" data-panel="needs" data-t="panel.needs"></button>
+      <button type="button" data-panel="host" data-t="panel.host"></button>
+      <button type="button" data-panel="plan" data-t="panel.plan"></button>
+      <button type="button" data-panel="simulate" data-t="panel.simulate"></button>
+    </nav>
+
+    <main>
+      <section id="panel-board" class="panel">
+        <h2 data-t="board.title"></h2>
+        <div id="board-table" class="scroll"></div>
+        <div id="board-captions" class="captions"></div>
+        <h2 data-t="board.excluded"></h2>
+        <div id="board-excluded" class="scroll"></div>
+      </section>
+
+      <section id="panel-needs" class="panel" hidden>
+        <form id="needs-form">
+          <label>
+            <span data-t="needs.use_case"></span>
+            <select name="use_case" id="needs-use-case"></select>
+          </label>
+          <fieldset>
+            <legend data-t="needs.require"></legend>
+            <div id="needs-capabilities" class="checks"></div>
+          </fieldset>
+          <label>
+            <span data-t="needs.prefer"></span>
+            <select name="prefer" id="needs-prefer"></select>
+          </label>
+          <label>
+            <span data-t="needs.min_context"></span>
+            <input type="number" name="min_context" min="0" step="1024" value="0" />
+          </label>
+          <label>
+            <span data-t="needs.max_download"></span>
+            <input type="text" name="max_download" inputmode="text" />
+            <small class="muted" data-t="simulate.sizes"></small>
+          </label>
+          <label>
+            <span data-t="needs.limit"></span>
+            <input type="number" name="limit" min="1" max="200" value="10" />
+          </label>
+          <label class="check">
+            <input type="checkbox" name="all_quants" />
+            <span data-t="needs.all_quants"></span>
+          </label>
+          <label class="check">
+            <input type="checkbox" name="vision" checked />
+            <span data-t="needs.vision"></span>
+          </label>
+          <div class="actions">
+            <button type="submit" data-t="needs.apply"></button>
+            <button type="reset" data-t="needs.reset"></button>
+          </div>
+        </form>
+      </section>
+
+      <section id="panel-host" class="panel" hidden>
+        <div class="actions">
+          <button type="button" id="rescan" data-t="host.rescan"></button>
+        </div>
+        <h2 data-t="host.machine"></h2>
+        <div id="host-facts"></div>
+        <h2 data-t="host.llamacpp"></h2>
+        <div id="host-llamacpp"></div>
+        <h2 data-t="host.findings"></h2>
+        <div id="host-findings"></div>
+      </section>
+
+      <section id="panel-plan" class="panel" hidden>
+        <form id="plan-form">
+          <label>
+            <span data-t="columns.model"></span>
+            <select name="model" id="plan-model"></select>
+          </label>
+          <label>
+            <span data-t="plan.quant"></span>
+            <input type="text" name="quant" />
+          </label>
+          <label>
+            <span data-t="plan.context"></span>
+            <input type="number" name="context" min="1" step="1024" />
+          </label>
+          <label>
+            <span data-t="plan.micro_batch"></span>
+            <input type="number" name="ub" min="1" />
+          </label>
+          <label class="check">
+            <input type="checkbox" name="vision" checked />
+            <span data-t="needs.vision"></span>
+          </label>
+          <div class="actions">
+            <button type="submit" data-t="plan.build"></button>
+          </div>
+        </form>
+        <div id="plan-output"></div>
+      </section>
+
+      <section id="panel-simulate" class="panel" hidden>
+        <form id="simulate-form">
+          <label>
+            <span data-t="simulate.profile"></span>
+            <select name="profile" id="simulate-profile"></select>
+          </label>
+          <label>
+            <span data-t="simulate.gpu_memory"></span>
+            <input type="text" name="memory" />
+          </label>
+          <label>
+            <span data-t="simulate.ram"></span>
+            <input type="text" name="ram" />
+          </label>
+          <label>
+            <span data-t="simulate.cpu_cores"></span>
+            <input type="number" name="cpu_cores" min="1" />
+          </label>
+          <small class="muted" data-t="simulate.sizes"></small>
+          <div class="actions">
+            <button type="submit" data-t="simulate.apply"></button>
+            <button type="button" id="simulate-clear" data-t="simulate.clear"></button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <a id="source-link" href="https://github.com/pvaz/llamafit" data-t="app.source"></a>
+      <span class="muted" data-t="app.local_only"></span>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
