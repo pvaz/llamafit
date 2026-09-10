@@ -252,6 +252,16 @@ the reference machine's recorded configurations actually passed, so a rendered c
 line matches the one that was measured.
 """
 
+SHARED_EXPERT_OVERRIDE = "ffn_.*_shexp=CPU"
+"""The ``-ot`` pattern that sends the always-on shared experts to system memory.
+
+llama.cpp names those tensors ``ffn_gate_shexp``, ``ffn_up_shexp`` and ``ffn_down_shexp``,
+so one pattern claims all three. It is the flag the reference machine's best measured
+configuration turns on, and the planner reaches it through
+:func:`~llamafit.placement.modes.shared_expert_ladder` rather than by a user knowing to
+ask for it.
+"""
+
 KV_TYPE_DEFAULT = "f16"
 """llama.cpp's own KV cache type, and the one every architecture accepts."""
 
