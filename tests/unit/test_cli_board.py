@@ -22,8 +22,17 @@ GIB = 1024**3
 
 
 def flat(output: str) -> str:
-    """The output as one line, so an assertion is not defeated by where Rich wrapped a table."""
-    return " ".join(output.split())
+    """The output as one line, so an assertion is not defeated by where Rich wrapped a table.
+
+    The column separators go first, before the whitespace is collapsed. A reason too long
+    for its cell is wrapped onto the next row, which puts the borders of every column to its
+    left between the two halves of a sentence, so collapsing whitespace alone leaves them
+    there and an assertion on the sentence fails over a table's shape rather than its
+    content. Widening one column is enough to do it, and a column is as wide as the longest
+    model id the catalog happens to hold, which is not something these tests are about.
+    """
+    borders = str.maketrans(dict.fromkeys([ord("|"), *range(0x2500, 0x2580)], " "))
+    return " ".join(output.translate(borders).split())
 
 
 @pytest.fixture(autouse=True)
