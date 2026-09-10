@@ -1,0 +1,144 @@
+# Mistral AI's "Small" line: the models that fit a single consumer card once quantised.
+# Sourced from the vendor's Hugging Face model cards, the release announcements and the
+# GGUF-publishing repositories.
+# Primary sources used for this file:
+#   - mistral-small-3.2-24b-instruct model card:
+#     https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506
+#   - mistral-small-3.2 predecessor card (context window, key features):
+#     https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503
+#   - mistral-small-3.2 GGUF repository:
+#     https://huggingface.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF
+#   - mistral-small-4 model card: https://huggingface.co/mistralai/Mistral-Small-4-119B-2603
+#   - mistral-small-4 announcement: https://mistral.ai/news/mistral-small-4
+#   - mistral-small-4 GGUF repository:
+#     https://huggingface.co/unsloth/Mistral-Small-4-119B-2603-GGUF
+#
+# Both entries are Apache-2.0, which is not true of every Mistral model: see the Mistral AI
+# Research License note on ministral-8b-instruct-2410 in ministral.yaml. Read the licence
+# on the card of the model you actually want; Mistral mixes Apache-2.0, the Mistral AI
+# Research License (research use only) and the Mistral AI Non-Production License across
+# its range, and the family name tells you nothing about which one you have.
+- id: mistral-small-3.2-24b-instruct
+  name: Mistral Small 3.2 24B Instruct
+  vendor: Mistral AI
+  family: mistral-small
+  release_date: 2025-06-19
+  license:
+    spdx: Apache-2.0
+    # The repository declares apache-2.0 in its card metadata and has no LICENSE file of
+    # its own, so this links to the licence text.
+    url: "https://www.apache.org/licenses/LICENSE-2.0"
+  params: { total_b: 24, active_b: 24 }
+  architecture:
+    class: dense
+    gguf_arch: llama
+    notes: >-
+      40 layers, dense, published to GGUF under the plain llama architecture. The vision
+      encoder is not in the weights file: llama.cpp loads it from a separate projector,
+      which is why the mmproj extra below is declared alongside the quants.
+  context: { native: 131072 }
+  capabilities: [coding, vision, tools, multilingual, long-context]
+  # A general instruction-tuned model with a vision encoder and a strong code score, not a
+  # specialist: general and chat come first so an ordinary request can reach it at all.
+  use_cases: [general, chat, multimodal, coding]
+  quality:
+    baseline: 75
+    benchmarks:
+      # All four are the 3.2 instruction-tuned row of the card's own tables, not the
+      # Small 3.1 comparison row and not the pretrained base checkpoint.
+      - name: MMLU
+        score: 80.50
+        source: "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506"
+      - name: MMLU Pro (5-shot CoT)
+        score: 69.06
+        source: "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506"
+      - name: HumanEval Plus (pass@5)
+        score: 92.90
+        source: "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506"
+      - name: MMMU
+        score: 62.50
+        source: "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506"
+  # "We recommend using a relatively low temperature, such as temperature=0.15."
+  sampling: { temp: 0.15 }
+  sources:
+    - repo: unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF
+      kind: gguf
+      trust: unsloth
+      # Q4_K_M is the ordinary choice at 24B; Q6_K is for a machine with the memory to
+      # spare; UD-Q3_K_XL is the one that turns a 16 GB card from "spilling into system
+      # memory" into "resident", which is exactly where a smaller quant earns its place.
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q6_K }
+        - { name: UD-Q3_K_XL }
+      extras:
+        # The model claims vision, so the projector has to be charged to a memory pool.
+        - { role: mmproj, file: mmproj-F16.gguf }
+
+- id: mistral-small-4-119b
+  name: Mistral Small 4 119B A6B
+  vendor: Mistral AI
+  family: mistral-small
+  release_date: 2026-03-16
+  license:
+    spdx: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0"
+  params: { total_b: 119, active_b: 6.5 }
+  architecture:
+    class: moe
+    gguf_arch: mistral4
+    notes: >-
+      36 layers, 128 routed experts with 4 used per token plus 1 shared expert, so 6.5B of
+      119B parameters are touched per token. That is why this model does not behave like
+      its parameter count: it generates at roughly the speed of a small dense model while
+      needing the memory of a large one, and the routed experts are the part that can sit
+      in system memory while the shared weights and attention stay on the card. The GGUF
+      header declares a 1,048,576-token context; the vendor documents 256k, which is the
+      figure recorded here.
+  context: { native: 262144 }
+  capabilities: [coding, thinking, vision, tools, multilingual, long-context]
+  # One model doing the work of three: the card describes it as unifying the Instruct,
+  # Reasoning (Magistral) and Devstral lines behind a per-request reasoning_effort switch,
+  # so it claims all of their use cases rather than being filed as a specialist.
+  use_cases: [general, chat, reasoning, coding, multimodal]
+  quality:
+    baseline: 80
+    benchmarks:
+      # Read off the numeric labels printed on the vendor's own comparison charts on the
+      # model card; the card's prose gives only one figure. Instruct-mode (solid bar) and
+      # reasoning-mode (hatched bar) numbers are labelled separately below, because the
+      # same model reports two very different scores depending on reasoning_effort.
+      - name: MMLU Pro (instruct mode)
+        score: 73.5
+        source: "https://huggingface.co/mistralai/Mistral-Small-4-119B-2603/resolve/main/images/image2.png"
+      - name: GPQA Diamond (reasoning mode)
+        score: 71.2
+        source: "https://huggingface.co/mistralai/Mistral-Small-4-119B-2603/resolve/main/images/image2.png"
+      - name: Arena Hard (reasoning mode)
+        score: 58.3
+        source: "https://huggingface.co/mistralai/Mistral-Small-4-119B-2603/resolve/main/images/image2.png"
+      - name: MMMU-Pro (reasoning mode)
+        score: 60.0
+        source: "https://huggingface.co/mistralai/Mistral-Small-4-119B-2603/resolve/main/images/image2.png"
+      - name: AIME25 (reasoning mode)
+        score: 83.8
+        source: "https://huggingface.co/mistralai/Mistral-Small-4-119B-2603/resolve/main/images/image3.png"
+      - name: LiveCodeBench (reasoning mode)
+        score: 63.6
+        source: "https://huggingface.co/mistralai/Mistral-Small-4-119B-2603/resolve/main/images/image3.png"
+  # The card gives temperature 0.7 for reasoning_effort="high" and anything from 0.0 to 0.7
+  # for reasoning_effort="none"; 0.7 is the one value valid in both modes.
+  sampling: { temp: 0.7 }
+  sources:
+    - repo: unsloth/Mistral-Small-4-119B-2603-GGUF
+      kind: gguf
+      trust: unsloth
+      # Every quant of a 119B model is a large download, so the ladder is shifted down a
+      # step from the 24B entries: UD-Q4_K_XL is the one to want, UD-Q3_K_XL and
+      # UD-Q2_K_XL are what make it reachable on a machine with less system memory.
+      quants:
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q3_K_XL }
+        - { name: UD-Q2_K_XL }
+      extras:
+        - { role: mmproj, file: mmproj-F16.gguf }
