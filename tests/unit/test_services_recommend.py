@@ -11,6 +11,7 @@ from __future__ import annotations
 from llamafit.models.llamacpp import LocalModel
 from llamafit.models.plan import Needs
 from llamafit.scoring import DEFAULT_WEIGHTS
+from llamafit.scoring.speed_score import READING_TPS
 from llamafit.services.recommend import (
     PERFECT_FIT,
     best_quant,
@@ -101,7 +102,12 @@ def test_the_general_board_no_longer_leads_with_a_model_slower_than_its_reader()
     """
     board = build_board(catalog(), reference_host(), Needs(use_case="general"))
     assert board.rows, "something on this machine should be readable"
-    assert board.rows[0].model_id == "llama-3.1-8b-instruct"
+    # Asserted as the property, not as one model's id. The defect was a board led by a
+    # model nobody could read along with; which entry leads depends on what the catalog
+    # holds on the day, and pinning the id here made every new family a failing test.
+    for row in board.rows:
+        assert row.candidate.speed is not None
+        assert row.candidate.speed.gen_tps >= READING_TPS, row.model_id
     assert "gemma-3-27b-it" not in ids(board.rows)
 
     slow = next(row for row in board.excluded if row.model_id == "gemma-3-27b-it")
