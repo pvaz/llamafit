@@ -255,14 +255,17 @@ def test_a_narrow_console_keeps_the_columns_a_row_cannot_be_read_without() -> No
 
 
 def test_the_board_names_the_confidence_per_row_only_when_the_rows_disagree() -> None:
+    # Drawn at the width it was laid out for, as the test above does. A board budgeted for
+    # two hundred columns and printed into one hundred is squeezed by rich rather than by
+    # `_board_columns`, and what a squeeze truncates first is not this test's subject.
     board = build_board(catalog(), reference_host(), Needs(use_case="coding"))
-    text = drawn(render_board(board, console_width=200))
+    text = drawn(render_board(board, console_width=200), width=200)
     # Every row is estimated today, so the label belongs under the table, not in it.
     assert "no figure here is a measurement" in text
     board.rows[0].candidate.speed = SpeedEstimate(
         gen_tps=1.0, pp_tps=1.0, confidence="measured", measured_on=date(2026, 9, 9)
     )
-    mixed = drawn(render_board(board, console_width=200))
+    mixed = drawn(render_board(board, console_width=200), width=200)
     assert confidence_label("measured") in mixed
 
 
