@@ -56,6 +56,17 @@ class CatalogError(LlamaFitError):
     """A catalog file is invalid or a model id is unknown."""
 
 
+class BudgetError(LlamaFitError):
+    """A memory budget cannot be computed from what is known about a model.
+
+    Raised rather than returning a budget with a hole in it. A missing component is not a
+    component of zero bytes, and a budget that quietly left the key-value cache out
+    because the file never said how many key/value heads it has would report a model
+    fitting a card it would page off. The caller catches this and records why the
+    candidate was excluded.
+    """
+
+
 class NetworkError(LlamaFitError):
     """A network operation failed or the network is unavailable."""
 
