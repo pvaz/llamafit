@@ -62,7 +62,7 @@ def test_a_figure_within_the_tolerance_is_not_reported(tmp_path: Path) -> None:
                 "name": "NVIDIA GeForce RTX 4060",
                 "vram_total": "8GiB",
                 "bandwidth_gbps": 272.5,
-                "compute_tflops_fp16": 15.2,
+                "compute_tflops_fp16": 60.9,
             }
         ]
     )
