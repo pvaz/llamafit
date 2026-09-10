@@ -538,5 +538,27 @@ the changelog says so when they do.
   it reuses the reading floor, which was derived from reading rates rather than fitted to a
   board, and it fires on the machine rather than on the model — the same entry at the same
   quantisation leads a general board on a machine with a card that holds it.
+- **A request for a job asks for the ability the job needs, not for a curator's wording.**
+  Section 11.1 briefly excluded a model whose `use_cases` did not contain the requested one.
+  It fixed a real defect — Llama 3.1 8B ranking second for a coding request — and broke a
+  commoner case: ask for a general model on the reference machine and Qwen3-Coder-Next, the
+  fastest thing that fits it, was not ranked at all, on the grounds that "its entry lists
+  coding". A coding model is a perfectly reasonable thing to hold a general conversation
+  with, and the rule was hiding the best answer. The mistake was the field. `use_cases` says
+  what a model is *for*, which is a curator's emphasis; `capabilities` says what it can *do*,
+  which is a fact about the weights, and only a fact can carry a gate — excluding on emphasis
+  throws away good answers and turns every judgement call into a hard filter nobody knew they
+  were setting. So a requested use case now implies a capability where one exists —
+  `CAPABILITY_FOR_USE_CASE` beside the two vocabularies in `models/catalog.py`, exhaustive and
+  refusing to load until a new use case has been decided about — and the capability gate does
+  the work: coding implies coding, reasoning implies thinking, multimodal implies vision,
+  embedding implies embeddings, while general and chat imply nothing because they are the
+  absence of a specialisation rather than one. The case that started it survives unharmed:
+  Llama 3.1 8B lacks the coding capability as well as the coding use case, so a coding request
+  still excludes it, now naming the ability rather than a list of jobs — "no coding capability,
+  which coding needs; ask for a different use case, or add it to the entry when the model
+  really has it". `use_cases` keeps its job: the first entry is still worth +5 when the request
+  names it, so a model built for the task still outranks one that merely can do it, and
+  `llamafit list --use-case` still browses on the whole list.
 
 [Unreleased]: https://github.com/pvaz/llamafit/commits/main

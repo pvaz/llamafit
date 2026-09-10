@@ -87,7 +87,7 @@ architecture:
   notes: "Gated DeltaNet on 3 of every 4 layers; the KV cache must stay F16"
 context: {native: 262144, extended: 1048576, extended_method: yarn}
 capabilities: [coding, thinking, vision, tools, multilingual, long-context]
-use_cases: [coding, reasoning, multimodal]
+use_cases: [coding, reasoning, multimodal, general, chat]
 quality:
   baseline: 84
   benchmarks:
@@ -203,6 +203,18 @@ at most 32 (the width of an unquantised float, so anything above it is a wrong n
 than a quantisation), and `sha256` must have exactly one checksum per entry in `files`, since
 otherwise nobody can say which checksum covers which file. A value outside those bounds is
 rejected when the catalog loads, not when a memory budget is computed from it.
+
+`capabilities` and `use_cases` are different kinds of claim and are used differently.
+`capabilities` is what the weights can do, and it is the only one a board filters on: a request
+asks for a capability by naming it, and by naming a job that needs one — coding needs the
+coding capability, reasoning needs thinking, multimodal needs vision, embedding needs
+embeddings, and `general` and `chat` need nothing at all. `use_cases` is the curator's emphasis
+and gates nothing. It earns a model +5 when the request names the *first* entry, the job the
+baseline was set against, and `llamafit list --use-case` browses on the whole list. So writing
+a job into an entry is a recommendation and never a restriction: a model that lists only
+`coding` still competes for a general or chat request, and one that lists `reasoning` without
+the `thinking` capability is not excused the capability by saying so. Add a use case when the
+model really is a good answer for that job, and add a capability only when it is a fact.
 
 `bpw` is not the download divided by the parameter count: it divides the *weight* bytes, the
 files less whatever `llama_cpp.lazy_tensors` marks as streamable, because a model can carry a

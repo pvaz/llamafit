@@ -53,13 +53,28 @@ def test_every_scored_row_carries_the_parts_that_produced_it() -> None:
         assert row.candidate.speed is not None
 
 
-def test_a_model_built_for_another_job_is_excluded_and_says_so() -> None:
+def test_a_model_that_cannot_do_the_job_is_excluded_and_says_so() -> None:
     board = build_board(catalog(), reference_host(), Needs(use_case="coding"))
     excluded = {row.model_id: row.candidate.excluded_because for row in board.excluded}
     assert "llama-3.1-8b-instruct" in excluded
     reason = excluded["llama-3.1-8b-instruct"] or ""
-    assert "coding" in reason
-    assert "chat" in reason  # the use cases its entry does list, so the reader can adjust
+    # It cannot code, which is a fact about the weights. The reason names the ability and
+    # the two ways to answer it, so the reader can adjust the request or the entry.
+    assert "no coding capability" in reason
+    assert "ask for a different use case" in reason
+
+
+def test_a_model_built_for_another_job_still_competes_for_this_one() -> None:
+    """A coding model on a general board, which the use-case gate used to hide.
+
+    Qwen3-Coder-Next lists coding and nothing else, and on this machine it is the fastest
+    thing that fits. General asks for no capability, so the entry's emphasis costs it
+    nothing and it is ranked on its merits.
+    """
+    board = build_board(catalog(), reference_host(), Needs(use_case="general"))
+    assert catalog().by_id["qwen3-coder-next"].use_cases == ["coding"]
+    assert "qwen3-coder-next" in ids(board.rows)
+    assert board.rows[0].model_id == "qwen3-coder-next"
 
 
 def test_nothing_is_dropped_even_when_the_limit_is_one() -> None:
@@ -101,7 +116,10 @@ def test_the_general_board_no_longer_leads_with_a_model_slower_than_its_reader()
     """
     board = build_board(catalog(), reference_host(), Needs(use_case="general"))
     assert board.rows, "something on this machine should be readable"
-    assert board.rows[0].model_id == "llama-3.1-8b-instruct"
+    # Which model leads is a fact about the catalog and moves when a curator changes an
+    # entry. What this test is named for is that the slow one leads nothing and is not on
+    # the ranked half at all.
+    assert board.rows[0].model_id != "gemma-3-27b-it"
     assert "gemma-3-27b-it" not in ids(board.rows)
 
     slow = next(row for row in board.excluded if row.model_id == "gemma-3-27b-it")
