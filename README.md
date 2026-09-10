@@ -102,9 +102,9 @@ Every command has a `--json` form for scripts. The Textual terminal dashboard op
 | `llamafit doctor` | every probe, what failed, what would unlock more | 1A (done) |
 | `llamafit list`, `search`, `info` | browse the catalog; `info` shows one model in full, with every quant it publishes | 1B (done) |
 | `llamafit catalog validate`, `refresh`, `show` | maintain the catalog | 1B (done) |
-| `llamafit fit` | every model ranked by fit on this machine | 1C |
-| `llamafit recommend` | the board for your needs: use case, required capabilities, minimum context, size and license limits | 1C |
-| `llamafit plan <model>` | placement, memory budget, context tiers, flags and the command line | 1C |
+| `llamafit fit` | every model ranked by fit on this machine | 1C (done) |
+| `llamafit recommend` | the board for your needs: use case, required capabilities, minimum context, size and license limits; `--explain` shows the working | 1C (done) |
+| `llamafit plan <model>` | placement, memory budget, context tiers, flags and the command line | 1C (done) |
 | `llamafit hardware` | hardware profiles, to score against a machine you are not on | 1C |
 | `llamafit` | the terminal dashboard | 1D |
 | `llamafit serve` | the web dashboard and JSON API on localhost | 1D |
@@ -136,12 +136,20 @@ Requirements: Python 3.10 or newer. No compiler, no Node, no account. The option
 ## Use
 
 ```
-llamafit list                   # the catalog, strongest first
-llamafit info qwen3-coder-next  # one model in full: facts, sources, every quant
-llamafit system                 # CPU, memory, GPUs, disks, llama.cpp installation
-llamafit doctor                 # what was detected, what failed, what would help
-llamafit --json system          # the same as JSON for scripts
+llamafit recommend --use-case coding   # the board for what you want to do
+llamafit recommend --explain --limit 1 # and every number that produced the first row
+llamafit plan qwen3-coder-next         # budget, context tiers and the command line to paste
+llamafit fit                           # every model ranked by how well it uses this machine
+llamafit list                          # the catalog, strongest first
+llamafit info qwen3-coder-next         # one model in full: facts, sources, every quant
+llamafit system                        # CPU, memory, GPUs, disks, llama.cpp installation
+llamafit doctor                        # what was detected, what failed, what would help
+llamafit --json recommend              # the same as JSON for scripts
 ```
+
+Speeds are estimates from the formulas in [how-it-works.md](docs/how-it-works.md), never
+benchmarks of your machine: `plan` prints the runs the catalog records beside its own estimate
+rather than in place of them, and phase 3's `bench` is what will measure yours.
 
 Sizes and GGUF facts read `unknown` until `llamafit catalog refresh` fills them in from
 Hugging Face; nothing is downloaded but file metadata and headers.

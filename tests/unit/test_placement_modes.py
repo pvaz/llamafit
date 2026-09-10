@@ -50,14 +50,21 @@ def test_the_batch_is_twice_the_micro_batch_with_a_floor(micro_batch: int, expec
     assert batch_for(micro_batch) == expected
 
 
-def test_threads_are_the_performance_cores_on_a_hybrid_part() -> None:
+def test_threads_are_the_threads_the_performance_cores_provide_on_a_hybrid_part() -> None:
+    # Section 9.4: 8 performance cores with simultaneous multithreading provide 16 of this
+    # part's 32 threads, and 16 is the measured optimum -- four percent faster than 8.
     cpu = Cpu(model="i9-14900KF", physical_cores=24, logical_cores=32, performance_cores=8)
-    assert thread_count(cpu) == 8
-
-
-def test_threads_fall_back_to_physical_cores_when_the_os_does_not_distinguish() -> None:
-    cpu = Cpu(model="Ryzen 9", physical_cores=16, logical_cores=32, performance_cores=None)
     assert thread_count(cpu) == 16
+
+
+def test_threads_are_every_thread_when_no_core_is_an_efficiency_core() -> None:
+    cpu = Cpu(model="Ryzen 9", physical_cores=16, logical_cores=32, performance_cores=None)
+    assert thread_count(cpu) == 32
+
+
+def test_threads_are_the_cores_on_a_part_without_multithreading() -> None:
+    cpu = Cpu(model="Apple M3 Max", physical_cores=12, logical_cores=12, performance_cores=8)
+    assert thread_count(cpu) == 8
 
 
 def test_threads_are_never_zero() -> None:
@@ -65,13 +72,14 @@ def test_threads_are_never_zero() -> None:
     assert thread_count(cpu) == 1
 
 
-def test_the_context_ladder_halves_down_to_the_floor() -> None:
-    assert context_ladder(32768, 0) == (32768, 16384)
-    assert context_ladder(262144, 0) == (262144, 131072, 65536, 32768, 16384)
+def test_the_context_ladder_steps_down_the_tier_ladder_not_by_halving() -> None:
+    # Section 9.2: "Candidate contexts come from that ladder, not from halving."
+    assert context_ladder(32768, 0) == (32768, 24576, 16384)
+    assert context_ladder(40960, 0) == (40960, 32768, 24576, 16384)
 
 
 def test_the_users_minimum_raises_the_floor() -> None:
-    assert context_ladder(262144, 65536) == (262144, 131072, 65536)
+    assert context_ladder(262144, 65536) == (262144, 196608, 131072, 98304, 65536)
 
 
 def test_an_explicit_request_below_the_floor_is_honoured() -> None:

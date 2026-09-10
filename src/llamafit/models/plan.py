@@ -115,6 +115,13 @@ class ContextTier(BaseModel):
         tokens: The context length this tier offers.
         vram_required: What that context needs on the card.
         fits: Whether it fits the machine as scanned.
+        verdict: How it fits, or how it fails. ``fits`` cannot tell the two failures apart
+            and they are not the same thing to a reader: a rung that overflows the card
+            still starts and then pages, silently, while a rung that overflows system
+            memory does not start at all. Carrying the verdict is what lets a ladder show
+            the paging band rather than one flat "no", and it is already computed —
+            costing a rung means computing a whole budget, and the verdict was being
+            thrown away.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -122,6 +129,7 @@ class ContextTier(BaseModel):
     tokens: int = Field(gt=0)
     vram_required: ByteSize
     fits: bool
+    verdict: Verdict = "fits"
 
 
 class Placement(BaseModel):

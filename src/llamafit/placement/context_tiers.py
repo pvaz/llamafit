@@ -61,6 +61,7 @@ def context_tiers(
                 tokens=tokens,
                 vram_required=budget.vram_required,
                 fits=is_acceptable(budget.verdict),
+                verdict=budget.verdict,
             )
         )
     return tuple(tiers)

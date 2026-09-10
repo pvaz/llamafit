@@ -77,7 +77,7 @@ def test_the_best_case_is_everything_on_the_card_at_the_requested_context() -> N
     assert placement.kv_type == "f16"
     assert placement.gpu_layers == ALL_GPU_LAYERS
     assert placement.cpu_moe_layers is None
-    assert placement.threads == 8
+    assert placement.threads == 16
 
 
 def test_a_mode_that_works_stops_the_search_before_the_slower_ones() -> None:
@@ -530,7 +530,7 @@ def test_the_reference_machine_gets_its_experts_into_system_memory() -> None:
     assert placement.mode == "moe-offload"
     assert placement.cpu_moe_layers == 48
     assert placement.kv_type == "f16"
-    assert placement.threads == 8
+    assert placement.threads == 16
     assert 16384 <= placement.context <= 65536
     assert placement.budget.ram_required > 60 * GIB
     assert placement.budget.vram_required < 8188 * MIB

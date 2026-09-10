@@ -238,31 +238,105 @@ sources[0].quants[0].bpw
 first, each naming the model. A repository that cannot be listed leaves its whole model exactly
 as it was and exits 1, rather than blanking out fields that took a real read to fill in.
 
-### `llamafit fit` — phase 1C
+### `llamafit fit` — phase 1C, shipped
 
-Every model ranked by fit on this machine, best quant per model. Options: `--min-fit
-comfortable|fits|tight`, `--limit N`, `--all-quants`, `--include-does-not-fit`.
-
-### `llamafit recommend` — phase 1C
-
-The board for your needs.
+Every model in the catalog ranked by how well it uses this machine, and nothing else. There is
+no use case, no weights and no score here: a coding model is not left out of a fit listing for
+being a coding model. Models are sized for 32,768 tokens of context, and the context column is
+the largest each one holds in the mode shown.
 
 | Option | Effect |
 |---|---|
-| `--use-case general\|coding\|reasoning\|chat\|multimodal\|embedding` | sets the score weights and defaults |
-| `--require CAP` (repeatable) | capability the model must have: `coding`, `thinking`, `vision`, `tools`, `multilingual`, `long-context`, `embeddings` |
-| `--prefer CAP` (repeatable) | capability that earns a bonus |
-| `--min-context N` | exclude candidates that cannot fit this context |
-| `--max-download SIZE` | exclude larger downloads |
-| `--license SPDX` (repeatable) | allowed licenses |
-| `--prefer-quality`, `--prefer-speed` | shift 0.10 of weight between quality and speed |
-| `--limit N`, `--all-quants`, `--explain` | output control |
+| `--min-fit comfortable\|fits\|tight` | The worst verdict to list. Defaults to `tight`. |
+| `--perfect` | Only configurations inside section 11.3's ideal band, between half and four fifths of the tightest pool. |
+| `--limit N` | Show at most this many rows. |
+| `--all-quants` | Show every quantisation instead of the best-fitting one per model. |
 
-### `llamafit plan <model>` — phase 1C
+```
+$ llamafit fit
+                            Fit on this machine
+ #   Model                  Quant        Fit     Runs             Ctx    Card      RAM
+ 1   qwen3-coder-next       UD-Q4_K_XL   fits    experts in RAM   61K    5.4 GiB   47.3 GiB
+ 2   qwen3-0.6b             Q8_0         fits    GPU              32K    5.5 GiB    2.2 GiB
+ 3   llama-3.1-8b-instruct  Q4_K_M       tight   split            35K    6.1 GiB    7.8 GiB
+Sized for 32K tokens. The context column is the largest each one holds in the mode shown.
+```
 
-Placement, budget by component, context tier table, chosen flags and the full `llama-server`
-command line for one model on this host. Options: `--quant NAME`, `--context N`, `--ub N`,
-`--no-vision`, `--target-tps N` (what would be needed to reach a speed).
+Models that cannot be placed at all are listed under **Not placed** with the reason, never
+dropped. `--limit` cuts the ranked rows and never the reasons.
+
+### `llamafit recommend` — phase 1C, shipped
+
+The board for your needs: every model planned, sized, estimated and scored, in order. This is
+the command the program exists for, and it scans the machine to answer.
+
+| Option | Effect |
+|---|---|
+| `--use-case general\|coding\|reasoning\|chat\|multimodal\|embedding` | Sets the score weights, the speed target and the context candidates are scored against. Defaults to `general`. |
+| `--require CAP` (repeatable) | Capability the model must have: `coding`, `thinking`, `vision`, `tools`, `multilingual`, `long-context`, `embeddings`, `audio`. A model without it is excluded, by name. |
+| `--prefer balanced\|quality\|speed` | Moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights. Write the four numbers into the config file for that. |
+| `--min-context N` | Exclude candidates that cannot hold at least this many tokens. |
+| `--max-download SIZE` | Exclude larger downloads. Sizes look like `40G`, `7.5GiB`, `512M`. |
+| `--license SPDX` (repeatable) | Licences the request will accept. A model with another one is excluded and still shown, with the licence it actually has. |
+| `--limit N` | Show at most this many rows. Defaults to 10. |
+| `--all-quants` | Show every quantisation instead of the best one per model. |
+| `--no-vision` | Plan without a vision projector, freeing its memory for context. |
+| `--explain` | Expand every row shown into the four scores, the weights, the quality it was built from, the memory budget line by line, the context ladder and where a token's time goes. Combine with `--limit 1` for one model. |
+
+```
+$ llamafit recommend --use-case coding
+                                 Recommended
+ #   Model                Quant        Score   Gen/s   Fit     Runs             Ctx
+ 1   qwen3-coder-next     UD-Q4_K_XL    93.9    24.1   fits    experts in RAM   61K
+ 2   qwen3-0.6b           Q8_0          72.1   114.6   fits    GPU              32K
+ 3   qwen3.8-flash-next   UD-Q4_K_XL    67.5    13.9   tight   experts in RAM   17K
+Speeds are for 8K tokens of context so every row compares like with like; the context
+column is the largest each one holds. Sized and scored for coding at 32K tokens.
+Speeds are section 10's formula on its default constants. Nothing has been benchmarked
+on this machine yet, so no figure here is a measurement.
+Weights: quality 0.40, speed 0.20, fit 0.20, context 0.20.
+
+                                  Not ranked
+ Model                   Quant    Why not
+ gemma-3-27b-it          Q4_K_M   not a coding model; its entry lists general, multimodal,
+                                  chat, so ask for one of those
+```
+
+Which columns appear depends on the width of the terminal. The rank, model, quantisation and
+score are never dropped; the rest are added in the order gen/s, fit, run mode, context,
+quality, card, prompt/s, download size, RAM, each only while its whole content fits. A column
+that cannot fit is dropped rather than shrunk.
+
+**No row is ever dropped for failing.** A candidate the request excludes appears under **Not
+ranked** with the reason: the job its entry does not offer, the capability it lacks, the
+licence it carries, the download it exceeds, or the memory it needs. A shorter list would say
+none of that.
+
+**Nothing is labelled `measured`.** Section 10.3 reserves that word for a benchmark taken on
+*this* machine, and phase 3's `bench` is what will store one. A catalog entry's own `measured`
+block is a record from the curator's machine; `plan` shows it beside the estimate, and neither
+is ever allowed to become the other.
+
+### `llamafit plan` — phase 1C, shipped
+
+`llamafit plan <model>`: place one model on this machine and print the command line that runs
+it. The output is the memory budget component by component with the source of every figure,
+the context ladder a launch script chooses from, where a token's time goes, any run the
+catalog records for comparison, and last, on a line of its own, the `llama-server` command.
+
+| Option | Effect |
+|---|---|
+| `--quant NAME` | Plan this quantisation, matched case-insensitively, instead of the one that scores best on this machine. |
+| `--context N` | Size for this many tokens. When it does not fit, the plan sizes down **and** shows what the context you asked for would have cost, so the overflow is visible rather than merely retreated from. |
+| `--ub N` | Set the micro-batch by hand. The whole budget is rebuilt around it, because it moves the compute buffer and with it the verdict, the largest context that fits and every rung of the ladder. |
+| `--target-tps N` | A generation speed to answer against: whether this reaches it, and which context would. |
+| `--no-vision` | Leave the vision projector out, freeing its memory for context. |
+
+The context ladder has three states, not two. `fits` is a rung a launch script may take;
+`pages` is a rung the driver will accept and then quietly page to system memory, which is
+section 8.4's failure and the one a person cannot diagnose for themselves; `no room` is a rung
+system memory could not absorb either. A table showing only yes and no would file the second
+under the third and lose the only one worth warning about.
 
 ### `llamafit hardware` `list|show|validate|path` — phase 1B, shipped
 
