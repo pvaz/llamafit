@@ -1,0 +1,73 @@
+# Devstral: Mistral AI's agentic software-engineering line. Sourced from the vendor's
+# Hugging Face model card and the GGUF-publishing repository.
+# Primary sources used for this file:
+#   - Model card: https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512
+#   - GGUF repository:
+#     https://huggingface.co/unsloth/Devstral-Small-2-24B-Instruct-2512-GGUF
+#   - Attention softmax reference cited by the card:
+#     https://arxiv.org/abs/2501.19399
+- id: devstral-small-2-24b-instruct
+  name: Devstral Small 2 24B Instruct 2512
+  vendor: Mistral AI
+  family: devstral
+  release_date: 2025-11-28
+  license:
+    spdx: Apache-2.0
+    # The card states it explicitly: "Apache 2.0 License: Open-source license allowing
+    # usage and modification for both commercial and non-commercial purposes." That is
+    # worth reading off the card rather than assuming, because Mistral's earlier coding
+    # model, Codestral 22B, ships under the non-commercial Mistral AI Non-Production
+    # License instead.
+    url: "https://www.apache.org/licenses/LICENSE-2.0"
+  params: { total_b: 24, active_b: 24 }
+  architecture:
+    class: dense
+    gguf_arch: mistral3
+    notes: >-
+      40 layers, dense, sharing the Ministral 3 architecture: Llama-4-style rope-scaling
+      with a scalable attention softmax temperature. The GGUF header declares a
+      393,216-token context, longer than the 256k the vendor documents. Vision arrives
+      through a separate projector, declared under extras.
+  context: { native: 262144 }
+  # Vision is new in Devstral Small 2 and is for reading screenshots and diagrams inside a
+  # coding task; multilingual is deliberately absent, because the card's "SWE Bench
+  # Multilingual" measures programming languages, not natural ones, and claiming otherwise
+  # would put this model in front of people asking for something it was never trained for.
+  capabilities: [coding, vision, tools, long-context]
+  # A specialist, and it stays one: the card describes an "agentic LLM for software
+  # engineering tasks", and the chat it mentions is chat about code.
+  use_cases: [coding]
+  quality:
+    baseline: 82
+    benchmarks:
+      # The "Devstral Small 2" (24B) row of the card's table, not the 123B "Devstral 2"
+      # row directly above it.
+      - name: SWE-bench Verified
+        score: 68.0
+        source: "https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512"
+      - name: SWE-bench Multilingual
+        score: 55.7
+        source: "https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512"
+      - name: Terminal-Bench 2
+        score: 22.5
+        source: "https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512"
+  # temperature 0.15 throughout the card's own request examples.
+  sampling: { temp: 0.15 }
+  llama_cpp:
+    quirks:
+      - >-
+        The model card points llama.cpp users at ggml-org/llama.cpp pull request 17945;
+        a build older than that will not load this architecture.
+  sources:
+    - repo: unsloth/Devstral-Small-2-24B-Instruct-2512-GGUF
+      kind: gguf
+      trust: unsloth
+      # Q4_K_M is what an agent loop should normally run; Q6_K is for when a wrong edit
+      # costs more than the memory; UD-Q3_K_XL keeps a 24B coding model reachable on a
+      # 16 GB card, which is the size of machine this model was published for.
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q6_K }
+        - { name: UD-Q3_K_XL }
+      extras:
+        - { role: mmproj, file: mmproj-F16.gguf }
