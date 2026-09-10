@@ -11,7 +11,7 @@ weights.
 import pytest
 
 from llamafit.budget import compute, kv_cache_bytes
-from llamafit.budget.budget import pool_verdict, utilisation
+from llamafit.budget.budget import pool_verdict, runtime_overhead, utilisation
 from llamafit.catalog import load_catalog
 from llamafit.constants import CUDA_CONTEXT_BYTES, GIB, MIB, VRAM_RESERVE_BYTES
 from llamafit.errors import BudgetError
@@ -135,15 +135,14 @@ def test_the_reference_machine_sizes_flash_next_at_32k() -> None:
     assert abs(lines[("compute-buffer", "vram")].bytes_ - 1337 * MIB) <= MIB
     assert on_card == budget.vram_required
 
-    # llama.cpp used about 7,232 MiB here: 7,112 of buffers plus its CUDA context. The
-    # budget is above that and never below it, and every mebibyte of the difference is the
-    # 300 MiB context the specification plans with against the 120 measured.
-    assert 0 < budget.vram_required - 7232 * MIB < 200 * MIB
+    # llama.cpp used about 7,232 MiB here: 7,112 of buffers plus the 120 MiB of backend
+    # overhead measured on this card.
+    assert abs(budget.vram_required - 7232 * MIB) < 2 * MIB
 
     assert budget.vram_available == (8188 - 550) * MIB - VRAM_RESERVE_BYTES
     assert budget.ram_available == 100 * GIB
-    assert budget.vram_required > budget.vram_available, "29 MiB over an 8 GB card"
-    assert budget.verdict == "too-tight", "the driver pages and the server starts anyway"
+    assert budget.vram_required < budget.vram_available, "inside the card, but only just"
+    assert budget.verdict == "too-tight", "98 percent of the card is not a fit"
 
 
 def test_a_cache_the_facts_cannot_account_for_is_carried_and_named() -> None:
@@ -228,14 +227,18 @@ def test_the_reference_machines_winning_configuration_is_reproduced() -> None:
     )
     assert abs(model_buffer - 4367 * MIB) < MIB, "the shared experts left the card"
 
-    buffers = budget.vram_required - CUDA_CONTEXT_BYTES
-    assert abs(buffers - 6873 * MIB) < 4 * MIB, "within 0.05 percent of the measured total"
+    overhead, note = runtime_overhead(host.primary_gpu)
+    assert overhead == 120 * MIB and "driver 610.88" in note
+
+    buffers = budget.vram_required - overhead
+    assert abs(buffers - 6873 * MIB) < 2 * MIB, "within 0.03 percent of the measured total"
 
     assert budget.vram_required < budget.vram_available, "it is inside the card now"
-    assert budget.vram_available - budget.vram_required > 200 * MIB
+    assert budget.vram_available - budget.vram_required > 300 * MIB
+    assert budget.verdict == "tight", "the best configuration measured on this machine"
 
-    # The catalog's own measured entry for these flags at 40,960 records 7.3 GB peak.
-    assert abs(winning(40960).vram_required - 7.3 * GIB) < 0.05 * GIB
+    # llama-server printed 7,161 MiB of buffers for the same flags at 40,960.
+    assert abs(winning(40960).vram_required - (7161 * MIB + overhead)) < 2 * MIB
 
 
 def test_the_lines_come_in_the_order_a_reader_should_meet_them() -> None:
@@ -398,3 +401,25 @@ def test_an_empty_pool_is_at_zero_and_a_pool_with_no_room_is_infinitely_over() -
     assert utilisation(0, 0) == 0.0
     assert utilisation(1, 0) == float("inf")
     assert utilisation(1, 2) == 0.5
+
+
+def test_a_card_nobody_has_measured_keeps_the_conservative_overhead() -> None:
+    """The measured figure is a lookup with the safe one underneath it."""
+    unknown = machine(vram_total=24 * GIB).primary_gpu
+    assert unknown is not None
+    overhead, note = runtime_overhead(unknown)
+    assert overhead == CUDA_CONTEXT_BYTES
+    assert "conservative" in note and "measured" in note
+
+    measured, measured_note = runtime_overhead(reference_host().primary_gpu)
+    assert measured == 120 * MIB
+    assert "610.88" in measured_note and "b10867" in measured_note
+    assert measured < overhead, "the safe figure is the larger of the two"
+
+
+def test_the_overhead_line_says_which_of_the_two_it_is() -> None:
+    model, quant = model_and_quant("qwen3-0.6b")
+    on_the_reference = compute(model, quant, reference_host(), context=4096, mode="gpu")
+    line = next(li for li in on_the_reference.lines if li.component == "cuda-context")
+    assert line.bytes_ == 120 * MIB
+    assert line.exact is False and "driver" in (line.note or "")

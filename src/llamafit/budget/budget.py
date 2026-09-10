@@ -30,6 +30,7 @@ from math import inf
 
 from llamafit.constants import (
     CUDA_CONTEXT_BYTES,
+    MEASURED_RUNTIME_OVERHEAD_BYTES,
     PROCESS_OVERHEAD_BYTES,
     UTILISATION_COMFORTABLE,
     UTILISATION_FITS,
@@ -39,7 +40,7 @@ from llamafit.constants import (
 from llamafit.errors import BudgetError
 from llamafit.i18n import _
 from llamafit.models.catalog import CatalogModel, Extra, Quant
-from llamafit.models.host import Host
+from llamafit.models.host import Gpu, Host
 from llamafit.models.plan import Budget, BudgetLine, Pool, RunMode, Verdict
 
 from .compute_buffer import batch_for, buffer_lines
@@ -115,6 +116,33 @@ def pool_verdict(share: float, pool: Pool) -> Verdict:
     if share <= UTILISATION_TIGHT:
         return "tight"
     return "too-tight" if pool == "vram" else "does-not-fit"
+
+
+def runtime_overhead(gpu: Gpu | None) -> tuple[int, str]:
+    """What the GPU backend costs before any buffer, and where that figure comes from.
+
+    A card somebody has measured gets the measured figure; every other card gets section
+    8.1's conservative default. The two are 180 MiB apart on the one card that has been
+    measured, which on an eight-gigabyte machine is two rungs of the context ladder, so
+    the difference decides whether a configuration is offered at all -- and that is
+    exactly why the note says which of the two a reader is looking at. A number that can
+    change a recommendation should not be able to do it anonymously.
+
+    Args:
+        gpu: The card the placement runs on, or ``None`` when there is none.
+
+    Returns:
+        The bytes, and the note for the budget line.
+    """
+    key = " ".join((gpu.name if gpu else "").split()).casefold()
+    measured = MEASURED_RUNTIME_OVERHEAD_BYTES.get(key)
+    if measured is None:
+        return CUDA_CONTEXT_BYTES, _(
+            "a conservative default; nobody has measured this card's backend overhead"
+        )
+    return measured.bytes_, _(
+        "measured on this card with driver %(driver)s and llama.cpp %(build)s; one machine"
+    ) % {"driver": measured.driver, "build": measured.build}
 
 
 def _verdict(
