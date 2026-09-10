@@ -85,7 +85,8 @@ class Formula:
         vram_seconds: Share of a token spent reading the graphics card.
         ram_seconds: Share spent reading system memory.
         overhead_seconds: Per-layer and sampling overheads.
-        pp_compute_seconds: Share of a micro-batch spent on arithmetic.
+        pp_compute_seconds: Share of a micro-batch spent on arithmetic, on the card and
+            on the CPU together in the proportion the placement splits the layers.
         pp_link_seconds: Share spent streaming the expert set across the link to the card.
         pp_ram_seconds: Share spent reading the expert set out of system memory, which is
             section 10.2's third term and happens instead of the second when there is no
@@ -118,6 +119,37 @@ def _active_params(traffic: TokenTraffic, given: float | None) -> float:
     return _weight_bytes(traffic) * 8 / ASSUMED_BITS_PER_WEIGHT
 
 
+def card_share_of_compute(placement: Placement, n_layer: int, *, card_flops: float) -> float:
+    """The share of the prompt arithmetic that runs on the graphics card.
+
+    Prompt processing multiplies matrices where the weights are. A layer offloaded to the
+    card multiplies on the card; a layer left in system memory multiplies on the CPU, at a
+    rate the two are nowhere near agreeing on. So the share is the share of the layers,
+    and ``-ngl`` is what says it.
+
+    ``--n-cpu-moe`` is deliberately not read here. It moves a layer's routed experts into
+    system memory, but prompt processing streams them back across the link a micro-batch
+    at a time and multiplies them on the card, which is what section 10.2's second term
+    charges for; counting those layers as CPU layers would charge the same bytes twice.
+
+    Args:
+        placement: Where the bytes go and at what settings.
+        n_layer: The model's transformer blocks, or 0 when the file did not say.
+        card_flops: What the card reaches, so that a host with no card figure at all
+            answers zero rather than dividing by one.
+
+    Returns:
+        A fraction from 0 to 1. With no layer count to go on it is all-or-nothing on
+        whether ``-ngl`` offloads anything, which is the honest reading of a file that
+        does not say how many blocks it has.
+    """
+    if card_flops <= 0:
+        return 0.0
+    if n_layer <= 0:
+        return 1.0 if placement.gpu_layers > 0 else 0.0
+    return min(placement.gpu_layers, n_layer) / n_layer
+
+
 def formula_estimate(
     placement: Placement,
     facts: GgufFacts,
@@ -144,7 +176,9 @@ def formula_estimate(
 
     Prompt processing, from section 10.2::
 
-        t_ubatch = 2 x active_params x ub / (tflops_fp16 x eff_pp)
+        flops    = 2 x active_params x ub
+        t_ubatch = flops x on_card / (tflops_fp16 x eff_pp)      # the card's share
+                 + flops x (1 - on_card) / cpu_pp_flops          # the CPU's share
                  + streamed_expert_bytes / pcie_bw
 
     with the expert term charged to system memory instead of the link when there is no
@@ -153,6 +187,13 @@ def formula_estimate(
     constant was fitted on the single model whose expert set does not fit in system
     memory, and a model whose set stays in the page cache streams about three times
     faster. A reader who is shown the terms can see how much of the answer rests on it.
+
+    **The compute term is split between the card and the CPU**, by
+    :func:`card_share_of_compute`, and the specification's single term is not. Prompt
+    arithmetic runs where the weights are, and a hybrid placement leaves most of them in
+    system memory: charging all of it to the card put Gemma 3 27B, which this machine can
+    offload nine layers of out of sixty-two, at a prompt rate that needed six times what
+    the same machine's CPU has ever been measured doing.
 
     Args:
         placement: Where the bytes go and at what settings.
@@ -208,7 +249,24 @@ def formula_estimate(
         )
 
     params = _active_params(traffic, active_params)
-    t_compute = 2 * params * micro_batch / (bandwidths.compute_flops * EFF_PP)
+    card_flops = bandwidths.compute_flops * EFF_PP
+    on_card = card_share_of_compute(placement, facts.n_layer or 0, card_flops=card_flops)
+    prompt_flops = 2 * params * micro_batch
+    t_compute = prompt_flops * (1.0 - on_card) / bandwidths.cpu_compute_flops
+    if on_card:
+        t_compute += prompt_flops * on_card / card_flops
+    if on_card < 1.0:
+        notes.append(
+            _(
+                "%(pct).0f percent of the layers sit in system memory, so that share of the"
+                " prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than"
+                " to the card. Both rates come from one small dense model on one machine."
+            )
+            % {
+                "pct": 100.0 * (1.0 - on_card),
+                "tflops": bandwidths.cpu_compute_flops / 1e12,
+            }
+        )
     streamed = expert_bytes_in_ram(placement, facts) * streamed_expert_fraction(facts, micro_batch)
     t_link = streamed / bandwidths.pcie if streamed and device_bw else 0.0
     t_prompt_ram = streamed / bandwidths.sequential if streamed and not device_bw else 0.0
