@@ -390,10 +390,65 @@ authentication. See [web.md](web.md).
 Today it prints the help and exits. From phase 1D it opens the terminal dashboard, and in a
 non-interactive terminal behaves like `recommend`. See [tui.md](tui.md).
 
-### `llamafit install llama.cpp|model <id>` — phase 2
+### `llamafit install` — phase 2
 
-- `install llama.cpp [--backend cuda|vulkan|metal|hip|cpu] [--dir PATH] [--add-to-path] [--yes]`
-- `install model <id> [--quant NAME] [--dir PATH] [--workers N] [--yes]`
+The `install` group puts what LlamaFit needs onto the machine. `llamafit install llama.cpp`
+has shipped; `llamafit install model <id> [--quant NAME] [--dir PATH] [--workers N] [--yes]`
+is still to come.
+
+#### `llamafit install llama.cpp` — phase 2, shipped
+
+Downloads a published llama.cpp build from the project's GitHub releases and installs it into
+`~/.llamafit/llama.cpp`, which is the first directory the detector looks in, so nothing has to
+be configured afterwards.
+
+| Option | Effect |
+|---|---|
+| `--backend cuda\|vulkan\|hip\|sycl\|metal\|cpu` | Install this backend instead of the one chosen for your GPU. It is honoured exactly: if the release publishes no such build the command says so, rather than installing something else. |
+| `--dir PATH` | Install here instead of `~/.llamafit/llama.cpp`. |
+| `--tag TAG` | Install this release, for example `b6100`, instead of the newest. |
+| `--add-to-path` | Offer to add the `bin` directory to your `PATH`, in user scope, printing the exact way to undo it before asking. |
+| `--force` | Install over a directory LlamaFit did not create. |
+| `--allow-unverified` | Install an archive that publishes no checksum. |
+| `--dry-run` | Print the plan and write nothing. |
+| `--yes`, `-y` | Do not ask; assume yes. |
+
+**What it prints before writing anything.** The release and its build number, the backend, the
+archive and any companion archive, how much has to be downloaded and how much is already on
+disk, whether a checksum is published, the directory it will install into and what is already
+there, and the free space on both the cache and the install volume. Only then does it ask.
+`--dry-run` stops there, and so does `--json` without `--yes`, because a machine-readable run
+should not be the one that opens a prompt nobody is watching.
+
+**Which archive.** Chosen from the asset names, for the operating system, the architecture and
+the backend: on Windows with an NVIDIA card, `llama-<tag>-bin-win-cuda-<ver>-x64.zip` plus the
+matching `cudart-...` archive, which holds the CUDA runtime libraries the build cannot start
+without; on Apple silicon, `llama-<tag>-bin-macos-arm64.tar.gz`, which *is* the Metal build,
+since Metal is compiled in and has no archive of its own; on Linux with an AMD card,
+`llama-<tag>-bin-ubuntu-rocm-<ver>-x64.tar.gz`, falling through to the Vulkan archive on a
+release that publishes no ROCm build. A machine with no GPU gets the CPU build, and so does a
+Linux machine with an NVIDIA card, because llama.cpp publishes no Linux CUDA archive — there it
+falls to Vulkan.
+
+**Which CUDA.** A release publishes CUDA archives for two or three CUDA majors at once, and the
+newest is not automatically right: a CUDA 13 build does not start at all on a driver older than
+580. LlamaFit reads the driver version from the card and takes the newest archive that driver
+can load; where the driver is unknown it takes the *oldest* published CUDA, which is the one
+with the widest support, on the same principle that prefers an AVX2 build to an AVX512 one.
+
+**Which release.** The newest `bNNNN` tag, found by listing the releases. Not GitHub's
+`/releases/latest`, which skips prereleases and so names llama.cpp's semantic-version tag,
+whose only attachment is a text file.
+
+**Rules it keeps.** A directory that does not carry LlamaFit's own `.llamafit-install.json`
+marker is never overwritten without `--force`: people build llama.cpp themselves, with their own
+flags, and that is not something a download can restore. The published checksum is verified on
+the partial file *before* anything is unpacked, and a file that does not match is deleted rather
+than kept. An interrupted download continues from where it stopped the next time the command is
+run. Your `PATH` is never changed unless you ask with `--add-to-path` and then answer yes.
+
+**Exit codes.** `0` on success or after a dry run; `1` when you decline, when the directory is
+not LlamaFit's, when a volume has no room, or when an archive fails its checksum.
 
 ### `llamafit preset <model>` — phase 2
 
@@ -419,6 +474,7 @@ estimated versus measured. Options: `--all`, `--quant NAME`, `--context N`, `--j
 | `LLAMA_CPP_PATH` | Directory (or install root) that holds `llama-server`; checked before `PATH`. |
 | `LLAMA_SERVER_PORT` | First port to probe for a running server (then 8080, 8081, 8098). |
 | `LLAMA_CACHE` | llama.cpp's model cache directory; its GGUF files are listed as local models. |
+| `GITHUB_TOKEN` | Sent when reading the llama.cpp releases API, so a shared address does not run into the anonymous hourly limit. Not required, and no permission beyond reading a public repository is used. |
 | `NO_COLOR` | Same as `--no-color`. |
 
 ## Files
