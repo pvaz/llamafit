@@ -56,10 +56,21 @@ def unscannable(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 def test_a_profile_answers_without_probing_this_machine(unscannable: None) -> None:
-    """Section 4.4's rule, end to end: a profile is answered from the file and nothing else."""
+    """Section 4.4's rule, end to end: a profile is answered from the file and nothing else.
+
+    The fixture is the assertion that matters: it raises if the machine is scanned at all.
+    What is checked here is that a real answer came out of the file rather than an empty
+    one -- named models, ranked. Which models they are is a fact about the catalog on the
+    day, so the ids are not spelled out.
+    """
     result = runner.invoke(app, ["--language", "en", "--profile", PROFILE, "fit", "--limit", "3"])
     assert result.exit_code == 0, result.output
-    assert "qwen3-coder-next" in result.output
+    ranked = json.loads(
+        runner.invoke(app, ["--json", "--profile", PROFILE, "fit", "--limit", "3"]).output
+    )
+    assert len(ranked["rows"]) == 3
+    assert all(row["placement"] for row in ranked["rows"])
+    assert ranked["rows"][0]["model_id"] in result.output
 
 
 def test_a_board_from_a_profile_says_so_before_a_figure_is_read(unscannable: None) -> None:
