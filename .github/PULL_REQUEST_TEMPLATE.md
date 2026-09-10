@@ -18,3 +18,6 @@
 - [ ] `CHANGELOG.md` has an entry under *Unreleased*
 - [ ] Catalog changes cite a primary source for every number
 - [ ] One topic per pull request
+- [ ] New files under `src/llamafit/` carry the three-line AGPL header
+- [ ] I have read [CLA.md](../CLA.md) and I agree to it, for this and my future
+      contributions to LlamaFit *(needed once, on your first pull request)*
