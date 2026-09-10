@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling>=1.25"]
+requires = ["hatchling>=1.27"]  # PEP 639: License-Expression and license-files
 build-backend = "hatchling.build"
 
 [project]
@@ -7,7 +7,8 @@ name = "llamafit"
 version = "0.1.0a1"
 description = "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
 readme = "README.md"
-license = "MIT"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE", "NOTICE"]
 requires-python = ">=3.10"
 authors = [{ name = "Paulo Vaz" }]
 keywords = ["llama.cpp", "gguf", "llm", "local-ai", "hardware", "benchmark"]
@@ -15,7 +16,7 @@ classifiers = [
   "Development Status :: 3 - Alpha",
   "Environment :: Console",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
+  "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",

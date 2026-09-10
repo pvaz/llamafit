@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """Catalog services: filter the catalog, summarise a model, and describe one in full.
 
 These are the read-only operations the catalog commands render: ``filter_models`` is

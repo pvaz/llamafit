@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """Typer application: global options, error rendering, command registration.
 
 The language is chosen here and nowhere else. ``--language`` is eager, so it is read

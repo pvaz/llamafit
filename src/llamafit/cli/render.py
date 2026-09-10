@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """Rich tables for the host, llama.cpp status, probes, findings and the catalog.
 
 Every sentence here is built at render time, so the eager translation functions are the

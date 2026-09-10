@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """The ``Plural-Forms`` header: how many forms a language has, and which one a count picks.
 
 The rule is a C expression written by a translator and read from a data file, so it is

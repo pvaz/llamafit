@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """Read the catalog from YAML: the bundled files and a user's custom overrides.
 
 Nothing here raises on malformed input. A YAML syntax error, a file that is not a list

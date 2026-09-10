@@ -93,6 +93,12 @@ def test_version_is_pep440() -> None:
 
 - [ ] **Step 2: Create `pyproject.toml`**
 
+> Historical note, 2026-09-10: this plan was written and carried out while LlamaFit was
+> under the MIT licence. The project has since moved to `AGPL-3.0-or-later`, with a
+> contributor licence agreement in `CLA.md`. The `license` field and the licence
+> classifier below are left as they were written; do not copy them into a new file.
+> `CHANGELOG.md` records the change and `LICENSE` is authoritative.
+
 ```toml
 [build-system]
 requires = ["hatchling>=1.25"]
