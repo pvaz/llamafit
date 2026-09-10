@@ -1,0 +1,189 @@
+# Sourced from DeepSeek's Hugging Face model cards, the DeepSeek-V4 technical report and the
+# GGUF-publishing repositories.
+# Primary sources used for this file:
+#   - deepseek-v4-flash-0731 model card: https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731
+#   - deepseek-v4-pro-0813 model card: https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813
+#   - DeepSeek-V4 technical report: https://arxiv.org/abs/2606.19348
+#   - deepseek-r1-0528-qwen3-8b model card: https://huggingface.co/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B
+#   - GGUF repositories: https://huggingface.co/unsloth/DeepSeek-V4-Flash-0731-GGUF
+#                        https://huggingface.co/unsloth/DeepSeek-V4-Pro-0813-GGUF
+#                        https://huggingface.co/unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF
+#
+# Release dates are the Hugging Face repository creation dates, which for these three repositories
+# match the date stamped into the model name; DeepSeek publishes no other release date.
+#
+# Parameter counts are the technical report's, not the repository's tensor totals. The report
+# states 284B/13B for Flash and 1.6T/49B for Pro; the published Flash-0731 checkpoint carries
+# about 20B more than that because the DSpark speculative-decoding module ships inside it, and
+# the GGUF repository splits that module out into its own file, which is what the `draft` extra
+# below points at.
+- id: deepseek-v4-flash-0731
+  name: DeepSeek-V4-Flash-0731
+  vendor: DeepSeek
+  family: deepseek
+  release_date: 2026-07-31
+  license:
+    spdx: MIT
+    url: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731/blob/main/LICENSE"
+  params: { total_b: 284, active_b: 13 }
+  architecture:
+    class: moe
+    gguf_arch: deepseek4
+    notes: >-
+      43 layers, 256 routed experts with 6 used per token plus 1 shared expert, so 284B of
+      weights but only 13B of arithmetic per token. That ratio is the whole point of the
+      model on a small machine: the weights must all be somewhere addressable, but the
+      per-token work is that of a 13B model, so it runs far faster than its size suggests
+      once the experts sit in system memory and the attention layers sit on the card.
+      Attention is a compressed latent scheme with a single key/value head and 512-wide
+      keys and values, which keeps the KV cache small even at a million tokens; a sparse
+      index selects 512 of the positions per query. A DSpark speculative-decoding module
+      ships alongside, quantised separately.
+  # The technical report documents a one-million-token context for both V4 models, and the
+  # shipped config enables YaRN by default (factor 16 over a 65,536-token base) rather than
+  # leaving it opt-in, so a million tokens is what llama.cpp will serve out of the box.
+  context: { native: 1048576 }
+  capabilities: [coding, thinking, tools, long-context]
+  use_cases: [coding, reasoning, general, chat]
+  quality:
+    baseline: 88
+    benchmarks:
+      # All from the model card's own table. These are agentic coding and tool-use
+      # benchmarks run through DeepSeek's harness at the `max` reasoning effort, which is
+      # what the card says and what the numbers mean.
+      - name: Terminal Bench 2.1
+        score: 82.7
+        source: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731"
+      - name: DeepSWE
+        score: 54.4
+        source: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731"
+      - name: NL2Repo
+        score: 54.2
+        source: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731"
+      - name: Toolathlon-Verified
+        score: 70.3
+        source: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731"
+  sampling: { temp: 1.0, top_p: 0.95 }
+  sources:
+    - repo: unsloth/DeepSeek-V4-Flash-0731-GGUF
+      kind: gguf
+      trust: unsloth
+      # A two-bit that a large workstation can actually hold, the four-bit everyone
+      # reaches for first, and the eight-bit, which is worth listing here for a reason
+      # that does not apply to most models: DeepSeek trains the experts at FP4, so
+      # quantising the rest to eight bits costs only a few per cent more than the
+      # four-bit build rather than roughly doubling it. The repository publishes
+      # thirteen; these are the three anyone chooses between.
+      quants:
+        - { name: UD-IQ2_XXS }
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q8_K_XL }
+      extras:
+        # The DSpark speculative-decoding weights. Declared so a plan that turns them on
+        # knows what they cost, and so their bytes are not counted into a quant.
+        - { role: draft, file: dspark-DeepSeek-V4-Flash-0731-Q8_0.gguf }
+
+- id: deepseek-v4-pro-0813
+  name: DeepSeek-V4-Pro-0813
+  vendor: DeepSeek
+  family: deepseek
+  release_date: 2026-08-13
+  license:
+    spdx: MIT
+    url: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813/blob/main/LICENSE"
+  params: { total_b: 1600, active_b: 49 }
+  architecture:
+    class: moe
+    gguf_arch: deepseek4
+    notes: >-
+      61 layers, 384 routed experts with 6 used per token plus 1 shared expert: 1.6
+      trillion parameters of weights, 49B of them touched per token. Nothing about the
+      speed of this model follows from its size, and nothing about its memory footprint
+      follows from its speed. Even the four-bit quantisation is a download measured in
+      hundreds of gigabytes, so on any ordinary machine this is a model the tool exists
+      to rule out — the interesting question it answers is how much memory would be
+      needed, not whether to fetch it. Same compressed latent attention and sparse
+      million-token index as Flash, with a wider 1024-position index.
+  # The technical report documents a one-million-token context for both V4 models, and the
+  # shipped config enables YaRN by default (factor 16 over a 65,536-token base) rather than
+  # leaving it opt-in, so a million tokens is what llama.cpp will serve out of the box.
+  context: { native: 1048576 }
+  capabilities: [coding, thinking, tools, long-context]
+  use_cases: [coding, reasoning, general, chat]
+  quality:
+    baseline: 91
+    benchmarks:
+      - name: Terminal Bench 2.1
+        score: 87.9
+        source: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813"
+      - name: DeepSWE
+        score: 62.7
+        source: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813"
+      - name: NL2Repo
+        score: 61.5
+        source: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813"
+      - name: "Humanity's Last Exam (with tools)"
+        score: 60.0
+        source: "https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813"
+  sampling: { temp: 1.0, top_p: 0.95 }
+  sources:
+    - repo: unsloth/DeepSeek-V4-Pro-0813-GGUF
+      kind: gguf
+      trust: unsloth
+      # The repository publishes exactly these two, each split over twenty shards.
+      quants:
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q8_K_XL }
+
+- id: deepseek-r1-0528-qwen3-8b
+  name: DeepSeek-R1-0528-Qwen3-8B
+  vendor: DeepSeek
+  family: deepseek
+  release_date: 2025-05-29
+  license:
+    spdx: MIT
+    url: "https://huggingface.co/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B/blob/main/LICENSE"
+  params: { total_b: 8, active_b: 8 }
+  architecture:
+    class: dense
+    gguf_arch: qwen3
+    notes: >-
+      A dense 8B model, and the only entry in this file that fits on a consumer card. It
+      is DeepSeek-R1-0528's chain of thought distilled onto Qwen3-8B-Base, so the
+      architecture is Qwen3's — 36 layers, 32 query heads, 8 key/value heads — with
+      DeepSeek's tokenizer configuration. Its benchmarks below are the distillation's own,
+      not R1-0528's; the teacher scores far higher on every one of them.
+  # DeepSeek ships this checkpoint with YaRN already enabled in its config (factor 4 over
+  # Qwen3-8B's 32,768-token base), so 131,072 is the context it serves without being asked.
+  context: { native: 131072 }
+  capabilities: [coding, thinking]
+  use_cases: [reasoning, general, chat, coding]
+  quality:
+    baseline: 62
+    benchmarks:
+      # From the model card's second table, the one headed with this model's own name.
+      # The card's first table is DeepSeek-R1-0528 itself (AIME 2024 91.4, GPQA-Diamond
+      # 81.0) and those numbers do not belong to this 8B distillation.
+      - name: AIME 2024 (Pass@1)
+        score: 86.0
+        source: "https://huggingface.co/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B"
+      - name: AIME 2025 (Pass@1)
+        score: 76.3
+        source: "https://huggingface.co/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B"
+      - name: GPQA Diamond
+        score: 61.1
+        source: "https://huggingface.co/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B"
+      - name: LiveCodeBench (2408-2505)
+        score: 60.5
+        source: "https://huggingface.co/deepseek-ai/DeepSeek-R1-0528-Qwen3-8B"
+  sampling: { temp: 0.6, top_p: 0.95 }
+  chat_template: { reasoning_format: deepseek }
+  sources:
+    - repo: unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF
+      kind: gguf
+      trust: unsloth
+      # Four-bit for an 8 GB card and eight-bit for anyone with room to spare. At this
+      # size a two-bit quantisation costs more quality than the memory is worth.
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q8_0 }

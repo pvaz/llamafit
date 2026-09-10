@@ -1,0 +1,289 @@
+# Sourced from NVIDIA's Hugging Face model cards and the GGUF-publishing repositories.
+# Named nvidia-nemotron.yaml rather than nemotron.yaml so it cannot be confused with the
+# unrelated Mistral NeMo family, which is a different vendor's model with a similar name.
+# Primary sources used for this file:
+#   - nemotron-3-nano-4b model card: https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16
+#   - nemotron-3-nano-30b model card: https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16
+#   - nemotron-3.5-lightning model card: https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16
+#   - nemotron-3-super model card: https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16
+#   - nemotron-3-ultra model card: https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16
+#   - GGUF repositories: https://huggingface.co/unsloth/NVIDIA-Nemotron-3-Nano-4B-GGUF
+#                        https://huggingface.co/unsloth/Nemotron-3-Nano-30B-A3B-GGUF
+#                        https://huggingface.co/unsloth/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF
+#                        https://huggingface.co/unsloth/NVIDIA-Nemotron-3-Super-120B-A12B-GGUF
+#                        https://huggingface.co/unsloth/NVIDIA-Nemotron-3-Ultra-550B-A55B-GGUF
+#
+# Release dates are the ones printed on each model card.
+#
+# Two different licences run through this one family and the difference is not cosmetic:
+# Nano 4B, Nano 30B and Super 120B are under the NVIDIA Nemotron Open Model License, while
+# Ultra 550B and the newer 3.5 Lightning are under OpenMDW-1.1, a community licence NVIDIA
+# does not itself author. Each entry links the terms that actually govern it.
+#
+# Every model here is a Mamba-2 hybrid: most layers are state-space blocks with a fixed-size
+# recurrent state instead of attention with a KV cache that grows with the context. That is
+# why the long-context memory figures for these models look nothing like a transformer's of
+# the same size, and it is the single most useful thing to know before budgeting one.
+- id: nemotron-3-nano-4b
+  name: NVIDIA Nemotron 3 Nano 4B
+  vendor: NVIDIA
+  family: nemotron
+  release_date: 2026-03-16
+  license:
+    spdx: nvidia-nemotron-open-model-license
+    url: "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-nemotron-open-model-license/"
+  params: { total_b: 4, active_b: 4 }
+  architecture:
+    class: dense-hybrid
+    gguf_arch: nemotron_h
+    notes: >-
+      42 layers of Mamba-2 state-space blocks interleaved with a few attention layers, 40
+      query heads over 8 key/value heads, and no mixture of experts — this is the one dense
+      model in the file. NVIDIA aims it at edge hardware (Jetson Thor, GeForce RTX, DGX
+      Spark), and it is the smallest model in this whole group: a four-bit build fits an
+      8 GB card several times over with room for a long context, because the Mamba layers
+      hold a fixed-size state rather than a KV cache. Reasoning is switched on or off from
+      the system prompt.
+  context: { native: 262144 }
+  capabilities: [coding, thinking, tools, long-context]
+  use_cases: [general, chat, reasoning, coding]
+  quality:
+    baseline: 58
+    benchmarks:
+      # From the model card's reasoning-on table. NVIDIA publishes two tables for this
+      # model, one with reasoning enabled and one without; these are the reasoning-on
+      # figures, which is how the model is meant to be run.
+      - name: AIME25
+        score: 78.5
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16"
+      - name: MATH500
+        score: 95.4
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16"
+      - name: GPQA
+        score: 53.2
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16"
+      - name: LiveCodeBench
+        score: 51.8
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16"
+      - name: RULER (128k)
+        score: 91.1
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16"
+  sampling: { temp: 1.0, top_p: 0.95 }
+  sources:
+    - repo: unsloth/NVIDIA-Nemotron-3-Nano-4B-GGUF
+      kind: gguf
+      trust: unsloth
+      # Four-bit for the common case and eight-bit because at 4B the whole model still fits
+      # a consumer card at that precision, which is rarely true elsewhere in this file.
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q8_0 }
+
+- id: nemotron-3-nano-30b-a3b
+  name: NVIDIA Nemotron 3 Nano 30B A3B
+  vendor: NVIDIA
+  family: nemotron
+  release_date: 2025-12-15
+  license:
+    spdx: nvidia-nemotron-open-model-license
+    url: "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-nemotron-open-model-license/"
+  params: { total_b: 30, active_b: 3.5 }
+  architecture:
+    class: moe-hybrid
+    gguf_arch: nemotron_h_moe
+    notes: >-
+      52 layers made of 23 Mamba-2 and mixture-of-experts blocks with 6 attention layers,
+      128 experts with 6 used per token plus 1 shared: 30B of weights, 3.5B of work per
+      token. The combination is unusually friendly to a workstation — the state-space
+      layers keep long-context memory nearly flat, and the low active fraction means the
+      experts can sit in system memory without generation speed collapsing. NVIDIA
+      measures RULER at 86.3 out to a million tokens.
+  context: { native: 262144 }
+  capabilities: [coding, thinking, tools, multilingual, long-context]
+  use_cases: [general, chat, reasoning, coding]
+  quality:
+    baseline: 72
+    benchmarks:
+      - name: MMLU-Pro
+        score: 78.3
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16"
+      - name: GPQA (no tools)
+        score: 73.0
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16"
+      - name: AIME25 (no tools)
+        score: 89.1
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16"
+      - name: LiveCodeBench v6
+        score: 68.3
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16"
+      - name: SWE-Bench (OpenHands)
+        score: 38.8
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16"
+  sampling: { temp: 1.0, top_p: 1.0 }
+  sources:
+    - repo: unsloth/Nemotron-3-Nano-30B-A3B-GGUF
+      kind: gguf
+      trust: unsloth
+      quants:
+        - { name: UD-Q2_K_XL }
+        - { name: UD-Q4_K_XL }
+        - { name: Q8_0 }
+
+- id: nemotron-3.5-lightning-30b-a3b
+  name: NVIDIA Nemotron 3.5 Lightning 30B A3B
+  vendor: NVIDIA
+  family: nemotron
+  release_date: 2026-08-11
+  license:
+    # OpenMDW-1.1, a permissive community model licence, not NVIDIA's own Nemotron licence
+    # that governs the Nano and Super models above and below.
+    spdx: openmdw-1.1
+    url: "https://openmdw.ai/license/1-1/"
+  params: { total_b: 30, active_b: 3 }
+  architecture:
+    class: moe-hybrid
+    gguf_arch: nemotron_h_moe
+    notes: >-
+      52 layers of interleaved Mamba-2 and mixture-of-experts blocks with a few attention
+      layers, 128 experts with 6 used per token plus 1 shared, and a multi-token-prediction
+      head for speculative decoding: 30B of weights, 3B of work per token. Trained on over
+      20T tokens with an NVFP4 recipe. It is the sweet spot of this family for a single
+      machine — small enough to hold at four bits on an ordinary workstation, hybrid enough
+      that a long context does not blow the memory budget, and fast because only a tenth
+      of it runs per token.
+  context: { native: 262144 }
+  capabilities: [coding, thinking, tools, multilingual, long-context]
+  use_cases: [general, chat, reasoning, coding]
+  quality:
+    baseline: 76
+    benchmarks:
+      - name: MMLU Pro
+        score: 81.94
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16"
+      - name: GPQA Diamond (no tools)
+        score: 75.44
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16"
+      - name: SWE-bench Verified
+        score: 51.56
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16"
+      - name: Terminal-Bench 2.1
+        score: 24.58
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16"
+      - name: BrowseComp
+        score: 36.97
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16"
+  sampling: { temp: 1.0, top_p: 0.95 }
+  sources:
+    - repo: unsloth/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF
+      kind: gguf
+      trust: unsloth
+      quants:
+        - { name: UD-IQ2_M }
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q8_K_XL }
+
+- id: nemotron-3-super-120b-a12b
+  name: NVIDIA Nemotron 3 Super 120B A12B
+  vendor: NVIDIA
+  family: nemotron
+  release_date: 2026-03-11
+  license:
+    spdx: nvidia-nemotron-open-model-license
+    url: "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-nemotron-open-model-license/"
+  params: { total_b: 120, active_b: 12 }
+  architecture:
+    class: moe-hybrid
+    gguf_arch: nemotron_h_moe
+    notes: >-
+      88 layers of NVIDIA's LatentMoE design — Mamba-2 blocks, mixture-of-experts blocks and
+      a small number of attention layers, with a built-in multi-token-prediction head — and
+      512 experts with 22 used per token plus 1 shared. 120B of weights against 12B of work
+      per token. NVIDIA quotes 8x H100 as the minimum for the full-precision weights; a
+      four-bit GGUF brings it inside a workstation with enough system memory, at the cost
+      of moving most of the experts off the card.
+  context: { native: 262144 }
+  capabilities: [coding, thinking, tools, multilingual, long-context]
+  use_cases: [general, reasoning, coding, chat]
+  quality:
+    baseline: 80
+    benchmarks:
+      - name: MMLU-Pro
+        score: 83.73
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16"
+      - name: GPQA (no tools)
+        score: 79.23
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16"
+      - name: SWE-Bench (OpenHands)
+        score: 60.47
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16"
+      - name: Terminal Bench Core 2.0
+        score: 31.00
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16"
+      - name: RULER @ 256k
+        score: 96.30
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16"
+  sampling: { temp: 1.0, top_p: 0.95 }
+  sources:
+    - repo: unsloth/NVIDIA-Nemotron-3-Super-120B-A12B-GGUF
+      kind: gguf
+      trust: unsloth
+      quants:
+        - { name: UD-Q2_K_XL }
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q8_K_XL }
+
+- id: nemotron-3-ultra-550b-a55b
+  name: NVIDIA Nemotron 3 Ultra 550B A55B
+  vendor: NVIDIA
+  family: nemotron
+  release_date: 2026-06-04
+  license:
+    spdx: openmdw-1.1
+    url: "https://openmdw.ai/license/1-1/"
+  params: { total_b: 550, active_b: 55 }
+  architecture:
+    class: moe-hybrid
+    gguf_arch: nemotron_h_moe
+    notes: >-
+      The same LatentMoE hybrid as Super, scaled up: 512 experts with 22 used per token plus
+      1 shared over an 8192-wide model, 550B of weights and 55B of work per token, with a
+      multi-token-prediction head. NVIDIA's own floor is 8x B200 or 16x H100 for the
+      full-precision weights, so on a single machine this is a model to size rather than to
+      install; the two-bit build below is what a very large workstation would need, and
+      even that is a several-hundred-gigabyte download. Being a Mamba-2 hybrid, its
+      million-token context costs far less memory than a transformer's would — RULER at 1M
+      is 94.7 — but the weights are still the weights.
+  context: { native: 262144 }
+  capabilities: [coding, thinking, tools, multilingual, long-context]
+  use_cases: [reasoning, general, coding, chat]
+  quality:
+    baseline: 85
+    benchmarks:
+      # First data column of the model card's comparison table, headed
+      # "N-3-Ultra 550B-A55B"; the remaining columns are other vendors' models.
+      - name: SWE-Bench Verified
+        score: 70.7
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16"
+      - name: Terminal Bench 2.1
+        score: 56.4
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16"
+      - name: GPQA (no tools)
+        score: 87.0
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16"
+      - name: LiveCodeBench (v6)
+        score: 89.0
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16"
+      - name: RULER (1M)
+        score: 94.7
+        source: "https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16"
+  sampling: { temp: 1.0, top_p: 0.95 }
+  sources:
+    - repo: unsloth/NVIDIA-Nemotron-3-Ultra-550B-A55B-GGUF
+      kind: gguf
+      trust: unsloth
+      # Two quants: the two-bit that a very large machine could conceivably hold, and the
+      # four-bit that states what the model really costs. The repository publishes
+      # twenty-two, including an eight-bit nobody outside a data centre completes.
+      quants:
+        - { name: UD-IQ2_M }
+        - { name: UD-Q4_K_XL }

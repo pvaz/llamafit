@@ -1,0 +1,134 @@
+# Sourced from MiniMax's Hugging Face model cards, their release blog posts and the
+# GGUF-publishing repositories.
+# Primary sources used for this file:
+#   - minimax-m3 model card: https://huggingface.co/MiniMaxAI/MiniMax-M3
+#   - minimax-m3 release blog: https://www.minimax.io/blog/minimax-m3
+#   - MiniMax Sparse Attention technical report: https://arxiv.org/abs/2606.13392
+#   - minimax-m2.7 model card: https://huggingface.co/MiniMaxAI/MiniMax-M2.7
+#   - GGUF repositories: https://huggingface.co/unsloth/MiniMax-M3-GGUF
+#                        https://huggingface.co/unsloth/MiniMax-M2.7-GGUF
+#
+# Release dates are the Hugging Face repository creation dates; neither model card states one.
+#
+# Read the licences before planning anything commercial with either of these. Both are
+# non-commercial by default and they are not the same document: M3's permits commercial use
+# subject to attribution and a revenue-triggered authorisation, while M2.7's prohibits any
+# commercial use at all without prior written authorisation from MiniMax. Redistribution of
+# the weights and of derivatives such as these GGUF conversions is permitted by both.
+- id: minimax-m3
+  name: MiniMax-M3
+  vendor: MiniMax
+  family: minimax
+  release_date: 2026-06-02
+  license:
+    # MiniMax Community Licence: non-commercial by default. Commercial use requires
+    # displaying "Built with MiniMax M3", plus a one-time notice to MiniMax, or prior
+    # written authorisation once the product passes 20 million US dollars of yearly
+    # revenue. An appendix lists prohibited uses.
+    spdx: minimax-community
+    url: "https://huggingface.co/MiniMaxAI/MiniMax-M3/blob/main/LICENSE"
+  params: { total_b: 428, active_b: 23 }
+  architecture:
+    class: moe
+    gguf_arch: minimax-m3
+    notes: >-
+      60 layers, 128 experts with 4 used per token plus 1 shared, and a multi-token
+      prediction head: 428B of weights, 23B of arithmetic per token. Its distinguishing
+      feature is MiniMax Sparse Attention, which MiniMax measures at roughly a
+      twenty-eighth of the per-token attention compute of grouped-query attention at a
+      million tokens, and 9x prefill and 15x decode speedups over M2 at that length. The
+      model is natively multimodal on text, image and video, but the GGUF conversions
+      published for llama.cpp are text-only — no vision projector is published alongside
+      them — so `vision` is deliberately absent from the capabilities below. It is a
+      property of what you can run, not of what MiniMax trained.
+  context: { native: 1048576 }
+  capabilities: [coding, thinking, tools, long-context]
+  use_cases: [coding, reasoning, general, chat]
+  quality:
+    baseline: 84
+    benchmarks:
+      - name: SWE-Bench Pro
+        score: 59.0
+        source: "https://www.minimax.io/blog/minimax-m3"
+      - name: Terminal-Bench 2.1
+        score: 66.0
+        source: "https://www.minimax.io/blog/minimax-m3"
+      - name: MCP Atlas
+        score: 74.2
+        source: "https://www.minimax.io/blog/minimax-m3"
+      - name: SWE-fficiency
+        score: 34.8
+        source: "https://www.minimax.io/blog/minimax-m3"
+      - name: KernelBench Hard
+        score: 28.8
+        source: "https://www.minimax.io/blog/minimax-m3"
+  sampling: { temp: 1.0, top_p: 0.95 }
+  chat_template: { thinking_toggle: thinking }
+  sources:
+    - repo: unsloth/MiniMax-M3-GGUF
+      kind: gguf
+      trust: unsloth
+      # A two-bit that a 128 GB workstation can hold and the four-bit common case. The
+      # repository publishes twenty-two; at 428B an eight-bit is a download nobody with a
+      # desk-sized machine completes.
+      quants:
+        - { name: UD-IQ2_XXS }
+        - { name: UD-Q4_K_XL }
+
+- id: minimax-m2.7
+  name: MiniMax-M2.7
+  vendor: MiniMax
+  family: minimax
+  release_date: 2026-04-09
+  license:
+    # Stricter than M3's: any commercial use of the weights or of a derivative is
+    # prohibited without prior written authorisation from MiniMax, and commercial use must
+    # display "Built with MiniMax M2.7". Non-commercial use, modification and
+    # redistribution are permitted on MIT-style terms.
+    spdx: minimax-noncommercial
+    url: "https://github.com/MiniMax-AI/MiniMax-M2.7/blob/main/LICENSE"
+  params: { total_b: 230, active_b: 10 }
+  architecture:
+    class: moe
+    gguf_arch: minimax-m2
+    notes: >-
+      62 layers, 256 experts with 8 used per token, 48 query heads over 8 key/value heads:
+      230B of weights against about 10B of work per token. Conventional grouped-query
+      attention rather than M3's sparse scheme, and text-only. The very low active fraction
+      is what makes it interesting on a machine with plenty of system memory and one
+      ordinary card — the experts can sit in system memory and be streamed while the
+      attention layers stay resident on the GPU, and generation speed tracks the 10B rather
+      than the 230B.
+  # The published config declares 204,800; the converted GGUF declares 196,608, and the
+  # smaller of the two is what llama.cpp will actually serve.
+  context: { native: 196608 }
+  capabilities: [coding, thinking, tools, long-context]
+  use_cases: [coding, reasoning, general, chat]
+  quality:
+    baseline: 81
+    benchmarks:
+      # All quoted in the model card's own prose rather than a table.
+      - name: SWE-Pro
+        score: 56.22
+        source: "https://huggingface.co/MiniMaxAI/MiniMax-M2.7"
+      - name: SWE Multilingual
+        score: 76.5
+        source: "https://huggingface.co/MiniMaxAI/MiniMax-M2.7"
+      - name: Terminal Bench 2
+        score: 57.0
+        source: "https://huggingface.co/MiniMaxAI/MiniMax-M2.7"
+      - name: NL2Repo
+        score: 39.8
+        source: "https://huggingface.co/MiniMaxAI/MiniMax-M2.7"
+      - name: Toolathon
+        score: 46.3
+        source: "https://huggingface.co/MiniMaxAI/MiniMax-M2.7"
+  sampling: { temp: 1.0, top_p: 0.95, top_k: 40 }
+  sources:
+    - repo: unsloth/MiniMax-M2.7-GGUF
+      kind: gguf
+      trust: unsloth
+      quants:
+        - { name: UD-IQ2_XXS }
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q8_K_XL }
