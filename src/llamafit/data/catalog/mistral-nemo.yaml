@@ -1,0 +1,67 @@
+# Mistral NeMo: the 12B Mistral AI and NVIDIA trained together, and still the default
+# Apache-2.0 12B a lot of people reach for. Sourced from the vendor's Hugging Face model
+# card, the release announcement and the GGUF-publishing repository.
+# Primary sources used for this file:
+#   - Model card: https://huggingface.co/mistralai/Mistral-Nemo-Instruct-2407
+#   - Base card, for the provenance note below:
+#     https://huggingface.co/mistralai/Mistral-Nemo-Base-2407
+#   - Announcement: https://mistral.ai/news/mistral-nemo
+#   - GGUF repository: https://huggingface.co/bartowski/Mistral-Nemo-Instruct-2407-GGUF
+#
+# A WARNING ABOUT THE NUMBERS BELOW. The "Metrics / Main Benchmarks" table on the INSTRUCT
+# card is byte-for-byte the same table that appears on the BASE card: HellaSwag 83.5,
+# Winogrande 76.8, MMLU 68.0, TriviaQA 73.8 and the rest are pretrained-checkpoint figures
+# that Mistral republished on the instruct page. Mistral's announcement does publish an
+# instruction-tuned comparison, but only as an image whose values are not readable, so
+# there is no instruct-specific number to quote. The scores are therefore recorded here
+# labelled as base-model scores, and the baseline below is set from what a 2024-vintage 12B
+# is worth rather than from them.
+- id: mistral-nemo-12b-instruct
+  name: Mistral NeMo 12B Instruct 2407
+  vendor: Mistral AI
+  family: mistral-nemo
+  release_date: 2024-07-18
+  license:
+    spdx: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0"
+  params: { total_b: 12, active_b: 12 }
+  architecture:
+    class: dense
+    gguf_arch: llama
+    notes: >-
+      40 layers, 32 query heads, 8 key/value heads (GQA), 5,120 hidden dimension, rotary
+      theta 1M, and a Tekken tokenizer with a 2^17 vocabulary — the large vocabulary is
+      why its token embeddings take a bigger share of a quant than an older 7B's do. The
+      GGUF header declares a 1,024,000-token context; the vendor documents 128k, which is
+      the figure recorded here.
+  context: { native: 131072 }
+  capabilities: [tools, multilingual, long-context]
+  use_cases: [general, chat]
+  quality:
+    baseline: 58
+    benchmarks:
+      # See the warning in the file header: these are the pretrained checkpoint's figures,
+      # republished by Mistral on the instruct card, and are labelled as such.
+      - name: MMLU (5-shot, base model)
+        score: 68.0
+        source: "https://huggingface.co/mistralai/Mistral-Nemo-Instruct-2407"
+      - name: HellaSwag (0-shot, base model)
+        score: 83.5
+        source: "https://huggingface.co/mistralai/Mistral-Nemo-Instruct-2407"
+      - name: TriviaQA (5-shot, base model)
+        score: 73.8
+        source: "https://huggingface.co/mistralai/Mistral-Nemo-Instruct-2407"
+      - name: French MMLU (base model)
+        score: 62.3
+        source: "https://huggingface.co/mistralai/Mistral-Nemo-Instruct-2407"
+  # The card's own mistral-chat example runs at --temperature 0.35.
+  sampling: { temp: 0.35 }
+  sources:
+    - repo: bartowski/Mistral-Nemo-Instruct-2407-GGUF
+      kind: gguf
+      trust: bartowski
+      # Two is enough at 12B: Q4_K_M is the ordinary choice and Q6_K the one for a machine
+      # with room to spare. Nothing below four bits is worth it on a model this size.
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q6_K }
