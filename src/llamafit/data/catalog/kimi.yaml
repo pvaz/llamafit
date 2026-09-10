@@ -1,0 +1,142 @@
+# Sourced from Moonshot AI's Hugging Face model cards, the Kimi Linear technical report and
+# the GGUF-publishing repositories.
+# Primary sources used for this file:
+#   - kimi-k3 model card: https://huggingface.co/moonshotai/Kimi-K3
+#   - kimi-linear model card: https://huggingface.co/moonshotai/Kimi-Linear-48B-A3B-Instruct
+#   - Kimi Linear technical report: https://arxiv.org/abs/2510.26692
+#   - GGUF repositories: https://huggingface.co/unsloth/Kimi-K3-GGUF
+#                        https://huggingface.co/bartowski/moonshotai_Kimi-Linear-48B-A3B-Instruct-GGUF
+#
+# Release dates are the Hugging Face repository creation dates; neither model card states one.
+#
+# Both models are built on Kimi Delta Attention, and they are the two ends of what that
+# architecture is for: one is the largest open-weight model published anywhere, the other is
+# small enough to run on a workstation. The licences differ — K3 has Moonshot's own terms,
+# Kimi Linear is plain MIT.
+- id: kimi-k3
+  name: Kimi K3
+  vendor: Moonshot AI
+  family: kimi
+  release_date: 2026-06-13
+  license:
+    # MIT-like in substance with two conditions: an operator of a Model-as-a-Service
+    # business past 20 million US dollars of group revenue over any 12 months needs a
+    # separate agreement with Moonshot before commercial use, and a product past 100
+    # million monthly active users (or 20 million dollars of monthly revenue) must display
+    # "Kimi K3" in its interface. Neither applies to internal use or to running the weights
+    # locally, which the licence says in as many words.
+    spdx: kimi-k3
+    url: "https://huggingface.co/moonshotai/Kimi-K3/blob/main/LICENSE"
+  params: { total_b: 2800, active_b: 104 }
+  architecture:
+    class: moe-hybrid
+    gguf_arch: kimi-k3
+    notes: >-
+      2.8 trillion parameters, 104B of them active per token: 93 layers pairing 69 Kimi
+      Delta Attention layers with 24 gated latent-attention layers, and 896 experts with 16
+      used per token plus 2 shared. It is the largest open-weight model in this catalog by
+      a wide margin, and the sparsity is what makes that even arguable: the arithmetic per
+      token is a 104B model's, but every one of the 2.8 trillion parameters has to be
+      somewhere a memory controller can reach. Even the one-bit ternary quantisation runs
+      to hundreds of gigabytes. Vision is native, through a 401M MoonViT-V2 encoder, and
+      the weights were quantisation-aware trained at MXFP4 from the SFT stage onward, so
+      four-bit is closer to the model's intended precision here than it usually is.
+  context: { native: 1048576 }
+  capabilities: [coding, thinking, vision, tools, long-context]
+  use_cases: [coding, reasoning, multimodal, general, chat]
+  quality:
+    baseline: 92
+    benchmarks:
+      # From the model card's evaluation table, all at reasoning effort `max` with
+      # temperature 1.0, evaluated through the Kimi Code harness for agentic rows.
+      - name: Terminal-Bench 2.1
+        score: 88.3
+        source: "https://huggingface.co/moonshotai/Kimi-K3"
+      - name: GPQA Diamond
+        score: 93.5
+        source: "https://huggingface.co/moonshotai/Kimi-K3"
+      - name: DeepSWE
+        score: 67.5
+        source: "https://huggingface.co/moonshotai/Kimi-K3"
+      - name: BrowseComp
+        score: 91.2
+        source: "https://huggingface.co/moonshotai/Kimi-K3"
+      - name: MMMU-Pro
+        score: 81.6
+        source: "https://huggingface.co/moonshotai/Kimi-K3"
+  sampling: { temp: 1.0, top_p: 0.95 }
+  chat_template: { reasoning_format: deepseek, thinking_toggle: reasoning_effort }
+  sources:
+    - repo: unsloth/Kimi-K3-GGUF
+      kind: gguf
+      trust: unsloth
+      # A one-bit for anyone determined to try, the two-bit that is the realistic floor,
+      # and the four-bit that matches the precision the model was trained for. The
+      # repository publishes nine; an eight-bit of a 2.8T model helps nobody. Its two
+      # ternary builds, UD-TQ1_0 and UD-TQ2_0, are smaller still and are left out
+      # deliberately: LlamaFit cannot yet price a ternary quantisation, and a candidate
+      # whose cost in quality nobody can name is dropped from every board rather than
+      # guessed at.
+      quants:
+        - { name: UD-IQ1_M }
+        - { name: UD-Q2_K_XL }
+        - { name: UD-Q4_K_XL }
+      extras:
+        - { role: mmproj, file: mmproj-F16.gguf }
+
+- id: kimi-linear-48b-a3b-instruct
+  name: Kimi-Linear-48B-A3B-Instruct
+  vendor: Moonshot AI
+  family: kimi
+  release_date: 2025-10-30
+  license:
+    spdx: MIT
+    url: "https://huggingface.co/moonshotai/Kimi-Linear-48B-A3B-Instruct/blob/main/LICENSE"
+  params: { total_b: 48, active_b: 3 }
+  architecture:
+    class: moe-hybrid
+    gguf_arch: kimi-linear
+    notes: >-
+      27 layers in a 3:1 ratio of Kimi Delta Attention to full latent attention, with 256
+      experts and 8 used per token plus 1 shared: 48B of weights, 3B of work per token.
+      The three-in-four linear layers carry a fixed-size recurrent state rather than a KV
+      cache that grows with the conversation, which is why Moonshot measures up to a 75%
+      smaller cache and roughly six times the decoding throughput at a million tokens. On
+      a machine with system memory to hold 48B of weights this is one of the few
+      million-token models that is genuinely usable rather than merely downloadable.
+  context: { native: 1048576 }
+  capabilities: [coding, tools, long-context]
+  use_cases: [general, chat, reasoning, coding]
+  quality:
+    baseline: 68
+    benchmarks:
+      # Appendix D, Table 9 of the technical report: "Performance of Kimi-Linear-Instruct
+      # and Moonlight-Instruct", the 48B/3B model trained on 5.7T tokens, which is the
+      # checkpoint published here. The paper's main body (Tables 3 and 4) reports a
+      # different, smaller 1.4T-token architecture ablation — MMLU-Pro 51.0, LiveCodeBench
+      # v6 26.0 — and those numbers are not this model's.
+      - name: GPQA-Diamond (Avg@8)
+        score: 71.7
+        source: "https://arxiv.org/abs/2510.26692"
+      - name: MMLU-Pro (EM)
+        score: 72.7
+        source: "https://arxiv.org/abs/2510.26692"
+      - name: AIME 2025 (Avg@64)
+        score: 58.6
+        source: "https://arxiv.org/abs/2510.26692"
+      - name: LiveCodeBench v6 (Pass@1)
+        score: 45.7
+        source: "https://arxiv.org/abs/2510.26692"
+      - name: RULER@1M
+        score: 94.8
+        source: "https://arxiv.org/abs/2510.26692"
+  sources:
+    - repo: bartowski/moonshotai_Kimi-Linear-48B-A3B-Instruct-GGUF
+      kind: gguf
+      trust: bartowski
+      # Four-bit for the common case, six-bit where quality matters, and a two-bit for an
+      # 8 GB card that wants the experts to stay resident. The repository publishes thirty.
+      quants:
+        - { name: IQ2_M }
+        - { name: Q4_K_M }
+        - { name: Q6_K }
