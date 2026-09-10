@@ -261,5 +261,25 @@ the changelog says so when they do.
   left-to-right language, nothing was added to any catalog, and `--json` receives no
   direction mark in any language. `docs/translations.md` records what this cannot fix and
   which terminals act on it.
+- **A benchmark is no longer called `measured` for a run it does not describe.** The
+  estimator treated a flag a recorded run does not mention as agreement, so a run that
+  never says where its layers went matched every placement in sight. The catalog's own
+  winning row for Qwen3.8-Flash-Next is such a row — it recorded `-ub 1024`, the projector
+  off the card and the shared experts in system memory, and nothing about `-ngl` or
+  `--n-cpu-moe` — and it matched a hybrid split holding two layers on the card as readily
+  as the full offload it was actually taken on. Six flags are now load-bearing, and they
+  are exactly the ones that decide which bytes are read out of which pool: `-ngl`,
+  `--n-cpu-moe`, `-ot ffn_.*_shexp=CPU`, `--no-mmproj-offload`, `-ctk`/`-ctv`, and `-ub`
+  for prompt processing. An unrecorded switch is read as the default it stands for — no
+  override, `f16`, `-ub 512` — but an unrecorded `-ngl` is read as nothing at all, because
+  that one flag separates 78 tokens per second from 279.5 for the same file on the same
+  machine and this project's own records keep it in a base line the catalog rows quoted
+  only the delta of. A run that does not describe the placement still calibrates the
+  formula and says which run it came from; it cannot be labelled `measured`, and when its
+  layer split is unknown the estimate says that the correction assumed this placement.
+  Nothing printed differently today — no command feeds catalog measurements to the
+  estimator, and section 10.3 reserves `measured` for a benchmark taken on *this* machine —
+  but phase 3 stores exactly such benchmarks and would have walked straight into it. The
+  Flash-Next row now records the whole command line rather than the delta.
 
 [Unreleased]: https://github.com/pvaz/llamafit/commits/main

@@ -133,7 +133,13 @@
       gen_tps: 13.9
       pp_tps: 49.4
       context: 40960
-      flags: "-ub 1024 --no-mmproj-offload -ot ffn_.*_shexp=CPU"
+      # The whole command line, not the delta. The calibration record states the base
+      # flags once for every run of this model and then names only what the winning
+      # configuration adds; a benchmark that does not say where its layers went describes
+      # no placement, and this row was the one the estimator could match to anything.
+      flags: >-
+        -ngl 99 --n-cpu-moe 48 --fit off -fa on -t 16 -tb 16 -b 4096 -ub 1024
+        --no-mmproj-offload -ot ffn_.*_shexp=CPU
       llama_cpp_build: 10867
       peak_vram_gb: 7.3
       date: 2026-09-09

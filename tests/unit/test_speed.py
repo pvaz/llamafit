@@ -442,7 +442,12 @@ def test_a_benchmark_that_offloaded_nothing_is_not_a_full_offload() -> None:
     assert estimate.confidence == "calibrated"
 
 
-def test_a_benchmark_naming_no_flags_at_all_matches_any_configuration() -> None:
+def test_a_benchmark_naming_no_flags_at_all_describes_no_configuration() -> None:
+    """A number with no command line is not a benchmark of anything in particular.
+
+    It is still this machine's number, so it calibrates; what it may not do is arrive
+    labelled ``measured``, which is the label a reader trusts above every other.
+    """
     measurement = Measured(
         profile="somebody's number",
         quant="UD-Q4_K_XL",
@@ -458,8 +463,41 @@ def test_a_benchmark_naming_no_flags_at_all_matches_any_configuration() -> None:
         quant="UD-Q4_K_XL",
         measurements=[measurement],
     )
-    assert estimate.confidence == "measured"
-    assert estimate.gen_tps == 20.0
+    assert estimate.confidence == "calibrated"
+    assert estimate.measured_on is None
+    assert "does not record how many layers" in " ".join(estimate.notes)
+
+
+def test_a_benchmark_that_never_names_ngl_is_not_a_benchmark_of_this_placement() -> None:
+    """The bug this test exists for, in the shape it was found in.
+
+    The reference machine's winning Flash-Next configuration was recorded with only the
+    flags it added to a base line written down elsewhere: ``-ub 1024``, the projector off
+    the card, the shared experts in system memory, and no word about ``-ngl`` or
+    ``--n-cpu-moe``. Every unmentioned flag used to count as agreement, so that row
+    matched a placement holding two layers on the card as readily as the one it was taken
+    on, and a hybrid split arrived labelled with a benchmark of a full offload.
+    """
+    winning_row = Measured(
+        profile="winning configuration",
+        quant="UD-Q4_K_XL",
+        gen_tps=13.9,
+        pp_tps=49.4,
+        context=40960,
+        flags="-ub 1024 --no-mmproj-offload -ot ffn_.*_shexp=CPU",
+        date=date(2026, 9, 9),
+    )
+    hybrid = placement(mode="hybrid", gpu_layers=2, cpu_moe_layers=None)
+    estimate = estimate_speed(
+        hybrid,
+        moe_facts(),
+        reference_host(),
+        active_params=3e9,
+        quant="UD-Q4_K_XL",
+        measurements=[winning_row],
+    )
+    assert estimate.confidence != "measured"
+    assert estimate.gen_tps != 13.9
 
 
 def test_an_expert_offload_benchmark_needs_the_placement_to_offload_experts_too() -> None:
@@ -564,3 +602,96 @@ def test_the_token_embedding_table_is_never_charged_to_a_token() -> None:
     traffic = per_token_traffic(placement(), facts, working_context=0)
     assert facts.bytes_token_embd == 9 * GB
     assert traffic.total_bytes == 2 * GB + 1 * GB + active_expert_bytes(facts)
+
+
+# --- which flags decide whether a run describes a placement ---------------------------
+
+
+def measured_at(flags: str) -> Measured:
+    """A benchmark of the reference offload, differing only in the flags it records."""
+    return Measured(
+        profile="llama-bench",
+        quant="UD-Q4_K_XL",
+        gen_tps=24.7,
+        pp_tps=323.0,
+        flags=flags,
+        date=date(2026, 9, 9),
+    )
+
+
+def confidence_for(flags: str, **placement_overrides: object) -> str:
+    """How a benchmark recording ``flags`` is labelled against one placement."""
+    return estimate_speed(
+        placement(**placement_overrides),  # type: ignore[arg-type]
+        moe_facts(),
+        reference_host(),
+        active_params=3e9,
+        quant="UD-Q4_K_XL",
+        measurements=[measured_at(flags)],
+    ).confidence
+
+
+def test_a_run_that_records_the_whole_offload_is_a_benchmark_of_it() -> None:
+    assert confidence_for("-ngl 99 --n-cpu-moe 48 -ub 1024") == "measured"
+
+
+def test_a_run_that_left_the_shared_experts_on_the_card_is_a_different_run() -> None:
+    """239 MB of always-on weights on the other side of the link, which is a placement."""
+    assert (
+        confidence_for("-ngl 99 --n-cpu-moe 48 -ub 1024", shared_experts_pool="ram") != "measured"
+    )
+    assert (
+        confidence_for(
+            "-ngl 99 --n-cpu-moe 48 -ub 1024 -ot ffn_.*_shexp=CPU", shared_experts_pool="ram"
+        )
+        == "measured"
+    )
+
+
+def test_a_run_that_kept_the_projector_on_the_card_is_a_different_run() -> None:
+    """On an eight-gigabyte card the projector is 1.9 GB, or 52K tokens of context."""
+    assert confidence_for("-ngl 99 --n-cpu-moe 48 -ub 1024", projector_pool="ram") != "measured"
+    assert (
+        confidence_for("-ngl 99 --n-cpu-moe 48 -ub 1024 --no-mmproj-offload", projector_pool="ram")
+        == "measured"
+    )
+    # Vision left out entirely is neither of those, and says so out loud.
+    assert (
+        confidence_for("-ngl 99 --n-cpu-moe 48 -ub 1024 --no-mmproj", projector_pool="vram")
+        != "measured"
+    )
+
+
+def test_a_run_with_a_quantised_cache_is_not_a_benchmark_of_an_f16_one() -> None:
+    """A q8_0 token is 8.5 bits of the 16 an f16 one is, and the cache is read per token."""
+    assert confidence_for("-ngl 99 --n-cpu-moe 48 -ub 1024 -ctk q8_0 -ctv q8_0") != "measured"
+    assert (
+        confidence_for("-ngl 99 --n-cpu-moe 48 -ub 1024 -ctk q8_0 -ctv q8_0", kv_type="q8_0")
+        == "measured"
+    )
+    # Silence means llama.cpp's own default, which is what this project renders too.
+    assert confidence_for("-ngl 99 --n-cpu-moe 48 -ub 1024", kv_type="q8_0") != "measured"
+
+
+def test_a_prompt_benchmark_naming_no_micro_batch_was_taken_at_the_default() -> None:
+    """512, which the same machine measured at 118 prompt tokens per second against 323."""
+    at_512 = estimate_speed(
+        placement(micro_batch=512),
+        moe_facts(),
+        reference_host(),
+        active_params=3e9,
+        quant="UD-Q4_K_XL",
+        measurements=[measured_at("-ngl 99 --n-cpu-moe 48")],
+    )
+    assert at_512.confidence == "measured"
+    assert at_512.pp_tps == 323.0
+    assert confidence_for("-ngl 99 --n-cpu-moe 48", micro_batch=2048) == "calibrated"
+
+
+def test_a_flag_that_moves_no_byte_is_not_compared() -> None:
+    """A thread count, a sampling temperature and ``--fit off`` are not a placement."""
+    assert (
+        confidence_for("-ngl 99 --n-cpu-moe 48 --fit off -fa on -t 16 -tb 16 -b 4096 -ub 1024")
+        == "measured"
+    )
+    assert confidence_for("-ngl 99 --n-cpu-moe 48 -ub 1024 --temp 0.7 --jinja") == "measured"
