@@ -6,21 +6,35 @@
 Two models with the same baseline are not equally good answers to the same question. A
 coding model asked to write code is being used for what it was built and measured on; the
 same model asked to describe an image is not. Section 11.1 of the design specification
-draws the line in three places, and this module is all three:
+draws the line in two places, and this module is both:
 
-- a model whose ``use_cases`` do not include the one the request names is excluded, the
-  same way a missing required capability excludes one. A request for coding must not come
-  back with a model whose own entry says it is for general chat and reasoning.
-- a model missing a required capability is excluded, and :func:`missing_capabilities` says
-  which one, so the exclusion can be explained rather than merely applied.
+- a model missing a capability the request needs is excluded. The request can name one
+  outright, and asking for a job names one too, through
+  :data:`~llamafit.models.catalog.CAPABILITY_FOR_USE_CASE`:
+  :func:`required_capability` is what a use case turns into, and
+  :func:`missing_capabilities` is what the request asked for by name. Either way the
+  exclusion can say which ability is missing, which is what makes it something a person
+  can act on.
 - among the models that are left, ``+5`` when the request names the model's *primary* use
   case, and nothing when it merely lists it.
 
-The *primary* use case is the first one the catalog entry lists. An entry writes them in
-the curator's order of merit — ``use_cases: [coding, reasoning, multimodal]`` says this is
-a coding model that can also reason and see — so the head of the list is the job the
-baseline was set against. This is the whole of the bonus, and it varies between candidates,
-which is the point: it separates a model built for the job from one that also does it.
+**The gate is on what a model can do, never on what it is offered for.** An earlier reading
+excluded a model whose ``use_cases`` did not contain the requested one, and it threw away
+good answers: ask this catalog for a general model and Qwen3-Coder-Next, the fastest thing
+that fits the reference machine, was not ranked at all — because a coding model is a
+perfectly reasonable thing to hold a general conversation with, and nothing in the entry
+said otherwise. It also turned every curator's judgement call into a hard filter they did
+not know they were setting. Capabilities are facts about the weights and can carry a gate;
+emphasis cannot. The case the old rule was written for survives the change unharmed: Llama
+3.1 8B lacks the coding *capability* as well as the coding use case, so a coding request
+still excludes it, and now for the reason that was always the real one.
+
+``use_cases`` keeps a job. The *primary* use case is the first one the catalog entry lists,
+and an entry writes them in the curator's order of merit — ``use_cases: [coding, reasoning,
+multimodal]`` says this is a coding model that can also reason and see — so the head of the
+list is the job the baseline was set against. It is worth :data:`PRIMARY_USE_CASE_BONUS`,
+which is how a model built for the task still outranks one that merely can do it. That is
+the right weight for an editorial opinion: it moves a close board and it hides nothing.
 
 An earlier reading of this section also gave ``+3`` per required capability. That term
 could not discriminate: a missing required capability excludes the candidate, so every
@@ -28,14 +42,14 @@ candidate still standing has every required capability, and the bonus was the sa
 added to all of them. It looked like a judgement and was arithmetic on the length of the
 request. It is gone.
 
-Both exclusions have the same cheap fix when they are wrong. The catalog is curated by
-hand, so a model that really is good at something its entry does not claim is a one-line
-change to that entry, reviewed like any other.
+The exclusion has a cheap fix when it is wrong. The catalog is curated by hand, so a model
+that really can do something its entry does not claim is a one-line change to that entry,
+reviewed like any other.
 """
 
 from __future__ import annotations
 
-from llamafit.models.catalog import CatalogModel, UseCase
+from llamafit.models.catalog import CAPABILITY_FOR_USE_CASE, Capability, CatalogModel, UseCase
 from llamafit.models.plan import Needs
 
 PRIMARY_USE_CASE_BONUS = 5.0
@@ -55,20 +69,21 @@ def primary_use_case(model: CatalogModel) -> UseCase:
     return model.use_cases[0]
 
 
-def declares_use_case(model: CatalogModel, use_case: str) -> bool:
-    """Say whether this model's entry offers itself for this job at all.
+def required_capability(use_case: str) -> Capability | None:
+    """Return the ability asking for this job asks for, when asking for it asks for one.
 
     Args:
-        model: The catalog entry.
-        use_case: What the request asked for.
+        use_case: What the request asked for. An unrecognised one requires nothing: this
+            is not where a typo is caught — :func:`~llamafit.scoring.weights.check_use_case`
+            names the six and refuses the rest — and inventing a requirement for a job
+            nobody has defined would empty the board for a reason no reader could act on.
 
     Returns:
-        True when ``use_case`` is among the entry's ``use_cases``, in any position. A
-        model that merely lists it competes; a model that does not is excluded rather
-        than ranked low, because a curated entry's declared purpose is meant to mean
-        something.
+        The entry in :data:`~llamafit.models.catalog.CAPABILITY_FOR_USE_CASE`, which is
+        ``None`` for ``general`` and ``chat``, since neither is a specialisation and
+        neither needs one.
     """
-    return use_case in model.use_cases
+    return CAPABILITY_FOR_USE_CASE.get(use_case)
 
 
 def missing_capabilities(model: CatalogModel, needs: Needs) -> tuple[str, ...]:
@@ -82,6 +97,12 @@ def missing_capabilities(model: CatalogModel, needs: Needs) -> tuple[str, ...]:
         Every entry of ``needs.capabilities`` the model lacks. Empty means the model
         clears the filter; anything else is grounds for excluding it, and naming the
         capability is what makes that exclusion something a person can act on.
+
+        Only what the request named itself. The capability the *use case* asks for is
+        :func:`required_capability`, and it is kept apart because the two have different
+        fixes: one is dropped from the request, the other is answered by asking for a
+        different job, and a reason that offered the wrong one would be worse than no
+        reason at all.
     """
     have = set(model.capabilities)
     return tuple(capability for capability in needs.capabilities if capability not in have)

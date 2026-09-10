@@ -90,21 +90,55 @@ def test_the_fixture_speeds_are_the_catalogs_own_measurements(catalog: Catalog) 
 
 
 def test_the_same_board_reorders_when_the_request_changes(catalog: Catalog) -> None:
-    # Two models offer themselves for chat, and the faster of them wins a use case that
-    # weights speed at 0.40. The request is what decides, not a fixed order of merit.
+    # The same four candidates, in two orders. Chat weights speed at 0.40 against general's
+    # 0.25, and that alone lifts Llama 3.1 8B at 45 t/s over Qwen3.8-Flash-Next at 13.9.
+    # The request is what decides, not a fixed order of merit.
+    general = evaluate_and_rank(entries(catalog), Needs(use_case="general"))
     chat = evaluate_and_rank(entries(catalog), Needs(use_case="chat"))
-    assert ids(chat)[0] == "llama-3.1-8b-instruct"
-    coding = evaluate_and_rank(entries(catalog), Needs(use_case="coding"))
-    assert ids(coding)[0] == "qwen3-coder-next"
+    ranked_general = [c.model_id for c in general if c.score is not None]
+    ranked_chat = [c.model_id for c in chat if c.score is not None]
+    assert sorted(ranked_general) == sorted(ranked_chat)
+    assert ranked_general.index("qwen3.8-flash-next") < ranked_general.index(
+        "llama-3.1-8b-instruct"
+    )
+    assert ranked_chat.index("llama-3.1-8b-instruct") < ranked_chat.index("qwen3.8-flash-next")
 
 
-def test_only_the_models_that_offer_themselves_for_the_job_compete(catalog: Catalog) -> None:
+def test_only_the_models_that_can_do_the_job_compete(catalog: Catalog) -> None:
     coding = evaluate_and_rank(entries(catalog), Needs(use_case="coding"))
     ranked = [c.model_id for c in coding if c.score is not None]
     assert ranked == ["qwen3-coder-next", "qwen3.8-flash-next", "qwen3-0.6b"]
-    # Llama 3.1 8B used to place second here on fit and a capped speed score, with a
-    # catalog entry that never claimed to code.
+    # Llama 3.1 8B used to place second here on fit and a capped speed score. It has no
+    # coding capability, which is a fact about the weights rather than a curator's
+    # emphasis, and that is what keeps it off a coding board.
     assert "llama-3.1-8b-instruct" not in ranked
+    assert "coding" not in catalog.by_id["llama-3.1-8b-instruct"].capabilities
+
+
+def test_a_model_built_for_one_job_still_competes_for_another(catalog: Catalog) -> None:
+    """The defect the use-case gate caused, guarded where it showed.
+
+    Qwen3-Coder-Next is the fastest thing that fits this machine at 24.7 tokens per second
+    and its entry lists coding and nothing else. Gating on that list left it off a general
+    board entirely — "not a general model; its entry lists coding" — which hid the best
+    answer behind a curator's emphasis. A coding model is a perfectly reasonable thing to
+    hold a general conversation with, and general asks for no capability at all, so nothing
+    excludes it and it is ranked on its merits.
+    """
+    board = evaluate_and_rank(entries(catalog), Needs(use_case="general"))
+    coder = next(c for c in board if c.model_id == "qwen3-coder-next")
+    assert coder.excluded_because is None
+    assert catalog.by_id["qwen3-coder-next"].use_cases == ["coding"]
+    assert ids(board)[0] == "qwen3-coder-next"
+
+
+def test_a_general_or_chat_request_excludes_nobody_for_what_it_asks(catalog: Catalog) -> None:
+    # Neither is a specialisation, so neither names an ability to lack. Whatever is missing
+    # from these two boards is missing for the machine's reasons, never for the request's.
+    for use_case in ("general", "chat"):
+        board = evaluate_and_rank(entries(catalog), Needs(use_case=use_case))
+        for candidate in board:
+            assert "capability" not in (candidate.excluded_because or "")
 
 
 MACHINE_ONLY = {"coding": {"quality": 0.0, "speed": 0.0, "fit": 1.0, "context": 0.0}}
@@ -187,23 +221,27 @@ def test_the_quality_breakdown_expands_into_the_catalogs_own_numbers(
 # --- exclusions --------------------------------------------------------------------
 
 
-def test_a_model_that_does_not_offer_itself_for_the_job_is_kept_with_its_reason(
+def test_a_model_that_cannot_do_the_job_is_kept_with_its_reason(
     catalog: Catalog,
 ) -> None:
     board = evaluate_and_rank(entries(catalog), CODING)
     excluded = {c.model_id: c for c in board if c.excluded_because}
     assert set(excluded) == {"gemma-3-27b-it", "llama-3.1-8b-instruct"}
     reason = excluded["llama-3.1-8b-instruct"].excluded_because or ""
-    assert "not a coding model" in reason
-    # It names what the entry does say, so the reader can ask for one of those instead —
-    # or correct the entry, which is a one-line change to a curated file.
-    assert "general, chat, reasoning" in reason
+    # This is the case the whole rule was written for, and it survives: Llama 3.1 8B used
+    # to rank second for a coding request. It names the ability, not a list of jobs, so the
+    # reader can ask for a different one — or correct the entry, which is a one-line change
+    # to a curated file when the model really does have it.
+    assert "no coding capability" in reason
+    assert "ask for a different use case" in reason
+    assert "add it to the entry" in reason
 
 
 def test_a_model_without_a_required_capability_is_kept_with_its_reason(
     catalog: Catalog,
 ) -> None:
-    # Qwen3-Coder-Next is a coding model, so the use case lets it through; it cannot see.
+    # Qwen3-Coder-Next can code, so the use case's own requirement lets it through; it
+    # cannot see, and vision is what this request named for itself.
     needs = Needs(use_case="coding", capabilities=("vision",))
     candidate = evaluate_one(catalog, "qwen3-coder-next", needs)
     reason = candidate.excluded_because or ""
@@ -327,25 +365,25 @@ def test_an_embedding_request_never_excludes_a_model_for_generating_slowly(
 ) -> None:
     """Nobody reads an embedding, so there is no reader for a model to fall behind.
 
-    Gemma is not an embedding model and is excluded for that instead, which is the point:
-    the reason a reader is given is about the catalog entry, never about a generation rate
-    nothing in an embedding run produces.
+    Gemma cannot produce an embedding and is excluded for that instead, which is the point:
+    the reason a reader is given is about what the model can do, never about a generation
+    rate nothing in an embedding run produces.
     """
     candidate = evaluate_one(catalog, "gemma-3-27b-it", Needs(use_case="embedding"))
-    assert "not a embedding model" in (candidate.excluded_because or "")
+    assert "no embeddings capability" in (candidate.excluded_because or "")
 
 
 def test_being_too_slow_is_reported_after_everything_the_request_controls(
     catalog: Catalog,
 ) -> None:
-    """A model that is both wrong for the job and too slow is told about the job.
+    """A model that both cannot do the job and is too slow is told about the job.
 
     The reading floor is a fact about this machine and this model together. What the
     request asked for is the part the reader can change outright, so it is what they are
     told first.
     """
     candidate = evaluate_one(catalog, "gemma-3-27b-it", Needs(use_case="coding"))
-    assert "not a coding model" in (candidate.excluded_because or "")
+    assert "no coding capability" in (candidate.excluded_because or "")
 
 
 def test_the_slow_model_is_not_dropped_from_the_board_it_is_moved_to_the_end(
@@ -428,12 +466,16 @@ def test_the_default_board_is_exactly_what_it_was_before_the_flag_existed(
 def test_what_the_request_asked_for_is_reported_before_what_the_machine_can_do(
     catalog: Catalog,
 ) -> None:
-    # This candidate fails four ways at once. The job it does not offer itself for is the
-    # broadest statement of why it is not here, so it is the one the reader is told.
+    # This candidate fails three ways at once, and the request names the coding capability
+    # that the coding use case already asks for. The job's own requirement is the broader
+    # statement of why the model is not here, so it is the one the reader is told, and the
+    # fix it offers — ask for a different job — is the one that actually works here.
     model, quant, _, _ = one(catalog, "gemma-3-27b-it")
     demanding = Needs(use_case="coding", capabilities=("coding",), min_context=131072)
     candidate = evaluate(model, quant, demanding, None, None)
-    assert "not a coding model" in (candidate.excluded_because or "")
+    reason = candidate.excluded_because or ""
+    assert "which coding needs" in reason
+    assert "drop it from the request" not in reason
 
 
 # --- ordering ----------------------------------------------------------------------
