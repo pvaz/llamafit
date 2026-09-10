@@ -1,0 +1,139 @@
+# Llama 4: Meta's first natively multimodal, mixture-of-experts Llama, on llama.cpp's `llama4`
+# architecture with a `PROJECTOR_TYPE_LLAMA4` vision projector. Both entries activate 17B per
+# token, so what separates them is total memory, not speed: Scout is a 109B model a 64 GB
+# machine can hold and Maverick is a 400B model that needs a workstation.
+#
+# Primary sources used for this file:
+#   - Scout card: https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct
+#   - Maverick card: https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct
+#   - Announcement: https://ai.meta.com/blog/llama-4-multimodal-intelligence/
+#   - Licence: https://github.com/meta-llama/llama-models/blob/main/models/llama4/LICENSE
+#   - GGUF repositories: https://huggingface.co/unsloth/Llama-4-Scout-17B-16E-Instruct-GGUF
+#                        https://huggingface.co/unsloth/Llama-4-Maverick-17B-128E-Instruct-GGUF
+#   - llama.cpp vision support: https://github.com/ggml-org/llama.cpp/blob/master/docs/multimodal.md
+#
+# Both ship under the Llama 4 Community License, which is not OSI-approved and is a different
+# document from the Llama 3.x ones in llama3.yaml: same shape -- acceptable use policy, a
+# naming condition ("Built with Llama", derivatives named Llama-<something>), and the clause
+# withholding the grant from anyone above 700 million monthly active users on 5 April 2025 --
+# but its own text, so `spdx` carries Meta's `llama4` slug rather than a registered
+# identifier. See docs/catalog.md, "license.spdx".
+- id: llama-4-scout-17b-16e-instruct
+  name: Llama 4 Scout 17B-16E Instruct
+  vendor: Meta
+  family: llama4
+  release_date: 2025-04-05
+  license:
+    spdx: llama4
+    url: "https://github.com/meta-llama/llama-models/blob/main/models/llama4/LICENSE"
+  params: { total_b: 109, active_b: 17 }
+  architecture:
+    class: moe
+    gguf_arch: llama4
+    notes: >-
+      48 layers, 16 routed experts with one shared expert, 17B active per token, and
+      interleaved attention layers without positional embeddings (iRoPE) with inference-time
+      temperature scaling, which is how it reaches its documented context. Vision comes from
+      an early-fusion MetaCLIP encoder through a separate projector file.
+  # The card documents 10M tokens and the published GGUF header declares exactly 10,485,760,
+  # so the two agree. Nothing on a consumer machine will allocate a KV cache that long; the
+  # figure is the model's, not a recommendation.
+  context: { native: 10485760 }
+  # No `coding`: LiveCodeBench 32.8 is the weakest number on the card and well below what the
+  # much older Llama 3.3 70B manages on HumanEval. Listing it would put Scout in front of
+  # people asking for a coding model, which is the disappointment the capability gate exists
+  # to prevent. Maverick, at 43.4, keeps it.
+  capabilities: [vision, tools, multilingual, long-context]
+  use_cases: [general, chat, multimodal]
+  quality:
+    baseline: 76
+    benchmarks:
+      - name: MMLU Pro
+        score: 74.3
+        source: "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct"
+      - name: GPQA Diamond
+        score: 57.2
+        source: "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct"
+      - name: MMMU
+        score: 73.4
+        source: "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct"
+      - name: ChartQA
+        score: 88.8
+        source: "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct"
+      - name: LiveCodeBench
+        score: 32.8
+        source: "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct"
+  llama_cpp:
+    quirks:
+      - "Vision needs the mmproj file; without it llama.cpp serves the text model alone."
+  sources:
+    - repo: unsloth/Llama-4-Scout-17B-16E-Instruct-GGUF
+      kind: gguf
+      trust: unsloth
+      # Unsloth's dynamic (UD) line throughout rather than a mix, so the three sizes are
+      # comparable to each other. UD-Q2_K_XL is what brings a 109B model within reach of a
+      # 64 GB machine, UD-Q4_K_XL is the default, UD-Q6_K_XL is for a machine large enough
+      # that quantisation rather than memory is the limit.
+      quants:
+        - { name: UD-Q2_K_XL }
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q6_K_XL }
+      extras:
+        # The model declares `vision`, so the projector is declared too: unlisted, its bytes
+        # are charged to no pool and every plan that wants images comes out too optimistic.
+        - { role: mmproj, file: mmproj-F16.gguf }
+
+- id: llama-4-maverick-17b-128e-instruct
+  name: Llama 4 Maverick 17B-128E Instruct
+  vendor: Meta
+  family: llama4
+  release_date: 2025-04-05
+  license:
+    spdx: llama4
+    url: "https://github.com/meta-llama/llama-models/blob/main/models/llama4/LICENSE"
+  params: { total_b: 400, active_b: 17 }
+  architecture:
+    class: moe
+    gguf_arch: llama4
+    notes: >-
+      48 layers, 128 routed experts with one shared expert, alternating dense and MoE layers,
+      17B active per token. Same 17B active cost as Scout on eight times the total weights,
+      so it is the memory that decides whether it runs, not the speed of a token.
+  context: { native: 1048576 }
+  capabilities: [coding, vision, tools, multilingual, long-context]
+  use_cases: [general, chat, multimodal, coding]
+  quality:
+    baseline: 79
+    benchmarks:
+      - name: MMLU Pro
+        score: 80.5
+        source: "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct"
+      - name: GPQA Diamond
+        score: 69.8
+        source: "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct"
+      - name: MMMU
+        score: 73.4
+        source: "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct"
+      - name: LiveCodeBench
+        score: 43.4
+        source: "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct"
+      - name: MathVista
+        score: 73.7
+        source: "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct"
+  llama_cpp:
+    quirks:
+      - "Vision needs the mmproj file; without it llama.cpp serves the text model alone."
+  sources:
+    - repo: unsloth/Llama-4-Maverick-17B-128E-Instruct-GGUF
+      kind: gguf
+      trust: unsloth
+      # The usual shape is inverted here, and on purpose: nothing above four bits is listed,
+      # because a 400B model above four bits is a quarter of a terabyte and no machine a
+      # person owns will hold it. So the four-bit is the top of the range rather than the
+      # middle, and the two below it are the ones that decide whether this model runs at all.
+      quants:
+        - { name: UD-IQ2_XXS }
+        - { name: UD-Q2_K_XL }
+        - { name: UD-Q4_K_XL }
+      extras:
+        - { role: mmproj, file: mmproj-F16.gguf }
