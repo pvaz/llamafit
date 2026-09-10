@@ -239,6 +239,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "tuntematon"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr "ohjelmointi"
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr "ajattelu"
+
+msgctxt "model capability"
+msgid "vision"
+msgstr "konenäkö"
+
+msgctxt "model capability"
+msgid "tools"
+msgstr "työkalut"
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr "monikielisyys"
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr "pitkä konteksti"
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr "upotukset"
+
+msgctxt "model capability"
+msgid "audio"
+msgstr "ääni"
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s ja %(compute)s TFLOPS fp16"
 
@@ -248,31 +280,29 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Tietokone"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "OS"
-msgstr "Käyttöjärjestelmä"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d ydintä / %(logical)d säiettä"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d tehoydin"
 msgstr[1] "%(count)d tehoydintä"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "isa tuntematon"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -287,6 +317,57 @@ msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d kanava"
 msgstr[1] "%(count)d kanavaa"
 
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "tyyppi tuntematon"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+# "(spec)" marks a figure that comes from the bundled specification table rather than
+# from this machine; "datalehti" is what a Finnish reader calls that table, and it is
+# far shorter than the literal "teknisten tietojen taulukon mukaan".
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (datalehti)"
+
+msgid "driver %(driver)s"
+msgstr "ajuri %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "ei teknisiä tietoja"
+
+msgid "Host"
+msgstr "Tietokone"
+
+msgid "OS"
+msgstr "Käyttöjärjestelmä"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa tuntematon"
+
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
 
@@ -300,9 +381,6 @@ msgstr "Muisti"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "%(total)s yhteensä, %(available)s käytettävissä; %(details)s; kaistanleveys %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "tyyppi tuntematon"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -313,26 +391,15 @@ msgstr "ei havaittu"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM-muistia, %(free)s vapaana"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM tuntematon"
-
-# "(spec)" marks a figure that comes from the bundled specification table rather than
-# from this machine; "datalehti" is what a Finnish reader calls that table, and it is
-# far shorter than the literal "teknisten tietojen taulukon mukaan".
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (datalehti)"
-
-msgid "driver %(driver)s"
-msgstr "ajuri %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "ei teknisiä tietoja"
 
 msgid "Memory pool"
 msgstr "Muistivaranto"
@@ -359,6 +426,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "tuntematon koontiversio"
 
@@ -383,6 +451,7 @@ msgstr "Käynnissä"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, konteksti %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "tuntematon malli"
 
@@ -412,6 +481,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "ok"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "ei palvelinta"
 
@@ -428,28 +498,33 @@ msgstr "taso"
 msgid "finding"
 msgstr "havainto"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "Laatu*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Laatu"
 
 # "Params" is already an abbreviation in English and this is the narrowest column in
 # the list table, so it stays one here; the caption below uses the same short form.
+msgctxt "column heading"
 msgid "Params"
 msgstr "Param."
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Konteksti"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Ominaisuudet"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "Laatu on toimituksellinen perustaso ennen kvantisoinnin aiheuttamaa vähennystä; suorita `llamafit info <model>` nähdäksesi lähteistetyt vertailutestit sen takana."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "Param. on mixture-of-experts-mallin parametrien määrä miljardeina muodossa yhteensä/aktiivisena, tai yksi luku, kun ne ovat samat."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Mallit"
@@ -474,17 +549,22 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Parametrit"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "%(total)sB yhteensä, %(active)sB aktiivisena"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "menetelmää ei ole kerrottu"
 
 msgid "%(tokens)s tokens native"
 msgstr "%(tokens)s tokenia natiivisti"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", laajennettuna %(tokens)s menetelmällä %(method)s"
-
-msgid "unspecified method"
-msgstr "menetelmää ei ole kerrottu"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Konteksti"
 
 msgid "Architecture"
 msgstr "Arkkitehtuuri"
@@ -493,6 +573,10 @@ msgstr "Arkkitehtuuri"
 # Finnish reader expects over a short remark in a table.
 msgid "Notes"
 msgstr "Huomiot"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Ominaisuudet"
 
 msgid "Use cases"
 msgstr "Käyttötapaukset"
@@ -506,6 +590,7 @@ msgstr "Vertailutesti"
 msgid "Source %(index)d"
 msgstr "Lähde %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "ei vielä luettu"
 
@@ -514,15 +599,24 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d kerros"
 msgstr[1] "%(count)d kerrosta"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d asiantuntija"
-msgstr[1] "%(count)d/%(used)d asiantuntijaa"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d asiantuntija"
 msgstr[1] "%(count)d asiantuntijaa"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d asiantuntija"
+msgstr[1] "%(count)d/%(used)d asiantuntijaa"
 
 msgid "Quants"
 msgstr "Kvantisoinnit"
@@ -554,8 +648,10 @@ msgstr "Ohittaa RAM-muistin kaistanleveyden mittauksen."
 msgid "Command: %(command)s"
 msgstr "Komento: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "katkennut GGUF-otsake: odotettiin %(wanted)d tavua kohdassa %(offset)d, saatiin %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Tiedosto saattaa olla vielä latautumassa, tai osoite ei osoita GGUF-tiedostoon."
@@ -578,6 +674,11 @@ msgstr "GGUF-versiota %(version)d ei tueta, kohdassa 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit tukee GGUF-versioita %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "nämä GGUF-tiedostot eivät ole yksi jaettu malli: ne ovat eri mieltä avaimesta '%(key)s' ja ilmoittavat %(values)s"
 
@@ -593,14 +694,16 @@ msgstr "ei GGUF-otsaketta, josta lukea tiedot"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Anna mallin tiedosto tai jaetun mallin kaikki osat."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(total)d GGUF-tiedostosta %(count)d ei sisällä avainta '%(key)s', joten niiden paikkaa jaetussa mallissa ei voi määrittää"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Anna joko yksi jakamaton tiedosto yksinään tai yhden jaetun mallin kaikki osat."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "epätäydellinen osajoukko: malli ilmoittaa %(declared)d osaa, ja niitä saapui %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Anna jaetun mallin kaikki osat."
@@ -617,8 +720,13 @@ msgstr "epätäydellinen osajoukko: odotettiin avaimen %(key)s arvoja 0-%(last)d
 msgid "Pass each shard of the split model exactly once."
 msgstr "Anna jaetun mallin jokainen osa täsmälleen kerran."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "epätäydellinen osajoukko: malli ilmoittaa %(declared)d tensoria, ja sen %(shards)d osaa sisältävät yhteensä %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "tiedostoa %(path)s ei voitu lukea: %(error)s"
@@ -663,11 +771,13 @@ msgstr "ei käytössä olevia muistimoduuleja"
 msgid "no SPMemoryDataType"
 msgstr "ei SPMemoryDataType-tietoa"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "tyhjä komento"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: aikakatkaisu %(seconds)ss kuluttua"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -794,6 +904,7 @@ msgstr "Asenna numpy (`pip install llamafit[fast]`), jotta LlamaFit voi mitata R
 msgid "Probe %(probe)s failed"
 msgstr "Testi %(probe)s epäonnistui"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "tuntematon virhe"
 

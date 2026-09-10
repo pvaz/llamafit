@@ -242,6 +242,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "άγνωστο"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr "προγραμματισμός"
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr "σκέψη"
+
+msgctxt "model capability"
+msgid "vision"
+msgstr "όραση"
+
+msgctxt "model capability"
+msgid "tools"
+msgstr "εργαλεία"
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr "πολυγλωσσία"
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr "μεγάλο πλαίσιο"
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr "embeddings"
+
+msgctxt "model capability"
+msgid "audio"
+msgstr "ήχος"
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s και %(compute)s TFLOPS fp16"
 
@@ -251,31 +283,29 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Μηχάνημα"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "OS"
-msgstr "Λειτουργικό"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d πυρήνες / %(logical)d νήματα"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d πυρήνας απόδοσης"
 msgstr[1] "%(count)d πυρήνες απόδοσης"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s· %(cores)s· %(isa)s"
-
-msgid "isa unknown"
-msgstr "άγνωστο σύνολο εντολών"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -289,6 +319,54 @@ msgid "%(count)d channel"
 msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d κανάλι"
 msgstr[1] "%(count)d κανάλια"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "άγνωστος τύπος"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (κατά τις προδιαγραφές)"
+
+msgid "driver %(driver)s"
+msgstr "πρόγραμμα οδήγησης %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "χωρίς προδιαγραφές"
+
+msgid "Host"
+msgstr "Μηχάνημα"
+
+msgid "OS"
+msgstr "Λειτουργικό"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s· %(cores)s· %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "άγνωστο σύνολο εντολών"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -306,9 +384,6 @@ msgstr "Μνήμη"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "%(total)s συνολικά, %(available)s διαθέσιμα· %(details)s· εύρος ζώνης %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "άγνωστος τύπος"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -319,23 +394,15 @@ msgstr "δεν εντοπίστηκε καμία"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM, %(free)s ελεύθερα"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "άγνωστη VRAM"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (κατά τις προδιαγραφές)"
-
-msgid "driver %(driver)s"
-msgstr "πρόγραμμα οδήγησης %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s)· %(vram)s· %(specs)s"
-
-msgid "no specs"
-msgstr "χωρίς προδιαγραφές"
 
 msgid "Memory pool"
 msgstr "Δεξαμενή μνήμης"
@@ -362,6 +429,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "άγνωστη δόμηση"
 
@@ -384,6 +452,7 @@ msgstr "Εκτελείται"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, πλαίσιο %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "άγνωστο μοντέλο"
 
@@ -410,6 +479,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "εντάξει"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "χωρίς διακομιστή"
 
@@ -426,26 +496,31 @@ msgstr "επίπεδο"
 msgid "finding"
 msgstr "εύρημα"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "Ποιότητα*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Ποιότητα"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "Παράμ."
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Πλαίσιο"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Δυνατότητες"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "Η ποιότητα είναι η συντακτική βάση, πριν από οποιαδήποτε ποινή κβαντισμού· εκτελέστε `llamafit info <model>` για τις τεκμηριωμένες δοκιμές αναφοράς που τη στηρίζουν."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "Το Παράμ. είναι οι συνολικές/ενεργές παράμετροι σε δισεκατομμύρια για μοντέλο μείγματος ειδικών, ή ένας αριθμός όταν είναι ίσες."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Μοντέλα"
@@ -468,23 +543,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Παράμετροι"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "%(total)sB συνολικά, %(active)sB ενεργά"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "μη καθορισμένη μέθοδος"
 
 msgid "%(tokens)s tokens native"
 msgstr "%(tokens)s tokens εγγενώς"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", %(tokens)s με επέκταση μέσω %(method)s"
-
-msgid "unspecified method"
-msgstr "μη καθορισμένη μέθοδος"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Πλαίσιο"
 
 msgid "Architecture"
 msgstr "Αρχιτεκτονική"
 
 msgid "Notes"
 msgstr "Σημειώσεις"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Δυνατότητες"
 
 msgid "Use cases"
 msgstr "Περιπτώσεις χρήσης"
@@ -498,6 +582,7 @@ msgstr "Δοκιμή αναφοράς"
 msgid "Source %(index)d"
 msgstr "Πηγή %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "δεν έχει διαβαστεί ακόμη"
 
@@ -506,15 +591,24 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d επίπεδο"
 msgstr[1] "%(count)d επίπεδα"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d ειδικός"
-msgstr[1] "%(count)d/%(used)d ειδικοί"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d ειδικός"
 msgstr[1] "%(count)d ειδικοί"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d ειδικός"
+msgstr[1] "%(count)d/%(used)d ειδικοί"
 
 msgid "Quants"
 msgstr "Κβαντισμοί"
@@ -544,8 +638,10 @@ msgstr "Παραλείπει τη μέτρηση του εύρους ζώνης 
 msgid "Command: %(command)s"
 msgstr "Εντολή: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "περικομμένη κεφαλίδα GGUF: αναμένονταν %(wanted)d bytes στη θέση %(offset)d, ελήφθησαν %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Το αρχείο μπορεί να κατεβαίνει ακόμη, ή το URL μπορεί να μην είναι αρχείο GGUF."
@@ -568,6 +664,11 @@ msgstr "μη υποστηριζόμενη έκδοση GGUF %(version)d στη �
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "Το LlamaFit υποστηρίζει τις εκδόσεις GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "αυτά τα αρχεία GGUF δεν είναι ένα διαιρεμένο μοντέλο: διαφωνούν ως προς το '%(key)s', δηλώνοντας %(values)s"
 
@@ -580,14 +681,16 @@ msgstr "δεν υπάρχει κεφαλίδα GGUF από την οποία ν�
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Δώστε το αρχείο του μοντέλου, ή κάθε τμήμα ενός διαιρεμένου μοντέλου."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d από %(total)d αρχεία GGUF δεν φέρουν το κλειδί '%(key)s', οπότε δεν μπορεί να προσδιοριστεί η θέση τους σε ένα διαιρεμένο μοντέλο"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Δώστε ένα μόνο αδιαίρετο αρχείο, ή κάθε τμήμα ενός διαιρεμένου μοντέλου."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "ελλιπές σύνολο τμημάτων: το μοντέλο δηλώνει %(declared)d τμήματα και έφτασαν %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Δώστε κάθε τμήμα του διαιρεμένου μοντέλου."
@@ -604,8 +707,13 @@ msgstr "ελλιπές σύνολο τμημάτων: αναμενόταν %(key
 msgid "Pass each shard of the split model exactly once."
 msgstr "Δώστε κάθε τμήμα του διαιρεμένου μοντέλου ακριβώς μία φορά."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "ελλιπές σύνολο τμημάτων: το μοντέλο δηλώνει %(declared)d τανυστές και τα %(shards)d τμήματά του κρατούν συνολικά %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "δεν ήταν δυνατή η ανάγνωση του %(path)s: %(error)s"
@@ -650,11 +758,13 @@ msgstr "καμία κατειλημμένη μονάδα μνήμης"
 msgid "no SPMemoryDataType"
 msgstr "χωρίς SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "κενή εντολή"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: έληξε το χρονικό όριο μετά από %(seconds)s δευτερόλεπτα"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -781,6 +891,7 @@ msgstr "Εγκαταστήστε το numpy (`pip install llamafit[fast]`) ώσ�
 msgid "Probe %(probe)s failed"
 msgstr "Η ανίχνευση %(probe)s απέτυχε"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "άγνωστο σφάλμα"
 

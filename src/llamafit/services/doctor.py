@@ -222,7 +222,7 @@ def diagnose(report: SystemReport) -> Diagnosis:
             Finding(
                 level="warn",
                 title=_("Probe %(probe)s failed") % {"probe": probe.name},
-                detail=probe.error or _("unknown error"),
+                detail=probe.error or pgettext("probe error", "unknown error"),
                 hint=_hint(probe.name),
             )
         )

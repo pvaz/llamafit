@@ -238,6 +238,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "okänd"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr "programmering"
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr "tänkande"
+
+msgctxt "model capability"
+msgid "vision"
+msgstr "bildförståelse"
+
+msgctxt "model capability"
+msgid "tools"
+msgstr "verktyg"
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr "flerspråkig"
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr "lång kontext"
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr "inbäddningar"
+
+msgctxt "model capability"
+msgid "audio"
+msgstr "ljud"
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s och %(compute)s TFLOPS fp16"
 
@@ -247,31 +279,29 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Dator"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "OS"
-msgstr "OS"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d kärnor / %(logical)d trådar"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d prestandakärna"
 msgstr[1] "%(count)d prestandakärnor"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "isa okänd"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -286,6 +316,56 @@ msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d kanal"
 msgstr[1] "%(count)d kanaler"
 
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "typ okänd"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+# "(spec)" marks a figure that comes from the bundled specification table rather than
+# from this machine; "datablad" is what a Swedish reader calls that table.
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (datablad)"
+
+msgid "driver %(driver)s"
+msgstr "drivrutin %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "inga specifikationer"
+
+msgid "Host"
+msgstr "Dator"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa okänd"
+
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
 
@@ -299,9 +379,6 @@ msgstr "Minne"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "%(total)s totalt, %(available)s tillgängligt; %(details)s; bandbredd %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "typ okänd"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -312,25 +389,15 @@ msgstr "ingen hittad"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM, varav %(free)s ledigt"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM okänt"
-
-# "(spec)" marks a figure that comes from the bundled specification table rather than
-# from this machine; "datablad" is what a Swedish reader calls that table.
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (datablad)"
-
-msgid "driver %(driver)s"
-msgstr "drivrutin %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "inga specifikationer"
 
 msgid "Memory pool"
 msgstr "Minnespool"
@@ -357,6 +424,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "okänt bygge"
 
@@ -379,6 +447,7 @@ msgstr "Kör"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, kontext %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "okänd modell"
 
@@ -407,6 +476,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "ok"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "ingen server"
 
@@ -423,28 +493,33 @@ msgstr "nivå"
 msgid "finding"
 msgstr "fynd"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "Kvalitet*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Kvalitet"
 
 # "Params" is already an abbreviation in English and this is the narrowest column in
 # the list table, so it stays one here; the caption below uses the same short form.
+msgctxt "column heading"
 msgid "Params"
 msgstr "Param."
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Kontext"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Förmågor"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "Kvalitet är den redaktionella basen, före varje avdrag för kvantisering; kör `llamafit info <model>` för de källbelagda mätningarna bakom den."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "Param. är antalet parametrar i miljarder som totalt/aktivt för en mixture-of-experts-modell, annars ett enda tal när de är lika."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Modeller"
@@ -467,23 +542,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Parametrar"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "%(total)sB totalt, %(active)sB aktiva"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "metoden är inte angiven"
 
 msgid "%(tokens)s tokens native"
 msgstr "%(tokens)s token som standard"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", %(tokens)s utökat via %(method)s"
-
-msgid "unspecified method"
-msgstr "metoden är inte angiven"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Kontext"
 
 msgid "Architecture"
 msgstr "Arkitektur"
 
 msgid "Notes"
 msgstr "Anteckningar"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Förmågor"
 
 msgid "Use cases"
 msgstr "Användningsfall"
@@ -497,6 +581,7 @@ msgstr "Mätning"
 msgid "Source %(index)d"
 msgstr "Källa %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "inte läst än"
 
@@ -505,15 +590,24 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d lager"
 msgstr[1] "%(count)d lager"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d expert"
-msgstr[1] "%(count)d/%(used)d experter"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d expert"
 msgstr[1] "%(count)d experter"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d expert"
+msgstr[1] "%(count)d/%(used)d experter"
 
 msgid "Quants"
 msgstr "Kvantiseringar"
@@ -543,8 +637,10 @@ msgstr "Hoppa över mätningen av RAM-bandbredden."
 msgid "Command: %(command)s"
 msgstr "Kommando: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "avhuggen GGUF-header: %(wanted)d byte väntades på position %(offset)d, %(got)d kom"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Filen kanske fortfarande hämtas, eller så pekar adressen inte på en GGUF-fil."
@@ -567,6 +663,11 @@ msgstr "GGUF-version %(version)d stöds inte, på position 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit stöder GGUF-versionerna %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "de här GGUF-filerna är inte en enda uppdelad modell: de är oense om '%(key)s' och anger %(values)s"
 
@@ -581,14 +682,16 @@ msgstr "ingen GGUF-header att läsa fakta ur"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Ange modellens fil, eller varje shard i en uppdelad modell."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d av %(total)d GGUF-filer saknar nyckeln '%(key)s', så deras plats i en uppdelad modell går inte att fastställa"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Ange antingen en enda odelad fil för sig, eller varje shard i en uppdelad modell."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "ofullständig uppsättning shards: modellen anger %(declared)d shards och %(arrived)d kom fram (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Ange varje shard i den uppdelade modellen."
@@ -605,8 +708,13 @@ msgstr "ofullständig uppsättning shards: väntade %(key)s 0 till %(last)d, fic
 msgid "Pass each shard of the split model exactly once."
 msgstr "Ange varje shard i den uppdelade modellen exakt en gång."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "ofullständig uppsättning shards: modellen anger %(declared)d tensorer och dess %(shards)d shards rymmer %(held)d tillsammans"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "det gick inte att läsa %(path)s: %(error)s"
@@ -651,11 +759,13 @@ msgstr "inga bestyckade minnesmoduler"
 msgid "no SPMemoryDataType"
 msgstr "ingen SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "tomt kommando"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: tiden gick ut efter %(seconds)ss"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -782,6 +892,7 @@ msgstr "Installera numpy (`pip install llamafit[fast]`) så att LlamaFit kan mä
 msgid "Probe %(probe)s failed"
 msgstr "Testet %(probe)s misslyckades"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "okänt fel"
 

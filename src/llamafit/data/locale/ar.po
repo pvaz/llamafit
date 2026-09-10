@@ -275,6 +275,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "غير معروف"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr ""
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr ""
+
+msgctxt "model capability"
+msgid "vision"
+msgstr ""
+
+msgctxt "model capability"
+msgid "tools"
+msgstr ""
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr ""
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr ""
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr ""
+
+msgctxt "model capability"
+msgid "audio"
+msgstr ""
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s و%(compute)s TFLOPS fp16"
 
@@ -284,19 +316,26 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "الجهاز"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
-msgid "OS"
-msgstr "نظام التشغيل"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-# Not a counted message, so Arabic cannot agree with either number: the accusative
-# singular is what a large count wants and it is what small counts get too.
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d نواة / %(logical)d خيط"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -307,14 +346,11 @@ msgstr[3] "%(count)d أنوية أداء"
 msgstr[4] "%(count)d نواة أداء"
 msgstr[5] "%(count)d نواة أداء"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s؛ %(cores)s؛ %(isa)s"
-
-msgid "isa unknown"
-msgstr "مجموعة التعليمات غير معروفة"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -337,6 +373,54 @@ msgstr[3] "%(count)d قنوات"
 msgstr[4] "%(count)d قناة"
 msgstr[5] "%(count)d قناة"
 
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "النوع غير معروف"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (حسب المواصفات)"
+
+msgid "driver %(driver)s"
+msgstr "تعريف %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "لا مواصفات"
+
+msgid "Host"
+msgstr "الجهاز"
+
+msgid "OS"
+msgstr "نظام التشغيل"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s؛ %(cores)s؛ %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "مجموعة التعليمات غير معروفة"
+
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
 
@@ -353,9 +437,6 @@ msgstr "الذاكرة"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "%(total)s إجمالًا، منها %(available)s متاحة؛ %(details)s؛ عرض النطاق %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "النوع غير معروف"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -366,23 +447,15 @@ msgstr "لم تُكتشف أي بطاقة"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM، منها %(free)s حرة"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM غير معروفة"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (حسب المواصفات)"
-
-msgid "driver %(driver)s"
-msgstr "تعريف %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s)؛ %(vram)s؛ %(specs)s"
-
-msgid "no specs"
-msgstr "لا مواصفات"
 
 msgid "Memory pool"
 msgstr "مجمّع الذاكرة"
@@ -409,6 +482,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "بناء غير معروف"
 
@@ -431,6 +505,7 @@ msgstr "قيد التشغيل"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s، السياق %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "نموذج غير معروف"
 
@@ -457,6 +532,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "سليم"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "لا خادم"
 
@@ -473,26 +549,31 @@ msgstr "المستوى"
 msgid "finding"
 msgstr "النتيجة"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "المعرّف"
 
-msgid "Quality*"
-msgstr "الجودة*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "الجودة"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "المعاملات"
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "السياق"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "القدرات"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "الجودة هي الأساس التحريري، قبل أي خصم بسبب التكميم؛ نفّذ `llamafit info <model>` لعرض الاختبارات المرجعية الموثّقة التي تستند إليها."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "المعاملات هي الإجمالي/النشط بالمليارات في نموذج خليط الخبراء، أو رقم واحد عندما يتساويان."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "النماذج"
@@ -515,23 +596,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "المعاملات"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "%(total)sB إجمالًا، %(active)sB نشطة"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "طريقة غير محدّدة"
 
 msgid "%(tokens)s tokens native"
 msgstr "%(tokens)s رمزًا أصليًا"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr "، و%(tokens)s ممتدًا عبر %(method)s"
-
-msgid "unspecified method"
-msgstr "طريقة غير محدّدة"
+msgctxt "table row label"
+msgid "Context"
+msgstr "السياق"
 
 msgid "Architecture"
 msgstr "البنية"
 
 msgid "Notes"
 msgstr "ملاحظات"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "القدرات"
 
 msgid "Use cases"
 msgstr "حالات الاستخدام"
@@ -545,6 +635,7 @@ msgstr "اختبار مرجعي"
 msgid "Source %(index)d"
 msgstr "المصدر %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "لم يُقرأ بعد"
 
@@ -557,14 +648,14 @@ msgstr[3] "%(count)d طبقات"
 msgstr[4] "%(count)d طبقة"
 msgstr[5] "%(count)d طبقة"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d خبير"
-msgstr[1] "%(count)d/%(used)d خبير"
-msgstr[2] "%(count)d/%(used)d خبيران"
-msgstr[3] "%(count)d/%(used)d خبراء"
-msgstr[4] "%(count)d/%(used)d خبيرًا"
-msgstr[5] "%(count)d/%(used)d خبير"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
@@ -574,6 +665,15 @@ msgstr[2] "%(count)d خبيران"
 msgstr[3] "%(count)d خبراء"
 msgstr[4] "%(count)d خبيرًا"
 msgstr[5] "%(count)d خبير"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d خبير"
+msgstr[1] "%(count)d/%(used)d خبير"
+msgstr[2] "%(count)d/%(used)d خبيران"
+msgstr[3] "%(count)d/%(used)d خبراء"
+msgstr[4] "%(count)d/%(used)d خبيرًا"
+msgstr[5] "%(count)d/%(used)d خبير"
 
 msgid "Quants"
 msgstr "التكميمات"
@@ -603,8 +703,14 @@ msgstr "تخطّي قياس عرض نطاق RAM."
 msgid "Command: %(command)s"
 msgstr "الأمر: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "ترويسة GGUF مبتورة: توقّع %(wanted)d بايت عند الإزاحة %(offset)d، ووصل %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "قد يكون الملف ما زال قيد التنزيل، أو قد لا يكون العنوان عنوان ملف GGUF."
@@ -627,6 +733,15 @@ msgstr "إصدار GGUF غير مدعوم %(version)d عند الإزاحة 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "يدعم LlamaFit إصدارات GGUF التالية: %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "ملفات GGUF هذه ليست نموذجًا مقسّمًا واحدًا: تختلف حول '%(key)s'، إذ تعلن %(values)s"
 
@@ -639,14 +754,20 @@ msgstr "لا توجد ترويسة GGUF تُقرأ منها الحقائق"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "مرّر ملف النموذج، أو كل أجزاء النموذج المقسّم."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d من %(total)d من ملفات GGUF لا تحمل المفتاح '%(key)s'، لذا يتعذّر تحديد موضعها في نموذج مقسّم"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "مرّر ملفًا واحدًا غير مقسّم بمفرده، أو كل أجزاء نموذج مقسّم واحد."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "مجموعة أجزاء ناقصة: يعلن النموذج %(declared)d جزءًا ووصل منها %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "مرّر كل أجزاء النموذج المقسّم."
@@ -663,8 +784,17 @@ msgstr "مجموعة أجزاء ناقصة: كان المتوقّع %(key)s من
 msgid "Pass each shard of the split model exactly once."
 msgstr "مرّر كل جزء من النموذج المقسّم مرة واحدة بالضبط."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "مجموعة أجزاء ناقصة: يعلن النموذج %(declared)d موتّرًا، وتحمل أجزاؤه البالغة %(shards)d منها %(held)d مجتمعة"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "تعذّرت قراءة %(path)s: %(error)s"
@@ -709,11 +839,17 @@ msgstr "لا توجد وحدات ذاكرة مركّبة"
 msgid "no SPMemoryDataType"
 msgstr "لا يوجد SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
 msgid "empty command"
 msgstr "أمر فارغ"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: انتهت المهلة بعد %(seconds)s ثانية"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -840,6 +976,7 @@ msgstr "ثبّت numpy (`pip install llamafit[fast]`) ليتمكّن LlamaFit م
 msgid "Probe %(probe)s failed"
 msgstr "فشل الفحص %(probe)s"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "خطأ غير معروف"
 

@@ -80,8 +80,32 @@ the changelog says so when they do.
 - Packaging metadata declares `license = "AGPL-3.0-or-later"` as a PEP 639 expression with a
   matching trove classifier, and ships `LICENSE` and `NOTICE` in the wheel. The build backend
   floor moves to `hatchling>=1.27`, the first release that writes `License-Expression`.
+- The capability names a reader sees — `coding`, `thinking`, `vision`, `tools`,
+  `multilingual`, `long-context`, `embeddings`, `audio` — are translatable, each with a
+  context of its own. They reached every language in English because they are catalog enum
+  values rather than messages, and they are ordinary words. Thirty of the thirty-seven
+  catalogs are filled; `ar`, `bn`, `he`, `hi`, `ta`, `th` and `ur` fall back to English
+  until somebody who reads them fills them in. `--capability` still takes the English id.
 
 ### Fixed
+- Messages six translators independently reported as impossible to translate well are
+  fixed in the English rather than worked around in thirty-six catalogs. Lines built from
+  optional pieces — the memory row's details, the GPU row's specifications and driver, a
+  model's context, a quant's facts summary — are one whole message per shape instead of
+  fragments joined behind a separator no catalog could reach; one of them appended a
+  message that opened with a comma. Counts each have an entry of their own, so cores,
+  threads, bytes, files, shards and tensors agree with the number beside them, and the
+  experts ratio selects its form on the number the noun actually stands next to. The
+  timeout message spells its unit out instead of welding a bare `s` to the placeholder.
+  The list table's column headings and the row labels that shared their messages each
+  carry a context, and the two captions are handed their heading rather than spelling its
+  English word out a second time. `isa unknown`, `type unknown`, `VRAM unknown`,
+  `unknown build`, `unknown model`, `unknown error`, `no specs`, `no server` and
+  `not read yet` carry a context naming their row, like the entries beside them. The
+  parameters row welded its `B` to a placeholder while the list table asked
+  `billions_suffix()` for the same mark. Translations whose English is unchanged were
+  carried across; a message that became a different sentence is untranslated everywhere
+  and falls back to English rather than keeping a translation of something else.
 - RAM bandwidth now measures sequential read throughput, not a copy: a copy moves each
   byte twice (read and write), which is not what llama.cpp's read-dominated weight
   streaming does, and a single thread also cannot saturate a multi-channel memory

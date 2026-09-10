@@ -249,6 +249,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "necunoscută"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr "programare"
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr "raționament"
+
+msgctxt "model capability"
+msgid "vision"
+msgstr "viziune"
+
+msgctxt "model capability"
+msgid "tools"
+msgstr "instrumente"
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr "multilingv"
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr "context lung"
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr "embeddings"
+
+msgctxt "model capability"
+msgid "audio"
+msgstr "audio"
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s și %(compute)s TFLOPS fp16"
 
@@ -258,17 +290,20 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Sistem"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
-msgid "OS"
-msgstr "SO"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d nuclee / %(logical)d fire de execuție"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -276,14 +311,11 @@ msgstr[0] "%(count)d nucleu de performanță"
 msgstr[1] "%(count)d nuclee de performanță"
 msgstr[2] "%(count)d de nuclee de performanță"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "isa necunoscut"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -299,6 +331,54 @@ msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d canal"
 msgstr[1] "%(count)d canale"
 msgstr[2] "%(count)d de canale"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "tip necunoscut"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (din specificații)"
+
+msgid "driver %(driver)s"
+msgstr "driver %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "fără specificații"
+
+msgid "Host"
+msgstr "Sistem"
+
+msgid "OS"
+msgstr "SO"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa necunoscut"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -318,9 +398,6 @@ msgstr "Memorie"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "%(total)s în total, %(available)s disponibili; %(details)s; lățime de bandă %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "tip necunoscut"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -331,23 +408,15 @@ msgstr "niciunul detectat"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM, %(free)s liberi"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM necunoscută"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (din specificații)"
-
-msgid "driver %(driver)s"
-msgstr "driver %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "fără specificații"
 
 msgid "Memory pool"
 msgstr "Pool de memorie"
@@ -374,6 +443,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "compilare necunoscută"
 
@@ -396,6 +466,7 @@ msgstr "În execuție"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, context %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "model necunoscut"
 
@@ -422,6 +493,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "ok"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "niciun server"
 
@@ -438,28 +510,33 @@ msgstr "nivel"
 msgid "finding"
 msgstr "constatare"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "Calitate*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Calitate"
 
 # The list table is narrow, so this heading is abbreviated, and the footnote below has to
 # use the same abbreviation the column shows.
+msgctxt "column heading"
 msgid "Params"
 msgstr "Param."
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Context"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Capabilități"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "Calitatea este reperul editorial, înainte de orice penalizare de cuantizare; rulați `llamafit info <model>` pentru testele de referință, cu sursă, care o susțin."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "Param. este totalul/activul în miliarde pentru un model cu amestec de experți, sau un singur număr când sunt egale."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Modele"
@@ -482,23 +559,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Parametri"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "%(total)sB în total, %(active)sB activi"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "metodă nespecificată"
 
 msgid "%(tokens)s tokens native"
 msgstr "%(tokens)s token-uri native"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", %(tokens)s extins prin %(method)s"
-
-msgid "unspecified method"
-msgstr "metodă nespecificată"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Context"
 
 msgid "Architecture"
 msgstr "Arhitectură"
 
 msgid "Notes"
 msgstr "Note"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Capabilități"
 
 msgid "Use cases"
 msgstr "Cazuri de utilizare"
@@ -512,6 +598,7 @@ msgstr "Test de referință"
 msgid "Source %(index)d"
 msgstr "Sursa %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "încă necitite"
 
@@ -521,6 +608,21 @@ msgstr[0] "%(count)d strat"
 msgstr[1] "%(count)d straturi"
 msgstr[2] "%(count)d de straturi"
 
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d expert"
+msgstr[1] "%(count)d experți"
+msgstr[2] "%(count)d de experți"
+
 # The compact "total/used" notation does not take "de" in Romanian, so the third form
 # repeats the second here.
 msgid "%(count)d/%(used)d expert"
@@ -528,12 +630,6 @@ msgid_plural "%(count)d/%(used)d experts"
 msgstr[0] "%(count)d/%(used)d expert"
 msgstr[1] "%(count)d/%(used)d experți"
 msgstr[2] "%(count)d/%(used)d experți"
-
-msgid "%(count)d expert"
-msgid_plural "%(count)d experts"
-msgstr[0] "%(count)d expert"
-msgstr[1] "%(count)d experți"
-msgstr[2] "%(count)d de experți"
 
 msgid "Quants"
 msgstr "Cuantizări"
@@ -563,8 +659,11 @@ msgstr "Sare peste măsurarea lățimii de bandă a memoriei RAM."
 msgid "Command: %(command)s"
 msgstr "Comandă: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "antet GGUF trunchiat: se așteptau %(wanted)d octeți la poziția %(offset)d, s-au primit %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Fișierul poate fi încă în curs de descărcare sau URL-ul poate să nu fie un fișier GGUF."
@@ -587,6 +686,12 @@ msgstr "versiune GGUF neacceptată %(version)d la poziția 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit acceptă versiunile GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "aceste fișiere GGUF nu formează un singur model împărțit: nu sunt de acord asupra '%(key)s' și declară %(values)s"
 
@@ -599,14 +704,17 @@ msgstr "niciun antet GGUF din care să se citească caracteristicile"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Dați fișierul modelului sau fiecare fragment al unui model împărțit."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d din %(total)d fișiere GGUF nu au cheia '%(key)s', așa că locul lor într-un model împărțit nu poate fi stabilit"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Dați un singur fișier neîmpărțit de unul singur sau fiecare fragment al unui singur model împărțit."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "set de fragmente incomplet: modelul declară %(declared)d fragmente și au sosit %(arrived)d (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Dați fiecare fragment al modelului împărțit."
@@ -623,8 +731,14 @@ msgstr "set de fragmente incomplet: se așteptau %(key)s de la 0 la %(last)d, s-
 msgid "Pass each shard of the split model exactly once."
 msgstr "Dați fiecare fragment al modelului împărțit exact o dată."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "set de fragmente incomplet: modelul declară %(declared)d tensori, iar cele %(shards)d fragmente ale lui conțin %(held)d în total"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "nu s-a putut citi %(path)s: %(error)s"
@@ -669,11 +783,14 @@ msgstr "niciun modul de memorie ocupat"
 msgid "no SPMemoryDataType"
 msgstr "fără SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
 msgid "empty command"
 msgstr "comandă goală"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: timpul a expirat după %(seconds)ss"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -800,6 +917,7 @@ msgstr "Instalați numpy (`pip install llamafit[fast]`) pentru ca LlamaFit să p
 msgid "Probe %(probe)s failed"
 msgstr "Verificarea %(probe)s a eșuat"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "eroare necunoscută"
 

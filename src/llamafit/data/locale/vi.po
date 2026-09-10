@@ -233,6 +233,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "không rõ"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr "lập trình"
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr "suy luận"
+
+msgctxt "model capability"
+msgid "vision"
+msgstr "thị giác"
+
+msgctxt "model capability"
+msgid "tools"
+msgstr "công cụ"
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr "đa ngôn ngữ"
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr "ngữ cảnh dài"
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr "embedding"
+
+msgctxt "model capability"
+msgid "audio"
+msgstr "âm thanh"
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s và %(compute)s TFLOPS fp16"
 
@@ -242,30 +274,26 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Máy"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
 
-msgid "OS"
-msgstr "HĐH"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d nhân / %(logical)d luồng"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d nhân hiệu năng"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "không rõ tập lệnh"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -277,6 +305,54 @@ msgstr[0] "%(count)d thanh"
 msgid "%(count)d channel"
 msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d kênh"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "không rõ loại"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (theo thông số)"
+
+msgid "driver %(driver)s"
+msgstr "trình điều khiển %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "không có thông số"
+
+msgid "Host"
+msgstr "Máy"
+
+msgid "OS"
+msgstr "HĐH"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "không rõ tập lệnh"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -294,9 +370,6 @@ msgstr "Bộ nhớ"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "tổng %(total)s, còn trống %(available)s; %(details)s; băng thông %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "không rõ loại"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -307,23 +380,15 @@ msgstr "không phát hiện"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM, còn trống %(free)s"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "không rõ VRAM"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (theo thông số)"
-
-msgid "driver %(driver)s"
-msgstr "trình điều khiển %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "không có thông số"
 
 msgid "Memory pool"
 msgstr "Vùng nhớ"
@@ -350,6 +415,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "không rõ bản dựng"
 
@@ -372,6 +438,7 @@ msgstr "Đang chạy"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, ngữ cảnh %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "không rõ mô hình"
 
@@ -398,6 +465,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "ok"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "không có máy chủ"
 
@@ -414,26 +482,31 @@ msgstr "mức"
 msgid "finding"
 msgstr "nội dung"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "Chất lượng*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Chất lượng"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "Tham số"
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Ngữ cảnh"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Khả năng"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "Chất lượng là mức nền do biên tập đặt ra, trước khi tính thiệt hại do lượng tử hóa; chạy `llamafit info <model>` để xem các phép đo chuẩn có dẫn nguồn đứng sau nó."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "Với mô hình hỗn hợp chuyên gia, Tham số là tổng/đang hoạt động tính bằng tỉ, hoặc một con số khi hai giá trị bằng nhau."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Mô hình"
@@ -456,23 +529,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Tham số"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "tổng %(total)sB, hoạt động %(active)sB"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "không nêu phương pháp"
 
 msgid "%(tokens)s tokens native"
 msgstr "%(tokens)s token gốc"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", mở rộng lên %(tokens)s bằng %(method)s"
-
-msgid "unspecified method"
-msgstr "không nêu phương pháp"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Ngữ cảnh"
 
 msgid "Architecture"
 msgstr "Kiến trúc"
 
 msgid "Notes"
 msgstr "Ghi chú"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Khả năng"
 
 msgid "Use cases"
 msgstr "Trường hợp sử dụng"
@@ -486,6 +568,7 @@ msgstr "Phép đo chuẩn"
 msgid "Source %(index)d"
 msgstr "Nguồn %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "chưa đọc"
 
@@ -493,13 +576,22 @@ msgid "%(count)d layer"
 msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d lớp"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d chuyên gia"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d chuyên gia"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d chuyên gia"
 
 msgid "Quants"
 msgstr "Bản lượng tử hóa"
@@ -529,8 +621,9 @@ msgstr "Bỏ qua bước đo băng thông RAM."
 msgid "Command: %(command)s"
 msgstr "Lệnh: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "phần đầu GGUF bị cắt cụt: cần %(wanted)d byte tại vị trí %(offset)d, chỉ có %(got)d"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Tệp có thể vẫn đang tải về, hoặc URL không trỏ tới một tệp GGUF."
@@ -553,6 +646,10 @@ msgstr "phiên bản GGUF %(version)d không được hỗ trợ, tại vị tr�
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit hỗ trợ các phiên bản GGUF %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "các tệp GGUF này không thuộc cùng một mô hình chia mảnh: chúng khai báo '%(key)s' khác nhau, là %(values)s"
 
@@ -565,14 +662,15 @@ msgstr "không có phần đầu GGUF để đọc dữ kiện"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Hãy đưa vào tệp của mô hình, hoặc mọi mảnh của một mô hình chia mảnh."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(count)d trong %(total)d tệp GGUF không có khóa '%(key)s', nên không xác định được vị trí của chúng trong mô hình chia mảnh"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Hãy đưa vào một tệp không chia mảnh riêng lẻ, hoặc mọi mảnh của một mô hình chia mảnh."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "bộ mảnh chưa đủ: mô hình khai báo %(declared)d mảnh mà chỉ có %(arrived)d mảnh tới (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Hãy đưa vào mọi mảnh của mô hình chia mảnh."
@@ -589,8 +687,12 @@ msgstr "bộ mảnh chưa đủ: cần %(key)s từ 0 đến %(last)d, nhận đ
 msgid "Pass each shard of the split model exactly once."
 msgstr "Hãy đưa mỗi mảnh của mô hình chia mảnh đúng một lần."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "bộ mảnh chưa đủ: mô hình khai báo %(declared)d tensor mà %(shards)d mảnh của nó gộp lại chỉ có %(held)d"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "không đọc được %(path)s: %(error)s"
@@ -635,11 +737,12 @@ msgstr "không có thanh nhớ nào được gắn"
 msgid "no SPMemoryDataType"
 msgstr "không có SPMemoryDataType"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+
 msgid "empty command"
 msgstr "lệnh rỗng"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: quá hạn sau %(seconds)ss"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -766,6 +869,7 @@ msgstr "Hãy cài numpy (`pip install llamafit[fast]`) để LlamaFit đo đư�
 msgid "Probe %(probe)s failed"
 msgstr "Phép dò %(probe)s thất bại"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "lỗi không rõ"
 

@@ -245,6 +245,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "bilinmiyor"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr "kodlama"
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr "düşünme"
+
+msgctxt "model capability"
+msgid "vision"
+msgstr "görü"
+
+msgctxt "model capability"
+msgid "tools"
+msgstr "araçlar"
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr "çok dilli"
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr "uzun bağlam"
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr "gömmeler"
+
+msgctxt "model capability"
+msgid "audio"
+msgstr "ses"
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s ve %(compute)s TFLOPS fp16"
 
@@ -254,31 +286,29 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Makine"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "OS"
-msgstr "İşletim sistemi"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d çekirdek / %(logical)d iş parçacığı"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d performans çekirdeği"
 msgstr[1] "%(count)d performans çekirdeği"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "komut kümesi bilinmiyor"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -293,6 +323,54 @@ msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d kanal"
 msgstr[1] "%(count)d kanal"
 
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "tür bilinmiyor"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (belirtim)"
+
+msgid "driver %(driver)s"
+msgstr "sürücü %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "belirtim yok"
+
+msgid "Host"
+msgstr "Makine"
+
+msgid "OS"
+msgstr "İşletim sistemi"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "komut kümesi bilinmiyor"
+
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
 
@@ -306,9 +384,6 @@ msgstr "Bellek"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "%(total)s toplam, %(available)s kullanılabilir; %(details)s; bant genişliği %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "tür bilinmiyor"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -319,14 +394,9 @@ msgstr "algılanmadı"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM, %(free)s boş"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM bilinmiyor"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (belirtim)"
-
-msgid "driver %(driver)s"
-msgstr "sürücü %(driver)s"
 
 # Turkish numbers a thing with an ordinal, so the index leads: "2. GPU", not "GPU 2".
 msgid "GPU %(index)d"
@@ -334,9 +404,6 @@ msgstr "%(index)d. GPU"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "belirtim yok"
 
 msgid "Memory pool"
 msgstr "Bellek havuzu"
@@ -363,6 +430,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "bilinmeyen derleme"
 
@@ -385,6 +453,7 @@ msgstr "Çalışıyor"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, bağlam %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "bilinmeyen model"
 
@@ -411,6 +480,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "tamam"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "sunucu yok"
 
@@ -427,26 +497,31 @@ msgstr "düzey"
 msgid "finding"
 msgstr "bulgu"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "Kimlik"
 
-msgid "Quality*"
-msgstr "Kalite*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Kalite"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "Param."
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Bağlam"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Yetenekler"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "Kalite, herhangi bir nicemleme kaybından önceki yayın temelidir; arkasındaki kaynaklı kıyaslamalar için `llamafit info <model>` komutunu çalıştırın."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "Param., uzman karışımı bir modelde milyar cinsinden toplam/etkin sayıdır; ikisi eşitse tek bir sayıdır."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Modeller"
@@ -469,23 +544,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Parametreler"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "%(total)sB toplam, %(active)sB etkin"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "yöntem belirtilmemiş"
 
 msgid "%(tokens)s tokens native"
 msgstr "yerel olarak %(tokens)s token"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", %(method)s ile %(tokens)s token'a genişletilmiş"
-
-msgid "unspecified method"
-msgstr "yöntem belirtilmemiş"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Bağlam"
 
 msgid "Architecture"
 msgstr "Mimari"
 
 msgid "Notes"
 msgstr "Notlar"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Yetenekler"
 
 msgid "Use cases"
 msgstr "Kullanım alanları"
@@ -500,6 +584,7 @@ msgstr "Kıyaslama"
 msgid "Source %(index)d"
 msgstr "%(index)d. Kaynak"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "henüz okunmadı"
 
@@ -508,15 +593,24 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d katman"
 msgstr[1] "%(count)d katman"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d uzman"
-msgstr[1] "%(count)d/%(used)d uzman"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d uzman"
 msgstr[1] "%(count)d uzman"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d uzman"
+msgstr[1] "%(count)d/%(used)d uzman"
 
 msgid "Quants"
 msgstr "Nicemlemeler"
@@ -546,8 +640,10 @@ msgstr "RAM bant genişliği ölçümünü atlar."
 msgid "Command: %(command)s"
 msgstr "Komut: %(command)s"
 
-msgid "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr "kesik GGUF başlığı: %(offset)d konumunda %(wanted)d bayt bekleniyordu, %(got)d alındı"
+msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
+msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Dosya hâlâ iniyor olabilir veya URL bir GGUF dosyasına ait olmayabilir."
@@ -570,6 +666,11 @@ msgstr "4 konumunda desteklenmeyen GGUF sürümü %(version)d"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit şu GGUF sürümlerini destekler: %(versions)s."
 
+msgid "%(count)d shard"
+msgid_plural "%(count)d shards"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "bu GGUF dosyaları tek bir bölünmüş model değil: '%(key)s' konusunda ayrışıyor ve %(values)s bildiriyorlar"
 
@@ -582,14 +683,16 @@ msgstr "bilgilerin okunacağı bir GGUF başlığı yok"
 msgid "Pass the model's file, or every shard of a split model."
 msgstr "Modelin dosyasını ya da bölünmüş bir modelin tüm parçalarını verin."
 
-msgid "%(count)d of %(total)d GGUF files carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr "%(total)d GGUF dosyasının %(count)d tanesi '%(key)s' anahtarını taşımıyor, bu yüzden bölünmüş bir modeldeki yerleri belirlenemiyor"
+msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
+msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Bölünmemiş tek bir dosyayı kendi başına ya da tek bir bölünmüş modelin tüm parçalarını verin."
 
-msgid "incomplete shard set: the model declares %(declared)d shards and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr "eksik parça kümesi: model %(declared)d parça bildiriyor, %(arrived)d parça geldi (%(key)s %(numbers)s)"
+msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
+msgstr ""
 
 msgid "Pass every shard of the split model."
 msgstr "Bölünmüş modelin tüm parçalarını verin."
@@ -606,8 +709,13 @@ msgstr "eksik parça kümesi: %(key)s 0 ile %(last)d arasında bekleniyordu, %(n
 msgid "Pass each shard of the split model exactly once."
 msgstr "Bölünmüş modelin her parçasını tam olarak bir kez verin."
 
-msgid "incomplete shard set: the model declares %(declared)d tensors and its %(shards)d shards hold %(held)d between them"
-msgstr "eksik parça kümesi: model %(declared)d tensör bildiriyor, %(shards)d parçası toplamda %(held)d tensör taşıyor"
+msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
+msgstr ""
+
+msgid "%(count)d tensor"
+msgid_plural "%(count)d tensors"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "%(path)s okunamadı: %(error)s"
@@ -652,11 +760,13 @@ msgstr "dolu bellek modülü yok"
 msgid "no SPMemoryDataType"
 msgstr "SPMemoryDataType yok"
 
+msgid "%(program)s: timed out after %(seconds)s second"
+msgid_plural "%(program)s: timed out after %(seconds)s seconds"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "empty command"
 msgstr "boş komut"
-
-msgid "%(program)s: timed out after %(seconds)ss"
-msgstr "%(program)s: %(seconds)s saniye sonra zaman aşımına uğradı"
 
 msgid "%(program)s: %(error)s"
 msgstr "%(program)s: %(error)s"
@@ -783,6 +893,7 @@ msgstr "LlamaFit'in RAM bant genişliğini ölçebilmesi için numpy kurun (`pip
 msgid "Probe %(probe)s failed"
 msgstr "%(probe)s yoklaması başarısız oldu"
 
+msgctxt "probe error"
 msgid "unknown error"
 msgstr "bilinmeyen hata"
 

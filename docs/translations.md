@@ -12,8 +12,10 @@ translation is read at runtime from a plain text file in this repository.
 > Three kinds of text stay English on purpose, and each says why where it lives: the
 > translation layer's own messages (`src/llamafit/i18n/`, below), the per-field diagnostics
 > `catalog validate` and `catalog refresh` print about a YAML file, and identifiers — command
-> names, flags, paths, backend names, capability and use-case ids, and the catalog's own
-> data.
+> names, flags, paths, backend names, use-case ids, and the catalog's own data. A model's
+> *capability* is the one enum value that is both: `--capability coding` takes the English
+> identifier, and the word the table shows for it is a message like any other, because
+> *coding*, *vision* and *audio* are ordinary words and a reader meets them as words.
 
 The format is GNU gettext, the one every translation tool already speaks. There is no new
 dependency and no compiled `.mo` file: the `.po` file a translator edits is the exact file
@@ -417,6 +419,53 @@ which languages inflect for what is their business, not ours.
 Reach for a context whenever an English word is short enough that two places could share
 it — a value in a table, a status, a unit. Do not wrap the same bare word twice without
 one and hope.
+
+### A count needs an entry of its own
+
+A `.po` entry selects its form on one number. A message carrying two counts therefore has
+one noun agreeing with a count that is not its own, which in Czech, Polish or Russian is
+not a rounding error but a misspelling — and a message carrying a count and no plural
+forms at all cannot agree with anything.
+
+```python
+# no: two numbers, one entry, and neither noun can be made to agree
+_("%(physical)d cores / %(logical)d threads") % {...}
+
+# yes: one counted entry per count, set into a sentence that counts nothing itself
+_("%(cores)s / %(threads)s") % {
+    "cores": ngettext("%(count)d core", "%(count)d cores", physical) % {"count": physical},
+    "threads": ngettext("%(count)d thread", "%(count)d threads", logical) % {"count": logical},
+}
+```
+
+Select the form on the number the noun stands **next to**, not on the one the sentence is
+about: `%(count)d/%(used)d experts` agrees with `%(used)d`, because that is the numeral
+immediately before the word.
+
+A unit belongs in the sentence as a word, never welded to a placeholder. `%(seconds)ss`
+leaves every language that spells the unit out guessing whether it may drop the letter,
+and in Arabic, Hebrew and Urdu the trailing Latin `s` sits at a seam between two writing
+directions.
+
+### A line built from optional pieces is one message per shape
+
+Building a list in Python and joining it with `", "` hands a translator fragments and
+keeps the punctuation between them where no catalog can reach it. Japanese wants `、`,
+Arabic wants `، `, and several languages want a conjunction before the last item. Write
+out one whole message per shape instead, the way `_from_table` and `_memory_details` in
+`src/llamafit/cli/render.py` do, and never append a fragment that opens with a comma.
+
+```python
+# no: the separator is not in any catalog, and neither fragment is a whole phrase
+details = ", ".join(part for part in (kind, modules, channels) if part)
+
+# yes: every shape is an entry, and a translator can move every word in it
+if kind and modules:
+    return _("%(kind)s, %(modules)s") % {"kind": kind, "modules": modules}
+```
+
+Substituting an already-translated whole phrase into a message is fine and is not the same
+thing: the translator can see the join, name it, and move it.
 
 ### Anything built at import time needs the deferred pair
 
