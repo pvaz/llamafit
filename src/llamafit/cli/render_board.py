@@ -156,6 +156,11 @@ def verdict_label(verdict: str) -> str:
     Fit. These are the short forms a table can carry, and :func:`verdict_sentence` is what
     says what each of them means where there is room to say it.
 
+    The sentence opens with the word in this table and not with section 8.3's, for every
+    verdict. ``too-tight`` reads *Pages* in both places and ``does-not-fit`` reads *No
+    room* in both; ``comfortable`` once read *roomy* in the column and *Comfortable* in
+    the sentence, which asked a reader to work out that two words were one verdict and
+    asked thirty-seven translators to keep two unrelated words in step.
     """
     labels = {
         "comfortable": pgettext("fit verdict", "roomy"),
@@ -186,7 +191,7 @@ def verdict_sentence(verdict: str) -> str:
     overflow to system memory while generation runs at a fraction of its speed.
     """
     sentences = {
-        "comfortable": _("Comfortable: room for a longer context or a second model."),
+        "comfortable": _("Roomy: there is room for a longer context or a second model."),
         "fits": _("Fits: the intended configuration runs as planned."),
         "tight": _("Tight: it runs, but a browser or a second process can push it over."),
         "too-tight": _(
