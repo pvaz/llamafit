@@ -1,0 +1,74 @@
+# Magistral: Mistral AI's reasoning line, a Mistral Small body with reasoning post-training
+# on top. Sourced from the vendor's Hugging Face model card, the release announcement, the
+# Magistral paper and the GGUF-publishing repository.
+# Primary sources used for this file:
+#   - Model card: https://huggingface.co/mistralai/Magistral-Small-2509
+#   - Announcement: https://mistral.ai/news/magistral/
+#   - Paper: https://huggingface.co/papers/2506.10910
+#   - GGUF repository: https://huggingface.co/unsloth/Magistral-Small-2509-GGUF
+- id: magistral-small-1.2
+  name: Magistral Small 1.2 (2509)
+  vendor: Mistral AI
+  family: magistral
+  release_date: 2025-09-12
+  license:
+    spdx: Apache-2.0
+    # The card declares apache-2.0 in its metadata and ships no LICENSE file; linking to
+    # the licence text itself. Magistral is Apache-2.0 in a range where several siblings
+    # are not, so this one is safe to use commercially.
+    url: "https://www.apache.org/licenses/LICENSE-2.0"
+  params: { total_b: 24, active_b: 24 }
+  architecture:
+    class: dense
+    gguf_arch: llama
+    notes: >-
+      The 24B dense Mistral Small 3.2 body with reasoning SFT from Magistral Medium traces
+      and RL on top; 40 layers, published to GGUF under the plain llama architecture. It
+      wraps its reasoning in [THINK] and [/THINK] special tokens, so a plan that budgets
+      only for the visible answer will underestimate the tokens it generates by a wide
+      margin. Vision comes from a separate projector, declared under extras.
+  context:
+    # The card documents a 128k window and warns that quality "might degrade past 40k",
+    # while recommending the maximum stay at 128k.
+    native: 131072
+  capabilities: [coding, thinking, vision, tools, multilingual, long-context]
+  # A reasoning specialist first, but it is the whole Mistral Small 3.2 model underneath
+  # and answers ordinary questions perfectly well, so general and chat are listed too
+  # rather than hiding it from the most common request there is.
+  use_cases: [reasoning, coding, general, chat, multimodal]
+  quality:
+    baseline: 75
+    benchmarks:
+      # The "Magistral Small 1.2" row of the card's benchmark table, not the Medium rows
+      # and not the 1.0/1.1 rows above it.
+      - name: AIME24 (pass@1)
+        score: 86.14
+        source: "https://huggingface.co/mistralai/Magistral-Small-2509"
+      - name: AIME25 (pass@1)
+        score: 77.34
+        source: "https://huggingface.co/mistralai/Magistral-Small-2509"
+      - name: GPQA Diamond
+        score: 70.07
+        source: "https://huggingface.co/mistralai/Magistral-Small-2509"
+      - name: LiveCodeBench (v5)
+        score: 70.88
+        source: "https://huggingface.co/mistralai/Magistral-Small-2509"
+  # The card's "Sampling parameters" section: top_p 0.95, temperature 0.7.
+  sampling: { temp: 0.7, top_p: 0.95 }
+  sources:
+    # Mistral publishes an official GGUF at mistralai/Magistral-Small-2509-GGUF, but it
+    # carries no projector, and this entry claims vision. The unsloth repository publishes
+    # the same quants plus the mmproj file, so it is the one that can actually deliver the
+    # capability declared above.
+    - repo: unsloth/Magistral-Small-2509-GGUF
+      kind: gguf
+      trust: unsloth
+      # Q4_K_M for the common case, Q6_K where the answer matters more than the memory,
+      # and UD-Q3_K_XL because at 24B a three-bit quant is the difference between fitting
+      # a 16 GB card and not.
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q6_K }
+        - { name: UD-Q3_K_XL }
+      extras:
+        - { role: mmproj, file: mmproj-F16.gguf }
