@@ -147,6 +147,7 @@ msgid "Run `llamafit catalog validate` for details."
 msgstr ""
 
 #: src/llamafit/catalog/refresh.py:437
+#: src/llamafit/download/install.py:124
 msgid "could not write %(path)s: %(error)s"
 msgstr ""
 
@@ -1824,6 +1825,226 @@ msgstr ""
 msgid "Skip the RAM bandwidth measurement."
 msgstr ""
 
+#: src/llamafit/download/engine.py:230
+msgid "%(url)s answered a range request with the whole file."
+msgstr ""
+
+#: src/llamafit/download/engine.py:234
+msgid "%(url)s is rate-limiting this download (HTTP %(status)d)."
+msgstr ""
+
+#: src/llamafit/download/engine.py:241
+#: src/llamafit/download/transport.py:164
+msgid "Check your network connection and run the command again to resume."
+msgstr ""
+
+#: src/llamafit/download/engine.py:245
+msgid "%(file)s needs authorisation (HTTP %(status)d)."
+msgstr ""
+
+#: src/llamafit/download/engine.py:246
+msgid "This repository is gated. Accept its terms on Hugging Face and set HF_TOKEN to a token that can read it."
+msgstr ""
+
+#: src/llamafit/download/engine.py:253
+msgid "%(file)s is not at %(url)s any more (HTTP 404)."
+msgstr ""
+
+#: src/llamafit/download/engine.py:254
+msgid "Run `llamafit catalog refresh` to pick up the repository's current files."
+msgstr ""
+
+#: src/llamafit/download/engine.py:257
+#: src/llamafit/download/engine.py:240
+msgid "%(url)s returned HTTP %(status)d."
+msgstr ""
+
+#: src/llamafit/download/engine.py:258
+#: src/llamafit/download/engine.py:296
+msgid "Confirm the URL points at a downloadable file."
+msgstr ""
+
+#: src/llamafit/download/engine.py:294
+msgid "%(url)s did not say how big %(file)s is."
+msgstr ""
+
+#: src/llamafit/download/engine.py:300
+msgid "%(file)s is %(actual)s on the server but the catalog says %(expected)s; the repository has been re-uploaded since the catalog was refreshed."
+msgstr ""
+
+#: src/llamafit/download/engine.py:309
+#: src/llamafit/download/plan.py:344
+msgid "Run `llamafit catalog refresh` and try again."
+msgstr ""
+
+#: src/llamafit/download/engine.py:383
+msgid "%(file)s: the server sent %(actual)d bytes of a %(expected)d byte range."
+msgstr ""
+
+#: src/llamafit/download/engine.py:385
+msgid "Run the command again; the parts that did arrive are kept."
+msgstr ""
+
+#: src/llamafit/download/engine.py:412
+#: src/llamafit/download/engine.py:369
+msgid "Stopped."
+msgstr ""
+
+#: src/llamafit/download/engine.py:431
+msgid "%(file)s: the server asked for fewer connections; using %(count)d."
+msgstr ""
+
+#: src/llamafit/download/engine.py:606
+msgid "%(file)s: this server will not serve byte ranges; fetching it in one stream."
+msgstr ""
+
+#: src/llamafit/download/engine.py:675
+msgid "%(file)s does not match its checksum; fetching it again."
+msgstr ""
+
+#: src/llamafit/download/install.py:125
+#: src/llamafit/download/state.py:187
+msgid "Check that the download directory is writable."
+msgstr ""
+
+#: src/llamafit/download/plan.py:256
+msgid "%(needed)s is needed for this model but %(path)s has only %(free)s free, %(short)s short of what is wanted with %(headroom)s left spare."
+msgstr ""
+
+#: src/llamafit/download/plan.py:267
+msgid "Free some space, or choose another directory with --dir, or a smaller quantisation with --quant."
+msgstr ""
+
+#: src/llamafit/download/plan.py:303
+msgid "could not measure the free space on %(path)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/download/plan.py:305
+msgid "Check that the download directory's volume is available."
+msgstr ""
+
+#: src/llamafit/download/plan.py:325
+msgid "%(model)s has no downloadable source in the catalog."
+msgstr ""
+
+#: src/llamafit/download/plan.py:326
+msgid "Only Hugging Face sources can be installed; this entry has none."
+msgstr ""
+
+#: src/llamafit/download/plan.py:336
+msgid "the catalog has no file list for %(model)s %(quant)s."
+msgstr ""
+
+#: src/llamafit/download/plan.py:338
+msgid "Run `llamafit catalog refresh` to fill in the file names."
+msgstr ""
+
+#: src/llamafit/download/plan.py:343
+msgid "%(model)s publishes no quantisations."
+msgstr ""
+
+#: src/llamafit/download/plan.py:347
+msgid "%(model)s does not publish a %(quant)s quantisation."
+msgstr ""
+
+#: src/llamafit/download/plan.py:349
+msgid "It publishes: %(quants)s"
+msgstr ""
+
+#: src/llamafit/download/plan.py:363
+msgid "the catalog does not record how big %(quant)s is."
+msgstr ""
+
+#: src/llamafit/download/plan.py:364
+msgid "Run `llamafit catalog refresh` to fill in the sizes."
+msgstr ""
+
+#: src/llamafit/download/plan.py:492
+msgid "the catalog holds no checksum for %(files)s."
+msgid_plural "the catalog holds no checksums for %(files)s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/download/plan.py:498
+msgid "Run `llamafit catalog refresh` to fetch them, or pass --allow-unverified to download anyway and check the files yourself."
+msgstr ""
+
+#: src/llamafit/download/progress.py:111
+msgid "%(done)s of %(total)s"
+msgstr ""
+
+#: src/llamafit/download/progress.py:130
+msgid "%(rate)s/s"
+msgstr ""
+
+#: src/llamafit/download/progress.py:195
+msgid "Fetching %(file)s (%(size)s)"
+msgstr ""
+
+#: src/llamafit/download/progress.py:214
+msgid "Checking %(file)s against its checksum"
+msgstr ""
+
+#: src/llamafit/download/progress.py:226
+msgid "Done: %(file)s"
+msgstr ""
+
+#: src/llamafit/download/state.py:156
+msgid "could not create %(path)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/download/state.py:157
+#: src/llamafit/download/state.py:209
+msgid "Check that the download directory is writable and has room."
+msgstr ""
+
+#: src/llamafit/download/state.py:185
+msgid "could not move %(source)s into place: %(error)s"
+msgstr ""
+
+#: src/llamafit/download/state.py:207
+msgid "could not record progress in %(path)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/download/transport.py:163
+#: src/llamafit/gguf/source.py:203
+msgid "could not fetch %(url)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/download/verify.py:58
+msgid "Stopped before the checksum was finished."
+msgstr ""
+
+#: src/llamafit/download/verify.py:67
+#: src/llamafit/download/verify.py:93
+#: src/llamafit/gguf/source.py:78
+#: src/llamafit/gguf/source.py:92
+msgid "could not read %(path)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/download/verify.py:68
+#: src/llamafit/download/verify.py:94
+#: src/llamafit/gguf/source.py:79
+#: src/llamafit/gguf/source.py:93
+msgid "Check that the file exists and is readable."
+msgstr ""
+
+#: src/llamafit/download/verify.py:98
+msgid "%(file)s is %(actual)d bytes, but the catalog says %(expected)d"
+msgstr ""
+
+#: src/llamafit/download/verify.py:100
+msgid "The transfer was cut short. Run the command again to fetch it properly."
+msgstr ""
+
+#: src/llamafit/download/verify.py:122
+msgid "%(file)s does not match the checksum the catalog holds."
+msgstr ""
+
+#: src/llamafit/download/verify.py:123
+msgid "Expected %(expected)s but the file hashes to %(actual)s. The bad copy has been deleted; run the command again to fetch it."
+msgstr ""
+
 #: src/llamafit/errors.py:41
 msgid "Command: %(command)s"
 msgstr ""
@@ -1928,20 +2149,6 @@ msgid "%(count)d tensor"
 msgid_plural "%(count)d tensors"
 msgstr[0] ""
 msgstr[1] ""
-
-#: src/llamafit/gguf/source.py:78
-#: src/llamafit/gguf/source.py:92
-msgid "could not read %(path)s: %(error)s"
-msgstr ""
-
-#: src/llamafit/gguf/source.py:79
-#: src/llamafit/gguf/source.py:93
-msgid "Check that the file exists and is readable."
-msgstr ""
-
-#: src/llamafit/gguf/source.py:203
-msgid "could not fetch %(url)s: %(error)s"
-msgstr ""
 
 #: src/llamafit/gguf/source.py:204
 msgid "Check your network connection and that the URL is reachable."
