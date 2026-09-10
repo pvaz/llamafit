@@ -167,6 +167,40 @@ the changelog says so when they do.
   which was being computed and thrown away, so the ladder no longer has to guess.
 - `--prefer balanced|quality|speed` moves a tenth of the weight between quality and speed
   (section 12.1), capped by what the other part has to give so no weight goes below nothing.
+- **Launch presets: `llamafit preset <model>` writes a script that chooses its context when
+  it runs.** A plan is a command line somebody has to paste; a preset is a file they can
+  double-click, and it is what makes a recommendation survive contact with a real desktop. The
+  plan behind it was computed while the machine was idle and the script runs when a browser
+  has taken a gigabyte of the card, so the script does not carry a context: it carries section
+  9.3's ladder — every rung with what it costs the card — reads how much is free at start
+  time, keeps 256 MiB back for the desktop, and takes the largest rung that still fits. This
+  is the failure the project was born from: a configuration over the card does not fail on an
+  NVIDIA driver, it pages into system memory and runs at a fraction of its speed for weeks
+  while `/health` answers and the log looks healthy. The ladder never climbs above the planned
+  context, because the planner weighed system memory and the user's request too and the script
+  can measure only the card, and when not even the smallest rung fits the script stops with
+  exit code 4 rather than starting something that would page.
+- Free card memory is read with the tool that ships with the driver: `nvidia-smi` on every
+  platform, amdgpu's sysfs files on Linux, `vm_stat` on Apple silicon, where the graphics
+  memory is the system memory. A card with no such tool — AMD or Intel on Windows, Intel on
+  Linux — makes the script say so once in its header rather than apologise on every run, and a
+  probe that answers with something that is not a number falls back to the planned context and
+  says out loud that it did.
+- A preset is three files: `start-<id>.cmd` or `start-<id>.sh` for the machine that asked,
+  `models-<id>.ini` for a llama.cpp router, and `README-<id>.md` with the endpoints and the
+  ladder. The router section says in its own comments that it is the one artifact that cannot
+  run the ladder, since a router starts a model with no shell in between.
+- **A file you have edited is never overwritten.** Each generated file carries a checksum of
+  itself, and one whose checksum no longer matches is kept and named, with `--force` the only
+  way to replace it — and `--force` says which files it discarded. A file that has lost its
+  stamp altogether counts as edited, because both a hand-written and a hand-cut file are
+  somebody's work.
+- `llamafit launch <model>` runs the preset **script** rather than a command line rebuilt for
+  the occasion, so the ladder still chooses and hand edits still apply; it waits for
+  `/health`, prints the endpoints, and `--stop` stops the server and everything it started. A
+  server already answering is reported rather than joined by a second one, and what was
+  started is remembered by process id *and* start time so `--stop` cannot aim at whatever
+  inherited a recycled id.
 ### Changed
 - **The placement planner steps down section 9.3's context ladder instead of halving.**
   Section 9.2 says so in as many words, and the difference is not cosmetic: from 40,960
