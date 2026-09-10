@@ -195,7 +195,11 @@ def describe(model: CatalogModel, local_files: Sequence[LocalModel] = ()) -> Mod
     local_paths: list[str] = []
     for source in model.sources:
         for quant in source.quants:
-            matched_paths = [local_by_name[name] for name in quant.files if name in local_by_name]
+            # Compared as bare file names on both sides: a catalog's ``files`` entry is a
+            # path inside the publishing repository and often carries a directory, while a
+            # local file is wherever its owner put it.
+            wanted = [PurePath(name).name for name in quant.files]
+            matched_paths = [local_by_name[name] for name in wanted if name in local_by_name]
             quants.append(
                 QuantDetail(
                     name=quant.name,

@@ -70,6 +70,18 @@ from llamafit.models.catalog import UseCase
 PARTS: tuple[str, ...] = ("quality", "speed", "fit", "context")
 """The four parts of the composite score, in the order a breakdown shows them."""
 
+PREFERENCES: tuple[str, ...] = ("balanced", "quality", "speed")
+"""What ``--prefer`` accepts, from section 12.1's ``Needs``."""
+
+PREFERENCE_SHIFT = 0.10
+"""How much weight ``--prefer`` moves between quality and speed (section 12.1).
+
+A tenth is enough to reorder a close board and not enough to overturn a clear answer,
+which is what a preference should be: the user leaning on the scales, not replacing them.
+Somebody who wants more than a lean writes the four numbers into the config file, where
+they can see exactly what they asked for.
+"""
+
 USE_CASES: tuple[str, ...] = get_args(UseCase)
 """Every use case the catalog knows, taken from the catalog's own type."""
 
@@ -184,3 +196,38 @@ def _normalise(use_case: str, override: Mapping[str, float]) -> dict[str, float]
             hint=_("At least one part has to count for something."),
         )
     return {part: float(override[part]) / total for part in PARTS}
+
+
+def shift_preference(weights: Mapping[str, float], prefer: str) -> dict[str, float]:
+    """Lean the weights towards quality or speed, by section 12.1's tenth.
+
+    Args:
+        weights: The use case's weights, already resolved.
+        prefer: ``balanced``, ``quality`` or ``speed``.
+
+    Returns:
+        A new set of weights that still sums to one: the shift moves weight from one part
+        to the other rather than adding any, so two requests stay comparable and the total
+        stays on the 0 to 100 scale.
+
+    Raises:
+        ConfigError: If ``prefer`` is not one of the three.
+
+    The shift is capped by what the other part has to give. Reasoning already weights
+    quality at 0.50 and speed at 0.15, and a preference for quality there moves a tenth;
+    a use case weighting speed at 0.05 would have only 0.05 to move, and moving it into a
+    negative weight would score a part as though it counted against the model.
+    """
+    if prefer not in PREFERENCES:
+        raise ConfigError(
+            _("unknown preference %(prefer)s") % {"prefer": prefer},
+            hint=_("Preferences: %(known)s.") % {"known": ", ".join(PREFERENCES)},
+        )
+    shifted = {part: float(weights[part]) for part in PARTS}
+    if prefer == "balanced":
+        return shifted
+    giver, taker = ("speed", "quality") if prefer == "quality" else ("quality", "speed")
+    moved = min(PREFERENCE_SHIFT, shifted[giver])
+    shifted[giver] -= moved
+    shifted[taker] += moved
+    return shifted

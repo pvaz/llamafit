@@ -334,14 +334,15 @@ def placement_notes(
             )
         )
 
-    physical = host.cpu.physical_cores
-    if threads < physical:
+    available = host.cpu.logical_cores
+    if threads < available:
         notes.append(
             _(
-                "%(threads)s threads, not %(physical)s: the efficiency cores are left out "
-                "because generation measures slower with them."
+                "%(threads)s threads, not the %(available)s this processor has: the "
+                "efficiency cores are left out because generation measures slower with "
+                "them, and what is left is the threads the performance cores provide."
             )
-            % {"threads": format_grouped(threads), "physical": format_grouped(physical)}
+            % {"threads": format_grouped(threads), "available": format_grouped(available)}
         )
     if budget.verdict == "tight":
         notes.append(

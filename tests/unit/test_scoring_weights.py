@@ -5,7 +5,15 @@ from __future__ import annotations
 import pytest
 
 from llamafit.errors import ConfigError
-from llamafit.scoring.weights import DEFAULT_WEIGHTS, PARTS, USE_CASES, check_use_case, weights_for
+from llamafit.scoring.weights import (
+    DEFAULT_WEIGHTS,
+    PARTS,
+    PREFERENCE_SHIFT,
+    USE_CASES,
+    check_use_case,
+    shift_preference,
+    weights_for,
+)
 
 SPECIFICATION_TABLE = {
     "general": {"quality": 0.35, "speed": 0.25, "fit": 0.25, "context": 0.15},
@@ -100,3 +108,38 @@ def test_the_defaults_cannot_be_mutated_through_the_table() -> None:
     weights = weights_for("coding")
     weights["quality"] = 0.99
     assert weights_for("coding")["quality"] == 0.40
+
+
+# --- --prefer -------------------------------------------------------------------------
+
+
+def test_a_balanced_preference_changes_nothing() -> None:
+    assert shift_preference(weights_for("coding"), "balanced") == weights_for("coding")
+
+
+def test_preferring_quality_moves_a_tenth_out_of_speed() -> None:
+    leaned = shift_preference(weights_for("coding"), "quality")
+    assert leaned["quality"] == pytest.approx(0.40 + PREFERENCE_SHIFT)
+    assert leaned["speed"] == pytest.approx(0.20 - PREFERENCE_SHIFT)
+    assert sum(leaned.values()) == pytest.approx(1.0)
+
+
+def test_preferring_speed_moves_a_tenth_the_other_way() -> None:
+    leaned = shift_preference(weights_for("reasoning"), "speed")
+    assert leaned["speed"] == pytest.approx(0.15 + PREFERENCE_SHIFT)
+    assert leaned["quality"] == pytest.approx(0.50 - PREFERENCE_SHIFT)
+
+
+def test_a_preference_never_pushes_a_weight_below_nothing() -> None:
+    # Embedding weights context at 0.05; a part cannot give more than it has, and a
+    # negative weight would score a part as though it counted against the model.
+    thin = {"quality": 0.05, "speed": 0.45, "fit": 0.45, "context": 0.05}
+    leaned = shift_preference(thin, "speed")
+    assert leaned["quality"] == pytest.approx(0.0)
+    assert leaned["speed"] == pytest.approx(0.50)
+    assert sum(leaned.values()) == pytest.approx(1.0)
+
+
+def test_an_unknown_preference_names_the_three_that_exist() -> None:
+    with pytest.raises(ConfigError, match="unknown preference"):
+        shift_preference(weights_for("coding"), "sideways")

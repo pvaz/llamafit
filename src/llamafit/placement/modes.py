@@ -22,6 +22,7 @@ from typing import Protocol
 
 from llamafit.constants import (
     ALL_GPU_LAYERS,
+    CONTEXT_TIERS,
     KV_TYPE_DEFAULT,
     KV_TYPE_QUANTISED,
     MIN_BATCH_TOKENS,
@@ -205,25 +206,34 @@ def batch_for(micro_batch: int) -> int:
 
 
 def thread_count(cpu: Cpu) -> int:
-    """How many threads to run: the performance cores (section 9.4).
+    """How many threads to run: the threads the performance cores provide (section 9.4).
 
     Args:
         cpu: The scanned processor.
 
     Returns:
-        The performance-core count, the physical-core count when the operating system
-        does not distinguish, and never less than one.
+        The number of hardware threads the performance cores between them offer, never
+        fewer than the performance cores themselves and never less than one.
 
-    The smaller number is deliberate, and it looks like a bug. On a hybrid Intel part —
-    the reference machine is an i9-14900KF with 8 performance and 16 efficiency cores —
-    this returns 8 on a machine that advertises 24 cores and 32 threads. Efficiency cores
-    are excluded because measured generation is *slower* with them: llama.cpp splits each
-    layer evenly across its threads and then waits for the slowest one, so a thread
-    sitting on an efficiency core holds up every thread on a performance core, once per
-    layer, for every token. The reference machine measured 23.8 tokens per second at 8
-    threads and 22.8 at 24; asking for every core took speed away.
+    Two things are going on here, and section 9.4 exists because conflating them costs
+    speed in both directions. Efficiency cores are excluded, because measured generation
+    is *slower* with them: llama.cpp splits each layer evenly across its threads and then
+    waits for the slowest one, so a thread sitting on an efficiency core holds up every
+    thread on a performance core, once per layer, for every token. But excluding them is
+    not the same as counting cores rather than threads. On the reference machine — an
+    i9-14900KF with 8 performance and 16 efficiency cores, 24 cores and 32 threads in all
+    — the performance cores carry simultaneous multithreading and provide 16 of those
+    threads, the measured optimum is 16, and it is about four percent faster than 8. The
+    figure is reached by taking the efficiency cores' threads off the total rather than by
+    doubling anything, since an efficiency core is one thread and a performance core on
+    this kind of part is two; on a processor with no efficiency cores at all the answer is
+    simply every thread it has, and on one with no multithreading it is every core.
     """
-    return max(cpu.performance_cores or cpu.physical_cores, 1)
+    performance = cpu.performance_cores or cpu.physical_cores
+    if performance <= 0:
+        return 1
+    efficiency_cores = max(cpu.physical_cores - performance, 0)
+    return max(cpu.logical_cores - efficiency_cores, performance, 1)
 
 
 def is_moe(model: CatalogModel, facts: GgufFacts | None) -> bool:
@@ -288,25 +298,33 @@ def available_modes(model: CatalogModel, quant: Quant, host: Host) -> tuple[RunM
 
 
 def context_ladder(requested: int, minimum: int) -> tuple[int, ...]:
-    """The contexts to try, largest first: the request, then halves (section 9.2).
+    """The contexts to try, largest first: the request, then section 9.3's rungs.
 
     Args:
         requested: What to size for.
         minimum: The smallest context worth having.
 
     Returns:
-        The requested context and each halving of it down to ``minimum``, which is itself
-        never allowed below :data:`~llamafit.constants.MIN_CONTEXT_TOKENS` — except by an
-        explicit request for less, which is a user saying they know what they want. Never
-        empty, so the planner always has something to cost.
+        The requested context, then every rung of :data:`~llamafit.constants.CONTEXT_TIERS`
+        below it and at or above ``minimum``, which is itself never allowed below
+        :data:`~llamafit.constants.MIN_CONTEXT_TOKENS` — except by an explicit request for
+        less, which is a user saying they know what they want. Never empty, so the planner
+        always has something to cost.
+
+    **The rungs are the ladder of section 9.3, not halves of the request**, and section 9.2
+    says so in as many words. Halving is the reading that looks equivalent and is not:
+    from 40,960 tokens it reaches 20,480 and then the floor, and never 32,768 or 24,576.
+    On the reference machine that is the difference between an answer and a wrong one. The
+    best configuration anybody has measured there runs at 40,960 tokens and needs more of
+    the card than a desktop with a browser open leaves free; the rungs below it hold the
+    same model in the same mode, and halving steps straight past all of them into a
+    placement with two layers on the card and seventy gigabytes of experts on the memory
+    bus. A shorter context in the right mode is the answer the user came for.
     """
     floor = min(max(minimum, MIN_CONTEXT_TOKENS), requested)
-    contexts: list[int] = []
-    context = requested
-    while context >= floor:
-        contexts.append(context)
-        context //= 2
-    return tuple(contexts) or (floor,)
+    rungs = [requested]
+    rungs += [tier for tier in reversed(CONTEXT_TIERS) if floor <= tier < requested]
+    return tuple(rungs)
 
 
 def kv_ladder(model: CatalogModel, *, allow_kv_quant: bool) -> tuple[str, ...]:

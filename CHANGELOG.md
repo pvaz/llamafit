@@ -140,7 +140,56 @@ the changelog says so when they do.
   the owner a licence broad enough to keep offering LlamaFit commercially alongside the AGPL.
   `CONTRIBUTING.md` and the pull request template say how to agree to it, in one line, once.
 
+- `llamafit recommend`: the board. Every model and quantisation in the catalog is planned
+  (section 9), sized (section 8), estimated (section 10) and scored (section 11), and the
+  result is one ordered list with `--use-case`, `--require`, `--prefer`, `--min-context`,
+  `--max-download`, `--license`, `--limit`, `--all-quants`, `--no-vision`, `--explain` and
+  `--json`. A candidate the request excludes is shown with the reason and what to change
+  about the request, never dropped: a shorter list tells a reader nothing. `--explain`
+  expands a row into the four scores, the weights that combined them, the quality it was
+  built from, the memory budget line by line, the context ladder and where a token's time
+  goes, which is the project's standing promise that no number has to be taken on faith.
+- `llamafit fit`: every model ranked by how well it uses this machine and nothing else, with
+  `--perfect`, `--min-fit`, `--limit` and `--all-quants`. It deliberately does not apply
+  section 11's exclusions: a coding model is not left out of a fit listing for being one.
+- `llamafit plan <model>`: one model placed on this machine, with `--quant`, `--context`,
+  `--ub`, `--target-tps`, `--no-vision` and `--json`. It prints the memory budget component
+  by component with the source of every figure, the context ladder with what each rung costs
+  the card, where a token's time goes, the runs the catalog records for comparison, and last,
+  on a line of its own, the `llama-server` command line. `--ub` rebuilds the whole budget
+  rather than relabelling it, because a micro-batch moves the compute buffer and with it the
+  verdict; `--context` beyond what fits sizes down **and** shows what the context asked for
+  would have cost, so the overflow is met rather than merely retreated from.
+- The context ladder has three states rather than two. A rung that overflows the card is
+  marked `pages`, not `no room`: section 8.4's failure is that the driver accepts the
+  allocation, moves the overflow to system memory, and lets the server start and look healthy
+  while generation collapses. `ContextTier` now carries the verdict its own budget produced,
+  which was being computed and thrown away, so the ladder no longer has to guess.
+- `--prefer balanced|quality|speed` moves a tenth of the weight between quality and speed
+  (section 12.1), capped by what the other part has to give so no weight goes below nothing.
 ### Changed
+- **The placement planner steps down section 9.3's context ladder instead of halving.**
+  Section 9.2 says so in as many words, and the difference is not cosmetic: from 40,960
+  tokens, halving reaches 20,480 and then the floor and never 32,768 or 24,576, so on the
+  reference machine with a desktop open the search stepped past every context that fits in
+  the right mode and settled on a hybrid placement with two layers on the card and seventy
+  gigabytes of experts on the memory bus. It now finds the mixture-of-experts placement the
+  machine was measured running.
+- **`-t` is the threads the performance cores provide, not the number of those cores.**
+  Section 9.4: on the reference machine's i9-14900KF the eight performance cores carry
+  simultaneous multithreading and provide sixteen of its thirty-two threads, sixteen is the
+  measured optimum, and it is about four percent faster than eight. Efficiency cores are
+  still excluded — generation measures slower with them — but excluding them is not the same
+  as counting cores. The rendered command line now matches the flags the winning
+  configuration was actually measured with.
+- A quantisation's files are matched against the disk by bare file name on both sides. A
+  catalog `files` entry is a path inside the publishing repository and often carries a
+  directory, so a sharded model that was on the machine read as missing from it.
+- `llamafit list` and `llamafit recommend` share one catalog loader, one model lookup and one
+  pair of value checks (`llamafit/cli/common.py`), so a mistyped id, use case or capability
+  fails the same way whichever command met it. The capability message names the flag that was
+  actually typed, `--capability` or `--require`, which cost the thirty-seven catalogs their
+  translation of the old wording.
 - **Licence: MIT is now the GNU Affero General Public License, version 3 or later**
   (`AGPL-3.0-or-later`). `LICENSE` holds the Free Software Foundation's text verbatim, with
   the notice the licence asks a program to carry appended and filled in. Using LlamaFit still

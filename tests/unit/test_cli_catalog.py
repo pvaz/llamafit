@@ -1,6 +1,6 @@
 """Tests for ``list``, ``search``, ``info`` and the ``catalog`` command group.
 
-Every test monkeypatches ``llamafit.cli.catalog_cmd.load_catalog`` (or
+Every test monkeypatches ``llamafit.cli.common.load_catalog`` (or
 ``validate_files`` / ``refresh_file``) directly, by name, rather than the module,
 matching how those names are imported in ``catalog_cmd.py``. No test touches the
 bundled catalog or the network.
@@ -84,7 +84,7 @@ def _catalog() -> Catalog:
 @pytest.fixture(autouse=True)
 def patch_catalog(monkeypatch: pytest.MonkeyPatch) -> None:
     """Every test sees the same small, fixed catalog and file list, never the bundled ones."""
-    monkeypatch.setattr("llamafit.cli.catalog_cmd.load_catalog", lambda: (_catalog(), []))
+    monkeypatch.setattr("llamafit.cli.common.load_catalog", lambda: (_catalog(), []))
     monkeypatch.setattr(
         "llamafit.cli.catalog_cmd._default_catalog_paths", lambda: [Path("fake-catalog.yaml")]
     )
@@ -302,9 +302,7 @@ def test_a_bracket_in_catalog_text_does_not_crash_list_or_info(
         vendor="Vendor [/red]",
         license=License(spdx="weird-[/bold]licence", url="https://example.invalid/l"),
     )
-    monkeypatch.setattr(
-        "llamafit.cli.catalog_cmd.load_catalog", lambda: (Catalog(models=[hostile]), [])
-    )
+    monkeypatch.setattr("llamafit.cli.common.load_catalog", lambda: (Catalog(models=[hostile]), []))
 
     # The list table no longer shows vendor or name (dropped to keep rows to one
     # line), so it carries no free-text field a bracket could break; this just
@@ -332,7 +330,7 @@ def test_a_catalog_problem_is_reported_but_browsing_still_works(
         location="quality.baseline",
         message="field required",
     )
-    monkeypatch.setattr("llamafit.cli.catalog_cmd.load_catalog", lambda: (_catalog(), [problem]))
+    monkeypatch.setattr("llamafit.cli.common.load_catalog", lambda: (_catalog(), [problem]))
 
     result = runner.invoke(app, ["list"])
 
@@ -352,7 +350,7 @@ def test_multiple_catalog_problems_are_reported_as_a_count(
         Problem(file="a.yaml", model_id="x", location="id", message="bad"),
         Problem(file="b.yaml", model_id="y", location="id", message="also bad"),
     ]
-    monkeypatch.setattr("llamafit.cli.catalog_cmd.load_catalog", lambda: (_catalog(), problems))
+    monkeypatch.setattr("llamafit.cli.common.load_catalog", lambda: (_catalog(), problems))
 
     result = runner.invoke(app, ["info", "coder-with-tools"])
 
