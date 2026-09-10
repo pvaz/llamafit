@@ -178,7 +178,7 @@ def _scored(
     quality = score_quality(model, quant.name, needs)
     parts = {
         "quality": quality.quality,
-        "speed": speed_score(speed, needs.use_case),
+        "speed": speed_score(speed, needs.use_case, needs.min_tps),
         "fit": fit_score_for(placement.budget),
         "context": context_score(placement.max_context_fit, requested_context(needs)),
     }
@@ -240,6 +240,12 @@ def _exclusion(
     candidate keeps its placement and its speed and is shown, so the row that used to read
     "ranked third, 2.1 tokens per second" now reads "2.1 tokens per second, below the six a
     person reads at" — which is the same number with the consequence attached.
+
+    Six is the default and not the only answer. ``--min-tps`` puts the request's own figure
+    in its place, and ``--min-tps 0`` says nobody is waiting, which is the batch case and
+    excludes nothing here. The reason then names the figure it actually used and says which
+    flag set it, because a reader who moved a boundary should meet the boundary they moved
+    and not the one the specification argued for.
     """
     if not declares_use_case(model, needs.use_case):
         return _(
@@ -279,15 +285,19 @@ def _exclusion(
         }
     if speed is None:
         return _("no speed estimate, so it cannot be ranked against models that have one")
-    if not keeps_up_with_reader(speed, needs.use_case):
+    if not keeps_up_with_reader(speed, needs.use_case, needs.min_tps):
+        observed = _tps(observed_tps(speed, needs.use_case))
+        floor = _tps(floor_tps(needs.use_case, needs.min_tps))
+        if needs.min_tps is not None:
+            return _(
+                "generates %(tps)s tokens per second, below the %(floor)s this request asks "
+                "for; lower --min-tps or choose a smaller model or quantisation"
+            ) % {"tps": observed, "floor": floor}
         return _(
             "generates %(tps)s tokens per second, below the %(floor)s a person reads at: "
             "a batch tool on this machine and not one to sit in front of; "
             "a smaller model or quantisation would keep up"
-        ) % {
-            "tps": _tps(observed_tps(speed, needs.use_case)),
-            "floor": _tps(floor_tps(needs.use_case)),
-        }
+        ) % {"tps": observed, "floor": floor}
     return None
 
 

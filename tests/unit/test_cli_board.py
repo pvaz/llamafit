@@ -104,6 +104,46 @@ def test_a_download_ceiling_is_read_as_a_size() -> None:
     assert data["needs"]["max_download_bytes"] == 10 * 10**9
 
 
+def test_a_board_that_did_not_move_the_speed_floor_says_nothing_about_it() -> None:
+    """Silence is the default, and the default is section 11.4's reading floor."""
+    result = runner.invoke(app, ["--language", "en", "recommend", "--use-case", "general"])
+    assert result.exit_code == 0, result.output
+    assert "--min-tps" not in flat(result.output)
+
+
+def test_a_batch_request_ranks_the_model_the_reading_floor_removes() -> None:
+    """The board a person with nobody waiting gets: the slow model is on it."""
+    plain = json.loads(runner.invoke(app, ["--json", "recommend"]).output)
+    batch = json.loads(runner.invoke(app, ["--json", "recommend", "--min-tps", "0"]).output)
+    assert "gemma-3-27b-it" in {row["model_id"] for row in plain["excluded"]}
+    assert "gemma-3-27b-it" in {row["model_id"] for row in batch["rows"]}
+    assert batch["needs"]["min_tps"] == 0.0
+
+
+def test_a_batch_board_says_on_its_face_that_the_rule_was_relaxed() -> None:
+    """A board that quietly stopped excluding is the failure the exclusion exists to stop."""
+    result = runner.invoke(app, ["--language", "en", "recommend", "--min-tps", "0"])
+    assert result.exit_code == 0, result.output
+    text = flat(result.output)
+    assert "--min-tps 0" in text
+    assert "nobody is waiting on these tokens" in text
+
+
+def test_a_raised_floor_is_named_under_the_board_and_in_every_reason() -> None:
+    result = runner.invoke(app, ["--language", "en", "recommend", "--min-tps", "12"])
+    assert result.exit_code == 0, result.output
+    text = flat(result.output)
+    assert "--min-tps 12" in text
+    assert "at least that many tokens per second" in text
+    # The reason wraps inside its cell, so only the part that survives one line is asserted.
+    assert "the 12 this request asks for" in text
+
+
+def test_a_speed_floor_below_zero_is_refused_by_the_flag() -> None:
+    result = runner.invoke(app, ["recommend", "--min-tps", "-1"])
+    assert result.exit_code != 0
+
+
 def test_a_download_ceiling_that_is_not_a_size_is_a_clean_error() -> None:
     result = runner.invoke(app, ["recommend", "--max-download", "lots"])
     assert result.exit_code == 1

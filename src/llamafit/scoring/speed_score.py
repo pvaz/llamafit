@@ -78,6 +78,16 @@ what the old behaviour did on such a machine was order the candidates by quality
 and present the winner as a recommendation, which on a slow laptop means offering somebody
 a five-gigabyte download that will answer at a token and a half a second.
 
+**Six is a default and a request may replace it.** ``Needs.min_tps``, set from
+``--min-tps``, is the speed *this* request calls too slow, and it takes the floor's place
+in both the ramp and the test. ``--min-tps 0`` is the batch case: nobody is waiting on the
+tokens, so nothing is excluded for being slow and the ramp runs to the origin the way an
+embedding's does. A figure above zero raises the bar instead, and it applies to a
+throughput job too — the default answers "who is waiting", which is a fact about the job,
+while a typed figure answers "what will you accept", which is not a question this module
+is entitled to overrule. Because both readings come from one call, a request that moved
+the floor cannot be excluded on one number and scored against another.
+
 Coding and reasoning carry a prompt-processing modifier on top: ten points off below 100
 prompt tokens per second, twenty below 40. These are the two use cases that begin by
 feeding the model something long — a repository, a document, a chain of earlier thinking —
@@ -109,7 +119,7 @@ TARGET_TPS: Mapping[str, float] = MappingProxyType(
 """Tokens per second at which a use case stops benefiting from more speed."""
 
 READING_TPS = 6.0
-"""Tokens per second a person reads at, below which generation scores nothing.
+"""Tokens per second a person reads at, below which generation scores nothing by default.
 
 Silent reading of prose runs at roughly 240 words a minute, which is four words a second,
 and a token is about three quarters of a word: five to seven tokens per second, and six is
@@ -119,6 +129,10 @@ the middle of that band rather than a measurement of anybody in particular.
 it does not scale with the use case. A person reading a reasoning trace reads at the same
 rate as a person reading a chat reply; what changes between them is how much faster than
 that they need it to be, and that is the target's job.
+
+It is also the one number here a request may replace, through ``Needs.min_tps``: it is a
+claim about people in general, and the person in front of the program is entitled to a
+different one.
 """
 
 THROUGHPUT_ONLY = frozenset({"embedding"})
@@ -126,9 +140,11 @@ THROUGHPUT_ONLY = frozenset({"embedding"})
 
 This set decides two things now, and they are the same thing said twice: which figure the
 score reads, generation or prompt, and whether there is a reader who can be left behind.
-A use case in here has no floor, so :func:`keeps_up_with_reader` is true of it at any
-speed and section 11.4's exclusion can never apply to it. There is no person waiting on
-the tokens, so there is no rate below which the waiting stops being worth it.
+A use case in here has no floor of its own, so :func:`keeps_up_with_reader` is true of it
+at any speed and section 11.4's exclusion cannot apply to it. There is no person waiting
+on the tokens, so there is no rate below which the waiting stops being worth it — unless
+the request names one with ``--min-tps``, which is somebody saying an embedding run below
+that rate is not worth starting, and this set is not a reason to disbelieve them.
 """
 
 PROMPT_SENSITIVE = frozenset({"coding", "reasoning"})
@@ -162,20 +178,31 @@ def target_tps(use_case: str) -> float:
     return TARGET_TPS[check_use_case(use_case)]
 
 
-def floor_tps(use_case: str) -> float:
-    """Return the speed below which this use case scores nothing at all.
+def floor_tps(use_case: str, min_tps: float | None = None) -> float:
+    """Return the speed below which this request scores nothing at all.
 
     Args:
         use_case: What the request asked for.
+        min_tps: The request's own figure, from ``--min-tps``, or ``None`` when it did
+            not name one.
 
     Returns:
-        :data:`READING_TPS` for anything a person reads as it arrives, and zero for a
-        throughput job, which has no reader to fall behind.
+        The request's own figure when it named one, and otherwise :data:`READING_TPS` for
+        anything a person reads as it arrives and zero for a throughput job, which has no
+        reader to fall behind.
 
     Raises:
         ConfigError: If the use case is not one of the six.
+
+    A named figure wins for every use case, embedding included. The default says who is
+    waiting — a reader, or nobody — and that is a fact about the job. A figure typed on
+    the command line says what *this* person calls too slow, and there is no reading of
+    "at least this many tokens per second" under which the right answer is to ignore it.
     """
-    return 0.0 if check_use_case(use_case) in THROUGHPUT_ONLY else READING_TPS
+    checked = check_use_case(use_case)
+    if min_tps is not None:
+        return max(0.0, min_tps)
+    return 0.0 if checked in THROUGHPUT_ONLY else READING_TPS
 
 
 def observed_tps(speed: SpeedEstimate, use_case: str) -> float:
@@ -200,16 +227,19 @@ def observed_tps(speed: SpeedEstimate, use_case: str) -> float:
     return speed.pp_tps if check_use_case(use_case) in THROUGHPUT_ONLY else speed.gen_tps
 
 
-def keeps_up_with_reader(speed: SpeedEstimate, use_case: str) -> bool:
-    """Whether this estimate is at least as fast as the person waiting on it.
+def keeps_up_with_reader(speed: SpeedEstimate, use_case: str, min_tps: float | None = None) -> bool:
+    """Whether this estimate is at least as fast as whoever is waiting on it.
 
     Args:
         speed: The estimate for this placement.
         use_case: What the request asked for.
+        min_tps: The request's own floor, from ``--min-tps``, or ``None`` for the use
+            case's default.
 
     Returns:
-        True when there is no reader to fall behind — a :data:`THROUGHPUT_ONLY` job —
-        and otherwise whether :func:`observed_tps` reaches :func:`floor_tps`.
+        True when there is nobody to fall behind — a :data:`THROUGHPUT_ONLY` job, or a
+        request that said so with ``--min-tps 0`` — and otherwise whether
+        :func:`observed_tps` reaches :func:`floor_tps`.
 
     Raises:
         ConfigError: If the use case is not one of the six.
@@ -220,7 +250,7 @@ def keeps_up_with_reader(speed: SpeedEstimate, use_case: str) -> bool:
     boundary case falls on the side that keeps a candidate rather than the side that
     removes it.
     """
-    floor = floor_tps(use_case)
+    floor = floor_tps(use_case, min_tps)
     return floor <= 0.0 or observed_tps(speed, use_case) >= floor
 
 
@@ -266,23 +296,30 @@ def prompt_penalty(pp_tps: float, use_case: str) -> float:
     return 0.0
 
 
-def speed_score(speed: SpeedEstimate, use_case: str) -> float:
-    """Score an estimate against what this use case needs, from 0 to 100.
+def speed_score(speed: SpeedEstimate, use_case: str, min_tps: float | None = None) -> float:
+    """Score an estimate against what this request needs, from 0 to 100.
 
     Args:
         speed: The estimate for this placement.
         use_case: What the request asked for.
+        min_tps: The request's own floor, from ``--min-tps``, or ``None`` for the use
+            case's default.
 
     Returns:
         100 when the model is at least as fast as the target, zero when it is at or below
-        the speed its reader reads at, the share of the doublings between them otherwise,
-        less any prompt-processing penalty, and never below zero.
+        the floor this request is judged against, the share of the doublings between them
+        otherwise, less any prompt-processing penalty, and never below zero.
 
     Raises:
         ConfigError: If the use case is not one of the six.
+
+    The ramp and :func:`keeps_up_with_reader` read the floor from the same call, so a
+    request that moved it cannot end up excluding on one figure and scoring on another —
+    which would put a candidate on the board at a fraction of a score it could not have
+    earned, or off it while the column beside it said otherwise.
     """
     checked = check_use_case(use_case)
     reached = speed_ramp(
-        max(0.0, observed_tps(speed, checked)), floor_tps(checked), TARGET_TPS[checked]
+        max(0.0, observed_tps(speed, checked)), floor_tps(checked, min_tps), TARGET_TPS[checked]
     )
     return max(0.0, reached - prompt_penalty(speed.pp_tps, checked))

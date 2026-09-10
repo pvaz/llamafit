@@ -6,7 +6,7 @@ here sits on a boundary or immediately either side of one.
 
 from __future__ import annotations
 
-from math import inf
+from math import inf, log2
 
 import pytest
 
@@ -426,6 +426,56 @@ def test_keeping_up_is_a_question_about_the_machine_and_not_about_the_weights() 
     """
     just_over = speed(READING_TPS + 0.1, 500.0)
     assert all(keeps_up_with_reader(just_over, case) for case in TARGET_TPS if case != "embedding")
+
+
+# --- speed: a request that names its own floor -----------------------------------
+
+
+def test_a_request_that_says_nothing_gets_the_use_cases_own_floor() -> None:
+    """The default has to be what it was, or the flag would change every board."""
+    for case in TARGET_TPS:
+        assert floor_tps(case, None) == floor_tps(case)
+
+
+def test_a_named_figure_replaces_the_reading_floor() -> None:
+    assert floor_tps("general", 12.0) == 12.0
+    assert floor_tps("chat", 2.5) == 2.5
+
+
+def test_zero_is_a_request_saying_nobody_is_waiting_and_not_a_missing_value() -> None:
+    """The batch case, and the reason the field is ``None`` when unset rather than zero."""
+    assert floor_tps("general", 0.0) == 0.0
+    assert keeps_up_with_reader(speed(0.5, 500.0), "general", 0.0)
+    assert speed_score(speed(2.5, 500.0), "general", 0.0) == pytest.approx(10.0)
+
+
+def test_a_named_figure_reaches_a_throughput_job_too() -> None:
+    """Embedding has no floor of its own; that is not licence to ignore one somebody typed.
+
+    The default answers "who is waiting", which is a fact about the job. A typed figure
+    answers "what will you accept", which is not a question this module gets to overrule.
+    """
+    assert floor_tps("embedding", 50.0) == 50.0
+    assert not keeps_up_with_reader(speed(0.0, 49.0), "embedding", 50.0)
+    assert keeps_up_with_reader(speed(0.0, 50.0), "embedding", 50.0)
+
+
+def test_the_ramp_and_the_test_start_from_the_same_named_figure() -> None:
+    """Excluding on one number and scoring against another would put the two on screen."""
+    raised = 12.0
+    assert not keeps_up_with_reader(speed(11.9, 500.0), "general", raised)
+    assert speed_score(speed(11.9, 500.0), "general", raised) == 0.0
+    assert keeps_up_with_reader(speed(12.0, 500.0), "general", raised)
+    assert speed_score(speed(raised * 2**0.5, 500.0), "general", raised) == pytest.approx(
+        100.0 * 0.5 / (log2(25.0 / raised))
+    )
+
+
+def test_a_floor_at_or_above_the_target_is_a_step_and_not_a_division_by_zero() -> None:
+    """Nothing survives such a floor below the target, so the ramp only ever says 100 or 0."""
+    assert speed_ramp(24.9, 30.0, 25.0) == 0.0
+    assert speed_ramp(25.0, 30.0, 25.0) == 100.0
+    assert speed_score(speed(40.0, 500.0), "general", 30.0) == 100.0
 
 
 def test_an_unknown_use_case_is_named_by_the_floor_test_too() -> None:

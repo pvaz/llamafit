@@ -158,12 +158,13 @@ the changelog says so when they do.
 - `llamafit recommend`: the board. Every model and quantisation in the catalog is planned
   (section 9), sized (section 8), estimated (section 10) and scored (section 11), and the
   result is one ordered list with `--use-case`, `--require`, `--prefer`, `--min-context`,
-  `--max-download`, `--license`, `--limit`, `--all-quants`, `--no-vision`, `--explain` and
-  `--json`. A candidate the request excludes is shown with the reason and what to change
-  about the request, never dropped: a shorter list tells a reader nothing. `--explain`
-  expands a row into the four scores, the weights that combined them, the quality it was
-  built from, the memory budget line by line, the context ladder and where a token's time
-  goes, which is the project's standing promise that no number has to be taken on faith.
+  `--min-tps`, `--max-download`, `--license`, `--limit`, `--all-quants`, `--no-vision`,
+  `--explain` and `--json`. A candidate the request excludes is shown with the reason and
+  what to change about the request, never dropped: a shorter list tells a reader nothing.
+  `--explain` expands a row into the four scores, the weights that combined them, the
+  quality it was built from, the memory budget line by line, the context ladder and where a
+  token's time goes, which is the project's standing promise that no number has to be taken
+  on faith.
 - `llamafit fit`: every model ranked by how well it uses this machine and nothing else, with
   `--perfect`, `--min-fit`, `--limit` and `--all-quants`. It deliberately does not apply
   section 11's exclusions: a coding model is not left out of a fit listing for being one.
@@ -182,6 +183,21 @@ the changelog says so when they do.
   which was being computed and thrown away, so the ladder no longer has to guess.
 - `--prefer balanced|quality|speed` moves a tenth of the weight between quality and speed
   (section 12.1), capped by what the other part has to give so no weight goes below nothing.
+- **`--min-tps` lets a person with nobody waiting say so.** Section 11.4 excludes a candidate
+  that generates more slowly than a person reads, which is right for somebody sitting in
+  front of it and wrong for somebody running a batch — and until now there was no way to
+  disagree with the figure, in either direction. `Needs.min_tps` carries the request's own
+  speed and `--min-tps` sets it: `0` says nobody is waiting on these tokens and excludes
+  nothing for being slow, and a larger figure raises the bar for a reader who skims. Unset
+  means the reading floor, so a request that says nothing is judged exactly as it was
+  before. The figure goes into the floor's place for both the exclusion and the ramp, from
+  one call, so a board cannot exclude on one number while scoring against another. It
+  applies to a throughput job too: the default answers "who is waiting", which is a fact
+  about the job, and a typed figure answers "what will you accept", which is not the
+  program's to overrule. Because a board that quietly stopped excluding would be the same
+  failure the exclusion exists to prevent, a board whose floor was moved says so under
+  itself, and every row excluded by a figure somebody typed names that figure and the flag
+  that set it rather than the reading rate.
 - Prompt processing shows its working, as generation already did. Section 10.2's three
   terms — the arithmetic, the expert set crossing the link to the card, and the same set
   read out of system memory when there is no card — arrive on `SpeedEstimate` per prompt
@@ -442,5 +458,36 @@ the changelog says so when they do.
   estimator, and section 10.3 reserves `measured` for a benchmark taken on *this* machine —
   but phase 3 stores exactly such benchmarks and would have walked straight into it. The
   Flash-Next row now records the whole command line rather than the delta.
+- **A model nobody can wait for scores zero rather than a fraction.** Section 11.4's straight
+  line to the origin gave Gemma 3 27B at 2.1 tokens per second 8.4 points out of 100 for a
+  general request, which put it above Llama 3.1 8B at 9.7 on the same machine. A person
+  waiting three and a half minutes for a five-hundred-token answer is not getting eight
+  percent of a good experience. The score now runs between two speeds instead of one: the
+  target, which is a property of the job and where the score stops, and a floor of six
+  tokens per second, which is a property of the *reader* — silent reading at about 240 words
+  a minute, three quarters of a word to a token — and where it starts. Between them the axis
+  is doublings and not tokens per second, because six to twelve is the difference between
+  waiting and not waiting while twenty-one to twenty-five is a difference nobody can feel,
+  and a straight line prices them the same; it is the axis section 11.3's capacity arm
+  already chose, for the same reason. The floor does not move with the use case, because a
+  person reading a reasoning trace reads no faster than one reading a chat reply, and
+  embedding has no floor at all: nobody reads an embedding, so it keeps the straight line
+  and is scored on prompt throughput. What it costs is named rather than hidden — where
+  nothing reaches six tokens per second the speed term stops separating candidates at all.
+- **A model slower than its reader is excluded from an interactive board, not ranked on
+  it.** The speed score already knew that six tokens per second is the rate a person reads
+  at and already scored everything below it zero, and zero was not enough: on the reference
+  machine Gemma 3 27B at 2.2 tokens per second led a general board at 54.92 over Llama 3.1
+  8B at 51.34 with its speed column reading nothing at all. That is not the speed term being
+  outvoted — it is the speed term at its rail, unable to say anything worse about a model
+  that cannot be used, while quality and fit go on being right about a model nobody can wait
+  for. Reweighting only demotes: on the bundled reference profile, where the ordering was
+  never inverted, the same model still sat at number two of three for general, chat and
+  multimodal. So a candidate below the floor is now excluded with its speed and the floor in
+  the reason, keeping its placement and its estimate the way every other exclusion does, and
+  a throughput job with no reader can never be excluded this way. The rule adds no constant:
+  it reuses the reading floor, which was derived from reading rates rather than fitted to a
+  board, and it fires on the machine rather than on the model — the same entry at the same
+  quantisation leads a general board on a machine with a card that holds it.
 
 [Unreleased]: https://github.com/pvaz/llamafit/commits/main
