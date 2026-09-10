@@ -1,8 +1,27 @@
-# Sourced from Meta's Hugging Face model card and the bartowski GGUF repository.
+# The Llama 3 line: Meta's dense models on llama.cpp's `llama` architecture, from the 1B that
+# fits anywhere to the 70B that needs a workstation. Llama 3.1, 3.2 and 3.3 are separate
+# releases with separate licences, and each entry names its own; they share a file because
+# they share an architecture and a generation, which is what `family` groups.
+#
 # Primary sources used for this file:
-#   - Model card: https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct
-#   - Licence: https://github.com/meta-llama/llama-models/blob/main/models/llama3_1/LICENSE
-#   - GGUF repository: https://huggingface.co/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
+#   - Llama 3.1 8B card: https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct
+#   - Llama 3.2 1B card: https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct
+#   - Llama 3.2 3B card: https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct
+#   - Llama 3.3 70B card: https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct
+#   - Llama 3.1 licence: https://github.com/meta-llama/llama-models/blob/main/models/llama3_1/LICENSE
+#   - Llama 3.2 licence: https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/LICENSE
+#   - Llama 3.3 licence: https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/LICENSE
+#   - GGUF repositories: https://huggingface.co/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
+#                        https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF
+#                        https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF
+#                        https://huggingface.co/bartowski/Llama-3.3-70B-Instruct-GGUF
+#
+# Every model here ships under a Llama Community License, which is not an OSI-approved open
+# source licence: it carries an acceptable use policy, a naming condition (a derivative must
+# be named "Llama-<something>" and the product must say "Built with Llama"), and a clause
+# withholding the grant from anyone whose product had more than 700 million monthly active
+# users on the release date. The `spdx` field therefore holds Meta's own slug, which differs
+# per release, and `url` points at that release's text -- see docs/catalog.md, "license.spdx".
 - id: llama-3.1-8b-instruct
   name: Llama 3.1 8B Instruct
   vendor: Meta
@@ -37,3 +56,146 @@
       trust: bartowski
       quants:
         - { name: Q4_K_M }
+
+- id: llama-3.2-1b-instruct
+  name: Llama 3.2 1B Instruct
+  vendor: Meta
+  family: llama3
+  release_date: 2024-09-25
+  license:
+    spdx: llama3.2
+    url: "https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/LICENSE"
+  params: { total_b: 1.24, active_b: 1.24 }
+  architecture:
+    class: dense
+    gguf_arch: llama
+    notes: >-
+      16 layers, 32 query heads, 8 key/value heads (GQA), pruned from Llama 3.1 8B and
+      distilled from the 8B and 70B teachers. The smallest Llama anyone ships; it exists to
+      run where nothing else will.
+  context: { native: 131072 }
+  # Meta's card advertises tool calling for both 3.2 sizes and reports BFCL v2 for each, but
+  # the 1B scores 25.7 against the 3B's 67.0. `tools` is left off here deliberately: the
+  # capability list is a gate, and a model that fails three tool calls in four does not
+  # belong in the results for a request that needs them. The 3B below keeps it.
+  capabilities: [multilingual, long-context]
+  use_cases: [general, chat]
+  quality:
+    baseline: 35
+    benchmarks:
+      # Instruction-tuned (BF16) rows from the model card's own table, not the pretrained ones.
+      - name: MMLU (5-shot)
+        score: 49.3
+        source: "https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct"
+      - name: IFEval
+        score: 59.5
+        source: "https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct"
+      - name: GSM8K (8-shot, CoT)
+        score: 44.4
+        source: "https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct"
+  sources:
+    - repo: bartowski/Llama-3.2-1B-Instruct-GGUF
+      kind: gguf
+      trust: bartowski
+      # Two quants, no small one: the model is already the small one. Q4_K_M is the common
+      # case and Q8_0 costs about half a gigabyte more, which is the whole argument for it
+      # here: at this size the near-lossless quant is affordable on anything that runs at all.
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q8_0 }
+
+- id: llama-3.2-3b-instruct
+  name: Llama 3.2 3B Instruct
+  vendor: Meta
+  family: llama3
+  release_date: 2024-09-25
+  license:
+    spdx: llama3.2
+    url: "https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/LICENSE"
+  params: { total_b: 3.21, active_b: 3.21 }
+  architecture:
+    class: dense
+    gguf_arch: llama
+    notes: >-
+      28 layers, 24 query heads, 8 key/value heads (GQA), pruned and distilled from the
+      larger Llama 3.1 models. The size that fits a 4 GB card at four bits with context left
+      over.
+  context: { native: 131072 }
+  capabilities: [tools, multilingual, long-context]
+  use_cases: [general, chat]
+  quality:
+    baseline: 52
+    benchmarks:
+      # Instruction-tuned (BF16) rows from the model card's own table.
+      - name: MMLU (5-shot)
+        score: 63.4
+        source: "https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct"
+      - name: IFEval
+        score: 77.4
+        source: "https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct"
+      - name: GSM8K (8-shot, CoT)
+        score: 77.7
+        source: "https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct"
+      - name: BFCL v2 (tool use)
+        score: 67.0
+        source: "https://huggingface.co/meta-llama/Llama-3.2-3B-Instruct"
+  sources:
+    - repo: bartowski/Llama-3.2-3B-Instruct-GGUF
+      kind: gguf
+      trust: bartowski
+      # Same reasoning as the 1B: four bits for the common case, Q6_K where a further
+      # half-gigabyte buys back most of the quantisation loss. Nothing smaller is worth
+      # listing at 3B, where a three-bit quant costs more quality than it saves memory.
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q6_K }
+
+- id: llama-3.3-70b-instruct
+  name: Llama 3.3 70B Instruct
+  vendor: Meta
+  family: llama3
+  release_date: 2024-12-06
+  license:
+    spdx: llama3.3
+    url: "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/LICENSE"
+  params: { total_b: 70.6, active_b: 70.6 }
+  architecture:
+    class: dense
+    gguf_arch: llama
+    notes: >-
+      80 layers, 64 query heads, 8 key/value heads (GQA). Meta's last dense flagship: the
+      same architecture as Llama 3.1 70B with a rebuilt post-training run, and close enough
+      to Llama 3.1 405B on most tasks to have replaced it for anyone running locally.
+  context: { native: 131072 }
+  capabilities: [coding, tools, multilingual, long-context]
+  use_cases: [general, chat, coding, reasoning]
+  quality:
+    baseline: 75
+    benchmarks:
+      - name: MMLU Pro (5-shot, CoT)
+        score: 68.9
+        source: "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct"
+      - name: HumanEval (pass@1)
+        score: 88.4
+        source: "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct"
+      - name: IFEval
+        score: 92.1
+        source: "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct"
+      - name: GPQA Diamond (0-shot, CoT)
+        score: 50.5
+        source: "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct"
+      - name: BFCL v2 (tool use)
+        score: 77.3
+        source: "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct"
+  sources:
+    - repo: bartowski/Llama-3.3-70B-Instruct-GGUF
+      kind: gguf
+      trust: bartowski
+      # Three, because at 70B the spread is what decides whether the model runs at all.
+      # IQ3_XXS is the one that fits a 32 GB machine; Q4_K_M is the default anyone with 64 GB
+      # should take; Q6_K is for a machine with enough memory that the quantisation, rather
+      # than the memory, is the limit.
+      quants:
+        - { name: IQ3_XXS }
+        - { name: Q4_K_M }
+        - { name: Q6_K }
