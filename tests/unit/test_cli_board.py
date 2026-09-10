@@ -112,11 +112,21 @@ def test_a_board_that_did_not_move_the_speed_floor_says_nothing_about_it() -> No
 
 
 def test_a_batch_request_ranks_the_model_the_reading_floor_removes() -> None:
-    """The board a person with nobody waiting gets: the slow model is on it."""
-    plain = json.loads(runner.invoke(app, ["--json", "recommend"]).output)
-    batch = json.loads(runner.invoke(app, ["--json", "recommend", "--min-tps", "0"]).output)
-    assert "gemma-3-27b-it" in {row["model_id"] for row in plain["excluded"]}
-    assert "gemma-3-27b-it" in {row["model_id"] for row in batch["rows"]}
+    """The board a person with nobody waiting gets: the floor stops holding the model back.
+
+    Asserted as the floor's own effect rather than as a place in the ranking. The board
+    shows a fixed number of rows, so as the catalog grows a model can leave the excluded
+    half without reaching the visible half, and a test that demanded a row would then fail
+    for a reason that has nothing to do with the floor.
+    """
+    plain = json.loads(runner.invoke(app, ["--language", "en", "--json", "recommend"]).output)
+    batch = json.loads(
+        runner.invoke(app, ["--language", "en", "--json", "recommend", "--min-tps", "0"]).output
+    )
+    slow = next(row for row in plain["excluded"] if row["model_id"] == "gemma-3-27b-it")
+    assert "a person reads at" in (slow["candidate"]["excluded_because"] or "")
+    batch_excluded = {row["model_id"] for row in batch["excluded"]}
+    assert "gemma-3-27b-it" not in batch_excluded
     assert batch["needs"]["min_tps"] == 0.0
 
 
@@ -135,8 +145,19 @@ def test_a_raised_floor_is_named_under_the_board_and_in_every_reason() -> None:
     text = flat(result.output)
     assert "--min-tps 12" in text
     assert "at least that many tokens per second" in text
-    # The reason wraps inside its cell, so only the part that survives one line is asserted.
-    assert "the 12 this request asks for" in text
+    # "in every reason" is asserted against the reasons themselves, not against the render:
+    # the excluded table shows only as many rows as it has room for, so which reasons reach
+    # the terminal depends on how big the catalog is.
+    data = json.loads(
+        runner.invoke(app, ["--language", "en", "--json", "recommend", "--min-tps", "12"]).output
+    )
+    too_slow = [
+        because
+        for row in data["excluded"]
+        if "tokens per second" in (because := row["candidate"]["excluded_because"] or "")
+    ]
+    assert too_slow, "a floor of 12 has to exclude something on the reference machine"
+    assert all("the 12 this request asks for" in because for because in too_slow)
 
 
 def test_a_speed_floor_below_zero_is_refused_by_the_flag() -> None:
