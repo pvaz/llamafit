@@ -174,6 +174,7 @@ def main() -> None:
 
 
 from llamafit.cli import (  # noqa: E402  (registers commands on import)
+    bench_cmd,
     board_cmd,
     catalog_cmd,
     doctor_cmd,
@@ -189,6 +190,7 @@ from llamafit.tui.entry import open_dashboard  # noqa: E402  (`llamafit` with no
 __all__ = [
     "CliState",
     "app",
+    "bench_cmd",
     "board_cmd",
     "catalog_cmd",
     "doctor_cmd",

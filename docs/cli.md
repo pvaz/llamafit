@@ -593,10 +593,51 @@ A server already answering on that endpoint is reported rather than joined by a 
 What was started is remembered by process id **and start time**, so `--stop` cannot aim at
 whatever inherited a recycled id.
 
-### `llamafit bench [model]` — phase 3
+### `llamafit bench` — phase 3, shipped
 
-Measure generation and prompt throughput at the planned flags, store the result, and print
-estimated versus measured. Options: `--all`, `--quant NAME`, `--context N`, `--json`.
+`llamafit bench <model>`: measure the model on this machine at the flags `plan` would launch
+it with, and print the measurement beside the estimate. It runs `llama-bench` for a prompt
+row and a generation row, then starts a real `llama-server` and asks it three fixed
+questions — a short prompt on a cold server, a thousand-token prompt on a warm one, and a
+tool call — recording the throughput each reports about itself, the time to first token, the
+peak VRAM during the run and the buffer sizes from the server's log.
+
+| Option | Effect |
+|---|---|
+| `--quant NAME` | Benchmark this quantisation instead of the planned one. |
+| `--context N` | Size for this many tokens. |
+| `--ub N` | Set the micro-batch by hand; the whole budget is rebuilt around it. |
+| `--sweep` | Measure prompt processing at every micro-batch of the ladder. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all. |
+| `--no-server` | Run `llama-bench` only. Gives up the paging check, the buffer sizes and the tool-call test. |
+| `--no-store` | Print the result without writing it to the database, so no estimate is relabelled. |
+| `--dry-run` | Print the two command lines and run nothing. |
+| `--calibrate` | Fit the estimator's constants to this machine from every stored result, and name the ones the measurements do not determine. Works on its own, with no model. |
+| `--show` | List what this machine has already measured, and stop. |
+
+The last column of the table is the point of the command. A tool that measured a model and
+then showed only the measurement would leave you better informed about that model and no
+better informed about the next one, so the estimate stays on the page — and the estimate
+shown is the one made *before* the run, never one recomputed afterwards from a database that
+by then contains the answer.
+
+**The paging check** has three states and not two: it fires when peak VRAM was within three
+percent of the card's total **and** generation came in below three fifths of the estimate
+(section 16.4), it clears a card that stayed well short of full, and it says *unchecked* when
+there was no vendor tool, no card total or no estimate. A configuration nobody could check
+has not been cleared.
+
+**A result is refused rather than stored** when the run did not do what it was told — a
+context llama.cpp clamped, a micro-batch it did not use — and when the host is a simulated
+one. The flags a stored result hands out are built from what the tool reported about itself
+rather than from the command line it was given, so a micro-batch sweep's rows are each filed
+under the size that row actually ran at.
+
+**`--calibrate` fits only what the data determines.** Four measurements pinned four constants
+on the reference machine and two would not have pinned three, so a constant whose column is
+empty, whose configurations are too few, or whose fit comes out impossible is refused by name
+with the reason. `layer_overhead_ms` is never fitted at all: section 10.1 removed the
+per-layer term, so a number fitted for it would be read by nothing. See
+[benchmarking.md](benchmarking.md).
 
 ## Environment variables
 

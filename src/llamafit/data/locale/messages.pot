@@ -11,6 +11,160 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: src/llamafit/bench/calibrate.py:393
+msgid "nothing measured touches this term, so there is no equation it appears in"
+msgstr ""
+
+#: src/llamafit/bench/calibrate.py:395
+msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
+msgstr ""
+
+#: src/llamafit/bench/calibrate.py:401
+msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
+msgstr ""
+
+#: src/llamafit/bench/calibrate.py:406
+msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr ""
+
+#: src/llamafit/bench/calibrate.py:411
+msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr ""
+
+#: src/llamafit/bench/calibrate.py:415
+msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
+msgstr ""
+
+#: src/llamafit/bench/compare.py:100
+msgid "generation (llama-bench)"
+msgstr ""
+
+#: src/llamafit/bench/compare.py:101
+msgid "prompt (llama-bench)"
+msgstr ""
+
+#: src/llamafit/bench/compare.py:102
+msgid "generation, first request"
+msgstr ""
+
+#: src/llamafit/bench/compare.py:103
+msgid "generation, 1K prompt"
+msgstr ""
+
+#: src/llamafit/bench/compare.py:104
+msgid "prompt, 1K request"
+msgstr ""
+
+#: src/llamafit/bench/compare.py:105
+msgid "peak VRAM"
+msgstr ""
+
+#: src/llamafit/bench/fingerprint.py:115
+msgid "no graphics card"
+msgstr ""
+
+#: src/llamafit/bench/fingerprint.py:117
+msgid "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+msgstr ""
+
+#: src/llamafit/bench/fingerprint.py:229
+msgid "%(flag)s was asked for as %(wanted)s but the run reports %(actual)s"
+msgstr ""
+
+#: src/llamafit/bench/paging.py:145
+msgid "The card was full and generation came in below three fifths of the estimate: the driver was paging to system memory, which does not fail and does not appear in the log."
+msgstr ""
+
+#: src/llamafit/bench/paging.py:151
+msgid "Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page."
+msgstr ""
+
+#: src/llamafit/bench/paging.py:156
+msgid "The card was full, which a good plan is meant to be, and the speed was close enough to the estimate that nothing was paging."
+msgstr ""
+
+#: src/llamafit/bench/paging.py:161
+msgid "No VRAM reading was taken during the run, so this configuration has not been cleared of paging; it has only not been checked."
+msgstr ""
+
+#: src/llamafit/bench/paging.py:166
+msgid "The card's total memory is unknown, so a reading of what was in use says nothing about how close to full it was."
+msgstr ""
+
+#: src/llamafit/bench/paging.py:170
+msgid "There was no estimate to compare the measured speed against, so the second half of the signature could not be tested."
+msgstr ""
+
+#: src/llamafit/bench/parse.py:167
+msgid "llama-bench did not produce JSON"
+msgstr ""
+
+#: src/llamafit/bench/parse.py:171
+msgid "llama-bench JSON is not a list of results"
+msgstr ""
+
+#: src/llamafit/bench/parse.py:180
+msgid "llama-bench JSON held no readable results"
+msgstr ""
+
+#: src/llamafit/bench/parse.py:245
+msgid "no llama-bench result rows found"
+msgstr ""
+
+#: src/llamafit/bench/run.py:206
+msgid "could not open %(path)s for the server log"
+msgstr ""
+
+#: src/llamafit/bench/run.py:214
+msgid "could not start llama-server"
+msgstr ""
+
+#: src/llamafit/bench/run.py:488
+#: src/llamafit/hardware/runner.py:172
+#: src/llamafit/llamacpp/install.py:1320
+msgid "no output"
+msgstr ""
+
+#: src/llamafit/bench/run.py:490
+msgid "llama-bench exited with code %(code)d: %(detail)s"
+msgstr ""
+
+#: src/llamafit/bench/run.py:504
+msgid "llama-bench output could not be read: %(error)s"
+msgstr ""
+
+#: src/llamafit/bench/run.py:917
+msgid "llama-server did not become healthy"
+msgstr ""
+
+#: src/llamafit/bench/run.py:918
+msgid "Its whole output is in the log file `bench` named; the end says why."
+msgstr ""
+
+#: src/llamafit/bench/store.py:150
+msgid "%(path)s was written by a newer LlamaFit (benchmark format %(found)d, this build reads %(known)d)"
+msgstr ""
+
+#: src/llamafit/bench/store.py:155
+msgid "Upgrade LlamaFit, or move the file aside to start a new one."
+msgstr ""
+
+#: src/llamafit/bench/store.py:203
+msgid "a benchmark cannot be recorded against a simulated machine"
+msgstr ""
+
+#: src/llamafit/bench/store.py:204
+msgid "Run `llamafit bench` on the machine itself, without --profile."
+msgstr ""
+
+#: src/llamafit/bench/store.py:209
+msgid "the run did not use the settings it was given: %(problems)s"
+msgstr ""
+
+#: src/llamafit/bench/store.py:211
+msgid "Nothing was stored. A result filed under flags it was not taken with would be believed later by everything that reads it."
+msgstr ""
+
 #: src/llamafit/budget/budget.py:140
 msgid "a conservative default; nobody has measured this card's backend overhead"
 msgstr ""
@@ -214,6 +368,229 @@ msgstr ""
 msgid "Run again with --verbose for the full traceback."
 msgstr ""
 
+#: src/llamafit/cli/bench_cmd.py:75
+#: src/llamafit/cli/catalog_cmd.py:199
+#: src/llamafit/cli/catalog_cmd.py:430
+#: src/llamafit/cli/install_cmd.py:548
+#: src/llamafit/cli/plan_cmd.py:35
+#: src/llamafit/cli/preset_cmd.py:59
+msgid "A catalog model id."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:80
+msgid "Benchmark this quantisation instead of the planned one."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:83
+msgid "Size for this many tokens."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:89
+msgid "Set the micro-batch by hand; the budget is rebuilt around it."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:117
+msgid ""
+"Measure a model on this machine and show the measurement beside the estimate.\n"
+"\n"
+"Runs llama-bench and a real server at the planned flags, stores the result with the conditions it was taken under, and flags a configuration the driver was paging. With --calibrate, fits the estimator's constants to this machine from every stored result and says by name which ones the measurements do not determine."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:138
+msgid "Measure prompt processing at every micro-batch of the ladder, not only the planned one. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:151
+msgid "Run llama-bench only. Faster, and it gives up the paging check, the buffer sizes and the tool-call test, all of which need a real server."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:160
+msgid "Print the result without writing it to the database."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:165
+msgid "Print the commands that would run, and run nothing."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:172
+msgid "Fit the estimator's constants to this machine from every result."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:176
+msgid "List what is already stored and stop."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:190
+msgid "`llamafit bench` needs a model to measure"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:191
+msgid "Try `llamafit bench <model>`, `--calibrate` on its own, or `--show`."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:272
+msgid "llama.cpp was not found, so there is nothing to benchmark with"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:273
+msgid "Run `llamafit doctor` to see where it was looked for."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:278
+msgid "%(path)s has llama-server but no llama-bench"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:279
+msgid "Some release archives leave it out; a full build has it beside the server."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:294
+msgid "this host is simulated, and a simulated machine cannot be measured"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:295
+msgid "Run `llamafit bench` on the machine itself."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:299
+msgid "the model file is not on this machine: %(path)s"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:300
+msgid "Download it first; `llamafit plan` shows the path the command line uses."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:307
+msgid "Would run:"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:339
+msgid "Nothing has been measured on this machine yet."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:341
+msgid "Stored measurements"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:342
+msgid "model"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:343
+msgid "kind"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:344
+msgid "gen tok/s"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:345
+msgid "prompt tok/s"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:346
+msgid "taken"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:347
+msgid "flags"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:387
+msgid "Nothing was written to the database, so no estimate will be relabelled."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:396
+msgid "Estimated against measured"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:397
+msgid "figure"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:398
+msgid "estimated"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:399
+msgid "measured"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:400
+msgid "ratio"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:414
+msgid "%(count)d figure is outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgid_plural "%(count)d figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/bench_cmd.py:434
+msgid "This configuration was paging."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:436
+msgid "This configuration was not paging."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:438
+msgid "Paging could not be checked."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:448
+msgid "Peak VRAM was %(percent)s percent of the card, and generation was %(speed)s percent of the estimate."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:454
+msgid "not compared"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:462
+msgid "The largest context on the ladder that would not page is %(tokens)s."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:471
+#: src/llamafit/cli/render.py:1298
+msgid "Calibration"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:472
+msgid "constant"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:473
+msgid "value"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:474
+msgid "from"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:495
+msgid "%(base)s + %(slope)s per 1K"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:502
+msgid "%(count)d measured context"
+msgid_plural "%(count)d measured contexts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/bench_cmd.py:512
+msgid "Nothing was fitted. Every line below says what its constant was missing; a calibration made from less than that would look precise and be arbitrary."
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:523
+msgid "%(name)s was not fitted: %(reason)s"
+msgstr ""
+
+#: src/llamafit/cli/bench_cmd.py:533
+msgid "%(count)d measured configuration"
+msgid_plural "%(count)d measured configurations"
+msgstr[0] ""
+msgstr[1] ""
+
 #: src/llamafit/cli/board_cmd.py:57
 msgid "What the model is for. It sets the score weights, the speed target and the context a candidate is measured against."
 msgstr ""
@@ -352,14 +729,6 @@ msgstr ""
 
 #: src/llamafit/cli/catalog_cmd.py:194
 msgid "Show one model's facts, sources and every quant it publishes."
-msgstr ""
-
-#: src/llamafit/cli/catalog_cmd.py:199
-#: src/llamafit/cli/catalog_cmd.py:430
-#: src/llamafit/cli/install_cmd.py:548
-#: src/llamafit/cli/plan_cmd.py:35
-#: src/llamafit/cli/preset_cmd.py:59
-msgid "A catalog model id."
 msgstr ""
 
 #: src/llamafit/cli/catalog_cmd.py:230
@@ -1820,10 +2189,6 @@ msgstr ""
 msgid "Provenance"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1298
-msgid "Calibration"
-msgstr ""
-
 #: src/llamafit/cli/render.py:1300
 msgid "recorded from %(source)s; this build stores it but does not apply it yet"
 msgstr ""
@@ -2893,11 +3258,6 @@ msgstr ""
 #: src/llamafit/hardware/runner.py:147
 #: src/llamafit/hardware/runner.py:98
 msgid "%(program)s: not found"
-msgstr ""
-
-#: src/llamafit/hardware/runner.py:172
-#: src/llamafit/llamacpp/install.py:1320
-msgid "no output"
 msgstr ""
 
 #: src/llamafit/hardware/runner.py:173
