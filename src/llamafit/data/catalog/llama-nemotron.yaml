@@ -1,0 +1,97 @@
+# NVIDIA's Llama Nemotron: Llama 3.3 70B put through neural architecture search into a 49B
+# model with irregular per-layer attention and FFN shapes, then post-trained for reasoning.
+# llama.cpp loads it as `deci`, not `llama`, because the layers are no longer uniform.
+#
+# It is in the catalog as a community fine-tune rather than a vendor model because it is the
+# better model for one purpose than the Meta release it came from: it beats Llama 3.3 70B on
+# every reasoning and coding benchmark the two both publish, while being 30 per cent smaller.
+#
+# Primary sources used for this file:
+#   - Model card: https://huggingface.co/nvidia/Llama-3_3-Nemotron-Super-49B-v1_5
+#   - NVIDIA Open Model License: https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license/
+#   - Llama 3.3 Community License: https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/LICENSE
+#   - Puzzle / NAS method: https://arxiv.org/abs/2411.19146
+#   - GGUF repository: https://huggingface.co/bartowski/nvidia_Llama-3_3-Nemotron-Super-49B-v1_5-GGUF
+#
+# On the licence, which is the whole reason to be careful with a fine-tune. The Hugging Face
+# metadata on this repository says `license: other, license_name: nvidia-open-model-license`,
+# and that is true but not complete. The card's own "License/Terms of Use" section reads:
+# "GOVERNING TERMS: Your use of this model is governed by the NVIDIA Open Model License.
+# Additional Information: Llama 3.3 Community License Agreement. Built with Llama." Both
+# apply. A fine-tune cannot shed the terms of the weights it was built from, and Meta's are
+# the restrictive half -- the acceptable use policy, the naming condition NVIDIA is obeying
+# in the model's own name, and the 700-million-user clause. `spdx` therefore records
+# `llama3.3`, the licence that actually constrains who may use this and how, and the NVIDIA
+# terms are named here rather than in the field because the field holds one value. Anyone
+# deploying this needs to read both documents.
+#
+# One thing to expect from this entry before filing it as broken: `recommend` will not rank
+# it, and says why -- "This model's file does not say how large its key-value cache is per
+# token." That is true of the reader rather than of the file. `deci` stores per-layer values
+# where every other architecture stores one, so `deci.attention.head_count_kv` is an array of
+# 80 numbers (8 on the attention layers, 0 on the 31 that the architecture search removed
+# attention from entirely) and `llamafit.gguf.facts` reads a single integer, gets nothing, and
+# leaves `kv_bytes_per_token_f16` empty. The cache is computable -- it is the sum over the
+# array times the key and value lengths, and it is *smaller* than a uniform 49B model's
+# because a third of the layers hold no cache at all, which is part of why this model is
+# cheaper to run than its parameter count suggests. Teaching the reader to sum an array-valued
+# head count is what would make this model rankable; it is a code change, not a catalog one.
+- id: llama-3.3-nemotron-super-49b-v1.5
+  name: Llama 3.3 Nemotron Super 49B v1.5
+  vendor: NVIDIA
+  family: llama-nemotron
+  release_date: 2025-07-25
+  license:
+    spdx: llama3.3
+    url: "https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/LICENSE"
+  params: { total_b: 49.9, active_b: 49.9 }
+  architecture:
+    class: dense
+    gguf_arch: deci
+    notes: >-
+      Llama 3.3 70B compressed by neural architecture search (Puzzle): every block was chosen
+      independently, so attention is skipped entirely in some layers and the FFN width varies
+      between them. Dense, but not uniform, which is why llama.cpp reads it as `deci` and not
+      as `llama`.
+  context: { native: 131072 }
+  # `thinking` is the point of this model rather than a bonus: reasoning is ON by default and
+  # `/no_think` in the system prompt turns it off. No `multilingual`: the base is multilingual
+  # but NVIDIA declares English only for this checkpoint and publishes no multilingual score,
+  # so there is nothing to claim it from.
+  capabilities: [thinking, coding, tools, long-context]
+  use_cases: [reasoning, coding, general, chat]
+  quality:
+    baseline: 80
+    benchmarks:
+      # All from the card's own evaluation tables, reasoning ON, averaged over the number of
+      # runs each table states.
+      - name: AIME 2025 (pass@1, avg of 16)
+        score: 82.71
+        source: "https://huggingface.co/nvidia/Llama-3_3-Nemotron-Super-49B-v1_5"
+      - name: GPQA (pass@1, avg of 4)
+        score: 71.97
+        source: "https://huggingface.co/nvidia/Llama-3_3-Nemotron-Super-49B-v1_5"
+      - name: LiveCodeBench 24.10-25.02 (pass@1, avg of 4)
+        score: 73.58
+        source: "https://huggingface.co/nvidia/Llama-3_3-Nemotron-Super-49B-v1_5"
+      - name: MMLU Pro (CoT)
+        score: 79.53
+        source: "https://huggingface.co/nvidia/Llama-3_3-Nemotron-Super-49B-v1_5"
+      - name: BFCL v3 (pass@1, avg of 2)
+        score: 71.75
+        source: "https://huggingface.co/nvidia/Llama-3_3-Nemotron-Super-49B-v1_5"
+  # The card's recommendation for reasoning ON; it asks for greedy decoding with reasoning OFF.
+  sampling: { temp: 0.6, top_p: 0.95 }
+  chat_template: { thinking_toggle: "/no_think in the system prompt" }
+  sources:
+    - repo: bartowski/nvidia_Llama-3_3-Nemotron-Super-49B-v1_5-GGUF
+      kind: gguf
+      trust: bartowski
+      # 49B is the size where the three-bit quant is the difference between running on a
+      # 24 GB card and not running: IQ3_M is that one. Q4_K_M is the default, and Q6_K is
+      # worth listing because a reasoning model generates long answers and pays for
+      # quantisation error over every one of those tokens.
+      quants:
+        - { name: IQ3_M }
+        - { name: Q4_K_M }
+        - { name: Q6_K }
