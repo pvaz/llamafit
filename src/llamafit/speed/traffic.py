@@ -19,10 +19,13 @@ under one of three access patterns:
     gigabytes and the memory system never gets to stream. This is the term that decides
     whether a mixture-of-experts recommendation is right or twice as optimistic.
 
-What is deliberately *not* counted: the token embedding table, because a token reads one
-row of it; the vision projector, because it runs on images rather than on every token; and
-the recurrent state of a hybrid architecture, which section 10.1's formula omits and which
-is under one millisecond a token on both reference models.
+What is deliberately *not* counted. **The token embedding table**, because a lookup reads
+one row and not the table: counting the whole thing puts the apparent rate above what the
+memory bus can physically deliver, and on a small dense model, where the table is a quarter
+of the file, it is the difference between a plausible answer and an impossible one. The
+**vision projector**, because it runs on images rather than on every token. And the
+**recurrent state** of a hybrid architecture, which section 10.1's formula omits and which
+is under one millisecond a token on both expert models in the calibration set.
 """
 
 from __future__ import annotations

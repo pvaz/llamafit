@@ -9,12 +9,14 @@ written out in :func:`formula_estimate`, and every constant they use lives in
 Two things about this module are more important than the arithmetic.
 
 **System memory has two effective bandwidths, not one.** A dense model's weights are read
-in long contiguous runs and reach about 0.70 of the machine's measured read bandwidth. A
-routed expert set is not read that way: each token selects a different handful of experts,
-so a layer's read is a scatter of small blocks across tens of gigabytes and the memory
-system never gets to stream. That is 0.36, a factor of two apart, and every estimate says
-in its notes which figure it applied to which bytes. Treating the two alike is what makes
-a mixture-of-experts model look twice as fast as it runs.
+in long contiguous runs and reach 0.70 of the machine's measured read bandwidth. A routed
+expert set is not read that way: each token selects a different handful of experts, so a
+layer's read is a scatter of small blocks across tens of gigabytes and the memory system
+never gets to stream. That is 0.57, and every estimate says in its notes which figure it
+applied to which bytes. The three efficiencies and the fixed overhead were identified
+together from four runs on the reference machine, two of them a small dense model held
+first entirely in system memory and then entirely on the card so that each pool could be
+isolated; :mod:`llamafit.constants` carries the arithmetic.
 
 **A formula and a measurement must never look alike.** Section 10.3's four labels are a
 precedence, and :func:`estimate_speed` walks it: a benchmark taken on this machine for
@@ -37,8 +39,7 @@ from llamafit.constants import (
     EFF_PP,
     EFF_RAM_SCATTERED,
     EFF_RAM_SEQUENTIAL,
-    LAYER_OVERHEAD_S,
-    SAMPLING_OVERHEAD_S,
+    FIXED_OVERHEAD_S,
 )
 from llamafit.i18n import _
 from llamafit.models.catalog import Measured
@@ -111,11 +112,13 @@ def formula_estimate(
         t_token = bytes_vram / (vram_bw x eff_vram)
                 + scattered_bytes / (ram_bw x eff_ram_scattered)
                 + sequential_bytes / (ram_bw x eff_ram_sequential)
-                + n_layer x layer_overhead + sampling_overhead
+                + fixed_overhead
 
     The two system-memory terms are section 10.1's correction: the specification's single
     ``bytes_ram / (ram_bw x eff_ram)`` is split in two because a routed expert read and a
     contiguous weight read do not reach the same fraction of the same memory controller.
+    The overhead is one fixed term and not a per-layer one: a per-layer term large enough
+    to matter on a 48-layer model exceeds the whole measured token of a 28-layer one.
 
     Prompt processing, from section 10.2::
 
@@ -145,7 +148,7 @@ def formula_estimate(
     t_sequential = (
         traffic.sequential_bytes / bandwidths.sequential if traffic.sequential_bytes else 0.0
     )
-    t_overhead = (facts.n_layer or 0) * LAYER_OVERHEAD_S + SAMPLING_OVERHEAD_S
+    t_overhead = FIXED_OVERHEAD_S
     t_token = t_vram + t_scattered + t_sequential + t_overhead
 
     if traffic.scattered_bytes:

@@ -1,43 +1,51 @@
-"""The estimator against the two configurations that were actually measured.
+"""The estimator against the four configurations that were actually measured.
 
-Everything here is checked against ``docs/calibration/2026-09-09-reference-machine.md``
-and the ``measured`` blocks the catalog carries for Qwen3-Coder-Next and
-Qwen3.8-Flash-Next. Two models is not a validation set, but it is what exists, and a
-speed estimator that has never been held against a real number is a random number
-generator with good manners.
+Everything here is checked against the ``measured`` blocks the catalog carries for
+Qwen3-0.6B, Qwen3-Coder-Next and Qwen3.8-Flash-Next, all taken on the reference machine.
 
-**The tolerance.** For a tool whose job is to tell a person which model to run, 15 percent
-is the error that does not change the advice: the reference machine's own generation
-figure moves from 22.8 to 24.7 tokens per second just by changing the thread count, and
-candidates a person is choosing between differ by much more than that. So 15 percent is
-what these tests would like to assert.
+**Why four and not two.** Two runs cannot identify three efficiencies and an overhead, and
+an earlier revision of section 10.1 tried: it derived the scattered-read efficiency by
+dividing the expert traffic by the whole token time, which already contains the card
+traffic and the overhead the formula then adds again, and the estimator built on it came
+out 42 percent low. The two Qwen3-0.6B runs exist to break that degeneracy. The same small
+dense model held entirely in system memory and then entirely on the card puts all of the
+traffic in one pool at a time with nothing competing, so each efficiency is read off
+directly rather than fitted.
 
-The formula does not reach it. With section 10.1's constants exactly as written it lands
-37 to 42 percent below both measurements, for a reason recorded in
-:data:`llamafit.constants.EFF_RAM_SCATTERED`: the 0.36 was derived by dividing the expert
-traffic by the *whole* token time, so using it alongside the graphics-card term and the
-per-layer overheads counts a token's time about 1.6 times over. Rather than widen the
-tolerance until it passes, the tests below assert the gap that is actually there, so it
-stays visible and so they fail the day the constants are reconciled -- which is exactly
-when somebody should look at this file again.
+**The tolerance.** 15 percent is the error that does not change the advice: the reference
+machine's own generation figure for Coder-Next moves from 22.8 to 24.7 tokens per second
+just by changing the thread count, and models a person is choosing between differ by far
+more than that. Generation now meets it on all four runs with room to spare -- the worst is
+4 percent. Prompt processing does not, and the tests at the bottom of this file assert the
+gap that is there rather than a tolerance wide enough to hide it.
 """
 
 from typing import NamedTuple
 
 import pytest
 
-from llamafit.speed import Formula, estimate_speed, formula_estimate, resolve_bandwidths
+from llamafit.models.plan import Placement, RunMode
+from llamafit.speed import (
+    Formula,
+    estimate_speed,
+    formula_estimate,
+    per_token_traffic,
+    resolve_bandwidths,
+)
 from tests.fixtures.speed import catalog_facts, catalog_model, placement, reference_host
 
-QUANT = "UD-Q4_K_XL"
-
-# The tolerance a speed advisor should meet, and does not yet. See the module docstring.
+# The tolerance a speed advisor has to meet. See the module docstring.
 USEFUL_TOLERANCE = 0.15
 
 
-class Case(NamedTuple):
+class Run(NamedTuple):
+    label: str
     model_id: str
+    quant: str
     active_params: float
+    mode: RunMode
+    gpu_layers: int
+    cpu_moe_layers: int | None
     context: int
     micro_batch: int
     working_context: int
@@ -45,95 +53,191 @@ class Case(NamedTuple):
     pp_tps: float
 
 
-# The reference machine's expert-offload configuration for each model, as recorded in the
-# calibration document: the working context the run actually used, the micro-batch, and
-# the figures it produced.
-CODER = Case("qwen3-coder-next", 3e9, 262144, 2048, 128, 24.7, 323.0)
-FLASH = Case("qwen3.8-flash-next", 6e9, 40960, 1024, 1056, 13.9, 49.4)
+DENSE_IN_RAM = Run(
+    "Qwen3-0.6B -ngl 0", "qwen3-0.6b", "Q8_0", 0.6e9, "cpu", 0, None, 4096, 512, 128, 78.0, 2924.0
+)
+DENSE_ON_CARD = Run(
+    "Qwen3-0.6B -ngl 99",
+    "qwen3-0.6b",
+    "Q8_0",
+    0.6e9,
+    "gpu",
+    99,
+    None,
+    4096,
+    512,
+    128,
+    279.5,
+    21734.0,
+)
+CODER = Run(
+    "Qwen3-Coder-Next",
+    "qwen3-coder-next",
+    "UD-Q4_K_XL",
+    3e9,
+    "moe-offload",
+    99,
+    48,
+    262144,
+    2048,
+    128,
+    24.7,
+    323.0,
+)
+FLASH = Run(
+    "Qwen3.8-Flash-Next",
+    "qwen3.8-flash-next",
+    "UD-Q4_K_XL",
+    6e9,
+    "moe-offload",
+    99,
+    48,
+    40960,
+    1024,
+    1056,
+    13.9,
+    49.4,
+)
+ALL_FOUR = [DENSE_IN_RAM, DENSE_ON_CARD, CODER, FLASH]
+EXPERT_MODELS = [CODER, FLASH]
 
 
-def formula_for(case: Case) -> Formula:
-    """Run the formula alone, with no benchmark allowed to correct it."""
-    return formula_estimate(
-        placement(micro_batch=case.micro_batch, context=case.context),
-        catalog_facts(case.model_id, QUANT),
-        resolve_bandwidths(reference_host()),
-        working_context=case.working_context,
-        micro_batch=case.micro_batch,
-        active_params=case.active_params,
+def placement_for(run: Run) -> Placement:
+    return placement(
+        mode=run.mode,
+        gpu_layers=run.gpu_layers,
+        cpu_moe_layers=run.cpu_moe_layers,
+        context=run.context,
+        micro_batch=run.micro_batch,
     )
 
 
-@pytest.mark.parametrize(("case", "low", "high"), [(CODER, 0.30, 0.45), (FLASH, 0.30, 0.45)])
-def test_the_formula_lands_well_below_both_reference_measurements(
-    case: Case, low: float, high: float
-) -> None:
-    """The specification's constants under-predict generation by 37 to 42 percent.
-
-    This asserts the gap rather than a tolerance, deliberately. The estimator is not
-    within the 15 percent that would make it useful on its own, and pretending otherwise
-    by loosening a bound would hide the one thing about section 10.1 that needs fixing.
-    """
-    predicted = formula_for(case).gen_tps
-    measured = case.gen_tps
-    shortfall = 1 - predicted / measured
-    assert low < shortfall < high, f"predicted {predicted:.2f} against a measured {measured}"
-    assert shortfall > USEFUL_TOLERANCE, "the formula now meets the tolerance; revisit this file"
+def formula_for(run: Run) -> Formula:
+    return formula_estimate(
+        placement_for(run),
+        catalog_facts(run.model_id, run.quant),
+        resolve_bandwidths(reference_host()),
+        working_context=run.working_context,
+        micro_batch=run.micro_batch,
+        active_params=run.active_params,
+    )
 
 
-def test_the_formula_gets_the_ratio_between_the_two_models_nearly_right() -> None:
-    """What is wrong with the formula is its level, not its shape.
+@pytest.mark.parametrize("run", ALL_FOUR, ids=lambda run: run.label)
+def test_the_formula_reproduces_every_reference_measurement(run: Run) -> None:
+    predicted = formula_for(run).gen_tps
+    assert predicted == pytest.approx(run.gen_tps, rel=USEFUL_TOLERANCE)
+    assert predicted == pytest.approx(run.gen_tps, rel=0.08), (
+        f"{run.label}: predicted {predicted:.2f} against a measured {run.gen_tps}"
+    )
 
-    The two models' expert traffic differs by 64 percent and their measured speeds by 78
-    percent. The formula reproduces that spread to within nine percent of the measured
-    ratio and within two percent of the ratio between the figures section 10.1 itself
-    quotes, which is why the constant that sets the level is worth fixing rather than the
-    model being worth replacing.
-    """
+
+def test_the_formula_gets_the_ratio_between_the_two_expert_models_right() -> None:
     predicted = formula_for(CODER).gen_tps / formula_for(FLASH).gen_tps
-    assert predicted == pytest.approx(24.7 / 13.9, rel=0.10)
-    assert predicted == pytest.approx(23.0 / 13.9, rel=0.03)
+    assert predicted == pytest.approx(24.7 / 13.9, rel=0.05)
 
 
-@pytest.mark.parametrize("case", [CODER, FLASH])
-def test_the_expert_read_dominates_both_reference_predictions(case: Case) -> None:
+def test_the_formula_spans_the_whole_range_from_the_fastest_run_to_the_slowest() -> None:
+    """A model that only works at one speed is a constant fitted to one machine state."""
+    fastest = formula_for(DENSE_ON_CARD).gen_tps
+    slowest = formula_for(FLASH).gen_tps
+    assert fastest / slowest == pytest.approx(279.5 / 13.9, rel=0.08)
+
+
+@pytest.mark.parametrize("run", EXPERT_MODELS, ids=lambda run: run.label)
+def test_the_expert_read_dominates_both_expert_predictions(run: Run) -> None:
     """Which term dominates, which is what a person who doubts the number needs to see."""
-    formula = formula_for(case)
+    formula = formula_for(run)
     total = formula.vram_seconds + formula.ram_seconds + formula.overhead_seconds
     assert formula.ram_seconds / total > 0.6
     assert formula.ram_seconds > formula.vram_seconds
 
 
-@pytest.mark.parametrize("case", [CODER, FLASH])
-def test_the_measured_rung_reproduces_the_benchmark_exactly(case: Case) -> None:
+def test_the_card_dominates_a_model_that_fits_on_it() -> None:
+    formula = formula_for(DENSE_ON_CARD)
+    total = formula.vram_seconds + formula.ram_seconds + formula.overhead_seconds
+    assert formula.ram_seconds == 0.0
+    assert formula.vram_seconds / total > 0.7
+
+
+def test_the_overhead_is_one_fixed_term_and_does_not_grow_with_depth() -> None:
+    """A per-layer overhead exceeded the whole measured token of a 28-layer model.
+
+    Section 10.1 carried 0.20 ms per transformer block, which for Qwen3-0.6B is 5.6 ms
+    against a token measured at 3.58 ms. The term was impossible, not merely large, and it
+    capped every 28-layer model near 105 tokens per second however small.
+    """
+    shallow = formula_for(DENSE_ON_CARD)
+    deep = formula_for(CODER)
+    assert shallow.overhead_seconds == deep.overhead_seconds == 0.001
+    assert 1 / shallow.gen_tps < 28 * 0.0002
+    assert shallow.gen_tps > 200
+
+
+def test_the_token_embedding_table_is_not_read_per_token() -> None:
+    """A lookup reads one row, and counting the table breaks the memory bus.
+
+    Qwen3-0.6B keeps 165 MB of token embeddings against 468 MB of block weights, a quarter
+    of the file. Charging a token for the whole table puts its apparent read rate above
+    anything the hardware can deliver, which is how the earlier error was caught.
+    """
+    facts = catalog_facts("qwen3-0.6b", "Q8_0")
+    assert facts.bytes_token_embd == 165_306_368
+    traffic = per_token_traffic(placement_for(DENSE_ON_CARD), facts, working_context=0)
+    assert traffic.total_bytes == facts.bytes_dense_block_weights
+    assert all("embd" not in line.component for line in traffic.lines)
+
+
+@pytest.mark.parametrize("run", ALL_FOUR, ids=lambda run: run.label)
+def test_the_measured_rung_reproduces_the_benchmark_exactly(run: Run) -> None:
     """With the machine's own benchmarks in hand, the tool shows them, dated."""
     estimate = estimate_speed(
-        placement(micro_batch=case.micro_batch, context=case.context),
-        catalog_facts(case.model_id, QUANT),
+        placement_for(run),
+        catalog_facts(run.model_id, run.quant),
         reference_host(),
-        working_context=case.working_context,
-        active_params=case.active_params,
-        quant=QUANT,
-        measurements=catalog_model(case.model_id).measured,
+        working_context=run.working_context,
+        active_params=run.active_params,
+        quant=run.quant,
+        measurements=catalog_model(run.model_id).measured,
     )
     assert estimate.confidence == "measured"
     assert estimate.measured_on is not None
-    assert estimate.measured_on.isoformat() == "2026-09-09"
-    assert estimate.gen_tps == pytest.approx(case.gen_tps)
-    assert estimate.pp_tps == pytest.approx(case.pp_tps)
+    assert estimate.gen_tps == pytest.approx(run.gen_tps)
+    assert estimate.pp_tps == pytest.approx(run.pp_tps)
     shares = (
         estimate.vram_seconds_per_token
         + estimate.ram_seconds_per_token
         + estimate.overhead_seconds_per_token
     )
     assert shares == pytest.approx(1 / estimate.gen_tps)
-    assert estimate.ram_seconds_per_token > estimate.vram_seconds_per_token
+
+
+def test_generation_barely_moves_with_the_micro_batch() -> None:
+    """Which is why a generation benchmark is matched on the offload and not on ``-ub``.
+
+    The reference machine measured Flash-Next at 14.5 tokens per second with ``-ub 2048``
+    and 13.9 with ``-ub 1024``. Taking the first as a benchmark of the second's
+    configuration costs four percent, and refusing to would cost the label entirely.
+    """
+    anchor = [m for m in catalog_model("qwen3.8-flash-next").measured if m.context == 16384]
+    estimate = estimate_speed(
+        placement_for(FLASH),
+        catalog_facts(FLASH.model_id, FLASH.quant),
+        reference_host(),
+        working_context=FLASH.working_context,
+        active_params=FLASH.active_params,
+        quant=FLASH.quant,
+        measurements=anchor,
+    )
+    assert estimate.gen_tps == pytest.approx(13.9, rel=0.05)
+
+
+# --- Prompt processing, which section 10.2 has not had the same treatment ------------
 
 
 def test_prompt_processing_matches_the_model_its_constant_was_fitted_on() -> None:
     """Section 10.2's 4 GB/s came from Flash-Next, and Flash-Next it predicts."""
-    predicted = formula_for(FLASH).pp_tps
-    assert predicted == pytest.approx(49.4, rel=USEFUL_TOLERANCE)
+    assert formula_for(FLASH).pp_tps == pytest.approx(49.4, rel=USEFUL_TOLERANCE)
 
 
 def test_prompt_processing_is_half_the_truth_for_a_model_that_fits_in_memory() -> None:
@@ -145,29 +249,27 @@ def test_prompt_processing_is_half_the_truth_for_a_model_that_fits_in_memory() -
     Qwen3-Coder-Next's 50 GB expert set stays cached and streams at about 12.8 GB/s, which
     is the whole of the gap asserted here.
     """
-    predicted = formula_for(CODER).pp_tps
-    assert 0.40 < predicted / 323.0 < 0.55
+    assert 0.40 < formula_for(CODER).pp_tps / CODER.pp_tps < 0.55
 
 
-def test_generation_barely_moves_with_the_micro_batch() -> None:
-    """Which is why a generation benchmark is matched on the offload and not on ``-ub``.
+def test_prompt_processing_is_an_order_out_on_a_small_dense_model() -> None:
+    """The compute term's peak figure is wrong, and the small dense runs make it visible.
 
-    The reference machine measured Flash-Next at 14.5 tokens per second with ``-ub 2048``
-    and 13.9 with ``-ub 1024``. Taking the first as a benchmark of the second's
-    configuration costs four percent, and refusing to would cost the label entirely.
+    Nothing streams for a dense model held on the card, so the whole prompt formula is
+    ``2 x active_params x ub / (tflops_fp16 x eff_pp)`` and a measurement reads the product
+    of those two constants off directly. Qwen3-0.6B managed 21,734 prompt tokens per
+    second, which is 26 TFLOP/s -- more than the 15 the bundled table gives this card, so
+    no efficiency below one can reach it. The table's figure is the RTX 4060's fp32 shader
+    throughput rather than what its tensor cores do with fp16, and ``EFF_PP`` has been
+    absorbing the difference on the models where the streaming term hid it.
+
+    Section 10.1 was settled by four runs chosen to isolate its pools; section 10.2 has had
+    no such treatment, and this is what that costs. Recorded rather than refitted to a
+    single point, which is the mistake that produced the 0.36.
     """
-    flash = catalog_model("qwen3.8-flash-next")
-    anchor = [m for m in flash.measured if m.context == 16384]
-    estimate = estimate_speed(
-        placement(micro_batch=1024, context=40960),
-        catalog_facts("qwen3.8-flash-next", QUANT),
-        reference_host(),
-        working_context=1056,
-        active_params=6e9,
-        quant=QUANT,
-        measurements=anchor,
-    )
-    assert estimate.gen_tps == pytest.approx(13.9, rel=0.05)
+    predicted = formula_for(DENSE_ON_CARD).pp_tps
+    assert predicted < DENSE_ON_CARD.pp_tps * 0.25
+    assert 2 * 0.6e9 * DENSE_ON_CARD.pp_tps / 1e12 > 15.0
 
 
 def test_a_prompt_benchmark_from_another_micro_batch_is_only_as_good_as_its_anchor() -> None:
@@ -176,19 +278,18 @@ def test_a_prompt_benchmark_from_another_micro_batch_is_only_as_good_as_its_anch
     The catalog's ``-ub 2048`` prompt figure for Flash-Next, 50 tokens per second, is a
     real 1,056-token request: only one micro-batch of 1,056 tokens was ever formed, so the
     figure belongs to a micro-batch half the size its flags claim. Calibrating the
-    ``-ub 1024`` estimate on it therefore drags the prediction well below the 49.4 that
-    was measured there. Recorded rather than worked around: the fix belongs in the
-    catalog, which should say what micro-batch a prompt figure really used.
+    ``-ub 1024`` estimate on it drags the prediction well below the 49.4 that was measured
+    there. Recorded rather than worked around: the fix belongs in the catalog, which should
+    say what micro-batch a prompt figure really used.
     """
-    flash = catalog_model("qwen3.8-flash-next")
-    anchor = [m for m in flash.measured if m.context == 16384]
+    anchor = [m for m in catalog_model("qwen3.8-flash-next").measured if m.context == 16384]
     estimate = estimate_speed(
-        placement(micro_batch=1024, context=40960),
-        catalog_facts("qwen3.8-flash-next", QUANT),
+        placement_for(FLASH),
+        catalog_facts(FLASH.model_id, FLASH.quant),
         reference_host(),
-        working_context=1056,
-        active_params=6e9,
-        quant=QUANT,
+        working_context=FLASH.working_context,
+        active_params=FLASH.active_params,
+        quant=FLASH.quant,
         measurements=anchor,
     )
     assert estimate.confidence == "calibrated"
