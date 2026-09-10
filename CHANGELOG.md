@@ -54,6 +54,22 @@ the changelog says so when they do.
   print one entry as JSON or YAML.
 - Custom models: entries in `custom_models.yaml` are merged with the bundled catalog, an entry
   whose id matches a bundled one replacing it.
+- Placement planner: for one model and quantisation on one machine it searches the run modes
+  in order -- everything on the card, routed experts in system memory, some layers on the card,
+  the processor alone -- and keeps the best configuration that fits rather than the first,
+  choosing the context, the micro-batch, the KV cache type, the number of layers on the card
+  and where the vision projector lives. A faster mode wins over a longer context, and a floor
+  under the context ladder is what keeps that from recommending a working configuration nobody
+  could work in. It takes the memory budget as an injected function, so it can be read, tested
+  and changed apart from the thing that sizes a configuration.
+- Context tier table: what each of ten context lengths costs on the card for the chosen
+  placement, so a launch script can pick the largest one that fits the free VRAM it actually
+  sees at the moment it starts, and a recommendation survives a browser being opened.
+- `llama-server` flag rendering: a placement becomes the ordered argument list a person can
+  paste, with the model and projector paths, the endpoint, the context, the cache type, the
+  layer placement, the thread count, the batch sizes, the vendor's sampling and the catalog's
+  own quirks. Numbers on a command line are never localised, and a curated quirk that is prose
+  rather than arguments reaches the reader as a note instead of being pasted onto the line.
 - Translated interface: every message a person reads goes through the GNU gettext layer, and
   a global `--language TAG` option chooses the language. The order is the option, then
   `LLAMAFIT_LANGUAGE`, then the operating system's locale, then English; a language LlamaFit

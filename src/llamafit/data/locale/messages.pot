@@ -982,6 +982,50 @@ msgstr ""
 msgid "unexpected response: %(error)s"
 msgstr ""
 
+#: src/llamafit/placement/planner.py:93
+msgid "%(model)s holds %(native)s tokens, fewer than the %(minimum)s asked for."
+msgstr ""
+
+#: src/llamafit/placement/planner.py:168
+msgid "No configuration of this model fits this machine."
+msgstr ""
+
+#: src/llamafit/placement/planner.py:275
+msgid "Routed experts are held in system memory; attention, the KV cache and the shared experts stay on the card."
+msgstr ""
+
+#: src/llamafit/placement/planner.py:282
+msgid "%(layers)s layers are on the card and the rest run on the processor."
+msgstr ""
+
+#: src/llamafit/placement/planner.py:286
+msgid "Nothing runs on a graphics card: every weight is in system memory."
+msgstr ""
+
+#: src/llamafit/placement/planner.py:290
+msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
+msgstr ""
+
+#: src/llamafit/placement/planner.py:298
+msgid "The KV cache is quantised to %(type)s to reach this context."
+msgstr ""
+
+#: src/llamafit/placement/planner.py:305
+msgid "Vision is off: the projector did not fit, on the card or in system memory."
+msgstr ""
+
+#: src/llamafit/placement/planner.py:309
+msgid "The vision projector is in system memory (--no-mmproj-offload), which costs nothing measurable for text and makes images slower."
+msgstr ""
+
+#: src/llamafit/placement/planner.py:318
+msgid "%(threads)s threads, not %(physical)s: the efficiency cores are left out because generation measures slower with them."
+msgstr ""
+
+#: src/llamafit/placement/planner.py:326
+msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
+msgstr ""
+
 #: src/llamafit/services/doctor.py:17
 msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
 msgstr ""
