@@ -551,7 +551,11 @@ def render_measurements(measurements: Sequence[Measured]) -> Group | None:
         [
             {"header": pgettext("column heading", "Run")},
             {"header": pgettext("column heading", "Tok/s"), "justify": "right", "no_wrap": True},
-            {"header": pgettext("column heading", "Prompt/s"), "justify": "right", "no_wrap": True},
+            {
+                "header": pgettext("column heading", "Prompt tok/s"),
+                "justify": "right",
+                "no_wrap": True,
+            },
             {"header": pgettext("column heading", "Context"), "justify": "right", "no_wrap": True},
             {"header": pgettext("column heading", "Date"), "no_wrap": True},
         ],
@@ -782,7 +786,7 @@ def _board_columns(
         ("context", 7),
         ("quality", 4),
         ("vram", 9),
-        ("prompt", 6),
+        ("prompt", cell_len(pgettext("column heading", "Prompt tok/s"))),
         ("size", 9),
         ("ram", 9),
     ]
@@ -831,7 +835,7 @@ def render_board(board: Board, *, console_width: int = 80) -> Group:
         "context": pgettext("column heading", "Ctx"),
         "quality": pgettext("column heading", "Qual"),
         "vram": pgettext("column heading", "Card"),
-        "prompt": pgettext("column heading", "PP/s"),
+        "prompt": pgettext("column heading", "Prompt tok/s"),
         "size": pgettext("column heading", "Size"),
         "ram": pgettext("column heading", "RAM"),
     }

@@ -131,7 +131,7 @@ WIDTHS: dict[Column, int] = {
     "have": 5,
     "quality": 5,
     "vram": 9,
-    "prompt": 6,
+    "prompt": 13,
     "size": 9,
     "ram": 9,
 }
@@ -199,7 +199,7 @@ def heading(column: Column) -> str:
         "context": pgettext("column heading", "Ctx"),
         "quality": pgettext("column heading", "Qual"),
         "vram": pgettext("column heading", "Card"),
-        "prompt": pgettext("column heading", "PP/s"),
+        "prompt": pgettext("column heading", "Prompt tok/s"),
         "size": pgettext("column heading", "Size"),
         "ram": pgettext("column heading", "RAM"),
         "have": pgettext("column heading", "Have"),
