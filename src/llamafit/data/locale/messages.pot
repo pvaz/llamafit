@@ -124,6 +124,14 @@ msgid "Could not read the file listing for %(repo)s from Hugging Face."
 msgstr ""
 
 #: src/llamafit/catalog/hf.py:205
+#: src/llamafit/llamacpp/install.py:503
+#: src/llamafit/llamacpp/install.py:438
+#: src/llamafit/llamacpp/install.py:428
+#: src/llamafit/llamacpp/releases.py:335
+#: src/llamafit/llamacpp/releases.py:350
+#: src/llamafit/llamacpp/releases.py:359
+#: src/llamafit/llamacpp/releases.py:315
+#: src/llamafit/llamacpp/releases.py:342
 msgid "Check your network connection and try again."
 msgstr ""
 
@@ -147,6 +155,7 @@ msgid "Run `llamafit catalog validate` for details."
 msgstr ""
 
 #: src/llamafit/catalog/refresh.py:437
+#: src/llamafit/llamacpp/install.py:678
 msgid "could not write %(path)s: %(error)s"
 msgstr ""
 
@@ -505,6 +514,197 @@ msgstr ""
 
 #: src/llamafit/cli/hardware_cmd.py:240
 msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:66
+msgid "Install what LlamaFit needs: llama.cpp, and later models."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:80
+msgid "Install this backend instead of the one chosen for your GPU: cuda, vulkan, hip, sycl, metal or cpu."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:91
+msgid "Install here instead of ~/.llamafit/llama.cpp."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:97
+msgid "Install this release tag, for example b6100, not the latest."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:107
+msgid "invalid --backend %(value)s"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:108
+msgid "Valid backends: %(values)s"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:155
+msgid "release %(tag)s publishes no %(backend)s build for %(os)s %(arch)s."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:157
+msgid "Leave --backend out and LlamaFit will choose a published one."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:160
+msgid "release %(tag)s publishes nothing for %(os)s %(arch)s."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:162
+msgid "Build llama.cpp from source; see the project's own instructions."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:241
+msgid "Release"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:243
+msgid "%(tag)s (build %(build)s)"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:248
+msgid "Backend"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:249
+msgid "Archive"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:251
+msgid "Also"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:253
+msgid "Download"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:255
+msgid "%(size)s (%(done)s already on disk)"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:265
+msgid "Checksum"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:267
+msgid "published, checked before anything is unpacked"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:269
+msgid "none published"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:273
+msgid "Install into"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:274
+msgid "Directory"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:277
+msgid "Free space"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:277
+msgid "Free space (cache)"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:279
+msgid "%(free)s on %(path)s, %(needed)s needed"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:295
+msgid "will be created"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:297
+msgid "exists and is empty"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:301
+msgid "holds %(tag)s, installed by LlamaFit; it will be replaced"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:304
+msgid "installed by LlamaFit; it will be replaced"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:305
+msgid "was not installed by LlamaFit"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:322
+msgid "Downloading"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:334
+msgid "Installed llama.cpp %(tag)s into %(path)s."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:340
+msgid "Replaced %(tag)s."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:343
+msgid "Backends found in it: %(backends)s"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:344
+msgid "none"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:349
+msgid "Check it with `llamafit doctor`."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:374
+msgid "Change your PATH?"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:375
+msgid "PATH left alone."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:379
+msgid "PATH changed. Open a new terminal for it to take effect."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:388
+msgid ""
+"Download a published llama.cpp build and install it into ~/.llamafit/llama.cpp.\n"
+"\n"
+"The plan is printed before anything is written. The archive's checksum is verified before it is unpacked, an interrupted download continues where it stopped, and a directory LlamaFit did not create is never overwritten."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:406
+msgid "Offer to add the bin directory to your PATH, showing the undo first."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:414
+msgid "Install over a directory LlamaFit did not create. Ask yourself twice."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:422
+msgid "Install an archive that publishes no checksum. Nothing can be checked."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:426
+msgid "Print the plan and write nothing."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:429
+msgid "Do not ask; assume yes."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:469
+msgid "Install this?"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:470
+msgid "Nothing was written."
 msgstr ""
 
 #: src/llamafit/cli/plan_cmd.py:42
@@ -2031,6 +2231,7 @@ msgid "%(program)s: not found"
 msgstr ""
 
 #: src/llamafit/hardware/runner.py:172
+#: src/llamafit/llamacpp/install.py:1320
 msgid "no output"
 msgstr ""
 
@@ -2092,6 +2293,219 @@ msgstr ""
 
 #: src/llamafit/llamacpp/detect.py:208
 msgid "no ggml backend libraries found next to llama-server; the build may be static"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:262
+msgid "%(path)s is a file, not a directory."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:273
+msgid "%(path)s cannot be read: %(error)s"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:281
+msgid "%(path)s has a marker file that cannot be read."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:284
+msgid "%(path)s already holds %(count)d file that LlamaFit did not install."
+msgid_plural "%(path)s already holds %(count)d files that LlamaFit did not install."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/llamacpp/install.py:502
+#: src/llamafit/llamacpp/install.py:426
+msgid "%(url)s returned HTTP %(status)d."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:582
+msgid "%(name)s has no published checksum, so it cannot be verified."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:584
+msgid "Pass --allow-unverified to install it anyway, knowing the archive is unchecked."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:608
+#: src/llamafit/llamacpp/install.py:437
+msgid "could not download %(url)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:609
+#: src/llamafit/llamacpp/install.py:523
+msgid "the connection was closed"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:610
+#: src/llamafit/llamacpp/install.py:666
+#: src/llamafit/llamacpp/install.py:465
+#: src/llamafit/llamacpp/install.py:524
+msgid "Run the command again; it continues from where it stopped."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:660
+#: src/llamafit/llamacpp/install.py:464
+#: src/llamafit/llamacpp/install.py:522
+msgid "the download of %(url)s stopped early: %(error)s"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:663
+msgid "%(got)s of %(want)s arrived"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:674
+msgid "the disk holding %(path)s is full."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:675
+msgid "Free some space and run the command again; the download resumes."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:679
+msgid "Check that the directory exists and is writable."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:701
+msgid "%(name)s did not match its published checksum and was discarded."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:703
+msgid "Nothing was unpacked. Run the command again: the archive arrived damaged, which a second download usually fixes."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:726
+msgid "%(archive)s contains %(name)s, which would be written outside the install directory."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:728
+msgid "Do not install this archive; report it to the llama.cpp project."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:760
+msgid "%(name)s is not an archive LlamaFit knows how to unpack."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:766
+msgid "%(name)s could not be unpacked: %(error)s"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:767
+msgid "Delete it and run the command again to download it afresh."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:821
+msgid "the archive holds no %(name)s."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:822
+#: src/llamafit/llamacpp/install.py:762
+msgid "Report this; the release layout has changed."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1029
+msgid "%(path)s was not installed by LlamaFit."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1030
+msgid "Pass --force to replace it, or --dir to install somewhere else. LlamaFit never overwrites an installation it did not create."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1039
+msgid "%(path)s has %(free)s free; this install needs %(needed)s."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1045
+msgid "Free some space, or pass --dir to install on another volume."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1124
+msgid "the %(backend)s libraries are not in the installed directory."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1129
+msgid "no ggml backend libraries were installed; the build may be a static one."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1240
+msgid "Your PATH could not be read, so it will not be changed."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1257
+msgid "Add %(path)s to your user PATH (HKCU\\Environment)."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1258
+msgid "To undo: run `setx PATH \"%(previous)s\"`, or remove the entry in System > About > Advanced system settings > Environment Variables."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1275
+#: src/llamafit/llamacpp/install.py:1249
+msgid "%(path)s is already on your PATH."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1276
+#: src/llamafit/llamacpp/install.py:1241
+#: src/llamafit/llamacpp/install.py:1250
+msgid "Nothing to undo."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1283
+msgid "Append a PATH line for %(path)s to %(file)s."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1285
+msgid "To undo: delete the two lines marked `%(mark)s` from %(file)s."
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1319
+msgid "your PATH could not be changed: %(error)s"
+msgstr ""
+
+#: src/llamafit/llamacpp/install.py:1338
+msgid "To remove it later, delete %(path)s."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:281
+msgid "the most recent %(count)d llama.cpp releases hold no build."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:283
+msgid "Name one with `llamafit install llama.cpp --tag ...`."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:314
+msgid "could not reach GitHub at %(url)s: %(error)s"
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:319
+msgid "GitHub refused the request for %(url)s: the rate limit is exhausted."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:321
+msgid "Wait for the limit to reset, or set GITHUB_TOKEN to a personal access token with no scopes."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:328
+#: src/llamafit/llamacpp/releases.py:457
+msgid "GitHub has no release at %(url)s."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:329
+#: src/llamafit/llamacpp/releases.py:459
+msgid "Check the tag with `llamafit install llama.cpp --tag ...`."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:333
+msgid "GitHub returned %(status)d for %(url)s."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:341
+msgid "GitHub's answer for %(url)s was not JSON."
+msgstr ""
+
+#: src/llamafit/llamacpp/releases.py:349
+#: src/llamafit/llamacpp/releases.py:358
+msgid "GitHub's answer did not describe a release."
 msgstr ""
 
 #: src/llamafit/llamacpp/server.py:120

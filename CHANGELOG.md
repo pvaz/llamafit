@@ -62,6 +62,21 @@ the changelog says so when they do.
   print one entry as JSON or YAML.
 - Custom models: entries in `custom_models.yaml` are merged with the bundled catalog, an entry
   whose id matches a bundled one replacing it.
+- `llamafit install llama.cpp`: downloads a published llama.cpp build and installs it into
+  `~/.llamafit/llama.cpp`, which is the first directory the detector looks in, so nothing has to
+  be configured afterwards. The archive is chosen from the asset names for the operating system,
+  the architecture and the backend, with the CUDA runtime archive a Windows CUDA build cannot
+  start without brought along beside it, and with the CUDA version chosen against the card's
+  actual driver rather than by taking the newest — a CUDA 13 build does not run slowly on a
+  driver below 580, it does not run at all. The whole plan is printed before anything is
+  written: which release, which archive, how large, how much is already on disk, whether a
+  checksum is published, where it will go, what is already there and how much room the volume
+  has. A directory that does not carry LlamaFit's own marker file is never overwritten without
+  `--force`, because people build llama.cpp themselves with their own flags and no download can
+  put that back. The published checksum is verified on the partial file before anything is
+  unpacked, and a file that fails it is deleted rather than left to be resumed onto; an
+  interrupted download continues where it stopped; and `PATH` is changed only on an explicit
+  `--add-to-path` and a yes, with the undo printed in the same breath as the offer.
 - Placement planner: for one model and quantisation on one machine it searches the run modes
   in order -- everything on the card, routed experts in system memory, some layers on the card,
   the processor alone -- and keeps the best configuration that fits rather than the first,
