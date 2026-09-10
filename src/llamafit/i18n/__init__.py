@@ -38,6 +38,18 @@ puts between a number's groups of three digits::
 
     pgettext_literal("thousands separator", ",")
 
+Three of the languages are written right to left, and a Latin identifier inside one of
+their sentences needs a directional isolate around it or a reader is shown ``verbose--``
+where ``--verbose`` was meant. That belongs to whoever draws the screen, not to a
+translator, so nothing about it appears in a catalog::
+
+    from llamafit.i18n import for_display, isolate
+
+    Text(for_display(_("%(path)s: %(free)s free") % {"path": isolate(path), ...}))
+
+``llamafit.i18n.bidi`` has the whole story, and every function in it returns its input
+unchanged for a left-to-right language.
+
 The catalogs are GNU gettext ``.po`` files under ``llamafit/data/locale/``, read as text.
 Nothing is compiled and no binary is committed, so a translator edits the same file the
 program reads. Every message that is missing, or left empty, falls back to English, and
@@ -46,6 +58,18 @@ so does a blank one for every lookup but ``pgettext_literal``.
 
 from __future__ import annotations
 
+from llamafit.i18n.bidi import (
+    FIRST_STRONG_ISOLATE,
+    POP_DIRECTIONAL_ISOLATE,
+    RIGHT_TO_LEFT_MARK,
+    RTL_LANGUAGES,
+    for_display,
+    is_rtl,
+    isolate,
+    isolate_identifiers,
+    mirror_justify,
+    reading_order,
+)
 from llamafit.i18n.catalogs import (
     CATALOG_SUFFIX,
     TEMPLATE_NAME,
@@ -104,7 +128,11 @@ from llamafit.i18n.translator import (
 __all__ = [
     "CATALOG_SUFFIX",
     "DEFAULT_PLURAL_FORMS",
+    "FIRST_STRONG_ISOLATE",
     "LANGUAGE_ENV_VAR",
+    "POP_DIRECTIONAL_ISOLATE",
+    "RIGHT_TO_LEFT_MARK",
+    "RTL_LANGUAGES",
     "SOURCE_LANGUAGE",
     "TEMPLATE_NAME",
     "CatalogTranslator",
@@ -126,15 +154,20 @@ __all__ = [
     "catalog_dir",
     "catalog_path",
     "current_language",
+    "for_display",
     "get_translator",
     "gettext",
+    "is_rtl",
     "is_substitution",
+    "isolate",
+    "isolate_identifiers",
     "lazy_gettext",
     "lazy_ngettext",
     "lazy_npgettext",
     "lazy_pgettext",
     "load_language",
     "match",
+    "mirror_justify",
     "ngettext",
     "normalise",
     "npgettext",
@@ -144,6 +177,7 @@ __all__ = [
     "pgettext_literal",
     "placeholders",
     "read_po",
+    "reading_order",
     "reset",
     "resolve_language",
     "set_language",
