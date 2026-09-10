@@ -212,6 +212,29 @@ the changelog says so when they do.
   until somebody who reads them fills them in. `--capability` still takes the English id.
 
 ### Fixed
+- **The fit score's left-hand slope reads the model, not the pool.** Section 11.3 has a
+  slope that penalises a model far smaller than the machine, precisely so the tool does not
+  always recommend the smallest safe option — and it did not work, because it was measured
+  on the worst pool's utilisation. On a machine with a small card the worst pool is the
+  card, and most of what sits on it is the compute buffer, the output buffer, the key-value
+  cache and the backend's own overhead: a 0.6B at Q8 puts 0.6 GB of weights on an
+  eight-gigabyte card and 6 GB of cache and buffers on top, so the card reads ninety percent
+  full and a 27B model reads the same. Worse, the cache is elastic — the planner grows the
+  context until the card is full — so the score was reading the planner's appetite rather
+  than the model, and every candidate came out equally well fitted. On the reference
+  machine's 128 GB, `llamafit recommend` put a 0.6B first for a general request and second
+  for coding, and `llamafit fit` called it the second best-fitting model on the machine.
+  The waste question is now asked of the model's own resident weight tensors against every
+  byte of memory the machine has to hold them in, both pools added, on a scale of halvings:
+  full marks at half the machine, and the price the specification already put on waste —
+  thirty points for a shortfall of two and a half times, about 23 points per halving —
+  applied per halving all the way down instead of flattening at a fifth. The floor goes with
+  the quantity that needed it: this measure is relative to the machine, so a 0.6B is half a
+  small laptop and scores 100 there while scoring nothing on a workstation. The crowding
+  question is untouched — same shape, same constants, same worst-pool quantity — and the two
+  are combined by taking the worse, since neither complaint excuses the other. The 0.6B now
+  comes last for general, last for coding and last on `fit`, and `--explain` names both
+  quantities rather than the one.
 - Messages six translators independently reported as impossible to translate well are
   fixed in the English rather than worked around in thirty-six catalogs. Lines built from
   optional pieces — the memory row's details, the GPU row's specifications and driver, a

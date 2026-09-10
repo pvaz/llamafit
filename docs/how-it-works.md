@@ -156,8 +156,13 @@ Four scores from 0 to 100:
 - **Speed**: generation tokens per second against a target for the use case (chat 30, general
   25, coding 20, reasoning 15, multimodal 15; embeddings are scored on prompt throughput), with
   a deduction when prompt processing is slow for coding and reasoning.
-- **Fit**: 100 when utilisation is between 0.50 and 0.80; lower when the model is far smaller
-  than the machine (it wastes it) or close to the limit; 0 when it does not fit.
+- **Fit**: two questions, scored as the worse of them. *Does it waste the machine?* — the
+  model's own weights against every byte of memory the machine has to hold them in: full marks
+  at half the machine or more, and about 23 points off for each halving below that. *Is it
+  crowded?* — the whole budget against whichever pool is tightest: full marks up to 0.80,
+  falling to 40 at 0.98, and 0 above. The weights are read apart from the cache and the buffers
+  because on a machine with a small card those dominate the pool and say nothing about how big
+  the model is.
 - **Context**: how much of the requested context fits, as a percentage.
 
 The composite weights them by use case:

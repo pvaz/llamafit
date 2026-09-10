@@ -248,7 +248,7 @@ the largest each one holds in the mode shown.
 | Option | Effect |
 |---|---|
 | `--min-fit comfortable\|fits\|tight` | The worst verdict to list. Defaults to `tight`. |
-| `--perfect` | Only configurations inside section 11.3's ideal band, between half and four fifths of the tightest pool. |
+| `--perfect` | Only configurations that score a perfect fit under section 11.3: at least half the machine's memory held in the model's own weights, and no pool past four fifths full. |
 | `--limit N` | Show at most this many rows. |
 | `--all-quants` | Show every quantisation instead of the best-fitting one per model. |
 
@@ -256,9 +256,11 @@ the largest each one holds in the mode shown.
 $ llamafit fit
                             Fit on this machine
  #   Model                  Quant        Fit     Runs             Ctx    Card      RAM
- 1   qwen3-coder-next       UD-Q4_K_XL   fits    experts in RAM   61K    5.4 GiB   47.3 GiB
- 2   qwen3-0.6b             Q8_0         fits    GPU              32K    5.5 GiB    2.2 GiB
- 3   llama-3.1-8b-instruct  Q4_K_M       tight   split            35K    6.1 GiB    7.8 GiB
+ 1   gemma-3-27b-it         Q4_K_M       tight   split            33K    6.2 GiB   32.1 GiB
+ 2   qwen3.8-flash-next     UD-Q4_K_XL   tight   experts in RAM   17K    6.3 GiB   75.5 GiB
+ 3   qwen3-coder-next       UD-Q4_K_XL   tight   experts in RAM   32K    6.3 GiB   46.4 GiB
+ 4   llama-3.1-8b-instruct  Q4_K_M       tight   split            35K    6.1 GiB    7.8 GiB
+ 5   qwen3-0.6b             Q8_0         fits    GPU              32K    5.5 GiB    2.2 GiB
 Sized for 32K tokens. The context column is the largest each one holds in the mode shown.
 ```
 
@@ -287,9 +289,9 @@ the command the program exists for, and it scans the machine to answer.
 $ llamafit recommend --use-case coding
                                  Recommended
  #   Model                Quant        Score   Gen/s   Fit     Runs             Ctx
- 1   qwen3-coder-next     UD-Q4_K_XL    93.9    24.1   fits    experts in RAM   61K
- 2   qwen3-0.6b           Q8_0          72.1   114.6   fits    GPU              32K
- 3   qwen3.8-flash-next   UD-Q4_K_XL    67.5    13.9   tight   experts in RAM   17K
+ 1   qwen3-coder-next     UD-Q4_K_XL    84.8    23.7   tight   experts in RAM   32K
+ 2   qwen3.8-flash-next   UD-Q4_K_XL    67.2    13.5   tight   experts in RAM   17K
+ 3   qwen3-0.6b           Q8_0          54.0   114.6   fits    GPU              32K
 Speeds are for 8K tokens of context so every row compares like with like; the context
 column is the largest each one holds. Sized and scored for coding at 32K tokens.
 Speeds are section 10's formula on its default constants. Nothing has been benchmarked
@@ -300,6 +302,8 @@ Weights: quality 0.40, speed 0.20, fit 0.20, context 0.20.
  Model                   Quant    Why not
  gemma-3-27b-it          Q4_K_M   not a coding model; its entry lists general, multimodal,
                                   chat, so ask for one of those
+ llama-3.1-8b-instruct   Q4_K_M   not a coding model; its entry lists general, chat,
+                                  reasoning, so ask for one of those
 ```
 
 Which columns appear depends on the width of the terminal. The rank, model, quantisation and
