@@ -109,14 +109,43 @@ Tokens per second throughout.
    -ot ffn_.*_shexp=CPU` with the context picked from free VRAM: 49,152 needs 7.8 GB free,
    40,960 needs 7.5, 32,768 needs 7.2, 24,576 needs 6.9, 16,384 needs 6.6.
 
-## Initial estimator constants derived here
+## Estimator constants derived here
+
+Four runs identify four constants. The two below the line were added on 2026-09-10
+precisely because two could not: a small dense model is the only way to isolate a memory
+pool, since its traffic per token is exactly its block weights and nothing else competes.
+
+| Run | Traffic per token | Measured | Isolates |
+|---|---|---|---|
+| Qwen3-Coder-Next UD-Q4_K_XL | 2.36 GB card, 0.916 GB scattered | 23.0 tok/s | scattered reads |
+| Qwen3.8-Flash-Next UD-Q4_K_XL | 4.83 GB card, 1.504 GB scattered | 13.9 tok/s | scattered reads |
+| Qwen3-0.6B Q8_0, `-ngl 0` | 0.47 GB, contiguous | 78.0 tok/s | system memory, sequential |
+| Qwen3-0.6B Q8_0, `-ngl 99` | 0.47 GB, card | 279.5 tok/s | the card |
 
 | Constant | Value | From |
 |---|---|---|
-| RAM efficiency | 0.70 | Coder-Next and Flash-Next generation against theoretical DDR bandwidth, after per-layer overhead |
-| VRAM efficiency | 0.60 | published llama-bench results on consumer GPUs; not measured here (the GPU part is small on this machine) |
-| PCIe effective bandwidth | 4 GB/s | 78 GB of experts per micro-batch at 52 tokens per second with `-ub 1024` |
-| Per-layer overhead | 0.20 ms | the residual between bandwidth-only prediction and measured generation |
-| KV per 1K tokens, Flash-Next | 33 MiB | the table above |
+| System memory, sequential | 0.70 | the two dense runs, with the fixed overhead below |
+| System memory, scattered | 0.57 | 0.54 from Coder-Next and 0.59 from Flash-Next, nine percent apart while carrying 64 percent different traffic |
+| Card efficiency | 0.67 | the dense run with everything on the card |
+| Fixed overhead | about 1 ms per token | the residual common to both dense runs |
+| PCIe effective bandwidth | 4 GB/s | 78 GB of experts per micro-batch at 52 tokens per second with `-ub 1024`. **Known to be wrong**: fitted on the one model whose expert set cannot fit in memory, while the other streams about three times faster from the page cache. Two physical paths sharing one constant |
+| KV per 1K tokens, Flash-Next | 33 MiB | the table above. Of this, about 9 MiB is a second cache the file's own header cannot account for |
 | Compute buffer base at `-ub` 512, 1024, 2048 | 1,090; 1,240; 2,080 MiB | the table above |
-| CUDA context overhead | 120 to 300 MiB | VRAM used minus buffer totals; 300 is used as a conservative default |
+| CUDA context overhead | 120 measured, 300 default | card memory minus the buffer totals. The measured figure is used for this card and the conservative default for every other, because one measurement is not a generalisation |
+
+### Two figures this record used to carry, and why they are gone
+
+**There is no per-layer overhead.** It read 0.20 ms, which across 28 layers is 5.6 ms,
+while that model's entire measured token is 3.58 ms. The term was not merely too large,
+it was impossible, and it capped every model of that depth near 105 tokens per second.
+
+**The scattered efficiency was once given as 0.36 and that was an error.** It was derived
+by dividing the expert traffic by the *whole* token time, which already contains the card
+traffic and the overhead the formula then adds again; used as a term in a sum it alone
+exceeds the measured token, and the estimator built on it came out 42 percent low. An
+apparent end-to-end rate and a coefficient inside a sum of terms are not the same
+quantity, and the mistake is invisible until something is measured against it.
+
+**A token embedding table is not per-token traffic.** A lookup reads one row. Counting the
+whole table put the apparent rate above what the memory bus can physically deliver, which
+is how the error above was finally caught.
