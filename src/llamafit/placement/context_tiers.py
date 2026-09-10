@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """The context ladder: what each context costs, so a launch script can choose one live.
 
 This is the most useful thing the planner produces. A recommendation sized for the free

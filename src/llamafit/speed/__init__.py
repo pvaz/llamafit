@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """Speed estimation: what a placement will actually run at, and how much to trust it.
 
 :func:`estimate_speed` is the entry point. Everything else is here so an explanation can

@@ -1,5 +1,6 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """Constants the memory budget is built from, each with the measurement it came from.
 
 Nothing here is a round number chosen because it looked safe. Every value is either
@@ -14,41 +15,11 @@ right as the people who chose it. The compute-buffer table is a *model*, fitted 
 measurements on one graphics card with one llama.cpp build, and it will be wrong on
 another machine in ways nobody has measured yet. Every budget line built from the second
 kind is marked ``exact=False`` so a reader can tell them apart.
-=======
-"""Constants the estimator and the placement planner are built from, with their provenance.
-
-Every number here is written down once, with a comment saying where it came from, because
-a constant with no provenance is indistinguishable from a guess and nobody dares change
-it. Values measured on the reference machine cite
-``docs/calibration/2026-09-09-reference-machine.md``; values the design fixed cite the
-section of ``docs/specs/2026-09-09-llamafit-design.md`` that fixed them.
-
-Phase 3 replaces the measured ones per host by calibration, so a constant here is the
-starting point rather than the answer.
->>>>>>> feat/placement
-=======
-"""Constants the sizing and speed models are built from, each with its provenance.
-
-A constant with no source is a guess that has learned to look like a measurement, so every
-number here says where it came from: a section of the design specification, a published
-figure, or a run on the reference machine recorded in
-``docs/calibration/2026-09-09-reference-machine.md``. Nothing here is meant to be the last
-word. A measurement taken on a real host supersedes the constant for that host, and the
-estimate built from it is relabelled accordingly (section 10.3).
-
-The three efficiencies below are not independent guesses. They were identified together
-from four measurements on the reference machine, two of which exist only to isolate a pool:
-the same small dense model run entirely in system memory and entirely on the card, where
-the traffic is exactly its block weights and nothing else competes. Changing one of them
-without re-deriving the others against all four runs will make the estimator worse.
->>>>>>> feat/speed
 """
 
 from __future__ import annotations
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-from typing import NamedTuple
+from typing import Final, NamedTuple
 
 MIB = 1024**2
 """One mebibyte. Buffer sizes are reported in these by llama.cpp, so budgets speak them."""
@@ -190,7 +161,26 @@ UTILISATION_TIGHT = 0.95
 
 Section 8.3's table. Above it, section 8.4 applies: on the graphics card the driver pages
 rather than refusing, so the configuration is named ``too-tight`` rather than rejected.
-=======
+"""
+
+
+# --------------------------------------------------------------------------------------
+# From the placement work.
+# --------------------------------------------------------------------------------------
+
+"""Constants the estimator and the placement planner are built from, with their provenance.
+
+Every number here is written down once, with a comment saying where it came from, because
+a constant with no provenance is indistinguishable from a guess and nobody dares change
+it. Values measured on the reference machine cite
+``docs/calibration/2026-09-09-reference-machine.md``; values the design fixed cite the
+section of ``docs/specs/2026-09-09-llamafit-design.md`` that fixed them.
+
+Phase 3 replaces the measured ones per host by calibration, so a constant here is the
+starting point rather than the answer.
+"""
+
+
 MIB = 1024**2
 """One mebibyte, so a size below can be written the way llama.cpp reports it."""
 
@@ -301,9 +291,29 @@ DEFAULT_PARALLEL_SLOTS = 1
 Every budget in section 8 is computed for one sequence. A second slot divides the context
 between them and changes the KV cache, so the number that is planned and the number that
 is launched have to be the same one.
->>>>>>> feat/placement
-=======
-from typing import Final
+"""
+
+
+# --------------------------------------------------------------------------------------
+# From the speed work.
+# --------------------------------------------------------------------------------------
+
+"""Constants the sizing and speed models are built from, each with its provenance.
+
+A constant with no source is a guess that has learned to look like a measurement, so every
+number here says where it came from: a section of the design specification, a published
+figure, or a run on the reference machine recorded in
+``docs/calibration/2026-09-09-reference-machine.md``. Nothing here is meant to be the last
+word. A measurement taken on a real host supersedes the constant for that host, and the
+estimate built from it is relabelled accordingly (section 10.3).
+
+The three efficiencies below are not independent guesses. They were identified together
+from four measurements on the reference machine, two of which exist only to isolate a pool:
+the same small dense model run entirely in system memory and entirely on the card, where
+the traffic is exactly its block weights and nothing else competes. Changing one of them
+without re-deriving the others against all four runs will make the estimator worse.
+"""
+
 
 # --- Generation: how much of a pool's bandwidth the decode loop actually reaches -----
 #
@@ -478,5 +488,4 @@ ASSUMED_BITS_PER_WEIGHT: Final = 4.5
 The average of the Q4_K family, which is what nearly every recommended quantisation is.
 Only ever used to turn bytes back into a parameter count for the prompt-processing compute
 term, and the estimate says so in its notes.
->>>>>>> feat/speed
 """

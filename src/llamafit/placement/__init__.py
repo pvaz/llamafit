@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """The placement planner: where a model's bytes go, and the settings that put them there.
 
 Section 9 of the design. Four things live here and each is one of its subsections: the run
