@@ -436,24 +436,32 @@ bytes_vram = attention_bytes_on_gpu + shared_expert_bytes_on_gpu + active_expert
            + output_head_bytes + kv_bytes_per_token × working_context
 bytes_ram  = active_expert_bytes_in_ram + attention_bytes_on_cpu + kv_bytes_on_cpu × working_context
 t_token    = bytes_vram / (vram_bw × eff_vram) + bytes_ram / (ram_bw × eff_ram)
-           + n_layer × layer_overhead + sampling_overhead
+           + fixed_overhead
 gen_tps    = 1 / t_token
 ```
 
 `active_expert_bytes = bytes_expert_weights × n_expert_used / n_expert`. `working_context` defaults to 8K tokens for the board and to the user's requested context for `plan`.
 
-**System memory has two effective bandwidths, not one, and the difference is a factor of two.** A dense model's weights are read in large contiguous runs and reach `eff_ram_sequential 0.70` of the measured read bandwidth. A routed expert set is not: each token selects a different handful of experts, so a layer's read is a scatter of small blocks across tens of gigabytes, and the memory system never gets to stream. Treating the two alike overstates a mixture-of-experts model's speed roughly twofold, which is the difference between advising a model and advising the wrong one.
+**System memory has two effective bandwidths, not one.** A dense model's weights are read in large contiguous runs. A routed expert set is not: each token selects a different handful of experts, so a layer's read is a scatter of small blocks across tens of gigabytes and the memory system never gets to stream.
 
-`eff_ram_scattered` is **0.36**, derived on the reference machine from two models whose per-token traffic differs by 64 percent:
+**The token embedding table is not per-token traffic.** A lookup reads one row, not the table, and counting the whole thing puts the apparent rate above what the memory bus can physically deliver, which is how the error below was caught.
 
-| Model | Active expert bytes per token | Measured | Effective |
+The four constants are identified from four measurements on the reference machine, not fitted to two. Two of them exist to isolate the pools: the same small dense model run entirely in system memory and entirely on the card, where the traffic is known exactly and nothing else competes.
+
+| Run | Traffic per token | Measured | Isolates |
 |---|---|---|---|
-| Qwen3-Coder-Next UD-Q4_K_XL | 0.916 GB | 23.0 tok/s | 21.1 GB/s |
-| Qwen3.8-Flash-Next UD-Q4_K_XL | 1.504 GB | 13.9 tok/s | 20.9 GB/s |
+| Qwen3-0.6B Q8_0, `-ngl 0` | 0.47 GB, system memory, contiguous | 78.0 tok/s | `eff_ram_sequential` |
+| Qwen3-0.6B Q8_0, `-ngl 99` | 0.47 GB, card | 279.5 tok/s | `eff_vram` |
+| Qwen3-Coder-Next UD-Q4_K_XL | 2.36 GB card, 0.916 GB scattered | 23.0 tok/s | `eff_ram_scattered` |
+| Qwen3.8-Flash-Next UD-Q4_K_XL | 4.83 GB card, 1.504 GB scattered | 13.9 tok/s | `eff_ram_scattered` |
 
-Against a measured sequential read of 55 to 60 GB/s on the same machine, that is 0.36. The two agree to within one percent while the traffic they carry differs by more than half, which is what makes it a constant of the access pattern rather than a fit to one model.
+The two dense runs give a fixed overhead of about **1 ms** per token with `eff_ram_sequential 0.70` and `eff_vram 0.67`. The two expert models then give `eff_ram_scattered` independently as **0.54** and **0.59**, nine percent apart while carrying 64 percent different traffic, so **0.57** is the value and the agreement is what makes it a property of the access pattern.
 
-Other initial constants, with provenance: `eff_vram 0.60` (the fraction of peak bandwidth that decode kernels reach on consumer GPUs in published llama-bench results), `layer_overhead 0.20 ms`, `sampling_overhead 1 ms`. When a pool's bandwidth is unknown, a per-backend fallback applies to the whole model, in GB/s-equivalent: CUDA 250, Metal 150, HIP 200, Vulkan 120, SYCL 100, CPU arm64 80, CPU x86_64 60. These fallbacks are deliberately conservative and always labelled `estimated`.
+**There is no per-layer overhead term.** The specification carried 0.20 ms per layer, which for a 28-layer model is 5.6 ms, while that model's whole measured token is 3.58 ms. The term is not merely too large, it is impossible, and it imposed a ceiling of about 105 tokens per second on any model of that depth.
+
+**An earlier revision of this section gave `eff_ram_scattered` as 0.36 and was wrong.** That figure was the expert traffic divided by the *whole* token time, which already contains the card traffic and the overhead the formula then adds again. Used as a term in the sum it alone exceeds the measured token, and the estimator came out 42 percent low. An apparent end-to-end rate and a coefficient inside a sum of terms are not the same quantity, and the error is easy to make and invisible until something is measured against it.
+
+When a pool's bandwidth is unknown, a per-backend fallback applies to the whole model, in GB/s-equivalent: CUDA 250, Metal 150, HIP 200, Vulkan 120, SYCL 100, CPU arm64 80, CPU x86_64 60. These fallbacks are deliberately conservative and always labelled `estimated`.
 
 ### 10.2 Prompt processing
 
