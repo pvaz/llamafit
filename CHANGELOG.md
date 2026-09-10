@@ -222,7 +222,35 @@ the changelog says so when they do.
 - `fastapi` and `uvicorn` as the optional `web` extra, with their rows in
   `docs/development.md`: somebody who only wants the command line should not have to install a
   web server, and `llamafit serve` without them says so and gives the line that fixes it.
-
+- `llamafit install model <id>`: the parallel, resumable model downloader (section 15.2).
+  The files are tens or hundreds of gigabytes, so everything about it is about doing it once.
+  Before a socket is opened it prints the model, the quantisation, the repository, every file
+  it will fetch, what the set weighs, where it is going, how much is already there and what
+  would be left on the volume afterwards; in a terminal it then asks, and outside one it does
+  not, because there is nobody there to answer. The disk is checked against the catalog's own
+  byte count first and the run refused with the shortfall named, since a hundred-gigabyte
+  download that fills a volume at ninety percent has cost hours and left nothing behind. Each
+  file is cut into 32 MiB chunks fetched by a pool of workers into a part file created at its
+  final size, with a sidecar recording each chunk only once its last byte is written, so an
+  interruption at eighty gigabytes continues rather than restarts — a test proves it by
+  interrupting a transfer and then refusing, from the server side, to serve a byte that was
+  already on disk. Every file is checked against the SHA-256 the catalog holds before it is
+  moved into place, and one that does not match is deleted along with its part file and its
+  record, because a model that downloaded wrong does not fail loudly: it loads and answers
+  nonsense. A quant with no checksums in the catalog is refused outright unless
+  `--allow-unverified` says so in as many words. A split model is one thing: every shard and
+  every extra the entry declares are planned together under one total, and the manifest that
+  means "this model is installed" is written only once all of them have arrived and been
+  checked, so nobody ends up with three files of four and no warning. A server that answers a
+  range request with the whole body is caught before a byte is written and that file restarts
+  as one sequential stream; a server that rate-limits is waited for and given one fewer
+  connection, permanently, rather than retried harder. `--limit-rate` is one token bucket
+  shared by every worker, and `--workers` defaults to eight rather than the specification's
+  sixteen, because the line is somebody's home connection and they did not ask for their
+  video call to stop working. `Ctrl+C` sets a flag the workers read between pieces instead of
+  raising into whichever one was running, and the last line says the run can be carried on.
+- `llamafit install history`: what has been downloaded, when, how big it was and whether it
+  finished, carrying the sentence a failed run gave at the time.
 ### Changed
 - **The placement planner steps down section 9.3's context ladder instead of halving.**
   Section 9.2 says so in as many words, and the difference is not cosmetic: from 40,960

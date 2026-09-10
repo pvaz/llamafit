@@ -421,9 +421,9 @@ non-interactive terminal behaves like `recommend`. See [tui.md](tui.md).
 
 ### `llamafit install` — phase 2
 
-The `install` group puts what LlamaFit needs onto the machine. `llamafit install llama.cpp`
-has shipped; `llamafit install model <id> [--quant NAME] [--dir PATH] [--workers N] [--yes]`
-is still to come.
+The `install` group puts onto the machine what it takes to run a model: llama.cpp itself,
+and the weights. Both commands have shipped, and both keep the same rule — the whole plan
+is printed, and only then is the question asked.
 
 #### `llamafit install llama.cpp` — phase 2, shipped
 
@@ -478,6 +478,49 @@ run. Your `PATH` is never changed unless you ask with `--add-to-path` and then a
 
 **Exit codes.** `0` on success or after a dry run; `1` when you decline, when the directory is
 not LlamaFit's, when a volume has no room, or when an archive fails its checksum.
+
+#### `llamafit install model <id>` — phase 2, shipped
+
+Download a model's weights from the repository the catalog names, resuming anything an
+earlier run left behind and checking every file against the SHA-256 the catalog holds.
+
+```
+llamafit install model <id> [--quant NAME] [--dir PATH] [--workers N] [--limit-rate RATE]
+                            [--yes] [--dry-run] [--no-extras] [--recheck]
+                            [--allow-unverified]
+llamafit install history [--limit N]
+```
+
+Before a socket is opened it prints the model, the quantisation, the repository, every
+file it will fetch, what the set weighs, where it is going, how much is already there and
+what would be left on the volume afterwards. In a terminal it then asks; outside one it
+does not, because there is nobody there to answer.
+
+| Option | Effect |
+|---|---|
+| `--quant NAME` | Fetch this quantisation instead of the first the catalog publishes. |
+| `--dir PATH` | Put the files here instead of under the downloads directory. |
+| `--workers N` | Requests in flight, 1 to 32. The default is 8: the specification's 16–32 will take every bit of a domestic connection, and nobody asked for their video call to stop working. |
+| `--limit-rate RATE` | A ceiling in bytes per second — `5M`, `500K` — shared across every worker, so the figure is the figure whatever `--workers` says. |
+| `--yes`, `-y` | Do not ask before starting. |
+| `--dry-run` | Print the plan and the disk arithmetic, fetch nothing. Needs no network. |
+| `--no-extras` | Weights only: no vision projector, no draft model. |
+| `--recheck` | Re-read files that are already here and hash them against the catalog. |
+| `--allow-unverified` | Fetch files the catalog holds no checksum for. Refused by default, because a model that downloaded wrong does not fail loudly — it answers nonsense. |
+
+What is on disk while a download is running: `<name>.gguf.part`, created at the file's
+final size, and `<name>.gguf.part.state`, a small JSON record of which chunks have
+arrived. A chunk is recorded only once its last byte is written, so `Ctrl+C` or a dropped
+connection costs at most one chunk and the next run continues rather than restarts. When
+every file of a model has arrived and been checked, `llamafit-install.json` is written
+into the directory; its presence is what "this model is installed" means, and a directory
+holding three shards of four does not have one.
+
+A file whose checksum does not match is deleted along with its part file and its record,
+and the command exits 1. Nothing that could be resumed into the wrong bytes is kept.
+
+`install history` lists what has been downloaded, newest first, finished or not.
+`--json` gives the plan (with `--dry-run`), the outcome, or the history records.
 
 ### `llamafit preset <model>` — phase 2
 
