@@ -302,9 +302,18 @@ class Needs(BaseModel):
         capabilities: What the model must be able to do. A model missing one of these
             is excluded rather than penalised.
         min_context: The smallest context worth having.
+        min_tps: The slowest generation worth having, in tokens per second, or ``None``
+            to use section 11.4's reading floor for the use case. Zero says nobody is
+            waiting on the tokens, which is the batch case: no candidate is then
+            excluded for being slow. See :func:`~llamafit.scoring.speed_score.floor_tps`.
         requested_context: What to size for, defaulting by use case.
         allow_kv_quant: Whether the cache may be quantised to buy context.
         max_download_bytes: A ceiling on what the user is willing to fetch.
+
+    ``min_tps`` is ``None`` rather than zero when it is unset, and the two mean opposite
+    things: unset is "use the figure the specification derived from reading rates", zero
+    is "there is no such figure for this request". A single number could not carry both,
+    and a default of zero would have quietly turned the exclusion off for everybody.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -312,6 +321,7 @@ class Needs(BaseModel):
     use_case: str = "general"
     capabilities: tuple[str, ...] = ()
     min_context: int = Field(default=0, ge=0)
+    min_tps: float | None = Field(default=None, ge=0)
     requested_context: int | None = None
     allow_kv_quant: bool = True
     max_download_bytes: ByteSize | None = None

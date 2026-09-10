@@ -492,17 +492,57 @@ Every estimate carries one label, in this precedence: `measured` (a stored bench
 
 **A model is excluded when the requested use case is not in its `use_cases` at all**, with the reason said plainly, and likewise when a required capability is missing. The catalog is curated by hand precisely so that a model's declared purpose means something; a request for coding must not return a model whose own entry says it is for general chat and reasoning. Without this rule the seeded Llama 3.1 8B, which declares neither the coding use case nor the coding capability, ranks second for a coding request on the reference machine, carried there by fit and a capped speed score. No weighting fixes that, because the defect is that an unsuitable candidate was allowed to compete at all. When a model really is good at something its entry does not claim, the fix is a one-line catalog change, which is the kind of correction this project wants to be easy.
 
+The exclusions are in three places and a reader should be told where: **11.1** excludes a model whose entry does not claim the use case, or which lacks a required capability; **11.2** excludes one that cannot hold `--min-context`; **11.4** excludes one slower than its reader. All three are exclusions rather than filters — the candidate appears with its reason, its placement and whatever else was learned about it — and all three name the thing the reader can change.
+
 ### 11.2 Context
 
 `context_score = 100 × min(1, max_context_fit / requested_context)`, with `requested_context` defaulting to 8K for general and chat, 32K for coding and reasoning, 16K for multimodal. Candidates whose `max_context_fit` is below the user's `--min-context` are excluded.
 
 ### 11.3 Fit score
 
-From the worst-pool utilisation `u`: 100 for `0.50 ≤ u ≤ 0.80`; linear down to 70 at `u = 0.20` (a model far smaller than the machine wastes it); linear down to 40 at `u = 0.98`; 0 above.
+The fit score asks two questions and answers with the worse of them, because neither complaint excuses the other.
+
+**Is it crowded?** From the whole budget on whichever pool is worst, `u`: 100 for `u ≤ 0.80`; linear down to 40 at `u = 0.98`; 0 above. A configuration filling 95 percent of a card is one browser window away from paging into system memory, where the speed collapses with nothing raising an error. That a configuration *will* page is not merely scored here, it is named: the budget's own verdict says `too-tight`.
+
+**Does it waste the machine?** From the model's own resident weight tensors over every byte of memory the machine has to hold them in, `w = resident weight bytes / (vram_available + ram_available)`: 100 for `w ≥ 0.50`, falling by `30 / log₂(2.5) ≈ 22.7` points for every halving below it — so 70 at `w = 0.20`, and 0 at about `w = 0.024`. A tool that scored only on safety would recommend the smallest model that runs, every time, and tell a person with 128 GB of memory to run a 0.6B. The user did not buy the machine to leave it idle.
+
+Weights only, and only the resident ones. The key-value cache and the recurrent state grow with whatever context the planner chose; the compute and output buffers follow the micro-batch and the vocabulary; the backend context and the process overhead are the same bytes whatever is loaded. None of them says anything about how large the model is, and the cache is worse than uninformative because the planner grows it until the pool is full, so a score read off the total budget scores the planner's appetite. A tensor streamed from disk is not resident and does not count. Both memory pools are added, because on a machine with a small card most of a large model's weights live in the second; a machine with unified memory charges every line to system memory and reports no card, so nothing is counted twice.
+
+**This is not the quantity the first revision of this section named, and the difference is the whole point.** Read on worst-pool utilisation, waste cannot be seen at all on a host with a small card: a 0.6B at Q8 puts 0.6 GB of weights on an eight-gigabyte card and 6 GB of cache and buffers on top, so the card reads 90 percent full — and so does a 27B. The price of waste is unchanged from that revision: thirty points for a shortfall of two and a half times, and the curve still passes through 100 at 0.50 and 70 at 0.20 exactly. What changed is the quantity, and that the interpolation is in halvings, because a fiftieth of a machine and a hundredth of one are a ratio apart rather than a difference apart.
+
+**There is no floor.** The first revision held the score at 70 below 0.20 on the grounds that a small model is still the right answer where nothing else fits. `w` is relative to the machine by construction, so that case needs no special rule: 0.6 GB of weights is more than half of a laptop with 1.2 GB free and scores 100 there, and nothing at all on a workstation that could hold forty times more. A zero costs a candidate a fifth to a quarter of its composite and never its place on the board — nothing is dropped for fitting badly, and a small model can still win on the other three parts, which is how a draft model or a smoke test gets recommended.
 
 ### 11.4 Speed score
 
-`speed_score = 100 × min(1, gen_tps / target_tps)` with targets by use case: chat 30, general 25, coding 20, reasoning 15, multimodal 15, embedding 200 (prompt throughput instead of generation). Prompt throughput adds a modifier for coding and reasoning: −10 when `pp_tps < 100`, −20 when below 40.
+```
+speed_score = 100 × log2(gen_tps / floor_tps) / log2(target_tps / floor_tps)
+```
+
+clamped to 0 and 100, with targets by use case: chat 30, general 25, coding 20, reasoning 15, multimodal 15, embedding 200 (prompt throughput instead of generation).
+
+**The score runs between two speeds, and they are different kinds of number.** The target is a property of the job and is where the score stops: past the point where a person stops waiting, more speed buys nothing, so forty tokens per second in a chat scores what thirty-two does. The floor is a property of the *person* and is where the score starts: silent reading runs at roughly 240 words a minute, and a token is about three quarters of a word, so **six tokens per second**, the middle of a five-to-seven band. A model slower than that cannot keep up with somebody reading its own output.
+
+**The floor does not vary by use case.** A person reading a reasoning trace reads at the same rate as a person reading a chat reply. What varies between them is how much faster than reading they need it to be, which is what the target already says. Embedding is the single exception and has no floor: it is scored on prompt throughput because an embedding run generates nothing, and nobody reads an embedding, so there is no speed at which the experience stops existing — only more work done or less. Its curve is the straight line `100 × min(1, pp_tps / 200)`.
+
+**Between the floor and the target the score is linear in doublings, not in tokens per second.** A person experiences the multiple of their own reading rate, and the steps in that multiple are not equal in tokens per second: six to twelve is the difference between waiting and not waiting, twenty-one to twenty-five is a difference nobody can feel, and a straight line prices them the same. This is the axis section 11.3 already chose for the capacity arm, for the same reason.
+
+**An earlier revision ran the straight line all the way to zero tokens per second, and it could not be defended.** Gemma 3 27B generating 2.1 tokens per second scored 8.4 out of 100 for a general request and ranked above Llama 3.1 8B at 9.7 on the same machine. A person waiting three and a half minutes for a five-hundred-token answer is not getting eight percent of a good experience; they are getting none of it.
+
+**The floor is a test as well as a scale.** A candidate whose speed falls below it is **excluded**, with its speed and the floor in the reason, and not ranked last with a score of zero.
+
+Zero was not enough on its own, and the reason is worth stating exactly, because it is not that the speed term is outvoted. On the reference machine Gemma 3 27B at 2.2 tokens per second led a general board at 54.92 over Llama 3.1 8B at 51.34 — a second live scan of the same machine as the paragraph above, whose free card memory moves a few hundred megabytes between runs, which is why the two rates differ in the first decimal — and *the speed score was already at its rail*. Gemma scored zero, which is the least this section can say about anything; no curve on `[floor, target]` can take it lower. Llama earned 36.88, which is a fair score for 1.7 times reading speed against a target of 25. Both ends of the range were working correctly and the answer was still wrong. That is what places the defect outside the score.
+
+**The claim is about a kind of tool, not a degree of quality.** A model that generates more slowly than its reader reads is not a worse interactive model; it is a batch one. Ranking it second or third tells a person nothing they can act on, and it kept happening: on the bundled reference profile, where the ordering was never inverted, Gemma still sat at number two of three for general, chat and multimodal. "Generates 2.2 tokens per second, below the 6 a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up" says what it is, what decided it, and what to change — and, because this program excludes rather than filters, the row is still on the page with its placement and its speed attached. This is the argument section 11.1 already makes about a model whose entry does not claim the use case, and it reaches the same answer.
+
+**The comparison is not strict.** A model generating at exactly the reading rate is keeping up, by the plain meaning of the words, and stays on the board with a speed score of zero. Exclusion is the stronger of the two claims and takes the stricter test, so the boundary case falls on the side that keeps a candidate.
+
+**A throughput use case has no floor of its own, so it is never excluded this way unless the request names a figure.** The rule applies exactly where the floor applies, and embedding has none by default: there is no person waiting on those tokens, so there is no rate below which the waiting stops being worth it.
+
+**What the floor costs.** On a machine where nothing reaches six tokens per second, the ranked half of an interactive board is empty and every candidate appears in the excluded half with its speed. That is a real change and not a free one. It is also the true answer: the behaviour it replaces was to order such a machine's candidates by quality and fit and present the winner as a recommendation, which on a two-core laptop meant leading a general board with a model that answers at 1.6 tokens per second.
+
+**The floor is a default, not a law, and it describes a person.** Six tokens per second is the middle of a five-to-seven band for somebody reading English prose as it arrives. It is the wrong number for a reader who skims, for a language whose tokenizer packs differently, and for anybody who starts a generation and walks away. So a request carries its own figure: `Needs.min_tps`, unset by default and then meaning the use case's own floor, set from `--min-tps` on the command line. `--min-tps 0` says nobody is waiting — the batch case — and excludes nothing at all; a figure above zero raises the bar and applies to every use case, embedding included, because a person who names a rate has one in mind. Whichever figure is in force, the ramp starts from it and the exclusion names it, so the two can never disagree about what this request calls too slow, and the board says beneath itself which figure it used. A board that quietly included a model nobody can wait for is the failure this exclusion exists to prevent, and a board that quietly relaxed the rule would be the same failure wearing the opposite face.
+
+Prompt throughput adds a modifier for coding and reasoning, unchanged: −10 when `pp_tps < 100`, −20 when below 40, replacing rather than stacking.
 
 ### 11.5 Composite
 
@@ -527,6 +567,7 @@ Needs:
   required: [coding, tools]          # must have
   preferred: [thinking]              # bonus
   min_context: 32768
+  min_tps: null                      # unset = section 11.4's reading floor; 0 = nobody is waiting
   max_download_gb: 120
   licenses: [Apache-2.0, MIT, Llama]  # empty = any
   languages: []                      # empty = any
@@ -553,7 +594,7 @@ Every row can expand into an explanation composed from templates, never free tex
 | `llamafit list` / `search <text>` | catalog browsing | `--use-case`, `--capability`, `--license`, `--vendor` |
 | `llamafit info <model>` | one model: facts, quants, budget on this host per quant | `--quant`, `--context`, `--json` |
 | `llamafit fit` | all models ranked by fit | `--perfect`, `--min-fit`, `--limit` |
-| `llamafit recommend` | the board for the given needs | `--use-case`, `--require`, `--prefer`, `--min-context`, `--max-download`, `--license`, `--limit`, `--all-quants`, `--explain`, `--json` |
+| `llamafit recommend` | the board for the given needs | `--use-case`, `--require`, `--prefer`, `--min-context`, `--min-tps`, `--max-download`, `--license`, `--limit`, `--all-quants`, `--explain`, `--json` |
 | `llamafit plan <model>` | placement, flags and command line for one model | `--quant`, `--context`, `--ub`, `--target-tps`, `--no-vision`, `--json` |
 | `llamafit catalog validate|refresh|show` | catalog maintenance | `--check`, `--dry-run`, `--model` |
 | `llamafit hardware list|show|validate|path` | hardware profiles | |

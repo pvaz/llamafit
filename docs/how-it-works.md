@@ -153,9 +153,15 @@ Four scores from 0 to 100:
   IQ3 12, Q2 20, IQ2 24, IQ1 35; dynamic quants one less than their base), plus a small bonus
   when the model's strengths match the request. A missing required capability excludes the
   candidate.
-- **Speed**: generation tokens per second against a target for the use case (chat 30, general
-  25, coding 20, reasoning 15, multimodal 15; embeddings are scored on prompt throughput), with
-  a deduction when prompt processing is slow for coding and reasoning.
+- **Speed**: generation tokens per second, scored between two speeds — the rate a person reads
+  at (about six tokens per second) and a target for the use case (chat 30, general 25, coding
+  20, reasoning 15, multimodal 15), on an axis of doublings rather than of tokens per second.
+  Embeddings are scored on prompt throughput instead, with no reading floor, because nobody
+  reads one. A candidate below the floor is excluded with its speed in the reason rather than
+  ranked: it is a batch tool, not a slow interactive one. `--min-tps` puts the request's own
+  figure in the floor's place — `--min-tps 0` when nobody is waiting on the tokens — and the
+  board says underneath which figure it used. Coding and reasoning take a deduction when prompt
+  processing is slow.
 - **Fit**: two questions, scored as the worse of them. *Does it waste the machine?* — the
   model's own weights against every byte of memory the machine has to hold them in: full marks
   at half the machine or more, and about 23 points off for each halving below that. *Is it

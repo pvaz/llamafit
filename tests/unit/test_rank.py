@@ -357,6 +357,71 @@ def test_the_slow_model_is_not_dropped_from_the_board_it_is_moved_to_the_end(
     assert ids(board)[0] == "llama-3.1-8b-instruct"
 
 
+def test_a_request_with_nobody_waiting_ranks_the_model_it_would_have_excluded(
+    catalog: Catalog,
+) -> None:
+    """``--min-tps 0`` is the batch case: no reader, so no reader to fall behind."""
+    candidate = evaluate_one(catalog, "gemma-3-27b-it", Needs(use_case="general", min_tps=0))
+    assert candidate.excluded_because is None
+    assert candidate.score is not None
+
+
+def test_nobody_waiting_scores_the_slow_model_on_the_straight_line_to_the_origin(
+    catalog: Catalog,
+) -> None:
+    """With no floor the ramp is the one an embedding gets, and it separates slow from slower.
+
+    The floor is what sends everything below it to zero. Take it away and 4.2 tokens per
+    second against a general target of 25 is a sixth of the way there, which is the honest
+    thing to say to somebody who is not sitting in front of it.
+    """
+    candidate = evaluate_one(catalog, "gemma-3-27b-it", Needs(use_case="general", min_tps=0))
+    assert candidate.score is not None
+    assert candidate.score.speed == pytest.approx(100.0 * 4.2 / 25.0)
+
+
+def test_a_request_may_raise_the_bar_above_the_reading_floor(catalog: Catalog) -> None:
+    """A reader who skims is entitled to disagree with six, upwards as well as downwards."""
+    kept = evaluate_one(catalog, "qwen3.8-flash-next", Needs(use_case="multimodal"))
+    assert kept.excluded_because is None
+    raised = evaluate_one(catalog, "qwen3.8-flash-next", Needs(use_case="multimodal", min_tps=20))
+    assert "13.9 tokens per second" in (raised.excluded_because or "")
+
+
+def test_the_reason_names_the_figure_the_request_set_and_the_flag_that_set_it(
+    catalog: Catalog,
+) -> None:
+    """A reader who moved a boundary meets the boundary they moved, not the default one."""
+    candidate = evaluate_one(catalog, "gemma-3-27b-it", Needs(use_case="general", min_tps=12))
+    reason = candidate.excluded_because or ""
+    assert "below the 12 this request asks for" in reason
+    assert "--min-tps" in reason
+    assert "a person reads at" not in reason
+
+
+def test_the_exclusion_and_the_score_are_decided_on_one_figure(catalog: Catalog) -> None:
+    """A board that excluded on one number and scored on another would disagree with itself.
+
+    Llama 3.1 8B runs at 33.9 here and a general request targets 25, so a floor of 30 keeps
+    it and leaves its speed score at the rail. Nothing survives such a floor below the
+    target, which is what makes the two readings impossible to tell apart from the outside —
+    and exactly why they are taken from one call rather than two.
+    """
+    ranked = evaluate_one(catalog, "llama-3.1-8b-instruct", Needs(use_case="general", min_tps=30))
+    assert ranked.excluded_because is None
+    assert ranked.score is not None and ranked.score.speed == 100.0
+
+
+def test_the_default_board_is_exactly_what_it_was_before_the_flag_existed(
+    catalog: Catalog,
+) -> None:
+    """A request that says nothing is judged the way it was judged yesterday."""
+    silent = evaluate_and_rank(entries(catalog), Needs(use_case="general"))
+    spelled = evaluate_and_rank(entries(catalog), Needs(use_case="general", min_tps=6))
+    assert ids(silent) == ids(spelled)
+    assert [c.score is None for c in silent] == [c.score is None for c in spelled]
+
+
 def test_what_the_request_asked_for_is_reported_before_what_the_machine_can_do(
     catalog: Catalog,
 ) -> None:
