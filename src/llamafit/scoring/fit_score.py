@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """How well a candidate uses the machine, punishing both ends of the range.
 
 The curve, from section 11.3 of the design specification, over the worst pool's

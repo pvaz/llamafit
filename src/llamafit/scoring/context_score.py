@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """How much of the context a request wants a candidate can actually hold.
 
 ``context_score = 100 x min(1, max_context_fit / requested_context)``

@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """How the estimated speed compares with what this use case actually needs.
 
 ``speed_score = 100 x min(1, tokens_per_second / target)``
