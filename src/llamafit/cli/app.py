@@ -176,7 +176,16 @@ def main() -> None:
 from llamafit.cli import (  # noqa: E402  (registers commands on import)
     catalog_cmd,
     doctor_cmd,
+    hardware_cmd,
     system_cmd,
 )
 
-__all__ = ["CliState", "app", "catalog_cmd", "doctor_cmd", "main", "system_cmd"]
+__all__ = [
+    "CliState",
+    "app",
+    "catalog_cmd",
+    "doctor_cmd",
+    "hardware_cmd",
+    "main",
+    "system_cmd",
+]

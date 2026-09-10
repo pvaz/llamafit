@@ -131,7 +131,9 @@ jobs:
               "the model catalog": lambda n: n.startswith("llamafit/data/catalog/")
               and n.endswith(".yaml"),
               "the generated facts": lambda n: n.endswith(".facts.json"),
-              "the JSON schema": lambda n: n == "llamafit/data/schema/catalog.schema.json",
+              "the hardware profiles": lambda n: n.startswith("llamafit/data/profiles/")
+              and n.endswith(".json"),
+              "the JSON schemas": lambda n: n == "llamafit/data/schema/catalog.schema.json",
               "the translations": lambda n: n.startswith("llamafit/data/locale/")
               and n.endswith(".po"),
               "the GPU table": lambda n: n == "llamafit/data/gpus.json",
@@ -161,6 +163,8 @@ jobs:
           llamafit --version
           llamafit list                       # the catalog YAML
           llamafit catalog validate           # the catalog files parse and check out
+          llamafit hardware list              # the bundled hardware profiles
+          llamafit hardware validate          # they parse and check out
           model=$(llamafit --json list | python -c 'import json,sys; print(json.load(sys.stdin)[0]["id"])')
           llamafit info "$model"              # the generated facts file
           python - <<'PY'

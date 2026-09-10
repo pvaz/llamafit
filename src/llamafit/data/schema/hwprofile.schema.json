@@ -1,0 +1,525 @@
+{
+  "$defs": {
+    "ProfileCalibration": {
+      "additionalProperties": false,
+      "description": "Factors fitted to one machine by ``llamafit bench``.\n\nStored, not applied: nothing in this build reads them, and ``hardware show`` says so\nrather than letting a reader assume a number they typed here changed an estimate.\nPhase 3 (section 16) is where they start to count.",
+      "properties": {
+        "fixed_overhead_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fixed Overhead Ms"
+        },
+        "layer_overhead_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Layer Overhead Ms"
+        },
+        "pcie_effective_gbps": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pcie Effective Gbps"
+        },
+        "ram_efficiency": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ram Efficiency"
+        },
+        "source": {
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        },
+        "vram_efficiency": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 1,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vram Efficiency"
+        }
+      },
+      "required": [
+        "source"
+      ],
+      "title": "ProfileCalibration",
+      "type": "object"
+    },
+    "ProfileCpu": {
+      "additionalProperties": false,
+      "description": "The processor, as far as thread choice and CPU inference care.",
+      "properties": {
+        "isa": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Isa",
+          "type": "array"
+        },
+        "logical_cores": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Logical Cores"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "performance_cores": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Performance Cores"
+        },
+        "physical_cores": {
+          "exclusiveMinimum": 0,
+          "title": "Physical Cores",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "model",
+        "physical_cores"
+      ],
+      "title": "ProfileCpu",
+      "type": "object"
+    },
+    "ProfileGpu": {
+      "additionalProperties": false,
+      "description": "One graphics device.\n\n``bandwidth_gbps`` and ``compute_tflops_fp16`` may be left out, and usually should\nbe: :func:`llamafit.hardware.gputable.enrich_gpu` fills them from the bundled table\nof vendor specifications, which is sourced, dated and shared by every card of that\nname. A figure typed here instead is a figure whose provenance only the profile's\n``provenance`` note can carry.",
+      "properties": {
+        "backend_hint": {
+          "anyOf": [
+            {
+              "enum": [
+                "cuda",
+                "hip",
+                "metal",
+                "vulkan",
+                "sycl",
+                "cpu"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Backend Hint"
+        },
+        "bandwidth_gbps": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Bandwidth Gbps"
+        },
+        "compute_tflops_fp16": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Compute Tflops Fp16"
+        },
+        "driver": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Driver"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "vendor": {
+          "enum": [
+            "nvidia",
+            "amd",
+            "apple",
+            "intel",
+            "other"
+          ],
+          "title": "Vendor",
+          "type": "string"
+        },
+        "vram_total": {
+          "anyOf": [
+            {
+              "gt": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vram Total"
+        },
+        "vram_used": {
+          "default": 0,
+          "ge": 0,
+          "title": "Vram Used",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "vendor",
+        "name"
+      ],
+      "title": "ProfileGpu",
+      "type": "object"
+    },
+    "ProfileMatch": {
+      "additionalProperties": false,
+      "description": "Rules that let a live scan recognise itself in a profile.\n\nA machine that has been benchmarked gets its calibration written into a user profile\nwhose rules fit it (section 16), and later runs pick that profile up without being\ntold to. Every rule given must hold; a profile with no rules matches nothing, which\nis what a profile of somebody else's machine should do.",
+      "properties": {
+        "cpu_model_contains": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpu Model Contains"
+        },
+        "gpu_name_contains": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gpu Name Contains"
+        },
+        "total_ram_min": {
+          "anyOf": [
+            {
+              "gt": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total Ram Min"
+        }
+      },
+      "title": "ProfileMatch",
+      "type": "object"
+    },
+    "ProfileMemory": {
+      "additionalProperties": false,
+      "description": "The system memory pool, and how its bandwidth figure was arrived at.",
+      "properties": {
+        "available": {
+          "anyOf": [
+            {
+              "ge": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Available"
+        },
+        "bandwidth_gbps": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Bandwidth Gbps"
+        },
+        "bandwidth_source": {
+          "anyOf": [
+            {
+              "enum": [
+                "measured",
+                "estimated",
+                "assumed",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Bandwidth Source"
+        },
+        "channels": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Channels"
+        },
+        "modules": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Modules"
+        },
+        "speed_mts": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Speed Mts"
+        },
+        "total": {
+          "gt": 0,
+          "title": "Total",
+          "type": "integer"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Type"
+        }
+      },
+      "required": [
+        "total"
+      ],
+      "title": "ProfileMemory",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "One machine, described well enough to score models against without being on it.",
+  "properties": {
+    "arch": {
+      "enum": [
+        "x86_64",
+        "arm64",
+        "other"
+      ],
+      "title": "Arch",
+      "type": "string"
+    },
+    "backends": {
+      "items": {
+        "enum": [
+          "cuda",
+          "hip",
+          "metal",
+          "vulkan",
+          "sycl",
+          "cpu"
+        ],
+        "type": "string"
+      },
+      "title": "Backends",
+      "type": "array"
+    },
+    "calibration": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ProfileCalibration"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "cpu": {
+      "$ref": "#/$defs/ProfileCpu"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Description"
+    },
+    "gpus": {
+      "items": {
+        "$ref": "#/$defs/ProfileGpu"
+      },
+      "title": "Gpus",
+      "type": "array"
+    },
+    "match": {
+      "$ref": "#/$defs/ProfileMatch"
+    },
+    "memory": {
+      "$ref": "#/$defs/ProfileMemory"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "os": {
+      "enum": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "title": "Os",
+      "type": "string"
+    },
+    "os_version": {
+      "minLength": 1,
+      "title": "Os Version",
+      "type": "string"
+    },
+    "provenance": {
+      "minLength": 1,
+      "title": "Provenance",
+      "type": "string"
+    },
+    "recorded_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Recorded At"
+    },
+    "schema_version": {
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "unified_memory": {
+      "default": false,
+      "title": "Unified Memory",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_version",
+    "name",
+    "provenance",
+    "os",
+    "os_version",
+    "arch",
+    "cpu",
+    "memory"
+  ],
+  "title": "HardwareProfile",
+  "type": "object"
+}
