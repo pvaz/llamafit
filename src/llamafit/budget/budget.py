@@ -248,13 +248,14 @@ def compute(
         lines = [line.model_copy(update={"pool": "ram"}) for line in lines]
 
     if any(line.pool == "vram" for line in lines):
+        overhead, overhead_note = runtime_overhead(host.primary_gpu)
         lines.append(
             BudgetLine(
                 component="cuda-context",
                 pool="vram",
-                bytes=CUDA_CONTEXT_BYTES,
+                bytes=overhead,
                 exact=False,
-                note=_("what the GPU backend costs before it allocates anything"),
+                note=overhead_note,
             )
         )
     lines.append(
