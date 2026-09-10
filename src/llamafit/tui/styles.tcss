@@ -34,6 +34,10 @@ TabbedContent {
     height: 1fr;
 }
 
+/* No padding, and the Board depends on that: `BoardPane._width` lays its table out for
+   the terminal's own width whenever the pane has none of its own -- behind another tab,
+   or before the first layout pass -- and that is the right number only while a pane is
+   the full width of the screen. */
 TabPane {
     padding: 0;
 }
