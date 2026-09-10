@@ -70,6 +70,14 @@ _VERDICT_RANK: dict[Verdict, int] = {
 
 _PROJECTOR_RANK: dict[Pool | None, int] = {"vram": 2, "ram": 1, "disk": 0, None: 0}
 
+_SHARED_EXPERT_RANK: dict[Pool | None, int] = {None: 1, "vram": 1, "ram": 0, "disk": 0}
+"""Shared experts kept with their layers or sent to system memory; kept is better.
+
+``None`` and ``vram`` rank alike because in the mode where the question arises they
+mean the same thing: every layer is on the card, so leaving the shared experts with
+their layers leaves them on it.
+"""
+
 
 @dataclass(frozen=True)
 class PlacementSettings:
@@ -93,6 +101,8 @@ class PlacementSettings:
             weights are being held in system memory.
         projector_pool: Where the vision projector goes, or ``None`` when the model has
             none or it was left out.
+        shared_experts_pool: Where the always-on shared experts go, or ``None`` to leave
+            them with their layers. ``ram`` is ``-ot ffn_.*_shexp=CPU``.
     """
 
     mode: RunMode
@@ -103,6 +113,7 @@ class PlacementSettings:
     gpu_layers: int
     cpu_moe_layers: int | None = None
     projector_pool: Pool | None = None
+    shared_experts_pool: Pool | None = None
 
     def with_context(self, context: int) -> PlacementSettings:
         """Return a copy sized for another context."""
@@ -115,6 +126,10 @@ class PlacementSettings:
     def with_projector(self, pool: Pool | None) -> PlacementSettings:
         """Return a copy with the vision projector somewhere else."""
         return replace(self, projector_pool=pool)
+
+    def with_shared_experts(self, pool: Pool | None) -> PlacementSettings:
+        """Return a copy with the always-on shared experts somewhere else."""
+        return replace(self, shared_experts_pool=pool)
 
     def with_layer_choice(self, value: int) -> PlacementSettings:
         """Return a copy with one rung of :func:`layer_ladder` applied.
@@ -159,6 +174,7 @@ class PlacementSettings:
             gpu_layers=self.gpu_layers,
             cpu_moe_layers=self.cpu_moe_layers,
             projector_pool=self.projector_pool,
+            shared_experts_pool=self.shared_experts_pool,
             threads=threads,
             budget=budget,
             max_context_fit=max_context_fit,
@@ -350,6 +366,31 @@ def projector_ladder(model: CatalogModel, quant: Quant, *, vision: bool) -> tupl
     return ("vram", "ram", None)
 
 
+def shared_expert_ladder(mode: RunMode, facts: GgufFacts | None) -> tuple[Pool | None, ...]:
+    """Where to try putting the always-on shared experts, best first (section 9.2).
+
+    Args:
+        mode: The run mode. Only ``moe-offload`` asks the question: it is the mode that
+            already holds the routed experts in system memory, and the shared experts are
+            what is left on the card that could follow them without the attention path
+            going too.
+        facts: The quant's GGUF facts, which say how many bytes there are to move.
+
+    Returns:
+        ``(None,)`` when there is nothing to move or no mode that would move it; otherwise
+        keeping them with their layers, and then sending them to system memory.
+
+    A shared expert runs for every token, so moving it off the card costs generation
+    speed on every one; it is tried second and never preferred. What makes it worth trying
+    at all is that it is a *whole* bucket, movable on its own with one tensor override,
+    and on the reference machine those 239 MiB are the difference between the best
+    measured configuration being offered and being withheld.
+    """
+    if mode != "moe-offload" or facts is None or not facts.bytes_shared_expert_weights:
+        return (None,)
+    return (None, "ram")
+
+
 def layer_ladder(mode: RunMode, layers: int | None) -> tuple[int, ...]:
     """The mode's own parameter, in the order section 9.2 tries it.
 
@@ -393,6 +434,7 @@ def initial_settings(
         gpu_layers=ALL_GPU_LAYERS if mode in ("gpu", "moe-offload") else 0,
         cpu_moe_layers=None,
         projector_pool=projector_pool,
+        shared_experts_pool=None,
     )
 
 
@@ -438,15 +480,19 @@ def rank(settings: PlacementSettings, budget: Budget, *, requested_context: int)
     3. **An unquantised KV cache**, which costs no quality.
     4. **The micro-batch**, which is prompt-processing speed.
     5. **The vision projector**: on the card, then in system memory, then absent.
-    6. **Layers on the card**, and fewer experts in system memory, which is generation
+    6. **The shared experts kept with their layers**, since they run for every token and
+       reading them over the memory bus costs speed on all of them. Below the projector
+       because vision is something the user asked for and this is only speed: give up the
+       239 MiB before giving up a capability.
+    7. **Layers on the card**, and fewer experts in system memory, which is generation
        speed within one mode. This is the one part the search cannot reach by taking the
        first acceptable answer, because ``moe-offload`` starts from the configuration
        with *every* expert in system memory and improves on it from there — which is
        exactly what "continuing to find the best one" is asking for.
-    7. **The verdict**, last among the things that differ, because parts 3 to 6 are each
+    8. **The verdict**, last among the things that differ, because parts 3 to 7 are each
        decided by a ladder that stops at its first acceptable rung; a verdict ranked
        above them would contradict those ladders rather than refine them.
-    8. **Context again**, uncapped, to separate two placements that both reached the
+    9. **Context again**, uncapped, to separate two placements that both reached the
        request.
     """
     return (
@@ -455,6 +501,7 @@ def rank(settings: PlacementSettings, budget: Budget, *, requested_context: int)
         int(settings.kv_type == KV_TYPE_DEFAULT),
         settings.micro_batch,
         _PROJECTOR_RANK[settings.projector_pool],
+        _SHARED_EXPERT_RANK[settings.shared_experts_pool],
         settings.gpu_layers - (settings.cpu_moe_layers or 0),
         _VERDICT_RANK[budget.verdict],
         settings.context,

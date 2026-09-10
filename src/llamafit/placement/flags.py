@@ -33,6 +33,7 @@ from llamafit.constants import (
     DEFAULT_SERVER_HOST,
     DEFAULT_SERVER_PORT,
     KV_TYPE_DEFAULT,
+    SHARED_EXPERT_OVERRIDE,
 )
 from llamafit.models.catalog import CatalogModel
 from llamafit.models.plan import Placement
@@ -119,7 +120,7 @@ def render_flags(placement: Placement, model: CatalogModel, options: LaunchOptio
     args += ["-ngl", str(placement.gpu_layers)]
     if placement.cpu_moe_layers is not None:
         args += ["--n-cpu-moe", str(placement.cpu_moe_layers)]
-    for override in options.tensor_overrides:
+    for override in _tensor_overrides(placement, options):
         args += ["-ot", override]
     # Always: llama.cpp's own automatic placement was measured at half the speed of the
     # planned one on the reference machine (11.9 tokens per second against 24.7), and a
@@ -149,6 +150,22 @@ def command_line(
 ) -> list[str]:
     """The whole command, program name first, ready to be run or printed."""
     return [executable, *render_flags(placement, model, options)]
+
+
+def _tensor_overrides(placement: Placement, options: LaunchOptions) -> list[str]:
+    """The ``-ot`` patterns to render: the placement's own, then the caller's.
+
+    A placement that decided to send the shared experts to system memory has to say so on
+    the command line, or the budget was computed for one configuration and the server is
+    launched into another -- the same failure ``--fit off`` exists to prevent, arrived at
+    from the other direction. The caller's own overrides follow, and an override already
+    named by the placement is not repeated.
+    """
+    overrides: list[str] = []
+    if placement.shared_experts_pool == "ram":
+        overrides.append(SHARED_EXPERT_OVERRIDE)
+    overrides += [o for o in options.tensor_overrides if o not in overrides]
+    return overrides
 
 
 def _projector_flags(placement: Placement, options: LaunchOptions) -> list[str]:
