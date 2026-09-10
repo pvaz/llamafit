@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """The curator's editorial score for a model, before anything is taken off or added on.
 
 The baseline is the only number in the composite score that no program produced. It is a
