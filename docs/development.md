@@ -96,13 +96,11 @@ Runtime dependencies, with the reason each earns its place:
 | `numpy` | a faster, more accurate memory-bandwidth measurement; optional extra `fast`, and part of `dev` so CI exercises it |
 | `fastapi` | the JSON API behind `llamafit serve`: it routes, parses query strings and validates request bodies against the pydantic models the project already has, so the API and `--json` serialise one set of models. Optional extra `web`, and part of `dev` so CI exercises it: somebody who only ever types `llamafit recommend` should not be made to install a web server |
 | `uvicorn` | the ASGI server that runs it; the only way to serve a FastAPI application without adding a second one. Optional extra `web`, and part of `dev` for the same reason |
+| `textual` | the terminal dashboard `llamafit` opens with no arguments; a hard dependency and not an extra, because the dashboard is the first thing a newcomer meets and an interface that may or may not be installed cannot be that |
 
-Planned, not installed and not yet declared in `pyproject.toml`; each arrives with the phase
-that needs it, together with the extra it belongs to:
-
-| Package | Why | Phase |
-|---|---|---|
-| `textual` | the terminal dashboard | 1D |
+Nothing is planned and undeclared. Every package the project runs on is in the table above;
+a row moves out of this paragraph and into that table in the phase that first needs it, and
+`fastapi`, `uvicorn` and `textual` were the last three to make the move.
 
 Adding a dependency means adding a row here with a reason, in the same pull request.
 

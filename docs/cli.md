@@ -414,10 +414,15 @@ The dashboard speaks the language `--language` chose, like everything else, and 
 carry the same labels the tables above use. See [web.md](web.md) for the API, the safety
 rules and what the page does about languages.
 
-### `llamafit` (no command) — phase 1D
+### `llamafit` (no command) — shipped
 
-Today it prints the help and exits. From phase 1D it opens the terminal dashboard, and in a
-non-interactive terminal behaves like `recommend`. See [tui.md](tui.md).
+Opens the terminal dashboard: the board, the request as a form, the machine, the plan for a
+chosen row and the simulation controls, over one scan and one catalog. It is what somebody
+who has just installed LlamaFit meets, so nothing on it has to be found out from a flag.
+
+Where there is no terminal to draw one in — a pipe, a redirect, a CI job — it says so on
+standard error and prints exactly what `llamafit recommend` would print, with the same
+defaults, read off that command rather than repeated here. See [tui.md](tui.md).
 
 ### `llamafit install` — phase 2
 
