@@ -367,10 +367,21 @@ function renderCaptions() {
   const weights = Object.entries(board.weights)
     .map(([part, weight]) => `${label("score_part", part)} ${number(weight, 2)}`)
     .join(", ");
-  fill(document.getElementById("board-captions"), [
-    el("p", { text: first }),
-    el("p", { text: format(t("board.weights"), { weights }) }),
-  ]);
+  const captions = [el("p", { text: first })];
+  // A row limit that says nothing hides the catalog. The sentence appears only when the
+  // limit actually cut something, so silence keeps meaning "this is all of it".
+  if (board.ranked_total > board.rows.length) {
+    captions.push(
+      el("p", {
+        text: format(t("board.truncated"), {
+          shown: number(board.rows.length, 0),
+          total: number(board.ranked_total, 0),
+        }),
+      }),
+    );
+  }
+  captions.push(el("p", { text: format(t("board.weights"), { weights }) }));
+  fill(document.getElementById("board-captions"), captions);
 }
 
 /** Expand a row into what produced it, or sort the board by a column heading. */
