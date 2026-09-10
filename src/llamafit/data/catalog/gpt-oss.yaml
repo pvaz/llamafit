@@ -1,0 +1,154 @@
+# Sourced from OpenAI's Hugging Face model cards, the published gpt-oss model card and the
+# GGUF repositories maintained by the llama.cpp authors.
+# Primary sources used for this file:
+#   - gpt-oss-20b model card: https://huggingface.co/openai/gpt-oss-20b
+#   - gpt-oss-120b model card: https://huggingface.co/openai/gpt-oss-120b
+#   - gpt-oss model card (benchmarks): https://arxiv.org/abs/2508.10925
+#   - GGUF repositories: https://huggingface.co/ggml-org/gpt-oss-20b-GGUF
+#                        https://huggingface.co/ggml-org/gpt-oss-120b-GGUF
+#
+# Release date is the date on OpenAI's own model card, 5 August 2025.
+#
+# These are the two easiest models in this group to actually run, and the only ones under a
+# plain Apache-2.0 licence with no conditions attached. Both were post-trained with MXFP4
+# quantisation of the mixture-of-experts weights, so the four-bit file is the model as
+# OpenAI evaluated it rather than a lossy conversion of something larger — which is why each
+# repository publishes one quantisation and not a ladder of them.
+- id: gpt-oss-20b
+  name: gpt-oss-20b
+  vendor: OpenAI
+  family: gpt-oss
+  release_date: 2025-08-05
+  license:
+    spdx: Apache-2.0
+    url: "https://huggingface.co/openai/gpt-oss-20b/blob/main/LICENSE"
+  params: { total_b: 21, active_b: 3.6 }
+  architecture:
+    class: moe
+    gguf_arch: gpt-oss
+    notes: >-
+      24 layers alternating 128-token sliding-window attention with full attention, 32
+      experts with 4 used per token: 21B of weights, 3.6B of arithmetic per token. Because
+      the expert weights are natively MXFP4 the whole model fits in about 16 GB, which puts
+      it within reach of a single consumer card — the one model in this group that a
+      person with an 8 GB card and ordinary system memory can run at a comfortable speed.
+      Reasoning effort is set in the prompt (low, medium, high) rather than by a flag, and
+      the model expects OpenAI's harmony response format.
+  context: { native: 131072 }
+  capabilities: [coding, thinking, tools, long-context]
+  use_cases: [reasoning, general, chat, coding]
+  quality:
+    baseline: 70
+    benchmarks:
+      # From OpenAI's own model card, all at high reasoning effort and without tools unless
+      # noted. Every figure below is gpt-oss-20b's own column, not gpt-oss-120b's.
+      - name: GPQA Diamond (no tools)
+        score: 71.5
+        source: "https://arxiv.org/abs/2508.10925"
+      - name: AIME 2025 (no tools)
+        score: 91.7
+        source: "https://arxiv.org/abs/2508.10925"
+      - name: MMLU
+        score: 85.3
+        source: "https://arxiv.org/abs/2508.10925"
+      - name: "Humanity's Last Exam (no tools)"
+        score: 10.9
+        source: "https://arxiv.org/abs/2508.10925"
+      - name: Tau-Bench Retail
+        score: 54.8
+        source: "https://arxiv.org/abs/2508.10925"
+  chat_template: { reasoning_format: harmony }
+  sources:
+    - repo: ggml-org/gpt-oss-20b-GGUF
+      kind: gguf
+      trust: official
+      # One quant here, and that is not an omission: MXFP4 is the precision the model was
+      # post-trained and evaluated at, so this repository offers no higher-quality build
+      # and a smaller one would only lose accuracy the model was never measured at. Prefer
+      # it over anything in the second source when the llama.cpp build supports it.
+      #
+      # Note for whoever owns the ranking: LlamaFit cannot currently price MXFP4 — it is
+      # not in the quantisation penalty table — so a board drops this candidate as an
+      # unknown quantisation rather than scoring it. That is why the second source below
+      # exists at all, and it is a gap in the scorer, not in this entry.
+      quants:
+        - { name: MXFP4 }
+      extras:
+        # An EAGLE-3 speculative-decoding draft head, published in the same repository.
+        # Declared so its bytes are charged to a pool when a plan turns it on, and so they
+        # are never counted as part of the MXFP4 quant.
+        - { role: draft, file: eagle3-gpt-oss-20b-Q8_0.gguf }
+    - repo: unsloth/gpt-oss-20b-GGUF
+      kind: gguf
+      trust: unsloth
+      # Conventional K-quant conversions of the same weights, for a llama.cpp build too
+      # old to load an MXFP4 file. They are not a quality step up and not a size step
+      # down: the expert tensors dominate the model and are already four bits wide in
+      # OpenAI's weights, so the refresh measures all three builds within a quarter of a
+      # gigabyte of each other, at 4.52, 4.59 and 4.61 bits per weight. Choose between
+      # them on what the build supports, not on what the name suggests.
+      quants:
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q6_K_XL }
+
+- id: gpt-oss-120b
+  name: gpt-oss-120b
+  vendor: OpenAI
+  family: gpt-oss
+  release_date: 2025-08-05
+  license:
+    spdx: Apache-2.0
+    url: "https://huggingface.co/openai/gpt-oss-120b/blob/main/LICENSE"
+  params: { total_b: 117, active_b: 5.1 }
+  architecture:
+    class: moe
+    gguf_arch: gpt-oss
+    notes: >-
+      The same alternating sliding-window and full-attention design as the 20B, scaled to
+      36 layers and 128 experts with 4 used per token: 117B of weights, 5.1B of arithmetic
+      per token. That is an unusually low active fraction for a model of this size and it
+      is the reason the 120B is worth considering on a machine that could never hold a
+      dense 117B model at speed — the per-token work is a 5B model's. In MXFP4 the whole
+      thing fits a single 80 GB card, and on a workstation with plenty of system memory the
+      experts can live there while the attention layers stay on the GPU.
+  context: { native: 131072 }
+  capabilities: [coding, thinking, tools, long-context]
+  use_cases: [reasoning, general, chat, coding]
+  quality:
+    baseline: 78
+    benchmarks:
+      - name: GPQA Diamond (no tools)
+        score: 80.1
+        source: "https://arxiv.org/abs/2508.10925"
+      - name: AIME 2025 (no tools)
+        score: 92.5
+        source: "https://arxiv.org/abs/2508.10925"
+      - name: MMLU
+        score: 90.0
+        source: "https://arxiv.org/abs/2508.10925"
+      - name: "Humanity's Last Exam (no tools)"
+        score: 14.9
+        source: "https://arxiv.org/abs/2508.10925"
+      - name: Tau-Bench Retail
+        score: 67.8
+        source: "https://arxiv.org/abs/2508.10925"
+  chat_template: { reasoning_format: harmony }
+  sources:
+    - repo: ggml-org/gpt-oss-120b-GGUF
+      kind: gguf
+      trust: official
+      # As for the 20B: MXFP4 is the native precision and the one to prefer, and it is
+      # also the one LlamaFit cannot yet price.
+      quants:
+        - { name: MXFP4 }
+      extras:
+        - { role: draft, file: eagle3-gpt-oss-120b-Q8_0.gguf }
+    - repo: unsloth/gpt-oss-120b-GGUF
+      kind: gguf
+      trust: unsloth
+      # K-quant conversions for builds without MXFP4 support. As for the 20B they are the
+      # same size as the original to within a few hundred megabytes, because the expert
+      # tensors they leave alone are most of the model.
+      quants:
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q6_K_XL }
