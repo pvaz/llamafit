@@ -396,17 +396,21 @@ def render_tiers(placement: Placement) -> Group:
 
 
 def render_speed(speed: SpeedEstimate, *, context: int) -> Group:
-    """The two speeds, where a token's time goes, and how the figures were arrived at.
+    """The two speeds, where each one's time goes, and how the figures were arrived at.
 
-    The three shares always add up to one over the generation figure, whichever rung of
-    section 10.3's ladder that figure came from, so a reader who doubts the number is owed
-    three that add up to it and say which term dominates.
+    Both figures get the same treatment, because both were owed it. A trio of shares
+    always adds up to one over the figure it belongs to, whichever rung of section 10.3's
+    ladder that figure came from, so a reader who doubts a number is owed terms that add
+    up to it and say which one dominates.
+
+    Prompt processing is the one that pays for this. Its second term, the expert set
+    crossing the link, is charged at a rate section 10.2 fitted on the single model whose
+    expert set does not fit in system memory; a model whose set stays in the page cache
+    streams about three times faster and this project has one constant for both paths.
+    That is a known gap, written down rather than fixed here, and it is why the term is a
+    row of its own with the note underneath rather than a share of a total: the reader
+    looking at the terms is exactly the one who might catch it before we do.
     """
-    total = (
-        speed.vram_seconds_per_token
-        + speed.ram_seconds_per_token
-        + speed.overhead_seconds_per_token
-    )
     headline = _cell(
         _(
             "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens "
@@ -419,14 +423,56 @@ def render_speed(speed: SpeedEstimate, *, context: int) -> Group:
             "confidence": confidence_label(speed.confidence),
         }
     )
-    if total <= 0:
-        return Group(headline, *_speed_notes(speed))
+    tables = [
+        _time_table(
+            pgettext("column heading", "A token's time"),
+            (
+                (pgettext("token time", "reading the card"), speed.vram_seconds_per_token),
+                (pgettext("token time", "reading system memory"), speed.ram_seconds_per_token),
+                (pgettext("token time", "everything else"), speed.overhead_seconds_per_token),
+            ),
+        ),
+        _time_table(
+            pgettext("column heading", "A prompt token's time"),
+            (
+                (
+                    pgettext("prompt token time", "doing the arithmetic"),
+                    speed.prompt_compute_seconds_per_token,
+                ),
+                (
+                    pgettext("prompt token time", "streaming the experts across the link"),
+                    speed.prompt_link_seconds_per_token,
+                ),
+                (
+                    pgettext("prompt token time", "reading the experts from system memory"),
+                    speed.prompt_ram_seconds_per_token,
+                ),
+            ),
+        ),
+    ]
+    drawn = [table for table in tables if table is not None]
+    return Group(headline, *drawn, *_speed_notes(speed))
 
+
+def _time_table(heading: str, parts: Sequence[tuple[str, float]]) -> Table | None:
+    """One figure's time, term by term, or ``None`` when there is no breakdown to show.
+
+    Args:
+        heading: What the first column is called, which is what the trio adds up to.
+        parts: Each term's label and its seconds, in the order a reader should meet them.
+
+    Returns:
+        The table, or ``None`` when the terms add up to nothing -- an estimate that
+        carries no breakdown at all, which is not the same as one whose terms are zero.
+    """
+    total = sum(seconds for _label, seconds in parts)
+    if total <= 0:
+        return None
     table = Table(show_header=True)
     _add_columns(
         table,
         [
-            {"header": pgettext("column heading", "A token's time")},
+            {"header": heading},
             {
                 "header": pgettext("column heading", "Seconds"),
                 "justify": "right",
@@ -435,19 +481,26 @@ def render_speed(speed: SpeedEstimate, *, context: int) -> Group:
             {"header": pgettext("column heading", "Share"), "justify": "right", "no_wrap": True},
         ],
     )
-    parts = (
-        (pgettext("token time", "reading the card"), speed.vram_seconds_per_token),
-        (pgettext("token time", "reading system memory"), speed.ram_seconds_per_token),
-        (pgettext("token time", "everything else"), speed.overhead_seconds_per_token),
-    )
+    digits = _seconds_digits(total)
     for label, seconds in parts:
         _add_row(
-            table,
-            _cell(label),
-            _cell(_number(seconds, 4)),
-            _cell(_percent(seconds / total)),
+            table, _cell(label), _cell(_number(seconds, digits)), _cell(_percent(seconds / total))
         )
-    return Group(headline, table, *_speed_notes(speed))
+    return table
+
+
+def _seconds_digits(total: float) -> int:
+    """Decimals enough that the smallest term of a trio is still a number.
+
+    Four for anything a person waits on, which is every generation token and nearly every
+    prompt token. A small dense model held on the card reads a prompt token in forty-six
+    microseconds, and four decimals would print that as ``0.0000`` three times over: a
+    breakdown that adds up to zero is worse than no breakdown, because it looks like one.
+    """
+    digits = 4
+    while digits < 9 and total < 10 ** -(digits - 2):
+        digits += 1
+    return digits
 
 
 def _speed_notes(speed: SpeedEstimate) -> list[RenderableType]:

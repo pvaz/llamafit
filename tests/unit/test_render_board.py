@@ -151,6 +151,61 @@ def test_a_speed_with_no_breakdown_still_reports_the_two_figures() -> None:
     text = drawn(render_speed(bare, context=8192))
     assert "12.0" in text
     assert "A token's time" not in text
+    assert "A prompt token's time" not in text
+
+
+def test_the_prompt_terms_are_shown_beside_the_generation_ones() -> None:
+    """Section 10.2's three terms, given the treatment section 10.1's three already had."""
+    model, quant = model_and_quant("qwen3-coder-next")
+    report = plan_report(model, quant, reference_host())
+    assert report.speed is not None
+    text = drawn(render_speed(report.speed, context=32768))
+    assert "A prompt token's time" in text
+    assert "doing the arithmetic" in text
+    assert "streaming the experts across the link" in text
+    assert "reading the experts from system memory" in text
+
+
+def test_the_link_term_carries_the_gap_it_is_known_to_have() -> None:
+    """The constant covers two physical paths, and the reader is told beside the term."""
+    model, quant = model_and_quant("qwen3-coder-next")
+    report = plan_report(model, quant, reference_host())
+    assert report.speed is not None
+    text = drawn(render_speed(report.speed, context=32768))
+    assert "does not fit in system memory" in text
+    assert "three times faster" in text
+
+
+def test_a_generation_breakdown_alone_still_draws_its_table() -> None:
+    """One trio may be there without the other, and the table for it is not conditional."""
+    generation_only = SpeedEstimate(
+        gen_tps=12.0,
+        pp_tps=0.0,
+        confidence="estimated",
+        vram_seconds_per_token=0.05,
+        ram_seconds_per_token=0.03,
+        overhead_seconds_per_token=0.001,
+    )
+    text = drawn(render_speed(generation_only, context=8192))
+    assert "A token's time" in text
+    assert "A prompt token's time" not in text
+
+
+def test_a_term_too_small_for_four_decimals_is_still_printed_as_a_number() -> None:
+    """A breakdown that reads 0.0000 three times over looks like one and is not.
+
+    A small dense model held on the card reads a prompt token in forty-six microseconds.
+    Four decimals would round every term of that trio to zero, which is worse than showing
+    no trio at all, because a reader checking the terms would find they add up to nothing.
+    """
+    fast = SpeedEstimate(
+        gen_tps=279.5,
+        pp_tps=21734.0,
+        confidence="estimated",
+        prompt_compute_seconds_per_token=1 / 21734.0,
+    )
+    text = drawn(render_speed(fast, context=8192))
+    assert "0.0000460" in text
 
 
 def test_a_measured_figure_carries_the_date_it_was_taken() -> None:

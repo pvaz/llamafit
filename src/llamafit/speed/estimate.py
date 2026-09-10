@@ -76,12 +76,20 @@ _RANK: dict[Confidence, int] = {"measured": 0, "calibrated": 1, "estimated": 2, 
 class Formula:
     """What the formula produced, before any measurement was allowed to correct it.
 
+    The two speeds each keep their own terms, and each set adds up to one over its own
+    figure: the generation trio to a token, the prompt trio to a micro-batch.
+
     Attributes:
         gen_tps: Generated tokens per second.
         pp_tps: Prompt tokens per second.
         vram_seconds: Share of a token spent reading the graphics card.
         ram_seconds: Share spent reading system memory.
         overhead_seconds: Per-layer and sampling overheads.
+        pp_compute_seconds: Share of a micro-batch spent on arithmetic.
+        pp_link_seconds: Share spent streaming the expert set across the link to the card.
+        pp_ram_seconds: Share spent reading the expert set out of system memory, which is
+            section 10.2's third term and happens instead of the second when there is no
+            card to stream to.
         traffic: The bytes the token reads, itemised.
         notes: What the formula applied, and to which bytes.
     """
@@ -91,6 +99,9 @@ class Formula:
     vram_seconds: float
     ram_seconds: float
     overhead_seconds: float
+    pp_compute_seconds: float
+    pp_link_seconds: float
+    pp_ram_seconds: float
     traffic: TokenTraffic
     notes: tuple[str, ...]
 
@@ -137,7 +148,11 @@ def formula_estimate(
                  + streamed_expert_bytes / pcie_bw
 
     with the expert term charged to system memory instead of the link when there is no
-    card to stream to, which is section 10.2's third term.
+    card to stream to, which is section 10.2's third term. The three are kept apart rather
+    than summed, because the link term is the one this project knows least about: its
+    constant was fitted on the single model whose expert set does not fit in system
+    memory, and a model whose set stays in the page cache streams about three times
+    faster. A reader who is shown the terms can see how much of the answer rests on it.
 
     Args:
         placement: Where the bytes go and at what settings.
@@ -195,8 +210,29 @@ def formula_estimate(
     params = _active_params(traffic, active_params)
     t_compute = 2 * params * micro_batch / (bandwidths.compute_flops * EFF_PP)
     streamed = expert_bytes_in_ram(placement, facts) * streamed_expert_fraction(facts, micro_batch)
-    stream_bw = bandwidths.pcie if device_bw else bandwidths.sequential
-    t_ubatch = t_compute + (streamed / stream_bw if streamed else 0.0)
+    t_link = streamed / bandwidths.pcie if streamed and device_bw else 0.0
+    t_prompt_ram = streamed / bandwidths.sequential if streamed and not device_bw else 0.0
+    t_ubatch = t_compute + t_link + t_prompt_ram
+
+    if t_link:
+        notes.append(
+            _(
+                "%(gb).1f GB of the expert set is streamed across the link once per"
+                " micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model"
+                " whose expert set does not fit in system memory, so part of its read comes"
+                " off the disk; an expert set that stays in the page cache streams about"
+                " three times faster, and for one of those this term is that much too slow."
+            )
+            % {"gb": streamed / 1e9, "gbps": bandwidths.pcie / 1e9}
+        )
+    if t_prompt_ram:
+        notes.append(
+            _(
+                "%(gb).1f GB of the expert set is read out of system memory once per"
+                " micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+            )
+            % {"gb": streamed / 1e9, "gbps": bandwidths.sequential / 1e9}
+        )
 
     return Formula(
         gen_tps=1.0 / t_token if t_token > 0 else 0.0,
@@ -204,6 +240,9 @@ def formula_estimate(
         vram_seconds=t_vram,
         ram_seconds=t_scattered + t_sequential,
         overhead_seconds=t_overhead,
+        pp_compute_seconds=t_compute,
+        pp_link_seconds=t_link,
+        pp_ram_seconds=t_prompt_ram,
         traffic=traffic,
         notes=tuple(notes),
     )
@@ -412,9 +451,10 @@ def estimate_speed(
         measurements: Benchmarks taken on this host for this model.
 
     Returns:
-        The estimate, with the share of a token spent in each pool and notes saying which
-        effective bandwidth was applied to which bytes. The three shares always add up to
-        one over ``gen_tps``, whichever rung of the ladder that figure came from: a
+        The estimate, with the share of a token spent in each pool, the share of a prompt
+        token spent in each of section 10.2's three terms, and notes saying which
+        effective bandwidth was applied to which bytes. Each trio always adds up to one
+        over its own figure, whichever rung of the ladder that figure came from: a
         benchmark overturns the level the formula predicted, not the proportions.
     """
     if placement.mode == "unsupported":
@@ -526,11 +566,16 @@ def estimate_speed(
             _("This figure assumes nothing pages: a placement this tight often does, silently.")
         )
 
-    # The breakdown is the formula's proportions, rescaled to the token time actually
-    # reported. A reader who doubts the figure is owed three numbers that add up to it and
-    # say which term dominates; three that add up to something else would be worse than
-    # none, and the proportions are the part of the formula a benchmark does not overturn.
+    # Both breakdowns are the formula's proportions, rescaled to the time actually
+    # reported. A reader who doubts a figure is owed terms that add up to it and say which
+    # one dominates; terms that add up to something else would be worse than none, and the
+    # proportions are the part of the formula a benchmark does not overturn. The prompt
+    # terms are divided by the micro-batch they were computed for, so that they add up to
+    # one over ``pp_tps`` exactly as the generation terms add up to one over ``gen_tps``
+    # and the two tables can be read the same way.
     scale = (formula.gen_tps / gen_tps) if gen_tps > 0 and formula.gen_tps > 0 else 1.0
+    pp_scale = (formula.pp_tps / pp_tps) if pp_tps > 0 and formula.pp_tps > 0 else 1.0
+    per_prompt_token = pp_scale / placement.micro_batch
 
     return SpeedEstimate(
         gen_tps=max(gen_tps, 0.0),
@@ -540,5 +585,8 @@ def estimate_speed(
         vram_seconds_per_token=formula.vram_seconds * scale,
         ram_seconds_per_token=formula.ram_seconds * scale,
         overhead_seconds_per_token=formula.overhead_seconds * scale,
+        prompt_compute_seconds_per_token=formula.pp_compute_seconds * per_prompt_token,
+        prompt_link_seconds_per_token=formula.pp_link_seconds * per_prompt_token,
+        prompt_ram_seconds_per_token=formula.pp_ram_seconds * per_prompt_token,
         notes=tuple(notes),
     )

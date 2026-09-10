@@ -167,6 +167,17 @@ the changelog says so when they do.
   which was being computed and thrown away, so the ladder no longer has to guess.
 - `--prefer balanced|quality|speed` moves a tenth of the weight between quality and speed
   (section 12.1), capped by what the other part has to give so no weight goes below nothing.
+- Prompt processing shows its working, as generation already did. Section 10.2's three
+  terms — the arithmetic, the expert set crossing the link to the card, and the same set
+  read out of system memory when there is no card — arrive on `SpeedEstimate` per prompt
+  token and are drawn as their own table wherever the token-time table is drawn, so each
+  trio adds up to one over the figure above it. The link term is deliberately a row of its
+  own rather than a share of a total: section 10.2's rate was fitted on the one model whose
+  expert set does not fit in system memory, so part of its read comes off the disk, while a
+  set that stays in the page cache streams about three times faster. Two physical paths,
+  one constant, and on the reference machine's own best configuration that term is 88
+  percent of a prompt token — which is the point of printing it. The gap is recorded, not
+  fixed: the reader looking at the terms is the person most likely to catch it first.
 ### Changed
 - **The placement planner steps down section 9.3's context ladder instead of halving.**
   Section 9.2 says so in as many words, and the difference is not cosmetic: from 40,960
