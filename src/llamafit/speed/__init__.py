@@ -11,7 +11,12 @@ measurement allowed to correct it.
 """
 
 from llamafit.speed.bandwidths import EffectiveBandwidths, resolve_bandwidths
-from llamafit.speed.estimate import Formula, estimate_speed, formula_estimate
+from llamafit.speed.estimate import (
+    Formula,
+    card_share_of_compute,
+    estimate_speed,
+    formula_estimate,
+)
 from llamafit.speed.traffic import (
     TokenTraffic,
     TrafficLine,
@@ -28,6 +33,7 @@ __all__ = [
     "TokenTraffic",
     "TrafficLine",
     "active_expert_bytes",
+    "card_share_of_compute",
     "estimate_speed",
     "expert_bytes_in_ram",
     "formula_estimate",

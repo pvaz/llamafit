@@ -70,7 +70,7 @@ def test_the_card_specifications_come_from_the_bundled_table_not_the_file() -> N
     host = _reference_profile_host()
     gpu = host.primary_gpu
     assert gpu is not None
-    assert gpu.bandwidth_gbps == 272.0 and gpu.compute_tflops_fp16 == 15.0
+    assert gpu.bandwidth_gbps == 272.0 and gpu.compute_tflops_fp16 == 60.4
 
 
 def test_every_bundled_profile_says_where_its_figures_came_from() -> None:

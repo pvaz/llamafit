@@ -118,7 +118,7 @@ def test_a_card_with_its_own_figures_says_so(tmp_path: Path) -> None:
                 "name": "NVIDIA GeForce RTX 4090",
                 "vram_total": "24GiB",
                 "bandwidth_gbps": 1008,
-                "compute_tflops_fp16": 83,
+                "compute_tflops_fp16": 330,
             }
         ]
     )

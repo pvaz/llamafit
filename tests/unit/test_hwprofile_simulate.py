@@ -58,7 +58,7 @@ def test_a_card_with_no_figures_gets_them_from_the_bundled_table(tmp_path: Path)
     host = host_from_profile(_loaded(tmp_path, profiles.with_gpu()))
     gpu = host.primary_gpu
     assert gpu is not None
-    assert gpu.bandwidth_gbps == 1008 and gpu.compute_tflops_fp16 == 83
+    assert gpu.bandwidth_gbps == 1008 and gpu.compute_tflops_fp16 == 330
     assert gpu.backend_hint == "cuda"
 
 

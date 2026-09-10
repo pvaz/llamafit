@@ -14,6 +14,16 @@ stands in for the raw figure -- not for the effective one. A fallback is a conse
 guess at what the hardware can do, so the same efficiency that applies to a measured
 bandwidth applies to it, and the estimate built on it can never be labelled better than
 ``estimated``.
+
+**Prompt processing needs two compute rates, not one, because it runs in two places.** A
+layer on the card multiplies its matrices on the card and a layer in system memory
+multiplies them on the CPU, so section 10.2's compute term is charged to both in the
+proportion the placement splits the layers -- which :mod:`llamafit.speed.estimate` does,
+with what comes out of here. ``compute_flops`` is the card's published peak and is scaled
+by an efficiency where it is spent; ``cpu_compute_flops`` is what the CPU was measured
+reaching and is not scaled again. A single rate hid a category error for as long as it
+existed: every prompt figure on this project's own reference machine, including the ones
+for models with six layers out of sixty-two on the card, was charged to the card.
 """
 
 from __future__ import annotations
@@ -25,7 +35,7 @@ from llamafit.constants import (
     BACKEND_FALLBACK_GBPS,
     CPU_FALLBACK_DEFAULT_GBPS,
     CPU_FALLBACK_GBPS,
-    CPU_FP16_TFLOPS_PER_CORE,
+    CPU_PP_TFLOPS_PER_CORE,
     EFF_PCIE,
     EFF_RAM_SCATTERED,
     EFF_RAM_SEQUENTIAL,
@@ -47,7 +57,13 @@ class EffectiveBandwidths:
         scattered: System memory's read bandwidth for a routed expert read, which is about
             half the contiguous figure and is why the two are kept apart.
         pcie: What an expert set streams at across the link, for prompt processing.
-        compute_flops: Peak fp16 throughput available to prompt processing.
+        compute_flops: The card's *peak* dense fp16 matrix throughput, which section
+            10.2's compute term then multiplies by
+            :data:`~llamafit.constants.EFF_PP`. Zero when the host has no card figure at
+            all, which is how a caller knows there is no card side to charge anything to.
+        cpu_compute_flops: What the CPU *reaches* on the same arithmetic, already
+            effective. The two are not the same kind of number and the docstring of
+            :data:`~llamafit.constants.CPU_PP_TFLOPS_PER_CORE` says why.
         ram_gbps: The raw system-memory figure the two RAM numbers were derived from.
         device_gbps: The raw graphics-card figure, or ``None``.
         assumed: True when any figure above came from a fallback rather than from the
@@ -60,6 +76,7 @@ class EffectiveBandwidths:
     scattered: float
     pcie: float
     compute_flops: float
+    cpu_compute_flops: float
     ram_gbps: float
     device_gbps: float | None
     assumed: bool
@@ -115,23 +132,21 @@ def resolve_bandwidths(host: Host) -> EffectiveBandwidths:
                 % {"gpu": gpu.name, "backend": gpu.backend_hint, "gbps": device_gbps}
             )
 
-    if compute_tflops <= 0:
-        cores = host.cpu.performance_cores or host.cpu.physical_cores
-        compute_flops = max(cores, 1) * CPU_FP16_TFLOPS_PER_CORE * 1e12
+    cores = host.cpu.performance_cores or host.cpu.physical_cores
+    cpu_compute_flops = max(cores, 1) * CPU_PP_TFLOPS_PER_CORE * 1e12
+    compute_assumed = compute_tflops <= 0
+    if compute_assumed:
         notes.append(
             _("No graphics card compute figure: prompt processing is estimated on the CPU.")
         )
-        compute_assumed = True
-    else:
-        compute_flops = compute_tflops * 1e12
-        compute_assumed = False
 
     return EffectiveBandwidths(
         device=None if device_gbps is None else device_gbps * EFF_VRAM * 1e9,
         sequential=ram_gbps * EFF_RAM_SEQUENTIAL * 1e9,
         scattered=ram_gbps * EFF_RAM_SCATTERED * 1e9,
         pcie=pcie_gbps * EFF_PCIE * 1e9,
-        compute_flops=compute_flops,
+        compute_flops=max(compute_tflops, 0.0) * 1e12,
+        cpu_compute_flops=cpu_compute_flops,
         ram_gbps=ram_gbps,
         device_gbps=device_gbps,
         assumed=ram_assumed or device_assumed or compute_assumed,

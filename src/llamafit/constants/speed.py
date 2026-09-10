@@ -144,15 +144,54 @@ file reports its cache size at f16, and these ratios scale it.
 """
 
 # --- Prompt processing --------------------------------------------------------------
+#
+# Prompt arithmetic runs where the layer is: a layer on the card multiplies on the card, a
+# layer in system memory multiplies on the CPU, and section 10.2's compute term is split
+# between them by that share. So there are two rates here rather than one, and each is
+# fitted to the one reference run that isolates it -- the same small dense model, held
+# first entirely on the card and then entirely in system memory:
+#
+#   Qwen3-0.6B Q8_0, -ngl 99   everything on the card    21,734 prompt tok/s   EFF_PP
+#   Qwen3-0.6B Q8_0, -ngl 0    everything in RAM          2,924 prompt tok/s   CPU_PP_...
+#
+# Two runs, two constants, and neither has a second machine behind it.
 
-EFF_PP: Final = 0.30
-"""Fraction of a card's peak fp16 throughput prompt processing reaches (section 10.2).
+EFF_PP: Final = 0.43
+"""Fraction of a card's dense fp16 matrix throughput prompt processing reaches (10.2).
 
-From the slope of the reference machine's ``llama-bench`` micro-batch sweep for
-Qwen3-Coder-Next: 118 tokens per second at ``-ub 512``, 194 at 1024 and 323 at 2048, which
-is 1.30 ms of extra time per extra prompt token. The slope isolates the compute term,
-because the per-micro-batch streaming cost is the same at every micro-batch size. Against
-2 x 3e9 active parameters on a 15 TFLOP/s card that is 0.307.
+**One measurement, and it wants a second machine.** Qwen3-0.6B Q8_0 with every layer on
+the card is the only run this project has in which the compute term is the whole of the
+prompt formula: nothing streams and nothing is read from system memory, so the measurement
+reads the product ``tflops_fp16 x eff_pp`` off directly. It managed 21,734 prompt tokens
+per second, and at the ``2 x active_params x ub`` the formula charges, that is
+2 x 0.6e9 x 21,734 = **26.1 TFLOP/s achieved**. The bundled table now rates that machine's
+RTX 4060 at 60.4 TFLOPS of dense fp16 matrix throughput, so 26.1 / 60.4 = 0.43.
+
+It has to be fitted the way the formula spends it, which means against the catalog's
+``active_b`` and not against some tidier parameter count: Qwen3-0.6B's 0.6 billion includes
+a tied embedding table that prompt processing barely multiplies by, so the real arithmetic
+is less than 26.1 TFLOP/s and the real silicon efficiency lower than 0.43. An apparent
+end-to-end rate and a coefficient inside a sum of terms are not the same quantity -- the
+mistake section 10.1 already made once with ``eff_ram_scattered`` -- and this is the
+coefficient.
+
+**An earlier revision gave 0.30 against a table that held 15 TFLOPS, and the pair was
+impossible.** 15 was the RTX 4060's *fp32 shader* rate; llama.cpp multiplies matrices on
+the tensor cores, and no efficiency at or below one reaches 26.1 from 15. The two errors
+cancelled wherever the streaming term was large enough to hide them, and on a dense model
+held on the card, where nothing hides them, the prompt figure came out roughly fourfold
+low. That 0.30 came from the slope of a ``llama-bench`` micro-batch sweep of
+Qwen3-Coder-Next -- 118 tokens per second at ``-ub 512``, 194 at 1024, 323 at 2048 -- which
+is not a clean read of this constant: that model's experts stream across the link, its
+three points do not lie on a line to better than 13 percent, and the slope through them
+implies about 5 TFLOP/s where the dense run says 26. The dense run is the one that isolates
+the term, so the dense run is the one this is fitted to. The disagreement is real, it is
+not resolved here, and it is the reason a second machine is wanted.
+
+Two things this figure quietly absorbs, neither of which it should carry for ever:
+llama.cpp runs a *quantised* matrix multiply on the integer tensor cores, whose dense rate
+is twice the fp16 one on the card measured here, and the formula counts no attention
+arithmetic at all.
 """
 
 EFF_PCIE: Final = 0.33
@@ -177,13 +216,32 @@ A PCIe 4.0 x8 link, which is what the reference machine has and roughly the midd
 a consumer card is given.
 """
 
-CPU_FP16_TFLOPS_PER_CORE: Final = 0.05
-"""Prompt-processing throughput of one performance core, in TFLOP/s.
+CPU_PP_TFLOPS_PER_CORE: Final = 0.44
+"""Prompt-processing throughput one performance core actually reaches, in TFLOP/s.
 
-An AVX2 core issuing two eight-wide fused multiply-adds per cycle at 4 GHz has about 256
-GFLOP/s of fp32 peak, and llama.cpp's quantised matrix multiply reaches roughly a fifth of
-it. Not measured: it exists so a CPU-only placement gets a prompt figure at all, and any
-estimate that depends on it is labelled ``estimated``.
+**Effective, not peak, and it is not multiplied by :data:`EFF_PP`.** There is no table of
+CPU peaks to scale, and the two halves of the prompt formula are asked for different
+things: the card side gets a published ceiling and an efficiency against it, this side gets
+the rate itself.
+
+From the reference machine's other dense run: Qwen3-0.6B Q8_0 at ``-ngl 0 -t 8``, 2,924
+prompt tokens per second, which at ``2 x 0.6e9`` per token is 3.51 TFLOP/s across eight
+performance cores, so 0.44 each.
+
+**The name it replaces said fp16 and meant nothing measurable.** ``CPU_FP16_TFLOPS_PER_CORE``
+was 0.05, a fifth of an AVX2 core's fp32 peak, arrived at by argument rather than by
+measurement -- and then multiplied by ``eff_pp`` on the way out, so the rate the formula
+actually spent was a fiftieth of that core's peak and about twentyfold below what the
+machine was measured doing. Nothing caught it because the term only ever fired on a host
+with no graphics card at all.
+
+**One machine, one thread count, one quantisation.** The run used eight threads on eight
+performance cores, which is what makes "per performance core" meaningful here and is not
+what section 9.4 asks llama.cpp for; a Q8_0 matrix multiply on a Raptor Lake core runs on
+integer dot-product instructions rather than on fp32 fused multiply-adds, which is why a
+figure above that core's fp32 peak is not the contradiction it looks like; and every other
+architecture inherits this number by division. It wants a second machine at least as badly
+as :data:`EFF_PP` does.
 """
 
 ASSUMED_BITS_PER_WEIGHT: Final = 4.5
