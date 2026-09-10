@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from llamafit.models.llamacpp import LocalModel
 from llamafit.models.plan import Needs
-from llamafit.scoring import DEFAULT_WEIGHTS
+from llamafit.scoring import DEFAULT_WEIGHTS, READING_TPS
 from llamafit.services.recommend import (
     PERFECT_FIT,
     best_quant,
@@ -101,7 +101,10 @@ def test_the_general_board_no_longer_leads_with_a_model_slower_than_its_reader()
     """
     board = build_board(catalog(), reference_host(), Needs(use_case="general"))
     assert board.rows, "something on this machine should be readable"
-    assert board.rows[0].model_id == "llama-3.1-8b-instruct"
+    # The defect was a leading row nobody could read, so that is what is asserted: which
+    # model leads is a fact about the catalog on the day, and the catalog keeps growing.
+    lead = board.rows[0].candidate.speed
+    assert lead is not None and lead.gen_tps >= READING_TPS
     assert "gemma-3-27b-it" not in ids(board.rows)
 
     slow = next(row for row in board.excluded if row.model_id == "gemma-3-27b-it")
