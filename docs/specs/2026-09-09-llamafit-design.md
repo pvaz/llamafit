@@ -178,7 +178,9 @@ A hardware profile is a JSON document that describes a machine well enough to sc
 }
 ```
 
-`--profile <name|file>` scores against a profile instead of the live scan. `--memory`, `--ram`, `--cpu-cores` override single values (simulation). The TUI exposes the same as a Simulate panel with a visible `SIM` badge.
+**The JSON above is the sketch this design started from and is not the schema that shipped.** The published one is `src/llamafit/data/schema/hwprofile.schema.json`, generated from the pydantic model, and `docs/hardware-profiles.md` documents it field by field; a file written from the sketch is refused by name, because the model forbids unknown fields. Four things changed and each is recorded there: the document is nested and mirrors `Host` rather than being flat, so a card carries its own name (which is the key the bundled GPU table is looked up by); sizes are written the way the flags are written (`"128GiB"`, `"8188MiB"`) rather than as `_gb` numbers meaning two different things in one object; `pcie_bandwidth_gbps` is gone, because `Host` has no field for it and a parsed-then-discarded field is the failure the loaders exist to prevent; and `provenance` is required, because nothing else in the document distinguishes a profile of a measured machine from a profile somebody imagined.
+
+`--profile <name|file>` scores against a profile instead of the live scan. `--memory`, `--ram`, `--cpu-cores` override single values (simulation). All four are global options, they apply to every command that answers about a machine, and `--profile` does not probe this one at all. The TUI exposes the same as a Simulate panel with a visible `SIM` badge, and `llamafit --profile NAME` opens the dashboard already on it.
 
 ## 5. llama.cpp integration
 
@@ -436,11 +438,17 @@ Time per token is the sum of memory traffic per pool divided by that pool's effe
 ```
 bytes_vram = attention_bytes_on_gpu + shared_expert_bytes_on_gpu + active_expert_bytes_on_gpu
            + output_head_bytes + kv_bytes_per_token × working_context
-bytes_ram  = active_expert_bytes_in_ram + attention_bytes_on_cpu + kv_bytes_on_cpu × working_context
-t_token    = bytes_vram / (vram_bw × eff_vram) + bytes_ram / (ram_bw × eff_ram)
+scattered_bytes  = active_expert_bytes_in_ram
+contiguous_bytes = attention_bytes_on_cpu + output_head_bytes_in_ram
+                 + kv_bytes_on_cpu × working_context
+t_token    = bytes_vram / (vram_bw × eff_vram)
+           + scattered_bytes / (ram_bw × eff_ram_scattered)
+           + contiguous_bytes / (ram_bw × eff_ram_sequential)
            + fixed_overhead
 gen_tps    = 1 / t_token
 ```
+
+The two system-memory terms are the paragraph below made arithmetic; an earlier revision of this block had one `bytes_ram / (ram_bw × eff_ram)` and the paragraph corrected a formula the block still showed.
 
 `active_expert_bytes = bytes_expert_weights × n_expert_used / n_expert`. `working_context` defaults to 8K tokens for the board and to the user's requested context for `plan`.
 
@@ -468,13 +476,24 @@ When a pool's bandwidth is unknown, a per-backend fallback applies to the whole 
 ### 10.2 Prompt processing
 
 ```
-t_ubatch = 2 × active_params × ub / (tflops_fp16 × eff_pp)          # compute on the GPU
-         + streamed_expert_bytes / pcie_bw                          # experts in RAM streamed per micro-batch
-         + streamed_expert_bytes_cpu_path / (ram_bw × eff_ram)      # when the CPU computes them instead
-pp_tps   = ub / t_ubatch
+flops      = 2 × active_params × ub
+on_card    = min(ngl, n_layer) / n_layer                            # the share of the layers on the card
+t_ubatch   = flops × on_card / (tflops_fp16 × eff_pp)               # the card's share of the arithmetic
+           + flops × (1 − on_card) / (cores × cpu_pp_tflops)        # the CPU's share of it
+           + streamed_expert_bytes / (pcie_bw × eff_pcie)            # experts in RAM, streamed per micro-batch
+           + streamed_expert_bytes / (ram_bw × eff_ram_sequential)   # instead of the line above, with no card
+pp_tps     = ub / t_ubatch
 ```
 
-`streamed_expert_bytes` is the expert bytes touched per micro-batch, which for `ub ≥ 256` is nearly all of them. The reference machine gives 52 tokens per second at `ub 1024` and 25 at `ub 512` for a 78 GB expert set, which fixes the initial PCIe effective bandwidth at 4 GB/s for that host until phase 3 measures it.
+**The compute term is split between the two devices, and an earlier revision of this section charged all of it to the card.** Prompt processing multiplies matrices where the weights are: a layer offloaded to the card multiplies on the card, a layer left in system memory multiplies on the CPU, and the two are nowhere near agreeing on a rate. Charging the whole term to the card put Gemma 3 27B on the reference machine — which can offload nine of its sixty-two layers — near 480 prompt tokens per second, a figure that needs about 22 TFLOP/s from a processor the same machine has been measured at 3.5. `-ngl` is what says the share. `--n-cpu-moe` deliberately does not: it moves a layer's routed experts into system memory, but prompt processing streams them back across the link a micro-batch at a time and multiplies them on the card, which is what the third term already charges for, and counting those layers as CPU layers would charge the same bytes twice.
+
+**The two rates are different kinds of number and only one of them is an efficiency.** The card gets a published peak and a fraction of it, because there is a table of published peaks; `eff_pp` is **0.43**, from the one run in which the compute term is the whole formula — Qwen3-0.6B Q8_0 with every layer on the card, 21,734 prompt tokens per second, which at the `2 × active_params × ub` the formula charges is 26.1 TFLOP/s against a card rated 60.4. The CPU gets the rate itself, `cpu_pp_tflops` = **0.44 TFLOP/s per performance core**, from the same model at `-ngl 0 -t 8`: 2,924 prompt tokens per second is 3.51 TFLOP/s across eight performance cores. It is effective already and is **not** multiplied by `eff_pp`. The figure it replaced was invented rather than measured — a fifth of an AVX2 core's fp32 peak — and was then scaled by `eff_pp` on the way out, so the rate actually spent was about twentyfold below what the machine does; nothing caught it because the term only ever fired on a host with no graphics card at all.
+
+Both figures come from one machine, one thread count and one quantisation, and each is fitted to exactly one run. `eff_pp` in particular disagrees with the other reading available: a `llama-bench` micro-batch sweep of Qwen3-Coder-Next — 118 tokens per second at `-ub 512`, 194 at 1024, 323 at 2048 — has a slope implying about 5 TFLOP/s where the dense run says 26. That model's experts stream across the link and its three points do not lie on a line to better than 13 percent, so the dense run is the one that isolates the term and the dense run is what this is fitted to. The disagreement is real and is not resolved here; a second machine is what would resolve it.
+
+`streamed_expert_bytes` is the expert bytes touched per micro-batch, which for `ub ≥ 256` is nearly all of them. The reference machine gives 52 tokens per second at `ub 1024` and 25 at `ub 512` for a 78 GB expert set, which fixes the initial PCIe effective bandwidth at 4 GB/s for that host until phase 3 measures it — `eff_pcie` 0.33 of a link the table rates at 12 GB/s. **That constant is known to be wrong for half the cases it covers**: it was fitted on the one model whose expert set does not fit in system memory, so part of every micro-batch's read comes off the disk, while a set that stays in the page cache streams about three times faster. Residency, not the link, is the real variable, and modelling it needs a disk-bandwidth probe this phase does not have. The three terms are reported separately rather than summed, so a reader can see how much of an answer rests on the one this project knows least about.
+
+Against the four reference runs the formula predicts 2,933 prompt tokens per second against a measured 2,924; 21,643 against 21,734; and 51.4 against 49.4. The fourth, Qwen3-Coder-Next at 166 against 323, is the link constant above and is unchanged in kind.
 
 ### 10.3 Confidence
 

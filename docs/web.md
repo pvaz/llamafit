@@ -113,6 +113,7 @@ words:
 | `prefer` | `balanced`, `quality`, `speed` |
 | `license` | SPDX identifiers, repeatable |
 | `min_context` | integer, tokens |
+| `max_context` | integer, tokens; plan, report and score no context longer than this. Below `min_context` it is refused by name |
 | `max_download` | a size such as `40G` or `7.5GiB`; a bare number is bytes |
 | `all_quants` | `true` or `false` (`/api/v1/models` is always every quant) |
 | `vision` | `false` to plan without a vision projector |

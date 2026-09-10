@@ -116,9 +116,10 @@ Tokens per second throughout.
 
 ## Estimator constants derived here
 
-Four runs identify four constants. The two below the line were added on 2026-09-10
-precisely because two could not: a small dense model is the only way to isolate a memory
-pool, since its traffic per token is exactly its block weights and nothing else competes.
+Four runs identify four generation constants. The two below the line were added on
+2026-09-10 precisely because two could not: a small dense model is the only way to isolate
+a memory pool, since its traffic per token is exactly its block weights and nothing else
+competes.
 
 | Run | Traffic per token | Measured | Isolates |
 |---|---|---|---|
@@ -127,18 +128,30 @@ pool, since its traffic per token is exactly its block weights and nothing else 
 | Qwen3-0.6B Q8_0, `-ngl 0` | 0.47 GB, contiguous | 78.0 tok/s | system memory, sequential |
 | Qwen3-0.6B Q8_0, `-ngl 99` | 0.47 GB, card | 279.5 tok/s | the card |
 
+The same two dense runs were measured processing a prompt, and those two figures are what
+the prompt-processing compute constants are fitted to. A dense model held entirely on one
+device is the only run in which the compute term is charged to one device alone, which is
+what makes each of these isolate a rate rather than a mixture of two.
+
+| Run | Prompt throughput | Isolates |
+|---|---|---|
+| Qwen3-0.6B Q8_0, `-ngl 99` | 21,734 pp tok/s | the card's share of the compute term |
+| Qwen3-0.6B Q8_0, `-ngl 0 -t 8` | 2,924 pp tok/s | the CPU's share of the compute term |
+
 | Constant | Value | From |
 |---|---|---|
 | System memory, sequential | 0.70 | the two dense runs, with the fixed overhead below |
 | System memory, scattered | 0.57 | 0.54 from Coder-Next and 0.59 from Flash-Next, nine percent apart while carrying 64 percent different traffic |
 | Card efficiency | 0.67 | the dense run with everything on the card |
 | Fixed overhead | about 1 ms per token | the residual common to both dense runs |
+| Prompt compute on the card | 0.43 | 21,734 prompt tokens per second with every layer on the card is 26.1 TFLOP/s at the `2 x active_params x ub` the formula charges, against the 60.4 TFLOPS the corrected table rates this card at. One run, and it wants a second machine |
+| Prompt compute on the CPU | 0.44 TFLOP/s per performance core | 2,924 prompt tokens per second at `-ngl 0 -t 8` is 3.51 TFLOP/s across eight performance cores. Effective, not a peak, and **not** multiplied by the row above: the card side has a published ceiling to scale and this side does not |
 | PCIe effective bandwidth | 4 GB/s | 78 GB of experts per micro-batch at 52 tokens per second with `-ub 1024`. **Known to be wrong**: fitted on the one model whose expert set cannot fit in memory, while the other streams about three times faster from the page cache. Two physical paths sharing one constant |
 | KV per 1K tokens, Flash-Next | 33 MiB | the table above. Of this, about 9 MiB is a second cache the file's own header cannot account for |
 | Compute buffer base at `-ub` 512, 1024, 2048 | 1,090; 1,240; 2,080 MiB | the table above |
 | CUDA context overhead | 120 measured, 300 default | card memory minus the buffer totals. The measured figure is used for this card and the conservative default for every other, because one measurement is not a generalisation |
 
-### Two figures this record used to carry, and why they are gone
+### Figures this record used to carry, and why they are gone
 
 **There is no per-layer overhead.** It read 0.20 ms, which across 28 layers is 5.6 ms,
 while that model's entire measured token is 3.58 ms. The term was not merely too large,
@@ -154,3 +167,29 @@ quantity, and the mistake is invisible until something is measured against it.
 **A token embedding table is not per-token traffic.** A lookup reads one row. Counting the
 whole table put the apparent rate above what the memory bus can physically deliver, which
 is how the error above was finally caught.
+
+**The prompt compute term was one term charged wholly to the card, at an efficiency of
+0.30.** Both halves of that were wrong and they hid each other. The efficiency was read off
+the slope of the `llama-bench` micro-batch sweep under "Qwen3-Coder-Next" above -- 118
+tokens per second at `-ub 512`, 194 at 1024, 323 at 2048 -- which is not a clean read of a
+compute constant: that model's experts stream across the link, its three points do not lie
+on a line to better than 13 percent, and the slope through them implies about 5 TFLOP/s
+where the dense run says 26. The sweep stays in this record because it is a real
+measurement of that model's prompt throughput; it is simply not the run that isolates this
+term. The 0.30 was also divided into a table that rated this card at 15 TFLOPS, which was
+its fp32 *shader* rate, and llama.cpp multiplies matrices on the tensor cores: no
+efficiency at or below one reaches 26.1 TFLOP/s from 15. The pair cancelled wherever the
+streaming term was large enough to hide it, and on a dense model held on the card, where
+nothing hides it, the prompt figure came out roughly fourfold low.
+
+**The same term also had no CPU side, and inventing one made it worse.**
+`CPU_FP16_TFLOPS_PER_CORE` read 0.05, a fifth of an AVX2 core's fp32 peak arrived at by
+argument rather than by measurement, and it was then multiplied by the card's efficiency on
+the way out, so the rate the formula actually spent was a fiftieth of that core's peak and
+about twentyfold below the 3.51 TFLOP/s this machine was measured doing. Nothing caught it
+because the term only ever fired on a host with no graphics card at all. With an honest
+tensor figure in the table, the whole-term-to-the-card reading put Gemma 3 27B -- nine of
+sixty-two layers on this card -- near 480 prompt tokens per second, which needs about 22
+TFLOP/s from this processor. That is what made the split visible: prompt arithmetic runs
+where the weights are, so the term is now divided by the share of the layers each device
+holds and the CPU rate is measured rather than argued.
