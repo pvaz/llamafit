@@ -16,7 +16,7 @@ from typing import Any
 import pytest
 from typer.testing import CliRunner
 
-from llamafit.cli import install_cmd
+from llamafit.cli import llamacpp_cmd
 from llamafit.cli.app import app
 from llamafit.errors import ConfigError, LlamaFitError, NetworkError
 from llamafit.llamacpp.install import (
@@ -72,12 +72,12 @@ BODIES = {
 def _no_network_and_no_machine(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     """Substitute the release API, the downloader, the machine and the directories."""
     client = FakeReleaseClient(releases={"b10892": RELEASE}, latest_tag="b10892")
-    monkeypatch.setattr(install_cmd, "HttpReleaseClient", lambda **_kwargs: client)
+    monkeypatch.setattr(llamacpp_cmd, "HttpReleaseClient", lambda **_kwargs: client)
     monkeypatch.setattr(
-        install_cmd, "HttpFetcher", lambda **_kwargs: FakeFetcher(bodies=BODIES, chunk=64)
+        llamacpp_cmd, "HttpFetcher", lambda **_kwargs: FakeFetcher(bodies=BODIES, chunk=64)
     )
-    monkeypatch.setattr(install_cmd, "current_os", lambda: "windows")
-    monkeypatch.setattr(install_cmd, "current_arch", lambda: "x86_64")
+    monkeypatch.setattr(llamacpp_cmd, "current_os", lambda: "windows")
+    monkeypatch.setattr(llamacpp_cmd, "current_arch", lambda: "x86_64")
     _set_gpu(monkeypatch, "nvidia")
     monkeypatch.setenv("LLAMAFIT_HOME", str(tmp_path / "llamafit-home"))
 
@@ -98,7 +98,7 @@ def _set_gpu(
             )
         ]
     )
-    monkeypatch.setattr(install_cmd, "detect_gpus", lambda _runner, _os: (gpus, []))
+    monkeypatch.setattr(llamacpp_cmd, "detect_gpus", lambda _runner, _os: (gpus, []))
 
 
 def _rendered(result: Any) -> str:
@@ -251,7 +251,7 @@ def test_a_backend_with_no_published_build_is_reported_not_quietly_replaced(
 def test_a_machine_the_release_publishes_nothing_for_is_told_so(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(install_cmd, "current_arch", lambda: "other")
+    monkeypatch.setattr(llamacpp_cmd, "current_arch", lambda: "other")
     result, _root = _invoke(tmp_path, "install", "llama.cpp", "--yes")
     assert result.exit_code == 1
     assert "publishes nothing" in _rendered(result)
@@ -267,7 +267,7 @@ def test_a_named_tag_is_the_one_asked_for(tmp_path: Path) -> None:
 def test_a_machine_with_no_gpu_gets_the_cpu_build(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(install_cmd, "current_os", lambda: "linux")
+    monkeypatch.setattr(llamacpp_cmd, "current_os", lambda: "linux")
     _set_gpu(monkeypatch, None)
     result, _root = _invoke(tmp_path, "--json", "install", "llama.cpp")
     payload = json.loads(result.output)
@@ -299,7 +299,7 @@ def test_an_older_driver_is_given_the_cuda_archive_it_can_actually_load(
 def test_the_path_offer_shows_the_undo_before_it_asks_and_a_no_leaves_it_alone(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(install_cmd, "current_os", lambda: "linux")
+    monkeypatch.setattr(llamacpp_cmd, "current_os", lambda: "linux")
     _set_gpu(monkeypatch, None)
     home = tmp_path / "home"
     home.mkdir()
@@ -315,7 +315,7 @@ def test_the_path_offer_shows_the_undo_before_it_asks_and_a_no_leaves_it_alone(
 def test_the_path_change_is_applied_when_it_is_agreed_to(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(install_cmd, "current_os", lambda: "linux")
+    monkeypatch.setattr(llamacpp_cmd, "current_os", lambda: "linux")
     _set_gpu(monkeypatch, None)
     home = tmp_path / "home"
     home.mkdir()
@@ -335,8 +335,8 @@ def test_an_unverified_archive_is_refused_until_the_flag_says_otherwise(
     client = FakeReleaseClient(
         releases={"b10892": Release(tag="b10892", assets=(unsigned,))}, latest_tag="b10892"
     )
-    monkeypatch.setattr(install_cmd, "HttpReleaseClient", lambda **_kwargs: client)
-    monkeypatch.setattr(install_cmd, "current_os", lambda: "linux")
+    monkeypatch.setattr(llamacpp_cmd, "HttpReleaseClient", lambda **_kwargs: client)
+    monkeypatch.setattr(llamacpp_cmd, "current_os", lambda: "linux")
     _set_gpu(monkeypatch, None)
 
     refused, root = _invoke(tmp_path, "install", "llama.cpp", "--yes")
@@ -356,7 +356,7 @@ def test_a_corrupt_download_leaves_the_previous_install_untouched(
     root = tmp_path / "install"
     (root / "bin" / "keepsake.txt").write_text("still here", encoding="utf-8")
     monkeypatch.setattr(
-        install_cmd,
+        llamacpp_cmd,
         "HttpFetcher",
         # The same length as the real archive, so it is the checksum that catches it
         # and not the size.
@@ -377,7 +377,7 @@ def test_the_installed_directory_is_the_managed_one_when_no_dir_is_given(
 ) -> None:
     home = tmp_path / "home"
     home.mkdir()
-    monkeypatch.setattr(install_cmd, "managed_dir", lambda: home / ".llamafit" / "llama.cpp")
+    monkeypatch.setattr(llamacpp_cmd, "managed_dir", lambda: home / ".llamafit" / "llama.cpp")
     result = runner.invoke(app, ["--json", "install", "llama.cpp"])
     assert result.exit_code == 0, result.output
     payload = json.loads(result.output)
