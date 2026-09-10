@@ -51,6 +51,7 @@ def test_the_byte_buckets_sum_exactly_to_the_total(path: Path) -> None:
         + facts.bytes_output_head
         + facts.bytes_expert_weights
         + facts.bytes_dense_block_weights
+        + facts.bytes_shared_expert_weights
         + facts.bytes_lazy_tables
         + facts.bytes_global_weights
     )
