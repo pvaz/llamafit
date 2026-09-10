@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """Where header bytes come from: a local file, an HTTP range request, or a test.
 
 A GGUF file can be a hundred gigabytes; its header is a few hundred kilobytes at
