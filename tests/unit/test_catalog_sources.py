@@ -37,11 +37,19 @@ pytestmark = pytest.mark.network
 
 _HEADERS = {"User-Agent": "llamafit-catalog-check/0.1 (+https://github.com/pvaz/llamafit)"}
 
-_THROTTLED = 429
-"""The one status that means "ask again later" rather than "this is not here"."""
+_WITHHELD = frozenset({401, 403, 429})
+"""The statuses that mean "the host will not answer" rather than "this is not here".
 
-_UNCHECKED = "rate-limited"
-"""What :func:`_check` returns when the host would not answer either time."""
+A dead link is a 404, a 410, or a name that does not resolve. These three are a server
+that is present and declining: a login wall, a bot filter, a rate limit. Bot filters are
+not a curiosity here -- one licence in the catalog is served behind Cloudflare, which
+returns 200 to a browser and to curl and 403 to this checker whatever headers it sends,
+because the block is on the TLS handshake rather than on anything a request can change.
+Calling that a broken link would send a curator to fix an entry that is perfectly correct.
+"""
+
+_UNCHECKED = "withheld"
+"""What :func:`_check` returns when the host declined to answer both times."""
 
 _RETRY_PAUSE = 5.0
 """Seconds to wait before the single retry a throttled host is given."""
@@ -85,25 +93,27 @@ def _check(url: str, client: httpx.Client) -> str | None:
         client: The shared client, so connections and headers are reused.
 
     Returns:
-        ``None`` when the URL resolved, ``_UNCHECKED`` when the host rate-limited both the
-        request and its one retry, and otherwise the status or the transport error, so a
-        curator is told what happened rather than only that something did. "Does not
-        resolve" without a reason sends somebody to re-check a link by hand.
+        ``None`` when the URL resolved, ``_UNCHECKED`` when the host declined to answer
+        both times, and otherwise the status or the transport error, so a curator is told
+        what happened rather than only that something did. "Does not resolve" without a
+        reason sends somebody to re-check a link by hand.
     """
     asked = _askable(url)
     trouble = "no attempt was made"
+    withheld = False
     for attempt in range(2):
         try:
             response = client.get(asked, follow_redirects=True, timeout=15.0)
         except httpx.HTTPError as error:
             trouble = f"{type(error).__name__}: {error}"
         else:
-            if response.status_code != _THROTTLED:
+            if response.status_code not in _WITHHELD:
                 return None if response.is_success else f"HTTP {response.status_code}"
-            trouble = f"HTTP {_THROTTLED}"
+            withheld = True
+            trouble = f"HTTP {response.status_code}"
         if attempt == 0:
             time.sleep(_RETRY_PAUSE)
-    return _UNCHECKED if trouble == f"HTTP {_THROTTLED}" else trouble
+    return _UNCHECKED if withheld else trouble
 
 
 def test_every_licence_and_benchmark_source_resolves() -> None:
@@ -132,4 +142,4 @@ def test_every_licence_and_benchmark_source_resolves() -> None:
 
     assert not failures, "\n".join(failures)
     if unchecked:
-        pytest.skip(f"{unchecked} of {len(cited)} sources were rate-limited, not checked")
+        pytest.skip(f"{unchecked} of {len(cited)} sources withheld an answer, not checked")
