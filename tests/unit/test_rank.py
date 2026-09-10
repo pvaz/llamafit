@@ -286,6 +286,77 @@ def test_a_candidate_with_no_speed_estimate_is_excluded(catalog: Catalog) -> Non
     assert "no speed estimate" in (candidate.excluded_because or "")
 
 
+def test_a_model_slower_than_its_reader_is_excluded_and_the_number_is_in_the_reason(
+    catalog: Catalog,
+) -> None:
+    """The defect this change exists to settle, at the model it was found on.
+
+    Gemma 3 27B runs at 4.2 tokens per second on the reference machine's recorded
+    placement, under the six a person reads at, and under both agents' earlier fixes it
+    was still ranked for a general request: the speed score was zero, and quality, fit and
+    context carried the remaining three quarters of the weight.
+    """
+    candidate = evaluate_one(catalog, "gemma-3-27b-it", Needs(use_case="general"))
+    reason = candidate.excluded_because or ""
+    assert "4.2 tokens per second" in reason
+    assert "below the 6 a person reads at" in reason
+    assert candidate.score is None
+
+
+def test_the_excluded_model_keeps_the_placement_and_the_speed_it_was_judged_on(
+    catalog: Catalog,
+) -> None:
+    """Nothing disappears: the row still says where it would run and how fast."""
+    candidate = evaluate_one(catalog, "gemma-3-27b-it", Needs(use_case="chat"))
+    assert candidate.placement is not None
+    assert candidate.speed is not None
+    assert candidate.speed.gen_tps == 4.2
+
+
+def test_a_model_that_keeps_up_is_still_ranked_however_slow_it_looks(
+    catalog: Catalog,
+) -> None:
+    """The rule is about the floor, not about being slower than the rest of the board."""
+    candidate = evaluate_one(catalog, "qwen3.8-flash-next", Needs(use_case="multimodal"))
+    assert candidate.excluded_because is None
+    assert candidate.speed is not None and candidate.speed.gen_tps == 13.9
+
+
+def test_an_embedding_request_never_excludes_a_model_for_generating_slowly(
+    catalog: Catalog,
+) -> None:
+    """Nobody reads an embedding, so there is no reader for a model to fall behind.
+
+    Gemma is not an embedding model and is excluded for that instead, which is the point:
+    the reason a reader is given is about the catalog entry, never about a generation rate
+    nothing in an embedding run produces.
+    """
+    candidate = evaluate_one(catalog, "gemma-3-27b-it", Needs(use_case="embedding"))
+    assert "not a embedding model" in (candidate.excluded_because or "")
+
+
+def test_being_too_slow_is_reported_after_everything_the_request_controls(
+    catalog: Catalog,
+) -> None:
+    """A model that is both wrong for the job and too slow is told about the job.
+
+    The reading floor is a fact about this machine and this model together. What the
+    request asked for is the part the reader can change outright, so it is what they are
+    told first.
+    """
+    candidate = evaluate_one(catalog, "gemma-3-27b-it", Needs(use_case="coding"))
+    assert "not a coding model" in (candidate.excluded_because or "")
+
+
+def test_the_slow_model_is_not_dropped_from_the_board_it_is_moved_to_the_end(
+    catalog: Catalog,
+) -> None:
+    board = evaluate_and_rank(entries(catalog), Needs(use_case="general"))
+    assert "gemma-3-27b-it" in ids(board)
+    assert ids(board)[-1] == "gemma-3-27b-it"
+    assert ids(board)[0] == "llama-3.1-8b-instruct"
+
+
 def test_what_the_request_asked_for_is_reported_before_what_the_machine_can_do(
     catalog: Catalog,
 ) -> None:

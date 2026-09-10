@@ -15,6 +15,12 @@ because its entry lists general, chat and reasoning, not coding" tells them why 
 they expected to see is missing, and what to change — the request, or the catalog entry —
 which is the difference between a tool that answers and one that merely responds.
 
+That is also what makes an exclusion the right home for a fact a score cannot carry. A
+score of zero says "this is bad at the job"; an exclusion says "this is not that kind of
+tool, and here is the number that decides it". The second is the more useful sentence and
+the more falsifiable one, and it costs the reader nothing, because the candidate is still
+on the page.
+
 **Nothing is a bare number.** Every candidate that is scored carries the four parts, the
 weights that combined them and the total, because a ranking whose reason is invisible asks
 a reader to take it on faith. This project has already fixed that defect once, in a table
@@ -42,9 +48,14 @@ from llamafit.quality import (
 )
 from llamafit.scoring.context_score import context_score, requested_context
 from llamafit.scoring.fit_score import fit_score_for
-from llamafit.scoring.speed_score import speed_score
+from llamafit.scoring.speed_score import (
+    floor_tps,
+    keeps_up_with_reader,
+    observed_tps,
+    speed_score,
+)
 from llamafit.scoring.weights import weights_for
-from llamafit.units import format_bytes, format_grouped
+from llamafit.units import format_bytes, format_grouped, localise_number
 
 
 def evaluate(
@@ -211,6 +222,24 @@ def _exclusion(
     The job comes before the capability because it is the broader statement about the
     same thing: a model whose entry does not offer itself for this work at all should not
     be explained away by whichever capability it also happens to lack.
+
+    **The reading floor is the last check, and it is a check and not a penalty.** A model
+    that generates more slowly than its reader reads cannot do an interactive job at any
+    quality, and section 11.4's floor already says so — it scores such a candidate zero.
+    Zero was not enough on its own: the other three parts carry three quarters of every
+    use case's weight, so a slow, large, well-fitting model finishes above a fast one that
+    can actually be used, which is what Gemma 3 27B at 2.1 tokens per second did to Llama
+    3.1 8B at 10.2 on the reference machine. Reweighting cannot answer it, because the
+    complaint is not that the candidate was ranked too high. It is that a batch tool was
+    entered in a race about waiting.
+
+    It comes last because it is the most machine-ish of the machine's reasons: it needs a
+    placement, and then a speed estimated from that placement, so everything that could
+    have been said about the request or about the memory has already been said. And the
+    exclusion changes nothing about what a reader sees except the words: an excluded
+    candidate keeps its placement and its speed and is shown, so the row that used to read
+    "ranked third, 2.1 tokens per second" now reads "2.1 tokens per second, below the six a
+    person reads at" — which is the same number with the consequence attached.
     """
     if not declares_use_case(model, needs.use_case):
         return _(
@@ -250,4 +279,24 @@ def _exclusion(
         }
     if speed is None:
         return _("no speed estimate, so it cannot be ranked against models that have one")
+    if not keeps_up_with_reader(speed, needs.use_case):
+        return _(
+            "generates %(tps)s tokens per second, below the %(floor)s a person reads at: "
+            "a batch tool on this machine and not one to sit in front of; "
+            "a smaller model or quantisation would keep up"
+        ) % {
+            "tps": _tps(observed_tps(speed, needs.use_case)),
+            "floor": _tps(floor_tps(needs.use_case)),
+        }
     return None
+
+
+def _tps(value: float) -> str:
+    """A tokens-per-second figure for a sentence, in this language's punctuation.
+
+    One decimal, and none at all when the figure is a whole number: the floor is six and
+    reads better in a sentence as six than as 6.0, while an estimate of 2.65 has to keep
+    its fraction or the reason would round a model up to three tokens a second.
+    """
+    whole = value == int(value)
+    return localise_number(f"{value:,.0f}" if whole else f"{value:,.1f}")
