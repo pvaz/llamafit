@@ -1,0 +1,186 @@
+# Sourced from IBM's Hugging Face model cards and IBM's own GGUF repositories.
+# Primary sources used for this file:
+#   - Model cards: https://huggingface.co/ibm-granite/granite-4.2-30b
+#                  https://huggingface.co/ibm-granite/granite-4.2-8b
+#                  https://huggingface.co/ibm-granite/granite-4.2-3b
+#   - Technical blog: https://huggingface.co/blog/ibm-granite/granite-4-2
+#   - Licence: https://www.apache.org/licenses/LICENSE-2.0
+#   - GGUF repositories: https://huggingface.co/ibm-granite/granite-4.2-30b-GGUF
+#                        https://huggingface.co/ibm-granite/granite-4.2-8b-GGUF
+#                        https://huggingface.co/ibm-granite/granite-4.2-3b-GGUF
+#
+# BENCHMARKS. One evaluation table appears in all three cards with a column per size, and it
+# covers only the instruction-tuned reasoning checkpoints that these entries name -- the base
+# models are separate repositories (granite-4.2-*-base) with no numbers of their own on these
+# cards. Each entry cites the card of its own size.
+#
+# WHAT THESE ARE. IBM publishes one shape at three sizes: a plain dense transformer with
+# grouped-query attention, built-in <think> reasoning, tool calling, and Apache-2.0 with no
+# conditions attached. There is no sliding window anywhere in the family, so unlike the Gemma
+# entries every layer keeps a cache over the whole context; that is recorded in each entry's
+# architecture notes because it is the thing that makes a 128K context expensive here.
+#
+# PARAMETER COUNTS. IBM names the sizes 3b, 8b and 30b; the repositories actually hold 3.66,
+# 8.79 and 29.28 billion parameters, from the parameter totals Hugging Face publishes for
+# each repository's safetensors index. The exact figures are what `params.total_b` carries,
+# because that field is the denominator of bits per weight: with the rounded 3 in it, the 3B
+# model's Q8_0 reads 10.4 bits per weight, which is not a thing an eight-bit quant can be.
+# With 3.66 it reads 8.50, which is exactly what Q8_0 is.
+#
+# QUANTS. IBM publishes the GGUFs itself, so every source below is the official one. Two
+# quants on the 3B and 8B and three on the 30B, where a four-bit is well past an 8 GB card
+# and a three-bit is the difference between running and not.
+
+- id: granite-4.2-30b
+  name: Granite 4.2 30B
+  vendor: IBM
+  family: granite4
+  release_date: 2026-08-25
+  license:
+    spdx: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0"
+  params: { total_b: 29.28, active_b: 29.28 }
+  architecture:
+    class: dense
+    gguf_arch: granite
+    notes: >-
+      64 layers, 32 query heads, 8 key/value heads (GQA), embedding size 4096 with an MLP
+      hidden size of 32768, RoPE at theta 10,000,000 and untied input and output embeddings.
+      No sliding window on any layer, so all 64 cache the whole context: the largest Granite
+      is also the one whose long contexts cost the most memory per token.
+  # The cards document 128K natively with a long-context extension to 512K but name no
+  # technique for it, and the config declares no rope scaling, so `extended_method` is left
+  # empty rather than guessed at.
+  context: { native: 131072, extended: 524288 }
+  capabilities: [coding, thinking, tools, multilingual, long-context]
+  use_cases: [reasoning, coding, general, chat]
+  quality:
+    baseline: 76
+    benchmarks:
+      - name: MMLU-Pro
+        score: 77.6
+        source: "https://huggingface.co/ibm-granite/granite-4.2-30b"
+      - name: AIME25
+        score: 89.17
+        source: "https://huggingface.co/ibm-granite/granite-4.2-30b"
+      - name: GPQA
+        score: 66.41
+        source: "https://huggingface.co/ibm-granite/granite-4.2-30b"
+      - name: SWE-bench Verified
+        score: 57.0
+        source: "https://huggingface.co/ibm-granite/granite-4.2-30b"
+      - name: LiveCodeBench v6
+        score: 75.77
+        source: "https://huggingface.co/ibm-granite/granite-4.2-30b"
+  # "Use temperature=1.0 and top_p=0.95 across all tasks and serving backends", marked
+  # important on the card rather than offered as a default.
+  sampling: { temp: 1.0, top_p: 0.95 }
+  chat_template: { thinking_toggle: enable_thinking }
+  sources:
+    - repo: ibm-granite/granite-4.2-30b-GGUF
+      kind: gguf
+      trust: official
+      quants:
+        - { name: Q3_K_M }
+        - { name: Q4_K_M }
+        - { name: Q6_K }
+
+- id: granite-4.2-8b
+  name: Granite 4.2 8B
+  vendor: IBM
+  family: granite4
+  release_date: 2026-08-25
+  license:
+    spdx: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0"
+  params: { total_b: 8.79, active_b: 8.79 }
+  architecture:
+    class: dense
+    gguf_arch: granite
+    notes: >-
+      40 layers, 32 query heads, 8 key/value heads (GQA), embedding size 4096, MLP hidden
+      size 12800, RoPE at theta 10,000,000. No sliding window: every layer holds a cache
+      over the whole context, which is the cost of the plain architecture and the reason a
+      long context on this model is dearer than on a Gemma of the same size.
+  context: { native: 131072, extended: 524288 }
+  capabilities: [coding, thinking, tools, multilingual, long-context]
+  use_cases: [reasoning, coding, general, chat]
+  quality:
+    baseline: 72
+    benchmarks:
+      - name: MMLU-Pro
+        score: 74.04
+        source: "https://huggingface.co/ibm-granite/granite-4.2-8b"
+      - name: AIME25
+        score: 86.67
+        source: "https://huggingface.co/ibm-granite/granite-4.2-8b"
+      - name: GPQA
+        score: 64.14
+        source: "https://huggingface.co/ibm-granite/granite-4.2-8b"
+      - name: SWE-bench Verified
+        score: 47.67
+        source: "https://huggingface.co/ibm-granite/granite-4.2-8b"
+      - name: LiveCodeBench v6
+        score: 73.24
+        source: "https://huggingface.co/ibm-granite/granite-4.2-8b"
+  sampling: { temp: 1.0, top_p: 0.95 }
+  chat_template: { thinking_toggle: enable_thinking }
+  sources:
+    - repo: ibm-granite/granite-4.2-8b-GGUF
+      kind: gguf
+      trust: official
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q6_K }
+
+- id: granite-4.2-3b
+  name: Granite 4.2 3B
+  vendor: IBM
+  family: granite4
+  release_date: 2026-08-25
+  license:
+    spdx: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0"
+  params: { total_b: 3.66, active_b: 3.66 }
+  architecture:
+    class: dense
+    gguf_arch: granite
+    notes: >-
+      40 layers, 40 query heads, 8 key/value heads (GQA) with a head size of 64, embedding
+      size 2560, MLP hidden size 8192. No sliding window here either, so the whole context
+      is cached on all 40 layers; the heads are narrow enough that this stays affordable on
+      a small card, which is what makes the 3B the family's practical long-context size.
+  context: { native: 131072, extended: 524288 }
+  capabilities: [coding, thinking, tools, multilingual, long-context]
+  # The card's agentic-coding rows are all "NA" for this size -- IBM did not run SWE-bench on
+  # it -- but LiveCodeBench 69.71 is published, so `coding` stays a capability while the
+  # coding use case sits behind reasoning rather than in front of it.
+  use_cases: [reasoning, general, chat, coding]
+  quality:
+    baseline: 65
+    benchmarks:
+      - name: MMLU-Pro
+        score: 67.84
+        source: "https://huggingface.co/ibm-granite/granite-4.2-3b"
+      - name: AIME25
+        score: 78.33
+        source: "https://huggingface.co/ibm-granite/granite-4.2-3b"
+      - name: GPQA
+        score: 54.8
+        source: "https://huggingface.co/ibm-granite/granite-4.2-3b"
+      - name: LiveCodeBench v6
+        score: 69.71
+        source: "https://huggingface.co/ibm-granite/granite-4.2-3b"
+      # The open-ended row, well below the reasoning ones and worth recording next to them.
+      - name: Arena-Hard-V2
+        score: 34.96
+        source: "https://huggingface.co/ibm-granite/granite-4.2-3b"
+  sampling: { temp: 1.0, top_p: 0.95 }
+  chat_template: { thinking_toggle: enable_thinking }
+  sources:
+    - repo: ibm-granite/granite-4.2-3b-GGUF
+      kind: gguf
+      trust: official
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q8_0 }

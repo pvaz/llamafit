@@ -106,7 +106,10 @@ def test_a_cut_board_says_how_many_it_cut() -> None:
 
 
 def test_an_uncut_board_says_nothing_about_a_limit() -> None:
-    result = runner.invoke(app, ["--language", "en", "recommend", "--use-case", "coding"])
+    """Silence is the default: the sentence exists to report a cut, not to appear always."""
+    result = runner.invoke(
+        app, ["--language", "en", "recommend", "--use-case", "coding", "--limit", "500"]
+    )
     assert "that qualified" not in flat(result.output)
 
 

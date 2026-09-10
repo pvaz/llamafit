@@ -1,0 +1,240 @@
+# Sourced from Microsoft's Hugging Face model cards, the Phi-4 technical reports, the Azure
+# announcement blog and the GGUF-publishing repositories.
+# Primary sources used for this file:
+#   - phi-4 model card: https://huggingface.co/microsoft/phi-4
+#   - phi-4 technical report: https://arxiv.org/pdf/2412.08905
+#   - Phi-4-mini-instruct model card: https://huggingface.co/microsoft/Phi-4-mini-instruct
+#   - Phi-4-mini announcement: https://azure.microsoft.com/en-us/blog/empowering-innovation-the-next-generation-of-the-phi-family/
+#   - Phi-4-reasoning-plus model card: https://huggingface.co/microsoft/Phi-4-reasoning-plus
+#   - Phi-4-reasoning-vision-15B model card: https://huggingface.co/microsoft/Phi-4-reasoning-vision-15B
+#   - GGUF repositories: https://huggingface.co/microsoft/phi-4-gguf
+#                        https://huggingface.co/bartowski/microsoft_Phi-4-mini-instruct-GGUF
+#                        https://huggingface.co/unsloth/Phi-4-reasoning-plus-GGUF
+#                        https://huggingface.co/DevQuasar/microsoft.Phi-4-reasoning-vision-15B-GGUF
+#
+# WHAT THESE MODELS ARE FOR. The Phi line trades world knowledge for reasoning: the training
+# data is filtered and synthesised to teach maths, science and logic rather than to memorise
+# facts, and the published numbers say so plainly. phi-4 scores 84.8 on MMLU and 3.0 on
+# SimpleQA in the same table; Phi-4-mini-instruct scores 88.6 on GSM8K and 32.8 on Arena
+# Hard. So `use_cases` on these entries leads with `reasoning` and leaves `chat` off, which
+# is a claim about what the vendor tested and published, not a guess: phi-4's card names
+# "reasoning and logic" among its three primary use cases and names no conversational one,
+# and Phi-4-reasoning-plus's card puts everything but maths reasoning out of scope in as many
+# words. `general` stays on the two general-purpose entries, because both are broadly
+# instruction-tuned models and hiding them from an ordinary request would be the worse error.
+#
+# LICENCE. Every model here is MIT, with the text in the model repository itself.
+#
+# PARAMETER COUNTS. Microsoft names these 14B, 3.8B and 15B; the repositories hold 14.66,
+# 3.84 and 15.12 billion, from the parameter totals Hugging Face publishes for each
+# repository's safetensors index. `params.total_b` carries the exact figure because it is
+# the denominator of bits per weight, and a rounded one makes a Q6_K read as something Q6_K
+# is not. Phi-4-reasoning-vision-15B carries 14.66 rather than its own 15.12: the difference
+# is the SigLIP-2 encoder, which ships in the projector file declared as an extra and is
+# therefore not among the bytes that figure divides.
+#
+# QUANTS. Two or three each: a four-bit for the common case, one step up where the quality
+# matters, and a three-bit only on the 14B and 15B models, where a four-bit does not fit an
+# 8 GB card and the three-bit does.
+
+- id: phi-4
+  name: Phi-4
+  vendor: Microsoft
+  family: phi4
+  release_date: 2024-12-12
+  license:
+    spdx: MIT
+    url: "https://huggingface.co/microsoft/phi-4/resolve/main/LICENSE"
+  params: { total_b: 14.66, active_b: 14.66 }
+  architecture:
+    class: dense
+    gguf_arch: phi3
+    notes: >-
+      40 layers, 40 query heads, 10 key/value heads (GQA), no sliding window: every layer
+      holds a cache over the whole context. The context is only 16K, which keeps that
+      affordable, but it is also the shortest context of anything in this catalog.
+  context: { native: 16384 }
+  # No tools: the chat template has no tool role and the card documents no function-calling
+  # format, unlike Phi-4-mini-instruct's, which does. No multilingual: the card puts
+  # multilingual data at about 8% and describes the model's focus as English.
+  capabilities: [coding]
+  use_cases: [reasoning, general, coding]
+  quality:
+    baseline: 66
+    benchmarks:
+      - name: MMLU
+        score: 84.8
+        source: "https://huggingface.co/microsoft/phi-4"
+      - name: GPQA
+        score: 56.1
+        source: "https://huggingface.co/microsoft/phi-4"
+      - name: MATH
+        score: 80.4
+        source: "https://huggingface.co/microsoft/phi-4"
+      # In the same table, and the reason `chat` is not a use case here.
+      - name: SimpleQA
+        score: 3.0
+        source: "https://huggingface.co/microsoft/phi-4"
+  sources:
+    - repo: microsoft/phi-4-gguf
+      kind: gguf
+      trust: official
+      quants:
+        - { name: IQ3_M }
+        # The repository spells its four-bit K-quant "Q4_K", not "Q4_K_M"; the name here is
+        # the one on the file.
+        - { name: Q4_K }
+        - { name: Q6_K }
+
+- id: phi-4-mini-instruct
+  name: Phi-4-mini-instruct
+  vendor: Microsoft
+  family: phi4
+  release_date: 2025-02-26
+  license:
+    spdx: MIT
+    url: "https://huggingface.co/microsoft/Phi-4-mini-instruct/resolve/main/LICENSE"
+  params: { total_b: 3.84, active_b: 3.84 }
+  architecture:
+    class: dense
+    gguf_arch: phi3
+    notes: >-
+      32 layers, 24 query heads, 8 key/value heads, with tied input and output embeddings
+      and a 200k vocabulary. Reaches 128K context by LongRoPE rather than by training at
+      that length, and holds a full-length cache on every layer, so long contexts cost this
+      small model proportionally more memory than they cost a Gemma of the same size.
+  context: { native: 131072 }
+  capabilities: [coding, tools, multilingual, long-context]
+  # Function calling has a documented prompt format on the card, and the card lists 20-odd
+  # supported languages, so both are claims the vendor makes rather than inferences.
+  use_cases: [reasoning, general, coding]
+  quality:
+    baseline: 55
+    benchmarks:
+      - name: MMLU-Pro (0-shot, CoT)
+        score: 52.8
+        source: "https://huggingface.co/microsoft/Phi-4-mini-instruct"
+      - name: MATH (0-shot, CoT)
+        score: 64.0
+        source: "https://huggingface.co/microsoft/Phi-4-mini-instruct"
+      - name: GSM8K (8-shot, CoT)
+        score: 88.6
+        source: "https://huggingface.co/microsoft/Phi-4-mini-instruct"
+      # The open-ended half of the same table, and the reason `chat` is not a use case.
+      - name: Arena Hard
+        score: 32.8
+        source: "https://huggingface.co/microsoft/Phi-4-mini-instruct"
+  sources:
+    - repo: bartowski/microsoft_Phi-4-mini-instruct-GGUF
+      kind: gguf
+      trust: bartowski
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q8_0 }
+
+- id: phi-4-reasoning-plus
+  name: Phi-4-reasoning-plus
+  vendor: Microsoft
+  family: phi4
+  release_date: 2025-04-30
+  license:
+    spdx: MIT
+    url: "https://huggingface.co/microsoft/Phi-4-reasoning-plus/resolve/main/LICENSE"
+  params: { total_b: 14.66, active_b: 14.66 }
+  architecture:
+    class: dense
+    gguf_arch: phi3
+    notes: >-
+      The phi-4 network unchanged -- 40 layers, 40 query heads, 10 key/value heads, no
+      sliding window -- retrained on chain-of-thought traces and then with reinforcement
+      learning, and stretched from 16K to 32K of context. Every reply carries a reasoning
+      block before its answer, and the card warns the RL stage makes it emit about 50% more
+      tokens than plain Phi-4-reasoning, which is generation time as well as cache.
+  context: { native: 32768 }
+  capabilities: [thinking, coding]
+  # "This model is designed and tested for math reasoning only" is the card's own
+  # out-of-scope note, so this entry claims reasoning and the coding its HumanEvalPlus and
+  # LiveCodeBench rows support, and nothing else. It is also explicitly not multilingual:
+  # "Phi-4-reasoning-plus is not intended to support multilingual use".
+  use_cases: [reasoning, coding]
+  quality:
+    baseline: 72
+    benchmarks:
+      - name: AIME 25
+        score: 78.0
+        source: "https://huggingface.co/microsoft/Phi-4-reasoning-plus"
+      - name: GPQA Diamond
+        score: 68.9
+        source: "https://huggingface.co/microsoft/Phi-4-reasoning-plus"
+      - name: MMLU-Pro
+        score: 76.0
+        source: "https://huggingface.co/microsoft/Phi-4-reasoning-plus"
+      - name: HumanEvalPlus
+        score: 92.3
+        source: "https://huggingface.co/microsoft/Phi-4-reasoning-plus"
+  # The card marks these important rather than advisory: "inference must use temperature=0.8,
+  # top_k=50, top_p=0.95".
+  sampling: { temp: 0.8, top_p: 0.95, top_k: 50 }
+  sources:
+    - repo: unsloth/Phi-4-reasoning-plus-GGUF
+      kind: gguf
+      trust: unsloth
+      quants:
+        - { name: UD-Q3_K_XL }
+        - { name: UD-Q4_K_XL }
+        - { name: Q6_K }
+
+- id: phi-4-reasoning-vision-15b
+  name: Phi-4-reasoning-vision-15B
+  vendor: Microsoft
+  family: phi4
+  release_date: 2026-03-04
+  license:
+    spdx: MIT
+    url: "https://opensource.org/licenses/MIT"
+  params: { total_b: 14.66, active_b: 14.66 }
+  architecture:
+    class: dense
+    gguf_arch: phi3
+    notes: >-
+      The Phi-4-reasoning language model with a SigLIP-2 encoder joined to it mid-stack, up
+      to 3,600 visual tokens per image at dynamic resolution. No sliding window: all 40
+      layers cache the whole context, and a high-resolution image spends thousands of tokens
+      of it, so the 16K context the card documents fills faster than the number suggests.
+      The model decides for itself whether to think, emitting a <think> block or a <nothink>
+      tag per turn rather than exposing a switch.
+  context: { native: 16384 }
+  # No `coding`: the card evaluates captioning, VQA, OCR, grounding and maths, and publishes
+  # no code benchmark for this model. Its Phi-4-reasoning backbone codes well; this
+  # checkpoint makes no such claim, and claiming it here would put the model in front of
+  # coding requests on the strength of a different model's scores.
+  capabilities: [thinking, vision]
+  use_cases: [multimodal, reasoning]
+  quality:
+    baseline: 64
+    benchmarks:
+      - name: MathVista (MINI)
+        score: 75.2
+        source: "https://huggingface.co/microsoft/Phi-4-reasoning-vision-15B"
+      - name: MMMU (val)
+        score: 54.3
+        source: "https://huggingface.co/microsoft/Phi-4-reasoning-vision-15B"
+      - name: ScreenSpot-V2
+        score: 88.2
+        source: "https://huggingface.co/microsoft/Phi-4-reasoning-vision-15B"
+      - name: ChartQA (test)
+        score: 83.3
+        source: "https://huggingface.co/microsoft/Phi-4-reasoning-vision-15B"
+  sources:
+    # No official or well-known-packager GGUF build of this model exists; DevQuasar's is the
+    # one that publishes both the weights and a projector, and it is marked community trust
+    # accordingly.
+    - repo: DevQuasar/microsoft.Phi-4-reasoning-vision-15B-GGUF
+      kind: gguf
+      trust: community
+      quants:
+        - { name: Q3_K_M }
+        - { name: Q4_K_M }
+        - { name: Q6_K }
+      extras:
+        - { role: mmproj, file: mmproj-microsoft.Phi-4-reasoning-vision-15B.f16.gguf }
