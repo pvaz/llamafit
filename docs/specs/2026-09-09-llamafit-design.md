@@ -332,7 +332,7 @@ A `Budget` is computed for a candidate under a placement (section 9) at a contex
 | Lazy tables | disk (streamed) when lazy mode is used, else RAM | exact bytes |
 | KV cache | pool of the attention layers | `kv_bytes_per_token(kv) × c` |
 | Recurrent state | VRAM with the layers | constant |
-| Compute buffer | VRAM | `base(ub) + k(ub) × ub × c / 1024` (section 8.2) |
+| Compute buffer | VRAM of the pool the layers are in | `base(ub) + k(ub) × c / 1024` (section 8.2) |
 | Output buffer | RAM | `n_vocab × 4 × b` |
 | Vision projector | VRAM when offloaded, RAM otherwise | file bytes plus `projector_compute_bytes` |
 | Runtime overhead | VRAM | `cuda_context_bytes` (300 MiB default) when a GPU backend is used |
@@ -350,7 +350,24 @@ The compute buffer is the least predictable component. The initial model is piec
 | 1024 | 1240 | 3.0 |
 | 2048 | 2080 | 8.0, rising to 25 above 64K context |
 
-Values are in `constants.py` with their provenance. Any measured budget from phase 3 supersedes the formula for that model on that host.
+`k` is megabytes per 1K tokens of context, at that micro-batch. The earlier wording
+multiplied by `ub` as well, which counts the slope twice and overstates the buffer by
+262 MiB at `-ub 2048` and 32K context against a real measurement; the constants in the
+table were fitted to the reading given here and reproduce every measured row to within
+one percent.
+
+Three refinements, each backed by a measurement rather than reasoning:
+
+- **An offloaded vision projector sets a floor under the compute buffer rather than
+  adding to it.** It needs 780 MiB at `-ub 512` and nothing at 2048, because the main
+  buffer is already larger by then. Adding the two double-counts memory that is shared.
+- **The compute buffer follows the layers.** A placement with nothing on the card must
+  not be charged 1.3 GB of card memory it never touches.
+- **A machine with unified memory has one pool, not two.** Budgeting it as two both
+  double-counts and produces a verdict on a distinction that does not exist there.
+
+Values are in `constants.py` with their provenance. Any measured budget from phase 3
+supersedes the formula for that model on that host.
 
 ### 8.3 Fit utilisation and verdicts
 
@@ -368,6 +385,10 @@ A MoE-offload placement is not penalised for being MoE-offload: with all attenti
 ### 8.4 Driver paging
 
 On Windows and Linux with NVIDIA drivers, a VRAM allocation that exceeds the card does not fail; the driver pages to system RAM and speed collapses silently. LlamaFit models this explicitly: any placement whose required VRAM exceeds available VRAM is `Too Tight`, and the explanation says why the server would still start.
+
+The two rules meet as follows, because read separately they are not monotonic: an overflow of the card is `Too Tight`, since the work still runs and only the speed collapses; an overflow of system memory is `Does Not Fit`, since nothing absorbs it; and an overflow of the card large enough that system memory cannot absorb it is also `Does Not Fit`.
+
+**A budget must never quietly report less memory than a configuration will use.** Where an architecture allocates something the file's own facts cannot account for, the budget says so and marks the figure incomplete rather than omitting the component. Under-reporting is the one direction that turns into "this fits" when it does not, which is the failure this whole section exists to prevent. The reference machine shows one: `qwen4exp` allocates a second cache of about 9 MiB per 1K tokens beside the one the attention shape gives, so a budget derived from the header alone is 27 percent low at 32K and grows worse with context.
 
 ## 9. Placement planner
 
@@ -415,24 +436,32 @@ bytes_vram = attention_bytes_on_gpu + shared_expert_bytes_on_gpu + active_expert
            + output_head_bytes + kv_bytes_per_token × working_context
 bytes_ram  = active_expert_bytes_in_ram + attention_bytes_on_cpu + kv_bytes_on_cpu × working_context
 t_token    = bytes_vram / (vram_bw × eff_vram) + bytes_ram / (ram_bw × eff_ram)
-           + n_layer × layer_overhead + sampling_overhead
+           + fixed_overhead
 gen_tps    = 1 / t_token
 ```
 
 `active_expert_bytes = bytes_expert_weights × n_expert_used / n_expert`. `working_context` defaults to 8K tokens for the board and to the user's requested context for `plan`.
 
-**System memory has two effective bandwidths, not one, and the difference is a factor of two.** A dense model's weights are read in large contiguous runs and reach `eff_ram_sequential 0.70` of the measured read bandwidth. A routed expert set is not: each token selects a different handful of experts, so a layer's read is a scatter of small blocks across tens of gigabytes, and the memory system never gets to stream. Treating the two alike overstates a mixture-of-experts model's speed roughly twofold, which is the difference between advising a model and advising the wrong one.
+**System memory has two effective bandwidths, not one.** A dense model's weights are read in large contiguous runs. A routed expert set is not: each token selects a different handful of experts, so a layer's read is a scatter of small blocks across tens of gigabytes and the memory system never gets to stream.
 
-`eff_ram_scattered` is **0.36**, derived on the reference machine from two models whose per-token traffic differs by 64 percent:
+**The token embedding table is not per-token traffic.** A lookup reads one row, not the table, and counting the whole thing puts the apparent rate above what the memory bus can physically deliver, which is how the error below was caught.
 
-| Model | Active expert bytes per token | Measured | Effective |
+The four constants are identified from four measurements on the reference machine, not fitted to two. Two of them exist to isolate the pools: the same small dense model run entirely in system memory and entirely on the card, where the traffic is known exactly and nothing else competes.
+
+| Run | Traffic per token | Measured | Isolates |
 |---|---|---|---|
-| Qwen3-Coder-Next UD-Q4_K_XL | 0.916 GB | 23.0 tok/s | 21.1 GB/s |
-| Qwen3.8-Flash-Next UD-Q4_K_XL | 1.504 GB | 13.9 tok/s | 20.9 GB/s |
+| Qwen3-0.6B Q8_0, `-ngl 0` | 0.47 GB, system memory, contiguous | 78.0 tok/s | `eff_ram_sequential` |
+| Qwen3-0.6B Q8_0, `-ngl 99` | 0.47 GB, card | 279.5 tok/s | `eff_vram` |
+| Qwen3-Coder-Next UD-Q4_K_XL | 2.36 GB card, 0.916 GB scattered | 23.0 tok/s | `eff_ram_scattered` |
+| Qwen3.8-Flash-Next UD-Q4_K_XL | 4.83 GB card, 1.504 GB scattered | 13.9 tok/s | `eff_ram_scattered` |
 
-Against a measured sequential read of 55 to 60 GB/s on the same machine, that is 0.36. The two agree to within one percent while the traffic they carry differs by more than half, which is what makes it a constant of the access pattern rather than a fit to one model.
+The two dense runs give a fixed overhead of about **1 ms** per token with `eff_ram_sequential 0.70` and `eff_vram 0.67`. The two expert models then give `eff_ram_scattered` independently as **0.54** and **0.59**, nine percent apart while carrying 64 percent different traffic, so **0.57** is the value and the agreement is what makes it a property of the access pattern.
 
-Other initial constants, with provenance: `eff_vram 0.60` (the fraction of peak bandwidth that decode kernels reach on consumer GPUs in published llama-bench results), `layer_overhead 0.20 ms`, `sampling_overhead 1 ms`. When a pool's bandwidth is unknown, a per-backend fallback applies to the whole model, in GB/s-equivalent: CUDA 250, Metal 150, HIP 200, Vulkan 120, SYCL 100, CPU arm64 80, CPU x86_64 60. These fallbacks are deliberately conservative and always labelled `estimated`.
+**There is no per-layer overhead term.** The specification carried 0.20 ms per layer, which for a 28-layer model is 5.6 ms, while that model's whole measured token is 3.58 ms. The term is not merely too large, it is impossible, and it imposed a ceiling of about 105 tokens per second on any model of that depth.
+
+**An earlier revision of this section gave `eff_ram_scattered` as 0.36 and was wrong.** That figure was the expert traffic divided by the *whole* token time, which already contains the card traffic and the overhead the formula then adds again. Used as a term in the sum it alone exceeds the measured token, and the estimator came out 42 percent low. An apparent end-to-end rate and a coefficient inside a sum of terms are not the same quantity, and the error is easy to make and invisible until something is measured against it.
+
+When a pool's bandwidth is unknown, a per-backend fallback applies to the whole model, in GB/s-equivalent: CUDA 250, Metal 150, HIP 200, Vulkan 120, SYCL 100, CPU arm64 80, CPU x86_64 60. These fallbacks are deliberately conservative and always labelled `estimated`.
 
 ### 10.2 Prompt processing
 
@@ -457,7 +486,9 @@ Every estimate carries one label, in this precedence: `measured` (a stored bench
 
 - `baseline` from the catalog. Rubric for curators: 90+ frontier open weights on their primary task; 80 to 89 strong current generation; 70 to 79 solid previous generation; 50 to 69 small or dated; below 50 experimental. Cite the benchmarks used.
 - `quant_penalty`: Q8 0, Q6 1, Q5 2, Q4_K_XL and Q4_K_M 4, IQ4 6, Q3 10, IQ3 12, Q2 20, IQ2 24, IQ1 35. Dynamic (`UD-`) quants use the penalty of their base level minus 1.
-- `alignment_bonus`: +5 when the model's primary use case matches the request, +3 per required capability it has beyond the request's use case, capped at +10; a missing required capability excludes the candidate entirely.
+- `alignment_bonus`: +5 when the requested use case is the model's *primary* one, meaning the first entry in its `use_cases`, and 0 when the model merely lists it. That distinguishes a model built for the job from one that also does it, and unlike a bonus counted over required capabilities it actually varies between surviving candidates: every survivor has every required capability by definition, so a term counting them changes no ordering and only looks as though it does.
+
+**A model is excluded when the requested use case is not in its `use_cases` at all**, with the reason said plainly, and likewise when a required capability is missing. The catalog is curated by hand precisely so that a model's declared purpose means something; a request for coding must not return a model whose own entry says it is for general chat and reasoning. Without this rule the seeded Llama 3.1 8B, which declares neither the coding use case nor the coding capability, ranks second for a coding request on the reference machine, carried there by fit and a capped speed score. No weighting fixes that, because the defect is that an unsuitable candidate was allowed to compete at all. When a model really is good at something its entry does not claim, the fix is a one-line catalog change, which is the kind of correction this project wants to be easy.
 
 ### 11.2 Context
 
