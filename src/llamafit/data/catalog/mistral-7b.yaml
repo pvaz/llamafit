@@ -1,0 +1,64 @@
+# Mistral 7B Instruct v0.3: the model that made this vendor's name, still Apache-2.0 and
+# still the smallest thing here that runs comfortably on a laptop with no card at all.
+# Sourced from the vendor's Hugging Face model cards and the GGUF-publishing repository.
+# Primary sources used for this file:
+#   - Model card: https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3
+#   - Benchmark source: https://huggingface.co/mistralai/Ministral-8B-Instruct-2410
+#   - GGUF repository: https://huggingface.co/bartowski/Mistral-7B-Instruct-v0.3-GGUF
+#
+# The v0.3 card itself publishes no benchmarks at all. The figures below are Mistral's own,
+# published on the Ministral 8B Instruct 2410 card, whose comparison tables carry a
+# "Mistral 7B Instruct v0.3" row — the instruction-tuned checkpoint, which is this one, not
+# the Mistral 7B base model whose numbers appear in the 2023 Mistral 7B paper.
+- id: mistral-7b-instruct-v0.3
+  name: Mistral 7B Instruct v0.3
+  vendor: Mistral AI
+  family: mistral-7b
+  release_date: 2024-05-22
+  license:
+    spdx: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0"
+  params: { total_b: 7.25, active_b: 7.25 }
+  architecture:
+    class: dense
+    gguf_arch: llama
+    notes: >-
+      32 layers, dense, with the 32,768-token vocabulary and v3 tokenizer that v0.3 added
+      over v0.2. Old enough that its 32k context and its lack of any vision or thinking
+      path are the reasons to pass it over, not its size.
+  context: { native: 32768 }
+  # Function calling is the one capability the card claims for v0.3 over v0.2. Coding is
+  # deliberately not claimed: Mistral's own published HumanEval for this checkpoint is
+  # 38.4 pass@1, and putting it in front of somebody asking for a coding model would be
+  # putting it somewhere it will disappoint.
+  capabilities: [tools]
+  use_cases: [general, chat]
+  quality:
+    baseline: 52
+    benchmarks:
+      # The "Mistral 7B Instruct v0.3" rows of the Ministral 8B Instruct 2410 card's
+      # "Instruct Models" tables.
+      - name: MTBench
+        score: 6.7
+        source: "https://huggingface.co/mistralai/Ministral-8B-Instruct-2410"
+      - name: Arena Hard
+        score: 44.3
+        source: "https://huggingface.co/mistralai/Ministral-8B-Instruct-2410"
+      - name: WildBench
+        score: 33.1
+        source: "https://huggingface.co/mistralai/Ministral-8B-Instruct-2410"
+      - name: HumanEval (pass@1)
+        score: 38.4
+        source: "https://huggingface.co/mistralai/Ministral-8B-Instruct-2410"
+      - name: MBPP (pass@1)
+        score: 50.2
+        source: "https://huggingface.co/mistralai/Ministral-8B-Instruct-2410"
+  sources:
+    - repo: bartowski/Mistral-7B-Instruct-v0.3-GGUF
+      kind: gguf
+      trust: bartowski
+      # Two: Q4_K_M for the machine that needs a 7B at all, and Q8_0 because at this size
+      # the near-lossless quant is still only about 7.7 GB and is worth having.
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q8_0 }
