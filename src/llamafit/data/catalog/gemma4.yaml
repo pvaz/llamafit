@@ -1,0 +1,294 @@
+# Sourced from Google's Hugging Face model cards, the Gemma 4 launch blog, the Gemma release
+# page and the GGUF-publishing repositories.
+# Primary sources used for this file:
+#   - Model cards: https://huggingface.co/google/gemma-4-31B-it
+#                  https://huggingface.co/google/gemma-4-26B-A4B-it
+#                  https://huggingface.co/google/gemma-4-12B-it
+#                  https://huggingface.co/google/gemma-4-E4B-it
+#                  https://huggingface.co/google/gemma-4-E2B-it
+#   - Launch blog: https://blog.google/innovation-and-ai/technology/developers-tools/gemma-4/
+#   - Release dates: https://ai.google.dev/gemma/docs/releases
+#   - Licence: https://ai.google.dev/gemma/docs/gemma_4_license
+#   - GGUF repositories: https://huggingface.co/unsloth (one per size, named below)
+#
+# LICENCE. Gemma 4 is the first Gemma released under Apache-2.0. Every earlier Gemma,
+# including the Gemma 3 entries in gemma3.yaml, ships under the Gemma Terms of Use, which
+# carry use restrictions and a condition on redistribution; Gemma 4 does not. The model
+# cards' front matter says `license: apache-2.0`, and the vendor's own licence link
+# (recorded below) serves the Apache 2.0 text, so `spdx` is the registered identifier here
+# rather than the `gemma` slug the Gemma 3 entries carry.
+#
+# BENCHMARKS. Every score below comes from the "Benchmark Results" table that appears in
+# each model card, which states in the line above it that "Evaluation results marked in the
+# table are for instruction-tuned models" -- these are IT numbers, not pretrained ones. The
+# same table is reproduced in all five cards, so each entry cites its own card.
+#
+# RELEASE DATES. Google's release page dates E2B, E4B, 26B A4B and 31B to 31 March 2026 and
+# the 12B Unified model to 3 June 2026. The launch blog is dated 2 April 2026; the release
+# page is the more specific source and is the one used.
+#
+# PARAMETER COUNTS. Each entry's `params.total_b` is the "Total Parameters" figure from its
+# own card. On E2B and E4B that figure covers the whole checkpoint, vision and audio
+# encoders included, while the encoders ship in the separate projector file; so bits per
+# weight on those two entries reads a few per cent lower than the quantisation really is.
+# The alternative was to back a parameter count out of the file sizes, which is inventing a
+# number rather than citing one.
+#
+# QUANTS. Three per model where a model is large enough that a three-bit build is a real
+# choice on a consumer card, two where it is not: a four-bit for the common case, one step
+# up for quality, and one step down only where the four-bit does not fit 8 GB. The vision
+# and audio projector is declared as an extra on every entry, because these models declare
+# the vision capability and a plan that does not charge the projector's bytes to a pool is
+# optimistic by the projector's whole size.
+
+- id: gemma-4-31b-it
+  name: Gemma 4 31B
+  vendor: Google
+  family: gemma4
+  release_date: 2026-03-31
+  license:
+    spdx: Apache-2.0
+    url: "https://ai.google.dev/gemma/docs/gemma_4_license"
+  params: { total_b: 30.7, active_b: 30.7 }
+  architecture:
+    class: dense
+    gguf_arch: gemma4
+    notes: >-
+      60 layers, 32 query heads, 16 key/value heads. Attention is hybrid: five sliding-window
+      layers of 1024 tokens for every full-attention layer, and the last layer is always
+      global, so only ten of the sixty layers hold a cache that grows with the whole context
+      and the other fifty stop growing at the window. The global layers share one tensor for
+      keys and values and use four key/value heads, which cuts their share again. That is why
+      a 31B model's cache at 128k tokens is far smaller than its layer count suggests.
+  context: { native: 262144 }
+  capabilities: [coding, thinking, vision, tools, multilingual, long-context]
+  use_cases: [general, reasoning, coding, chat, multimodal]
+  quality:
+    baseline: 82
+    benchmarks:
+      - name: MMLU-Pro
+        score: 85.2
+        source: "https://huggingface.co/google/gemma-4-31B-it"
+      - name: GPQA Diamond
+        score: 84.3
+        source: "https://huggingface.co/google/gemma-4-31B-it"
+      - name: LiveCodeBench v6
+        score: 80.0
+        source: "https://huggingface.co/google/gemma-4-31B-it"
+      - name: MMMU Pro
+        score: 76.9
+        source: "https://huggingface.co/google/gemma-4-31B-it"
+  sampling: { temp: 1.0, top_p: 0.95, top_k: 64 }
+  # Thinking is switched on by putting the <|think|> token at the start of the system
+  # prompt and off by leaving it out; the card gives no llama.cpp --reasoning-format name
+  # for the <|channel>thought block, so none is claimed here.
+  chat_template: { thinking_toggle: "<|think|>" }
+  sources:
+    - repo: unsloth/gemma-4-31B-it-GGUF
+      kind: gguf
+      trust: unsloth
+      quants:
+        - { name: UD-Q3_K_XL }
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q5_K_XL }
+      extras:
+        - { role: mmproj, file: mmproj-F16.gguf }
+
+- id: gemma-4-26b-a4b-it
+  name: Gemma 4 26B A4B
+  vendor: Google
+  family: gemma4
+  release_date: 2026-03-31
+  license:
+    spdx: Apache-2.0
+    url: "https://ai.google.dev/gemma/docs/gemma_4_license"
+  params: { total_b: 25.2, active_b: 3.8 }
+  architecture:
+    class: moe
+    gguf_arch: gemma4
+    notes: >-
+      30 layers, 128 experts with 8 routed and 1 shared per token, so it holds 25B of
+      weights and multiplies under 4B of them. Attention is the same hybrid as the dense
+      31B: a 1024-token sliding window on twenty-five layers and full attention on five,
+      the last of them global, with unified keys and values on the global layers. Only
+      those five layers carry a cache that grows with the context.
+  context: { native: 262144 }
+  capabilities: [coding, thinking, vision, tools, multilingual, long-context]
+  use_cases: [general, reasoning, coding, chat, multimodal]
+  quality:
+    baseline: 80
+    benchmarks:
+      - name: MMLU-Pro
+        score: 82.6
+        source: "https://huggingface.co/google/gemma-4-26B-A4B-it"
+      - name: GPQA Diamond
+        score: 82.3
+        source: "https://huggingface.co/google/gemma-4-26B-A4B-it"
+      - name: LiveCodeBench v6
+        score: 77.1
+        source: "https://huggingface.co/google/gemma-4-26B-A4B-it"
+      - name: MMMU Pro
+        score: 73.8
+        source: "https://huggingface.co/google/gemma-4-26B-A4B-it"
+  sampling: { temp: 1.0, top_p: 0.95, top_k: 64 }
+  chat_template: { thinking_toggle: "<|think|>" }
+  sources:
+    - repo: unsloth/gemma-4-26B-A4B-it-GGUF
+      kind: gguf
+      trust: unsloth
+      quants:
+        - { name: UD-Q3_K_XL }
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q5_K_XL }
+      extras:
+        - { role: mmproj, file: mmproj-F16.gguf }
+
+- id: gemma-4-12b-it
+  name: Gemma 4 12B Unified
+  vendor: Google
+  family: gemma4
+  release_date: 2026-06-03
+  license:
+    spdx: Apache-2.0
+    url: "https://ai.google.dev/gemma/docs/gemma_4_license"
+  params: { total_b: 11.95, active_b: 11.95 }
+  architecture:
+    class: dense
+    gguf_arch: gemma4
+    notes: >-
+      48 layers with no separate vision or audio encoder: image patches and audio waveforms
+      are projected straight into the decoder by linear layers, which is what "Unified"
+      names. Attention is the family's hybrid, a 1024-token sliding window on forty layers
+      and full attention on eight with the last one global, so the cache of most layers
+      stops growing at the window while only eight grow with the context.
+  context: { native: 262144 }
+  capabilities: [coding, thinking, vision, audio, tools, multilingual, long-context]
+  use_cases: [general, multimodal, chat, reasoning, coding]
+  quality:
+    baseline: 76
+    benchmarks:
+      - name: MMLU-Pro
+        score: 77.2
+        source: "https://huggingface.co/google/gemma-4-12B-it"
+      - name: GPQA Diamond
+        score: 78.8
+        source: "https://huggingface.co/google/gemma-4-12B-it"
+      - name: LiveCodeBench v6
+        score: 72.0
+        source: "https://huggingface.co/google/gemma-4-12B-it"
+      - name: MMMU Pro
+        score: 69.1
+        source: "https://huggingface.co/google/gemma-4-12B-it"
+  sampling: { temp: 1.0, top_p: 0.95, top_k: 64 }
+  chat_template: { thinking_toggle: "<|think|>" }
+  sources:
+    - repo: unsloth/gemma-4-12b-it-GGUF
+      kind: gguf
+      trust: unsloth
+      quants:
+        - { name: UD-Q3_K_XL }
+        - { name: UD-Q4_K_XL }
+        - { name: UD-Q5_K_XL }
+      extras:
+        - { role: mmproj, file: mmproj-F16.gguf }
+
+- id: gemma-4-e4b-it
+  name: Gemma 4 E4B
+  vendor: Google
+  family: gemma4
+  release_date: 2026-03-31
+  license:
+    spdx: Apache-2.0
+    url: "https://ai.google.dev/gemma/docs/gemma_4_license"
+  # The card gives "4.5B effective (8B with embeddings)". total_b is the 8B that actually
+  # occupies the file, so bits per weight describes the quantisation; active_b is the 4.5B
+  # the model multiplies per token, since the per-layer embeddings are looked up rather
+  # than multiplied and the speed estimate should not charge for them.
+  params: { total_b: 8, active_b: 4.5 }
+  architecture:
+    class: dense
+    gguf_arch: gemma4
+    notes: >-
+      42 layers with Per-Layer Embeddings: every decoder layer gets its own small embedding
+      per token, which is why the file is far larger than the effective parameter count.
+      Attention is hybrid with a 512-token sliding window and a full-attention final layer,
+      and a run of layers share one key/value cache between them, so context costs this
+      model much less memory than a 8B file would suggest.
+  context: { native: 131072 }
+  capabilities: [coding, thinking, vision, audio, tools, multilingual, long-context]
+  use_cases: [general, chat, multimodal, reasoning]
+  quality:
+    baseline: 66
+    benchmarks:
+      - name: MMLU-Pro
+        score: 69.4
+        source: "https://huggingface.co/google/gemma-4-E4B-it"
+      - name: GPQA Diamond
+        score: 58.6
+        source: "https://huggingface.co/google/gemma-4-E4B-it"
+      - name: LiveCodeBench v6
+        score: 52.0
+        source: "https://huggingface.co/google/gemma-4-E4B-it"
+      - name: MMMU Pro
+        score: 52.6
+        source: "https://huggingface.co/google/gemma-4-E4B-it"
+  sampling: { temp: 1.0, top_p: 0.95, top_k: 64 }
+  chat_template: { thinking_toggle: "<|think|>" }
+  sources:
+    - repo: unsloth/gemma-4-E4B-it-GGUF
+      kind: gguf
+      trust: unsloth
+      quants:
+        - { name: UD-Q4_K_XL }
+        - { name: Q8_0 }
+      extras:
+        - { role: mmproj, file: mmproj-F16.gguf }
+
+- id: gemma-4-e2b-it
+  name: Gemma 4 E2B
+  vendor: Google
+  family: gemma4
+  release_date: 2026-03-31
+  license:
+    spdx: Apache-2.0
+    url: "https://ai.google.dev/gemma/docs/gemma_4_license"
+  # As for E4B: the card's "2.3B effective (5.1B with embeddings)" split, with the resident
+  # figure in total_b and the multiplied figure in active_b.
+  params: { total_b: 5.1, active_b: 2.3 }
+  architecture:
+    class: dense
+    gguf_arch: gemma4
+    notes: >-
+      35 layers with Per-Layer Embeddings, the smallest Gemma 4. Twenty-eight of its layers
+      use a 512-token sliding window and seven use full attention, the last of them global,
+      and twenty layers share their key/value cache with another, so the cache is a small
+      fraction of what a 35-layer model would normally hold. Text, image and audio input.
+  context: { native: 131072 }
+  capabilities: [coding, thinking, vision, audio, tools, multilingual, long-context]
+  use_cases: [general, chat, multimodal, reasoning]
+  quality:
+    baseline: 57
+    benchmarks:
+      - name: MMLU-Pro
+        score: 60.0
+        source: "https://huggingface.co/google/gemma-4-E2B-it"
+      - name: GPQA Diamond
+        score: 43.4
+        source: "https://huggingface.co/google/gemma-4-E2B-it"
+      - name: LiveCodeBench v6
+        score: 44.0
+        source: "https://huggingface.co/google/gemma-4-E2B-it"
+      - name: MMMU Pro
+        score: 44.2
+        source: "https://huggingface.co/google/gemma-4-E2B-it"
+  sampling: { temp: 1.0, top_p: 0.95, top_k: 64 }
+  chat_template: { thinking_toggle: "<|think|>" }
+  sources:
+    - repo: unsloth/gemma-4-E2B-it-GGUF
+      kind: gguf
+      trust: unsloth
+      quants:
+        - { name: UD-Q4_K_XL }
+        - { name: Q8_0 }
+      extras:
+        - { role: mmproj, file: mmproj-F16.gguf }
