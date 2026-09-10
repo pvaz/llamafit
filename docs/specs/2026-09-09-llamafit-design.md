@@ -332,7 +332,7 @@ A `Budget` is computed for a candidate under a placement (section 9) at a contex
 | Lazy tables | disk (streamed) when lazy mode is used, else RAM | exact bytes |
 | KV cache | pool of the attention layers | `kv_bytes_per_token(kv) × c` |
 | Recurrent state | VRAM with the layers | constant |
-| Compute buffer | VRAM | `base(ub) + k(ub) × ub × c / 1024` (section 8.2) |
+| Compute buffer | VRAM of the pool the layers are in | `base(ub) + k(ub) × c / 1024` (section 8.2) |
 | Output buffer | RAM | `n_vocab × 4 × b` |
 | Vision projector | VRAM when offloaded, RAM otherwise | file bytes plus `projector_compute_bytes` |
 | Runtime overhead | VRAM | `cuda_context_bytes` (300 MiB default) when a GPU backend is used |
@@ -350,7 +350,24 @@ The compute buffer is the least predictable component. The initial model is piec
 | 1024 | 1240 | 3.0 |
 | 2048 | 2080 | 8.0, rising to 25 above 64K context |
 
-Values are in `constants.py` with their provenance. Any measured budget from phase 3 supersedes the formula for that model on that host.
+`k` is megabytes per 1K tokens of context, at that micro-batch. The earlier wording
+multiplied by `ub` as well, which counts the slope twice and overstates the buffer by
+262 MiB at `-ub 2048` and 32K context against a real measurement; the constants in the
+table were fitted to the reading given here and reproduce every measured row to within
+one percent.
+
+Three refinements, each backed by a measurement rather than reasoning:
+
+- **An offloaded vision projector sets a floor under the compute buffer rather than
+  adding to it.** It needs 780 MiB at `-ub 512` and nothing at 2048, because the main
+  buffer is already larger by then. Adding the two double-counts memory that is shared.
+- **The compute buffer follows the layers.** A placement with nothing on the card must
+  not be charged 1.3 GB of card memory it never touches.
+- **A machine with unified memory has one pool, not two.** Budgeting it as two both
+  double-counts and produces a verdict on a distinction that does not exist there.
+
+Values are in `constants.py` with their provenance. Any measured budget from phase 3
+supersedes the formula for that model on that host.
 
 ### 8.3 Fit utilisation and verdicts
 
@@ -368,6 +385,10 @@ A MoE-offload placement is not penalised for being MoE-offload: with all attenti
 ### 8.4 Driver paging
 
 On Windows and Linux with NVIDIA drivers, a VRAM allocation that exceeds the card does not fail; the driver pages to system RAM and speed collapses silently. LlamaFit models this explicitly: any placement whose required VRAM exceeds available VRAM is `Too Tight`, and the explanation says why the server would still start.
+
+The two rules meet as follows, because read separately they are not monotonic: an overflow of the card is `Too Tight`, since the work still runs and only the speed collapses; an overflow of system memory is `Does Not Fit`, since nothing absorbs it; and an overflow of the card large enough that system memory cannot absorb it is also `Does Not Fit`.
+
+**A budget must never quietly report less memory than a configuration will use.** Where an architecture allocates something the file's own facts cannot account for, the budget says so and marks the figure incomplete rather than omitting the component. Under-reporting is the one direction that turns into "this fits" when it does not, which is the failure this whole section exists to prevent. The reference machine shows one: `qwen4exp` allocates a second cache of about 9 MiB per 1K tokens beside the one the attention shape gives, so a budget derived from the header alone is 27 percent low at 32K and grows worse with context.
 
 ## 9. Placement planner
 
