@@ -41,6 +41,7 @@ from llamafit.constants.budget import (
 from llamafit.constants.placement import (
     ALL_GPU_LAYERS,
     CONTEXT_TIERS,
+    DEFAULT_MICRO_BATCH,
     DEFAULT_PARALLEL_SLOTS,
     DEFAULT_REQUESTED_CONTEXT,
     DEFAULT_SERVER_HOST,
@@ -81,6 +82,7 @@ __all__ = [
     "CPU_FALLBACK_GBPS",
     "CPU_FP16_TFLOPS_PER_CORE",
     "CUDA_CONTEXT_BYTES",
+    "DEFAULT_MICRO_BATCH",
     "DEFAULT_PARALLEL_SLOTS",
     "DEFAULT_REQUESTED_CONTEXT",
     "DEFAULT_SERVER_HOST",

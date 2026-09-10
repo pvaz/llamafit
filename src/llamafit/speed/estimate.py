@@ -38,17 +38,19 @@ from datetime import date
 
 from llamafit.constants import (
     ASSUMED_BITS_PER_WEIGHT,
+    DEFAULT_MICRO_BATCH,
     DEFAULT_WORKING_CONTEXT,
     EFF_PP,
     EFF_RAM_SCATTERED,
     EFF_RAM_SEQUENTIAL,
     FIXED_OVERHEAD_S,
+    KV_TYPE_DEFAULT,
 )
 from llamafit.i18n import _
 from llamafit.models.catalog import Measured
 from llamafit.models.gguf import GgufFacts
 from llamafit.models.host import Host
-from llamafit.models.plan import Confidence, Placement, SpeedEstimate
+from llamafit.models.plan import Confidence, Placement, Pool, SpeedEstimate
 from llamafit.speed.bandwidths import EffectiveBandwidths, resolve_bandwidths
 from llamafit.speed.traffic import (
     TokenTraffic,
@@ -60,6 +62,12 @@ from llamafit.speed.traffic import (
 _NGL = re.compile(r"(?:^|\s)-ngl\s+(\d+)")
 _N_CPU_MOE = re.compile(r"(?:^|\s)--n-cpu-moe\s+(\d+)")
 _UBATCH = re.compile(r"(?:^|\s)-ub\s+(\d+)")
+_KV_CACHE_TYPE = re.compile(r"(?:^|\s)-ct[kv]\s+(\S+)")
+_SHARED_EXPERTS_TO_CPU = re.compile(
+    r"(?:^|\s)(?:-ot|--override-tensor)\s+[\"']?[^\s\"']*shexp[^\s\"']*=CPU", re.IGNORECASE
+)
+_PROJECTOR_IN_RAM = re.compile(r"(?:^|\s)--no-mmproj-offload(?=\s|$)")
+_PROJECTOR_LEFT_OUT = re.compile(r"(?:^|\s)--no-mmproj(?=\s|$)")
 
 _RANK: dict[Confidence, int] = {"measured": 0, "calibrated": 1, "estimated": 2, "unsupported": 3}
 
@@ -68,12 +76,20 @@ _RANK: dict[Confidence, int] = {"measured": 0, "calibrated": 1, "estimated": 2, 
 class Formula:
     """What the formula produced, before any measurement was allowed to correct it.
 
+    The two speeds each keep their own terms, and each set adds up to one over its own
+    figure: the generation trio to a token, the prompt trio to a micro-batch.
+
     Attributes:
         gen_tps: Generated tokens per second.
         pp_tps: Prompt tokens per second.
         vram_seconds: Share of a token spent reading the graphics card.
         ram_seconds: Share spent reading system memory.
         overhead_seconds: Per-layer and sampling overheads.
+        pp_compute_seconds: Share of a micro-batch spent on arithmetic.
+        pp_link_seconds: Share spent streaming the expert set across the link to the card.
+        pp_ram_seconds: Share spent reading the expert set out of system memory, which is
+            section 10.2's third term and happens instead of the second when there is no
+            card to stream to.
         traffic: The bytes the token reads, itemised.
         notes: What the formula applied, and to which bytes.
     """
@@ -83,6 +99,9 @@ class Formula:
     vram_seconds: float
     ram_seconds: float
     overhead_seconds: float
+    pp_compute_seconds: float
+    pp_link_seconds: float
+    pp_ram_seconds: float
     traffic: TokenTraffic
     notes: tuple[str, ...]
 
@@ -129,7 +148,11 @@ def formula_estimate(
                  + streamed_expert_bytes / pcie_bw
 
     with the expert term charged to system memory instead of the link when there is no
-    card to stream to, which is section 10.2's third term.
+    card to stream to, which is section 10.2's third term. The three are kept apart rather
+    than summed, because the link term is the one this project knows least about: its
+    constant was fitted on the single model whose expert set does not fit in system
+    memory, and a model whose set stays in the page cache streams about three times
+    faster. A reader who is shown the terms can see how much of the answer rests on it.
 
     Args:
         placement: Where the bytes go and at what settings.
@@ -187,8 +210,29 @@ def formula_estimate(
     params = _active_params(traffic, active_params)
     t_compute = 2 * params * micro_batch / (bandwidths.compute_flops * EFF_PP)
     streamed = expert_bytes_in_ram(placement, facts) * streamed_expert_fraction(facts, micro_batch)
-    stream_bw = bandwidths.pcie if device_bw else bandwidths.sequential
-    t_ubatch = t_compute + (streamed / stream_bw if streamed else 0.0)
+    t_link = streamed / bandwidths.pcie if streamed and device_bw else 0.0
+    t_prompt_ram = streamed / bandwidths.sequential if streamed and not device_bw else 0.0
+    t_ubatch = t_compute + t_link + t_prompt_ram
+
+    if t_link:
+        notes.append(
+            _(
+                "%(gb).1f GB of the expert set is streamed across the link once per"
+                " micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model"
+                " whose expert set does not fit in system memory, so part of its read comes"
+                " off the disk; an expert set that stays in the page cache streams about"
+                " three times faster, and for one of those this term is that much too slow."
+            )
+            % {"gb": streamed / 1e9, "gbps": bandwidths.pcie / 1e9}
+        )
+    if t_prompt_ram:
+        notes.append(
+            _(
+                "%(gb).1f GB of the expert set is read out of system memory once per"
+                " micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+            )
+            % {"gb": streamed / 1e9, "gbps": bandwidths.sequential / 1e9}
+        )
 
     return Formula(
         gen_tps=1.0 / t_token if t_token > 0 else 0.0,
@@ -196,6 +240,9 @@ def formula_estimate(
         vram_seconds=t_vram,
         ram_seconds=t_scattered + t_sequential,
         overhead_seconds=t_overhead,
+        pp_compute_seconds=t_compute,
+        pp_link_seconds=t_link,
+        pp_ram_seconds=t_prompt_ram,
         traffic=traffic,
         notes=tuple(notes),
     )
@@ -209,51 +256,116 @@ def _int_flag(flags: str | None, pattern: re.Pattern[str]) -> int | None:
     return int(found.group(1)) if found else None
 
 
+def _has_flag(flags: str | None, pattern: re.Pattern[str]) -> bool:
+    """Whether a recorded command line carries one switch."""
+    return flags is not None and pattern.search(flags) is not None
+
+
+def _micro_batch(flags: str | None) -> int:
+    """The micro-batch a recorded run used: what it names, or llama.cpp's own default."""
+    return _int_flag(flags, _UBATCH) or DEFAULT_MICRO_BATCH
+
+
+def _kv_type(flags: str | None) -> str:
+    """The cache type a recorded run used: what it names, or llama.cpp's own default.
+
+    ``llamafit.placement.flags`` does not render ``-ctk``/``-ctv`` for ``f16`` either, so
+    a line this project prints and a line somebody recorded agree on what silence means.
+    """
+    found = _KV_CACHE_TYPE.search(flags) if flags else None
+    return found.group(1).lower() if found else KV_TYPE_DEFAULT
+
+
+def _projector_agrees(flags: str | None, pool: Pool | None) -> bool:
+    """Whether a recorded run put the vision projector where this placement puts it.
+
+    Only one direction of this is decidable, and it is the one that matters. A run that
+    passed ``--no-mmproj-offload`` put the projector in system memory, and a run that
+    passed ``--no-mmproj`` had none loaded at all; both say so. A run that passed neither
+    either had no projector or left it on the card, and a catalog entry's quoted flags
+    cannot tell those two apart, because the ``--mmproj`` path that would is not part of
+    what gets quoted. What silence does settle is that the run was not one that moved a
+    projector into system memory, which on an eight-gigabyte card is the difference
+    between 1.9 GB of VRAM spent and 1.9 GB free.
+    """
+    if _has_flag(flags, _PROJECTOR_IN_RAM):
+        return pool == "ram"
+    if _has_flag(flags, _PROJECTOR_LEFT_OUT):
+        return pool is None
+    return pool != "ram"
+
+
 def _flags_agree(
     measurement: Measured, placement: Placement, n_layer: int, *, match_micro_batch: bool
 ) -> bool:
-    """Whether every flag the measurement records agrees with this placement.
+    """Whether the run this benchmark records is a run of *this* placement.
 
-    A flag the measurement does not record cannot disagree, so a benchmark whose command
-    line only mentions the micro-batch still counts as a benchmark of any offload that
-    used that micro-batch. ``-ngl`` is compared after clamping to the layer count, because
-    99 and 48 mean the same thing on a 48-layer model. The micro-batch is compared only
-    for prompt processing: generation on the reference machine varies by four percent
-    across micro-batch sizes and by a factor of two across offloads.
+    Six flags are load-bearing, and they are exactly the ones that decide which bytes are
+    read out of which pool: ``-ngl`` and ``--n-cpu-moe`` for the split of layers and of
+    routed experts, ``-ot ffn_.*_shexp=CPU`` for the always-on shared experts,
+    ``--no-mmproj-offload`` for the vision projector, ``-ctk``/``-ctv`` for the size of a
+    cached token, and ``-ub`` for prompt processing, whose whole formula is per
+    micro-batch. Everything else a command line carries -- a sampling temperature, a
+    thread count, ``--jinja``, ``--fit off`` -- moves no byte between pools and is not
+    compared. ``-ngl`` is compared after clamping to the layer count, because 99 and 48
+    mean the same thing on a 48-layer model. ``-ub`` is compared only for prompt
+    processing: generation on the reference machine varies by four percent across
+    micro-batch sizes and by a factor of two across offloads.
+
+    **An unrecorded flag is not agreement.** The switches above have a knowable meaning
+    when absent -- no override, no offload refused, ``f16``, ``-ub 512`` -- and are read
+    that way. ``-ngl`` has none: this project's own calibration record keeps the layer
+    split in a base line the catalog rows then quote only the delta of, so an absent
+    ``-ngl`` here means "recorded elsewhere, or not at all", not "none". Since that one
+    flag is what separates 78 tokens per second from 279.5 for the same file on the same
+    machine, a run that does not name it describes no placement, and this returns False
+    rather than matching every placement in sight. Such a run can still calibrate the
+    formula; it cannot be called ``measured``, which is the label a reader trusts above
+    all the others and the one a false claim does the most damage to.
     """
-    ngl = _int_flag(measurement.flags, _NGL)
-    if ngl is not None and n_layer and min(ngl, n_layer) != min(placement.gpu_layers, n_layer):
+    flags = measurement.flags
+    ngl = _int_flag(flags, _NGL)
+    if ngl is None:
         return False
-    moe = _int_flag(measurement.flags, _N_CPU_MOE)
-    if moe is not None and moe != (placement.cpu_moe_layers or 0):
+    if n_layer and min(ngl, n_layer) != min(placement.gpu_layers, n_layer):
         return False
-    if match_micro_batch:
-        ubatch = _int_flag(measurement.flags, _UBATCH)
-        if ubatch is not None and ubatch != placement.micro_batch:
-            return False
-    return True
+    if (_int_flag(flags, _N_CPU_MOE) or 0) != (placement.cpu_moe_layers or 0):
+        return False
+    if _has_flag(flags, _SHARED_EXPERTS_TO_CPU) != (placement.shared_experts_pool == "ram"):
+        return False
+    if not _projector_agrees(flags, placement.projector_pool):
+        return False
+    if _kv_type(flags) != placement.kv_type.lower():
+        return False
+    return not (match_micro_batch and _micro_batch(flags) != placement.micro_batch)
 
 
 def _as_placement(measurement: Measured, placement: Placement) -> Placement:
     """The placement a benchmark was taken under, as far as its command line records it.
 
-    Everything the flags do not mention is taken from ``placement``, since a benchmark of
-    the same model on the same machine differs from it only in what it says it does.
+    Every load-bearing flag is read back the way :func:`_flags_agree` compares it, so the
+    anchor a calibration is computed at is the configuration the run actually describes
+    rather than the one being asked about. What the flags cannot settle -- how many layers
+    went to the card when ``-ngl`` is missing, and where a projector went when nothing
+    says -- is taken from ``placement``, since a benchmark of the same model on the same
+    machine differs from it only in what it says it does. That residue is why a run
+    missing ``-ngl`` calibrates against itself and the estimate says so.
     """
-    updates: dict[str, object] = {}
+    updates: dict[str, object] = {
+        "micro_batch": _micro_batch(measurement.flags),
+        "batch": max(2 * _micro_batch(measurement.flags), 2048),
+        "kv_type": _kv_type(measurement.flags),
+        "cpu_moe_layers": _int_flag(measurement.flags, _N_CPU_MOE) or 0,
+        "shared_experts_pool": (
+            "ram" if _has_flag(measurement.flags, _SHARED_EXPERTS_TO_CPU) else None
+        ),
+    }
     ngl = _int_flag(measurement.flags, _NGL)
     if ngl is not None:
         updates["gpu_layers"] = ngl
-    moe = _int_flag(measurement.flags, _N_CPU_MOE)
-    if moe is not None:
-        updates["cpu_moe_layers"] = moe
-    ubatch = _int_flag(measurement.flags, _UBATCH)
-    if ubatch is not None:
-        updates["micro_batch"] = ubatch
-        updates["batch"] = max(2 * ubatch, 2048)
     if measurement.context:
         updates["context"] = measurement.context
-    return placement.model_copy(update=updates) if updates else placement
+    return placement.model_copy(update=updates)
 
 
 def _pick(
@@ -278,14 +390,14 @@ def _pick(
     Returns:
         The matching benchmark (or ``None``), and the nearest benchmark of the same model
         to calibrate against (or ``None``). Benchmarks are ranked by whether they used
-        this micro-batch and then by how close their context is; one that records neither
-        is treated as the model's canonical run and ranks first, which is what a
-        ``llama-bench tg128`` row is.
+        this micro-batch and then by how close their context is; a run that names no
+        micro-batch is ranked as the ``-ub 512`` it was, and one that names no context is
+        taken at the context being asked about, which is what a ``llama-bench tg128`` row
+        deserves -- it was run at a context small enough not to matter.
     """
 
     def rank(measurement: Measured) -> tuple[int, int]:
-        ubatch = _int_flag(measurement.flags, _UBATCH)
-        wrong_ubatch = ubatch is not None and ubatch != placement.micro_batch
+        wrong_ubatch = _micro_batch(measurement.flags) != placement.micro_batch
         return int(wrong_ubatch), abs((measurement.context or working_context) - working_context)
 
     usable = [
@@ -339,9 +451,10 @@ def estimate_speed(
         measurements: Benchmarks taken on this host for this model.
 
     Returns:
-        The estimate, with the share of a token spent in each pool and notes saying which
-        effective bandwidth was applied to which bytes. The three shares always add up to
-        one over ``gen_tps``, whichever rung of the ladder that figure came from: a
+        The estimate, with the share of a token spent in each pool, the share of a prompt
+        token spent in each of section 10.2's three terms, and notes saying which
+        effective bandwidth was applied to which bytes. Each trio always adds up to one
+        over its own figure, whichever rung of the ladder that figure came from: a
         benchmark overturns the level the formula predicted, not the proportions.
     """
     if placement.mode == "unsupported":
@@ -396,6 +509,8 @@ def estimate_speed(
         measurements, placement, quant=quant, n_layer=n_layer, working_context=context, prompt=True
     )
 
+    unpinned = False
+
     gen_tps = formula.gen_tps
     gen_label: Confidence = "estimated"
     measured_on: date | None = None
@@ -407,6 +522,7 @@ def estimate_speed(
         if baseline > 0:
             factor = gen_near.gen_tps / baseline
             gen_tps, gen_label = formula.gen_tps * factor, "calibrated"
+            unpinned = unpinned or _int_flag(gen_near.flags, _NGL) is None
             notes.append(
                 _(
                     "Generation is the formula corrected by %(factor).2f, from a benchmark of"
@@ -429,6 +545,7 @@ def estimate_speed(
         if baseline > 0:
             factor = pp_near.pp_tps / baseline
             pp_tps, pp_label = formula.pp_tps * factor, "calibrated"
+            unpinned = unpinned or _int_flag(pp_near.flags, _NGL) is None
             notes.append(
                 _("Prompt processing is the formula corrected by %(factor).2f from a benchmark.")
                 % {"factor": factor}
@@ -437,16 +554,28 @@ def estimate_speed(
     confidence: Confidence = gen_label if _RANK[gen_label] >= _RANK[pp_label] else pp_label
     if bandwidths.assumed and _RANK[confidence] < _RANK["estimated"]:
         confidence = "estimated"
+    if unpinned:
+        notes.append(
+            _(
+                "That benchmark's command line does not record how many layers went to the"
+                " card, so the correction assumes it ran at this placement."
+            )
+        )
     if placement.budget.verdict == "too-tight":
         notes.append(
             _("This figure assumes nothing pages: a placement this tight often does, silently.")
         )
 
-    # The breakdown is the formula's proportions, rescaled to the token time actually
-    # reported. A reader who doubts the figure is owed three numbers that add up to it and
-    # say which term dominates; three that add up to something else would be worse than
-    # none, and the proportions are the part of the formula a benchmark does not overturn.
+    # Both breakdowns are the formula's proportions, rescaled to the time actually
+    # reported. A reader who doubts a figure is owed terms that add up to it and say which
+    # one dominates; terms that add up to something else would be worse than none, and the
+    # proportions are the part of the formula a benchmark does not overturn. The prompt
+    # terms are divided by the micro-batch they were computed for, so that they add up to
+    # one over ``pp_tps`` exactly as the generation terms add up to one over ``gen_tps``
+    # and the two tables can be read the same way.
     scale = (formula.gen_tps / gen_tps) if gen_tps > 0 and formula.gen_tps > 0 else 1.0
+    pp_scale = (formula.pp_tps / pp_tps) if pp_tps > 0 and formula.pp_tps > 0 else 1.0
+    per_prompt_token = pp_scale / placement.micro_batch
 
     return SpeedEstimate(
         gen_tps=max(gen_tps, 0.0),
@@ -456,5 +585,8 @@ def estimate_speed(
         vram_seconds_per_token=formula.vram_seconds * scale,
         ram_seconds_per_token=formula.ram_seconds * scale,
         overhead_seconds_per_token=formula.overhead_seconds * scale,
+        prompt_compute_seconds_per_token=formula.pp_compute_seconds * per_prompt_token,
+        prompt_link_seconds_per_token=formula.pp_link_seconds * per_prompt_token,
+        prompt_ram_seconds_per_token=formula.pp_ram_seconds * per_prompt_token,
         notes=tuple(notes),
     )

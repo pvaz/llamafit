@@ -963,7 +963,7 @@ msgstr ""
 
 #: src/llamafit/cli/render.py:726
 #: src/llamafit/cli/render_board.py:371
-#: src/llamafit/cli/render_board.py:481
+#: src/llamafit/cli/render_board.py:534
 msgctxt "column heading"
 msgid "Context"
 msgstr ""
@@ -1512,305 +1512,325 @@ msgstr ""
 msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:411
+#: src/llamafit/cli/render_board.py:415
 msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:429
+#: src/llamafit/cli/render_board.py:428
 msgctxt "column heading"
 msgid "A token's time"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:431
-msgctxt "column heading"
-msgid "Seconds"
-msgstr ""
-
-#: src/llamafit/cli/render_board.py:435
-msgctxt "column heading"
-msgid "Share"
-msgstr ""
-
-#: src/llamafit/cli/render_board.py:439
+#: src/llamafit/cli/render_board.py:430
 msgctxt "token time"
 msgid "reading the card"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:440
+#: src/llamafit/cli/render_board.py:431
 msgctxt "token time"
 msgid "reading system memory"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:441
+#: src/llamafit/cli/render_board.py:432
 msgctxt "token time"
 msgid "everything else"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:457
+#: src/llamafit/cli/render_board.py:436
+msgctxt "column heading"
+msgid "A prompt token's time"
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:439
+msgctxt "prompt token time"
+msgid "doing the arithmetic"
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:443
+msgctxt "prompt token time"
+msgid "streaming the experts across the link"
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:447
+msgctxt "prompt token time"
+msgid "reading the experts from system memory"
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:477
+msgctxt "column heading"
+msgid "Seconds"
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:481
+msgctxt "column heading"
+msgid "Share"
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:510
 msgid "Measured on %(date)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:474
+#: src/llamafit/cli/render_board.py:527
 msgid "Recorded elsewhere"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:478
+#: src/llamafit/cli/render_board.py:531
 msgctxt "column heading"
 msgid "Run"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:480
+#: src/llamafit/cli/render_board.py:533
 msgctxt "column heading"
 msgid "Prompt/s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:482
+#: src/llamafit/cli/render_board.py:535
 msgctxt "column heading"
 msgid "Date"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:496
+#: src/llamafit/cli/render_board.py:549
 msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:508
+#: src/llamafit/cli/render_board.py:561
 msgid "%(profile)s: %(flags)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:524
+#: src/llamafit/cli/render_board.py:577
 msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:533
+#: src/llamafit/cli/render_board.py:586
 msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:552
+#: src/llamafit/cli/render_board.py:605
 msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:561
+#: src/llamafit/cli/render_board.py:614
 msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:569
+#: src/llamafit/cli/render_board.py:622
 msgid "The tightest pool is %(share)s full; the score is highest between %(low)s and %(high)s, and falls away at both ends."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:581
+#: src/llamafit/cli/render_board.py:634
 msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:610
+#: src/llamafit/cli/render_board.py:663
 msgid "Score %(total)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:616
+#: src/llamafit/cli/render_board.py:669
 msgctxt "column heading"
 msgid "Part"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:618
+#: src/llamafit/cli/render_board.py:671
 msgctxt "column heading"
 msgid "Weight"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:619
+#: src/llamafit/cli/render_board.py:672
 msgctxt "column heading"
 msgid "Adds"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:623
+#: src/llamafit/cli/render_board.py:676
 msgctxt "score part"
 msgid "quality"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:624
+#: src/llamafit/cli/render_board.py:677
 msgctxt "score part"
 msgid "speed"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:625
+#: src/llamafit/cli/render_board.py:678
 msgctxt "score part"
 msgid "fit"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:626
+#: src/llamafit/cli/render_board.py:679
 msgctxt "score part"
 msgid "context"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:732
+#: src/llamafit/cli/render_board.py:785
 msgid "Recommended"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:734
-#: src/llamafit/cli/render_board.py:942
+#: src/llamafit/cli/render_board.py:787
+#: src/llamafit/cli/render_board.py:995
 msgctxt "column heading"
 msgid "#"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:736
-#: src/llamafit/cli/render_board.py:944
-#: src/llamafit/cli/render_board.py:871
-#: src/llamafit/cli/render_board.py:1000
-#: src/llamafit/cli/render_board.py:680
-#: src/llamafit/cli/render_board.py:936
+#: src/llamafit/cli/render_board.py:789
+#: src/llamafit/cli/render_board.py:997
+#: src/llamafit/cli/render_board.py:924
+#: src/llamafit/cli/render_board.py:1053
+#: src/llamafit/cli/render_board.py:733
+#: src/llamafit/cli/render_board.py:989
 msgctxt "column heading"
 msgid "Model"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:741
-#: src/llamafit/cli/render_board.py:949
-#: src/llamafit/cli/render_board.py:872
-#: src/llamafit/cli/render_board.py:1001
-#: src/llamafit/cli/render_board.py:685
+#: src/llamafit/cli/render_board.py:794
+#: src/llamafit/cli/render_board.py:1002
+#: src/llamafit/cli/render_board.py:925
+#: src/llamafit/cli/render_board.py:1054
+#: src/llamafit/cli/render_board.py:738
 msgctxt "column heading"
 msgid "Quant"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:742
-#: src/llamafit/cli/render_board.py:617
+#: src/llamafit/cli/render_board.py:795
+#: src/llamafit/cli/render_board.py:670
 msgctxt "column heading"
 msgid "Score"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:745
-#: src/llamafit/cli/render_board.py:479
+#: src/llamafit/cli/render_board.py:798
+#: src/llamafit/cli/render_board.py:532
 msgctxt "column heading"
 msgid "Gen/s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:746
+#: src/llamafit/cli/render_board.py:799
 msgctxt "column heading"
 msgid "How"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:747
-#: src/llamafit/cli/render_board.py:950
+#: src/llamafit/cli/render_board.py:800
+#: src/llamafit/cli/render_board.py:1003
 msgctxt "column heading"
 msgid "Fit"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:748
-#: src/llamafit/cli/render_board.py:955
+#: src/llamafit/cli/render_board.py:801
+#: src/llamafit/cli/render_board.py:1008
 msgctxt "column heading"
 msgid "Runs"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:749
-#: src/llamafit/cli/render_board.py:956
+#: src/llamafit/cli/render_board.py:802
+#: src/llamafit/cli/render_board.py:1009
 msgctxt "column heading"
 msgid "Ctx"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:750
+#: src/llamafit/cli/render_board.py:803
 msgctxt "column heading"
 msgid "Qual"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:751
-#: src/llamafit/cli/render_board.py:957
+#: src/llamafit/cli/render_board.py:804
+#: src/llamafit/cli/render_board.py:1010
 msgctxt "column heading"
 msgid "Card"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:752
+#: src/llamafit/cli/render_board.py:805
 msgctxt "column heading"
 msgid "PP/s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:753
+#: src/llamafit/cli/render_board.py:806
 #: src/llamafit/cli/render_board.py:284
 msgctxt "column heading"
 msgid "Size"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:754
-#: src/llamafit/cli/render_board.py:958
+#: src/llamafit/cli/render_board.py:807
+#: src/llamafit/cli/render_board.py:1011
 msgctxt "column heading"
 msgid "RAM"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:821
+#: src/llamafit/cli/render_board.py:874
 msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:831
+#: src/llamafit/cli/render_board.py:884
 msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:846
+#: src/llamafit/cli/render_board.py:899
 msgid "Weights: %(weights)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:867
+#: src/llamafit/cli/render_board.py:920
 msgid "Not ranked"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:873
-#: src/llamafit/cli/render_board.py:1002
+#: src/llamafit/cli/render_board.py:926
+#: src/llamafit/cli/render_board.py:1055
 msgctxt "column heading"
 msgid "Why not"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:898
+#: src/llamafit/cli/render_board.py:951
 msgid "%(rank)s. %(name)s %(quant)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:940
+#: src/llamafit/cli/render_board.py:993
 msgid "Fit on this machine"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:983
+#: src/llamafit/cli/render_board.py:1036
 msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:996
+#: src/llamafit/cli/render_board.py:1049
 msgid "Not placed"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1017
+#: src/llamafit/cli/render_board.py:1070
 msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1036
+#: src/llamafit/cli/render_board.py:1089
 msgid "This reaches the %(target)s tokens per second asked for."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1040
+#: src/llamafit/cli/render_board.py:1093
 msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1048
+#: src/llamafit/cli/render_board.py:1101
 msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1066
+#: src/llamafit/cli/render_board.py:1119
 msgid "%(name)s %(quant)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1077
+#: src/llamafit/cli/render_board.py:1130
 msgid "Memory budget"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1083
+#: src/llamafit/cli/render_board.py:1136
 msgid "The %(context)s tokens asked for would have cost"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1101
+#: src/llamafit/cli/render_board.py:1154
 msgid "Command line"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1115
+#: src/llamafit/cli/render_board.py:1168
 msgid "Model file: %(path)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1117
+#: src/llamafit/cli/render_board.py:1170
 msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1126
+#: src/llamafit/cli/render_board.py:1179
 msgid "%(shown)d of %(total)d candidate shown."
 msgid_plural "%(shown)d of %(total)d candidates shown."
 msgstr[0] ""
@@ -2398,39 +2418,51 @@ msgstr ""
 msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:159
+#: src/llamafit/speed/estimate.py:182
 msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:172
+#: src/llamafit/speed/estimate.py:195
 msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:184
+#: src/llamafit/speed/estimate.py:207
 msgid "No active parameter count was supplied; it was inferred from the weight bytes."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:352
+#: src/llamafit/speed/estimate.py:219
+msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:230
+msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:465
 msgid "No placement of this model on this machine could run it."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:404
+#: src/llamafit/speed/estimate.py:519
 msgid "Generation is a benchmark of this configuration, not a prediction."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:411
+#: src/llamafit/speed/estimate.py:527
 msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:426
+#: src/llamafit/speed/estimate.py:542
 msgid "Prompt processing is a benchmark of this configuration."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:433
+#: src/llamafit/speed/estimate.py:550
 msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:442
+#: src/llamafit/speed/estimate.py:559
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:566
 msgid "This figure assumes nothing pages: a placement this tight often does, silently."
 msgstr ""
 

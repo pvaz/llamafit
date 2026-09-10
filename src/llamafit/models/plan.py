@@ -180,6 +180,12 @@ class Placement(BaseModel):
 class SpeedEstimate(BaseModel):
     """How fast a placement is expected to run, and how much to trust that.
 
+    Both figures carry their terms, and each trio adds up to one over the figure it
+    belongs to. Generation's three are section 10.1's; prompt processing's three are
+    section 10.2's, per prompt token rather than per micro-batch so that the two read the
+    same way. Three more fields rather than a second shape, because a reader who has
+    learnt to check one figure has then learnt to check the other.
+
     Attributes:
         gen_tps: Generated tokens per second.
         pp_tps: Prompt tokens per second.
@@ -188,6 +194,16 @@ class SpeedEstimate(BaseModel):
         vram_seconds_per_token: The share of a token's time spent reading the card.
         ram_seconds_per_token: The share spent reading system memory.
         overhead_seconds_per_token: Per-layer and sampling overheads.
+        prompt_compute_seconds_per_token: The share of a prompt token's time spent on
+            arithmetic.
+        prompt_link_seconds_per_token: The share spent streaming the expert set across
+            the link to the card. Its own term because its constant is the one this
+            project knows least about: it was fitted on the single model whose expert set
+            does not fit in system memory, and a model whose set stays in the page cache
+            streams about three times faster. Inside a total that gap is invisible;
+            standing alone the term says how much of the answer rests on it.
+        prompt_ram_seconds_per_token: The share spent reading the expert set out of
+            system memory, which happens instead of the term above when there is no card.
         notes: Why the number is what it is, for example that the expert set is read in
             a scattered pattern and reaches a third of the machine's sequential
             bandwidth rather than most of it.
@@ -202,6 +218,9 @@ class SpeedEstimate(BaseModel):
     vram_seconds_per_token: float = Field(default=0.0, ge=0)
     ram_seconds_per_token: float = Field(default=0.0, ge=0)
     overhead_seconds_per_token: float = Field(default=0.0, ge=0)
+    prompt_compute_seconds_per_token: float = Field(default=0.0, ge=0)
+    prompt_link_seconds_per_token: float = Field(default=0.0, ge=0)
+    prompt_ram_seconds_per_token: float = Field(default=0.0, ge=0)
     notes: tuple[str, ...] = ()
 
 

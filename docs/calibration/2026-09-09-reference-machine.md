@@ -107,7 +107,12 @@ Tokens per second throughout.
    tokens of context. On the CPU it costs nothing measurable for text.
 5. **The winning configuration** for this card is `-ub 1024 --no-mmproj-offload
    -ot ffn_.*_shexp=CPU` with the context picked from free VRAM: 49,152 needs 7.8 GB free,
-   40,960 needs 7.5, 32,768 needs 7.2, 24,576 needs 6.9, 16,384 needs 6.6.
+   40,960 needs 7.5, 32,768 needs 7.2, 24,576 needs 6.9, 16,384 needs 6.6. Those are the
+   flags it *adds* to the base line under "Models" above; the whole command line is
+   `-ngl 99 --n-cpu-moe 48 --fit off -fa on -t 16 -tb 16 -b 4096 -ub 1024
+   --no-mmproj-offload -ot ffn_.*_shexp=CPU`, and that is what the catalog entry records.
+   A run quoted as a delta does not say where its layers went, and the speed estimator
+   reads these flags to decide whether a run describes a placement at all.
 
 ## Estimator constants derived here
 
