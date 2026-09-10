@@ -451,6 +451,8 @@ msgid "%(option)s is not a size: %(value)s"
 msgstr ""
 
 #: src/llamafit/cli/common.py:190
+#: src/llamafit/tui/screens/needs.py:206
+#: src/llamafit/tui/screens/simulate.py:178
 msgid "Sizes look like 8G, 7.5GiB or 512M; a bare number is bytes."
 msgstr ""
 
@@ -621,41 +623,49 @@ msgid "these figures are not this machine"
 msgstr ""
 
 #: src/llamafit/cli/render.py:229
+#: src/llamafit/tui/labels.py:42
 msgctxt "model capability"
 msgid "coding"
 msgstr ""
 
 #: src/llamafit/cli/render.py:230
+#: src/llamafit/tui/labels.py:43
 msgctxt "model capability"
 msgid "thinking"
 msgstr ""
 
 #: src/llamafit/cli/render.py:231
+#: src/llamafit/tui/labels.py:44
 msgctxt "model capability"
 msgid "vision"
 msgstr ""
 
 #: src/llamafit/cli/render.py:232
+#: src/llamafit/tui/labels.py:45
 msgctxt "model capability"
 msgid "tools"
 msgstr ""
 
 #: src/llamafit/cli/render.py:233
+#: src/llamafit/tui/labels.py:46
 msgctxt "model capability"
 msgid "multilingual"
 msgstr ""
 
 #: src/llamafit/cli/render.py:234
+#: src/llamafit/tui/labels.py:47
 msgctxt "model capability"
 msgid "long-context"
 msgstr ""
 
 #: src/llamafit/cli/render.py:235
+#: src/llamafit/tui/labels.py:48
 msgctxt "model capability"
 msgid "embeddings"
 msgstr ""
 
 #: src/llamafit/cli/render.py:236
+#: src/llamafit/tui/labels.py:49
 msgctxt "model capability"
 msgid "audio"
 msgstr ""
@@ -757,10 +767,12 @@ msgid "no specs"
 msgstr ""
 
 #: src/llamafit/cli/render.py:406
+#: src/llamafit/tui/app.py:102
 msgid "Host"
 msgstr ""
 
 #: src/llamafit/cli/render.py:411
+#: src/llamafit/tui/summary.py:120
 msgid "SIMULATED"
 msgstr ""
 
@@ -1252,6 +1264,7 @@ msgid "recorded from %(source)s; this build stores it but does not apply it yet"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:108
+#: src/llamafit/tui/format.py:38
 msgctxt "utilisation"
 msgid "n/a"
 msgstr ""
@@ -1473,6 +1486,7 @@ msgid "Component"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:283
+#: src/llamafit/tui/screens/host.py:55
 msgctxt "column heading"
 msgid "Where"
 msgstr ""
@@ -1646,6 +1660,7 @@ msgstr ""
 
 #: src/llamafit/cli/render_board.py:734
 #: src/llamafit/cli/render_board.py:942
+#: src/llamafit/tui/board_view.py:191
 msgctxt "column heading"
 msgid "#"
 msgstr ""
@@ -1656,6 +1671,7 @@ msgstr ""
 #: src/llamafit/cli/render_board.py:1000
 #: src/llamafit/cli/render_board.py:680
 #: src/llamafit/cli/render_board.py:936
+#: src/llamafit/tui/board_view.py:192
 msgctxt "column heading"
 msgid "Model"
 msgstr ""
@@ -1665,69 +1681,81 @@ msgstr ""
 #: src/llamafit/cli/render_board.py:872
 #: src/llamafit/cli/render_board.py:1001
 #: src/llamafit/cli/render_board.py:685
+#: src/llamafit/tui/board_view.py:193
 msgctxt "column heading"
 msgid "Quant"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:742
 #: src/llamafit/cli/render_board.py:617
+#: src/llamafit/tui/board_view.py:194
 msgctxt "column heading"
 msgid "Score"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:745
 #: src/llamafit/cli/render_board.py:479
+#: src/llamafit/tui/board_view.py:195
 msgctxt "column heading"
 msgid "Gen/s"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:746
+#: src/llamafit/tui/board_view.py:196
 msgctxt "column heading"
 msgid "How"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:747
 #: src/llamafit/cli/render_board.py:950
+#: src/llamafit/tui/board_view.py:197
 msgctxt "column heading"
 msgid "Fit"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:748
 #: src/llamafit/cli/render_board.py:955
+#: src/llamafit/tui/board_view.py:198
 msgctxt "column heading"
 msgid "Runs"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:749
 #: src/llamafit/cli/render_board.py:956
+#: src/llamafit/tui/board_view.py:199
 msgctxt "column heading"
 msgid "Ctx"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:750
+#: src/llamafit/tui/board_view.py:200
 msgctxt "column heading"
 msgid "Qual"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:751
 #: src/llamafit/cli/render_board.py:957
+#: src/llamafit/tui/board_view.py:201
 msgctxt "column heading"
 msgid "Card"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:752
+#: src/llamafit/tui/board_view.py:202
 msgctxt "column heading"
 msgid "PP/s"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:753
 #: src/llamafit/cli/render_board.py:284
+#: src/llamafit/tui/board_view.py:203
 msgctxt "column heading"
 msgid "Size"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:754
 #: src/llamafit/cli/render_board.py:958
+#: src/llamafit/tui/board_view.py:204
 msgctxt "column heading"
 msgid "RAM"
 msgstr ""
@@ -1787,6 +1815,7 @@ msgid "Nothing this model and quantisation can do on this machine reaches %(targ
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:1066
+#: src/llamafit/tui/explain.py:43
 msgid "%(name)s %(quant)s"
 msgstr ""
 
@@ -2432,6 +2461,480 @@ msgstr ""
 
 #: src/llamafit/speed/estimate.py:442
 msgid "This figure assumes nothing pages: a placement this tight often does, silently."
+msgstr ""
+
+#: src/llamafit/tui/app.py:98
+msgid "Board"
+msgstr ""
+
+#: src/llamafit/tui/app.py:100
+msgid "Needs"
+msgstr ""
+
+#: src/llamafit/tui/app.py:104
+msgid "Plan"
+msgstr ""
+
+#: src/llamafit/tui/app.py:106
+msgid "Simulate"
+msgstr ""
+
+#: src/llamafit/tui/board_view.py:205
+msgctxt "column heading"
+msgid "Have"
+msgstr ""
+
+#: src/llamafit/tui/board_view.py:242
+msgctxt "model file on this machine"
+msgid "yes"
+msgstr ""
+
+#: src/llamafit/tui/board_view.py:244
+msgctxt "model file on this machine"
+msgid "no"
+msgstr ""
+
+#: src/llamafit/tui/board_view.py:253
+msgctxt "board sort"
+msgid "score"
+msgstr ""
+
+#: src/llamafit/tui/board_view.py:254
+msgctxt "board sort"
+msgid "speed"
+msgstr ""
+
+#: src/llamafit/tui/board_view.py:255
+msgctxt "board sort"
+msgid "quality"
+msgstr ""
+
+#: src/llamafit/tui/board_view.py:256
+msgctxt "board sort"
+msgid "context"
+msgstr ""
+
+#: src/llamafit/tui/board_view.py:257
+msgctxt "board sort"
+msgid "download size"
+msgstr ""
+
+#: src/llamafit/tui/board_view.py:265
+msgctxt "board filter"
+msgid "every candidate"
+msgstr ""
+
+#: src/llamafit/tui/board_view.py:266
+msgctxt "board filter"
+msgid "the ones that run"
+msgstr ""
+
+#: src/llamafit/tui/board_view.py:267
+msgctxt "board filter"
+msgid "the ones with room to spare"
+msgstr ""
+
+#: src/llamafit/tui/board_view.py:352
+msgid "%(shown)d of %(total)d shown"
+msgstr ""
+
+#: src/llamafit/tui/board_view.py:354
+msgid "%(counted)s, by %(sort)s, showing %(filter)s already on this machine."
+msgstr ""
+
+#: src/llamafit/tui/board_view.py:359
+msgid "%(counted)s, by %(sort)s, showing %(filter)s."
+msgstr ""
+
+#: src/llamafit/tui/entry.py:70
+msgid "There is no terminal here to draw the dashboard in, so this is what `llamafit recommend` would print."
+msgstr ""
+
+#: src/llamafit/tui/explain.py:47
+msgid "%(name)s %(quant)s, %(vendor)s, licensed %(license)s; it can: %(capabilities)s"
+msgstr ""
+
+#: src/llamafit/tui/explain.py:79
+msgid "Choose a row to see what put it there."
+msgstr ""
+
+#: src/llamafit/tui/explain.py:90
+msgid "Nothing has been ranked yet."
+msgstr ""
+
+#: src/llamafit/tui/explain.py:93
+msgid "Every candidate in the catalog was ranked; none was excluded."
+msgstr ""
+
+#: src/llamafit/tui/keys.py:46
+msgid "keys"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:47
+msgid "theme"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:48
+msgid "quit"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:53
+msgid "choose"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:54
+msgid "why"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:55
+msgid "command line"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:56
+msgid "search"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:57
+msgid "fit"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:58
+msgid "sort"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:59
+msgid "on disk"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:60
+msgid "all quants"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:61
+msgid "explanation"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:62
+msgid "not ranked"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:66
+#: src/llamafit/tui/keys.py:80
+msgid "apply"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:67
+msgid "reset"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:70
+msgid "rescan"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:73
+msgid "more context"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:74
+msgid "less context"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:75
+msgid "vision"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:76
+msgid "copy"
+msgstr ""
+
+#: src/llamafit/tui/keys.py:81
+msgid "this machine"
+msgstr ""
+
+#: src/llamafit/tui/labels.py:29
+msgctxt "use case"
+msgid "general use"
+msgstr ""
+
+#: src/llamafit/tui/labels.py:30
+msgctxt "use case"
+msgid "writing code"
+msgstr ""
+
+#: src/llamafit/tui/labels.py:31
+msgctxt "use case"
+msgid "reasoning"
+msgstr ""
+
+#: src/llamafit/tui/labels.py:32
+msgctxt "use case"
+msgid "chat"
+msgstr ""
+
+#: src/llamafit/tui/labels.py:33
+msgctxt "use case"
+msgid "images and text"
+msgstr ""
+
+#: src/llamafit/tui/labels.py:34
+msgctxt "use case"
+msgid "embeddings"
+msgstr ""
+
+#: src/llamafit/tui/labels.py:57
+msgctxt "preference"
+msgid "balanced"
+msgstr ""
+
+#: src/llamafit/tui/labels.py:58
+msgctxt "preference"
+msgid "lean towards quality"
+msgstr ""
+
+#: src/llamafit/tui/labels.py:59
+msgctxt "preference"
+msgid "lean towards speed"
+msgstr ""
+
+#: src/llamafit/tui/screens/board.py:93
+msgid "Move with the up and down arrows. Enter says why a row is where it is; p gives the command line that runs it."
+msgstr ""
+
+#: src/llamafit/tui/screens/board.py:102
+msgid "Part of a model name, then Enter"
+msgstr ""
+
+#: src/llamafit/tui/screens/help.py:35
+msgid "Keys"
+msgstr ""
+
+#: src/llamafit/tui/screens/help.py:36
+msgctxt "column heading"
+msgid "Screen"
+msgstr ""
+
+#: src/llamafit/tui/screens/help.py:37
+msgctxt "column heading"
+msgid "Key"
+msgstr ""
+
+#: src/llamafit/tui/screens/help.py:38
+msgctxt "column heading"
+msgid "What it does"
+msgstr ""
+
+#: src/llamafit/tui/screens/help.py:40
+msgctxt "dashboard screen"
+msgid "Everywhere"
+msgstr ""
+
+#: src/llamafit/tui/screens/help.py:41
+msgctxt "dashboard screen"
+msgid "Board"
+msgstr ""
+
+#: src/llamafit/tui/screens/help.py:42
+msgctxt "dashboard screen"
+msgid "Needs"
+msgstr ""
+
+#: src/llamafit/tui/screens/help.py:43
+msgctxt "dashboard screen"
+msgid "Host"
+msgstr ""
+
+#: src/llamafit/tui/screens/help.py:44
+msgctxt "dashboard screen"
+msgid "Plan"
+msgstr ""
+
+#: src/llamafit/tui/screens/help.py:45
+msgctxt "dashboard screen"
+msgid "Simulate"
+msgstr ""
+
+#: src/llamafit/tui/screens/help.py:82
+msgid "Press Escape to go back."
+msgstr ""
+
+#: src/llamafit/tui/screens/host.py:53
+msgid "Catalog files with a problem"
+msgstr ""
+
+#: src/llamafit/tui/screens/host.py:54
+msgctxt "column heading"
+msgid "File"
+msgstr ""
+
+#: src/llamafit/tui/screens/host.py:56
+msgctxt "column heading"
+msgid "What"
+msgstr ""
+
+#: src/llamafit/tui/screens/host.py:112
+msgid "This machine has not been scanned yet."
+msgstr ""
+
+#: src/llamafit/tui/screens/needs.py:72
+msgid "What do you want a model for?"
+msgstr ""
+
+#: src/llamafit/tui/screens/needs.py:79
+msgid "It must be able to:"
+msgstr ""
+
+#: src/llamafit/tui/screens/needs.py:84
+msgid "At least this much context, in tokens:"
+msgstr ""
+
+#: src/llamafit/tui/screens/needs.py:86
+msgid "Willing to download at most, for example 40G (blank for no limit):"
+msgstr ""
+
+#: src/llamafit/tui/screens/needs.py:88
+msgid "Licences you will accept (tick none to accept any):"
+msgstr ""
+
+#: src/llamafit/tui/screens/needs.py:90
+msgid "Lean the score:"
+msgstr ""
+
+#: src/llamafit/tui/screens/needs.py:98
+msgid "Keep the vision projector when a model has one"
+msgstr ""
+
+#: src/llamafit/tui/screens/needs.py:102
+#: src/llamafit/tui/screens/simulate.py:102
+msgid "Apply"
+msgstr ""
+
+#: src/llamafit/tui/screens/needs.py:103
+msgid "Reset"
+msgstr ""
+
+#: src/llamafit/tui/screens/needs.py:190
+msgid "The minimum context is a number of tokens, for example %(example)s."
+msgstr ""
+
+#: src/llamafit/tui/screens/needs.py:194
+msgid "The minimum context cannot be below zero."
+msgstr ""
+
+#: src/llamafit/tui/screens/plan.py:73
+msgid "Choose a row on the Board and press p, and its plan and command line appear here."
+msgstr ""
+
+#: src/llamafit/tui/screens/plan.py:98
+msgid "%(model)s is no longer in the catalog this board was built from."
+msgstr ""
+
+#: src/llamafit/tui/screens/plan.py:127
+msgid "Planned with the vision projector; press v to leave it out."
+msgstr ""
+
+#: src/llamafit/tui/screens/plan.py:128
+msgid "Planned without the vision projector; press v to put it back."
+msgstr ""
+
+#: src/llamafit/tui/screens/plan.py:160
+msgid "The ladder has no rung above %(context)s."
+msgstr ""
+
+#: src/llamafit/tui/screens/plan.py:163
+msgid "The ladder has no rung below %(context)s."
+msgstr ""
+
+#: src/llamafit/tui/screens/plan.py:186
+msgid "There is no command line to copy yet."
+msgstr ""
+
+#: src/llamafit/tui/screens/plan.py:189
+msgid "The command line is on the clipboard."
+msgstr ""
+
+#: src/llamafit/tui/screens/simulate.py:80
+msgid "Everything on every screen answers about the machine chosen here. While it is not this one, the band at the top says SIMULATED."
+msgstr ""
+
+#: src/llamafit/tui/screens/simulate.py:87
+msgid "Answer for this machine instead:"
+msgstr ""
+
+#: src/llamafit/tui/screens/simulate.py:94
+msgid "Pretend the graphics card has this much memory (blank to leave it):"
+msgstr ""
+
+#: src/llamafit/tui/screens/simulate.py:96
+msgid "Pretend the machine has this much system memory (blank to leave it):"
+msgstr ""
+
+#: src/llamafit/tui/screens/simulate.py:98
+msgid "Pretend the processor has this many cores (blank to leave it):"
+msgstr ""
+
+#: src/llamafit/tui/screens/simulate.py:103
+msgid "Back to this machine"
+msgstr ""
+
+#: src/llamafit/tui/screens/simulate.py:112
+#: src/llamafit/tui/screens/simulate.py:89
+msgctxt "hardware profile"
+msgid "this machine"
+msgstr ""
+
+#: src/llamafit/tui/screens/simulate.py:189
+msgid "The core count is a whole number, for example 8."
+msgstr ""
+
+#: src/llamafit/tui/summary.py:44
+msgctxt "dashboard header separator"
+msgid " · "
+msgstr ""
+
+#: src/llamafit/tui/summary.py:57
+msgctxt "dashboard header"
+msgid "no GPU detected"
+msgstr ""
+
+#: src/llamafit/tui/summary.py:59
+msgid "%(name)s, VRAM unknown"
+msgstr ""
+
+#: src/llamafit/tui/summary.py:60
+msgid "%(name)s, %(free)s free of %(total)s"
+msgstr ""
+
+#: src/llamafit/tui/summary.py:69
+msgid "%(available)s free of %(total)s RAM"
+msgstr ""
+
+#: src/llamafit/tui/summary.py:77
+msgid "%(model)s, %(count)d core"
+msgid_plural "%(model)s, %(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/tui/summary.py:93
+msgctxt "dashboard header"
+msgid "llama.cpp not installed"
+msgstr ""
+
+#: src/llamafit/tui/summary.py:95
+msgctxt "dashboard header"
+msgid "llama.cpp installed"
+msgstr ""
+
+#: src/llamafit/tui/summary.py:96
+msgid "llama.cpp b%(build)d"
+msgstr ""
+
+#: src/llamafit/tui/summary.py:106
+msgctxt "dashboard header"
+msgid "scanning this machine…"
+msgstr ""
+
+#: src/llamafit/tui/summary.py:135
+msgid "These speeds were not all arrived at the same way; the How column says which each row is."
 msgstr ""
 
 #. Translators: this is punctuation, not prose. It is what your language puts between

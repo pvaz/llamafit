@@ -167,6 +167,25 @@ the changelog says so when they do.
   which was being computed and thrown away, so the ladder no longer has to guess.
 - `--prefer balanced|quality|speed` moves a tenth of the weight between quality and speed
   (section 12.1), capped by what the other part has to give so no weight goes below nothing.
+- `llamafit` with no arguments opens the terminal dashboard (section 13.2), and prints the
+  board `llamafit recommend` would print when there is no terminal to draw one in. Five
+  screens over one scan and one catalog: **Board**, the ranked table with the explanation
+  under it; **Needs**, section 12.1's request as a form that offers the six use cases, the
+  eight capabilities and the licences the catalog actually carries, so nobody has to know a
+  value before they can type it; **Host**, `system` and `doctor` on one page, probe by probe;
+  **Plan**, the budget, the context ladder, the flags and the command line, with `+` and `-`
+  stepping along the ladder the planner produced rather than a step the screen invented; and
+  **Simulate**, section 4.4's overrides and profiles, with `SIMULATED` in the header for as
+  long as the figures are about another machine.
+- The dashboard shows the command line's own renderables rather than a second drawing of the
+  same facts, so section 12.3's promise that the two interfaces show the same explanation is
+  kept by construction. The explanation is open by default: on a terminal it costs a page per
+  row and sits behind `--explain`, and on a screen it costs nothing.
+- No speed on the dashboard appears without saying what kind of number it is. Nothing has been
+  benchmarked on any machine yet, so every figure is a formula on default constants, and the
+  sentence saying so is a band above the table that does not scroll away rather than a caption
+  under it. When rows disagree about how their speeds were arrived at, the label is a column
+  beside each figure and a terminal too narrow for the pair shows neither.
 ### Changed
 - **The placement planner steps down section 9.3's context ladder instead of halving.**
   Section 9.2 says so in as many words, and the difference is not cosmetic: from 40,960
