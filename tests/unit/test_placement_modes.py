@@ -24,6 +24,7 @@ from llamafit.placement.modes import (
     projector_ladder,
     projector_of,
     rank,
+    shared_expert_ladder,
     thread_count,
 )
 from tests.fixtures.placement import GIB, cpu_only_host, make_facts, make_model, reference_host
@@ -286,3 +287,24 @@ def test_the_fixture_host_is_the_machine_the_measurements_came_from() -> None:
     assert host.memory.total_bytes == 128 * GIB
     assert host.primary_gpu is not None
     assert host.primary_gpu.name.endswith("RTX 4060")
+
+
+def test_only_the_offload_mode_asks_where_the_shared_experts_go() -> None:
+    facts = make_facts(layers=48, experts=512, shared_expert_bytes=GIB // 4)
+    assert shared_expert_ladder("moe-offload", facts) == (None, "ram")
+    for mode in ("gpu", "hybrid", "cpu"):
+        assert shared_expert_ladder(mode, facts) == (None,)  # type: ignore[arg-type]
+
+
+def test_a_model_with_no_shared_experts_has_nothing_to_move() -> None:
+    assert shared_expert_ladder("moe-offload", make_facts(layers=48, experts=512)) == (None,)
+    assert shared_expert_ladder("moe-offload", None) == (None,)
+
+
+def test_keeping_the_shared_experts_on_the_card_outranks_moving_them() -> None:
+    base = initial_settings(
+        "moe-offload", context=32768, micro_batch=1024, kv_type="f16", projector_pool=None
+    )
+    kept = rank(base, budget("fits"), requested_context=32768)
+    moved = rank(base.with_shared_experts("ram"), budget("fits"), requested_context=32768)
+    assert kept > moved, "they run for every token; moving them is a cost, never a preference"

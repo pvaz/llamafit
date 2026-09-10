@@ -11,27 +11,31 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/llamafit/budget/budget.py:158
+#: src/llamafit/budget/budget.py:140
+msgid "a conservative default; nobody has measured this card's backend overhead"
+msgstr ""
+
+#: src/llamafit/budget/budget.py:143
+msgid "measured on this card with driver %(driver)s and llama.cpp %(build)s; one machine"
+msgstr ""
+
+#: src/llamafit/budget/budget.py:186
 msgid "A hybrid placement has to say how many layers are on the graphics card."
 msgstr ""
 
-#: src/llamafit/budget/budget.py:159
+#: src/llamafit/budget/budget.py:187
 msgid "Pass gpu_layers, which is what -ngl would be."
 msgstr ""
 
-#: src/llamafit/budget/budget.py:217
+#: src/llamafit/budget/budget.py:245
 msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
 msgstr ""
 
-#: src/llamafit/budget/budget.py:219
+#: src/llamafit/budget/budget.py:247
 msgid "Run `llamafit catalog refresh` to read the file's header."
 msgstr ""
 
-#: src/llamafit/budget/budget.py:257
-msgid "what the GPU backend costs before it allocates anything"
-msgstr ""
-
-#: src/llamafit/budget/budget.py:266
+#: src/llamafit/budget/budget.py:295
 msgid "the server process before any model buffer"
 msgstr ""
 
@@ -1114,47 +1118,51 @@ msgstr ""
 msgid "unexpected response: %(error)s"
 msgstr ""
 
-#: src/llamafit/placement/planner.py:96
+#: src/llamafit/placement/planner.py:97
 msgid "%(model)s holds %(native)s tokens, fewer than the %(minimum)s asked for."
 msgstr ""
 
-#: src/llamafit/placement/planner.py:171
+#: src/llamafit/placement/planner.py:182
 msgid "No configuration of this model fits this machine."
 msgstr ""
 
-#: src/llamafit/placement/planner.py:278
+#: src/llamafit/placement/planner.py:289
+msgid "Routed experts are held in system memory, and so are the always-on shared experts, which is what -ot ffn_.*_shexp=CPU does; attention and the KV cache stay on the card."
+msgstr ""
+
+#: src/llamafit/placement/planner.py:297
 msgid "Routed experts are held in system memory; attention, the KV cache and the shared experts stay on the card."
 msgstr ""
 
-#: src/llamafit/placement/planner.py:285
+#: src/llamafit/placement/planner.py:304
 msgid "%(layers)s layers are on the card and the rest run on the processor."
 msgstr ""
 
-#: src/llamafit/placement/planner.py:289
+#: src/llamafit/placement/planner.py:308
 msgid "Nothing runs on a graphics card: every weight is in system memory."
 msgstr ""
 
-#: src/llamafit/placement/planner.py:293
+#: src/llamafit/placement/planner.py:312
 msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
 msgstr ""
 
-#: src/llamafit/placement/planner.py:301
+#: src/llamafit/placement/planner.py:320
 msgid "The KV cache is quantised to %(type)s to reach this context."
 msgstr ""
 
-#: src/llamafit/placement/planner.py:308
+#: src/llamafit/placement/planner.py:327
 msgid "Vision is off: the projector did not fit, on the card or in system memory."
 msgstr ""
 
-#: src/llamafit/placement/planner.py:312
+#: src/llamafit/placement/planner.py:331
 msgid "The vision projector is in system memory (--no-mmproj-offload), which costs nothing measurable for text and makes images slower."
 msgstr ""
 
-#: src/llamafit/placement/planner.py:321
+#: src/llamafit/placement/planner.py:340
 msgid "%(threads)s threads, not %(physical)s: the efficiency cores are left out because generation measures slower with them."
 msgstr ""
 
-#: src/llamafit/placement/planner.py:329
+#: src/llamafit/placement/planner.py:348
 msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
 msgstr ""
 

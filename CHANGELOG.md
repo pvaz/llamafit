@@ -48,7 +48,11 @@ the changelog says so when they do.
   shared experts are a line of their own, so a tensor override that sends just those to system
   memory can be costed: on the reference machine it frees 239 MiB and turns Qwen3.8-Flash-Next
   at 32,768 tokens from 29 MiB over an 8 GB card into 211 MiB inside it, which is the best
-  configuration anyone has measured on that machine.
+  configuration anyone has measured on that machine. What a GPU backend costs before it
+  allocates anything is a lookup keyed by the card, with the conservative 300 MiB default
+  underneath it: a card somebody has measured gets the measured figure and every other card
+  keeps the safe one, and the budget line says which of the two a reader is looking at,
+  because 180 MiB on an 8 GB card is two rungs of the context ladder.
 - `llamafit list` and `llamafit search`: browse the catalog, filtered by use case, capability,
   licence, vendor or text.
 - `llamafit info <model>`: one model in full, with every quant it publishes and the GGUF facts
@@ -65,7 +69,15 @@ the changelog says so when they do.
   and where the vision projector lives. A faster mode wins over a longer context, and a floor
   under the context ladder is what keeps that from recommending a working configuration nobody
   could work in. It takes the memory budget as an injected function, so it can be read, tested
-  and changed apart from the thing that sizes a configuration.
+  and changed apart from the thing that sizes a configuration. For a mixture-of-experts model
+  holding its routed experts in system memory it also tries sending the always-on shared
+  experts after them, which is what `-ot ffn_.*_shexp=CPU` does: they run for every token, so
+  it is tried second and never preferred, but on the reference machine those 239 MiB are what
+  turns the best configuration anybody has measured there from withheld into recommended. A
+  placement that moved them says so on its own command line.
+- `llamafit.services.plan`: the join between the memory budget and the placement search, which
+  is what lets the planner run against real models on a real machine rather than only against
+  an injected fake.
 - Context tier table: what each of ten context lengths costs on the card for the chosen
   placement, so a launch script can pick the largest one that fits the free VRAM it actually
   sees at the moment it starts, and a recommendation survives a browser being opened.

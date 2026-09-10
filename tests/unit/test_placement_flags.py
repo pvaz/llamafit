@@ -7,6 +7,7 @@ thing to ground truth this repository has.
 
 from __future__ import annotations
 
+from itertools import pairwise
 from pathlib import Path
 
 import pytest
@@ -84,6 +85,7 @@ def placement(
     gpu_layers: int = 99,
     cpu_moe_layers: int | None = 48,
     projector_pool: Pool | None = None,
+    shared_experts_pool: Pool | None = None,
     threads: int = 8,
 ) -> Placement:
     return Placement(
@@ -95,6 +97,7 @@ def placement(
         gpu_layers=gpu_layers,
         cpu_moe_layers=cpu_moe_layers,
         projector_pool=projector_pool,
+        shared_experts_pool=shared_experts_pool,
         threads=threads,
         budget=budget(),
         max_context_fit=context,
@@ -369,3 +372,26 @@ def test_the_reference_machines_winning_configuration_renders() -> None:
     assert "--no-mmproj-offload" in rendered
     assert rendered[rendered.index("-ot") + 1] == "ffn_.*_shexp=CPU"
     assert rendered[rendered.index("-c") + 1] == "40960"
+
+
+def test_a_placement_that_moved_the_shared_experts_says_so_on_the_command_line() -> None:
+    """A budget computed for one configuration must not launch into another."""
+    model, _quant = make_model(moe=True, facts=make_facts(layers=48, experts=512))
+    args = render_flags(placement(shared_experts_pool="ram"), model, options())
+    assert "-ot" in args
+    assert args[args.index("-ot") + 1] == "ffn_.*_shexp=CPU"
+
+    kept = render_flags(placement(shared_experts_pool=None), model, options())
+    assert "-ot" not in kept
+
+
+def test_the_placements_own_override_is_not_repeated_by_the_callers() -> None:
+    model, _quant = make_model(moe=True, facts=make_facts(layers=48, experts=512))
+    args = render_flags(
+        placement(shared_experts_pool="ram"),
+        model,
+        options(tensor_overrides=("ffn_.*_shexp=CPU", "attn_.*=CUDA0")),
+    )
+    assert [a for a, b in pairwise(args) if b == "ffn_.*_shexp=CPU"] == ["-ot"]
+    assert args.count("ffn_.*_shexp=CPU") == 1
+    assert "attn_.*=CUDA0" in args

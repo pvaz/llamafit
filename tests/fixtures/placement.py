@@ -301,6 +301,7 @@ def make_facts(
     experts: int | None = None,
     dense_bytes: int = 4 * GIB,
     expert_bytes: int = 0,
+    shared_expert_bytes: int = 0,
     lazy_bytes: int = 0,
     kv_per_token: int = 128 * 1024,
     recurrent_bytes: int | None = None,
@@ -323,8 +324,9 @@ def make_facts(
         has_shared_experts=bool(experts),
         bytes_expert_weights=expert_bytes,
         bytes_dense_block_weights=dense_bytes,
+        bytes_shared_expert_weights=shared_expert_bytes,
         bytes_lazy_tables=lazy_bytes,
-        bytes_total=dense_bytes + expert_bytes + lazy_bytes,
+        bytes_total=dense_bytes + expert_bytes + shared_expert_bytes + lazy_bytes,
         kv_bytes_per_token_f16=kv_per_token,
         recurrent_state_bytes=recurrent_bytes,
     )

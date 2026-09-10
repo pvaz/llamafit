@@ -25,6 +25,7 @@ from llamafit.placement.modes import (
     layer_ladder,
     projector_ladder,
     rank,
+    shared_expert_ladder,
 )
 from llamafit.placement.planner import plan_placement
 from tests.fixtures.placement import (
@@ -428,22 +429,23 @@ def exhaustive_best(
             for kv_type in kv_ladder(model, allow_kv_quant=needs.allow_kv_quant):
                 for micro_batch in MICRO_BATCHES:
                     for projector in projector_ladder(model, quant, vision=True):
-                        base = initial_settings(
-                            mode,
-                            context=context,
-                            micro_batch=micro_batch,
-                            kv_type=kv_type,
-                            projector_pool=projector,
-                        )
-                        gate = has_margin if projector == "vram" else is_acceptable
-                        for value in layer_ladder(mode, layer_count(quant.gguf_facts)):
-                            settings = base.with_layer_choice(value)
-                            budget = budget_for(model, quant, host, settings)
-                            if not gate(budget.verdict):
-                                continue
-                            key = rank(settings, budget, requested_context=requested)
-                            if best is None or key > best:
-                                best = key
+                        for shared in shared_expert_ladder(mode, quant.gguf_facts):
+                            base = initial_settings(
+                                mode,
+                                context=context,
+                                micro_batch=micro_batch,
+                                kv_type=kv_type,
+                                projector_pool=projector,
+                            ).with_shared_experts(shared)
+                            gate = has_margin if projector == "vram" else is_acceptable
+                            for value in layer_ladder(mode, layer_count(quant.gguf_facts)):
+                                settings = base.with_layer_choice(value)
+                                budget = budget_for(model, quant, host, settings)
+                                if not gate(budget.verdict):
+                                    continue
+                                key = rank(settings, budget, requested_context=requested)
+                                if best is None or key > best:
+                                    best = key
     return best
 
 
@@ -462,7 +464,13 @@ def test_the_pruned_search_finds_what_an_exhaustive_one_would(
         moe=True,
         projector=True,
         kv_types=["f16", "q8_0"],
-        facts=make_facts(layers=6, experts=64, dense_bytes=3 * GIB, expert_bytes=20 * GIB),
+        facts=make_facts(
+            layers=6,
+            experts=64,
+            dense_bytes=3 * GIB,
+            expert_bytes=20 * GIB,
+            shared_expert_bytes=GIB // 2,
+        ),
     )
     host = reference_host()
     needs = Needs(requested_context=requested)
@@ -488,6 +496,7 @@ def test_the_pruned_search_finds_what_an_exhaustive_one_would(
         gpu_layers=pruned.gpu_layers,
         cpu_moe_layers=pruned.cpu_moe_layers,
         projector_pool=pruned.projector_pool,
+        shared_experts_pool=pruned.shared_experts_pool,
     )
     assert rank(settings, pruned.budget, requested_context=min(requested, 262144)) == expected
 

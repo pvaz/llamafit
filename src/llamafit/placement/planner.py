@@ -48,6 +48,7 @@ from llamafit.placement.modes import (
     projector_ladder,
     projector_of,
     rank,
+    shared_expert_ladder,
     thread_count,
 )
 from llamafit.units import format_bytes, format_grouped
@@ -110,34 +111,44 @@ def plan_placement(
 
     for mode in available_modes(model, quant, host):
         rungs = layer_ladder(mode, layers)
+        shared_experts = shared_expert_ladder(mode, quant.gguf_facts)
         for context in contexts:
             found_at_this_context = False
             for kv_type in kv_types:
                 for micro_batch in MICRO_BATCH_LADDER:
                     for projector in projectors:
-                        base = initial_settings(
-                            mode,
-                            context=context,
-                            micro_batch=micro_batch,
-                            kv_type=kv_type,
-                            projector_pool=projector,
-                        )
-                        # The projector earns the card only with margin (section 9.2);
-                        # everywhere else the plain acceptability gate applies.
-                        gate: _Gate = has_margin if projector == "vram" else is_acceptable
-                        chosen, count = _search_layers(
-                            model, quant, host, base, rungs, budget_for=budget_for, gate=gate
-                        )
-                        evaluations += count
-                        if chosen is None:
+                        placed = False
+                        for shared in shared_experts:
+                            base = initial_settings(
+                                mode,
+                                context=context,
+                                micro_batch=micro_batch,
+                                kv_type=kv_type,
+                                projector_pool=projector,
+                            ).with_shared_experts(shared)
+                            # The projector earns the card only with margin (section 9.2);
+                            # everywhere else the plain acceptability gate applies.
+                            gate: _Gate = has_margin if projector == "vram" else is_acceptable
+                            chosen, count = _search_layers(
+                                model, quant, host, base, rungs, budget_for=budget_for, gate=gate
+                            )
+                            evaluations += count
+                            if chosen is None:
+                                continue
+                            settings, budget = chosen
+                            key = rank(settings, budget, requested_context=requested)
+                            if best is None or key > best[0]:
+                                best = (key, settings, budget)
+                            placed = True
+                            # Prune: keeping the shared experts with their layers outranks
+                            # moving them, so once the first rung places the model there is
+                            # nothing the second could win on.
+                            break
+                        if not placed:
                             continue
-                        settings, budget = chosen
-                        key = rank(settings, budget, requested_context=requested)
-                        if best is None or key > best[0]:
-                            best = (key, settings, budget)
                         found_at_this_context = True
                         # Prune: the projector ladder runs best first and sits above the
-                        # layer choice in the rank, so no later placement of it can win.
+                        # shared experts in the rank, so no later placement of it can win.
                         break
                     if found_at_this_context:
                         # Prune: micro-batches run largest first and outrank the
@@ -273,7 +284,15 @@ def placement_notes(
     language (section 12.3).
     """
     notes: list[str] = []
-    if settings.mode == "moe-offload":
+    if settings.mode == "moe-offload" and settings.shared_experts_pool == "ram":
+        notes.append(
+            _(
+                "Routed experts are held in system memory, and so are the always-on "
+                "shared experts, which is what -ot ffn_.*_shexp=CPU does; attention and "
+                "the KV cache stay on the card."
+            )
+        )
+    elif settings.mode == "moe-offload":
         notes.append(
             _(
                 "Routed experts are held in system memory; attention, the KV cache and "

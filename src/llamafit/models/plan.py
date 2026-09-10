@@ -137,6 +137,12 @@ class Placement(BaseModel):
         cpu_moe_layers: What ``--n-cpu-moe`` would be, or ``None``.
         projector_pool: Where the vision projector goes, or ``None`` when the model has
             none or it was left out.
+        shared_experts_pool: Where the always-on shared experts go, or ``None`` when they
+            stay with their layers. ``ram`` is what ``-ot ffn_.*_shexp=CPU`` does: they
+            run for every token, so moving them costs speed, but they are the one part of
+            a mixture-of-experts model that can leave the card without the attention path
+            following, and on the reference machine it is what the best measured
+            configuration does.
         threads: How many threads to run, chosen from performance cores.
         budget: What this placement needs.
         max_context_fit: The largest context this mode fits.
@@ -155,6 +161,7 @@ class Placement(BaseModel):
     gpu_layers: int = Field(ge=0)
     cpu_moe_layers: int | None = None
     projector_pool: Pool | None = None
+    shared_experts_pool: Pool | None = None
     threads: int = Field(gt=0)
     budget: Budget
     max_context_fit: int = Field(ge=0)
