@@ -92,13 +92,13 @@ Runtime dependencies, with the reason each earns its place:
 | `httpx` | Hugging Face metadata, running-server discovery, downloads |
 | `pyyaml` | the catalog: reading the curated `<family>.yaml` files, and printing one entry back with `catalog show --yaml` |
 | `numpy` | a faster, more accurate memory-bandwidth measurement; optional extra `fast`, and part of `dev` so CI exercises it |
+| `textual` | the terminal dashboard `llamafit` opens with no arguments; a hard dependency and not an extra, because the dashboard is the first thing a newcomer meets and an interface that may or may not be installed cannot be that |
 
 Planned, not installed and not yet declared in `pyproject.toml`; each arrives with the phase
 that needs it, together with the extra it belongs to:
 
 | Package | Why | Phase |
 |---|---|---|
-| `textual` | the terminal dashboard | 1D |
 | `fastapi`, `uvicorn` | the JSON API and static dashboard | 1D |
 
 Adding a dependency means adding a row here with a reason, in the same pull request.
