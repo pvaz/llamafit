@@ -107,19 +107,40 @@ def test_only_the_models_that_offer_themselves_for_the_job_compete(catalog: Cata
     assert "llama-3.1-8b-instruct" not in ranked
 
 
+MACHINE_ONLY = {"coding": {"quality": 0.0, "speed": 0.0, "fit": 1.0, "context": 0.0}}
+"""Weights that ask nothing but "how well does this use the machine"."""
+
+
 def test_overriding_the_weights_changes_the_order(catalog: Catalog) -> None:
     open_request = Needs(use_case="coding")
     assert ids(evaluate_and_rank(entries(catalog), open_request))[0] == "qwen3-coder-next"
-    # A user who cares about nothing but speed and headroom is told what that asks for,
-    # rather than being quietly given the project's opinion instead.
-    machine_first = evaluate_and_rank(
-        entries(catalog),
-        open_request,
-        weight_overrides={
-            "coding": {"quality": 0.05, "speed": 0.475, "fit": 0.475, "context": 0.0}
-        },
+    # A user who cares about nothing but how much of the machine a model uses is told what
+    # that asks for, rather than being quietly given the project's opinion instead. On
+    # 115 GB of memory it asks for the model that holds 82 GB of it, which is not the one
+    # the balanced weights choose.
+    machine_first = evaluate_and_rank(entries(catalog), open_request, weight_overrides=MACHINE_ONLY)
+    assert ids(machine_first)[:3] == [
+        "qwen3.8-flash-next",
+        "qwen3-coder-next",
+        "qwen3-0.6b",
+    ]
+
+
+def test_the_machine_question_alone_puts_the_smallest_model_last(catalog: Catalog) -> None:
+    """The defect section 11.3 was written to prevent, guarded where it showed.
+
+    Weighting fit alone, a 0.6B on a machine with 115 GB of memory used to come first: its
+    0.6 GB of weights left the card ninety percent full of cache and buffers, and the
+    score read the card. It comes last now, and scores nothing, because the machine it is
+    being asked to fill is a hundred and eighty times its size.
+    """
+    machine_only = evaluate_and_rank(
+        entries(catalog), Needs(use_case="coding"), weight_overrides=MACHINE_ONLY
     )
-    assert ids(machine_first)[0] == "qwen3-0.6b"
+    scored = [candidate for candidate in machine_only if candidate.score is not None]
+    assert scored[-1].model_id == "qwen3-0.6b"
+    assert scored[-1].score is not None
+    assert scored[-1].score.fit == 0.0
 
 
 # --- the parts stay visible --------------------------------------------------------

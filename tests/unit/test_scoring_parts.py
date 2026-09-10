@@ -6,10 +6,12 @@ here sits on a boundary or immediately either side of one.
 
 from __future__ import annotations
 
+from math import inf
+
 import pytest
 
 from llamafit.errors import ConfigError
-from llamafit.models.plan import Needs
+from llamafit.models.plan import Budget, BudgetLine, Needs
 from llamafit.scoring.context_score import DEFAULT_CONTEXT, context_score, requested_context
 from llamafit.scoring.fit_score import (
     CROWDED,
@@ -18,8 +20,13 @@ from llamafit.scoring.fit_score import (
     IDEAL_LOW,
     SPARSE,
     SPARSE_SCORE,
+    WASTE_PER_HALVING,
+    capacity_score,
+    crowding_score,
     fit_score,
     fit_score_for,
+    model_share,
+    resident_model_bytes,
     worst_pool_utilisation,
 )
 from llamafit.scoring.speed_score import (
@@ -30,21 +37,16 @@ from llamafit.scoring.speed_score import (
     speed_score,
     target_tps,
 )
-from tests.fixtures.scoring import budget, speed
+from tests.fixtures.scoring import RAM_AVAILABLE, VRAM_AVAILABLE, budget, speed
 
-# --- fit ---------------------------------------------------------------------------
+# --- fit: the crowding arm, which this change leaves exactly where it was ----------
 
 
 @pytest.mark.parametrize(
     ("utilisation", "expected"),
     [
-        (-0.5, SPARSE_SCORE),
-        (0.0, SPARSE_SCORE),
-        (0.199, SPARSE_SCORE),
-        (SPARSE, SPARSE_SCORE),
-        (0.201, 70.1),
-        (0.35, 85.0),
-        (0.499, 99.9),
+        (0.0, 100.0),
+        (SPARSE, 100.0),
         (IDEAL_LOW, 100.0),
         (0.65, 100.0),
         (IDEAL_HIGH, 100.0),
@@ -57,24 +59,138 @@ from tests.fixtures.scoring import budget, speed
         (2.0, 0.0),
     ],
 )
-def test_the_fit_curve_at_every_threshold_and_either_side(
+def test_the_crowding_arm_at_every_threshold_and_either_side(
     utilisation: float, expected: float
 ) -> None:
-    assert fit_score(utilisation) == pytest.approx(expected, abs=0.01)
-
-
-def test_the_curve_punishes_both_ends_and_not_the_middle() -> None:
-    # The left-hand slope is the one that reads like a bug: a model far smaller than the
-    # machine scores below one that uses it. That is the whole point of it.
-    assert fit_score(0.10) < fit_score(0.60)
-    assert fit_score(0.95) < fit_score(0.60)
-    assert fit_score(0.10) == SPARSE_SCORE
+    assert crowding_score(utilisation) == pytest.approx(expected, abs=0.01)
 
 
 def test_the_cliff_above_the_crowded_threshold_is_a_cliff() -> None:
     # A driver does not refuse an allocation larger than the card; it pages, silently.
-    assert fit_score(CROWDED) == pytest.approx(CROWDED_SCORE)
-    assert fit_score(CROWDED + 0.001) == 0.0
+    assert crowding_score(CROWDED) == pytest.approx(CROWDED_SCORE)
+    assert crowding_score(CROWDED + 0.001) == 0.0
+
+
+# --- fit: the capacity arm, which is the one that changed --------------------------
+
+
+def test_the_capacity_arm_passes_through_the_two_points_the_specification_names() -> None:
+    # Section 11.3 priced waste at 100 for half the machine and 70 for a fifth of it. The
+    # curve still goes through both of those points; what changed is what it is a curve of.
+    assert capacity_score(IDEAL_LOW) == pytest.approx(100.0)
+    assert capacity_score(SPARSE) == pytest.approx(SPARSE_SCORE)
+
+
+@pytest.mark.parametrize(
+    ("share", "expected"),
+    [
+        (-0.5, 0.0),
+        (0.0, 0.0),
+        (1.0, 100.0),
+        (0.80, 100.0),
+        (IDEAL_LOW, 100.0),
+        (IDEAL_LOW / 2, 100.0 - WASTE_PER_HALVING),
+        (IDEAL_LOW / 4, 100.0 - 2 * WASTE_PER_HALVING),
+        (IDEAL_LOW / 8, 100.0 - 3 * WASTE_PER_HALVING),
+        (IDEAL_LOW / 16, 100.0 - 4 * WASTE_PER_HALVING),
+        (IDEAL_LOW / 32, 0.0),
+        (0.001, 0.0),
+    ],
+)
+def test_every_halving_of_the_model_costs_the_same(share: float, expected: float) -> None:
+    assert capacity_score(share) == pytest.approx(expected, abs=0.01)
+
+
+def test_the_arm_falls_by_ratio_and_not_by_difference() -> None:
+    # Two models a factor of two apart are the same distance apart wherever they sit, so a
+    # tenth of a machine and a fiftieth of it are not "both about nothing".
+    assert capacity_score(0.4) - capacity_score(0.2) == pytest.approx(
+        capacity_score(0.2) - capacity_score(0.1), abs=0.01
+    )
+    assert capacity_score(0.1) > capacity_score(0.03) > 0.0
+
+
+def test_the_arm_has_no_floor_because_the_measure_is_relative_to_the_machine() -> None:
+    # The old curve flattened at 70 below a fifth, which is part of how a 0.6B model came
+    # to score what a 30B one did. Nothing is held back now, and nothing needs to be.
+    assert capacity_score(0.005) == 0.0
+    assert capacity_score(0.60) == 100.0
+
+
+# --- fit: the two arms together ----------------------------------------------------
+
+
+def test_the_score_is_the_worse_of_the_two_complaints() -> None:
+    assert fit_score(0.60, 0.60) == pytest.approx(100.0)
+    # Fills the machine and fills the card: crowding takes it.
+    assert fit_score(0.60, 0.95) == pytest.approx(crowding_score(0.95))
+    # Room to spare on the card and nothing of the machine used: capacity takes it.
+    assert fit_score(0.02, 0.40) == pytest.approx(capacity_score(0.02))
+    # Neither complaint excuses the other.
+    assert fit_score(0.02, 0.95) == pytest.approx(min(capacity_score(0.02), crowding_score(0.95)))
+
+
+def test_negative_input_at_either_end_is_read_as_nothing() -> None:
+    assert fit_score(-0.5, -0.5) == 0.0
+
+
+# --- fit: what a budget is read for ------------------------------------------------
+
+
+def test_only_the_weight_lines_count_as_the_model() -> None:
+    mixed = budget(
+        vram_required=6 * 1024**3,
+        ram_required=2 * 1024**3,
+        weight_vram=4 * 1024**3,
+        weight_ram=1 * 1024**3,
+    )
+    assert resident_model_bytes(mixed) == 5 * 1024**3
+
+
+def test_a_tensor_streamed_from_disk_is_not_occupying_the_machine() -> None:
+    held = budget(vram_required=4 * 1024**3, ram_required=0, weight_vram=4 * 1024**3)
+    streamed = held.model_copy(
+        update={
+            "lines": (
+                *held.lines,
+                BudgetLine(component="lazy-tables", pool="disk", bytes=60 * 1024**3, exact=True),
+            )
+        }
+    )
+    assert resident_model_bytes(streamed) == resident_model_bytes(held)
+
+
+def test_the_share_is_of_both_pools_added_because_weights_live_in_both() -> None:
+    split = budget(
+        vram_required=6 * 1024**3,
+        ram_required=30 * 1024**3,
+        weight_vram=5 * 1024**3,
+        weight_ram=25 * 1024**3,
+    )
+    assert model_share(split) == pytest.approx(30 * 1024**3 / (VRAM_AVAILABLE + RAM_AVAILABLE))
+
+
+def test_a_placement_holding_no_weights_at_all_claims_nothing() -> None:
+    empty = budget(vram_required=2 * 1024**3, ram_required=0, weight_vram=0)
+    assert model_share(empty) == 0.0
+    assert fit_score_for(empty) == 0.0
+
+
+def test_a_machine_reporting_no_free_memory_is_not_a_division_by_zero() -> None:
+    # Built by hand rather than through the fixture: a machine with nothing free is what
+    # a failed probe looks like, and the budget it produces has infinities in it already.
+    nothing_free = Budget(
+        lines=(BudgetLine(component="dense-weights", pool="ram", bytes=1024**3, exact=True),),
+        vram_required=0,
+        ram_required=1024**3,
+        vram_available=0,
+        ram_available=0,
+        vram_utilisation=None,
+        ram_utilisation=inf,
+        verdict="does-not-fit",
+    )
+    assert model_share(nothing_free) == inf
+    assert fit_score_for(nothing_free) == 0.0
 
 
 def test_fit_is_decided_on_whichever_pool_is_worst() -> None:
@@ -91,7 +207,48 @@ def test_a_machine_with_no_card_is_scored_on_system_memory_alone() -> None:
     cpu_only = budget(vram_required=0, ram_required=60 * 1024**3, vram_available=0)
     assert cpu_only.vram_utilisation is None
     assert worst_pool_utilisation(cpu_only) == pytest.approx(0.6)
+    # 60 GiB of weights out of the 100 GiB free is more than half the machine, and the
+    # pool is nowhere near crowded, so both arms are content.
     assert fit_score_for(cpu_only) == 100.0
+
+
+def test_a_full_card_no_longer_makes_a_tiny_model_look_well_fitted() -> None:
+    """The defect section 11.3 was written to prevent and could not.
+
+    On the reference machine a 0.6B at Q8 puts 0.6 GB of weights on the card and six times
+    that in cache and buffers on top, so the card reads ninety percent full — the same as
+    a model fifty times its size. Read on the pool the two score alike; read on the
+    weights they do not.
+    """
+    card = int(0.9 * VRAM_AVAILABLE)
+    tiny = budget(vram_required=card, ram_required=0, weight_vram=int(0.639e9))
+    large = budget(
+        vram_required=card,
+        ram_required=46 * 1000**3,
+        weight_vram=int(3.3e9),
+        weight_ram=int(46e9),
+    )
+    assert worst_pool_utilisation(tiny) == pytest.approx(worst_pool_utilisation(large))
+    assert fit_score_for(tiny) == 0.0
+    # All that holds the larger one back is the card it fills, which is the complaint
+    # the right-hand arm exists to make and the one this change does not touch.
+    assert fit_score_for(large) == pytest.approx(crowding_score(0.9))
+
+
+def test_the_same_model_fits_a_small_machine_it_could_never_fit_a_large_one() -> None:
+    # Nothing about the model changed here; the machine did. That is the property the old
+    # measure's floor was standing in for, and this one has by construction.
+    weights = int(0.639e9)
+    on_a_workstation = budget(vram_required=2 * 1024**3, ram_required=0, weight_vram=weights)
+    on_a_laptop = budget(
+        vram_required=0,
+        ram_required=int(0.95e9),
+        weight_ram=weights,
+        vram_available=0,
+        ram_available=int(1.2e9),
+    )
+    assert fit_score_for(on_a_workstation) == 0.0
+    assert fit_score_for(on_a_laptop) == 100.0
 
 
 # --- speed -------------------------------------------------------------------------

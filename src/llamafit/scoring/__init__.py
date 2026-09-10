@@ -19,7 +19,15 @@ including the candidates that were excluded, each carrying the reason it was.
 from __future__ import annotations
 
 from llamafit.scoring.context_score import DEFAULT_CONTEXT, context_score, requested_context
-from llamafit.scoring.fit_score import fit_score, fit_score_for, worst_pool_utilisation
+from llamafit.scoring.fit_score import (
+    capacity_score,
+    crowding_score,
+    fit_score,
+    fit_score_for,
+    model_share,
+    resident_model_bytes,
+    worst_pool_utilisation,
+)
 from llamafit.scoring.rank import evaluate, evaluate_and_rank, rank
 from llamafit.scoring.speed_score import TARGET_TPS, prompt_penalty, speed_score, target_tps
 from llamafit.scoring.weights import (
@@ -40,14 +48,18 @@ __all__ = [
     "PREFERENCE_SHIFT",
     "TARGET_TPS",
     "USE_CASES",
+    "capacity_score",
     "context_score",
+    "crowding_score",
     "evaluate",
     "evaluate_and_rank",
     "fit_score",
     "fit_score_for",
+    "model_share",
     "prompt_penalty",
     "rank",
     "requested_context",
+    "resident_model_bytes",
     "shift_preference",
     "speed_score",
     "target_tps",
