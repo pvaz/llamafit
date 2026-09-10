@@ -37,6 +37,7 @@ from llamafit.placement.modes import (
     BudgetFn,
     PlacementSettings,
     available_modes,
+    context_ceiling,
     context_ladder,
     has_margin,
     initial_settings,
@@ -44,7 +45,6 @@ from llamafit.placement.modes import (
     kv_ladder,
     layer_count,
     layer_ladder,
-    native_context,
     projector_ladder,
     projector_of,
     rank,
@@ -87,7 +87,7 @@ def plan_placement(
         machine is rather than only that it failed.
     """
     needs = needs or Needs()
-    ceiling = native_context(model)
+    ceiling = context_ceiling(model, needs)
     # A minimum above what the user asked to be sized for is still a minimum: size for it.
     asked = max(needs.requested_context or DEFAULT_REQUESTED_CONTEXT, needs.min_context)
     requested = min(asked, ceiling)
@@ -194,8 +194,10 @@ def plan_placement(
     return settings.to_placement(
         budget,
         threads=threads,
-        max_context_fit=max_context_fit(model, quant, host, settings, budget_for=budget_for),
-        tiers=context_tiers(model, quant, host, settings, budget_for=budget_for),
+        max_context_fit=max_context_fit(
+            model, quant, host, settings, budget_for=budget_for, ceiling=ceiling
+        ),
+        tiers=context_tiers(model, quant, host, settings, budget_for=budget_for, ceiling=ceiling),
         notes=placement_notes(
             model,
             quant,

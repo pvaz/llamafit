@@ -124,21 +124,32 @@ launch script can pick the largest tier that fits at the moment it starts.
 effective bandwidth, plus fixed costs:
 
 ```
-t = bytes_in_vram / (vram_bandwidth × 0.60)
-  + bytes_in_ram  / (ram_bandwidth  × 0.70)
-  + layers × 0.2 ms + 1 ms
+t = bytes_in_vram      / (vram_bandwidth × 0.67)
+  + scattered_bytes    / (ram_bandwidth  × 0.57)
+  + contiguous_bytes   / (ram_bandwidth  × 0.70)
+  + 1 ms
 tokens_per_second = 1 / t
 ```
 
-`bytes_in_ram` for a MoE model with experts offloaded is the expert bytes touched per token,
-`expert_bytes × experts_used / experts`, plus whatever KV lives in RAM. The efficiency factors
-and overheads are the initial constants; a benchmark on your machine replaces them.
+**System memory has two effective bandwidths, not one.** A dense model's weights are read in
+long contiguous runs and reach 0.70 of the measured figure. A routed expert set is not: each
+token picks a different handful of experts, so a layer's read is a scatter of small blocks
+across tens of gigabytes and reaches 0.57. `scattered_bytes` for a MoE model with experts
+offloaded is the expert bytes touched per token, `expert_bytes × experts_used / experts`.
+The token embedding table is not counted at all, because a lookup reads one row.
 
-**Prompt processing.** With everything on the GPU it is compute-bound:
-`2 × active_parameters × tokens / (fp16_tflops × efficiency)`. With experts in RAM, llama.cpp
-streams the experts it needs across PCIe once per micro-batch, so throughput scales with the
-micro-batch size and is bounded by PCIe bandwidth. This is why LlamaFit prefers the largest
-micro-batch whose compute buffer still fits.
+The overhead is one fixed millisecond and is **not** per layer: a per-layer term large enough
+to matter on a 48-layer model exceeds the whole measured token of a 28-layer one. All four
+figures are the initial constants; a benchmark on your machine replaces them.
+
+**Prompt processing.** It is compute-bound, and the arithmetic runs where the weights are: the
+share of the layers on the card is multiplied on the card, at 0.43 of its published dense fp16
+matrix throughput, and the rest is multiplied by the CPU, at 0.44 TFLOP/s per performance core.
+Charging all of it to the card puts a model with nine of its sixty-two layers offloaded at a
+prompt rate the processor could not possibly produce. On top of that, with experts in RAM
+llama.cpp streams the experts it needs across PCIe once per micro-batch, so throughput also
+scales with the micro-batch size and is bounded by the link. This is why LlamaFit prefers the
+largest micro-batch whose compute buffer still fits.
 
 **Confidence.** Every speed carries one label: `measured` (a stored benchmark on this host for
 this model, quant and flags, with its date), `calibrated` (formula with factors derived from

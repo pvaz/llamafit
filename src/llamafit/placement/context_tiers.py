@@ -34,6 +34,7 @@ def context_tiers(
     settings: PlacementSettings,
     *,
     budget_for: BudgetFn,
+    ceiling: int | None = None,
 ) -> tuple[ContextTier, ...]:
     """Cost every rung of section 9.3's ladder for one placement.
 
@@ -44,13 +45,18 @@ def context_tiers(
         settings: The chosen placement; everything except the context is held fixed, so
             each rung differs from the chosen configuration in exactly one thing.
         budget_for: The injected budget function.
+        ceiling: The longest context to offer, from
+            :func:`~llamafit.placement.modes.context_ceiling`; the model's native length
+            when the caller states none. A launch script reads this table and picks a
+            rung, so a rung above a ceiling the request set is a rung the request said
+            it did not want launched.
 
     Returns:
         One :class:`~llamafit.models.plan.ContextTier` per rung of
         :data:`~llamafit.constants.CONTEXT_TIERS` the model supports, in increasing
         order of context.
     """
-    ceiling = model.context.native
+    ceiling = model.context.native if ceiling is None else min(ceiling, model.context.native)
     tiers: list[ContextTier] = []
     for tokens in CONTEXT_TIERS:
         if tokens > ceiling:
@@ -74,6 +80,7 @@ def max_context_fit(
     settings: PlacementSettings,
     *,
     budget_for: BudgetFn,
+    ceiling: int | None = None,
 ) -> int:
     """The largest context this placement holds, to the nearest thousand tokens.
 
@@ -83,10 +90,13 @@ def max_context_fit(
         host: The scanned machine.
         settings: The chosen placement, whose context is taken to fit already.
         budget_for: The injected budget function.
+        ceiling: The longest context to search to, from
+            :func:`~llamafit.placement.modes.context_ceiling`; the model's native length
+            when the caller states none.
 
     Returns:
-        A context at or above ``settings.context`` and at or below the model's native
-        length, on a :data:`~llamafit.constants.MAX_CONTEXT_SEARCH_STEP` grid.
+        A context at or above ``settings.context`` and at or below the ceiling, on a
+        :data:`~llamafit.constants.MAX_CONTEXT_SEARCH_STEP` grid.
 
     Found by bisection, which assumes what section 8.1 makes true: every component that
     depends on the context — the KV cache, the compute buffer's context term — grows with
@@ -97,7 +107,7 @@ def max_context_fit(
     """
     step = MAX_CONTEXT_SEARCH_STEP
     low = settings.context
-    high = model.context.native
+    high = model.context.native if ceiling is None else min(ceiling, model.context.native)
     if high <= low:
         return low
 

@@ -56,14 +56,22 @@ def requested_context(needs: Needs) -> int:
 
     Returns:
         ``needs.requested_context`` when it was given, and the use case's default
-        otherwise.
+        otherwise, in either case never above ``needs.max_context``.
 
     Raises:
         ConfigError: If the use case is not one of the six.
+
+    The ceiling applies here and not only to the planner. This figure is the score's
+    denominator, and a request that will not run past 16,384 tokens scored against the
+    32,768 its use case would have wanted would mark every candidate down by half for
+    failing to reach a length the same request forbade.
     """
-    if needs.requested_context is not None:
-        return needs.requested_context
-    return DEFAULT_CONTEXT[check_use_case(needs.use_case)]
+    wanted = (
+        needs.requested_context
+        if needs.requested_context is not None
+        else DEFAULT_CONTEXT[check_use_case(needs.use_case)]
+    )
+    return wanted if needs.max_context is None else min(wanted, needs.max_context)
 
 
 def context_score(max_context_fit: int, requested: int) -> float:

@@ -27,8 +27,9 @@ from llamafit.cli.common import (
     check_capabilities,
     check_size,
     check_use_case,
+    checked_max_context,
     load_catalog_or_warn,
-    scan,
+    machine,
 )
 from llamafit.cli.render_board import (
     render_board,
@@ -190,12 +191,13 @@ def recommend_command(
     """Rank the catalog for what you want to do on this machine."""
     state: CliState = ctx.obj
     catalog = load_catalog_or_warn(state)
-    report = scan()
+    report = machine(state)
     needs = Needs(
         use_case=check_use_case(use_case),
         capabilities=check_capabilities(require, option="--require"),
         min_context=min_context,
         min_tps=min_tps,
+        max_context=checked_max_context(state, min_context=min_context),
         max_download_bytes=(
             None if max_download is None else check_size(max_download, option="--max-download")
         ),
@@ -275,10 +277,11 @@ def fit_command(
     """Rank every model by how well it uses this machine, whatever it is for."""
     state: CliState = ctx.obj
     catalog = load_catalog_or_warn(state)
-    report = scan()
+    report = machine(state)
     board = build_fit_board(
         catalog,
         report.host,
+        needs=Needs(max_context=checked_max_context(state)),
         min_fit=_check_min_fit(min_fit),
         perfect=perfect,
         limit=limit,

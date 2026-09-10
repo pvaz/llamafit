@@ -32,11 +32,11 @@ from __future__ import annotations
 from collections.abc import Sequence
 from pathlib import PurePath
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 from llamafit.budget import compute
 from llamafit.models.catalog import CatalogModel, Extra, Measured, Quant
-from llamafit.models.host import Host
+from llamafit.models.host import Host, Simulation
 from llamafit.models.plan import Budget, ContextTier, Needs, Placement, SpeedEstimate
 from llamafit.paths import get_paths
 from llamafit.placement import (
@@ -49,7 +49,7 @@ from llamafit.placement import (
     plan_placement,
     render_flags,
 )
-from llamafit.placement.modes import projector_of, thread_count
+from llamafit.placement.modes import context_ceiling, projector_of, thread_count
 from llamafit.speed import estimate_speed
 
 
@@ -161,6 +161,8 @@ class PlanReport(BaseModel):
         measurements: The benchmarks the catalog records for this model and quantisation,
             to be shown beside the estimate rather than in place of it.
         target: The ``--target-tps`` answer, when one was asked for.
+        simulation: What was substituted for the machine this plan was computed on, or
+            ``None`` when it was computed on the machine the reader is sitting at.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -180,6 +182,18 @@ class PlanReport(BaseModel):
     download_bytes: int | None = None
     measurements: list[Measured] = Field(default_factory=list)
     target: TargetCheck | None = None
+    simulation: Simulation | None = None
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def simulated(self) -> bool:
+        """Whether this plan was computed for a machine other than this one.
+
+        The pair :class:`~llamafit.models.host.Host` carries, for the same reason: a plan
+        carries no host, so this is the only thing in ``plan --json`` that distinguishes
+        a command line sized for the reader's card from one sized for somebody else's.
+        """
+        return self.simulation is not None
 
 
 def settings_of(placement: Placement) -> PlacementSettings:
@@ -211,6 +225,7 @@ def replan(
     *,
     requested_context: int,
     vision: bool,
+    ceiling: int | None = None,
 ) -> Placement:
     """Rebuild a placement around settings a user chose by hand, keeping everything true.
 
@@ -221,6 +236,9 @@ def replan(
         settings: The knobs to cost.
         requested_context: What the user asked to be sized for, for the notes.
         vision: Whether vision was wanted at all, for the notes.
+        ceiling: The longest context to offer, from
+            :func:`~llamafit.placement.modes.context_ceiling`; the model's native length
+            when the caller states none.
 
     Returns:
         A placement for ``settings``, with the budget, the context ladder, the largest
@@ -237,8 +255,10 @@ def replan(
     return settings.to_placement(
         budget,
         threads=threads,
-        max_context_fit=max_context_fit(model, quant, host, settings, budget_for=budget_for),
-        tiers=context_tiers(model, quant, host, settings, budget_for=budget_for),
+        max_context_fit=max_context_fit(
+            model, quant, host, settings, budget_for=budget_for, ceiling=ceiling
+        ),
+        tiers=context_tiers(model, quant, host, settings, budget_for=budget_for, ceiling=ceiling),
         notes=placement_notes(
             model,
             quant,
@@ -392,8 +412,11 @@ def plan_report(
         BudgetError: If nobody has read this quantisation's header, so it cannot be sized.
     """
     needs = needs or Needs()
+    ceiling = context_ceiling(model, needs)
     placement = plan_model(model, quant, host, needs=needs, vision=vision)
-    wanted = max(needs.requested_context or placement.context, needs.min_context)
+    # The context asked for, but never above the ceiling: a report that costed a context
+    # the request itself forbade would print a budget for a configuration nobody wanted.
+    wanted = min(max(needs.requested_context or placement.context, needs.min_context), ceiling)
 
     if micro_batch is not None and micro_batch != placement.micro_batch:
         placement = replan(
@@ -403,6 +426,7 @@ def plan_report(
             settings_of(placement).with_micro_batch(micro_batch),
             requested_context=wanted,
             vision=vision,
+            ceiling=ceiling,
         )
 
     requested_budget: Budget | None = None
@@ -446,4 +470,5 @@ def plan_report(
         download_bytes=quant.bytes_,
         measurements=[m for m in model.measured if m.quant == quant.name],
         target=target,
+        simulation=host.simulation,
     )

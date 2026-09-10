@@ -1,7 +1,15 @@
 # LlamaFit. Copyright (C) 2026 Paulo Vaz.
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
-"""``llamafit system``: print the host scan and llama.cpp status."""
+"""``llamafit system``: print the host scan and llama.cpp status.
+
+Section 13.1's substitution flags apply here, and this is the command where a reader can
+see what they did: ``llamafit --profile NAME system`` prints the machine that profile
+stands in for, under the same red ``SIMULATED`` line ``hardware show NAME --as-host``
+prints it under, with this machine's llama.cpp beside it. The llama.cpp half is never
+substituted, because the binary and the GGUF files on this disk are real whichever
+machine the numbers describe.
+"""
 
 from __future__ import annotations
 
@@ -10,9 +18,9 @@ from typing import cast
 import typer
 
 from llamafit.cli.app import CliState, app
+from llamafit.cli.common import machine
 from llamafit.cli.render import render_host, render_llamacpp
 from llamafit.i18n import lazy_gettext
-from llamafit.services.scan import scan_system
 
 
 @app.command(
@@ -36,7 +44,7 @@ def system_command(
 ) -> None:
     """Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."""
     state: CliState = ctx.obj
-    report = scan_system(measure_bandwidth=not no_measure)
+    report = machine(state, measure_bandwidth=not no_measure)
     if state.json_output:
         typer.echo(report.model_dump_json(indent=2))
         return

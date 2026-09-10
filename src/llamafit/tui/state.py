@@ -106,9 +106,12 @@ class Dashboard:
     """The services' answers, held together, and the only caller of them in this package.
 
     Attributes:
-        request: What is being asked for; the Needs screen replaces it.
+        request: What is being asked for; the Needs screen replaces it, and
+            ``llamafit --max-context`` seeds it.
         substitution: What stands in for the scanned machine; the Simulate screen
-            replaces it.
+            replaces it, and section 13.1's ``--profile``, ``--memory``, ``--ram`` and
+            ``--cpu-cores`` seed it, so the dashboard opens on the machine the command
+            line named with its badge already showing.
         report: The scan, once it has been taken, and ``None`` before.
         catalog: The models, once loaded, and ``None`` before.
         catalog_problems: Every file the loader could not read, which the Host screen
@@ -124,11 +127,12 @@ class Dashboard:
         scanner: Scanner = scan_system,
         loader: Loader = load_catalog,
         request: Request | None = None,
+        substitution: Substitution | None = None,
     ) -> None:
         self._scanner = scanner
         self._loader = loader
         self.request = request or Request()
-        self.substitution = Substitution()
+        self.substitution = substitution or Substitution()
         self.report: SystemReport | None = None
         self.catalog: Catalog | None = None
         self.catalog_problems: list[CatalogProblem] = []

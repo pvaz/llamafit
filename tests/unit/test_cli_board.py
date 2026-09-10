@@ -29,7 +29,7 @@ def flat(output: str) -> str:
 @pytest.fixture(autouse=True)
 def fixed_machine(monkeypatch: pytest.MonkeyPatch) -> None:
     """Every command sees the reference machine, never the one running the tests."""
-    monkeypatch.setattr("llamafit.cli.board_cmd.scan", lambda **_kwargs: report())
+    monkeypatch.setattr("llamafit.cli.common.scan", lambda **_kwargs: report())
 
 
 # --- recommend ------------------------------------------------------------------------
@@ -183,7 +183,7 @@ def test_a_machine_that_fits_nothing_still_explains_every_candidate(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     tiny = machine(vram_total=None, ram_total=2 * GIB, ram_available=1 * GIB)
-    monkeypatch.setattr("llamafit.cli.board_cmd.scan", lambda **_kw: report(host=tiny))
+    monkeypatch.setattr("llamafit.cli.common.scan", lambda **_kw: report(host=tiny))
     result = runner.invoke(app, ["--language", "en", "recommend", "--use-case", "coding"])
     assert result.exit_code == 0, result.output
     assert "Nothing was ranked" in flat(result.output)
@@ -226,7 +226,7 @@ def test_fit_limits_rows_without_hiding_the_unplaceable_ones(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     small = machine(vram_total=2 * GIB, ram_total=8 * GIB, ram_available=6 * GIB)
-    monkeypatch.setattr("llamafit.cli.board_cmd.scan", lambda **_kw: report(host=small))
+    monkeypatch.setattr("llamafit.cli.common.scan", lambda **_kw: report(host=small))
     result = runner.invoke(app, ["--json", "fit", "--limit", "1"])
     data = json.loads(result.output)
     assert len(data["rows"]) <= 1
