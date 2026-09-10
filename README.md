@@ -107,7 +107,7 @@ Every command has a `--json` form for scripts. The Textual terminal dashboard op
 | `llamafit plan <model>` | placement, memory budget, context tiers, flags and the command line | 1C (done) |
 | `llamafit hardware` | hardware profiles, to score against a machine you are not on | 1C |
 | `llamafit` | the terminal dashboard | 1D |
-| `llamafit serve` | the web dashboard and JSON API on localhost | 1D |
+| `llamafit serve` | the web dashboard and JSON API on localhost | 1D (done) |
 | `llamafit install llama.cpp`, `install model` | install the runtime and download models | 2 |
 | `llamafit preset`, `launch` | write launch scripts and start a server | 2 |
 | `llamafit bench` | measure, compare with the estimate, calibrate | 3 |
@@ -128,10 +128,14 @@ The original hand-written launcher asked for 128K, started without complaint, an
 
 ```
 pip install llamafit            # add [fast] for the NumPy bandwidth measurement
+pip install "llamafit[web]"     # and the browser dashboard, if you want one
 ```
 
 Requirements: Python 3.10 or newer. No compiler, no Node, no account. The optional
-`llamafit[fast]` extra adds NumPy for a more accurate memory-bandwidth measurement.
+`llamafit[fast]` extra adds NumPy for a more accurate memory-bandwidth measurement, and
+`llamafit[web]` adds FastAPI and uvicorn for `llamafit serve` — the dashboard itself is
+plain HTML, CSS and JavaScript that ships in the package and fetches nothing from the
+internet, so there is still no build step anywhere.
 
 ## Use
 
