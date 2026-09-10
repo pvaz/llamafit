@@ -344,6 +344,7 @@ msgstr ""
 
 #: src/llamafit/cli/catalog_cmd.py:199
 #: src/llamafit/cli/catalog_cmd.py:430
+#: src/llamafit/cli/install_cmd.py:62
 #: src/llamafit/cli/plan_cmd.py:35
 msgid "A catalog model id."
 msgstr ""
@@ -506,6 +507,163 @@ msgstr ""
 
 #: src/llamafit/cli/hardware_cmd.py:240
 msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:54
+msgid "Install what it takes to run a model: the weights, for now."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:69
+msgid "Fetch this quantisation instead of the first the catalog publishes."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:77
+msgid "Put the files here instead of under the configured downloads directory."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:86
+msgid "Use at most this much bandwidth, for example 5M. Shared across every worker, so the figure is the figure whatever --workers says."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:99
+msgid "How many requests to keep in flight. More is not always faster, and a home connection is shared with whoever else is using it."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:106
+msgid "Do not ask before starting."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:111
+msgid "Show what would be fetched and stop before fetching it."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:118
+msgid "Fetch only the weights, not the vision projector or the draft model."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:126
+msgid "Re-read files that are already here and check them against the catalog."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:134
+msgid "Fetch files the catalog holds no checksum for. Nothing will be able to tell you whether they arrived intact."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:141
+msgid "Show at most this many entries."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:147
+msgid "already here"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:147
+msgid "to fetch"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:158
+msgid "About to download"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:159
+#: src/llamafit/cli/render.py:1268
+msgid "File"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:160
+msgid "Role"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:161
+#: src/llamafit/cli/install_cmd.py:515
+#: src/llamafit/cli/render.py:1088
+msgid "Size"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:162
+msgid "Status"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:180
+msgid "%(name)s %(quant)s from %(repo)s"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:194
+msgid "%(count)d file, %(total)s in all, %(needed)s still to fetch."
+msgid_plural "%(count)d files, %(total)s in all, %(needed)s still to fetch."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/install_cmd.py:210
+msgid "Into %(path)s, which has %(free)s free; %(after)s would be left."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:223
+msgid "The catalog holds no checksum for %(files)s."
+msgid_plural "The catalog holds no checksums for %(files)s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/install_cmd.py:301
+msgid "Download a model's weights, resuming anything an earlier run left and checking every file against the catalog's checksum."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:344
+msgid "%(model)s %(quant)s is already here; nothing to do."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:354
+msgid "Start the download?"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:403
+msgid "Stopped. What arrived is kept; run `llamafit install model %(model)s` again to carry on from there."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:420
+msgid "%(count)d file, %(size)s, checked against the catalog."
+msgid_plural "%(count)d files, %(size)s, checked against the catalog."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/cli/install_cmd.py:436
+msgid "In %(path)s. Run `llamafit plan %(model)s` for the command line that runs it."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:498
+msgid "Show what has been downloaded, newest first."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:509
+msgid "Nothing has been downloaded yet."
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:511
+msgid "Downloads"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:512
+msgid "When"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:513
+msgid "Model"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:514
+msgid "Quant"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:516
+msgid "Outcome"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:524
+msgid "finished"
+msgstr ""
+
+#: src/llamafit/cli/install_cmd.py:524
+msgid "stopped"
 msgstr ""
 
 #: src/llamafit/cli/plan_cmd.py:42
@@ -1105,10 +1263,6 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1088
-msgid "Size"
-msgstr ""
-
 #: src/llamafit/cli/render.py:1089
 msgid "BPW"
 msgstr ""
@@ -1226,10 +1380,6 @@ msgstr ""
 #: src/llamafit/cli/render.py:1267
 #: src/llamafit/cli/render.py:1216
 msgid "From"
-msgstr ""
-
-#: src/llamafit/cli/render.py:1268
-msgid "File"
 msgstr ""
 
 #: src/llamafit/cli/render.py:1291
