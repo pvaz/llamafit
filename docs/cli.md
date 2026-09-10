@@ -395,14 +395,71 @@ non-interactive terminal behaves like `recommend`. See [tui.md](tui.md).
 - `install llama.cpp [--backend cuda|vulkan|metal|hip|cpu] [--dir PATH] [--add-to-path] [--yes]`
 - `install model <id> [--quant NAME] [--dir PATH] [--workers N] [--yes]`
 
-### `llamafit preset <model>` — phase 2
+### `llamafit preset` — phase 2, shipped
 
-Write launch scripts and a router preset section for a plan. Options: `--dir PATH`,
-`--port N`, `--quant NAME`, `--context N`.
+`llamafit preset <model>`: turn the plan for one model into files you can run and edit. A
+plan is a command line somebody has to paste; a preset is a script they can double-click,
+and it is what makes a recommendation survive contact with a real desktop.
 
-### `llamafit launch <model>` — phase 2
+Three files are written, into LlamaFit's own presets directory unless `--dir` says otherwise:
 
-Run a preset, wait for `/health`, print the endpoints; `--stop` stops a server LlamaFit started.
+| File | What it is |
+|---|---|
+| `start-<id>.cmd` or `start-<id>.sh` | the launch script, for this operating system |
+| `models-<id>.ini` | a section for a llama.cpp router's `models.ini` |
+| `README-<id>.md` | the endpoints, the context ladder, and what changes when the machine does |
+
+| Option | Effect |
+|---|---|
+| `--dir PATH` | Write the files here instead of in the presets directory. |
+| `--port N` | Bind this port instead of llama.cpp's default 8080. |
+| `--quant NAME` | Plan this quantisation instead of the one that scores best on this machine. |
+| `--context N` | Size for this many tokens. It becomes the **top** of the ladder; the script never goes above it. |
+| `--force` | Overwrite files you have edited, saying which ones it discarded. |
+
+**The script chooses its context when it runs.** The plan behind it was computed while the
+machine was idle; it runs when a browser has taken a gigabyte of the card. A configuration
+that asks for more card memory than is free does not fail on an NVIDIA driver — it starts,
+pages the overflow into system memory, and runs at a fraction of its speed while `/health`
+answers and the log looks healthy. So the script carries section 9.3's ladder rather than a
+number: it reads how much card memory is free, keeps 256 MiB back for the desktop, and takes
+the largest rung that still fits. It never goes *above* the planned context, because the
+planner weighed system memory and your request too and the script can only measure the card.
+
+How free memory is read, and what happens when it cannot be:
+
+| Machine | How | When it cannot |
+|---|---|---|
+| NVIDIA, any OS | `nvidia-smi --query-gpu=memory.free` | says so, uses the planned context, warns that it may page |
+| AMD on Linux | `/sys/class/drm/card*/device/mem_info_vram_{total,used}` | same |
+| Apple silicon | `vm_stat` free, inactive and speculative pages | same |
+| AMD or Intel on Windows, Intel on Linux | nothing a script can ask | the script's header says so once, rather than warning on every run |
+
+Exit codes of the generated script: **0** as llama-server exited, **3** the model file or
+llama.cpp is not where the script expects it, **4** not even the smallest rung fits the free
+card memory, so it stopped rather than page. `LLAMAFIT_CONTEXT` overrules the ladder for one
+run.
+
+**A file you have edited is never overwritten.** Each file carries a checksum of itself; a
+file whose checksum no longer matches has been changed, and LlamaFit keeps it and names it.
+`--force` replaces it and says that it did.
+
+### `llamafit launch` — phase 2, shipped
+
+`llamafit launch <model>`: run the model's preset **script** — not a command line rebuilt
+for the occasion, so the ladder still chooses the context and your own edits still apply —
+wait for `/health`, and print the endpoints. If no preset exists yet, one is written first.
+
+| Option | Effect |
+|---|---|
+| `--dir PATH` | Look for the preset here. |
+| `--port N` | The port to expect; otherwise the one the script itself names, which is what makes a hand-edited port work. |
+| `--timeout N` | Seconds to wait for `/health`. The default of 180 is set by how long reading twenty gigabytes of weights takes. |
+| `--stop` | Stop the server LlamaFit started for this model, and everything it started. |
+
+A server already answering on that endpoint is reported rather than joined by a second one.
+What was started is remembered by process id **and start time**, so `--stop` cannot aim at
+whatever inherited a recycled id.
 
 ### `llamafit bench [model]` — phase 3
 

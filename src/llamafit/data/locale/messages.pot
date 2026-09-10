@@ -344,6 +344,7 @@ msgstr ""
 #: src/llamafit/cli/catalog_cmd.py:199
 #: src/llamafit/cli/catalog_cmd.py:430
 #: src/llamafit/cli/plan_cmd.py:35
+#: src/llamafit/cli/preset_cmd.py:59
 msgid "A catalog model id."
 msgstr ""
 
@@ -508,6 +509,7 @@ msgid "It does not exist yet; create it and put a %(suffix)s file in it."
 msgstr ""
 
 #: src/llamafit/cli/plan_cmd.py:42
+#: src/llamafit/cli/preset_cmd.py:81
 msgid "Plan this quantisation instead of the one that scores best on this machine."
 msgstr ""
 
@@ -548,6 +550,202 @@ msgstr ""
 
 #: src/llamafit/cli/plan_cmd.py:146
 msgid "Leave the vision projector out, freeing its memory for context."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:66
+msgid "Write the files here instead of in LlamaFit's own presets directory."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:74
+msgid "Bind this port instead of llama.cpp's default 8080."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:90
+msgid "Size for this many tokens. It becomes the top of the ladder the script chooses from; the script never goes above it."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:160
+msgid "%(model)s does not fit this machine in any configuration"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:161
+msgid "Run `llamafit plan %(model)s` to see what it would need."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:189
+msgid ""
+"Write launch scripts for one model: a script that picks its context from free card memory at start time, a router section, and a README.\n"
+"\n"
+"A file you have edited is never overwritten without --force."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:208
+msgid "Overwrite files you have edited. It says which ones it discarded."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:228
+msgid "Run a model's preset, wait for the server to answer, and print its endpoints. --stop stops the server LlamaFit started."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:242
+msgid "Stop the server LlamaFit started for this model."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:250
+msgid "Seconds to wait for /health before reporting that it has not answered."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:269
+msgid "the preset could not be written"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:272
+msgid "Wrote a preset first: %(path)s"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:311
+msgid "Nothing to stop: LlamaFit has no record of starting %(model)s."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:320
+msgid "Stopped %(model)s, which was serving on %(url)s."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:373
+msgid "Preset for %(name)s (%(quant)s) in %(dir)s"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:386
+msgid "The server will answer on %(url)s."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:394
+msgid "Your edits were kept. Nothing above was written to those files; run the command again with --force to replace them."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:408
+msgid "At start time the script reads how much card memory is free, keeps %(reserve)s MiB back, and takes the largest context that still fits."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:412
+msgid "This machine has nothing the script can ask for free card memory, so it will start at %(context)s tokens; the script's header says why."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:420
+msgid "Files"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:424
+msgctxt "column heading"
+msgid "File"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:425
+msgctxt "column heading"
+msgid "What happened"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:436
+msgid "Context tiers the script may choose"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:438
+#: src/llamafit/cli/render.py:726
+#: src/llamafit/cli/render_board.py:371
+#: src/llamafit/cli/render_board.py:481
+msgctxt "column heading"
+msgid "Context"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:441
+#: src/llamafit/cli/render_board.py:373
+msgctxt "column heading"
+msgid "Card needs"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:444
+msgctxt "column heading"
+msgid "Free card memory to reach it"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:460
+msgid "%(value)s MiB"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:466
+msgid "written"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:467
+msgid "brought up to date"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:468
+msgid "already up to date"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:469
+msgid "kept: you edited it"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:470
+msgid "overwritten: your edits are gone"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:490
+msgid "The preset could not be started: %(error)s"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:500
+msgid "Started, but %(url)s has not answered yet. A large model can spend minutes reading its weights; try the health endpoint again in a moment, or run `llamafit launch %(model)s --stop`."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:511
+msgid "%(model)s was already serving on %(url)s."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:513
+msgid "%(model)s is serving on %(url)s."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:523
+msgid "Stop it with `llamafit launch %(model)s --stop`."
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:532
+msgid "Endpoints"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:533
+msgctxt "column heading"
+msgid "What"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:534
+#: src/llamafit/cli/render_board.py:283
+msgctxt "column heading"
+msgid "Where"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:536
+msgid "Web interface"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:537
+msgid "Chat completions"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:538
+#: src/llamafit/cli/render.py:888
+msgid "Models"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:539
+msgid "Health"
+msgstr ""
+
+#: src/llamafit/cli/preset_cmd.py:544
+msgid "Ask for the model by the alias %(alias)s."
 msgstr ""
 
 #: src/llamafit/cli/render.py:137
@@ -961,13 +1159,6 @@ msgctxt "column heading"
 msgid "Params"
 msgstr ""
 
-#: src/llamafit/cli/render.py:726
-#: src/llamafit/cli/render_board.py:371
-#: src/llamafit/cli/render_board.py:481
-msgctxt "column heading"
-msgid "Context"
-msgstr ""
-
 #: src/llamafit/cli/render.py:727
 msgctxt "column heading"
 msgid "Capabilities"
@@ -979,10 +1170,6 @@ msgstr ""
 
 #: src/llamafit/cli/render.py:755
 msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr ""
-
-#: src/llamafit/cli/render.py:888
-msgid "Models"
 msgstr ""
 
 #: src/llamafit/cli/render.py:948
@@ -1472,11 +1659,6 @@ msgctxt "column heading"
 msgid "Component"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:283
-msgctxt "column heading"
-msgid "Where"
-msgstr ""
-
 #: src/llamafit/cli/render_board.py:285
 msgctxt "column heading"
 msgid "From"
@@ -1496,11 +1678,6 @@ msgstr ""
 
 #: src/llamafit/cli/render_board.py:367
 msgid "Context tiers"
-msgstr ""
-
-#: src/llamafit/cli/render_board.py:373
-msgctxt "column heading"
-msgid "Card needs"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:377
