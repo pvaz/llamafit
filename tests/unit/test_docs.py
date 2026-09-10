@@ -59,6 +59,32 @@ def test_catalog_doc_documents_every_top_level_field() -> None:
         )
 
 
+def test_hardware_profile_doc_documents_every_top_level_field() -> None:
+    """Every field of the profile model is named in its field reference.
+
+    The names are read from the model, not listed here, so a field added tomorrow
+    fails this test until somebody documents it. A profile is data a person types by
+    hand, and an undocumented field is one nobody can be expected to fill in.
+    """
+    from llamafit.models.hwprofile import HardwareProfile
+
+    text = (ROOT / "docs" / "hardware-profiles.md").read_text(encoding="utf-8")
+    for name, field in HardwareProfile.model_fields.items():
+        documented = field.alias or name
+        assert re.search(rf"`{re.escape(documented)}[`.\[]", text), (
+            f"docs/hardware-profiles.md does not document the {documented!r} field"
+        )
+
+
+def test_the_bundled_profiles_are_listed_in_their_doc() -> None:
+    """A bundled profile is data somebody has to be able to trace; the table is where."""
+    from llamafit.hwprofile import bundled_profiles_dir, profile_files
+
+    text = (ROOT / "docs" / "hardware-profiles.md").read_text(encoding="utf-8")
+    for path in profile_files(bundled_profiles_dir()):
+        assert f"`{path.stem}`" in text, f"docs/hardware-profiles.md lacks {path.stem}"
+
+
 def test_models_md_matches_the_catalog() -> None:
     from scripts.gen_models_md import render_markdown
 

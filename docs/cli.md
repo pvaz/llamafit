@@ -18,8 +18,8 @@ built, and their flags may still change. The [roadmap](../ROADMAP.md) says what 
 | `--no-color` | Disable colours; useful when piping into files. |
 | `--language TAG` | Speak this language, for example `pt_PT`. It is read before anything is rendered, so `--language pt_PT --help` comes out in Portuguese too. Without it LlamaFit reads `LLAMAFIT_LANGUAGE`, then the operating system's locale, then falls back to English. A language it does not have falls back to English and names the ones it does have; a request served by another region's catalog says so. The notice goes to stderr, so `--json` stays machine-readable. See [translations.md](translations.md). |
 | `--version` | Print the version and exit. |
-| `--profile NAME\|FILE` | Score against a hardware profile instead of the live scan (phase 1C). |
-| `--memory SIZE`, `--ram SIZE`, `--cpu-cores N` | Override single values of the scan for a what-if (phase 1C). Sizes accept `8G`, `7.5GiB`, `512M`. |
+| `--profile NAME\|FILE` | Score against a hardware profile instead of the live scan. The profiles ship now (`llamafit hardware`); the flag arrives with the commands that score, in phase 1C. |
+| `--memory SIZE`, `--ram SIZE`, `--cpu-cores N` | Override single values of the scan for a what-if (phase 1C, as above). Sizes accept `8G`, `7.5GiB`, `512M`. |
 | `--max-context N` | Cap the context used for budgets and scores (phase 1C). |
 
 ### What `--json` does and does not translate
@@ -264,9 +264,46 @@ Placement, budget by component, context tier table, chosen flags and the full `l
 command line for one model on this host. Options: `--quant NAME`, `--context N`, `--ub N`,
 `--no-vision`, `--target-tps N` (what would be needed to reach a speed).
 
-### `llamafit hardware list|show|validate|path` — phase 1C
+### `llamafit hardware` `list|show|validate|path` — phase 1B, shipped
 
-Manage hardware profiles; see [hardware-profiles.md](hardware-profiles.md).
+Hardware profiles: a machine described in a file, so LlamaFit can answer for a machine
+that is not this one. See [hardware-profiles.md](hardware-profiles.md) for the format.
+
+- `list`: every profile LlamaFit can reach, bundled ones first, with the machine each
+  describes and where its file is.
+- `show <name|file> [--as-host]`: one profile, with the `provenance` line that says where
+  its figures came from. `--as-host` prints the `Host` the profile substitutes — the same
+  table `llamafit system` prints, opening with the line that says it is not this machine.
+- `validate [FILE]`: check the bundled profiles and your own (or just `FILE`); exit 1 on
+  any problem, listing each. Beyond the schema it reports a name two files claim, a GPU
+  figure that contradicts the bundled specification table, and `match` rules that would
+  never recognise the machine the profile itself describes.
+- `path`: the directory your own profiles go in.
+
+```
+$ llamafit hardware list
+                                Hardware profiles
+┌─────────────────────────┬─────────┬───────────────────────┬───────────────────────┐
+│ Name                    │ From    │ Machine               │ Description           │
+├─────────────────────────┼─────────┼───────────────────────┼───────────────────────┤
+│ reference-rtx4060-128gb │ bundled │ 128.0 GiB RAM, NVIDIA │ Reference machine:    │
+│                         │         │ GeForce RTX 4060 with │ RTX 4060 8 GB,        │
+│                         │         │ 8.0 GiB               │ i9-14900KF, 128 GiB   │
+│                         │         │                       │ DDR5-4200, Windows 11 │
+└─────────────────────────┴─────────┴───────────────────────┴───────────────────────┘
+
+$ llamafit hardware show reference-rtx4060-128gb --as-host
+Host
+  SIMULATED  these figures come from the hardware profile reference-rtx4060-128gb; they
+             are not this machine
+  OS         windows Windows-11-10.0.26200-SP0 (x86_64)
+  ...
+```
+
+`--json` gives the profile itself, the list of profiles, the `Host` (with `--as-host`) or
+the problems, whichever the subcommand is about. A host built from a profile carries
+`"simulated": true` and a `simulation` object naming the profile and its file, so a script
+can tell a what-if from a scan without reading a heading.
 
 ### `llamafit serve` — phase 1D
 
@@ -304,6 +341,7 @@ estimated versus measured. Options: `--all`, `--quant NAME`, `--context N`, `--j
 |---|---|
 | `LLAMAFIT_HOME` | Put config, data, cache, logs and downloads under one directory. |
 | `LLAMAFIT_CUSTOM_MODELS` | Path of the custom models file (default under the data directory). |
+| `LLAMAFIT_PROFILES` | Directory holding your own hardware profiles (default `profiles` under the data directory). |
 | `LLAMA_CPP_PATH` | Directory (or install root) that holds `llama-server`; checked before `PATH`. |
 | `LLAMA_SERVER_PORT` | First port to probe for a running server (then 8080, 8081, 8098). |
 | `LLAMA_CACHE` | llama.cpp's model cache directory; its GGUF files are listed as local models. |
