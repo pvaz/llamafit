@@ -139,9 +139,10 @@ def test_a_board_that_did_not_move_the_speed_floor_says_nothing_about_it() -> No
 def test_a_batch_request_ranks_the_model_the_reading_floor_removes() -> None:
     """The board a person with nobody waiting gets: the slow model is on it.
 
-    Both boards ask for every row. The default limit is a display choice and would
-    otherwise decide this test as the catalog grows: a slow model is ranked last by
-    construction, so the first ten rows are exactly where it will not be.
+    Both boards ask for every row. The default limit is a display choice, and a slow
+    model is ranked last by construction, so the first ten rows are exactly where it
+    will not be -- letting the limit decide this test would hide the model for a reason
+    that has nothing to do with the speed floor.
     """
     plain = json.loads(runner.invoke(app, ["--json", "recommend", "--limit", "500"]).output)
     batch = json.loads(
@@ -167,8 +168,15 @@ def test_a_raised_floor_is_named_under_the_board_and_in_every_reason() -> None:
     text = flat(result.output)
     assert "--min-tps 12" in text
     assert "at least that many tokens per second" in text
-    # The reason wraps inside its cell, so only the part that survives one line is asserted.
-    assert "the 12 this request asks for" in text
+    # The reason itself is read from the JSON board rather than from the rendered table.
+    # Rich wraps it inside its cell and the column widths move with the longest model id
+    # in the catalog, so asserting on the wrapped text made the reason's presence depend
+    # on which families happen to be catalogued.
+    data = json.loads(
+        runner.invoke(app, ["--language", "en", "--json", "recommend", "--min-tps", "12"]).output
+    )
+    reasons = [row["candidate"]["excluded_because"] or "" for row in data["excluded"]]
+    assert any("the 12 this request asks for" in reason for reason in reasons)
 
 
 def test_a_speed_floor_below_zero_is_refused_by_the_flag() -> None:

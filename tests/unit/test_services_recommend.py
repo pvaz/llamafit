@@ -125,12 +125,14 @@ def test_the_general_board_no_longer_leads_with_a_model_slower_than_its_reader()
     """
     board = build_board(catalog(), reference_host(), Needs(use_case="general"))
     assert board.rows, "something on this machine should be readable"
-    # Which model leads is a fact about the catalog and moves when a curator changes an
-    # entry. What has to stay true is that whatever leads is something its reader can
-    # keep up with; the line below says the slow one is not even on the ranked half.
-    leader = board.rows[0].candidate.speed
-    assert leader is not None, "the leading row is scored on a speed, not on quality alone"
-    assert leader.gen_tps >= READING_TPS
+    # Asserted as the property, not as one model's id. The defect was a board led by a
+    # model nobody could read along with; which entry leads depends on what the catalog
+    # holds on the day, and pinning the id here made every new family a failing test.
+    # Every ranked row is checked rather than only the first: the floor is a promise
+    # about the whole board.
+    for row in board.rows:
+        assert row.candidate.speed is not None
+        assert row.candidate.speed.gen_tps >= READING_TPS, row.model_id
     assert "gemma-3-27b-it" not in ids(board.rows)
 
     slow = next(row for row in board.excluded if row.model_id == "gemma-3-27b-it")

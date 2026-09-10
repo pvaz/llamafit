@@ -1,0 +1,334 @@
+# Mistral AI's edge line: "les Ministraux", the models meant to run on a laptop or a small
+# card. Sourced from the vendor's Hugging Face model cards, the release announcements and
+# the GGUF repositories, which for the Ministral 3 generation are Mistral's own.
+# Primary sources used for this file:
+#   - Ministral 3 model cards (one per size; the benchmark tables are identical across them
+#     and are quoted from the 14B card):
+#     https://huggingface.co/mistralai/Ministral-3-14B-Instruct-2512
+#     https://huggingface.co/mistralai/Ministral-3-8B-Instruct-2512
+#     https://huggingface.co/mistralai/Ministral-3-3B-Instruct-2512
+#     https://huggingface.co/mistralai/Ministral-3-14B-Reasoning-2512
+#     https://huggingface.co/mistralai/Ministral-3-8B-Reasoning-2512
+#   - Ministral 3 announcement: https://mistral.ai/news/mistral-3
+#   - Ministral 3 paper: https://arxiv.org/abs/2601.08584
+#   - Official Ministral 3 GGUF repositories, for example:
+#     https://huggingface.co/mistralai/Ministral-3-14B-Instruct-2512-GGUF
+#   - ministral-8b-instruct-2410 model card:
+#     https://huggingface.co/mistralai/Ministral-8B-Instruct-2410
+#   - les Ministraux announcement: https://mistral.ai/news/ministraux
+#
+# THE LICENCE IS NOT THE SAME ACROSS THIS FAMILY. Every Ministral 3 model (the 2512
+# generation) is Apache-2.0 and may be used commercially. Ministral 8B Instruct 2410 is
+# under the Mistral AI Research License, whose section 3.2 reads "You shall only use the
+# Mistral Models, Derivatives (whether or not created by Mistral AI) and Outputs for
+# Research Purposes" — research only, commercial use requires a separate licence from
+# Mistral. Two models called "Ministral 8B" sit in this file and only one of them may be
+# put into a product.
+#
+# The Ministral 3 benchmark tables are split into Reasoning, Instruct and Base sections.
+# Each entry below quotes only its own section: the Instruct entries carry Instruct-table
+# numbers and the Reasoning entries carry Reasoning-table numbers. No base-checkpoint score
+# appears anywhere in this file.
+- id: ministral-3-3b-instruct
+  name: Ministral 3 3B Instruct 2512
+  vendor: Mistral AI
+  family: ministral
+  release_date: 2025-12-02
+  license:
+    spdx: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0.txt"
+  # The card splits the model into a 3.4B language model and a 0.4B vision encoder. The
+  # figure here is the language model alone, because that is what the GGUF quant holds:
+  # the vision encoder ships as the separate projector declared under extras.
+  params: { total_b: 3.4, active_b: 3.4 }
+  architecture:
+    class: dense
+    gguf_arch: mistral3
+    notes: >-
+      Dense, with the rope-scaling and scalable-softmax attention shared across the
+      Ministral 3 generation. The smallest model in the catalog that still carries a vision
+      encoder and a 256k context, which is the whole point of the edge line.
+  context: { native: 262144 }
+  capabilities: [vision, tools, multilingual, long-context]
+  use_cases: [general, chat, multimodal]
+  quality:
+    baseline: 60
+    benchmarks:
+      # From the "Instruct" table. Arena Hard and MATH are published as fractions and
+      # recorded here exactly as published; WildBench and MM MTBench are not.
+      - name: Arena Hard
+        score: 0.305
+        source: "https://huggingface.co/mistralai/Ministral-3-3B-Instruct-2512"
+      - name: WildBench
+        score: 56.8
+        source: "https://huggingface.co/mistralai/Ministral-3-3B-Instruct-2512"
+      - name: MATH (maj@1)
+        score: 0.830
+        source: "https://huggingface.co/mistralai/Ministral-3-3B-Instruct-2512"
+      - name: MM MTBench
+        score: 7.83
+        source: "https://huggingface.co/mistralai/Ministral-3-3B-Instruct-2512"
+  # "Use a temperature below 0.1 for daily-driver and production environments."
+  sampling: { temp: 0.1 }
+  sources:
+    - repo: mistralai/Ministral-3-3B-Instruct-2512-GGUF
+      kind: gguf
+      trust: official
+      # Only two: at 3.4B the whole model is small enough that Q8_0 is an ordinary choice
+      # rather than a luxury, and nothing below four bits buys a laptop anything useful.
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q8_0 }
+      extras:
+        - { role: mmproj, file: Ministral-3-3B-Instruct-2512-BF16-mmproj.gguf }
+
+- id: ministral-3-8b-instruct
+  name: Ministral 3 8B Instruct 2512
+  vendor: Mistral AI
+  family: ministral
+  release_date: 2025-12-02
+  license:
+    spdx: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0.txt"
+  # 8.4B language model plus a 0.4B vision encoder; the quant holds the former.
+  params: { total_b: 8.4, active_b: 8.4 }
+  architecture:
+    class: dense
+    gguf_arch: mistral3
+    notes: >-
+      Dense. The card puts it in 12 GB of VRAM at FP8 and less once quantised, which at
+      four bits makes it the largest of this family that a plain 8 GB card holds outright.
+  context: { native: 262144 }
+  capabilities: [vision, tools, multilingual, long-context]
+  use_cases: [general, chat, multimodal]
+  quality:
+    baseline: 70
+    benchmarks:
+      - name: Arena Hard
+        score: 0.509
+        source: "https://huggingface.co/mistralai/Ministral-3-8B-Instruct-2512"
+      - name: WildBench
+        score: 66.8
+        source: "https://huggingface.co/mistralai/Ministral-3-8B-Instruct-2512"
+      - name: MATH (maj@1)
+        score: 0.876
+        source: "https://huggingface.co/mistralai/Ministral-3-8B-Instruct-2512"
+      - name: MM MTBench
+        score: 8.08
+        source: "https://huggingface.co/mistralai/Ministral-3-8B-Instruct-2512"
+  sampling: { temp: 0.1 }
+  sources:
+    - repo: mistralai/Ministral-3-8B-Instruct-2512-GGUF
+      kind: gguf
+      trust: official
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q5_K_M }
+        - { name: Q8_0 }
+      extras:
+        - { role: mmproj, file: Ministral-3-8B-Instruct-2512-BF16-mmproj.gguf }
+
+- id: ministral-3-14b-instruct
+  name: Ministral 3 14B Instruct 2512
+  vendor: Mistral AI
+  family: ministral
+  release_date: 2025-12-02
+  license:
+    spdx: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0.txt"
+  # 13.5B language model plus a 0.4B vision encoder; the quant holds the former.
+  params: { total_b: 13.5, active_b: 13.5 }
+  architecture:
+    class: dense
+    gguf_arch: mistral3
+    notes: >-
+      Dense, 40 layers. Mistral's own card claims performance comparable to the 24B
+      Mistral Small 3.2 from a model two thirds the size, which is what makes this the
+      interesting entry for a 12 GB card.
+  context: { native: 262144 }
+  capabilities: [vision, tools, multilingual, long-context]
+  use_cases: [general, chat, multimodal]
+  quality:
+    baseline: 75
+    benchmarks:
+      - name: Arena Hard
+        score: 0.551
+        source: "https://huggingface.co/mistralai/Ministral-3-14B-Instruct-2512"
+      - name: WildBench
+        score: 68.5
+        source: "https://huggingface.co/mistralai/Ministral-3-14B-Instruct-2512"
+      - name: MATH (maj@1)
+        score: 0.904
+        source: "https://huggingface.co/mistralai/Ministral-3-14B-Instruct-2512"
+      - name: MM MTBench
+        score: 8.49
+        source: "https://huggingface.co/mistralai/Ministral-3-14B-Instruct-2512"
+  sampling: { temp: 0.1 }
+  sources:
+    - repo: mistralai/Ministral-3-14B-Instruct-2512-GGUF
+      kind: gguf
+      trust: official
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q5_K_M }
+        - { name: Q8_0 }
+      extras:
+        - { role: mmproj, file: Ministral-3-14B-Instruct-2512-BF16-mmproj.gguf }
+
+- id: ministral-3-8b-reasoning
+  name: Ministral 3 8B Reasoning 2512
+  vendor: Mistral AI
+  family: ministral
+  release_date: 2025-12-02
+  license:
+    spdx: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0.txt"
+  params: { total_b: 8.4, active_b: 8.4 }
+  architecture:
+    class: dense
+    gguf_arch: mistral3
+    notes: >-
+      The same 8.4B dense body as ministral-3-8b-instruct with a reasoning post-training
+      on top; it emits a [THINK]...[/THINK] trace before answering, so its answers cost
+      considerably more generated tokens than the instruct model's for the same question.
+  context: { native: 262144 }
+  # coding is claimed from a published LiveCodeBench score, not from the family's general
+  # reputation; the instruct siblings publish no code benchmark and so do not claim it.
+  capabilities: [coding, thinking, vision, tools, multilingual, long-context]
+  use_cases: [reasoning, coding, general, chat, multimodal]
+  quality:
+    baseline: 72
+    benchmarks:
+      # From the "Reasoning" table, which is the table for this checkpoint.
+      - name: AIME25
+        score: 0.787
+        source: "https://huggingface.co/mistralai/Ministral-3-8B-Reasoning-2512"
+      - name: AIME24
+        score: 0.860
+        source: "https://huggingface.co/mistralai/Ministral-3-8B-Reasoning-2512"
+      - name: GPQA Diamond
+        score: 0.668
+        source: "https://huggingface.co/mistralai/Ministral-3-8B-Reasoning-2512"
+      - name: LiveCodeBench
+        score: 0.616
+        source: "https://huggingface.co/mistralai/Ministral-3-8B-Reasoning-2512"
+  # "Use a temperature of 1 for most environments"; TOP_P = 0.95 in the card's examples.
+  sampling: { temp: 1.0, top_p: 0.95 }
+  sources:
+    - repo: mistralai/Ministral-3-8B-Reasoning-2512-GGUF
+      kind: gguf
+      trust: official
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q8_0 }
+      extras:
+        - { role: mmproj, file: Ministral-3-8B-Reasoning-2512-BF16-mmproj.gguf }
+
+- id: ministral-3-14b-reasoning
+  name: Ministral 3 14B Reasoning 2512
+  vendor: Mistral AI
+  family: ministral
+  release_date: 2025-12-02
+  license:
+    spdx: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0.txt"
+  params: { total_b: 13.5, active_b: 13.5 }
+  architecture:
+    class: dense
+    gguf_arch: mistral3
+    notes: >-
+      The reasoning post-training of the 13.5B dense body, emitting a [THINK]...[/THINK]
+      trace before its answer. Mistral recommends keeping those traces in context across
+      turns, so a conversation with this model fills its context faster than the token
+      count of the visible replies suggests.
+  context: { native: 262144 }
+  capabilities: [coding, thinking, vision, tools, multilingual, long-context]
+  use_cases: [reasoning, coding, general, chat, multimodal]
+  quality:
+    baseline: 77
+    benchmarks:
+      - name: AIME25
+        score: 0.850
+        source: "https://huggingface.co/mistralai/Ministral-3-14B-Reasoning-2512"
+      - name: AIME24
+        score: 0.898
+        source: "https://huggingface.co/mistralai/Ministral-3-14B-Reasoning-2512"
+      - name: GPQA Diamond
+        score: 0.712
+        source: "https://huggingface.co/mistralai/Ministral-3-14B-Reasoning-2512"
+      - name: LiveCodeBench
+        score: 0.646
+        source: "https://huggingface.co/mistralai/Ministral-3-14B-Reasoning-2512"
+  sampling: { temp: 1.0, top_p: 0.95 }
+  sources:
+    - repo: mistralai/Ministral-3-14B-Reasoning-2512-GGUF
+      kind: gguf
+      trust: official
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q5_K_M }
+        - { name: Q8_0 }
+      extras:
+        - { role: mmproj, file: Ministral-3-14B-Reasoning-2512-BF16-mmproj.gguf }
+
+- id: ministral-8b-instruct-2410
+  name: Ministral 8B Instruct 2410
+  vendor: Mistral AI
+  family: ministral
+  release_date: 2024-10-16
+  license:
+    # NOT an open-source licence and NOT Apache-2.0, unlike every other model in this file.
+    # The Mistral AI Research License permits research use only; section 3.2 states "You
+    # shall only use the Mistral Models, Derivatives ... and Outputs for Research
+    # Purposes", and Mistral's own card says to contact them for a commercial licence.
+    # Anyone who wants an 8B Ministral in a product wants ministral-3-8b-instruct instead.
+    spdx: mrl-0.1
+    url: "https://mistral.ai/licenses/MRL-0.1.md"
+  # The card gives the exact count: 8,019,808,256 parameters.
+  params: { total_b: 8.02, active_b: 8.02 }
+  architecture:
+    class: dense
+    gguf_arch: llama
+    notes: >-
+      36 layers, 32 heads, 8 key/value heads, with the ragged interleaved sliding-window
+      attention pattern (128k, 32k, 32k, 32k) the card describes. Superseded by
+      ministral-3-8b-instruct on every axis including the licence; kept because it is what
+      a search for "Ministral 8B" still finds first.
+  context:
+    # The card documents 128k. The published GGUF conversion declares 32,768 in its header,
+    # so 32,768 is what this file records: the number here has to describe what the file
+    # a person downloads will actually do, not what the safetensors release claims.
+    native: 32768
+  capabilities: [coding, tools, multilingual]
+  use_cases: [general, chat, coding]
+  quality:
+    baseline: 58
+    benchmarks:
+      # From the card's "Instruct Models" tables. Its Arena Hard figure (70.9) comes from a
+      # different harness and judge than the Ministral 3 cards' Arena Hard figures and the
+      # two are not comparable with each other.
+      - name: MTBench
+        score: 8.3
+        source: "https://huggingface.co/mistralai/Ministral-8B-Instruct-2410"
+      - name: WildBench
+        score: 41.3
+        source: "https://huggingface.co/mistralai/Ministral-8B-Instruct-2410"
+      - name: HumanEval (pass@1)
+        score: 76.8
+        source: "https://huggingface.co/mistralai/Ministral-8B-Instruct-2410"
+      - name: MBPP (pass@1)
+        score: 70.0
+        source: "https://huggingface.co/mistralai/Ministral-8B-Instruct-2410"
+      - name: MATH (maj@1)
+        score: 54.5
+        source: "https://huggingface.co/mistralai/Ministral-8B-Instruct-2410"
+  sources:
+    # Mistral published no GGUF for this model and neither did any of the usual
+    # converters, so this is a community conversion — the weakest source in the file, and
+    # the reason its context above had to be taken from the file rather than the card.
+    - repo: mradermacher/Ministral-8B-Instruct-2410-GGUF
+      kind: gguf
+      trust: community
+      quants:
+        - { name: Q4_K_M }
+        - { name: Q6_K }
