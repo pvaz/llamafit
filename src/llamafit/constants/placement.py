@@ -38,6 +38,16 @@ reference machine measured 25, 50 and 77 prompt tokens per second at 512, 1024 a
 for the same model, and 4096 was slower than 2048, which is why the ladder stops there.
 """
 
+DEFAULT_MICRO_BATCH = MICRO_BATCH_LADDER[2]
+"""llama.cpp's own ``-ub``, and so what a recorded run that does not name one was using.
+
+512, which is the value llama.cpp has carried for its whole history and the middle rung of
+the ladder above. It exists so the speed estimator can read an absent ``-ub`` as a
+statement rather than as a blank: a benchmark that names no micro-batch was taken at this
+one, and a benchmark taken at this one is not a benchmark of a placement asking for 2048,
+which the same machine measured at nearly three times the prompt throughput.
+"""
+
 ALL_GPU_LAYERS = 99
 """What ``-ngl`` is when every layer goes to the card (section 9.1).
 

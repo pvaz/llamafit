@@ -24,7 +24,7 @@ from typing import NamedTuple
 
 import pytest
 
-from llamafit.models.plan import Placement, RunMode
+from llamafit.models.plan import Placement, Pool, RunMode
 from llamafit.speed import (
     Formula,
     estimate_speed,
@@ -51,6 +51,11 @@ class Run(NamedTuple):
     working_context: int
     gen_tps: float
     pp_tps: float
+    # Where the always-on shared experts and the vision projector went. Neither enters
+    # the traffic model, and both are how the estimator tells the reference machine's two
+    # Flash-Next runs apart: one put them on the card, the winning one did not.
+    shared_experts_pool: Pool | None = None
+    projector_pool: Pool | None = None
 
 
 DENSE_IN_RAM = Run(
@@ -97,6 +102,17 @@ FLASH = Run(
     1056,
     13.9,
     49.4,
+    shared_experts_pool="ram",
+    projector_pool="ram",
+)
+FLASH_EXPERTS_ON_CARD = FLASH._replace(
+    label="Qwen3.8-Flash-Next, shared experts and vision on the card",
+    context=16384,
+    micro_batch=2048,
+    gen_tps=14.5,
+    pp_tps=50.0,
+    shared_experts_pool=None,
+    projector_pool="vram",
 )
 ALL_FOUR = [DENSE_IN_RAM, DENSE_ON_CARD, CODER, FLASH]
 EXPERT_MODELS = [CODER, FLASH]
@@ -109,6 +125,8 @@ def placement_for(run: Run) -> Placement:
         cpu_moe_layers=run.cpu_moe_layers,
         context=run.context,
         micro_batch=run.micro_batch,
+        shared_experts_pool=run.shared_experts_pool,
+        projector_pool=run.projector_pool,
     )
 
 
@@ -216,12 +234,14 @@ def test_generation_barely_moves_with_the_micro_batch() -> None:
     """Which is why a generation benchmark is matched on the offload and not on ``-ub``.
 
     The reference machine measured Flash-Next at 14.5 tokens per second with ``-ub 2048``
-    and 13.9 with ``-ub 1024``. Taking the first as a benchmark of the second's
-    configuration costs four percent, and refusing to would cost the label entirely.
+    and 13.9 with ``-ub 1024``. Asked about that same placement at 1024, the ``-ub 2048``
+    run is still a benchmark of it: the micro-batch moves no byte between pools, and
+    refusing it would cost the label to buy four percent.
     """
     anchor = [m for m in catalog_model("qwen3.8-flash-next").measured if m.context == 16384]
+    at_1024 = placement_for(FLASH_EXPERTS_ON_CARD._replace(micro_batch=1024))
     estimate = estimate_speed(
-        placement_for(FLASH),
+        at_1024,
         catalog_facts(FLASH.model_id, FLASH.quant),
         reference_host(),
         working_context=FLASH.working_context,
@@ -229,7 +249,31 @@ def test_generation_barely_moves_with_the_micro_batch() -> None:
         quant=FLASH.quant,
         measurements=anchor,
     )
-    assert estimate.gen_tps == pytest.approx(13.9, rel=0.05)
+    assert estimate.gen_tps == pytest.approx(14.5)
+    assert "Generation is a benchmark of this configuration" in " ".join(estimate.notes)
+
+
+def test_the_two_flash_next_runs_are_not_benchmarks_of_each_other() -> None:
+    """The winning configuration moved the shared experts and the projector off the card.
+
+    Both runs are Flash-Next at UD-Q4_K_XL on the same machine on the same day, and one of
+    them is 862 MB of projector and 239 MB of shared experts lighter on an eight-gigabyte
+    card. A benchmark of the first is not a benchmark of the second, and the label has to
+    say so: 14.5 tokens per second reported as a measurement of the configuration that ran
+    at 13.9 is the kind of false ``measured`` that is worse than no label at all.
+    """
+    runs = catalog_model("qwen3.8-flash-next").measured
+    estimate = estimate_speed(
+        placement_for(FLASH),
+        catalog_facts(FLASH.model_id, FLASH.quant),
+        reference_host(),
+        working_context=FLASH.working_context,
+        active_params=FLASH.active_params,
+        quant=FLASH.quant,
+        measurements=[m for m in runs if m.context == 16384],
+    )
+    assert estimate.confidence == "calibrated"
+    assert estimate.gen_tps != pytest.approx(14.5)
 
 
 # --- Prompt processing, which section 10.2 has not had the same treatment ------------

@@ -9,7 +9,7 @@ from llamafit.catalog.loader import load_catalog
 from llamafit.models.catalog import CatalogModel
 from llamafit.models.gguf import GgufFacts
 from llamafit.models.host import Cpu, Gpu, Host, Memory
-from llamafit.models.plan import Budget, Placement, RunMode, Verdict
+from llamafit.models.plan import Budget, Placement, Pool, RunMode, Verdict
 
 REFERENCE_RAM_GBPS = 57.0
 """What the NumPy read benchmark reports on the reference machine (bandwidth.py)."""
@@ -87,6 +87,8 @@ def placement(
     kv_type: str = "f16",
     gpu_layers: int = 99,
     cpu_moe_layers: int | None = 48,
+    shared_experts_pool: Pool | None = None,
+    projector_pool: Pool | None = None,
     verdict: Verdict = "fits",
 ) -> Placement:
     """A placement, defaulting to the reference machine's expert-offload configuration."""
@@ -98,6 +100,8 @@ def placement(
         kv_type=kv_type,
         gpu_layers=gpu_layers,
         cpu_moe_layers=cpu_moe_layers,
+        shared_experts_pool=shared_experts_pool,
+        projector_pool=projector_pool,
         threads=8,
         budget=budget(verdict),
         max_context_fit=context,
