@@ -157,7 +157,6 @@ def test_the_whole_bonus_is_five_points_or_none(catalog: Catalog) -> None:
 
 def test_asking_for_a_job_asks_for_the_ability_behind_it() -> None:
     assert required_capability("coding") == "coding"
-    assert required_capability("reasoning") == "thinking"
     assert required_capability("multimodal") == "vision"
     assert required_capability("embedding") == "embeddings"
 
@@ -168,6 +167,15 @@ def test_the_two_unspecialised_jobs_ask_for_nothing() -> None:
     # keeps a coding model on a general board instead of hiding the best answer.
     assert required_capability("general") is None
     assert required_capability("chat") is None
+
+
+def test_reasoning_asks_for_nothing_because_thinking_is_a_mechanism() -> None:
+    # `thinking` is a mode the chat template toggles, not the ability to reason, and every
+    # instruction-tuned model reasons. Gating the job on the mechanism excluded good
+    # generalists and told the reader "no thinking capability", which reads as "cannot
+    # reason". Which model reasons better is a matter of degree and belongs in the score.
+    assert required_capability("reasoning") is None
+    assert "thinking" in get_args(Capability)
 
 
 def test_every_use_case_has_been_decided_about() -> None:
@@ -193,11 +201,12 @@ def test_the_capability_a_job_asks_for_is_read_off_the_model_not_its_use_cases(
 ) -> None:
     llama = model_of(catalog, "llama-3.1-8b-instruct")
     # Its entry offers itself for reasoning and never for coding. Neither claim decides
-    # anything: what decides is that it cannot code and cannot think, both facts about the
-    # weights, and both are what a coding or reasoning request will be told.
+    # anything: what decides is that it cannot code, a fact about the weights, and that is
+    # what a coding request will be told. A reasoning request keeps it, because reasoning
+    # asks for no capability at all.
     assert "reasoning" in llama.use_cases
     assert required_capability("coding") not in llama.capabilities
-    assert required_capability("reasoning") not in llama.capabilities
+    assert required_capability("reasoning") is None
 
 
 def test_the_breakdown_keeps_all_three_parts_and_their_sum(catalog: Catalog) -> None:

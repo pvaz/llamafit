@@ -61,7 +61,7 @@ CAPABILITY_FOR_USE_CASE: Mapping[str, Capability | None] = MappingProxyType(
     {
         "general": None,
         "coding": "coding",
-        "reasoning": "thinking",
+        "reasoning": None,
         "chat": None,
         "multimodal": "vision",
         "embedding": "embeddings",
@@ -74,14 +74,26 @@ between them. ``use_cases`` is what a model is *for*, which is a curator's empha
 writing *coding* first says the entry's baseline was set against coding work. ``capabilities``
 is what a model can *do*, which is a fact about the weights. A request names a job, and the
 job is only worth turning into a requirement where there is a fact behind it — so a coding
-request asks for the coding capability, a reasoning one for thinking, a multimodal one for
-vision, an embedding one for embeddings.
+request asks for the coding capability, a multimodal one for vision, an embedding one for
+embeddings.
 
 ``general`` and ``chat`` require nothing, and the ``None`` is an answer rather than a gap.
 They are the absence of a specialisation rather than a specialisation of their own: there
 is no ability a model could lack that would make it unfit to hold a conversation, and a
 model built for one job is a perfectly reasonable thing to ask about another. Anything that
 runs can be talked to.
+
+``reasoning`` requires nothing either, and that one was decided the other way first.
+``thinking`` names a *mechanism* — a mode the chat template can toggle, which is why
+:class:`ChatTemplate` carries ``thinking_toggle`` beside it — and not the ability to
+reason. Every instruction-tuned model reasons; some do it in an explicit pass the reader
+can watch. Gating the job on the mechanism excluded strong general models from work they
+do perfectly well and told the reader "no thinking capability", which reads as "cannot
+reason" and is false. The difference between a thinking model and a good generalist on
+this job is one of degree, and degree belongs in the score: a reasoning model lists
+``reasoning`` first and takes the primary-use-case bonus, and its baseline was set against
+reasoning benchmarks in the first place. A gate is for what a model *cannot* do — see an
+image, produce an embedding — and it earns that severity by being unarguable.
 
 The table is exhaustive on purpose. A use case with no entry would quietly require nothing,
 which is the most permissive answer available and the least likely to be the one anybody

@@ -207,13 +207,16 @@ rejected when the catalog loads, not when a memory budget is computed from it.
 `capabilities` and `use_cases` are different kinds of claim and are used differently.
 `capabilities` is what the weights can do, and it is the only one a board filters on: a request
 asks for a capability by naming it, and by naming a job that needs one — coding needs the
-coding capability, reasoning needs thinking, multimodal needs vision, embedding needs
-embeddings, and `general` and `chat` need nothing at all. `use_cases` is the curator's emphasis
+coding capability, multimodal needs vision, embedding needs embeddings, and `general`, `chat`
+and `reasoning` need nothing at all. `reasoning` is the one worth explaining: `thinking` names
+the mode a chat template toggles, not the ability to reason, and every instruction-tuned model
+reasons. Which one reasons *better* is a matter of degree, and degree is scored rather than
+gated. `use_cases` is the curator's emphasis
 and gates nothing. It earns a model +5 when the request names the *first* entry, the job the
 baseline was set against, and `llamafit list --use-case` browses on the whole list. So writing
 a job into an entry is a recommendation and never a restriction: a model that lists only
-`coding` still competes for a general or chat request, and one that lists `reasoning` without
-the `thinking` capability is not excused the capability by saying so. Add a use case when the
+`coding` still competes for a general or chat request, and one that lists `multimodal` without
+the `vision` capability is not excused the capability by saying so. Add a use case when the
 model really is a good answer for that job, and add a capability only when it is a fact.
 
 `bpw` is not the download divided by the parameter count: it divides the *weight* bytes, the

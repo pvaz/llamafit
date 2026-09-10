@@ -509,9 +509,22 @@ Every estimate carries one label, in this precedence: `measured` (a stored bench
 - `quant_penalty`: Q8 0, Q6 1, Q5 2, Q4_K_XL and Q4_K_M 4, IQ4 6, Q3 10, IQ3 12, Q2 20, IQ2 24, IQ1 35. Dynamic (`UD-`) quants use the penalty of their base level minus 1.
 - `alignment_bonus`: +5 when the requested use case is the model's *primary* one, meaning the first entry in its `use_cases`, and 0 when the model merely lists it. That distinguishes a model built for the job from one that also does it, and unlike a bonus counted over required capabilities it actually varies between surviving candidates: every survivor has every required capability by definition, so a term counting them changes no ordering and only looks as though it does.
 
-**A model is excluded when the requested use case is not in its `use_cases` at all**, with the reason said plainly, and likewise when a required capability is missing. The catalog is curated by hand precisely so that a model's declared purpose means something; a request for coding must not return a model whose own entry says it is for general chat and reasoning. Without this rule the seeded Llama 3.1 8B, which declares neither the coding use case nor the coding capability, ranks second for a coding request on the reference machine, carried there by fit and a capped speed score. No weighting fixes that, because the defect is that an unsuitable candidate was allowed to compete at all. When a model really is good at something its entry does not claim, the fix is a one-line catalog change, which is the kind of correction this project wants to be easy.
+**A model is excluded when it lacks a capability the request needs**, with the missing ability named. The request can name one outright with `--require`, and asking for a job names one too, through the table below. What is *not* an exclusion is the use case: `use_cases` is a curator's emphasis, `capabilities` is a fact about the weights, and only a fact is allowed to hide a model. An earlier reading excluded a model whose `use_cases` did not contain the requested one, and it threw good answers away — ask this catalog for a general model and Qwen3-Coder-Next, the fastest thing that fits the reference machine, was not ranked at all, because a coding model is a perfectly reasonable thing to hold a general conversation with and nothing in its entry said otherwise. It also turned every curator's judgement call into a hard filter they did not know they were setting. The case that rule was written for survives unharmed: the seeded Llama 3.1 8B lacks the coding *capability* as well as the coding use case, so a coding request still excludes it, and now for the reason that was always the real one.
 
-The exclusions are in three places and a reader should be told where: **11.1** excludes a model whose entry does not claim the use case, or which lacks a required capability; **11.2** excludes one that cannot hold `--min-context`; **11.4** excludes one slower than its reader. All three are exclusions rather than filters — the candidate appears with its reason, its placement and whatever else was learned about it — and all three name the thing the reader can change.
+| Use case | Capability it requires |
+|---|---|
+| general | — |
+| coding | `coding` |
+| reasoning | — |
+| chat | — |
+| multimodal | `vision` |
+| embedding | `embeddings` |
+
+Three of the six require nothing, and each `—` is a decision rather than a gap. `general` and `chat` are the absence of a specialisation: no ability a model could lack makes it unfit to be talked to. `reasoning` was decided the other way first, requiring `thinking`, and that was a category error — `thinking` names a *mechanism*, the mode a chat template toggles, not the ability to reason. Every instruction-tuned model reasons; some do it in an explicit pass the reader can watch. Gating the job on the mechanism excluded strong generalists from work they do well and told the reader "no thinking capability", which reads as "cannot reason" and is false. That difference is one of degree, and degree belongs in the score: a reasoning model lists `reasoning` first and takes the alignment bonus, and its baseline was set against reasoning benchmarks to begin with. A gate is for what a model *cannot* do — see an image, produce an embedding — and it earns that severity by being unarguable.
+
+When a model really is good at something its entry does not claim, the fix is a one-line catalog change, which is the kind of correction this project wants to be easy.
+
+The exclusions are in three places and a reader should be told where: **11.1** excludes a model lacking a required capability; **11.2** excludes one that cannot hold `--min-context`; **11.4** excludes one slower than its reader. All three are exclusions rather than filters — the candidate appears with its reason, its placement and whatever else was learned about it — and all three name the thing the reader can change.
 
 ### 11.2 Context
 
