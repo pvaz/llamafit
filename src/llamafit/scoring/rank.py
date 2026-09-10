@@ -30,8 +30,9 @@ that sorted by a number it did not show.
 from __future__ import annotations
 
 from collections.abc import Iterable, Mapping, Sequence
+from typing import NamedTuple
 
-from llamafit.i18n import _
+from llamafit.i18n import _, pgettext
 from llamafit.models.catalog import CatalogModel, Quant
 from llamafit.models.plan import (
     Candidate,
@@ -87,8 +88,8 @@ def evaluate(
         A scored candidate, or an excluded one carrying the reason and whatever was
         learned about it before it was excluded.
     """
-    reason = _exclusion(model, quant, needs, placement, speed)
-    if reason is None and placement is not None and speed is not None:
+    excluded = _exclusion(model, quant, needs, placement, speed)
+    if excluded is None and placement is not None and speed is not None:
         return _scored(model, quant, needs, placement, speed, weights)
     # Unreachable with a reason of None: every branch that leaves placement or speed
     # unset above returns one. The fallback is written this way so the type checker can
@@ -98,7 +99,8 @@ def evaluate(
         quant=quant.name,
         placement=placement,
         speed=speed,
-        excluded_because=reason,
+        excluded_because=None if excluded is None else excluded.reason,
+        excluded_tag=None if excluded is None else excluded.tag,
     )
 
 
@@ -202,13 +204,31 @@ def _scored(
     )
 
 
+class Exclusion(NamedTuple):
+    """Why a candidate was excluded, said twice for two shapes of surface.
+
+    Attributes:
+        tag: One or two words for a cell -- the board's one list gives every row the same
+            columns, and a row that answers with a paragraph where its neighbours answer
+            with a number is not in the list any more, it is under it.
+        reason: The whole of it, for the terminal's separate table and for an opened row,
+            where there is somewhere to put a sentence and someone reading one.
+
+    The two are built in the same branch precisely so that neither can be edited without
+    the other being in front of the person editing it.
+    """
+
+    tag: str
+    reason: str
+
+
 def _exclusion(
     model: CatalogModel,
     quant: Quant,
     needs: Needs,
     placement: Placement | None,
     speed: SpeedEstimate | None,
-) -> str | None:
+) -> Exclusion | None:
     """Return why this candidate cannot be ranked, or ``None`` when it can.
 
     The order of the checks is the order of what a person can do about them. What the
@@ -260,58 +280,109 @@ def _exclusion(
     """
     needed = required_capability(needs.use_case)
     if needed is not None and needed not in model.capabilities:
-        return _(
-            "no %(capability)s capability, which %(use_case)s needs; ask for a different "
-            "use case, or add it to the entry when the model really has it"
-        ) % {"capability": needed, "use_case": needs.use_case}
+        return Exclusion(
+            _tag_missing(needed),
+            _(
+                "no %(capability)s capability, which %(use_case)s needs; ask for a different "
+                "use case, or add it to the entry when the model really has it"
+            )
+            % {"capability": needed, "use_case": needs.use_case},
+        )
     missing = missing_capabilities(model, needs)
     if missing:
-        return _("no %(capability)s capability; drop it from the request to see this model") % {
-            "capability": missing[0]
-        }
+        return Exclusion(
+            _tag_missing(missing[0]),
+            _("no %(capability)s capability; drop it from the request to see this model")
+            % {"capability": missing[0]},
+        )
     if (
         needs.max_download_bytes is not None
         and quant.bytes_ is not None
         and quant.bytes_ > needs.max_download_bytes
     ):
-        return _("%(size)s to download, over the %(limit)s this request allows") % {
-            "size": format_bytes(quant.bytes_),
-            "limit": format_bytes(needs.max_download_bytes),
-        }
+        return Exclusion(
+            pgettext("exclusion tag", "too big"),
+            _("%(size)s to download, over the %(limit)s this request allows")
+            % {
+                "size": format_bytes(quant.bytes_),
+                "limit": format_bytes(needs.max_download_bytes),
+            },
+        )
     if penalty_for(quant.name) is None:
-        return _("unknown quantisation %(quant)s, so its cost in quality cannot be told") % {
-            "quant": quant.name
-        }
+        return Exclusion(
+            pgettext("exclusion tag", "unknown quant"),
+            _("unknown quantisation %(quant)s, so its cost in quality cannot be told")
+            % {"quant": quant.name},
+        )
     if placement is None:
-        return _("nowhere to put it: no placement fits this machine at any context")
+        return Exclusion(
+            pgettext("exclusion tag", "no room"),
+            _("nowhere to put it: no placement fits this machine at any context"),
+        )
     if placement.mode == "unsupported":
-        return _("no run mode supports this model on this machine")
+        return Exclusion(
+            pgettext("exclusion tag", "unsupported"),
+            _("no run mode supports this model on this machine"),
+        )
     if placement.budget.verdict == "does-not-fit":
-        return _("needs more memory than this machine has, even at its smallest context")
+        return Exclusion(
+            pgettext("exclusion tag", "no room"),
+            _("needs more memory than this machine has, even at its smallest context"),
+        )
     if placement.max_context_fit < needs.min_context:
-        return _(
-            "holds %(fit)s tokens at most, under the %(minimum)s asked for; "
-            "lower the minimum context or free memory to see it ranked"
-        ) % {
-            "fit": format_grouped(placement.max_context_fit),
-            "minimum": format_grouped(needs.min_context),
-        }
+        return Exclusion(
+            pgettext("exclusion tag", "short context"),
+            _(
+                "holds %(fit)s tokens at most, under the %(minimum)s asked for; "
+                "lower the minimum context or free memory to see it ranked"
+            )
+            % {
+                "fit": format_grouped(placement.max_context_fit),
+                "minimum": format_grouped(needs.min_context),
+            },
+        )
     if speed is None:
-        return _("no speed estimate, so it cannot be ranked against models that have one")
+        return Exclusion(
+            pgettext("exclusion tag", "no estimate"),
+            _("no speed estimate, so it cannot be ranked against models that have one"),
+        )
     if not keeps_up_with_reader(speed, needs.use_case, needs.min_tps):
         observed = _tps(observed_tps(speed, needs.use_case))
         floor = _tps(floor_tps(needs.use_case, needs.min_tps))
         if needs.min_tps is not None:
-            return _(
-                "generates %(tps)s tokens per second, below the %(floor)s this request asks "
-                "for; lower --min-tps or choose a smaller model or quantisation"
-            ) % {"tps": observed, "floor": floor}
-        return _(
-            "generates %(tps)s tokens per second, below the %(floor)s a person reads at: "
-            "a batch tool on this machine and not one to sit in front of; "
-            "a smaller model or quantisation would keep up"
-        ) % {"tps": observed, "floor": floor}
+            return Exclusion(
+                pgettext("exclusion tag", "too slow"),
+                _(
+                    "generates %(tps)s tokens per second, below the %(floor)s this request asks "
+                    "for; lower --min-tps or choose a smaller model or quantisation"
+                )
+                % {"tps": observed, "floor": floor},
+            )
+        return Exclusion(
+            pgettext("exclusion tag", "too slow"),
+            _(
+                "generates %(tps)s tokens per second, below the %(floor)s a person reads at: "
+                "a batch tool on this machine and not one to sit in front of; "
+                "a smaller model or quantisation would keep up"
+            )
+            % {"tps": observed, "floor": floor},
+        )
     return None
+
+
+def _tag_missing(capability: str) -> str:
+    """The one-cell version of a missing capability, which names the capability.
+
+    Naming it costs a word and saves the reader opening the row: "no vision" says both
+    that this model is out and which box on the request put it there.
+
+    Args:
+        capability: The ability the request needs and the model does not claim.
+
+    Returns:
+        The tag to put in the cell.
+    """
+    return pgettext("exclusion tag", "no %(capability)s") % {"capability": capability}
 
 
 def _tps(value: float) -> str:

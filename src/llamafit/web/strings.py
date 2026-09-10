@@ -355,6 +355,9 @@ def page_strings() -> dict[str, str]:
         "app.hint": _("Hint"),
         "app.command": _("Command"),
         "app.none": _("none"),
+        "app.about": _("About these figures"),
+        "app.close": _("Close"),
+        "app.showing": _("%(shown)s of %(total)s in the catalog"),
         "app.source": _("Source code (AGPL-3.0-or-later)"),
         "app.local_only": _(
             "This dashboard is served from your own machine and sends nothing anywhere."

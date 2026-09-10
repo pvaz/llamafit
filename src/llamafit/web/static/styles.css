@@ -48,14 +48,31 @@
 }
 
 * { box-sizing: border-box; }
-html { background: var(--ground); }
+html { background: var(--ground); height: 100%; }
 
+/* One screen, three bands: what you asked, what came back, and one line of chrome.
+ *
+ * The page does not scroll, and neither does the window sideways. The request and the
+ * machine stay in front of the list they produced -- a filter you cannot see while
+ * reading the answer is a filter you forget you set -- and the only thing that moves is
+ * the list, inside its own box, which is the thing worth moving. */
 body {
   margin: 0;
-  padding: 1.25rem clamp(0.75rem, 3vw, 2.5rem) 3rem;
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  overflow: hidden;
+  padding: 0.9rem clamp(0.75rem, 2vw, 1.75rem) 0;
   background: var(--ground);
   color: var(--ink);
   font: 15px/1.55 var(--sans);
+}
+
+main {
+  min-height: 0;
+  overflow: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-gutter: stable;
 }
 
 /* ------------------------------------------------------------------- chrome */
@@ -63,11 +80,42 @@ body {
 .top {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 1.5rem;
+  gap: 0.25rem 1.25rem;
   align-items: baseline;
-  justify-content: space-between;
-  padding-bottom: 1rem;
+  padding-bottom: 0.6rem;
 }
+
+/* The machine takes the space between the name and the one thing to press. */
+.top #host-line { flex: 1 1 20rem; margin: 0; }
+
+/* A button that is a sentence, not a control: the prose it opens is not an action. */
+button.link {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--ink-faint);
+  font-size: 0.9rem;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+button.link:hover { color: var(--ink); }
+
+dialog {
+  max-width: 46rem;
+  max-height: 80dvh;
+  margin: auto;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 4px;
+  background: var(--ground-lift);
+  color: var(--ink);
+  box-shadow: 0 1.5rem 3rem rgb(0 0 0 / 0.55);
+}
+
+dialog::backdrop { background: rgb(8 10 13 / 0.7); }
+dialog h2 { margin: 0 0 1rem; font-size: 1rem; color: var(--ink-bright); }
+dialog .notice { margin-bottom: 1rem; }
 
 h1 {
   font-size: 1.35rem;
@@ -140,22 +188,28 @@ table { border-collapse: collapse; width: 100%; }
    The small tables inside an expanded row are laid out by the grid and are not capped: a
    shared minimum was scrolling their last columns out of sight, which is how the score's
    weights and the ladder's verdicts went missing. */
-/* The cap is on the container and the table fills it. A fixed-layout table whose own
-   width is `auto` is still measured by the automatic algorithm first, so the widths below
-   would be advisory and one long sentence would set the table's width for every row. */
-#board-table, #board-captions { max-width: 60rem; }
-#board-table > table { table-layout: fixed; min-width: 46rem; }
-#board-table .rank { width: 2.5rem; }
+/* Thirteen fixed widths, and the table is their sum rather than the width of the window.
+   Fixed is what makes sixty rows readable: figures line up in a column an eye can run
+   down, and a long model id cannot shove the speed sideways. The container scrolls
+   sideways when the window is narrower than the sum -- inside its own box, never the
+   page, which is why the window has no horizontal bar at any width. */
+#board-table > table { table-layout: fixed; min-width: 70rem; }
+#board-table .rank { width: 2.4rem; }
 /* A model id no wider than its column. Fixed layout will not grow the cell, so without
    this an unusually long one runs under the next column instead of stopping. */
-#board-table .name { width: 20rem; overflow: hidden; text-overflow: ellipsis; }
-#board-table .quant { width: 8rem; }
-#board-table .score { width: 5rem; }
-#board-table .tps { width: 6rem; }
-#board-table .how { width: 7rem; }
-#board-table .fit { width: 6rem; }
-#board-table .ctx { width: 5rem; }
-@media (max-width: 56rem) { #board-table { overflow-x: auto; } }
+#board-table .name { width: 15rem; overflow: hidden; text-overflow: ellipsis; }
+#board-table .quant { width: 7.5rem; }
+#board-table .size { width: 4.6rem; }
+#board-table .score { width: 4.4rem; }
+#board-table .qual { width: 3.4rem; }
+#board-table .tps { width: 4.4rem; }
+#board-table .pmt { width: 4.4rem; }
+#board-table .how { width: 6rem; }
+#board-table .mode { width: 8rem; }
+#board-table .vram { width: 4.6rem; }
+#board-table .ram { width: 4.6rem; }
+#board-table .fit { width: 5.6rem; }
+#board-table .ctx { width: 4rem; }
 
 /* Fifty rows means the headings scroll away, so they stay. A border on a sticky cell of
    a collapsed table does not paint reliably; an inset shadow does. */
@@ -167,17 +221,19 @@ table { border-collapse: collapse; width: 100%; }
 }
 
 /* A candidate that was not ranked is in the same list, one row like any other, quieter,
-   with the sentence that says what to change about the request. Cut to a line so fifty
-   rows stay fifty rows; the whole of it is in the row when it is opened. */
+   with every figure it has. Only the conclusion differs: where a ranked row prints a
+   score, this one prints the word for why there is none. The sentence behind that word
+   is on the row's title and in the row when it is opened. */
 tr.out td { color: var(--ink-faint); }
 tr.out .name { color: var(--ink-dim); }
-td.why { overflow: hidden; text-overflow: ellipsis; font-size: 0.9rem; }
+tr.out td.tps, tr.out td.fit { color: inherit; font-weight: 400; }
+td.why { overflow: hidden; text-overflow: ellipsis; font-size: 0.85rem; }
 caption { text-align: start; padding-bottom: 0.4rem; font-size: 0.85rem; }
 
 th,
 td {
-  padding-block: 0.45rem;
-  padding-inline: 0 0.9rem;
+  padding-block: 0.3rem;
+  padding-inline: 0 0.7rem;
   text-align: start;
   white-space: nowrap;
 }
@@ -242,11 +298,11 @@ form {
 /* The request lives above its answer and never moves. Its controls are narrow because
    they are choices from short lists, and the space they save is the list's. */
 form.controls {
-  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-  gap: 0.9rem 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 0.5rem 1.1rem;
   align-items: end;
-  max-width: 70rem;
-  margin: 0 0 1.5rem;
+  max-width: 76rem;
+  margin: 0 0 0.75rem;
 }
 
 form.controls fieldset, .switches { grid-column: 1 / -1; }
@@ -262,9 +318,13 @@ form.controls fieldset, .switches { grid-column: 1 / -1; }
 .drawers {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 2rem;
-  margin-bottom: 1.5rem;
+  gap: 0.4rem 2rem;
+  margin-bottom: 0.6rem;
 }
+
+/* An open drawer is the exception to the fixed band: it takes what it needs and scrolls
+   inside itself rather than pushing the list off the bottom of the screen. */
+.drawers details[open] { max-height: 45dvh; overflow: auto; }
 
 summary {
   cursor: pointer;
@@ -356,15 +416,18 @@ dl.facts {
 dl.facts dd { margin: 0; color: var(--ink); }
 
 footer {
-  margin-top: 3rem;
-  padding-top: 0.9rem;
+  padding: 0.5rem 0;
   border-top: 1px solid var(--rule);
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem 1.2rem;
-  font-size: 0.9rem;
+  align-items: baseline;
+  gap: 0.3rem 1.2rem;
+  font-size: 0.85rem;
   color: var(--ink-faint);
 }
+
+/* The count is the first thing on the line and the one thing on it that changes. */
+footer #board-count { margin: 0; margin-inline-end: auto; }
 
 a { color: var(--ink); text-underline-offset: 0.2em; }
 

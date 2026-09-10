@@ -3637,48 +3637,90 @@ msgstr ""
 msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
 msgstr ""
 
-#: src/llamafit/scoring/rank.py:263
+#: src/llamafit/scoring/rank.py:285
 msgid "no %(capability)s capability, which %(use_case)s needs; ask for a different use case, or add it to the entry when the model really has it"
 msgstr ""
 
-#: src/llamafit/scoring/rank.py:269
+#: src/llamafit/scoring/rank.py:295
 msgid "no %(capability)s capability; drop it from the request to see this model"
 msgstr ""
 
-#: src/llamafit/scoring/rank.py:277
-msgid "%(size)s to download, over the %(limit)s this request allows"
-msgstr ""
-
-#: src/llamafit/scoring/rank.py:282
-msgid "unknown quantisation %(quant)s, so its cost in quality cannot be told"
-msgstr ""
-
-#: src/llamafit/scoring/rank.py:286
-msgid "nowhere to put it: no placement fits this machine at any context"
-msgstr ""
-
-#: src/llamafit/scoring/rank.py:288
-msgid "no run mode supports this model on this machine"
-msgstr ""
-
-#: src/llamafit/scoring/rank.py:290
-msgid "needs more memory than this machine has, even at its smallest context"
-msgstr ""
-
-#: src/llamafit/scoring/rank.py:292
-msgid "holds %(fit)s tokens at most, under the %(minimum)s asked for; lower the minimum context or free memory to see it ranked"
-msgstr ""
-
-#: src/llamafit/scoring/rank.py:300
-msgid "no speed estimate, so it cannot be ranked against models that have one"
+#: src/llamafit/scoring/rank.py:304
+msgctxt "exclusion tag"
+msgid "too big"
 msgstr ""
 
 #: src/llamafit/scoring/rank.py:305
+msgid "%(size)s to download, over the %(limit)s this request allows"
+msgstr ""
+
+#: src/llamafit/scoring/rank.py:313
+msgctxt "exclusion tag"
+msgid "unknown quant"
+msgstr ""
+
+#: src/llamafit/scoring/rank.py:314
+msgid "unknown quantisation %(quant)s, so its cost in quality cannot be told"
+msgstr ""
+
+#: src/llamafit/scoring/rank.py:319
+#: src/llamafit/scoring/rank.py:329
+msgctxt "exclusion tag"
+msgid "no room"
+msgstr ""
+
+#: src/llamafit/scoring/rank.py:320
+msgid "nowhere to put it: no placement fits this machine at any context"
+msgstr ""
+
+#: src/llamafit/scoring/rank.py:324
+msgctxt "exclusion tag"
+msgid "unsupported"
+msgstr ""
+
+#: src/llamafit/scoring/rank.py:325
+msgid "no run mode supports this model on this machine"
+msgstr ""
+
+#: src/llamafit/scoring/rank.py:330
+msgid "needs more memory than this machine has, even at its smallest context"
+msgstr ""
+
+#: src/llamafit/scoring/rank.py:334
+msgctxt "exclusion tag"
+msgid "short context"
+msgstr ""
+
+#: src/llamafit/scoring/rank.py:335
+msgid "holds %(fit)s tokens at most, under the %(minimum)s asked for; lower the minimum context or free memory to see it ranked"
+msgstr ""
+
+#: src/llamafit/scoring/rank.py:346
+msgctxt "exclusion tag"
+msgid "no estimate"
+msgstr ""
+
+#: src/llamafit/scoring/rank.py:347
+msgid "no speed estimate, so it cannot be ranked against models that have one"
+msgstr ""
+
+#: src/llamafit/scoring/rank.py:355
 msgid "generates %(tps)s tokens per second, below the %(floor)s this request asks for; lower --min-tps or choose a smaller model or quantisation"
 msgstr ""
 
-#: src/llamafit/scoring/rank.py:309
+#: src/llamafit/scoring/rank.py:362
+#: src/llamafit/scoring/rank.py:354
+msgctxt "exclusion tag"
+msgid "too slow"
+msgstr ""
+
+#: src/llamafit/scoring/rank.py:363
 msgid "generates %(tps)s tokens per second, below the %(floor)s a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr ""
+
+#: src/llamafit/scoring/rank.py:385
+msgctxt "exclusion tag"
+msgid "no %(capability)s"
 msgstr ""
 
 #: src/llamafit/scoring/weights.py:126
@@ -4663,9 +4705,21 @@ msgid "Command"
 msgstr ""
 
 #: src/llamafit/web/strings.py:358
-msgid "Source code (AGPL-3.0-or-later)"
+msgid "About these figures"
 msgstr ""
 
 #: src/llamafit/web/strings.py:359
+msgid "Close"
+msgstr ""
+
+#: src/llamafit/web/strings.py:360
+msgid "%(shown)s of %(total)s in the catalog"
+msgstr ""
+
+#: src/llamafit/web/strings.py:361
+msgid "Source code (AGPL-3.0-or-later)"
+msgstr ""
+
+#: src/llamafit/web/strings.py:362
 msgid "This dashboard is served from your own machine and sends nothing anywhere."
 msgstr ""
