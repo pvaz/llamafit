@@ -233,6 +233,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "不明"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr ""
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr ""
+
+msgctxt "model capability"
+msgid "vision"
+msgstr ""
+
+msgctxt "model capability"
+msgid "tools"
+msgstr ""
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr ""
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr ""
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr ""
+
+msgctxt "model capability"
+msgid "audio"
+msgstr ""
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s、%(compute)s TFLOPS fp16"
 
@@ -242,30 +274,26 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "ホスト"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
 
-msgid "OS"
-msgstr "OS"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s（%(arch)s）"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d コア / %(logical)d スレッド"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d 個の高性能コア"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "命令セット不明"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -277,6 +305,54 @@ msgstr[0] "%(count)d 枚のモジュール"
 msgid "%(count)d channel"
 msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d チャネル"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "種類不明"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s（仕様値）"
+
+msgid "driver %(driver)s"
+msgstr "ドライバ %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "仕様値なし"
+
+msgid "Host"
+msgstr "ホスト"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s（%(arch)s）"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "命令セット不明"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s（%(source)s）"
@@ -294,9 +370,6 @@ msgstr "メモリ"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "合計 %(total)s、空き %(available)s、%(details)s、帯域幅 %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "種類不明"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -307,23 +380,15 @@ msgstr "検出なし"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "VRAM %(total)s、空き %(free)s"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM 不明"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s（仕様値）"
-
-msgid "driver %(driver)s"
-msgstr "ドライバ %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s（%(backend)s）; %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "仕様値なし"
 
 msgid "Memory pool"
 msgstr "メモリプール"
@@ -350,6 +415,7 @@ msgstr "b%(build)d（%(commit)s）"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "ビルド不明"
 
@@ -372,6 +438,7 @@ msgstr "実行中"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s、コンテキスト %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "モデル不明"
 
@@ -398,6 +465,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "成功"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "サーバーなし"
 
@@ -417,26 +485,31 @@ msgstr "内容"
 # These five are the list table's column headings, and the table is laid out for
 # an 80-column terminal. A Japanese character takes two terminal columns, so the
 # headings are kept as short as the meaning allows.
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "品質*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "品質"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "パラメータ"
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "コンテキスト"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "機能"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "品質は、量子化による低下を考慮する前の、編集部による基準値です。根拠となる出典付きのベンチマークは `llamafit info <model>` で確認できます。"
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "パラメータは、Mixture-of-Experts モデルでは総数/アクティブ数（十億単位）、両者が同じ場合は 1 つの数値です。"
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "モデル"
@@ -459,23 +532,32 @@ msgstr "%(spdx)s（%(url)s）"
 msgid "Parameters"
 msgstr "パラメータ数"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "合計 %(total)sB、アクティブ %(active)sB"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "方式は未指定"
 
 msgid "%(tokens)s tokens native"
 msgstr "ネイティブ %(tokens)s トークン"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr "、%(method)s により %(tokens)s まで拡張"
-
-msgid "unspecified method"
-msgstr "方式は未指定"
+msgctxt "table row label"
+msgid "Context"
+msgstr "コンテキスト"
 
 msgid "Architecture"
 msgstr "アーキテクチャ"
 
 msgid "Notes"
 msgstr "備考"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "機能"
 
 msgid "Use cases"
 msgstr "ユースケース"
@@ -489,6 +571,7 @@ msgstr "ベンチマーク"
 msgid "Source %(index)d"
 msgstr "出典 %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "未読み込み"
 
@@ -496,13 +579,22 @@ msgid "%(count)d layer"
 msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d 層"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d エキスパート"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d エキスパート"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d エキスパート"
 
 msgid "Quants"
 msgstr "量子化"

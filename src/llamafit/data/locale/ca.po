@@ -237,6 +237,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "desconeguda"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr ""
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr ""
+
+msgctxt "model capability"
+msgid "vision"
+msgstr ""
+
+msgctxt "model capability"
+msgid "tools"
+msgstr ""
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr ""
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr ""
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr ""
+
+msgctxt "model capability"
+msgid "audio"
+msgstr ""
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s i %(compute)s TFLOPS fp16"
 
@@ -246,31 +278,29 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Equip"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "OS"
-msgstr "SO"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d nuclis / %(logical)d fils"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d nucli de rendiment"
 msgstr[1] "%(count)d nuclis de rendiment"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "isa desconegut"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -284,6 +314,54 @@ msgid "%(count)d channel"
 msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d canal"
 msgstr[1] "%(count)d canals"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "tipus desconegut"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (especificació)"
+
+msgid "driver %(driver)s"
+msgstr "controlador %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "sense especificacions"
+
+msgid "Host"
+msgstr "Equip"
+
+msgid "OS"
+msgstr "SO"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa desconegut"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -302,9 +380,6 @@ msgstr "Memòria"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "%(total)s en total, %(available)s disponibles; %(details)s; amplada de banda %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "tipus desconegut"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -315,23 +390,15 @@ msgstr "cap detectada"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s de VRAM, %(free)s lliures"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM desconeguda"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (especificació)"
-
-msgid "driver %(driver)s"
-msgstr "controlador %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "sense especificacions"
 
 msgid "Memory pool"
 msgstr "Reserva de memòria"
@@ -358,6 +425,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "compilació desconeguda"
 
@@ -380,6 +448,7 @@ msgstr "En execució"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, context %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "model desconegut"
 
@@ -406,6 +475,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "ok"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "cap servidor"
 
@@ -422,28 +492,33 @@ msgstr "nivell"
 msgid "finding"
 msgstr "conclusió"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "Qualitat*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Qualitat"
 
 # The list table is narrow, so this heading is abbreviated, and the footnote below has to
 # use the same abbreviation the column shows.
+msgctxt "column heading"
 msgid "Params"
 msgstr "Paràm."
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Context"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Capacitats"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "La qualitat és la base editorial, abans de qualsevol penalització per quantització; executeu `llamafit info <model>` per a veure les proves de referència, amb font, que la sustenten."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "Paràm. és el total/actiu en milers de milions per a un model de barreja d'experts, o un sol nombre quan coincideixen."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Models"
@@ -466,23 +541,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Paràmetres"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "%(total)sB en total, %(active)sB actius"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "mètode no especificat"
 
 msgid "%(tokens)s tokens native"
 msgstr "%(tokens)s tokens natius"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", %(tokens)s ampliat mitjançant %(method)s"
-
-msgid "unspecified method"
-msgstr "mètode no especificat"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Context"
 
 msgid "Architecture"
 msgstr "Arquitectura"
 
 msgid "Notes"
 msgstr "Notes"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Capacitats"
 
 msgid "Use cases"
 msgstr "Casos d'ús"
@@ -496,6 +580,7 @@ msgstr "Prova de referència"
 msgid "Source %(index)d"
 msgstr "Font %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "encara no llegides"
 
@@ -504,15 +589,24 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d capa"
 msgstr[1] "%(count)d capes"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d expert"
-msgstr[1] "%(count)d/%(used)d experts"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d expert"
 msgstr[1] "%(count)d experts"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d expert"
+msgstr[1] "%(count)d/%(used)d experts"
 
 msgid "Quants"
 msgstr "Quantitzacions"

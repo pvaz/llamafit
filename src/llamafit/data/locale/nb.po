@@ -238,6 +238,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "ukjent"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr ""
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr ""
+
+msgctxt "model capability"
+msgid "vision"
+msgstr ""
+
+msgctxt "model capability"
+msgid "tools"
+msgstr ""
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr ""
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr ""
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr ""
+
+msgctxt "model capability"
+msgid "audio"
+msgstr ""
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s og %(compute)s TFLOPS fp16"
 
@@ -247,31 +279,29 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Maskin"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "OS"
-msgstr "OS"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d kjerner / %(logical)d tråder"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d ytelseskjerne"
 msgstr[1] "%(count)d ytelseskjerner"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "isa ukjent"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -286,6 +316,56 @@ msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d kanal"
 msgstr[1] "%(count)d kanaler"
 
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "type ukjent"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+# "(spec)" marks a figure that comes from the bundled specification table rather than
+# from this machine; "datablad" is what a Norwegian reader calls that table.
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (datablad)"
+
+msgid "driver %(driver)s"
+msgstr "driver %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "ingen spesifikasjoner"
+
+msgid "Host"
+msgstr "Maskin"
+
+msgid "OS"
+msgstr "OS"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa ukjent"
+
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
 
@@ -299,9 +379,6 @@ msgstr "Minne"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "%(total)s totalt, %(available)s tilgjengelig; %(details)s; båndbredde %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "type ukjent"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -312,25 +389,15 @@ msgstr "ingen funnet"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM, hvorav %(free)s ledig"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM ukjent"
-
-# "(spec)" marks a figure that comes from the bundled specification table rather than
-# from this machine; "datablad" is what a Norwegian reader calls that table.
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (datablad)"
-
-msgid "driver %(driver)s"
-msgstr "driver %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "ingen spesifikasjoner"
 
 msgid "Memory pool"
 msgstr "Minnepool"
@@ -357,6 +424,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "ukjent bygg"
 
@@ -379,6 +447,7 @@ msgstr "Kjører"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, kontekst %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "ukjent modell"
 
@@ -407,6 +476,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "ok"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "ingen server"
 
@@ -423,28 +493,33 @@ msgstr "nivå"
 msgid "finding"
 msgstr "funn"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "Kvalitet*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Kvalitet"
 
 # "Params" is already an abbreviation in English and this is the narrowest column in
 # the list table, so it stays one here; the caption below uses the same short form.
+msgctxt "column heading"
 msgid "Params"
 msgstr "Param."
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Kontekst"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Egenskaper"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "Kvalitet er det redaksjonelle utgangspunktet, før ethvert fradrag for kvantisering; kjør `llamafit info <model>` for målingene med kildehenvisning som ligger bak."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "Param. er antall parametere i milliarder som totalt/aktivt for en mixture-of-experts-modell, ellers ett enkelt tall når de er like."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Modeller"
@@ -467,23 +542,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Parametere"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "%(total)sB totalt, %(active)sB aktive"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "metoden er ikke oppgitt"
 
 msgid "%(tokens)s tokens native"
 msgstr "%(tokens)s tokens som standard"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", %(tokens)s utvidet via %(method)s"
-
-msgid "unspecified method"
-msgstr "metoden er ikke oppgitt"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Kontekst"
 
 msgid "Architecture"
 msgstr "Arkitektur"
 
 msgid "Notes"
 msgstr "Merknader"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Egenskaper"
 
 msgid "Use cases"
 msgstr "Bruksområder"
@@ -497,6 +581,7 @@ msgstr "Måling"
 msgid "Source %(index)d"
 msgstr "Kilde %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "ikke lest ennå"
 
@@ -505,15 +590,24 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d lag"
 msgstr[1] "%(count)d lag"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d ekspert"
-msgstr[1] "%(count)d/%(used)d eksperter"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d ekspert"
 msgstr[1] "%(count)d eksperter"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d ekspert"
+msgstr[1] "%(count)d/%(used)d eksperter"
 
 msgid "Quants"
 msgstr "Kvantiseringer"

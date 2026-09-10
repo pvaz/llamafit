@@ -237,6 +237,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "sconosciuta"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr ""
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr ""
+
+msgctxt "model capability"
+msgid "vision"
+msgstr ""
+
+msgctxt "model capability"
+msgid "tools"
+msgstr ""
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr ""
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr ""
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr ""
+
+msgctxt "model capability"
+msgid "audio"
+msgstr ""
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s e %(compute)s TFLOPS fp16"
 
@@ -246,17 +278,18 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Macchina"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "OS"
-msgstr "SO"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "%(physical)d core / %(logical)d thread"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 # "core" and "thread" are the words Italian uses here, and neither inflects, so the two
 # plural forms of this message are deliberately identical.
@@ -265,14 +298,11 @@ msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d core ad alte prestazioni"
 msgstr[1] "%(count)d core ad alte prestazioni"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "isa sconosciuto"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -286,6 +316,54 @@ msgid "%(count)d channel"
 msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d canale"
 msgstr[1] "%(count)d canali"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "tipo sconosciuto"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (da specifiche)"
+
+msgid "driver %(driver)s"
+msgstr "driver %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "nessuna specifica"
+
+msgid "Host"
+msgstr "Macchina"
+
+msgid "OS"
+msgstr "SO"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa sconosciuto"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -305,9 +383,6 @@ msgstr "Memoria"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "%(total)s in totale, %(available)s disponibili; %(details)s; larghezza di banda %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "tipo sconosciuto"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -318,23 +393,15 @@ msgstr "nessuna rilevata"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s di VRAM, %(free)s liberi"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM sconosciuta"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (da specifiche)"
-
-msgid "driver %(driver)s"
-msgstr "driver %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "nessuna specifica"
 
 msgid "Memory pool"
 msgstr "Pool di memoria"
@@ -361,6 +428,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "compilazione sconosciuta"
 
@@ -383,6 +451,7 @@ msgstr "In esecuzione"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, contesto %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "modello sconosciuto"
 
@@ -409,6 +478,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "ok"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "nessun server"
 
@@ -425,28 +495,33 @@ msgstr "livello"
 msgid "finding"
 msgstr "riscontro"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "Qualità*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Qualità"
 
 # The list table is narrow, so this heading is abbreviated, and the footnote below has to
 # use the same abbreviation the column shows.
+msgctxt "column heading"
 msgid "Params"
 msgstr "Param."
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Contesto"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Capacità"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "La qualità è il riferimento editoriale, prima di qualsiasi penalità di quantizzazione; eseguire `llamafit info <model>` per i benchmark con fonte che la sostengono."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "Param. è il totale/attivo in miliardi per un modello a miscela di esperti, o un solo numero quando coincidono."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Modelli"
@@ -469,23 +544,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Parametri"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "%(total)sB in totale, %(active)sB attivi"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "metodo non specificato"
 
 msgid "%(tokens)s tokens native"
 msgstr "%(tokens)s token nativi"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", %(tokens)s estesi tramite %(method)s"
-
-msgid "unspecified method"
-msgstr "metodo non specificato"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Contesto"
 
 msgid "Architecture"
 msgstr "Architettura"
 
 msgid "Notes"
 msgstr "Note"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Capacità"
 
 msgid "Use cases"
 msgstr "Casi d'uso"
@@ -499,6 +583,7 @@ msgstr "Benchmark"
 msgid "Source %(index)d"
 msgstr "Fonte %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "non ancora lette"
 
@@ -507,15 +592,24 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d strato"
 msgstr[1] "%(count)d strati"
 
-msgid "%(count)d/%(used)d expert"
-msgid_plural "%(count)d/%(used)d experts"
-msgstr[0] "%(count)d/%(used)d esperto"
-msgstr[1] "%(count)d/%(used)d esperti"
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] "%(count)d esperto"
 msgstr[1] "%(count)d esperti"
+
+msgid "%(count)d/%(used)d expert"
+msgid_plural "%(count)d/%(used)d experts"
+msgstr[0] "%(count)d/%(used)d esperto"
+msgstr[1] "%(count)d/%(used)d esperti"
 
 msgid "Quants"
 msgstr "Quantizzazioni"

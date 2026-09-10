@@ -244,6 +244,38 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "непознат"
 
+msgctxt "model capability"
+msgid "coding"
+msgstr ""
+
+msgctxt "model capability"
+msgid "thinking"
+msgstr ""
+
+msgctxt "model capability"
+msgid "vision"
+msgstr ""
+
+msgctxt "model capability"
+msgid "tools"
+msgstr ""
+
+msgctxt "model capability"
+msgid "multilingual"
+msgstr ""
+
+msgctxt "model capability"
+msgid "long-context"
+msgstr ""
+
+msgctxt "model capability"
+msgid "embeddings"
+msgstr ""
+
+msgctxt "model capability"
+msgid "audio"
+msgstr ""
+
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s и %(compute)s TFLOPS fp16"
 
@@ -253,19 +285,20 @@ msgstr "%(bandwidth)s GB/s"
 msgid "%(compute)s TFLOPS fp16"
 msgstr "%(compute)s TFLOPS fp16"
 
-msgid "Host"
-msgstr "Машина"
+msgid "%(count)d core"
+msgid_plural "%(count)d cores"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
-msgid "OS"
-msgstr "ОС"
+msgid "%(count)d thread"
+msgid_plural "%(count)d threads"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
-msgid "%(os)s %(version)s (%(arch)s)"
-msgstr "%(os)s %(version)s (%(arch)s)"
-
-# The English has no plural forms here, so a Serbian noun after the number could only ever
-# agree for some counts. The count is put after the noun instead: "језгара: 2 / нити: 4".
-msgid "%(physical)d cores / %(logical)d threads"
-msgstr "језгара: %(physical)d / нити: %(logical)d"
+msgid "%(cores)s / %(threads)s"
+msgstr ""
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -273,14 +306,11 @@ msgstr[0] "%(count)d језгро високих перформанси"
 msgstr[1] "%(count)d језгра високих перформанси"
 msgstr[2] "%(count)d језгара високих перформанси"
 
-msgid "CPU"
-msgstr "CPU"
+msgid "%(cores)s / %(threads)s, %(performance)s"
+msgstr ""
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgid "isa unknown"
-msgstr "isa непознат"
+msgid "%(type)s at %(speed)d MT/s"
+msgstr ""
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -296,6 +326,54 @@ msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d канал"
 msgstr[1] "%(count)d канала"
 msgstr[2] "%(count)d канала"
+
+msgid "%(kind)s, %(modules)s across %(channels)s"
+msgstr ""
+
+msgid "%(kind)s, %(modules)s"
+msgstr ""
+
+msgid "%(kind)s, %(channels)s"
+msgstr ""
+
+msgid "%(modules)s across %(channels)s"
+msgstr ""
+
+msgctxt "memory type"
+msgid "type unknown"
+msgstr "тип непознат"
+
+msgid "%(specs)s (spec), driver %(driver)s"
+msgstr ""
+
+msgid "%(specs)s (spec)"
+msgstr "%(specs)s (по спецификацији)"
+
+msgid "driver %(driver)s"
+msgstr "драјвер %(driver)s"
+
+msgctxt "GPU specifications"
+msgid "no specs"
+msgstr "нема података из спецификације"
+
+msgid "Host"
+msgstr "Машина"
+
+msgid "OS"
+msgstr "ОС"
+
+msgid "%(os)s %(version)s (%(arch)s)"
+msgstr "%(os)s %(version)s (%(arch)s)"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa непознат"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -313,9 +391,6 @@ msgstr "Меморија"
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr "укупно %(total)s, доступно %(available)s; %(details)s; пропусни опсег %(bandwidth)s"
 
-msgid "type unknown"
-msgstr "тип непознат"
-
 msgid "GPU"
 msgstr "GPU"
 
@@ -326,23 +401,15 @@ msgstr "није откривен"
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s VRAM, слободно %(free)s"
 
+msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM непознат"
-
-msgid "%(specs)s (spec)"
-msgstr "%(specs)s (по спецификацији)"
-
-msgid "driver %(driver)s"
-msgstr "драјвер %(driver)s"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-
-msgid "no specs"
-msgstr "нема података из спецификације"
 
 msgid "Memory pool"
 msgstr "Меморијски пул"
@@ -369,6 +436,7 @@ msgstr "b%(build)d (%(commit)s)"
 msgid "b%(build)d"
 msgstr "b%(build)d"
 
+msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr "непознат билд"
 
@@ -391,6 +459,7 @@ msgstr "Ради"
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr "%(url)s: %(model)s, контекст %(context)s"
 
+msgctxt "model name"
 msgid "unknown model"
 msgstr "непознат модел"
 
@@ -417,6 +486,7 @@ msgctxt "probe result"
 msgid "ok"
 msgstr "успешно"
 
+msgctxt "probe result"
 msgid "no server"
 msgstr "нема сервера"
 
@@ -433,26 +503,31 @@ msgstr "ниво"
 msgid "finding"
 msgstr "налаз"
 
+msgctxt "column heading"
 msgid "ID"
 msgstr "ID"
 
-msgid "Quality*"
-msgstr "Квалитет*"
+msgctxt "column heading"
+msgid "Quality"
+msgstr "Квалитет"
 
+msgctxt "column heading"
 msgid "Params"
 msgstr "Парам."
 
+msgctxt "column heading"
 msgid "Context"
 msgstr "Контекст"
 
+msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Могућности"
 
-msgid "Quality is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr "„Квалитет“ је уредничка основна оцена, пре било каквог губитка од квантизације; покрените `llamafit info <model>` да видите тестове са наведеним изворима који стоје иза ње."
+msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
+msgstr ""
 
-msgid "Params is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr "„Парам.“ је укупан/активан број милијарди за модел са мешавином експерата, или један број када су једнаки."
+msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
+msgstr ""
 
 msgid "Models"
 msgstr "Модели"
@@ -475,23 +550,32 @@ msgstr "%(spdx)s (%(url)s)"
 msgid "Parameters"
 msgstr "Параметри"
 
-msgid "%(total)sB total, %(active)sB active"
-msgstr "укупно %(total)sB, активно %(active)sB"
+msgid "%(total)s total, %(active)s active"
+msgstr ""
+
+msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
+msgstr ""
+
+msgctxt "context extension method"
+msgid "unspecified method"
+msgstr "метод није наведен"
 
 msgid "%(tokens)s tokens native"
 msgstr "изворно %(tokens)s токена"
 
-msgid ", %(tokens)s extended via %(method)s"
-msgstr ", проширено на %(tokens)s помоћу %(method)s"
-
-msgid "unspecified method"
-msgstr "метод није наведен"
+msgctxt "table row label"
+msgid "Context"
+msgstr "Контекст"
 
 msgid "Architecture"
 msgstr "Архитектура"
 
 msgid "Notes"
 msgstr "Напомене"
+
+msgctxt "table row label"
+msgid "Capabilities"
+msgstr "Могућности"
 
 msgid "Use cases"
 msgstr "Случајеви употребе"
@@ -505,6 +589,7 @@ msgstr "Бенчмарк"
 msgid "Source %(index)d"
 msgstr "Извор %(index)d"
 
+msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr "још није прочитано"
 
@@ -514,6 +599,21 @@ msgstr[0] "%(count)d слој"
 msgstr[1] "%(count)d слоја"
 msgstr[2] "%(count)d слојева"
 
+msgid "%(arch)s, %(layers)s, %(experts)s"
+msgstr ""
+
+msgid "%(arch)s, %(layers)s"
+msgstr ""
+
+msgid "%(arch)s, %(experts)s"
+msgstr ""
+
+msgid "%(count)d expert"
+msgid_plural "%(count)d experts"
+msgstr[0] "%(count)d експерт"
+msgstr[1] "%(count)d експерта"
+msgstr[2] "%(count)d експерата"
+
 # The form is chosen by %(count)d, the total number of experts, even though %(used)d is the
 # number the reader's eye lands on just before the noun.
 msgid "%(count)d/%(used)d expert"
@@ -521,12 +621,6 @@ msgid_plural "%(count)d/%(used)d experts"
 msgstr[0] "%(count)d/%(used)d експерт"
 msgstr[1] "%(count)d/%(used)d експерта"
 msgstr[2] "%(count)d/%(used)d експерата"
-
-msgid "%(count)d expert"
-msgid_plural "%(count)d experts"
-msgstr[0] "%(count)d експерт"
-msgstr[1] "%(count)d експерта"
-msgstr[2] "%(count)d експерата"
 
 msgid "Quants"
 msgstr "Квантизације"
