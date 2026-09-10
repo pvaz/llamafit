@@ -17,6 +17,198 @@ msgstr ""
 "Language-Team: Portuguese (Brazil)\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+msgid "nothing measured touches this term, so there is no equation it appears in"
+msgstr "nada do que foi medido toca neste termo, portanto não há nenhuma equação em que ele apareça"
+
+msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
+msgstr "%(measurements)d configurações distintas para %(parameters)d parâmetros livres; menos pontos do que parâmetros dá números que parecem precisos e são arbitrários"
+
+msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
+msgstr "as %(measurements)d configurações não variam de forma suficientemente independente para separar %(parameters)d parâmetros"
+
+msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "o ajuste o colocou em %(value).3f, valor que a própria definição dele não permite; as medições se contradizem entre si sob o modelo da seção 10.1"
+
+msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "saiu %(value).3f, mas outro parâmetro do mesmo ajuste era impossível, e os mínimos quadrados os escolheram um contra o outro"
+
+msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
+msgstr "o estimador não tem esse termo: a seção 10.1 retirou a sobrecarga por camada, que num modelo de 28 camadas excedia o token medido inteiro"
+
+msgid "generation (llama-bench)"
+msgstr "geração (llama-bench)"
+
+msgid "prompt (llama-bench)"
+msgstr "prompt (llama-bench)"
+
+msgid "generation, first request"
+msgstr "geração, primeira requisição"
+
+msgid "generation, 1K prompt"
+msgstr "geração, prompt de 1K"
+
+msgid "prompt, 1K request"
+msgstr "prompt, requisição de 1K"
+
+msgid "peak VRAM"
+msgstr "pico de VRAM"
+
+msgid "no graphics card"
+msgstr "sem placa gráfica"
+
+msgid "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+msgstr "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+
+msgid "%(flag)s was asked for as %(wanted)s but the run reports %(actual)s"
+msgstr "%(flag)s foi pedido como %(wanted)s mas a execução informa %(actual)s"
+
+msgid "The card was full and generation came in below three fifths of the estimate: the driver was paging to system memory, which does not fail and does not appear in the log."
+msgstr "A placa estava cheia e a geração ficou abaixo de três quintos da estimativa: o driver estava paginando para a memória do sistema, o que não falha nem aparece no log."
+
+msgid "Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page."
+msgstr "O pico de VRAM ficou longe do total da placa, portanto não havia nada para o driver paginar."
+
+msgid "The card was full, which a good plan is meant to be, and the speed was close enough to the estimate that nothing was paging."
+msgstr "A placa estava cheia, que é o que um bom plano deve conseguir, e a velocidade ficou perto o bastante da estimativa para que nada estivesse paginando."
+
+msgid "No VRAM reading was taken during the run, so this configuration has not been cleared of paging; it has only not been checked."
+msgstr "Não foi feita nenhuma leitura de VRAM durante a execução, portanto esta configuração não foi inocentada de paginação; apenas não foi verificada."
+
+msgid "The card's total memory is unknown, so a reading of what was in use says nothing about how close to full it was."
+msgstr "A memória total da placa é desconhecida, portanto uma leitura do que estava em uso não diz nada sobre o quão perto de cheia ela estava."
+
+msgid "There was no estimate to compare the measured speed against, so the second half of the signature could not be tested."
+msgstr "Não havia nenhuma estimativa com que comparar a velocidade medida, portanto não foi possível testar a segunda metade da assinatura."
+
+msgid "llama-bench did not produce JSON"
+msgstr "o llama-bench não produziu JSON"
+
+msgid "llama-bench JSON is not a list of results"
+msgstr "o JSON do llama-bench não é uma lista de resultados"
+
+msgid "llama-bench JSON held no readable results"
+msgstr "o JSON do llama-bench não continha resultados legíveis"
+
+msgid "no llama-bench result rows found"
+msgstr "não foram encontradas linhas de resultado do llama-bench"
+
+msgid "could not open %(path)s for the server log"
+msgstr "não foi possível abrir %(path)s para o log do servidor"
+
+msgid "could not start llama-server"
+msgstr "não foi possível iniciar o llama-server"
+
+msgid "no output"
+msgstr "sem saída"
+
+msgid "llama-bench exited with code %(code)d: %(detail)s"
+msgstr "o llama-bench terminou com o código %(code)d: %(detail)s"
+
+msgid "llama-bench output could not be read: %(error)s"
+msgstr "não foi possível ler a saída do llama-bench: %(error)s"
+
+msgid "llama-server did not become healthy"
+msgstr "o llama-server nunca ficou operacional"
+
+msgid "Its whole output is in the log file `bench` named; the end says why."
+msgstr "Toda a sua saída está no arquivo de log que o `bench` indicou; o fim diz por quê."
+
+msgid "%(path)s was written by a newer LlamaFit (benchmark format %(found)d, this build reads %(known)d)"
+msgstr "%(path)s foi gravado por um LlamaFit mais recente (formato de teste de referência %(found)d, esta compilação lê %(known)d)"
+
+msgid "Upgrade LlamaFit, or move the file aside to start a new one."
+msgstr "Atualize o LlamaFit, ou mova o arquivo para o lado para começar um novo."
+
+msgid "a benchmark cannot be recorded against a simulated machine"
+msgstr "não é possível registrar um teste de referência contra uma máquina simulada"
+
+msgid "Run `llamafit bench` on the machine itself, without --profile."
+msgstr "Execute `llamafit bench` na própria máquina, sem --profile."
+
+msgid "the run did not use the settings it was given: %(problems)s"
+msgstr "a execução não usou as configurações que lhe foram dadas: %(problems)s"
+
+msgid "Nothing was stored. A result filed under flags it was not taken with would be believed later by everything that reads it."
+msgstr "Nada foi armazenado. Um resultado arquivado sob flags com as quais não foi obtido seria acreditado depois por tudo o que o lesse."
+
+msgid "a conservative default; nobody has measured this card's backend overhead"
+msgstr "um valor padrão conservador; ninguém mediu a sobrecarga de backend desta placa"
+
+msgid "measured on this card with driver %(driver)s and llama.cpp %(build)s; one machine"
+msgstr "medido nesta placa com o driver %(driver)s e o llama.cpp %(build)s; uma máquina"
+
+msgid "A hybrid placement has to say how many layers are on the graphics card."
+msgstr "Uma colocação híbrida precisa dizer quantas camadas estão na placa gráfica."
+
+msgid "Pass gpu_layers, which is what -ngl would be."
+msgstr "Passe gpu_layers, que é o que seria -ngl."
+
+msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
+msgstr "O LlamaFit não leu o arquivo %(quant)s de %(model)s, portanto não consegue dimensioná-lo."
+
+msgid "Run `llamafit catalog refresh` to read the file's header."
+msgstr "Execute `llamafit catalog refresh` para ler o cabeçalho do arquivo."
+
+msgid "the server process before any model buffer"
+msgstr "o processo do servidor antes de qualquer buffer de modelo"
+
+msgid "fitted to one machine's measurements; the least certain line here"
+msgstr "ajustado às medições de uma só máquina; a linha menos segura desta tabela"
+
+msgid "room for one logit per vocabulary entry per token of the batch"
+msgstr "espaço para um logit por entrada do vocabulário por cada token do lote"
+
+msgid "LlamaFit cannot size a %(kv_type)s key-value cache."
+msgstr "O LlamaFit não consegue dimensionar uma cache chave-valor %(kv_type)s."
+
+msgid "Use one of: %(types)s."
+msgstr "Use um destes: %(types)s."
+
+msgid "This model's file does not say how large its key-value cache is per token."
+msgstr "O arquivo deste modelo não diz qual é o tamanho da sua cache chave-valor por token."
+
+msgid "Refresh the catalog so the file's header is read again."
+msgstr "Atualize o catálogo para que o cabeçalho do arquivo seja lido de novo."
+
+msgid "the attention-layer count was assumed, not counted"
+msgstr "o número de camadas de atenção foi presumido, não contado"
+
+msgid "%(arch)s allocates more cache than its header describes; see the line below"
+msgstr "%(arch)s reserva mais cache do que o seu cabeçalho descreve; veja a linha abaixo"
+
+msgid "what %(arch)s allocates beyond its header, measured rather than derived"
+msgstr "o que %(arch)s reserva além do seu cabeçalho, medido em vez de derivado"
+
+msgid "from the architecture's state dimensions; it does not grow with context"
+msgstr "a partir das dimensões de estado da arquitetura; não cresce com o contexto"
+
+msgid "the projector file itself"
+msgstr "o próprio arquivo do projetor"
+
+msgid "the projector's own compute space, measured at 248 MiB"
+msgstr "o espaço de cálculo do próprio projetor, medido em 248 MiB"
+
+msgid "attention projections, feed-forward weights and norms"
+msgstr "projeções de atenção, pesos de feed-forward e normalizações"
+
+msgid "always-on experts, which run for every token"
+msgstr "especialistas sempre ativos, que rodam para cada token"
+
+msgid "routed experts, read across the bus once per micro-batch"
+msgstr "especialistas encaminhados, lidos pelo barramento uma vez por micro-lote"
+
+msgid "this model ties its output projection to its embedding table"
+msgstr "este modelo liga a sua projeção de saída à sua tabela de embeddings"
+
+msgid "llama.cpp keeps the embedding table in memory even at full offload"
+msgstr "o llama.cpp mantém a tabela de embeddings em memória mesmo com o modelo todo na placa"
+
+msgid "streamed from disk as it is needed, not held in memory"
+msgstr "transmitido do disco conforme necessário, não mantido em memória"
+
+msgid "held in memory, since streaming from disk was turned off"
+msgstr "mantido em memória, já que a transmissão a partir do disco foi desligada"
+
 msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
 msgstr "O Hugging Face retornou %(status)d ao listar os arquivos de %(repo)s."
 
@@ -84,6 +276,234 @@ msgstr "Erro inesperado: %(error)s"
 msgid "Run again with --verbose for the full traceback."
 msgstr "Execute novamente com --verbose para ver o rastreamento completo."
 
+msgid "A catalog model id."
+msgstr "Um identificador de modelo do catálogo."
+
+msgid "Benchmark this quantisation instead of the planned one."
+msgstr "Mede esta quantização em vez da planejada."
+
+msgid "Size for this many tokens."
+msgstr "Dimensiona para esta quantidade de tokens."
+
+msgid "Set the micro-batch by hand; the budget is rebuilt around it."
+msgstr "Define o micro-lote à mão; o orçamento é reconstruído em torno dele."
+
+msgid "Measure a model on this machine and show the measurement beside the estimate.\n\nRuns llama-bench and a real server at the planned flags, stores the result with the conditions it was taken under, and flags a configuration the driver was paging. With --calibrate, fits the estimator's constants to this machine from every stored result and says by name which ones the measurements do not determine."
+msgstr "Mede um modelo nesta máquina e mostra a medição ao lado da estimativa.\n\nExecuta o llama-bench e um servidor de verdade com as flags planejadas, guarda o resultado com as condições em que foi obtido, e assinala uma configuração em que o driver estava paginando. Com --calibrate, ajusta as constantes do estimador a esta máquina a partir de todos os resultados guardados e diz pelo nome quais delas as medições não determinam."
+
+msgid "Measure prompt processing at every micro-batch of the ladder, not only the planned one. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all."
+msgstr "Mede o processamento do prompt em todos os micro-lotes da escada, não só no planejado. A seção 10.2 tem dois parâmetros livres e um micro-lote é uma equação, portanto sem isto a metade da calibração relativa ao prompt não pode ser ajustada de jeito nenhum."
+
+msgid "Run llama-bench only. Faster, and it gives up the paging check, the buffer sizes and the tool-call test, all of which need a real server."
+msgstr "Executa apenas o llama-bench. Mais rápido, e abre mão da verificação de paginação, dos tamanhos dos buffers e do teste de chamada de ferramentas, que precisam todos de um servidor de verdade."
+
+msgid "Print the result without writing it to the database."
+msgstr "Escreve o resultado sem gravá-lo no banco de dados."
+
+msgid "Print the commands that would run, and run nothing."
+msgstr "Escreve os comandos que seriam executados, e não executa nada."
+
+msgid "Fit the estimator's constants to this machine from every result."
+msgstr "Ajusta as constantes do estimador a esta máquina a partir de todos os resultados."
+
+msgid "List what is already stored and stop."
+msgstr "Lista o que já está guardado e para."
+
+msgid "`llamafit bench` needs a model to measure"
+msgstr "o `llamafit bench` precisa de um modelo para medir"
+
+msgid "Try `llamafit bench <model>`, `--calibrate` on its own, or `--show`."
+msgstr "Experimente `llamafit bench <modelo>`, `--calibrate` sozinho, ou `--show`."
+
+msgid "llama.cpp was not found, so there is nothing to benchmark with"
+msgstr "o llama.cpp não foi encontrado, portanto não há com que medir"
+
+msgid "Run `llamafit doctor` to see where it was looked for."
+msgstr "Execute `llamafit doctor` para ver onde ele foi procurado."
+
+msgid "%(path)s has llama-server but no llama-bench"
+msgstr "%(path)s tem llama-server mas não tem llama-bench"
+
+msgid "Some release archives leave it out; a full build has it beside the server."
+msgstr "Alguns arquivos de lançamento o deixam de fora; uma compilação completa o tem ao lado do servidor."
+
+msgid "this host is simulated, and a simulated machine cannot be measured"
+msgstr "esta máquina é simulada, e uma máquina simulada não pode ser medida"
+
+msgid "Run `llamafit bench` on the machine itself."
+msgstr "Execute `llamafit bench` na própria máquina."
+
+msgid "the model file is not on this machine: %(path)s"
+msgstr "o arquivo do modelo não está nesta máquina: %(path)s"
+
+msgid "Download it first; `llamafit plan` shows the path the command line uses."
+msgstr "Baixe-o primeiro; o `llamafit plan` mostra o caminho que a linha de comando usa."
+
+msgid "Would run:"
+msgstr "Executaria:"
+
+msgid "Nothing has been measured on this machine yet."
+msgstr "Ainda não foi medido nada nesta máquina."
+
+msgid "Stored measurements"
+msgstr "Medições guardadas"
+
+msgid "model"
+msgstr "modelo"
+
+msgid "kind"
+msgstr "tipo"
+
+# gen tok/s and prompt tok/s below are left as they are: they are the two
+# figures llama-bench itself prints, and the reader meets them in its output
+# before meeting this table.
+msgid "gen tok/s"
+msgstr "gen tok/s"
+
+msgid "prompt tok/s"
+msgstr "prompt tok/s"
+
+msgid "taken"
+msgstr "data"
+
+# The command line's own word for an option on it; the cell holds the flags
+# themselves, which are never translated.
+msgid "flags"
+msgstr "flags"
+
+msgid "Nothing was written to the database, so no estimate will be relabelled."
+msgstr "Nada foi gravado no banco de dados, portanto nenhuma estimativa será reetiquetada."
+
+msgid "Estimated against measured"
+msgstr "Estimado contra medido"
+
+msgid "figure"
+msgstr "valor"
+
+msgid "estimated"
+msgstr "estimado"
+
+msgid "measured"
+msgstr "medido"
+
+msgid "ratio"
+msgstr "razão"
+
+msgid "%(count)d figure is outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgid_plural "%(count)d figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgstr[0] "%(count)d valor está fora da banda de 0,8 a 1,25 em que se espera que uma fórmula não calibrada caia."
+msgstr[1] "%(count)d valores estão fora da banda de 0,8 a 1,25 em que se espera que uma fórmula não calibrada caia."
+
+msgid "This configuration was paging."
+msgstr "Esta configuração estava paginando."
+
+msgid "This configuration was not paging."
+msgstr "Esta configuração não estava paginando."
+
+msgid "Paging could not be checked."
+msgstr "Não foi possível verificar a paginação."
+
+msgid "Peak VRAM was %(percent)s percent of the card, and generation was %(speed)s percent of the estimate."
+msgstr "O pico de VRAM foi %(percent)s por cento da placa, e a geração foi %(speed)s por cento da estimativa."
+
+msgid "not compared"
+msgstr "não comparado"
+
+msgid "The largest context on the ladder that would not page is %(tokens)s."
+msgstr "O maior contexto da escada que não paginaria é %(tokens)s."
+
+msgid "Calibration"
+msgstr "Calibração"
+
+msgid "constant"
+msgstr "constante"
+
+msgid "value"
+msgstr "valor"
+
+msgid "from"
+msgstr "origem"
+
+msgid "%(base)s + %(slope)s per 1K"
+msgstr "%(base)s + %(slope)s por 1K"
+
+msgid "%(count)d measured context"
+msgid_plural "%(count)d measured contexts"
+msgstr[0] "%(count)d contexto medido"
+msgstr[1] "%(count)d contextos medidos"
+
+msgid "Nothing was fitted. Every line below says what its constant was missing; a calibration made from less than that would look precise and be arbitrary."
+msgstr "Nada foi ajustado. Cada linha abaixo diz o que faltava à sua constante; uma calibração feita com menos do que isso pareceria precisa e seria arbitrária."
+
+msgid "%(name)s was not fitted: %(reason)s"
+msgstr "%(name)s não foi ajustado: %(reason)s"
+
+msgid "%(count)d measured configuration"
+msgid_plural "%(count)d measured configurations"
+msgstr[0] "%(count)d configuração medida"
+msgstr[1] "%(count)d configurações medidas"
+
+msgid "What the model is for. It sets the score weights, the speed target and the context a candidate is measured against."
+msgstr "Para que serve o modelo. Define os pesos da pontuação, o alvo de velocidade e o contexto contra o qual um candidato é medido."
+
+# The English ends in a space where it means to end in a full stop; the
+# translation ends in the full stop, as every other option's help here does.
+msgid "Capability the model must have; a model without it is excluded "
+msgstr "Capacidade que o modelo precisa ter; um modelo sem ela é excluído."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Mantém apenas estes identificadores de licença (repetível)."
+
+# balanced, quality and speed are the values --prefer takes, so they stay in
+# English here and in the two entries below.
+msgid "balanced, quality or speed: moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights."
+msgstr "balanced, quality ou speed: move um décimo do peso entre a qualidade e a velocidade. Inclina o quadro; não substitui os pesos."
+
+msgid "Exclude anything larger to download, for example 40G or 7.5GiB."
+msgstr "Exclui tudo o que for maior para baixar, por exemplo 40G ou 7.5GiB."
+
+msgid "The worst verdict to list: comfortable, fits or tight."
+msgstr "O pior veredicto a listar: comfortable, fits ou tight."
+
+msgid "invalid --min-fit %(value)s"
+msgstr "--min-fit inválido: %(value)s"
+
+msgid "Valid values: %(values)s"
+msgstr "Valores válidos: %(values)s"
+
+msgid "invalid --prefer %(value)s"
+msgstr "--prefer inválido: %(value)s"
+
+msgid "Rank the catalog for what you want to do on this machine.\n\nEvery candidate is planned, sized and estimated here, so the first run scans the machine. Speeds compare candidates at 8K tokens of context; --explain expands a row into the scores, the weights, the budget and the speed breakdown that produced it."
+msgstr "Ordena o catálogo para o que você quer fazer nesta máquina.\n\nTodos os candidatos são planejados, dimensionados e estimados aqui, portanto a primeira execução analisa a máquina. As velocidades comparam os candidatos a 8K tokens de contexto; --explain expande uma linha nas pontuações, nos pesos, no orçamento e na decomposição de velocidade que a produziram."
+
+msgid "Exclude candidates that cannot hold at least this many tokens."
+msgstr "Exclui os candidatos que não conseguem conter pelo menos esta quantidade de tokens."
+
+msgid "Show at most this many rows."
+msgstr "Mostra no máximo esta quantidade de linhas."
+
+msgid "Show every quantisation instead of the best one per model."
+msgstr "Mostra todas as quantizações em vez da melhor de cada modelo."
+
+msgid "Expand every row shown into the scores, weights, budget and speed breakdown behind it. Combine with --limit 1 for one model."
+msgstr "Expande cada linha mostrada nas pontuações, pesos, orçamento e decomposição de velocidade que estão por trás dela. Combine com --limit 1 para um só modelo."
+
+msgid "Plan without a vision projector, freeing its memory."
+msgstr "Planeja sem projetor de visão, liberando a memória dele."
+
+msgid "Nothing was ranked. Every candidate is listed below with the reason; widen the request or free some memory."
+msgstr "Nada foi ordenado. Todos os candidatos estão listados abaixo com o motivo; amplie o pedido ou libere alguma memória."
+
+msgid "Rank every model by how well it uses this machine, whatever it is for.\n\nNo use case, no weights and no score: this is the memory question on its own. Models are sized for 32K tokens of context, and the context column is the largest each one holds in the mode shown."
+msgstr "Ordena todos os modelos pelo modo como usam esta máquina, seja para o que for.\n\nSem caso de uso, sem pesos e sem pontuação: esta é a questão da memória por si só. Os modelos são dimensionados para 32K tokens de contexto, e a coluna do contexto é o maior que cada um consegue no modo mostrado."
+
+msgid "Only the configurations that use the machine well: at least half its memory held in weights, and no pool past four fifths."
+msgstr "Apenas as configurações que usam bem a máquina: pelo menos metade da memória ocupada por pesos, e nenhuma reserva além de quatro quintos."
+
+msgid "Nothing fits this machine at that threshold. Try --min-fit tight, or drop --perfect."
+msgstr "Nada cabe nesta máquina com esse limiar. Experimente --min-fit tight, ou tire --perfect."
+
 msgid "Maintain the catalog: validate its files, refresh volatile fields."
 msgstr "Mantém o catálogo: valida seus arquivos, atualiza os campos voláteis."
 
@@ -93,37 +513,11 @@ msgstr "Mantém apenas este caso de uso."
 msgid "Keep only models with this capability (repeatable)."
 msgstr "Mantém apenas os modelos com esta capacidade (repetível)."
 
-msgid "Keep only these licence identifiers (repeatable)."
-msgstr "Mantém apenas estes identificadores de licença (repetível)."
-
 msgid "Validate only this file instead of the bundled catalog and custom overrides."
 msgstr "Valida apenas este arquivo, em vez do catálogo incluído e das personalizações."
 
-msgid "Did you mean: %(ids)s?"
-msgstr "Você quis dizer: %(ids)s?"
-
-msgid "Run `llamafit list` to see every model id."
-msgstr "Execute `llamafit list` para ver todos os identificadores de modelo."
-
-msgid "no model named %(id)s in the catalog"
-msgstr "não há nenhum modelo chamado %(id)s no catálogo"
-
-msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
-msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
-msgstr[0] "Encontrado %(count)d problema no catálogo; execute `llamafit catalog validate` para ver os detalhes."
-msgstr[1] "Encontrados %(count)d problemas no catálogo; execute `llamafit catalog validate` para ver os detalhes."
-
 msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
 msgstr "Nenhum modelo corresponde. Tente um --use-case, --capability, --license, --vendor ou --search mais amplo."
-
-msgid "invalid --use-case %(value)s"
-msgstr "--use-case inválido: %(value)s"
-
-msgid "Valid use cases: %(values)s"
-msgstr "Casos de uso válidos: %(values)s"
-
-msgid "Valid capabilities: %(values)s"
-msgstr "Capacidades válidas: %(values)s"
 
 msgid ""
 "List the model catalog, narrowed by any filters given.\n"
@@ -151,9 +545,6 @@ msgstr "Texto a procurar no identificador, nome, fabricante ou família."
 
 msgid "Show one model's facts, sources and every quant it publishes."
 msgstr "Mostra os fatos de um modelo, suas fontes e todas as quantizações que ele publica."
-
-msgid "A catalog model id."
-msgstr "Um identificador de modelo do catálogo."
 
 msgid "Validate catalog YAML files against the schema, printing one line per problem."
 msgstr "Valida os arquivos YAML do catálogo em relação ao esquema, escrevendo uma linha por problema."
@@ -201,8 +592,510 @@ msgstr "Escreve a entrada bruta de catálogo de um modelo, em JSON por padrão o
 msgid "Print YAML instead of JSON."
 msgstr "Escreve YAML em vez de JSON."
 
+msgid "Did you mean: %(ids)s?"
+msgstr "Você quis dizer: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Execute `llamafit list` para ver todos os identificadores de modelo."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "não há nenhum modelo chamado %(id)s no catálogo"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "Encontrado %(count)d problema no catálogo; execute `llamafit catalog validate` para ver os detalhes."
+msgstr[1] "Encontrados %(count)d problemas no catálogo; execute `llamafit catalog validate` para ver os detalhes."
+
+msgid "invalid --use-case %(value)s"
+msgstr "--use-case inválido: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Casos de uso válidos: %(values)s"
+
+msgid "invalid %(option)s value: %(values)s"
+msgid_plural "invalid %(option)s values: %(values)s"
+msgstr[0] "valor de %(option)s inválido: %(values)s"
+msgstr[1] "valores de %(option)s inválidos: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Capacidades válidas: %(values)s"
+
+msgid "%(option)s is not a size: %(value)s"
+msgstr "%(option)s não é um tamanho: %(value)s"
+
+msgid "Sizes look like 8G, 7.5GiB or 512M; a bare number is bytes."
+msgstr "Os tamanhos se escrevem 8G, 7.5GiB ou 512M; um número sozinho são bytes."
+
 msgid "Explain what was detected, what failed, and what would unlock more."
 msgstr "Explica o que foi detectado, o que falhou e o que liberaria mais."
+
+msgid "Hardware profiles: describe a machine in a file and score models against it."
+msgstr "Perfis de hardware: descreva uma máquina num arquivo e pontue os modelos contra ela."
+
+msgid "Validate only this file instead of every bundled and user profile."
+msgstr "Valida apenas este arquivo, em vez de todos os perfis incluídos e do usuário."
+
+msgid "A profile name, or a path to a profile file."
+msgstr "Um nome de perfil, ou um caminho para um arquivo de perfil."
+
+msgid "%(count)d hardware profile problem found; run `llamafit hardware validate` for details."
+msgid_plural "%(count)d hardware profile problems found; run `llamafit hardware validate` for details."
+msgstr[0] "Encontrado %(count)d problema em perfis de hardware; execute `llamafit hardware validate` para ver os detalhes."
+msgstr[1] "Encontrados %(count)d problemas em perfis de hardware; execute `llamafit hardware validate` para ver os detalhes."
+
+msgid "List the hardware profiles LlamaFit has: the bundled ones and your own."
+msgstr "Lista os perfis de hardware que o LlamaFit tem: os incluídos e os seus."
+
+msgid "No hardware profiles. Run `llamafit hardware path` to see where yours would go."
+msgstr "Não há perfis de hardware. Execute `llamafit hardware path` para ver onde ficariam os seus."
+
+msgid "Show one profile; with --as-host, the machine it stands in for.\n\nA host built from a profile is marked as simulated, in the table and in the JSON, so a what-if is never mistaken for a scan of this machine."
+msgstr "Mostra um perfil; com --as-host, a máquina que ele substitui.\n\nUma máquina construída a partir de um perfil é marcada como simulada, na tabela e no JSON, para que uma hipótese nunca seja confundida com uma análise desta máquina."
+
+msgid "Show the host this profile substitutes, as `llamafit system` would."
+msgstr "Mostra a máquina que este perfil substitui, como o `llamafit system` faria."
+
+msgid "Check hardware profile files against the schema, printing one line per problem."
+msgstr "Verifica os arquivos de perfil de hardware em relação ao esquema, escrevendo uma linha por problema."
+
+msgid "Print the directory your own hardware profiles go in."
+msgstr "Escreve o diretório onde ficam os seus próprios perfis de hardware."
+
+msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr "Ainda não existe; crie-o e ponha nele um arquivo %(suffix)s."
+
+msgid "Install what it takes to run a model: llama.cpp itself, and the weights."
+msgstr "Instala o que é preciso para rodar um modelo: o próprio llama.cpp, e os pesos."
+
+msgid "Install this backend instead of the one chosen for your GPU: cuda, vulkan, hip, sycl, metal or cpu."
+msgstr "Instala este backend em vez do escolhido para a sua GPU: cuda, vulkan, hip, sycl, metal ou cpu."
+
+msgid "Install here instead of ~/.llamafit/llama.cpp."
+msgstr "Instala aqui em vez de em ~/.llamafit/llama.cpp."
+
+msgid "Install this release tag, for example b6100, not the latest."
+msgstr "Instala esta etiqueta de lançamento, por exemplo b6100, e não a mais recente."
+
+msgid "invalid --backend %(value)s"
+msgstr "--backend inválido: %(value)s"
+
+msgid "Valid backends: %(values)s"
+msgstr "Backends válidos: %(values)s"
+
+msgid "release %(tag)s publishes no %(backend)s build for %(os)s %(arch)s."
+msgstr "o lançamento %(tag)s não publica nenhuma compilação %(backend)s para %(os)s %(arch)s."
+
+msgid "Leave --backend out and LlamaFit will choose a published one."
+msgstr "Deixe --backend de fora e o LlamaFit escolhe um dos publicados."
+
+msgid "release %(tag)s publishes nothing for %(os)s %(arch)s."
+msgstr "o lançamento %(tag)s não publica nada para %(os)s %(arch)s."
+
+msgid "Build llama.cpp from source; see the project's own instructions."
+msgstr "Compile o llama.cpp a partir do código-fonte; veja as instruções do próprio projeto."
+
+msgid "Release"
+msgstr "Lançamento"
+
+msgid "%(tag)s (build %(build)s)"
+msgstr "%(tag)s (compilação %(build)s)"
+
+msgid "Backend"
+msgstr "Backend"
+
+msgid "Archive"
+msgstr "Pacote"
+
+msgid "Also"
+msgstr "Também"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "%(size)s (%(done)s already on disk)"
+msgstr "%(size)s (%(done)s já em disco)"
+
+msgid "Checksum"
+msgstr "Soma de verificação"
+
+msgid "published, checked before anything is unpacked"
+msgstr "publicada, verificada antes de qualquer coisa ser descompactada"
+
+msgid "none published"
+msgstr "nenhuma publicada"
+
+msgid "Install into"
+msgstr "Instalar em"
+
+msgid "Directory"
+msgstr "Diretório"
+
+msgid "Free space"
+msgstr "Espaço livre"
+
+msgid "Free space (cache)"
+msgstr "Espaço livre (cache)"
+
+msgid "%(free)s on %(path)s, %(needed)s needed"
+msgstr "%(free)s em %(path)s, são precisos %(needed)s"
+
+msgid "will be created"
+msgstr "será criado"
+
+msgid "exists and is empty"
+msgstr "existe e está vazio"
+
+msgid "holds %(tag)s, installed by LlamaFit; it will be replaced"
+msgstr "contém %(tag)s, instalado pelo LlamaFit; será substituído"
+
+msgid "installed by LlamaFit; it will be replaced"
+msgstr "instalado pelo LlamaFit; será substituído"
+
+msgid "was not installed by LlamaFit"
+msgstr "não foi instalado pelo LlamaFit"
+
+msgid "Downloading"
+msgstr "Baixando"
+
+msgid "Installed llama.cpp %(tag)s into %(path)s."
+msgstr "Instalado o llama.cpp %(tag)s em %(path)s."
+
+msgid "Replaced %(tag)s."
+msgstr "Substituído %(tag)s."
+
+msgid "Backends found in it: %(backends)s"
+msgstr "Backends encontrados nele: %(backends)s"
+
+# Read in two places with no context to tell them apart: the Backends line of
+# `llamafit install llama.cpp`, and the web dashboard's word for a table with no
+# rows. A context would let each answer for itself; until there is one, this word
+# has to serve both.
+msgid "none"
+msgstr "nenhum"
+
+msgid "Check it with `llamafit doctor`."
+msgstr "Verifique-o com `llamafit doctor`."
+
+msgid "Change your PATH?"
+msgstr "Alterar o seu PATH?"
+
+msgid "PATH left alone."
+msgstr "O PATH ficou como estava."
+
+msgid "PATH changed. Open a new terminal for it to take effect."
+msgstr "PATH alterado. Abra um terminal novo para que tenha efeito."
+
+msgid "Download a published llama.cpp build and install it into ~/.llamafit/llama.cpp.\n\nThe plan is printed before anything is written. The archive's checksum is verified before it is unpacked, an interrupted download continues where it stopped, and a directory LlamaFit did not create is never overwritten."
+msgstr "Baixa uma compilação publicada do llama.cpp e a instala em ~/.llamafit/llama.cpp.\n\nO plano é escrito antes de qualquer coisa ser gravada. A soma de verificação do pacote é verificada antes de ele ser descompactado, um download interrompido continua de onde parou, e um diretório que o LlamaFit não criou nunca é sobrescrito."
+
+msgid "Offer to add the bin directory to your PATH, showing the undo first."
+msgstr "Oferece acrescentar o diretório bin ao seu PATH, mostrando primeiro como desfazer."
+
+msgid "Install over a directory LlamaFit did not create. Ask yourself twice."
+msgstr "Instala por cima de um diretório que o LlamaFit não criou. Pense duas vezes."
+
+msgid "Install an archive that publishes no checksum. Nothing can be checked."
+msgstr "Instala um pacote que não publica nenhuma soma de verificação. Não há nada que se possa verificar."
+
+msgid "Print the plan and write nothing."
+msgstr "Escreve o plano e não grava nada."
+
+msgid "Do not ask; assume yes."
+msgstr "Não pergunta; assume que sim."
+
+msgid "Install this?"
+msgstr "Instalar isto?"
+
+msgid "Nothing was written."
+msgstr "Nada foi gravado."
+
+msgid "Fetch this quantisation instead of the first the catalog publishes."
+msgstr "Obtém esta quantização em vez da primeira que o catálogo publica."
+
+msgid "Put the files here instead of under the configured downloads directory."
+msgstr "Põe os arquivos aqui em vez de no diretório de downloads configurado."
+
+msgid "Use at most this much bandwidth, for example 5M. Shared across every worker, so the figure is the figure whatever --workers says."
+msgstr "Usa no máximo esta largura de banda, por exemplo 5M. É compartilhada por todas as conexões em paralelo, portanto o valor é o valor independentemente do que diga --workers."
+
+msgid "How many requests to keep in flight. More is not always faster, and a home connection is shared with whoever else is using it."
+msgstr "Quantas requisições manter em curso. Mais nem sempre é mais rápido, e uma conexão doméstica é compartilhada com quem mais estiver usando."
+
+msgid "Do not ask before starting."
+msgstr "Não pergunta antes de começar."
+
+msgid "Show what would be fetched and stop before fetching it."
+msgstr "Mostra o que seria baixado e para antes de baixar."
+
+msgid "Fetch only the weights, not the vision projector or the draft model."
+msgstr "Baixa apenas os pesos, não o projetor de visão nem o modelo de rascunho."
+
+msgid "Re-read files that are already here and check them against the catalog."
+msgstr "Relê os arquivos que já estão aqui e os verifica em relação ao catálogo."
+
+msgid "Fetch files the catalog holds no checksum for. Nothing will be able to tell you whether they arrived intact."
+msgstr "Baixa arquivos para os quais o catálogo não tem soma de verificação. Nada poderá dizer se eles chegaram intactos."
+
+msgid "Show at most this many entries."
+msgstr "Mostra no máximo esta quantidade de entradas."
+
+msgid "already here"
+msgstr "já está aqui"
+
+msgid "to fetch"
+msgstr "a baixar"
+
+msgid "About to download"
+msgstr "Prestes a baixar"
+
+msgid "File"
+msgstr "Arquivo"
+
+msgid "Role"
+msgstr "Função"
+
+msgid "Size"
+msgstr "Tamanho"
+
+msgid "Status"
+msgstr "Estado"
+
+msgid "%(name)s %(quant)s from %(repo)s"
+msgstr "%(name)s %(quant)s de %(repo)s"
+
+msgid "%(count)d file, %(total)s in all, %(needed)s still to fetch."
+msgid_plural "%(count)d files, %(total)s in all, %(needed)s still to fetch."
+msgstr[0] "%(count)d arquivo, %(total)s ao todo, %(needed)s ainda por baixar."
+msgstr[1] "%(count)d arquivos, %(total)s ao todo, %(needed)s ainda por baixar."
+
+msgid "Into %(path)s, which has %(free)s free; %(after)s would be left."
+msgstr "Para %(path)s, que tem %(free)s livres; sobrariam %(after)s."
+
+msgid "The catalog holds no checksum for %(files)s."
+msgid_plural "The catalog holds no checksums for %(files)s."
+msgstr[0] "O catálogo não tem soma de verificação para %(files)s."
+msgstr[1] "O catálogo não tem somas de verificação para %(files)s."
+
+msgid "Download a model's weights, resuming anything an earlier run left and checking every file against the catalog's checksum."
+msgstr "Baixa os pesos de um modelo, retomando o que uma execução anterior deixou e verificando cada arquivo em relação à soma de verificação do catálogo."
+
+msgid "%(model)s %(quant)s is already here; nothing to do."
+msgstr "%(model)s %(quant)s já está aqui; não há nada a fazer."
+
+msgid "Start the download?"
+msgstr "Começar o download?"
+
+msgid "Stopped. What arrived is kept; run `llamafit install model %(model)s` again to carry on from there."
+msgstr "Parado. O que chegou fica guardado; execute `llamafit install model %(model)s` de novo para continuar a partir daí."
+
+msgid "%(count)d file, %(size)s, checked against the catalog."
+msgid_plural "%(count)d files, %(size)s, checked against the catalog."
+msgstr[0] "%(count)d arquivo, %(size)s, verificado em relação ao catálogo."
+msgstr[1] "%(count)d arquivos, %(size)s, verificados em relação ao catálogo."
+
+msgid "In %(path)s. Run `llamafit plan %(model)s` for the command line that runs it."
+msgstr "Em %(path)s. Execute `llamafit plan %(model)s` para a linha de comando que o executa."
+
+msgid "Show what has been downloaded, newest first."
+msgstr "Mostra o que já foi baixado, do mais recente para o mais antigo."
+
+msgid "Nothing has been downloaded yet."
+msgstr "Ainda não foi baixado nada."
+
+msgid "Downloads"
+msgstr "Downloads"
+
+msgid "When"
+msgstr "Quando"
+
+msgid "Model"
+msgstr "Modelo"
+
+msgid "Quant"
+msgstr "Quant."
+
+msgid "Outcome"
+msgstr "Resultado"
+
+msgid "finished"
+msgstr "terminado"
+
+msgid "stopped"
+msgstr "parado"
+
+msgid "Plan this quantisation instead of the one that scores best on this machine."
+msgstr "Planeja esta quantização em vez da que obtém a melhor pontuação nesta máquina."
+
+msgid "Size for this many tokens. When it does not fit, the plan sizes down and shows what the context you asked for would have cost."
+msgstr "Dimensiona para esta quantidade de tokens. Quando não cabe, o plano dimensiona para menos e mostra o que teria custado o contexto que você pediu."
+
+msgid "Set the micro-batch by hand. The whole budget is rebuilt around it, since it moves the compute buffer and with it the verdict."
+msgstr "Define o micro-lote à mão. Todo o orçamento é reconstruído em torno dele, já que ele move o buffer de cálculo e com ele o veredicto."
+
+msgid "A generation speed to answer against: whether this reaches it, and what context would."
+msgstr "Uma velocidade de geração a que responder: se esta a atinge, e que contexto a atingiria."
+
+msgid "%(model)s publishes no quantisations"
+msgstr "%(model)s não publica quantizações"
+
+msgid "Run `llamafit catalog refresh --model %(model)s`."
+msgstr "Execute `llamafit catalog refresh --model %(model)s`."
+
+msgid "%(model)s has no %(quant)s quantisation"
+msgstr "%(model)s não tem a quantização %(quant)s"
+
+msgid "It publishes: %(names)s"
+msgstr "Publica: %(names)s"
+
+msgid "Place one model on this machine and print the command line that runs it.\n\nShows the memory budget component by component, the context ladder a launch script chooses from, where a token's time goes, and any run the catalog records for comparison."
+msgstr "Coloca um modelo nesta máquina e escreve a linha de comando que o executa.\n\nMostra o orçamento de memória componente a componente, a escada de contextos entre os quais um script de inicialização escolhe, para onde vai o tempo de um token, e qualquer execução que o catálogo registre para comparação."
+
+msgid "Leave the vision projector out, freeing its memory for context."
+msgstr "Deixa o projetor de visão de fora, liberando a memória dele para contexto."
+
+msgid "Write the files here instead of in LlamaFit's own presets directory."
+msgstr "Escreve os arquivos aqui em vez de no diretório de predefinições do próprio LlamaFit."
+
+msgid "Bind this port instead of llama.cpp's default 8080."
+msgstr "Usa esta porta em vez da porta 8080 padrão do llama.cpp."
+
+msgid "Size for this many tokens. It becomes the top of the ladder the script chooses from; the script never goes above it."
+msgstr "Dimensiona para esta quantidade de tokens. Passa a ser o topo da escada entre a qual o script escolhe; o script nunca vai acima disso."
+
+msgid "%(model)s does not fit this machine in any configuration"
+msgstr "%(model)s não cabe nesta máquina em nenhuma configuração"
+
+msgid "Run `llamafit plan %(model)s` to see what it would need."
+msgstr "Execute `llamafit plan %(model)s` para ver do que ele precisaria."
+
+msgid "Write launch scripts for one model: a script that picks its context from free card memory at start time, a router section, and a README.\n\nA file you have edited is never overwritten without --force."
+msgstr "Escreve scripts de inicialização para um modelo: um script que escolhe o seu contexto a partir da memória livre da placa na inicialização, uma seção de router, e um README.\n\nUm arquivo que você tenha editado nunca é sobrescrito sem --force."
+
+msgid "Overwrite files you have edited. It says which ones it discarded."
+msgstr "Sobrescreve os arquivos que você editou. Diz quais foram descartados."
+
+msgid "Run a model's preset, wait for the server to answer, and print its endpoints. --stop stops the server LlamaFit started."
+msgstr "Executa a predefinição de um modelo, espera o servidor responder, e escreve os seus endpoints. --stop para o servidor que o LlamaFit iniciou."
+
+msgid "Stop the server LlamaFit started for this model."
+msgstr "Para o servidor que o LlamaFit iniciou para este modelo."
+
+msgid "Seconds to wait for /health before reporting that it has not answered."
+msgstr "Segundos a esperar por /health antes de dizer que ele não respondeu."
+
+msgid "the preset could not be written"
+msgstr "não foi possível gravar a predefinição"
+
+msgid "Wrote a preset first: %(path)s"
+msgstr "Foi gravada primeiro uma predefinição: %(path)s"
+
+msgid "Nothing to stop: LlamaFit has no record of starting %(model)s."
+msgstr "Nada para parar: o LlamaFit não tem registro de ter iniciado %(model)s."
+
+msgid "Stopped %(model)s, which was serving on %(url)s."
+msgstr "Parado o %(model)s, que estava servindo em %(url)s."
+
+msgid "Preset for %(name)s (%(quant)s) in %(dir)s"
+msgstr "Predefinição para %(name)s (%(quant)s) em %(dir)s"
+
+msgid "The server will answer on %(url)s."
+msgstr "O servidor vai responder em %(url)s."
+
+msgid "Your edits were kept. Nothing above was written to those files; run the command again with --force to replace them."
+msgstr "Suas edições foram mantidas. Nada do que está acima foi gravado nesses arquivos; execute o comando de novo com --force para substituí-los."
+
+msgid "At start time the script reads how much card memory is free, keeps %(reserve)s MiB back, and takes the largest context that still fits."
+msgstr "Na inicialização o script lê quanta memória da placa está livre, guarda %(reserve)s MiB de reserva, e toma o maior contexto que ainda cabe."
+
+msgid "This machine has nothing the script can ask for free card memory, so it will start at %(context)s tokens; the script's header says why."
+msgstr "Esta máquina não tem nada a que o script possa perguntar pela memória livre da placa, portanto ele vai começar com %(context)s tokens; o cabeçalho do script diz por quê."
+
+msgid "Files"
+msgstr "Arquivos"
+
+msgctxt "column heading"
+msgid "File"
+msgstr "Arquivo"
+
+msgctxt "column heading"
+msgid "What happened"
+msgstr "O que aconteceu"
+
+msgid "Context tiers the script may choose"
+msgstr "Níveis de contexto que o script pode escolher"
+
+msgctxt "column heading"
+msgid "Context"
+msgstr "Contexto"
+
+msgctxt "column heading"
+msgid "Card needs"
+msgstr "Precisa na placa"
+
+msgctxt "column heading"
+msgid "Free card memory to reach it"
+msgstr "Memória livre na placa para chegar lá"
+
+msgid "%(value)s MiB"
+msgstr "%(value)s MiB"
+
+msgid "written"
+msgstr "escrito"
+
+msgid "brought up to date"
+msgstr "atualizado"
+
+msgid "already up to date"
+msgstr "já estava atualizado"
+
+msgid "kept: you edited it"
+msgstr "mantido: você o editou"
+
+msgid "overwritten: your edits are gone"
+msgstr "sobrescrito: suas edições se perderam"
+
+msgid "The preset could not be started: %(error)s"
+msgstr "Não foi possível iniciar a predefinição: %(error)s"
+
+msgid "Started, but %(url)s has not answered yet. A large model can spend minutes reading its weights; try the health endpoint again in a moment, or run `llamafit launch %(model)s --stop`."
+msgstr "Iniciado, mas %(url)s ainda não respondeu. Um modelo grande pode passar minutos lendo os seus pesos; tente o endpoint de saúde daqui a pouco, ou execute `llamafit launch %(model)s --stop`."
+
+msgid "%(model)s was already serving on %(url)s."
+msgstr "%(model)s já estava servindo em %(url)s."
+
+msgid "%(model)s is serving on %(url)s."
+msgstr "%(model)s está servindo em %(url)s."
+
+msgid "Stop it with `llamafit launch %(model)s --stop`."
+msgstr "Pare-o com `llamafit launch %(model)s --stop`."
+
+msgid "Endpoints"
+msgstr "Endpoints"
+
+msgctxt "column heading"
+msgid "What"
+msgstr "O quê"
+
+msgctxt "column heading"
+msgid "Where"
+msgstr "Onde"
+
+msgid "Web interface"
+msgstr "Interface web"
+
+# The name the OpenAI-compatible API gives this endpoint, which is what the URL
+# beside it spells; it is read as that name and not as two English words.
+msgid "Chat completions"
+msgstr "Chat completions"
+
+msgid "Models"
+msgstr "Modelos"
+
+msgid "Health"
+msgstr "Estado do servidor"
+
+msgid "Ask for the model by the alias %(alias)s."
+msgstr "Peça o modelo pelo alias %(alias)s."
 
 msgctxt "finding level"
 msgid "OK"
@@ -231,6 +1124,34 @@ msgstr "presumida"
 msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "desconhecida"
+
+msgctxt "simulation override"
+msgid "VRAM"
+msgstr "VRAM"
+
+msgctxt "simulation override"
+msgid "system memory"
+msgstr "memória do sistema"
+
+msgctxt "simulation override"
+msgid "CPU cores"
+msgstr "núcleos da CPU"
+
+msgid "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgid_plural "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgstr[0] "estes valores vêm do perfil de hardware %(profile)s com %(fields)s substituído; não são esta máquina"
+msgstr[1] "estes valores vêm do perfil de hardware %(profile)s com %(fields)s substituídos; não são esta máquina"
+
+msgid "these figures come from the hardware profile %(profile)s; they are not this machine"
+msgstr "estes valores vêm do perfil de hardware %(profile)s; não são esta máquina"
+
+msgid "%(fields)s was overridden for a what-if; these figures are not what was scanned"
+msgid_plural "%(fields)s were overridden for a what-if; these figures are not what was scanned"
+msgstr[0] "%(fields)s foi substituído para uma hipótese; estes valores não são o que foi analisado"
+msgstr[1] "%(fields)s foram substituídos para uma hipótese; estes valores não são o que foi analisado"
+
+msgid "these figures are not this machine"
+msgstr "estes valores não são esta máquina"
 
 msgctxt "model capability"
 msgid "coding"
@@ -275,16 +1196,16 @@ msgstr "%(compute)s TFLOPS fp16"
 
 msgid "%(count)d core"
 msgid_plural "%(count)d cores"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d núcleo"
+msgstr[1] "%(count)d núcleos"
 
 msgid "%(count)d thread"
 msgid_plural "%(count)d threads"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d thread"
+msgstr[1] "%(count)d threads"
 
 msgid "%(cores)s / %(threads)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s"
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -292,10 +1213,10 @@ msgstr[0] "%(count)d núcleo de desempenho"
 msgstr[1] "%(count)d núcleos de desempenho"
 
 msgid "%(cores)s / %(threads)s, %(performance)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s, %(performance)s"
 
 msgid "%(type)s at %(speed)d MT/s"
-msgstr ""
+msgstr "%(type)s a %(speed)d MT/s"
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -311,23 +1232,23 @@ msgstr[0] "%(count)d canal"
 msgstr[1] "%(count)d canais"
 
 msgid "%(kind)s, %(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s em %(channels)s"
 
 msgid "%(kind)s, %(modules)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s"
 
 msgid "%(kind)s, %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(channels)s"
 
 msgid "%(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(modules)s em %(channels)s"
 
 msgctxt "memory type"
 msgid "type unknown"
 msgstr "tipo desconhecido"
 
 msgid "%(specs)s (spec), driver %(driver)s"
-msgstr ""
+msgstr "%(specs)s (especificação), driver %(driver)s"
 
 msgid "%(specs)s (spec)"
 msgstr "%(specs)s (especificação)"
@@ -342,6 +1263,9 @@ msgstr "sem especificações"
 msgid "Host"
 msgstr "Máquina"
 
+msgid "SIMULATED"
+msgstr "SIMULADO"
+
 msgid "OS"
 msgstr "SO"
 
@@ -350,13 +1274,6 @@ msgstr "%(os)s %(version)s (%(arch)s)"
 
 msgid "CPU"
 msgstr "CPU"
-
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgctxt "CPU instruction sets"
-msgid "isa unknown"
-msgstr "isa desconhecido"
 
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
@@ -383,18 +1300,12 @@ msgctxt "GPU"
 msgid "none detected"
 msgstr "nenhuma detectada"
 
-msgid "%(total)s VRAM, %(free)s free"
-msgstr "%(total)s de VRAM, %(free)s livres"
-
 msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM desconhecida"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
-
-msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 
 msgid "Memory pool"
 msgstr "Reserva de memória"
@@ -503,21 +1414,14 @@ msgid "Params"
 msgstr "Parâm."
 
 msgctxt "column heading"
-msgid "Context"
-msgstr "Contexto"
-
-msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Capacidades"
 
 msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr ""
+msgstr "%(heading)s é a base editorial, antes de qualquer penalização por quantização; execute `llamafit info <modelo>` para ver os testes de referência com fonte que a sustentam."
 
 msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr ""
-
-msgid "Models"
-msgstr "Modelos"
+msgstr "%(heading)s é o total/ativo em bilhões para um modelo de mistura de especialistas, ou um só número quando são iguais."
 
 msgid "Vendor"
 msgstr "Fabricante"
@@ -538,10 +1442,10 @@ msgid "Parameters"
 msgstr "Parâmetros"
 
 msgid "%(total)s total, %(active)s active"
-msgstr ""
+msgstr "%(total)s no total, %(active)s ativos"
 
 msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
-msgstr ""
+msgstr "%(tokens)s tokens nativos, %(extended)s estendidos via %(method)s"
 
 msgctxt "context extension method"
 msgid "unspecified method"
@@ -586,13 +1490,13 @@ msgstr[0] "%(count)d camada"
 msgstr[1] "%(count)d camadas"
 
 msgid "%(arch)s, %(layers)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s, %(experts)s"
 
 msgid "%(arch)s, %(layers)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s"
 
 msgid "%(arch)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(experts)s"
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
@@ -610,9 +1514,6 @@ msgstr "Quantizações"
 msgid "Name"
 msgstr "Nome"
 
-msgid "Size"
-msgstr "Tamanho"
-
 msgid "BPW"
 msgstr "BPW"
 
@@ -623,19 +1524,716 @@ msgctxt "bits per weight"
 msgid "unknown"
 msgstr "desconhecido"
 
+msgctxt "profile origin"
+msgid "bundled"
+msgstr "incluído"
+
+msgctxt "profile origin"
+msgid "yours"
+msgstr "seu"
+
+msgid "%(ram)s RAM, no graphics card"
+msgstr "%(ram)s de RAM, sem placa gráfica"
+
+msgid "%(ram)s RAM shared with %(gpu)s"
+msgstr "%(ram)s de RAM compartilhados com %(gpu)s"
+
+msgid "%(ram)s RAM, %(gpu)s with %(vram)s"
+msgstr "%(ram)s de RAM, %(gpu)s com %(vram)s"
+
+msgid "%(cores)d core / %(threads)d thread"
+msgid_plural "%(cores)d cores / %(threads)d threads"
+msgstr[0] "%(cores)d núcleo / %(threads)d thread"
+msgstr[1] "%(cores)d núcleos / %(threads)d threads"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa desconhecido"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "%(total)s total, %(available)s available; bandwidth %(bandwidth)s"
+msgstr "%(total)s no total, %(available)s disponíveis; largura de banda %(bandwidth)s"
+
+msgctxt "GPU specifications"
+msgid "no bandwidth or compute figure"
+msgstr "sem valor de largura de banda nem de cálculo"
+
+msgid "%(specs)s (from the profile)"
+msgstr "%(specs)s (do perfil)"
+
+msgid "%(specs)s (from the specification table)"
+msgstr "%(specs)s (da tabela de especificações)"
+
+msgctxt "GPU VRAM"
+msgid "VRAM from the shared pool"
+msgstr "VRAM da reserva compartilhada"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s de VRAM, %(free)s livres"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "Hardware profiles"
+msgstr "Perfis de hardware"
+
+msgid "Machine"
+msgstr "Máquina"
+
+msgid "a graphics card whose name contains %(text)s"
+msgstr "uma placa gráfica cujo nome contenha %(text)s"
+
+msgid "a processor whose model contains %(text)s"
+msgstr "um processador cujo modelo contenha %(text)s"
+
+msgid "at least %(ram)s of memory"
+msgstr "pelo menos %(ram)s de memória"
+
+msgctxt "profile match rules"
+msgid "none, so this profile is never chosen for you"
+msgstr "nenhuma, portanto este perfil nunca é escolhido para você"
+
+msgid "Description"
+msgstr "Descrição"
+
+msgid "From"
+msgstr "Origem"
+
+msgid "Matches"
+msgstr "Corresponde a"
+
+msgid "Recorded"
+msgstr "Registrado"
+
+msgid "Provenance"
+msgstr "Proveniência"
+
+msgid "recorded from %(source)s; this build stores it but does not apply it yet"
+msgstr "registrado a partir de %(source)s; esta compilação o guarda mas ainda não o aplica"
+
+msgctxt "utilisation"
+msgid "n/a"
+msgstr "n/d"
+
+msgctxt "run mode"
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "run mode"
+msgid "experts in RAM"
+msgstr "especialistas na RAM"
+
+msgctxt "run mode"
+msgid "split"
+msgstr "dividido"
+
+msgctxt "run mode"
+msgid "CPU"
+msgstr "CPU"
+
+msgctxt "run mode"
+msgid "nowhere"
+msgstr "em lugar nenhum"
+
+msgctxt "fit verdict"
+msgid "roomy"
+msgstr "folgado"
+
+msgctxt "fit verdict"
+msgid "fits"
+msgstr "cabe"
+
+msgctxt "fit verdict"
+msgid "tight"
+msgstr "apertado"
+
+msgctxt "fit verdict"
+msgid "pages"
+msgstr "pagina"
+
+msgctxt "fit verdict"
+msgid "no room"
+msgstr "sem espaço"
+
+msgid "Comfortable: room for a longer context or a second model."
+msgstr "Folgado: há espaço para um contexto mais longo ou para um segundo modelo."
+
+msgid "Fits: the intended configuration runs as planned."
+msgstr "Cabe: a configuração pretendida roda como planejado."
+
+msgid "Tight: it runs, but a browser or a second process can push it over."
+msgstr "Apertado: roda, mas um navegador ou um segundo processo pode fazer transbordar."
+
+msgid "Pages: this needs more of the graphics card than is free. The driver will not refuse it — it moves the overflow to system memory, the server starts, the log looks healthy, and generation runs at a fraction of its speed with nothing saying why."
+msgstr "Pagina: isto precisa de mais da placa gráfica do que está livre. O driver não recusa — passa o excedente para a memória do sistema, o servidor sobe, o log parece saudável, e a geração roda a uma fração da sua velocidade sem que nada diga por quê."
+
+msgid "No room: more memory than this machine has, with nothing to page to."
+msgstr "Sem espaço: mais memória do que esta máquina tem, e sem nada para onde paginar."
+
+msgctxt "confidence"
+msgid "measured"
+msgstr "medida"
+
+msgctxt "confidence"
+msgid "calibrated"
+msgstr "calibrada"
+
+msgctxt "confidence"
+msgid "estimated"
+msgstr "estimada"
+
+msgctxt "confidence"
+msgid "no estimate"
+msgstr "sem estimativa"
+
+msgid "Speeds are benchmarks taken on this machine, not predictions."
+msgstr "As velocidades são testes de referência feitos nesta máquina, não previsões."
+
+msgid "Speeds are section 10's formula corrected by benchmarks taken on this machine."
+msgstr "As velocidades são a fórmula da seção 10 corrigida por testes de referência feitos nesta máquina."
+
+msgid "Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement."
+msgstr "As velocidades são a fórmula da seção 10 com as constantes padrão. Ainda não foi medido nada nesta máquina, portanto nenhum valor aqui é uma medição."
+
+msgid "No speed could be estimated."
+msgstr "Não foi possível estimar nenhuma velocidade."
+
+msgctxt "memory pool"
+msgid "card"
+msgstr "placa"
+
+msgctxt "memory pool"
+msgid "system"
+msgstr "sistema"
+
+msgctxt "memory pool"
+msgid "disk"
+msgstr "disco"
+
+msgctxt "budget component"
+msgid "dense weights"
+msgstr "pesos densos"
+
+msgctxt "budget component"
+msgid "shared experts"
+msgstr "especialistas compartilhados"
+
+msgctxt "budget component"
+msgid "routed experts"
+msgstr "especialistas encaminhados"
+
+msgctxt "budget component"
+msgid "token embedding"
+msgstr "embedding de tokens"
+
+msgctxt "budget component"
+msgid "output head"
+msgstr "cabeça de saída"
+
+msgctxt "budget component"
+msgid "other weights"
+msgstr "outros pesos"
+
+msgctxt "budget component"
+msgid "streamed tables"
+msgstr "tabelas transmitidas"
+
+msgctxt "budget component"
+msgid "KV cache"
+msgstr "cache KV"
+
+msgctxt "budget component"
+msgid "KV cache, undeclared"
+msgstr "cache KV, não declarada"
+
+msgctxt "budget component"
+msgid "recurrent state"
+msgstr "estado recorrente"
+
+msgctxt "budget component"
+msgid "compute buffer"
+msgstr "buffer de cálculo"
+
+msgctxt "budget component"
+msgid "output buffer"
+msgstr "buffer de saída"
+
+msgctxt "budget component"
+msgid "vision projector"
+msgstr "projetor de visão"
+
+msgctxt "budget component"
+msgid "vision compute"
+msgstr "cálculo de visão"
+
+msgctxt "budget component"
+msgid "backend overhead"
+msgstr "sobrecarga do backend"
+
+msgctxt "budget component"
+msgid "process overhead"
+msgstr "sobrecarga do processo"
+
+msgctxt "budget line source"
+msgid "file"
+msgstr "arquivo"
+
+msgctxt "budget line source"
+msgid "formula"
+msgstr "fórmula"
+
+msgctxt "column heading"
+msgid "Component"
+msgstr "Componente"
+
+msgctxt "column heading"
+msgid "From"
+msgstr "Origem"
+
+msgid "Card: %(required)s of %(available)s free, %(share)s used."
+msgstr "Placa: %(required)s de %(available)s livres, %(share)s usado."
+
+msgid "System memory: %(required)s of %(available)s free, %(share)s used."
+msgstr "Memória do sistema: %(required)s de %(available)s livres, %(share)s usado."
+
+msgid "%(component)s: %(note)s"
+msgstr "%(component)s: %(note)s"
+
+msgid "Context tiers"
+msgstr "Níveis de contexto"
+
+msgctxt "column heading"
+msgid "On this machine"
+msgstr "Nesta máquina"
+
+msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
+msgstr "Um script de inicialização compara a memória livre que vê com a coluna da placa e toma o maior degrau que cabe (veja docs/cli.md)."
+
+msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
+msgstr "%(gen)s tokens por segundo gerados e %(prompt)s lidos, com %(context)s tokens de contexto (%(confidence)s)."
+
+msgctxt "column heading"
+msgid "A token's time"
+msgstr "O tempo de um token"
+
+msgctxt "token time"
+msgid "reading the card"
+msgstr "lendo a placa"
+
+msgctxt "token time"
+msgid "reading system memory"
+msgstr "lendo a memória do sistema"
+
+msgctxt "token time"
+msgid "everything else"
+msgstr "todo o resto"
+
+msgctxt "column heading"
+msgid "A prompt token's time"
+msgstr "O tempo de um token de prompt"
+
+msgctxt "prompt token time"
+msgid "doing the arithmetic"
+msgstr "fazendo as contas"
+
+msgctxt "prompt token time"
+msgid "streaming the experts across the link"
+msgstr "transmitindo os especialistas pelo enlace"
+
+msgctxt "prompt token time"
+msgid "reading the experts from system memory"
+msgstr "lendo os especialistas da memória do sistema"
+
+msgctxt "column heading"
+msgid "Seconds"
+msgstr "Segundos"
+
+msgctxt "column heading"
+msgid "Share"
+msgstr "Parcela"
+
+msgid "Measured on %(date)s."
+msgstr "Medido em %(date)s."
+
+msgid "Recorded elsewhere"
+msgstr "Registrado em outro lugar"
+
+msgctxt "column heading"
+msgid "Run"
+msgstr "Execução"
+
+msgctxt "column heading"
+msgid "Prompt/s"
+msgstr "Prompt/s"
+
+msgctxt "column heading"
+msgid "Date"
+msgstr "Data"
+
+msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
+msgstr "Estas são as execuções do próprio curador na máquina dele, não testes de referência desta, portanto nada acima está etiquetado como medido. Compare-as com a estimativa; o `llamafit bench` vai medir esta máquina na fase 3."
+
+msgid "%(profile)s: %(flags)s"
+msgstr "%(profile)s: %(flags)s"
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
+msgstr "%(baseline)s do curador, menos %(penalty)s por esta quantização, mais %(bonus)s porque %(use_case)s é o trabalho para o qual ele foi feito."
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
+msgstr "%(baseline)s do curador, menos %(penalty)s por esta quantização; ele lista %(use_case)s mas não foi feito para isso."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
+msgstr "%(gen)s tokens por segundo diante dos %(target)s que este caso de uso pede, menos %(penalty)s porque lê um prompt a %(prompt)s."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
+msgstr "%(gen)s tokens por segundo diante dos %(target)s que este caso de uso pede."
+
+msgid "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool is %(share)s full. The score wants at least %(low)s of the memory taken and no more than %(high)s of any one pool."
+msgstr "Os pesos dele ocupam %(weights)s dos %(memory)s desta máquina e a reserva mais apertada está %(share)s cheia. A pontuação quer pelo menos %(low)s da memória ocupada e não mais de %(high)s de qualquer reserva."
+
+msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
+msgstr "Contém %(fit)s tokens dos %(requested)s contra os quais este pedido é pontuado."
+
+msgid "Score %(total)s"
+msgstr "Pontuação %(total)s"
+
+msgctxt "column heading"
+msgid "Part"
+msgstr "Parte"
+
+msgctxt "column heading"
+msgid "Weight"
+msgstr "Peso"
+
+msgctxt "column heading"
+msgid "Adds"
+msgstr "Acrescenta"
+
+msgctxt "score part"
+msgid "quality"
+msgstr "qualidade"
+
+msgctxt "score part"
+msgid "speed"
+msgstr "velocidade"
+
+msgctxt "score part"
+msgid "fit"
+msgstr "espaço"
+
+msgctxt "score part"
+msgid "context"
+msgstr "contexto"
+
+msgid "Recommended"
+msgstr "Recomendados"
+
+msgctxt "column heading"
+msgid "#"
+msgstr "#"
+
+msgctxt "column heading"
+msgid "Model"
+msgstr "Modelo"
+
+msgctxt "column heading"
+msgid "Quant"
+msgstr "Quant."
+
+msgctxt "column heading"
+msgid "Score"
+msgstr "Pontos"
+
+# Gen/s and PP/s below are left as they are: generated and prompt tokens per
+# second, the pair llama-bench prints, in the two narrowest columns of the board.
+msgctxt "column heading"
+msgid "Gen/s"
+msgstr "Gen/s"
+
+msgctxt "column heading"
+msgid "How"
+msgstr "Como"
+
+msgctxt "column heading"
+msgid "Fit"
+msgstr "Espaço"
+
+msgctxt "column heading"
+msgid "Runs"
+msgstr "Onde"
+
+msgctxt "column heading"
+msgid "Ctx"
+msgstr "Ctx"
+
+msgctxt "column heading"
+msgid "Qual"
+msgstr "Qual."
+
+msgctxt "column heading"
+msgid "Card"
+msgstr "Placa"
+
+msgctxt "column heading"
+msgid "PP/s"
+msgstr "PP/s"
+
+msgctxt "column heading"
+msgid "Size"
+msgstr "Tamanho"
+
+msgctxt "column heading"
+msgid "RAM"
+msgstr "RAM"
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
+msgstr "As velocidades são para %(working)s tokens de contexto, para que todas as linhas se comparem em igualdade; a coluna do contexto é o maior que cada uma consegue. Dimensionado e pontuado para %(use_case)s com %(requested)s tokens."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
+msgstr "As velocidades são para %(working)s tokens de contexto, para que todas as linhas se comparem em igualdade; a coluna do contexto é o maior que cada uma consegue. Dimensionado para %(planned)s tokens e pontuado para %(use_case)s diante de %(requested)s."
+
+msgid "Weights: %(weights)s."
+msgstr "Pesos: %(weights)s."
+
+msgid "Not ranked"
+msgstr "Não ordenados"
+
+msgctxt "column heading"
+msgid "Why not"
+msgstr "Motivo"
+
+msgid "%(rank)s. %(name)s %(quant)s"
+msgstr "%(rank)s. %(name)s %(quant)s"
+
+msgid "Fit on this machine"
+msgstr "Espaço nesta máquina"
+
+msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
+msgstr "Dimensionado para %(context)s tokens. A coluna do contexto é o maior que cada um consegue no modo mostrado."
+
+msgid "Not placed"
+msgstr "Não colocados"
+
+msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
+msgstr "%(mode)s com %(context)s tokens, micro-lote %(ub)s, cache %(kv)s, %(threads)s threads."
+
+msgid "This reaches the %(target)s tokens per second asked for."
+msgstr "Isto atinge os %(target)s tokens por segundo pedidos."
+
+msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
+msgstr "Aqui não atinge %(target)s tokens por segundo, mas %(context)s tokens de contexto atingiriam: passe --context %(tokens)s."
+
+msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
+msgstr "Nada que este modelo e esta quantização consigam fazer nesta máquina atinge %(target)s tokens por segundo; a configuração mais rápida experimentada é %(best)s. Um modelo menor ou uma quantização menor é a mudança que conseguiria."
+
+msgid "%(name)s %(quant)s"
+msgstr "%(name)s %(quant)s"
+
+msgid "Memory budget"
+msgstr "Orçamento de memória"
+
+msgid "The %(context)s tokens asked for would have cost"
+msgstr "Os %(context)s tokens pedidos teriam custado"
+
+msgid "Command line"
+msgstr "Linha de comando"
+
+msgid "Model file: %(path)s."
+msgstr "Arquivo do modelo: %(path)s."
+
+msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
+msgstr "Arquivo do modelo: %(path)s, que ainda não está nesta máquina; é aí que um download o colocaria. %(size)s a baixar."
+
+msgid "%(shown)d of %(total)d candidate shown."
+msgid_plural "%(shown)d of %(total)d candidates shown."
+msgstr[0] "%(shown)d de %(total)d candidato mostrado."
+msgstr[1] "%(shown)d de %(total)d candidatos mostrados."
+
+msgid "Bind to this address instead of 127.0.0.1. Anything but loopback puts the dashboard on your network, where there is no password and no login; it prints what that exposes before it starts."
+msgstr "Liga-se a este endereço em vez de 127.0.0.1. Qualquer coisa que não seja o loopback põe o painel na sua rede, onde não há senha nem login; escreve o que isso expõe antes de subir."
+
+msgid "Listen on this port."
+msgstr "Escuta nesta porta."
+
+msgid "Open the dashboard in a browser: the board, the machine and the plans.\n\nIt serves the same numbers `--json` prints, from the same code, on this machine only. Nothing is fetched from the internet to draw the page."
+msgstr "Abre o painel num navegador: o quadro, a máquina e os planos.\n\nServe os mesmos números que o `--json` escreve, do mesmo código, só nesta máquina. Nada é obtido da internet para desenhar a página."
+
+msgid "Open the page in your browser."
+msgstr "Abre a página no seu navegador."
+
+msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
+msgstr "O LlamaFit está em %(url)s. Pressione Ctrl+C para pará-lo."
+
 msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
 msgstr "Mostra o que esta máquina tem: CPU, memória, GPUs, discos e llama.cpp."
 
 msgid "Skip the RAM bandwidth measurement."
 msgstr "Pula a medição da largura de banda da RAM."
 
+msgid "%(url)s answered a range request with the whole file."
+msgstr "%(url)s respondeu a uma requisição por intervalo com o arquivo inteiro."
+
+msgid "%(url)s is rate-limiting this download (HTTP %(status)d)."
+msgstr "%(url)s está limitando o ritmo deste download (HTTP %(status)d)."
+
+msgid "Check your network connection and run the command again to resume."
+msgstr "Verifique sua conexão de rede e execute o comando de novo para retomar."
+
+msgid "%(file)s needs authorisation (HTTP %(status)d)."
+msgstr "%(file)s precisa de autorização (HTTP %(status)d)."
+
+msgid "This repository is gated. Accept its terms on Hugging Face and set HF_TOKEN to a token that can read it."
+msgstr "Este repositório é de acesso condicionado. Aceite os termos dele no Hugging Face e defina HF_TOKEN com um token que possa lê-lo."
+
+msgid "%(file)s is not at %(url)s any more (HTTP 404)."
+msgstr "%(file)s não está mais em %(url)s (HTTP 404)."
+
+msgid "Run `llamafit catalog refresh` to pick up the repository's current files."
+msgstr "Execute `llamafit catalog refresh` para pegar os arquivos atuais do repositório."
+
+msgid "%(url)s returned HTTP %(status)d."
+msgstr "%(url)s retornou HTTP %(status)d."
+
+msgid "Confirm the URL points at a downloadable file."
+msgstr "Confirme que a URL aponta para um arquivo que possa ser baixado."
+
+msgid "%(url)s did not say how big %(file)s is."
+msgstr "%(url)s não disse qual é o tamanho de %(file)s."
+
+msgid "%(file)s is %(actual)s on the server but the catalog says %(expected)s; the repository has been re-uploaded since the catalog was refreshed."
+msgstr "%(file)s tem %(actual)s no servidor mas o catálogo diz %(expected)s; o repositório foi enviado de novo desde a última atualização do catálogo."
+
+msgid "Run `llamafit catalog refresh` and try again."
+msgstr "Execute `llamafit catalog refresh` e tente novamente."
+
+msgid "%(file)s: the server sent %(actual)d bytes of a %(expected)d byte range."
+msgstr "%(file)s: o servidor enviou %(actual)d bytes de um intervalo de %(expected)d bytes."
+
+msgid "Run the command again; the parts that did arrive are kept."
+msgstr "Execute o comando de novo; as partes que chegaram ficam guardadas."
+
+msgid "Stopped."
+msgstr "Parado."
+
+msgid "%(file)s: the server asked for fewer connections; using %(count)d."
+msgstr "%(file)s: o servidor pediu menos conexões; usando %(count)d."
+
+msgid "%(file)s: this server will not serve byte ranges; fetching it in one stream."
+msgstr "%(file)s: este servidor não serve intervalos de bytes; baixando em um só fluxo."
+
+msgid "%(file)s does not match its checksum; fetching it again."
+msgstr "%(file)s não corresponde à sua soma de verificação; baixando de novo."
+
+msgid "Check that the download directory is writable."
+msgstr "Verifique se o diretório de downloads permite gravação."
+
+msgid "%(needed)s is needed for this model but %(path)s has only %(free)s free, %(short)s short of what is wanted with %(headroom)s left spare."
+msgstr "São precisos %(needed)s para este modelo mas %(path)s só tem %(free)s livres, %(short)s abaixo do que é preciso deixando %(headroom)s de folga."
+
+msgid "Free some space, or choose another directory with --dir, or a smaller quantisation with --quant."
+msgstr "Libere espaço, ou escolha outro diretório com --dir, ou uma quantização menor com --quant."
+
+msgid "could not measure the free space on %(path)s: %(error)s"
+msgstr "não foi possível medir o espaço livre em %(path)s: %(error)s"
+
+msgid "Check that the download directory's volume is available."
+msgstr "Verifique se o volume do diretório de downloads está disponível."
+
+msgid "%(model)s has no downloadable source in the catalog."
+msgstr "%(model)s não tem no catálogo nenhuma fonte que possa ser baixada."
+
+msgid "Only Hugging Face sources can be installed; this entry has none."
+msgstr "Só se podem instalar fontes do Hugging Face; esta entrada não tem nenhuma."
+
+msgid "the catalog has no file list for %(model)s %(quant)s."
+msgstr "o catálogo não tem lista de arquivos para %(model)s %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the file names."
+msgstr "Execute `llamafit catalog refresh` para preencher os nomes dos arquivos."
+
+msgid "%(model)s publishes no quantisations."
+msgstr "%(model)s não publica quantizações."
+
+msgid "%(model)s does not publish a %(quant)s quantisation."
+msgstr "%(model)s não publica uma quantização %(quant)s."
+
+msgid "It publishes: %(quants)s"
+msgstr "Publica: %(quants)s"
+
+msgid "the catalog does not record how big %(quant)s is."
+msgstr "o catálogo não registra qual é o tamanho de %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the sizes."
+msgstr "Execute `llamafit catalog refresh` para preencher os tamanhos."
+
+msgid "the catalog holds no checksum for %(files)s."
+msgid_plural "the catalog holds no checksums for %(files)s."
+msgstr[0] "o catálogo não tem soma de verificação para %(files)s."
+msgstr[1] "o catálogo não tem somas de verificação para %(files)s."
+
+msgid "Run `llamafit catalog refresh` to fetch them, or pass --allow-unverified to download anyway and check the files yourself."
+msgstr "Execute `llamafit catalog refresh` para obtê-las, ou passe --allow-unverified para baixar mesmo assim e verificar os arquivos você mesmo."
+
+msgid "%(done)s of %(total)s"
+msgstr "%(done)s de %(total)s"
+
+msgid "%(rate)s/s"
+msgstr "%(rate)s/s"
+
+msgid "Fetching %(file)s (%(size)s)"
+msgstr "Baixando %(file)s (%(size)s)"
+
+msgid "Checking %(file)s against its checksum"
+msgstr "Verificando %(file)s com a sua soma de verificação"
+
+msgid "Done: %(file)s"
+msgstr "Concluído: %(file)s"
+
+msgid "could not create %(path)s: %(error)s"
+msgstr "não foi possível criar %(path)s: %(error)s"
+
+msgid "Check that the download directory is writable and has room."
+msgstr "Verifique se o diretório de downloads permite gravação e tem espaço."
+
+msgid "could not move %(source)s into place: %(error)s"
+msgstr "não foi possível mover %(source)s para o seu lugar: %(error)s"
+
+msgid "could not record progress in %(path)s: %(error)s"
+msgstr "não foi possível registrar o progresso em %(path)s: %(error)s"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "não foi possível obter %(url)s: %(error)s"
+
+msgid "Stopped before the checksum was finished."
+msgstr "Parado antes de a soma de verificação terminar."
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "não foi possível ler %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Verifique se o arquivo existe e pode ser lido."
+
+msgid "%(file)s is %(actual)d bytes, but the catalog says %(expected)d"
+msgstr "%(file)s tem %(actual)d bytes, mas o catálogo diz %(expected)d"
+
+msgid "The transfer was cut short. Run the command again to fetch it properly."
+msgstr "A transferência foi interrompida. Execute o comando de novo para baixá-lo direito."
+
+msgid "%(file)s does not match the checksum the catalog holds."
+msgstr "%(file)s não corresponde à soma de verificação que o catálogo tem."
+
+msgid "Expected %(expected)s but the file hashes to %(actual)s. The bad copy has been deleted; run the command again to fetch it."
+msgstr "Esperava-se %(expected)s mas o arquivo dá o resumo %(actual)s. A cópia defeituosa foi apagada; execute o comando de novo para baixá-lo."
+
 msgid "Command: %(command)s"
 msgstr "Comando: %(command)s"
 
 msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
 msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "cabeçalho GGUF truncado: queria %(wanted)d byte na posição %(offset)d, obteve %(got)d"
+msgstr[1] "cabeçalho GGUF truncado: queria %(wanted)d bytes na posição %(offset)d, obteve %(got)d"
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "O arquivo ainda pode estar sendo baixado, ou a URL pode não ser um arquivo GGUF."
@@ -660,8 +2258,8 @@ msgstr "O LlamaFit suporta as versões GGUF %(versions)s."
 
 msgid "%(count)d shard"
 msgid_plural "%(count)d shards"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d fragmento"
+msgstr[1] "%(count)d fragmentos"
 
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "estes arquivos GGUF não são um só modelo dividido: discordam sobre '%(key)s', declarando %(values)s"
@@ -677,14 +2275,14 @@ msgstr "Passe o arquivo do modelo, ou todos os fragmentos de um modelo dividido.
 
 msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
 msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d arquivo GGUF dos %(total)d indicados não tem a chave '%(key)s', portanto não é possível determinar o seu lugar num modelo dividido"
+msgstr[1] "%(count)d arquivos GGUF dos %(total)d indicados não têm a chave '%(key)s', portanto não é possível determinar o lugar deles num modelo dividido"
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Passe um único arquivo não dividido sozinho, ou todos os fragmentos de um só modelo dividido."
 
 msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr ""
+msgstr "conjunto de fragmentos incompleto: o modelo declara %(shards)s e chegaram %(arrived)d (%(key)s %(numbers)s)"
 
 msgid "Pass every shard of the split model."
 msgstr "Passe todos os fragmentos do modelo dividido."
@@ -702,21 +2300,12 @@ msgid "Pass each shard of the split model exactly once."
 msgstr "Passe cada fragmento do modelo dividido exatamente uma vez."
 
 msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
-msgstr ""
+msgstr "conjunto de fragmentos incompleto: o modelo declara %(tensors)s e os seus %(shards)s contêm %(held)d entre todos"
 
 msgid "%(count)d tensor"
 msgid_plural "%(count)d tensors"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "could not read %(path)s: %(error)s"
-msgstr "não foi possível ler %(path)s: %(error)s"
-
-msgid "Check that the file exists and is readable."
-msgstr "Verifique se o arquivo existe e pode ser lido."
-
-msgid "could not fetch %(url)s: %(error)s"
-msgstr "não foi possível obter %(url)s: %(error)s"
+msgstr[0] "%(count)d tensor"
+msgstr[1] "%(count)d tensores"
 
 msgid "Check your network connection and that the URL is reachable."
 msgstr "Verifique sua conexão de rede e se a URL está acessível."
@@ -754,8 +2343,8 @@ msgstr "sem SPMemoryDataType"
 
 msgid "%(program)s: timed out after %(seconds)s second"
 msgid_plural "%(program)s: timed out after %(seconds)s seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(program)s: excedeu o tempo ao fim de %(seconds)s segundo"
+msgstr[1] "%(program)s: excedeu o tempo ao fim de %(seconds)s segundos"
 
 msgid "empty command"
 msgstr "comando vazio"
@@ -766,11 +2355,44 @@ msgstr "%(program)s: %(error)s"
 msgid "%(program)s: not found"
 msgstr "%(program)s: não encontrado"
 
-msgid "no output"
-msgstr "sem saída"
-
 msgid "exit code %(code)d: %(detail)s"
 msgstr "código de saída %(code)d: %(detail)s"
+
+msgid "no hardware profile file at %(path)s"
+msgstr "não há nenhum arquivo de perfil de hardware em %(path)s"
+
+msgid "Run `llamafit hardware list` to see the profiles LlamaFit has."
+msgstr "Execute `llamafit hardware list` para ver os perfis que o LlamaFit tem."
+
+msgid "%(path)s is not a valid hardware profile: %(details)s"
+msgstr "%(path)s não é um perfil de hardware válido: %(details)s"
+
+msgid "Run `llamafit hardware validate FILE` for the whole list."
+msgstr "Execute `llamafit hardware validate ARQUIVO` para ver a lista completa."
+
+msgid "no hardware profile named %(name)s"
+msgstr "não há nenhum perfil de hardware chamado %(name)s"
+
+msgid "Profiles LlamaFit has: %(names)s"
+msgstr "Perfis que o LlamaFit tem: %(names)s"
+
+msgid "Run `llamafit hardware path` to see where your own profiles go."
+msgstr "Execute `llamafit hardware path` para ver onde ficam os seus próprios perfis."
+
+msgid "this machine has no graphics card, so there is no VRAM to override"
+msgstr "esta máquina não tem placa gráfica, portanto não há VRAM para substituir"
+
+msgid "Describe the whole machine in a hardware profile and pass --profile."
+msgstr "Descreva a máquina toda num arquivo de perfil de hardware e passe --profile."
+
+msgid "this machine has one memory pool shared with the graphics card"
+msgstr "esta máquina tem uma só reserva de memória compartilhada com a placa gráfica"
+
+msgid "Use --ram to resize the pool; --memory would change only half of it."
+msgstr "Use --ram para redimensionar a reserva; --memory mudaria apenas metade dela."
+
+msgid "%(option)s needs a value above zero"
+msgstr "%(option)s precisa de um valor acima de zero"
 
 msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
 msgstr "llama.cpp não encontrado: não há llama-server no PATH, em LLAMA_CPP_PATH nem nos diretórios habituais"
@@ -778,11 +2400,258 @@ msgstr "llama.cpp não encontrado: não há llama-server no PATH, em LLAMA_CPP_P
 msgid "no ggml backend libraries found next to llama-server; the build may be static"
 msgstr "não foram encontradas bibliotecas de backend ggml junto ao llama-server; a compilação pode ser estática"
 
+msgid "%(path)s is a file, not a directory."
+msgstr "%(path)s é um arquivo, não um diretório."
+
+msgid "%(path)s cannot be read: %(error)s"
+msgstr "%(path)s não pode ser lido: %(error)s"
+
+msgid "%(path)s has a marker file that cannot be read."
+msgstr "%(path)s tem um arquivo marcador que não pode ser lido."
+
+msgid "%(path)s already holds %(count)d file that LlamaFit did not install."
+msgid_plural "%(path)s already holds %(count)d files that LlamaFit did not install."
+msgstr[0] "%(path)s já contém %(count)d arquivo que o LlamaFit não instalou."
+msgstr[1] "%(path)s já contém %(count)d arquivos que o LlamaFit não instalou."
+
+msgid "%(name)s has no published checksum, so it cannot be verified."
+msgstr "%(name)s não tem soma de verificação publicada, portanto não pode ser verificado."
+
+msgid "Pass --allow-unverified to install it anyway, knowing the archive is unchecked."
+msgstr "Passe --allow-unverified para instalá-lo mesmo assim, sabendo que o pacote não foi verificado."
+
+msgid "could not download %(url)s: %(error)s"
+msgstr "não foi possível baixar %(url)s: %(error)s"
+
+msgid "the connection was closed"
+msgstr "a conexão foi fechada"
+
+msgid "Run the command again; it continues from where it stopped."
+msgstr "Execute o comando de novo; ele continua de onde parou."
+
+msgid "the download of %(url)s stopped early: %(error)s"
+msgstr "o download de %(url)s parou antes do fim: %(error)s"
+
+msgid "%(got)s of %(want)s arrived"
+msgstr "chegaram %(got)s de %(want)s"
+
+msgid "the disk holding %(path)s is full."
+msgstr "o disco que contém %(path)s está cheio."
+
+msgid "Free some space and run the command again; the download resumes."
+msgstr "Libere espaço e execute o comando de novo; o download é retomado."
+
+msgid "Check that the directory exists and is writable."
+msgstr "Verifique se o diretório existe e permite gravação."
+
+msgid "%(name)s did not match its published checksum and was discarded."
+msgstr "%(name)s não correspondeu à sua soma de verificação publicada e foi descartado."
+
+msgid "Nothing was unpacked. Run the command again: the archive arrived damaged, which a second download usually fixes."
+msgstr "Nada foi descompactado. Execute o comando de novo: o pacote chegou danificado, o que um segundo download costuma resolver."
+
+msgid "%(archive)s contains %(name)s, which would be written outside the install directory."
+msgstr "%(archive)s contém %(name)s, que seria gravado fora do diretório de instalação."
+
+msgid "Do not install this archive; report it to the llama.cpp project."
+msgstr "Não instale este pacote; reporte-o ao projeto llama.cpp."
+
+msgid "%(name)s is not an archive LlamaFit knows how to unpack."
+msgstr "%(name)s não é um pacote que o LlamaFit saiba descompactar."
+
+msgid "%(name)s could not be unpacked: %(error)s"
+msgstr "não foi possível descompactar %(name)s: %(error)s"
+
+msgid "Delete it and run the command again to download it afresh."
+msgstr "Apague-o e execute o comando de novo para baixá-lo outra vez."
+
+msgid "the archive holds no %(name)s."
+msgstr "o pacote não contém nenhum %(name)s."
+
+msgid "Report this; the release layout has changed."
+msgstr "Reporte isto; o layout do lançamento mudou."
+
+msgid "%(path)s was not installed by LlamaFit."
+msgstr "%(path)s não foi instalado pelo LlamaFit."
+
+msgid "Pass --force to replace it, or --dir to install somewhere else. LlamaFit never overwrites an installation it did not create."
+msgstr "Passe --force para substituí-lo, ou --dir para instalar em outro lugar. O LlamaFit nunca sobrescreve uma instalação que não criou."
+
+msgid "%(path)s has %(free)s free; this install needs %(needed)s."
+msgstr "%(path)s tem %(free)s livres; esta instalação precisa de %(needed)s."
+
+msgid "Free some space, or pass --dir to install on another volume."
+msgstr "Libere espaço, ou passe --dir para instalar em outro volume."
+
+msgid "the %(backend)s libraries are not in the installed directory."
+msgstr "as bibliotecas de %(backend)s não estão no diretório instalado."
+
+msgid "no ggml backend libraries were installed; the build may be a static one."
+msgstr "não foram instaladas bibliotecas de backend ggml; a compilação pode ser estática."
+
+msgid "Your PATH could not be read, so it will not be changed."
+msgstr "Não foi possível ler o seu PATH, portanto ele não será alterado."
+
+msgid "Add %(path)s to your user PATH (HKCU\\Environment)."
+msgstr "Acrescentar %(path)s ao seu PATH de usuário (HKCU\\Environment)."
+
+# The trail through Windows is given in the words Windows itself shows in this
+# language, because the reader is being told where to click.
+msgid "To undo: run `setx PATH \"%(previous)s\"`, or remove the entry in System > About > Advanced system settings > Environment Variables."
+msgstr "Para desfazer: execute `setx PATH \"%(previous)s\"`, ou remova a entrada em Sistema > Sobre > Configurações avançadas do sistema > Variáveis de Ambiente."
+
+msgid "%(path)s is already on your PATH."
+msgstr "%(path)s já está no seu PATH."
+
+msgid "Nothing to undo."
+msgstr "Não há nada a desfazer."
+
+msgid "Append a PATH line for %(path)s to %(file)s."
+msgstr "Acrescentar ao fim de %(file)s uma linha de PATH para %(path)s."
+
+msgid "To undo: delete the two lines marked `%(mark)s` from %(file)s."
+msgstr "Para desfazer: apague de %(file)s as duas linhas marcadas com `%(mark)s`."
+
+msgid "your PATH could not be changed: %(error)s"
+msgstr "não foi possível alterar o seu PATH: %(error)s"
+
+msgid "To remove it later, delete %(path)s."
+msgstr "Para removê-lo depois, apague %(path)s."
+
+msgid "the most recent %(count)d llama.cpp releases hold no build."
+msgstr "os %(count)d lançamentos mais recentes do llama.cpp não têm nenhuma compilação."
+
+msgid "Name one with `llamafit install llama.cpp --tag ...`."
+msgstr "Indique um com `llamafit install llama.cpp --tag ...`."
+
+msgid "could not reach GitHub at %(url)s: %(error)s"
+msgstr "não foi possível alcançar o GitHub em %(url)s: %(error)s"
+
+msgid "GitHub refused the request for %(url)s: the rate limit is exhausted."
+msgstr "O GitHub recusou a requisição de %(url)s: o limite de requisições está esgotado."
+
+msgid "Wait for the limit to reset, or set GITHUB_TOKEN to a personal access token with no scopes."
+msgstr "Espere o limite se restabelecer, ou defina GITHUB_TOKEN com um token de acesso pessoal sem escopos."
+
+msgid "GitHub has no release at %(url)s."
+msgstr "O GitHub não tem nenhum lançamento em %(url)s."
+
+msgid "Check the tag with `llamafit install llama.cpp --tag ...`."
+msgstr "Verifique a etiqueta com `llamafit install llama.cpp --tag ...`."
+
+msgid "GitHub returned %(status)d for %(url)s."
+msgstr "O GitHub retornou %(status)d para %(url)s."
+
+msgid "GitHub's answer for %(url)s was not JSON."
+msgstr "A resposta do GitHub para %(url)s não era JSON."
+
+msgid "GitHub's answer did not describe a release."
+msgstr "A resposta do GitHub não descrevia um lançamento."
+
 msgid "no llama-server answering"
 msgstr "nenhum llama-server respondendo"
 
 msgid "unexpected response: %(error)s"
 msgstr "resposta inesperada: %(error)s"
+
+msgid "%(model)s holds %(native)s tokens, fewer than the %(minimum)s asked for."
+msgstr "%(model)s contém %(native)s tokens, menos do que os %(minimum)s pedidos."
+
+msgid "No configuration of this model fits this machine."
+msgstr "Nenhuma configuração deste modelo cabe nesta máquina."
+
+msgid "Routed experts are held in system memory, and so are the always-on shared experts, which is what -ot ffn_.*_shexp=CPU does; attention and the KV cache stay on the card."
+msgstr "Os especialistas encaminhados ficam na memória do sistema, e os especialistas compartilhados sempre ativos também, que é o que -ot ffn_.*_shexp=CPU faz; a atenção e a cache KV ficam na placa."
+
+msgid "Routed experts are held in system memory; attention, the KV cache and the shared experts stay on the card."
+msgstr "Os especialistas encaminhados ficam na memória do sistema; a atenção, a cache KV e os especialistas compartilhados ficam na placa."
+
+msgid "%(layers)s layers are on the card and the rest run on the processor."
+msgstr "%(layers)s camadas estão na placa e as demais rodam no processador."
+
+msgid "Nothing runs on a graphics card: every weight is in system memory."
+msgstr "Nada roda numa placa gráfica: todos os pesos estão na memória do sistema."
+
+msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
+msgstr "Dimensionado para %(context)s tokens em vez dos %(requested)s pedidos."
+
+msgid "The KV cache is quantised to %(type)s to reach this context."
+msgstr "A cache KV é quantizada para %(type)s para chegar a este contexto."
+
+msgid "Vision is off: the projector did not fit, on the card or in system memory."
+msgstr "A visão está desligada: o projetor não coube, nem na placa nem na memória do sistema."
+
+msgid "The vision projector is in system memory (--no-mmproj-offload), which costs nothing measurable for text and makes images slower."
+msgstr "O projetor de visão está na memória do sistema (--no-mmproj-offload), o que não custa nada mensurável para texto e deixa as imagens mais lentas."
+
+msgid "%(threads)s threads, not the %(available)s this processor has: the efficiency cores are left out because generation measures slower with them, and what is left is the threads the performance cores provide."
+msgstr "%(threads)s threads, não os %(available)s que este processador tem: os núcleos de eficiência ficam de fora porque a geração mede mais devagar com eles, e o que sobra são os threads que os núcleos de desempenho dão."
+
+msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
+msgstr "Apertado: estão livres %(vram)s da placa gráfica e isto precisa de %(needed)s, portanto outro programa pode fazer transbordar. A tabela de níveis de contexto é a forma de um script de inicialização se recuperar."
+
+msgid "not a %(use_case)s model; its entry lists %(use_cases)s, so ask for one of those"
+msgstr "não é um modelo para %(use_case)s; a entrada dele lista %(use_cases)s, portanto peça um desses"
+
+msgid "no %(capability)s capability; drop it from the request to see this model"
+msgstr "não tem a capacidade %(capability)s; retire-a do pedido para ver este modelo"
+
+msgid "%(size)s to download, over the %(limit)s this request allows"
+msgstr "%(size)s a baixar, acima dos %(limit)s que este pedido permite"
+
+msgid "unknown quantisation %(quant)s, so its cost in quality cannot be told"
+msgstr "quantização %(quant)s desconhecida, portanto não é possível dizer o que ela custa em qualidade"
+
+msgid "nowhere to put it: no placement fits this machine at any context"
+msgstr "não há onde colocá-lo: nenhuma colocação cabe nesta máquina em nenhum contexto"
+
+msgid "no run mode supports this model on this machine"
+msgstr "nenhum modo de execução suporta este modelo nesta máquina"
+
+msgid "needs more memory than this machine has, even at its smallest context"
+msgstr "precisa de mais memória do que esta máquina tem, mesmo no seu menor contexto"
+
+msgid "holds %(fit)s tokens at most, under the %(minimum)s asked for; lower the minimum context or free memory to see it ranked"
+msgstr "contém %(fit)s tokens no máximo, abaixo dos %(minimum)s pedidos; baixe o contexto mínimo ou libere memória para vê-lo ordenado"
+
+msgid "no speed estimate, so it cannot be ranked against models that have one"
+msgstr "sem estimativa de velocidade, portanto não pode ser ordenado diante de modelos que a tenham"
+
+msgid "unknown use case %(use_case)s"
+msgstr "caso de uso desconhecido %(use_case)s"
+
+msgid "Known use cases: %(known)s."
+msgstr "Casos de uso conhecidos: %(known)s."
+
+msgid "unknown score part %(part)s in the weights for %(use_case)s"
+msgstr "parte de pontuação desconhecida %(part)s nos pesos de %(use_case)s"
+
+msgid "The parts are: %(parts)s."
+msgstr "As partes são: %(parts)s."
+
+msgid "the weights for %(use_case)s leave out %(part)s"
+msgstr "os pesos de %(use_case)s deixam de fora %(part)s"
+
+msgid "Overriding a use case means giving all four parts: %(parts)s."
+msgstr "Substituir um caso de uso implica dar as quatro partes: %(parts)s."
+
+msgid "the weight for %(part)s in %(use_case)s is below zero"
+msgstr "o peso de %(part)s em %(use_case)s é inferior a zero"
+
+msgid "A weight says how much a part counts; it cannot count less than none."
+msgstr "Um peso diz o quanto uma parte conta; não pode contar menos do que nada."
+
+msgid "the weights for %(use_case)s add up to nothing"
+msgstr "os pesos de %(use_case)s somam zero"
+
+msgid "At least one part has to count for something."
+msgstr "Pelo menos uma parte precisa contar para alguma coisa."
+
+msgid "unknown preference %(prefer)s"
+msgstr "preferência desconhecida %(prefer)s"
+
+msgid "Preferences: %(known)s."
+msgstr "Preferências: %(known)s."
 
 msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
 msgstr "Instale ou repare o driver da NVIDIA; o nvidia-smi vem com ele e precisa estar no PATH."
@@ -835,6 +2704,9 @@ msgstr "llama.cpp não encontrado"
 
 msgid "no llama-server binary was found"
 msgstr "não foi encontrado nenhum binário llama-server"
+
+msgid "Run `llamafit install llama.cpp`, which picks the right build for this machine, checks it against its published checksum, and never touches an installation LlamaFit did not create."
+msgstr "Execute `llamafit install llama.cpp`, que escolhe a compilação certa para esta máquina, verifica-a em relação à sua soma de verificação publicada, e nunca toca numa instalação que o LlamaFit não criou."
 
 msgid "Memory size unknown"
 msgstr "Tamanho da memória desconhecido"
@@ -905,6 +2777,417 @@ msgstr "%(size)s livres"
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr "A maioria dos modelos úteis precisa de 5 a 120 GB; libere espaço ou mude o diretório de downloads."
 
+msgid "licensed %(spdx)s, which this request does not allow"
+msgstr "licenciado sob %(spdx)s, que este pedido não permite"
+
+msgid "no placement of it fits this machine at any context"
+msgstr "nenhuma colocação dele cabe nesta máquina em nenhum contexto"
+
+msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
+msgstr "A largura de banda da memória do sistema não foi medida; presumiram-se %(gbps).0f GB/s para %(arch)s."
+
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
+msgstr "A largura de banda de %(gpu)s é desconhecida; usa-se em vez dela o valor de reserva de %(backend)s, %(gbps).0f GB/s."
+
+msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
+msgstr "Sem valor de cálculo da placa gráfica: o processamento do prompt é estimado na CPU."
+
+msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "São lidos %(gb).2f GB de especialistas encaminhados da memória do sistema por token, a %(eff).2f dos seus %(raw).0f GB/s, porque cada token seleciona um punhado diferente de especialistas e a leitura é uma dispersão de blocos pequenos em vez de um fluxo."
+
+msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
+msgstr "São lidos %(gb).2f GB de pesos contíguos da memória do sistema por token, a %(eff).2f dos seus %(raw).0f GB/s."
+
+msgid "No active parameter count was supplied; it was inferred from the weight bytes."
+msgstr "Não foi informado o número de parâmetros ativos; ele foi inferido a partir dos bytes dos pesos."
+
+msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "%(pct).0f por cento das camadas estão na memória do sistema, portanto essa parte das contas do prompt é cobrada da CPU a %(tflops).2f TFLOP/s em vez da placa. Ambos os ritmos vêm de um pequeno modelo denso numa só máquina."
+
+msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "%(gb).1f GB do conjunto de especialistas são transmitidos pelo enlace uma vez por micro-lote a %(gbps).1f GB/s. Esse ritmo foi ajustado no único modelo cujo conjunto de especialistas não cabe na memória do sistema, portanto parte da sua leitura vem do disco; um conjunto de especialistas que fique no cache de páginas é transmitido cerca de três vezes mais rápido, e para um desses este termo é exatamente essa quantidade lento demais."
+
+msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+msgstr "%(gb).1f GB do conjunto de especialistas são lidos da memória do sistema uma vez por micro-lote a %(gbps).1f GB/s, porque não há placa para onde transmiti-los."
+
+msgid "No placement of this model on this machine could run it."
+msgstr "Nenhuma colocação deste modelo nesta máquina conseguiria executá-lo."
+
+msgid "Generation is a benchmark of this configuration, not a prediction."
+msgstr "A geração é um teste de referência desta configuração, não uma previsão."
+
+msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "A geração é a fórmula corrigida por %(factor).2f, a partir de um teste de referência de %(profile)s nesta máquina feito em %(date)s."
+
+msgid "Prompt processing is a benchmark of this configuration."
+msgstr "O processamento do prompt é um teste de referência desta configuração."
+
+msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
+msgstr "O processamento do prompt é a fórmula corrigida por %(factor).2f a partir de um teste de referência."
+
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr "A linha de comando desse teste de referência não registra quantas camadas foram para a placa, portanto a correção presume que ele rodou nesta colocação."
+
+msgid "This figure assumes nothing pages: a placement this tight often does, silently."
+msgstr "Este valor presume que nada pagina: uma colocação tão apertada muitas vezes pagina, em silêncio."
+
+msgid "Board"
+msgstr "Quadro"
+
+msgid "Needs"
+msgstr "Necessidades"
+
+msgid "Plan"
+msgstr "Plano"
+
+msgid "Simulate"
+msgstr "Simular"
+
+msgctxt "column heading"
+msgid "Have"
+msgstr "No disco"
+
+msgctxt "model file on this machine"
+msgid "yes"
+msgstr "sim"
+
+msgctxt "model file on this machine"
+msgid "no"
+msgstr "não"
+
+msgctxt "board sort"
+msgid "score"
+msgstr "pontuação"
+
+msgctxt "board sort"
+msgid "speed"
+msgstr "velocidade"
+
+msgctxt "board sort"
+msgid "quality"
+msgstr "qualidade"
+
+msgctxt "board sort"
+msgid "context"
+msgstr "contexto"
+
+msgctxt "board sort"
+msgid "download size"
+msgstr "tamanho do download"
+
+msgctxt "board filter"
+msgid "every candidate"
+msgstr "todos os candidatos"
+
+msgctxt "board filter"
+msgid "the ones that run"
+msgstr "os que rodam"
+
+msgctxt "board filter"
+msgid "the ones with room to spare"
+msgstr "os que têm espaço de sobra"
+
+msgid "%(shown)d of %(total)d shown"
+msgstr "%(shown)d de %(total)d mostrados"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s already on this machine."
+msgstr "%(counted)s, por %(sort)s, mostrando %(filter)s que já estão nesta máquina."
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s."
+msgstr "%(counted)s, por %(sort)s, mostrando %(filter)s."
+
+msgid "There is no terminal here to draw the dashboard in, so this is what `llamafit recommend` would print."
+msgstr "Não há aqui nenhum terminal onde desenhar o painel, portanto isto é o que o `llamafit recommend` escreveria."
+
+msgid "%(name)s %(quant)s, %(vendor)s, licensed %(license)s; it can: %(capabilities)s"
+msgstr "%(name)s %(quant)s, %(vendor)s, licenciado sob %(license)s; sabe: %(capabilities)s"
+
+msgid "Choose a row to see what put it there."
+msgstr "Escolha uma linha para ver o que a colocou ali."
+
+msgid "Nothing has been ranked yet."
+msgstr "Ainda não foi ordenado nada."
+
+msgid "Every candidate in the catalog was ranked; none was excluded."
+msgstr "Todos os candidatos do catálogo foram ordenados; nenhum foi excluído."
+
+msgid "keys"
+msgstr "teclas"
+
+msgid "theme"
+msgstr "tema"
+
+msgid "quit"
+msgstr "sair"
+
+msgid "choose"
+msgstr "escolher"
+
+msgid "why"
+msgstr "por quê"
+
+msgid "command line"
+msgstr "linha de comando"
+
+msgid "search"
+msgstr "procurar"
+
+msgid "fit"
+msgstr "espaço"
+
+msgid "sort"
+msgstr "ordenar"
+
+msgid "on disk"
+msgstr "no disco"
+
+msgid "all quants"
+msgstr "todas as quant."
+
+msgid "explanation"
+msgstr "explicação"
+
+msgid "not ranked"
+msgstr "não ordenados"
+
+msgid "apply"
+msgstr "aplicar"
+
+msgid "reset"
+msgstr "redefinir"
+
+msgid "rescan"
+msgstr "analisar de novo"
+
+msgid "more context"
+msgstr "mais contexto"
+
+msgid "less context"
+msgstr "menos contexto"
+
+msgid "vision"
+msgstr "visão"
+
+msgid "copy"
+msgstr "copiar"
+
+msgid "this machine"
+msgstr "esta máquina"
+
+msgctxt "use case"
+msgid "general use"
+msgstr "uso geral"
+
+msgctxt "use case"
+msgid "writing code"
+msgstr "escrever código"
+
+msgctxt "use case"
+msgid "reasoning"
+msgstr "raciocínio"
+
+msgctxt "use case"
+msgid "chat"
+msgstr "conversa"
+
+msgctxt "use case"
+msgid "images and text"
+msgstr "imagens e texto"
+
+msgctxt "use case"
+msgid "embeddings"
+msgstr "embeddings"
+
+msgctxt "preference"
+msgid "balanced"
+msgstr "equilibrado"
+
+msgctxt "preference"
+msgid "lean towards quality"
+msgstr "inclinar para a qualidade"
+
+msgctxt "preference"
+msgid "lean towards speed"
+msgstr "inclinar para a velocidade"
+
+msgid "Move with the up and down arrows. Enter says why a row is where it is; p gives the command line that runs it."
+msgstr "Mova-se com as setas para cima e para baixo. O Enter diz por que uma linha está onde está; o p dá a linha de comando que a executa."
+
+msgid "Part of a model name, then Enter"
+msgstr "Parte de um nome de modelo e depois Enter"
+
+msgid "Keys"
+msgstr "Teclas"
+
+msgctxt "column heading"
+msgid "Screen"
+msgstr "Tela"
+
+msgctxt "column heading"
+msgid "Key"
+msgstr "Tecla"
+
+msgctxt "column heading"
+msgid "What it does"
+msgstr "O que faz"
+
+msgctxt "dashboard screen"
+msgid "Everywhere"
+msgstr "Em todo lugar"
+
+msgctxt "dashboard screen"
+msgid "Board"
+msgstr "Quadro"
+
+msgctxt "dashboard screen"
+msgid "Needs"
+msgstr "Necessidades"
+
+msgctxt "dashboard screen"
+msgid "Host"
+msgstr "Máquina"
+
+msgctxt "dashboard screen"
+msgid "Plan"
+msgstr "Plano"
+
+msgctxt "dashboard screen"
+msgid "Simulate"
+msgstr "Simular"
+
+msgid "Press Escape to go back."
+msgstr "Pressione Escape para voltar."
+
+msgid "Catalog files with a problem"
+msgstr "Arquivos do catálogo com problemas"
+
+msgid "This machine has not been scanned yet."
+msgstr "Esta máquina ainda não foi analisada."
+
+msgid "What do you want a model for?"
+msgstr "Para que você quer um modelo?"
+
+msgid "It must be able to:"
+msgstr "Precisa saber:"
+
+msgid "At least this much context, in tokens:"
+msgstr "Pelo menos este contexto, em tokens:"
+
+msgid "Willing to download at most, for example 40G (blank for no limit):"
+msgstr "Disposto a baixar no máximo, por exemplo 40G (em branco para sem limite):"
+
+msgid "Licences you will accept (tick none to accept any):"
+msgstr "Licenças que você aceita (não marque nenhuma para aceitar todas):"
+
+msgid "Lean the score:"
+msgstr "Inclinar a pontuação:"
+
+msgid "Keep the vision projector when a model has one"
+msgstr "Manter o projetor de visão quando um modelo o tem"
+
+msgid "Apply"
+msgstr "Aplicar"
+
+msgid "Reset"
+msgstr "Redefinir"
+
+msgid "The minimum context is a number of tokens, for example %(example)s."
+msgstr "O contexto mínimo é um número de tokens, por exemplo %(example)s."
+
+msgid "The minimum context cannot be below zero."
+msgstr "O contexto mínimo não pode ser inferior a zero."
+
+msgid "Choose a row on the Board and press p, and its plan and command line appear here."
+msgstr "Escolha uma linha no Quadro e pressione p, e o plano e a linha de comando aparecem aqui."
+
+msgid "%(model)s is no longer in the catalog this board was built from."
+msgstr "%(model)s não está mais no catálogo a partir do qual este quadro foi construído."
+
+msgid "Planned with the vision projector; press v to leave it out."
+msgstr "Planejado com o projetor de visão; pressione v para deixá-lo de fora."
+
+msgid "Planned without the vision projector; press v to put it back."
+msgstr "Planejado sem o projetor de visão; pressione v para colocá-lo de volta."
+
+msgid "The ladder has no rung above %(context)s."
+msgstr "A escada não tem nenhum degrau acima de %(context)s."
+
+msgid "The ladder has no rung below %(context)s."
+msgstr "A escada não tem nenhum degrau abaixo de %(context)s."
+
+msgid "There is no command line to copy yet."
+msgstr "Ainda não há nenhuma linha de comando para copiar."
+
+msgid "The command line is on the clipboard."
+msgstr "A linha de comando está na área de transferência."
+
+msgid "Everything on every screen answers about the machine chosen here. While it is not this one, the band at the top says SIMULATED."
+msgstr "Tudo em todas as telas responde sobre a máquina escolhida aqui. Enquanto não for esta, a faixa no topo diz SIMULADO."
+
+msgid "Answer for this machine instead:"
+msgstr "Responder em vez disso por esta máquina:"
+
+msgid "Pretend the graphics card has this much memory (blank to leave it):"
+msgstr "Fingir que a placa gráfica tem esta memória (em branco para deixar como está):"
+
+msgid "Pretend the machine has this much system memory (blank to leave it):"
+msgstr "Fingir que a máquina tem esta memória de sistema (em branco para deixar como está):"
+
+msgid "Pretend the processor has this many cores (blank to leave it):"
+msgstr "Fingir que o processador tem esta quantidade de núcleos (em branco para deixar como está):"
+
+msgid "Back to this machine"
+msgstr "Voltar a esta máquina"
+
+msgctxt "hardware profile"
+msgid "this machine"
+msgstr "esta máquina"
+
+msgid "The core count is a whole number, for example 8."
+msgstr "O número de núcleos é um número inteiro, por exemplo 8."
+
+# Punctuation, not prose: the separator between the pieces of the dashboard's
+# header line, with its spaces. The same middle dot serves here as in English.
+msgctxt "dashboard header separator"
+msgid " · "
+msgstr " · "
+
+msgctxt "dashboard header"
+msgid "no GPU detected"
+msgstr "nenhuma GPU detectada"
+
+msgid "%(name)s, VRAM unknown"
+msgstr "%(name)s, VRAM desconhecida"
+
+msgid "%(name)s, %(free)s free of %(total)s"
+msgstr "%(name)s, %(free)s livres de %(total)s"
+
+msgid "%(available)s free of %(total)s RAM"
+msgstr "%(available)s livres de %(total)s de RAM"
+
+msgid "%(model)s, %(count)d core"
+msgid_plural "%(model)s, %(count)d cores"
+msgstr[0] "%(model)s, %(count)d núcleo"
+msgstr[1] "%(model)s, %(count)d núcleos"
+
+msgctxt "dashboard header"
+msgid "llama.cpp not installed"
+msgstr "llama.cpp não instalado"
+
+msgctxt "dashboard header"
+msgid "llama.cpp installed"
+msgstr "llama.cpp instalado"
+
+msgid "llama.cpp b%(build)d"
+msgstr "llama.cpp b%(build)d"
+
+msgctxt "dashboard header"
+msgid "scanning this machine…"
+msgstr "analisando esta máquina…"
+
+msgid "These speeds were not all arrived at the same way; the How column says which each row is."
+msgstr "Estas velocidades não foram todas obtidas da mesma maneira; a coluna Como diz o que cada linha é."
+
 msgctxt "thousands separator"
 msgid ","
 msgstr "."
@@ -924,3 +3207,148 @@ msgstr "B"
 msgctxt "size"
 msgid "unknown"
 msgstr "desconhecido"
+
+msgid "profile must be a name, not a path: %(value)s"
+msgstr "o perfil precisa ser um nome, não um caminho: %(value)s"
+
+msgid "Ask GET /api/v1/profiles for the names this machine has."
+msgstr "Peça a GET /api/v1/profiles os nomes que esta máquina tem."
+
+msgid "unknown query parameter: %(names)s"
+msgstr "parâmetro de consulta desconhecido: %(names)s"
+
+msgid "This endpoint takes: %(names)s"
+msgstr "Este endpoint aceita: %(names)s"
+
+msgid "invalid prefer %(value)s"
+msgstr "prefer inválido: %(value)s"
+
+msgid "invalid sort %(value)s"
+msgstr "sort inválido: %(value)s"
+
+msgid "%(host)s:%(port)d is not this machine only. Anyone who can reach this computer on that port can read everything the dashboard shows -- your hardware, your disks, your file paths and the models you have downloaded. There is no password, because LlamaFit is meant for the person sitting at the keyboard. Press Ctrl+C now if you did not mean this."
+msgstr "%(host)s:%(port)d não é só esta máquina. Quem conseguir alcançar este computador nessa porta pode ler tudo o que o painel mostra -- o seu hardware, os seus discos, os seus caminhos de arquivos e os modelos que você baixou. Não há senha, porque o LlamaFit é para a pessoa sentada ao teclado. Pressione Ctrl+C agora se não era isto que você queria."
+
+msgid "the web dashboard needs FastAPI and uvicorn, which are not installed"
+msgstr "o painel web precisa do FastAPI e do uvicorn, que não estão instalados"
+
+msgid "Install them with: pip install \"llamafit[web]\""
+msgstr "Instale-os com: pip install \"llamafit[web]\""
+
+msgid "%(host)s is not a loopback address, and the dashboard has no authentication"
+msgstr "%(host)s não é um endereço de loopback, e o painel não tem autenticação"
+
+msgid "Leave --host alone to serve this machine only, or pass it to mean it."
+msgstr "Deixe --host em paz para servir só esta máquina, ou passe-o de propósito."
+
+msgid "Why this row"
+msgstr "Por que esta linha"
+
+msgid "Plan this"
+msgstr "Planejar isto"
+
+msgid "Already on this machine"
+msgstr "Já está nesta máquina"
+
+msgid "Score"
+msgstr "Pontuação"
+
+msgid "What the model is for"
+msgstr "Para que serve o modelo"
+
+msgid "Capabilities it must have"
+msgstr "Capacidades que ele precisa ter"
+
+msgid "Lean the weights"
+msgstr "Inclinar os pesos"
+
+msgid "Smallest context worth having"
+msgstr "Contexto mínimo que vale a pena"
+
+msgid "Most you will download"
+msgstr "Máximo que você vai baixar"
+
+msgid "Show every quantisation"
+msgstr "Mostrar todas as quantizações"
+
+msgid "Keep the vision projector"
+msgstr "Manter o projetor de visão"
+
+msgid "Rows to show"
+msgstr "Linhas a mostrar"
+
+msgid "Scan again"
+msgstr "Analisar de novo"
+
+# The project's own name, so it is written the way llama.cpp writes it.
+msgid "llama.cpp"
+msgstr "llama.cpp"
+
+msgid "Quantisation"
+msgstr "Quantização"
+
+msgid "Context"
+msgstr "Contexto"
+
+msgid "Micro-batch"
+msgstr "Micro-lote"
+
+msgid "Plan it"
+msgstr "Planejar"
+
+msgid "Copy"
+msgstr "Copiar"
+
+msgid "Copied"
+msgstr "Copiado"
+
+msgid "Flags"
+msgstr "Flags"
+
+msgid "Speed"
+msgstr "Velocidade"
+
+msgid "Choose a row on the board first."
+msgstr "Escolha primeiro uma linha no quadro."
+
+msgid "Hardware profile"
+msgstr "Perfil de hardware"
+
+msgid "This machine, as scanned"
+msgstr "Esta máquina, tal como foi analisada"
+
+msgid "Graphics memory"
+msgstr "Memória gráfica"
+
+msgid "System memory"
+msgstr "Memória do sistema"
+
+msgid "Processor cores"
+msgstr "Núcleos do processador"
+
+msgid "Score against that machine"
+msgstr "Pontuar contra essa máquina"
+
+msgid "What runs here, how fast, and with which settings."
+msgstr "O que roda aqui, a que velocidade, e com que configurações."
+
+msgid "Working…"
+msgstr "Trabalhando…"
+
+msgid "Something went wrong"
+msgstr "Algo deu errado"
+
+msgid "Hint"
+msgstr "Dica"
+
+msgid "Command"
+msgstr "Comando"
+
+msgid "any"
+msgstr ""
+
+msgid "Source code (AGPL-3.0-or-later)"
+msgstr "Código-fonte (AGPL-3.0-or-later)"
+
+msgid "This dashboard is served from your own machine and sends nothing anywhere."
+msgstr "Este painel é servido a partir da sua própria máquina e não envia nada para lugar nenhum."
