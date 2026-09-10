@@ -7,7 +7,6 @@ the weight split is checked against the file's own tensor table.
 
 import pytest
 
-from llamafit.budget import weights as weights_module
 from llamafit.budget.compute_buffer import (
     batch_for,
     buffer_lines,
@@ -23,7 +22,7 @@ from llamafit.budget.kv import (
     unaccounted_kv_cache_bytes,
 )
 from llamafit.budget.projector import projector_lines
-from llamafit.budget.weights import shared_expert_bytes, split_by_layers, weight_lines
+from llamafit.budget.weights import split_by_layers, weight_lines
 from llamafit.catalog import load_catalog
 from llamafit.constants import MIB, PROJECTOR_COMPUTE_BYTES
 from llamafit.errors import BudgetError
@@ -71,11 +70,13 @@ def test_the_weight_lines_of_a_real_model_add_up_to_the_file(model_id: str) -> N
 
 
 def test_the_flash_next_model_buffer_matches_what_llama_server_reported() -> None:
-    """4,606 MiB on the card, from the calibration record, within a mebibyte."""
+    """4,606 MiB on the card with the shared experts, 4,367 without: both measured."""
     facts = facts_for("qwen3.8-flash-next")
-    lines = weight_lines(facts, gpu_layers=99, cpu_moe_layers=48)
-    on_card = sum(line.bytes_ for line in lines if line.pool == "vram")
-    assert abs(on_card - 4606 * MIB) < MIB
+    with_shared = weight_lines(facts, gpu_layers=99, cpu_moe_layers=48)
+    assert abs(sum(line.bytes_ for line in with_shared if line.pool == "vram") - 4606 * MIB) < MIB
+
+    without = weight_lines(facts, gpu_layers=99, cpu_moe_layers=48, shared_experts_pool="ram")
+    assert abs(sum(line.bytes_ for line in without if line.pool == "vram") - 4367 * MIB) < MIB
 
 
 def test_the_embedding_table_stays_in_memory_but_a_tied_one_follows_the_output() -> None:
@@ -134,10 +135,24 @@ def test_a_model_with_no_streamable_table_has_no_such_line() -> None:
     ]
 
 
-def test_shared_experts_stay_in_the_dense_bucket_until_the_facts_split_them_out() -> None:
+def test_shared_experts_are_a_bucket_of_their_own_and_a_line_of_their_own() -> None:
+    """The file's `_shexp` tensors come to 239.5 MiB; the record measured 239 MiB freed."""
     facts = facts_for("qwen3.8-flash-next")
     assert facts.has_shared_experts is True
-    assert shared_expert_bytes(facts) == 0, "no bucket carries them yet"
+    assert abs(facts.bytes_shared_expert_weights - 239 * MIB) < MIB
+
+    lines = {
+        (line.component, line.pool): line.bytes_ for line in weight_lines(facts, gpu_layers=99)
+    }
+    assert lines[("shared-expert-weights", "vram")] == facts.bytes_shared_expert_weights
+    assert lines[("dense-weights", "vram")] == facts.bytes_dense_block_weights, (
+        "the bucket is carved out of the dense one, so nothing is subtracted here"
+    )
+
+
+def test_a_model_with_no_shared_experts_gets_no_such_line() -> None:
+    facts = facts_for("llama-3.1-8b-instruct")
+    assert facts.bytes_shared_expert_weights == 0
     assert not [
         line
         for line in weight_lines(facts, gpu_layers=99)
@@ -145,24 +160,24 @@ def test_shared_experts_stay_in_the_dense_bucket_until_the_facts_split_them_out(
     ]
 
 
-def test_a_shared_expert_bucket_becomes_a_line_an_override_can_move(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """What `-ot ffn_.*_shexp=CPU` will do once the facts carry those bytes separately."""
+def test_the_shared_expert_line_is_the_only_thing_an_override_moves() -> None:
+    """`-ot ffn_.*_shexp=CPU`, now that the bytes are separable."""
     facts = facts_for("qwen3.8-flash-next")
-    monkeypatch.setattr(weights_module, "shared_expert_bytes", lambda _: 239 * MIB)
+    shared = facts.bytes_shared_expert_weights
 
     with_their_layers = {
         (line.component, line.pool): line.bytes_ for line in weight_lines(facts, gpu_layers=99)
     }
-    assert with_their_layers[("shared-expert-weights", "vram")] == 239 * MIB
-
     moved = {
         (line.component, line.pool): line.bytes_
         for line in weight_lines(facts, gpu_layers=99, shared_experts_pool="ram")
     }
-    assert moved[("shared-expert-weights", "ram")] == 239 * MIB
+    assert with_their_layers[("shared-expert-weights", "vram")] == shared
+    assert moved[("shared-expert-weights", "ram")] == shared
     assert ("shared-expert-weights", "vram") not in moved
+    assert {k: v for k, v in moved.items() if k[0] != "shared-expert-weights"} == {
+        k: v for k, v in with_their_layers.items() if k[0] != "shared-expert-weights"
+    }
 
 
 @pytest.mark.parametrize("kv_type", KV_TYPES)

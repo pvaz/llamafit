@@ -11,10 +11,9 @@ weights.
 import pytest
 
 from llamafit.budget import compute, kv_cache_bytes
-from llamafit.budget import weights as weights_module
 from llamafit.budget.budget import pool_verdict, utilisation
 from llamafit.catalog import load_catalog
-from llamafit.constants import GIB, MIB, VRAM_RESERVE_BYTES
+from llamafit.constants import CUDA_CONTEXT_BYTES, GIB, MIB, VRAM_RESERVE_BYTES
 from llamafit.errors import BudgetError
 from llamafit.models.catalog import CatalogModel, Extra, Quant
 from llamafit.models.plan import Budget
@@ -23,6 +22,7 @@ from tests.fixtures.budget_hosts import card_with_free, first_quant, machine, re
 WEIGHT_COMPONENTS = frozenset(
     {
         "dense-weights",
+        "shared-expert-weights",
         "expert-weights",
         "token-embedding",
         "output-head",
@@ -171,15 +171,13 @@ def test_a_model_whose_header_describes_its_whole_cache_carries_no_such_line() -
     assert next(line for line in budget.lines if line.component == "kv-cache").exact is True
 
 
-def test_the_shared_expert_override_moves_a_bucket_between_pools(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    """`-ot ffn_.*_shexp=CPU`, once the facts carry those bytes as a bucket of their own."""
+def test_the_shared_expert_override_moves_a_bucket_between_pools() -> None:
+    """`-ot ffn_.*_shexp=CPU`: the whole bucket crosses, and nothing else moves."""
     model, quant = model_and_quant("qwen3.8-flash-next")
+    assert quant.gguf_facts is not None
+    shared = quant.gguf_facts.bytes_shared_expert_weights
     host = reference_host()
-    before = compute(model, quant, host, context=32768, mode="moe-offload", micro_batch=1024)
 
-    monkeypatch.setattr(weights_module, "shared_expert_bytes", lambda _: 239 * MIB)
     on_card = compute(model, quant, host, context=32768, mode="moe-offload", micro_batch=1024)
     off_card = compute(
         model,
@@ -190,9 +188,54 @@ def test_the_shared_expert_override_moves_a_bucket_between_pools(
         micro_batch=1024,
         shared_experts_pool="ram",
     )
-    assert on_card.vram_required == before.vram_required + 239 * MIB
-    assert off_card.vram_required == before.vram_required
-    assert off_card.ram_required == before.ram_required + 239 * MIB
+    assert on_card.vram_required - off_card.vram_required == shared
+    assert off_card.ram_required - on_card.ram_required == shared
+    assert weight_bytes(on_card) == weight_bytes(off_card) == quant.gguf_facts.bytes_total
+
+    # The header's own `_shexp` tensors and the calibration record's measurement of what
+    # the override frees are two independent routes to the same number.
+    assert abs(shared - 239 * MIB) < MIB
+
+
+def test_the_reference_machines_winning_configuration_is_reproduced() -> None:
+    """`-ub 1024 --no-mmproj-offload -ot ffn_.*_shexp=CPU`, the best measured on that card.
+
+    llama-server printed 4,367 MiB of model, 1,056 of cache, 113 of recurrent state and
+    1,337 of compute buffer at 32,768: 6,873 MiB of buffers. The catalog records a peak of
+    7.3 GB of VRAM for the same flags at 40,960.
+    """
+    model, quant = model_and_quant("qwen3.8-flash-next")
+    host = reference_host()
+
+    def winning(context: int) -> Budget:
+        return compute(
+            model,
+            quant,
+            host,
+            context=context,
+            mode="moe-offload",
+            micro_batch=1024,
+            shared_experts_pool="ram",
+            projector_pool=None,
+        )
+
+    budget = winning(32768)
+    lines = {(line.component, line.pool): line for line in budget.lines}
+    model_buffer = sum(
+        line.bytes_
+        for (component, pool), line in lines.items()
+        if pool == "vram" and component in WEIGHT_COMPONENTS
+    )
+    assert abs(model_buffer - 4367 * MIB) < MIB, "the shared experts left the card"
+
+    buffers = budget.vram_required - CUDA_CONTEXT_BYTES
+    assert abs(buffers - 6873 * MIB) < 4 * MIB, "within 0.05 percent of the measured total"
+
+    assert budget.vram_required < budget.vram_available, "it is inside the card now"
+    assert budget.vram_available - budget.vram_required > 200 * MIB
+
+    # The catalog's own measured entry for these flags at 40,960 records 7.3 GB peak.
+    assert abs(winning(40960).vram_required - 7.3 * GIB) < 0.05 * GIB
 
 
 def test_the_lines_come_in_the_order_a_reader_should_meet_them() -> None:

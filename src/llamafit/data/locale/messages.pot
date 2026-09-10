@@ -19,19 +19,19 @@ msgstr ""
 msgid "Pass gpu_layers, which is what -ngl would be."
 msgstr ""
 
-#: src/llamafit/budget/budget.py:218
+#: src/llamafit/budget/budget.py:217
 msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
 msgstr ""
 
-#: src/llamafit/budget/budget.py:220
+#: src/llamafit/budget/budget.py:219
 msgid "Run `llamafit catalog refresh` to read the file's header."
 msgstr ""
 
-#: src/llamafit/budget/budget.py:258
+#: src/llamafit/budget/budget.py:257
 msgid "what the GPU backend costs before it allocates anything"
 msgstr ""
 
-#: src/llamafit/budget/budget.py:267
+#: src/llamafit/budget/budget.py:266
 msgid "the server process before any model buffer"
 msgstr ""
 
@@ -83,31 +83,31 @@ msgstr ""
 msgid "the projector's own compute space, measured at 248 MiB"
 msgstr ""
 
-#: src/llamafit/budget/weights.py:117
-msgid "attention projections, feed-forward weights, norms and any shared experts"
+#: src/llamafit/budget/weights.py:103
+msgid "attention projections, feed-forward weights and norms"
 msgstr ""
 
-#: src/llamafit/budget/weights.py:125
+#: src/llamafit/budget/weights.py:111
 msgid "always-on experts, which run for every token"
 msgstr ""
 
-#: src/llamafit/budget/weights.py:148
+#: src/llamafit/budget/weights.py:134
 msgid "routed experts, read across the bus once per micro-batch"
 msgstr ""
 
-#: src/llamafit/budget/weights.py:159
+#: src/llamafit/budget/weights.py:145
 msgid "this model ties its output projection to its embedding table"
 msgstr ""
 
-#: src/llamafit/budget/weights.py:161
+#: src/llamafit/budget/weights.py:147
 msgid "llama.cpp keeps the embedding table in memory even at full offload"
 msgstr ""
 
-#: src/llamafit/budget/weights.py:176
+#: src/llamafit/budget/weights.py:162
 msgid "streamed from disk as it is needed, not held in memory"
 msgstr ""
 
-#: src/llamafit/budget/weights.py:178
+#: src/llamafit/budget/weights.py:164
 msgid "held in memory, since streaming from disk was turned off"
 msgstr ""
 
