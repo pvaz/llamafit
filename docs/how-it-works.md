@@ -162,8 +162,13 @@ Four scores from 0 to 100:
 - **Quality**: the catalog's baseline for the model (set by curators from published benchmarks,
   with sources), minus a penalty for the quantisation (Q8 0, Q6 1, Q5 2, Q4 4, IQ4 6, Q3 10,
   IQ3 12, Q2 20, IQ2 24, IQ1 35; dynamic quants one less than their base), plus a small bonus
-  when the model's strengths match the request. A missing required capability excludes the
-  candidate.
+  when the request names the job the entry was built for. A missing capability excludes the
+  candidate, and a request asks for one two ways: by naming it, and by naming a job that needs
+  it — coding needs the coding capability, reasoning needs thinking, multimodal needs vision,
+  embedding needs embeddings. `general` and `chat` need none, so on those two nothing is
+  excluded for what was asked. The filter is on what a model can do and never on the jobs its
+  entry offers it for, because a coding model is a perfectly good thing to hold a conversation
+  with.
 - **Speed**: generation tokens per second, scored between two speeds — the rate a person reads
   at (about six tokens per second) and a target for the use case (chat 30, general 25, coding
   20, reasoning 15, multimodal 15), on an axis of doublings rather than of tokens per second.

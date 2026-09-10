@@ -10,10 +10,10 @@ Two rules shape the module.
 
 **Nothing disappears.** A candidate that fails a filter comes back with
 ``excluded_because`` set and its placement and speed still attached, and it is ranked last
-rather than dropped. A shorter list tells a person nothing. "Llama 3.1 8B was excluded
-because its entry lists general, chat and reasoning, not coding" tells them why a model
-they expected to see is missing, and what to change — the request, or the catalog entry —
-which is the difference between a tool that answers and one that merely responds.
+rather than dropped. A shorter list tells a person nothing. "Llama 3.1 8B has no coding
+capability" tells them why a model they expected to see is missing, and what to change —
+the request, or the catalog entry — which is the difference between a tool that answers and
+one that merely responds.
 
 That is also what makes an exclusion the right home for a fact a score cannot carry. A
 score of zero says "this is bad at the job"; an exclusion says "this is not that kind of
@@ -41,9 +41,9 @@ from llamafit.models.plan import (
     SpeedEstimate,
 )
 from llamafit.quality import (
-    declares_use_case,
     missing_capabilities,
     penalty_for,
+    required_capability,
     score_quality,
 )
 from llamafit.scoring.context_score import context_score, requested_context
@@ -213,15 +213,26 @@ def _exclusion(
 
     The order of the checks is the order of what a person can do about them. What the
     request asked for comes first, because that is the part the reader controls outright:
-    the job itself, then a required capability, then the download ceiling they set. The
-    machine comes second, because "it does not fit" is only worth saying once it is clear
-    the model was wanted at all. Each reason names the thing to change, and only the first
-    is reported — a list of every way a candidate failed is a worse answer than the one
-    that comes first.
+    the ability the job needs, then an ability the request named itself, then the download
+    ceiling they set. The machine comes second, because "it does not fit" is only worth
+    saying once it is clear the model was wanted at all. Each reason names the thing to
+    change, and only the first is reported — a list of every way a candidate failed is a
+    worse answer than the one that comes first.
 
-    The job comes before the capability because it is the broader statement about the
-    same thing: a model whose entry does not offer itself for this work at all should not
-    be explained away by whichever capability it also happens to lack.
+    **The job is a capability and nothing else, which is the whole of section 11.1's
+    filter.** A request for coding asks for a model that can code, not for one whose
+    curator wrote *coding* among the jobs it is offered for; ``use_cases`` is emphasis and
+    :data:`~llamafit.models.catalog.CAPABILITY_FOR_USE_CASE` is what turns the request's
+    job into the fact it rests on. Gating on the emphasis instead threw away right answers
+    — a coding model is a perfectly ordinary thing to ask a general question of, and this
+    board refused to rank the fastest model that fits for exactly that reason — while
+    letting a curator set a filter they never meant to set.
+
+    The job's capability comes before one the request named because it is the broader
+    statement about the same thing, and because the two have different fixes: a named
+    capability is dropped from the request, and a job's is answered by asking for a
+    different job. A general or chat request names no capability at all, so on those two
+    this check is silent and nothing is excluded here.
 
     **The reading floor is the last check, and it is a check and not a penalty.** A model
     that generates more slowly than its reader reads cannot do an interactive job at any
@@ -247,10 +258,12 @@ def _exclusion(
     flag set it, because a reader who moved a boundary should meet the boundary they moved
     and not the one the specification argued for.
     """
-    if not declares_use_case(model, needs.use_case):
+    needed = required_capability(needs.use_case)
+    if needed is not None and needed not in model.capabilities:
         return _(
-            "not a %(use_case)s model; its entry lists %(use_cases)s, so ask for one of those"
-        ) % {"use_case": needs.use_case, "use_cases": ", ".join(model.use_cases)}
+            "no %(capability)s capability, which %(use_case)s needs; ask for a different "
+            "use case, or add it to the entry when the model really has it"
+        ) % {"capability": needed, "use_case": needs.use_case}
     missing = missing_capabilities(model, needs)
     if missing:
         return _("no %(capability)s capability; drop it from the request to see this model") % {

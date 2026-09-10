@@ -22,9 +22,9 @@ from llamafit.models.catalog import CatalogModel
 from llamafit.models.plan import Needs, QualityBreakdown
 from llamafit.quality.alignment import (
     alignment_bonus,
-    declares_use_case,
     missing_capabilities,
     primary_use_case,
+    required_capability,
 )
 from llamafit.quality.baseline import baseline_for
 from llamafit.quality.quant_penalty import penalty_for
@@ -32,10 +32,10 @@ from llamafit.quality.quant_penalty import penalty_for
 __all__ = [
     "alignment_bonus",
     "baseline_for",
-    "declares_use_case",
     "missing_capabilities",
     "penalty_for",
     "primary_use_case",
+    "required_capability",
     "score_quality",
 ]
 

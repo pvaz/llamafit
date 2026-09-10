@@ -283,7 +283,7 @@ def test_the_exclusions_carry_the_reason_beside_the_model() -> None:
     board = build_board(catalog(), reference_host(), Needs(use_case="coding"))
     text = drawn(render_excluded(board.excluded), width=200)
     assert "Not ranked" in text
-    assert "not a coding model" in text
+    assert "no coding capability" in text
 
 
 def test_the_fit_listing_drops_its_optional_columns_on_a_narrow_console() -> None:
