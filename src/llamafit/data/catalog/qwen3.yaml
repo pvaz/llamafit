@@ -88,10 +88,15 @@
       an image/video encoder.
   context: { native: 262144, extended: 1048576, extended_method: yarn }
   capabilities: [coding, thinking, vision, tools, multilingual, long-context]
-  # general and chat were missing, and their absence was a curation slip rather than a
-  # judgement: this is the vendor's flagship instruction-tuned model, not a specialist.
-  # The omission was visible from the outside, because a general request on the reference
-  # machine excluded the two strongest models in the catalog and returned the two weakest.
+  # In the curator's order of merit, coding first: SWE-bench Pro and LiveCodeBench are the
+  # scores this baseline was set against, and the first entry is the only one a board reads.
+  # general and chat come last and belong there. This is the vendor's flagship
+  # instruction-tuned model, not a specialist, and every other generalist in this catalog
+  # says as much in its own entry; leaving them off said this was a model you could not
+  # simply talk to, which was never true. They change no ranking — the bonus is for the
+  # primary use case alone — and nothing is gated on this list. What reads it is
+  # `llamafit list --use-case general`, a reader asking to browse, and hiding the strongest
+  # general model in the catalog from that browse is not a curator's call to make.
   # A specialist stays a specialist: Qwen3-Coder-Next is coding only and keeps it.
   use_cases: [coding, reasoning, multimodal, general, chat]
   quality:
