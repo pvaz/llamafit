@@ -46,12 +46,51 @@ the drift between the scan and the moment the server actually allocates.
 """
 
 CUDA_CONTEXT_BYTES = 300 * MIB
-"""VRAM a CUDA context costs before llama.cpp allocates a single buffer.
+"""VRAM a GPU backend costs before llama.cpp allocates a single buffer, on a card nobody
+has measured.
 
-Section 8.1 gives 300 MiB as the default. The calibration record measured 120 MiB on the
-reference machine (VRAM in use minus the sum of the buffers llama.cpp reported) and
-records 300 as the conservative figure to plan with, since it is the direction that
-refuses a configuration rather than the direction that silently pages.
+Section 8.1's default, and the fallback under
+:data:`MEASURED_RUNTIME_OVERHEAD_BYTES`. It is the conservative figure on purpose: being
+too high withholds a configuration, being too low recommends one that pages silently, and
+of those two the first is the one a user can argue with.
+"""
+
+
+class MeasuredRuntimeOverhead(NamedTuple):
+    """What one card was measured to cost, and what it was measured on.
+
+    Attributes:
+        bytes_: The overhead measured on that card.
+        driver: The graphics driver version it was measured under.
+        build: The llama.cpp build it was measured with.
+    """
+
+    bytes_: int
+    driver: str
+    build: str
+
+
+MEASURED_RUNTIME_OVERHEAD_BYTES: dict[str, MeasuredRuntimeOverhead] = {
+    "nvidia geforce rtx 4060": MeasuredRuntimeOverhead(120 * MIB, "610.88", "b10867"),
+}
+"""What the GPU backend actually cost, per card that somebody has measured.
+
+Keyed by the card's name as the scan reports it, casefolded with runs of whitespace
+collapsed. A card that is not here gets :data:`CUDA_CONTEXT_BYTES`, so the safe figure is
+what every unmeasured machine still plans with; this table is the project's confidence
+ladder applied to a constant rather than to a speed.
+
+The one row is one measurement: VRAM in use minus the sum of the buffers ``llama-server
+-v`` printed, on the reference machine, under the driver and build recorded beside it. It
+is worth having because on that machine the 180 MiB between the measured figure and the
+conservative one is two rungs of the context ladder -- it is the difference between the
+planner offering the best configuration anybody has measured there and withholding it.
+
+What would generalise it is a second card. The overhead is a property of the driver's
+context and the backend's own allocations rather than of the model, so a handful of rows
+across vendors, driver generations and llama.cpp builds would say whether 120 MiB is this
+card's number, this driver's, or roughly everyone's -- and until somebody takes them, a
+row here is a claim about one machine and the budget line built from it says so.
 """
 
 PROCESS_OVERHEAD_BYTES = 1 * GIB
