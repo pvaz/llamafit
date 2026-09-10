@@ -43,12 +43,14 @@ from llamafit.i18n import _, for_display, isolate, mirror_justify, ngettext, pge
 from llamafit.models.catalog import Measured
 from llamafit.models.plan import (
     Budget,
+    Candidate,
     ContextTier,
     Placement,
     QualityBreakdown,
-    ScoreBreakdown,
     SpeedEstimate,
 )
+from llamafit.scoring.fit_score import IDEAL_HIGH, IDEAL_LOW, worst_pool_utilisation
+from llamafit.scoring.speed_score import prompt_penalty, target_tps
 from llamafit.services.plan import PlanReport, TargetCheck
 from llamafit.services.recommend import Board, BoardRow, FitBoard, FitRow
 from llamafit.units import format_bytes, format_grouped, localise_number
@@ -538,14 +540,71 @@ def _quality_sentence(quality: QualityBreakdown, use_case: str) -> str:
     }
 
 
-def render_score(score: ScoreBreakdown, quality: QualityBreakdown | None, use_case: str) -> Group:
+def _speed_sentence(speed: SpeedEstimate, use_case: str) -> str:
+    """What the speed score was measured against, and what the prompt cost it.
+
+    Two shapes, because the prompt-processing modifier of section 11.4 either applied or
+    it did not, and a reader who is told a score of 80 out of a model comfortably past its
+    target deserves to be told that twenty points went on how slowly it reads.
+    """
+    penalty = prompt_penalty(speed.pp_tps, use_case)
+    if penalty:
+        return _(
+            "%(gen)s tokens per second against the %(target)s this use case asks for, less "
+            "%(penalty)s because it reads a prompt at %(prompt)s."
+        ) % {
+            "gen": _number(speed.gen_tps),
+            "target": _number(target_tps(use_case), 0),
+            "penalty": _number(penalty, 0),
+            "prompt": _number(speed.pp_tps, 0),
+        }
+    return _("%(gen)s tokens per second against the %(target)s this use case asks for.") % {
+        "gen": _number(speed.gen_tps),
+        "target": _number(target_tps(use_case), 0),
+    }
+
+
+def _fit_sentence(budget: Budget) -> str:
+    """Which pool is tightest and how full it is, which is the whole of the fit score."""
+    return _(
+        "The tightest pool is %(share)s full; the score is highest between %(low)s and "
+        "%(high)s, and falls away at both ends."
+    ) % {
+        "share": _percent(worst_pool_utilisation(budget)),
+        "low": _percent(IDEAL_LOW),
+        "high": _percent(IDEAL_HIGH),
+    }
+
+
+def _context_sentence(max_context_fit: int, requested: int) -> str:
+    """How much of the context the request wanted this candidate actually holds."""
+    return _("Holds %(fit)s tokens of the %(requested)s this request is scored against.") % {
+        "fit": isolate(format_grouped(max_context_fit)),
+        "requested": isolate(format_grouped(requested)),
+    }
+
+
+def render_score(candidate: Candidate, *, use_case: str, requested_context: int) -> Group | None:
     """The composite score expanded into its four parts, their weights and what each added.
 
+    Args:
+        candidate: The scored candidate, with the placement and speed the parts came from.
+        use_case: What the request asked for, which set the weights and the speed target.
+        requested_context: The context the context score was measured against.
+
+    Returns:
+        The table and one sentence per part, or ``None`` for a candidate with no score.
+
     Section 12.3's standing promise, and the one table in this program that exists purely
-    so that a ranking is never asked to be taken on faith. The last column is the part's
-    score times its weight, which is what actually moved the total, because a part scoring
-    100 under a weight of 0.05 has told the reader almost nothing.
+    so that a ranking is never asked to be taken on faith. The ``Adds`` column is the
+    part's score times its weight, which is what actually moved the total, because a part
+    scoring 100 under a weight of 0.05 has told the reader almost nothing. And each part
+    gets a sentence saying what it was measured against: a bare 46 for fit is a number on
+    faith however carefully the weight beside it is printed.
     """
+    score = candidate.score
+    if score is None:
+        return None
     table = Table(
         title=for_display(
             _("Score %(total)s") % {"total": _number(score.total)},
@@ -576,8 +635,15 @@ def render_score(score: ScoreBreakdown, quality: QualityBreakdown | None, use_ca
             _cell(_number(value * weight)),
         )
     below: list[RenderableType] = []
-    if quality is not None:
-        below.append(_cell(_quality_sentence(quality, use_case)))
+    if candidate.quality is not None:
+        below.append(_cell(_quality_sentence(candidate.quality, use_case)))
+    if candidate.speed is not None:
+        below.append(_cell(_speed_sentence(candidate.speed, use_case)))
+    if candidate.placement is not None:
+        below.append(_cell(_fit_sentence(candidate.placement.budget)))
+        below.append(
+            _cell(_context_sentence(candidate.placement.max_context_fit, requested_context))
+        )
     return Group(table, *below)
 
 
@@ -839,8 +905,11 @@ def render_explanation(row: BoardRow, board: Board) -> Group:
             style="bold",
         ),
     ]
-    if candidate.score is not None:
-        pieces.append(render_score(candidate.score, candidate.quality, board.needs.use_case))
+    scored = render_score(
+        candidate, use_case=board.needs.use_case, requested_context=board.requested_context
+    )
+    if scored is not None:
+        pieces.append(scored)
     if candidate.speed is not None and candidate.placement is not None:
         pieces.append(render_speed(candidate.speed, context=board.working_context))
     if candidate.placement is not None:

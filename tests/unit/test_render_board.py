@@ -280,10 +280,34 @@ def test_a_score_expands_into_the_parts_the_weights_and_what_each_one_added() ->
     rows = [row for row in board.rows if row.candidate.score is not None]
     assert rows
     for row in rows:
-        score = row.candidate.score
-        assert score is not None
-        text = drawn(render_score(score, row.candidate.quality, "coding"), width=200)
+        text = drawn(
+            render_score(row.candidate, use_case="coding", requested_context=32768), width=200
+        )
         for part in ("quality", "speed", "fit", "context"):
             assert part in text
         assert "Weight" in text and "Adds" in text
+        # Every part says what it was measured against, not only what it scored.
         assert "from the curator" in text
+        assert "this use case asks for" in text
+        assert "tightest pool" in text
+        assert "this request is scored against" in text
+
+
+def test_a_candidate_with_no_score_has_nothing_to_expand() -> None:
+    from llamafit.cli.render_board import render_score
+
+    board = build_board(catalog(), reference_host(), Needs(use_case="coding"))
+    assert board.excluded
+    assert (
+        render_score(board.excluded[0].candidate, use_case="coding", requested_context=32768)
+        is None
+    )
+
+
+def test_a_slow_prompt_says_what_it_cost_the_speed_score() -> None:
+    from llamafit.cli.render_board import _speed_sentence
+
+    slow = SpeedEstimate(gen_tps=30.0, pp_tps=20.0, confidence="estimated")
+    quick = SpeedEstimate(gen_tps=30.0, pp_tps=900.0, confidence="estimated")
+    assert "reads a prompt" in _speed_sentence(slow, "coding")
+    assert "reads a prompt" not in _speed_sentence(quick, "coding")
