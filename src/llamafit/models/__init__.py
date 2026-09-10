@@ -35,13 +35,26 @@ from llamafit.models.host import (
     Host,
     Memory,
     OsName,
+    Override,
     Probe,
+    Simulation,
     Source,
+    Vendor,
+)
+from llamafit.models.hwprofile import (
+    PROFILE_SCHEMA_VERSION,
+    HardwareProfile,
+    ProfileCalibration,
+    ProfileCpu,
+    ProfileGpu,
+    ProfileMatch,
+    ProfileMemory,
 )
 from llamafit.models.llamacpp import LlamaCpp, LocalModel, RunningServer
 from llamafit.models.report import SystemReport
 
 __all__ = [
+    "PROFILE_SCHEMA_VERSION",
     "Arch",
     "ArchClass",
     "Architecture",
@@ -59,6 +72,7 @@ __all__ = [
     "GgufFacts",
     "GgufHeader",
     "Gpu",
+    "HardwareProfile",
     "Host",
     "License",
     "LlamaCpp",
@@ -68,15 +82,23 @@ __all__ = [
     "Memory",
     "ModelSource",
     "OsName",
+    "Override",
     "Params",
     "Probe",
+    "ProfileCalibration",
+    "ProfileCpu",
+    "ProfileGpu",
+    "ProfileMatch",
+    "ProfileMemory",
     "Quality",
     "Quant",
     "RunningServer",
     "Sampling",
+    "Simulation",
     "Source",
     "SystemReport",
     "TensorInfo",
     "Trust",
     "UseCase",
+    "Vendor",
 ]

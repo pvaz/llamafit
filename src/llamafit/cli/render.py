@@ -53,6 +53,8 @@ from rich.cells import cell_len
 from rich.table import Table
 from rich.text import Text
 
+from llamafit.hardware.gputable import lookup_gpu
+from llamafit.hwprofile.loader import LoadedProfile
 from llamafit.i18n import (
     _,
     for_display,
@@ -64,7 +66,8 @@ from llamafit.i18n import (
 )
 from llamafit.models.catalog import CatalogModel
 from llamafit.models.gguf import GgufFacts
-from llamafit.models.host import Cpu, Gpu, Host, Memory, Probe, Source
+from llamafit.models.host import Cpu, Gpu, Host, Memory, Override, Probe, Simulation, Source
+from llamafit.models.hwprofile import ProfileCpu, ProfileGpu, ProfileMemory
 from llamafit.models.llamacpp import LlamaCpp
 from llamafit.services.catalog import ModelSummary, QuantDetail
 from llamafit.services.doctor import Finding
@@ -151,6 +154,51 @@ def _bandwidth_source_label(source: Source) -> str:
         "unknown": pgettext("bandwidth source", "unknown"),
     }
     return labels.get(source, source)
+
+
+def _override_label(field: Override) -> str:
+    """The name of a pool somebody substituted by hand, in the reader's language.
+
+    A word, not the identifier: ``gpu_memory`` is what a script filters on and *VRAM* is
+    what the sentence beside it has to read as. The identifiers stay in the JSON, where
+    the script is.
+    """
+    labels = {
+        "gpu_memory": pgettext("simulation override", "VRAM"),
+        "ram": pgettext("simulation override", "system memory"),
+        "cpu_cores": pgettext("simulation override", "CPU cores"),
+    }
+    return labels.get(field, field)
+
+
+def _simulation_note(simulation: Simulation) -> str:
+    """Why the host below this line is not the machine the reader is sitting at.
+
+    The three shapes are written out whole rather than assembled from a stem and a
+    clause: which of them applies is what the sentence is *about*, and a translator who
+    can see all three can put "not this machine" wherever their language puts it.
+    """
+    count = len(simulation.overrides)
+    fields = ", ".join(_override_label(field) for field in simulation.overrides)
+    if simulation.profile and count:
+        return ngettext(
+            "these figures come from the hardware profile %(profile)s with %(fields)s "
+            "overridden; they are not this machine",
+            "these figures come from the hardware profile %(profile)s with %(fields)s "
+            "overridden; they are not this machine",
+            count,
+        ) % {"profile": isolate(simulation.profile), "fields": fields}
+    if simulation.profile:
+        return _(
+            "these figures come from the hardware profile %(profile)s; they are not this machine"
+        ) % {"profile": isolate(simulation.profile)}
+    if count:
+        return ngettext(
+            "%(fields)s was overridden for a what-if; these figures are not what was scanned",
+            "%(fields)s were overridden for a what-if; these figures are not what was scanned",
+            count,
+        ) % {"fields": fields}
+    return _("these figures are not this machine")
 
 
 def _capability_label(capability: str) -> str:
@@ -348,9 +396,21 @@ def render_host(host: Host) -> Table:
     may contain square brackets, which Rich would otherwise try to parse as a tag. Each
     of them is also isolated, because a device name, an architecture and a path are
     identifiers, and an Arabic sentence lays one out backwards without a mark to say so.
+
+    A host that did not come from the probes says so in its first row, in red, before a
+    reader has met a single figure. That row is here rather than at the commands that
+    print a simulated host because this is the one function all of them go through, and a
+    warning that has to be remembered at each call site is a warning that will be
+    forgotten at one of them.
     """
     table = Table(title=for_display(_("Host")), show_header=False, box=None, pad_edge=False)
     _add_columns(table, [{"header": "key", "style": "bold"}, {"header": "value"}])
+    if host.simulation is not None:
+        _add_row(
+            table,
+            Text(for_display(_("SIMULATED")), style="bold red"),
+            Text(for_display(_simulation_note(host.simulation)), style="red"),
+        )
     _add_row(
         table,
         _("OS"),
@@ -1039,5 +1099,206 @@ def render_quants(quants: Sequence[QuantDetail]) -> Table:
             if quant.bpw is not None
             else pgettext("bits per weight", "unknown"),
             _cell(_facts_summary(quant.facts)),
+        )
+    return table
+
+
+def _profile_origin(loaded: LoadedProfile) -> str:
+    """Whether a profile shipped with LlamaFit or the reader wrote it."""
+    return (
+        pgettext("profile origin", "bundled")
+        if loaded.bundled
+        else pgettext("profile origin", "yours")
+    )
+
+
+def _profile_machine(loaded: LoadedProfile) -> str:
+    """One line saying what machine a profile describes: its pools and its card.
+
+    Both shapes are written out whole. A machine with no graphics card is not a machine
+    with an empty GPU column, and joining "no GPU" onto the memory with a comma would
+    leave a translator with a fragment instead of a sentence.
+    """
+    profile = loaded.profile
+    ram = _size(profile.memory.total)
+    gpu = profile.primary_gpu
+    if gpu is None:
+        return _("%(ram)s RAM, no graphics card") % {"ram": ram}
+    if gpu.vram_total is None:
+        return _("%(ram)s RAM shared with %(gpu)s") % {"ram": ram, "gpu": isolate(gpu.name)}
+    return _("%(ram)s RAM, %(gpu)s with %(vram)s") % {
+        "ram": ram,
+        "gpu": isolate(gpu.name),
+        "vram": _size(gpu.vram_total),
+    }
+
+
+def _profile_cpu(cpu: ProfileCpu) -> str:
+    """A profile's processor as one phrase: model, cores, threads, instruction sets."""
+    threads = cpu.logical_cores or cpu.physical_cores
+    cores = ngettext(
+        "%(cores)d core / %(threads)d thread",
+        "%(cores)d cores / %(threads)d threads",
+        cpu.physical_cores,
+    ) % {"cores": cpu.physical_cores, "threads": threads}
+    isa = isolate(" ".join(cpu.isa)) if cpu.isa else pgettext("CPU instruction sets", "isa unknown")
+    return _("%(model)s; %(cores)s; %(isa)s") % {
+        "model": isolate(cpu.model),
+        "cores": cores,
+        "isa": isa,
+    }
+
+
+def _profile_memory(memory: ProfileMemory) -> str:
+    """A profile's memory pool as one phrase, its bandwidth carrying its label.
+
+    A profile that states no bandwidth says so rather than showing a blank: an absent
+    figure means section 10.1's fallback stands in, which is a different claim from a
+    figure somebody wrote down, and the reader is entitled to know which they have.
+    """
+    if memory.bandwidth_gbps is None:
+        bandwidth = pgettext("memory bandwidth", "unknown")
+    else:
+        bandwidth = _("%(gbps)s GB/s (%(source)s)") % {
+            "gbps": localise_number(str(memory.bandwidth_gbps)),
+            "source": _bandwidth_source_label(memory.bandwidth_source or "unknown"),
+        }
+    return _("%(total)s total, %(available)s available; bandwidth %(bandwidth)s") % {
+        "total": _size(memory.total),
+        "available": _size(memory.total if memory.available is None else memory.available),
+        "bandwidth": bandwidth,
+    }
+
+
+def _profile_gpu(card: ProfileGpu) -> str:
+    """A profile's graphics card as one phrase, saying where its specifications come from.
+
+    A card that states no bandwidth or compute figure gets both from the bundled table by
+    name, exactly as a scanned one does, and the line says ``from the specification
+    table`` so nobody reads a vendor's number as this machine's measurement.
+    """
+    spec = lookup_gpu(card.name)
+    stated = card.bandwidth_gbps is not None or card.compute_tflops_fp16 is not None
+    bandwidth = card.bandwidth_gbps or (spec.bandwidth_gbps if spec else None)
+    compute = card.compute_tflops_fp16 or (spec.compute_tflops_fp16 if spec else None)
+    if bandwidth is None and compute is None:
+        specs = pgettext("GPU specifications", "no bandwidth or compute figure")
+    elif stated:
+        specs = _("%(specs)s (from the profile)") % {"specs": _from_table(bandwidth, compute)}
+    else:
+        specs = _("%(specs)s (from the specification table)") % {
+            "specs": _from_table(bandwidth, compute)
+        }
+    vram = (
+        pgettext("GPU VRAM", "VRAM from the shared pool")
+        if card.vram_total is None
+        else _("%(total)s VRAM, %(free)s free")
+        % {
+            "total": _size(card.vram_total),
+            "free": _size(max(card.vram_total - card.vram_used, 0)),
+        }
+    )
+    return _("%(name)s (%(backend)s); %(vram)s; %(specs)s") % {
+        "name": isolate(card.name),
+        "backend": isolate(card.backend),
+        "vram": vram,
+        "specs": specs,
+    }
+
+
+def render_profiles(profiles: Sequence[LoadedProfile]) -> Table:
+    """Every hardware profile LlamaFit can reach, bundled ones first."""
+    table = Table(title=for_display(_("Hardware profiles")))
+    _add_columns(
+        table,
+        [
+            {"header": _("Name")},
+            {"header": _("From")},
+            {"header": _("Machine")},
+            {"header": _("Description")},
+        ],
+    )
+    for loaded in profiles:
+        _add_row(
+            table,
+            _cell(isolate(loaded.name)),
+            _profile_origin(loaded),
+            _cell(_profile_machine(loaded)),
+            _cell(loaded.profile.description or ""),
+        )
+    return table
+
+
+def _profile_match_rules(loaded: LoadedProfile) -> str:
+    """The rules that would let a live scan recognise itself in this profile."""
+    rules = loaded.profile.match
+    parts: list[str] = []
+    if rules.gpu_name_contains is not None:
+        parts.append(
+            _("a graphics card whose name contains %(text)s")
+            % {"text": isolate(repr(rules.gpu_name_contains))}
+        )
+    if rules.cpu_model_contains is not None:
+        parts.append(
+            _("a processor whose model contains %(text)s")
+            % {"text": isolate(repr(rules.cpu_model_contains))}
+        )
+    if rules.total_ram_min is not None:
+        parts.append(_("at least %(ram)s of memory") % {"ram": _size(rules.total_ram_min)})
+    if not parts:
+        return pgettext("profile match rules", "none, so this profile is never chosen for you")
+    return ", ".join(parts)
+
+
+def render_profile(loaded: LoadedProfile) -> Table:
+    """One profile in full, provenance included.
+
+    The provenance line is not decoration. Every other row is a figure, and a figure
+    somebody typed into a file is worth exactly what its source is worth; this is the
+    row that says what that source was.
+    """
+    profile = loaded.profile
+    table = Table(
+        title=for_display(isolate(profile.name)), show_header=False, box=None, pad_edge=False
+    )
+    _add_columns(table, [{"header": "key", "style": "bold"}, {"header": "value"}])
+    if profile.description:
+        _add_row(table, _("Description"), _cell(profile.description))
+    _add_row(table, _("From"), _profile_origin(loaded))
+    _add_row(table, _("File"), _cell(isolate(str(loaded.path))))
+    _add_row(
+        table,
+        _("OS"),
+        _cell(
+            _("%(os)s %(version)s (%(arch)s)")
+            % {
+                "os": isolate(profile.os),
+                "version": isolate(profile.os_version),
+                "arch": isolate(profile.arch),
+            }
+        ),
+    )
+    _add_row(table, _("CPU"), _cell(_profile_cpu(profile.cpu)))
+    _add_row(table, _("Memory"), _cell(_profile_memory(profile.memory)))
+    if not profile.gpus:
+        _add_row(table, _("GPU"), pgettext("GPU", "none detected"))
+    for index, card in enumerate(profile.gpus):
+        _add_row(table, _("GPU %(index)d") % {"index": index}, _cell(_profile_gpu(card)))
+    if profile.unified_memory:
+        _add_row(table, _("Memory pool"), _("unified (GPU shares system memory)"))
+    if profile.backends:
+        _add_row(table, _("Backends"), _cell(isolate(", ".join(profile.backends))))
+    _add_row(table, _("Matches"), _cell(_profile_match_rules(loaded)))
+    if profile.recorded_at is not None:
+        _add_row(table, _("Recorded"), _cell(isolate(profile.recorded_at.isoformat())))
+    _add_row(table, _("Provenance"), _cell(profile.provenance))
+    if profile.calibration is not None:
+        _add_row(
+            table,
+            _("Calibration"),
+            _cell(
+                _("recorded from %(source)s; this build stores it but does not apply it yet")
+                % {"source": isolate(profile.calibration.source)}
+            ),
         )
     return table

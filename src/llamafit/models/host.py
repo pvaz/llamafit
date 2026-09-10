@@ -1,20 +1,29 @@
 # LlamaFit. Copyright (C) 2026 Paulo Vaz.
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
-"""What LlamaFit knows about the machine it runs on."""
+"""What LlamaFit knows about the machine it runs on -- or about one it does not.
+
+A ``Host`` is normally what the probes found. It can also come from a hardware profile,
+or from a scan with a value substituted for a what-if, and then it describes a machine
+nobody is sitting at. That difference is carried by the host itself, in
+:class:`Simulation` and the ``simulated`` flag beside it, and not by whichever screen
+happens to be drawing it: every service takes a ``Host``, so a mark on the ``Host`` is
+the only mark that reaches all of them, ``--json`` included.
+"""
 
 from __future__ import annotations
 
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 
 Source = Literal["measured", "estimated", "assumed", "unknown"]
 Vendor = Literal["nvidia", "amd", "apple", "intel", "other"]
 Backend = Literal["cuda", "hip", "metal", "vulkan", "sycl", "cpu"]
 OsName = Literal["windows", "macos", "linux"]
 Arch = Literal["x86_64", "arm64", "other"]
+Override = Literal["gpu_memory", "ram", "cpu_cores"]
 
 
 class Probe(BaseModel):
@@ -88,8 +97,31 @@ class Disk(BaseModel):
     total_bytes: int
 
 
+class Simulation(BaseModel):
+    """Why this host is not the machine LlamaFit is running on.
+
+    Present exactly when something was substituted: a whole machine read from a hardware
+    profile, one or more values overridden for a what-if, or both. Absent on a scan, and
+    there is no third state -- a host either describes the machine in front of the user or
+    it says, in a field, that it does not.
+    """
+
+    profile: str | None = None
+    """Name of the hardware profile the figures came from, when they came from one."""
+
+    path: str | None = None
+    """The file that profile was read from, so a reader can go and look at it."""
+
+    overrides: list[Override] = Field(default_factory=list)
+    """Which pools were substituted by hand, in the order the flags name them.
+
+    Identifiers, not prose: a script filters on them. The substituted values are in the
+    host's own fields, because a simulated machine has to be readable as a machine.
+    """
+
+
 class Host(BaseModel):
-    """The scanned machine."""
+    """The scanned machine -- or, when ``simulation`` is set, a machine standing in for it."""
 
     os: OsName
     os_version: str
@@ -101,6 +133,19 @@ class Host(BaseModel):
     disks: list[Disk] = Field(default_factory=list)
     probes: list[Probe] = Field(default_factory=list)
     scanned_at: datetime
+    simulation: Simulation | None = None
+    """What was substituted, or ``None`` on a host the probes actually found."""
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def simulated(self) -> bool:
+        """Whether these figures describe a machine other than the one running LlamaFit.
+
+        A computed field rather than a plain one, so it cannot drift from
+        ``simulation`` and cannot be left out of the serialised host: every ``--json``
+        consumer gets one boolean at the top of the host, whatever else it ignores.
+        """
+        return self.simulation is not None
 
     @property
     def primary_gpu(self) -> Gpu | None:

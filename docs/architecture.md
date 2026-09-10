@@ -40,7 +40,7 @@ Rules that keep it that way:
 | `errors`, `units`, `paths`, `logging`, `constants` | foundation | `models` |
 | `i18n` | choose a language and translate a message; see [translations.md](translations.md) | nothing internal |
 | `hardware` | host detection: CPU, memory, bandwidth, GPUs, disks; `scan()` | foundation |
-| `hwprofile` | hardware profiles: load, match, validate, simulate | foundation |
+| `hwprofile` | hardware profiles: load, match, validate, simulate | foundation, `hardware.gputable` |
 | `llamacpp` | find the installation, read version and backends, discover servers; later install and launch | `hardware.runner` |
 | `catalog` | load, validate, refresh and merge the YAML catalog | `gguf` |
 | `gguf` | read GGUF headers locally or over HTTP range requests; derive architecture facts | foundation |
