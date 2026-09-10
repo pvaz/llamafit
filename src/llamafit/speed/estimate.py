@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """Turning a placement into tokens per second, and saying how much to trust the number.
 
 This is section 10 of the design specification. Generation is memory traffic divided by

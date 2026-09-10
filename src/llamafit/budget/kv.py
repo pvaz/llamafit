@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """The key-value cache and the recurrent state: what a model remembers, and where.
 
 The cache the file describes is arithmetic on the file's own shapes -- attention layers,

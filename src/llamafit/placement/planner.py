@@ -1,3 +1,6 @@
+# LlamaFit. Copyright (C) 2026 Paulo Vaz.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """The placement search: where a model's bytes go, and the settings that put them there.
 
 Section 9.2 describes a search, not a list of preferences. The planner evaluates modes in
