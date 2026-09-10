@@ -270,6 +270,15 @@ def page_strings() -> dict[str, str]:
             "like; the context column is the largest each one holds. Sized for %(planned)s "
             "tokens and scored for %(use_case)s against %(requested)s."
         ),
+        # The terminal's own version of this sentence names --limit, which is the control
+        # there. Here the control is the "Rows to show" box above the table, so the page
+        # gets its own wording: a message that points at a flag the reader cannot see is
+        # a message that tells them to go and find one.
+        "board.truncated": _(
+            "Showing the best %(shown)s of %(total)s that qualified; raise “Rows to "
+            "show” for the rest, which are neither worse-behaved nor hidden, only "
+            "further down."
+        ),
         "board.weights": _("Weights: %(weights)s."),
         "board.score_total": _("Score %(total)s"),
         "plan.speed_headline": _(
