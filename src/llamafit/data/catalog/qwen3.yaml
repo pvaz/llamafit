@@ -118,6 +118,14 @@
       trust: unsloth
       quants:
         - { name: UD-Q4_K_XL }
+      extras:
+        # The model declares the vision capability, so the projector has to be declared
+        # too: without it nothing charges its bytes to a pool and a plan comes out about
+        # 1.9 GB of card too optimistic for anyone who actually wants vision. The MTP
+        # draft weights are listed for the same reason, since a plan that turns them on
+        # has to know what they cost.
+        - { role: mmproj, file: mmproj-F16.gguf }
+        - { role: mtp, file: MTP/mtp-Qwen3.8-Flash-Next-shared-Q8_0.gguf }
   measured:
     - profile: "Gen 1K / Prompt 1K, -ub 2048, vision and shared experts on GPU"
       quant: UD-Q4_K_XL
