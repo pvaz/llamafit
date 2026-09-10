@@ -14,6 +14,11 @@ translation is read at runtime from a plain text file in this repository.
 > `catalog validate` and `catalog refresh` print about a YAML file, and identifiers — command
 > names, flags, paths, backend names, capability and use-case ids, and the catalog's own
 > data.
+>
+> Three of the catalogs are written right to left, and an identifier inside one of their
+> sentences needs help from the renderer or a flag reaches the reader backwards. That is
+> the renderer's job and not a translator's:
+> [Right-to-left languages](#right-to-left-languages) says what it does and how far it goes.
 
 The format is GNU gettext, the one every translation tool already speaks. There is no new
 dependency and no compiled `.mo` file: the `.po` file a translator edits is the exact file
@@ -273,6 +278,95 @@ their readers use, `32,76,800`. That is a known limitation and not something thi
 fix: it is one separator, and where the separators go is decided in the code. Say so in an
 issue if it matters to your language — the fix is a grouping pattern per language, and it
 has to be made once for all of them.
+
+### Right-to-left languages
+
+Three of the catalogs are written right to left: Arabic (`ar.po`), Hebrew (`he.po`) and
+Urdu (`ur.po`). Every identifier LlamaFit prints stays in Latin script by the rule at the
+top of this page — a flag, a command name, a path, a model id, a repository, a URL, a unit
+— so most of their lines mix the two directions, and the Unicode bidirectional algorithm
+(UAX #9) decides how. It gets one thing wrong for us, by design.
+
+**A leading hyphen has no direction of its own.** Inside a right-to-left paragraph it
+takes the direction of whatever surrounds it, so the two hyphens of `--verbose` join the
+Arabic run and the flag reaches the screen as `verbose--`. A reader who retypes what they
+see has typed a command that does not run. The same neutrality moves the full stop that
+ends a sentence, and the slash inside a path or a URL.
+
+**The fix is in the renderer, not in your catalog.** Two translators reported this
+independently and both said the same thing: direction marks do not belong in a `.po` file.
+They are invisible, so they break comparison and search over the catalog; several
+terminals draw them as boxes; a reviewer cannot see them; and no character a translator
+can type will reorder a table's columns. So `src/llamafit/cli/render.py` does it, once,
+for all three languages, at the moment a table is drawn:
+
+- every value the code already treats as data — a flag, a command name, a path, a model or
+  repository id, a URL, a size with its unit — is wrapped in U+2068 FIRST STRONG ISOLATE
+  and U+2069 POP DIRECTIONAL ISOLATE, which is what the standard prescribes for embedding
+  a run whose direction is not known in advance;
+- an identifier a translator had to keep verbatim *inside* a sentence gets the same
+  treatment, for the three shapes that are unmistakable in Arabic, Hebrew or Urdu text: a
+  backticked command line, a URL, and a long or short option;
+- every line that holds a right-to-left letter is opened with U+200F RIGHT-TO-LEFT MARK,
+  so a line that happens to begin with a Latin identifier is still laid out right to left
+  and the full stop at its end stays with the sentence it ends;
+- a table's columns are added in the reverse order and every alignment is mirrored, so the
+  first column lands against the right edge, where the eye starts, and the ragged edge
+  falls at the left, where it finishes.
+
+None of this happens in any other language: for the other thirty-four catalogs, English
+included, the output is byte for byte what it was. None of it reaches `--json` either —
+the marks are added after the services have built their objects, so a program parsing
+LlamaFit never receives one. `tests/unit/test_i18n_bidi.py` and
+`tests/unit/test_cli_rtl.py` assert both, character by character.
+
+**What this asks of you, as a translator of one of the three:** keep every identifier
+exactly as the English message spells it, keep it in Latin script, and write no direction
+mark of your own. If an identifier still comes out wrong, open an issue naming the
+message: the fix belongs in the renderer and has to be made once for all three languages.
+
+#### How much of this a reader will actually see
+
+Honestly: on most terminals, none of it, because most terminals do not implement the
+bidirectional algorithm at all. They draw characters in the order they arrive, so an
+Arabic sentence is already shown with its words running the wrong way, and a mark that
+tells a bidi engine what to do reaches no bidi engine. That is not something this code can
+fix, and it is a larger problem for those readers than the flag ever was.
+
+Where it does work: a terminal that implements UAX #9 — mlterm has for years, iTerm2 added
+bidirectional text in 3.5, WezTerm has an implementation that is off by default — and,
+which may matter more in practice, everywhere the output goes *after* the terminal. A line
+pasted into a browser, a chat client, an issue tracker or an editor is laid out by
+something that does implement the algorithm, and there the marks are what make the flag
+copy correctly. Redirecting to a file and opening it in an editor is the same case.
+
+So the claim here is narrow and is meant to be: **LlamaFit emits the characters the
+standard prescribes, in the places it prescribes them.** Whether a given terminal acts on
+them is that terminal's business, and on the common ones today it does not.
+
+#### What is still wrong, and why it was left
+
+- **A unit written outside its placeholder.** `%(gbps)s GB/s`, `%(total)sB total` and
+  `%(speed)d MT/s` put the number in a placeholder and the unit in the message, so the
+  renderer can only reach the number — and isolating a number the message glues a letter
+  onto would part the two and make it worse than doing nothing. The fix is to move the
+  unit inside the placeholder, which changes the message id, and changing a message id
+  silently orphans work already under way in the other catalogs. It waits for the
+  consolidated English round, alongside the two messages already queued for it.
+- **An interpolated value inside a `doctor` finding.** A finding's `title`, `detail` and
+  `hint` are composed by `llamafit.services.doctor`, which is also what `--json`
+  serialises, so no mark may be added there. By the time the table has them they are
+  finished sentences, and only the identifiers shaped like a flag, a URL or a backticked
+  command can be picked out again; a path or a probe name inside a finding is left
+  unmarked. The clean fix is for a finding to carry its values apart from its sentence,
+  which changes a serialised shape and belongs with the phase that revisits it.
+- **A cell that wraps in the middle of an island.** When Rich breaks a long hint across
+  lines it can leave the opening isolate on one line and the closing one on the next. Each
+  line is then its own paragraph to a terminal, which is the standard's own behaviour for
+  an unterminated isolate and degrades to what would have happened anyway; making it exact
+  would mean doing the line breaking here rather than in Rich.
+- **Digit grouping**, which is not about direction and is already recorded above: LlamaFit
+  groups in threes everywhere, so Urdu gets `3,276,800` rather than `32,76,800`.
 
 ### When a message has a context
 
