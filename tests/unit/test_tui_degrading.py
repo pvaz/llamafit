@@ -188,6 +188,32 @@ async def test_widening_the_terminal_brings_columns_back() -> None:
         assert len(app.query_one("#board-table", DataTable).columns) > narrow
 
 
+# --- a pane that has not been laid out yet -------------------------------------------------
+
+
+@pytest.mark.asyncio
+async def test_a_board_behind_another_tab_is_laid_out_for_the_terminal_it_will_come_back_to() -> (
+    None
+):
+    """A hidden pane has a size of zero, and zero is not a width to lay a table out for.
+
+    Textual reports a widget's size from the last layout pass, so a pane behind another
+    tab measures zero until it is in front again. Redrawing it against a guess drops the
+    columns the terminal has room for and puts them back a frame later, when the resize
+    lands -- so the same table says two different things depending on when it is read.
+    """
+    app = LlamaFitApp(ready())
+    async with app.run_test(size=(120, 40)) as pilot:
+        board = app.query_one("#board", BoardPane)
+        in_front = board.columns
+        assert "context" in in_front, "120 columns has room for more than the required four"
+        app.query_one("#tabs").active = "tab-simulate"
+        await pilot.pause()
+        assert board.size.width == 0, "a pane behind another tab really has no width of its own"
+        board.refresh_board()
+        assert board.columns == in_front
+
+
 # --- without colour ------------------------------------------------------------------------
 
 
