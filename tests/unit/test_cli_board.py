@@ -113,8 +113,13 @@ def test_a_board_that_did_not_move_the_speed_floor_says_nothing_about_it() -> No
 
 def test_a_batch_request_ranks_the_model_the_reading_floor_removes() -> None:
     """The board a person with nobody waiting gets: the slow model is on it."""
+    # --limit is raised past the whole catalog on the batch board: the point is that the
+    # slow model is ranked rather than excluded, and a default limit that truncates the
+    # rows would hide it for a reason that has nothing to do with the speed floor.
     plain = json.loads(runner.invoke(app, ["--json", "recommend"]).output)
-    batch = json.loads(runner.invoke(app, ["--json", "recommend", "--min-tps", "0"]).output)
+    batch = json.loads(
+        runner.invoke(app, ["--json", "recommend", "--min-tps", "0", "--limit", "500"]).output
+    )
     assert "gemma-3-27b-it" in {row["model_id"] for row in plain["excluded"]}
     assert "gemma-3-27b-it" in {row["model_id"] for row in batch["rows"]}
     assert batch["needs"]["min_tps"] == 0.0
@@ -135,8 +140,15 @@ def test_a_raised_floor_is_named_under_the_board_and_in_every_reason() -> None:
     text = flat(result.output)
     assert "--min-tps 12" in text
     assert "at least that many tokens per second" in text
-    # The reason wraps inside its cell, so only the part that survives one line is asserted.
-    assert "the 12 this request asks for" in text
+    # The reason itself is read from the JSON board rather than from the rendered table.
+    # Rich wraps it inside its cell and the column widths move with the longest model id
+    # in the catalog, so asserting on the wrapped text made the reason's presence depend
+    # on which families happen to be catalogued.
+    data = json.loads(
+        runner.invoke(app, ["--language", "en", "--json", "recommend", "--min-tps", "12"]).output
+    )
+    reasons = [row["candidate"]["excluded_because"] or "" for row in data["excluded"]]
+    assert any("the 12 this request asks for" in reason for reason in reasons)
 
 
 def test_a_speed_floor_below_zero_is_refused_by_the_flag() -> None:
