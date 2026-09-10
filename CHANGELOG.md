@@ -44,7 +44,11 @@ the changelog says so when they do.
   allocates about 9 MiB of cache per 1,024 tokens beyond the shapes it declares, 27 percent of
   its cache at 32K and 1.1 GB at 128K — the budget carries it on a line naming the architecture
   and the component rather than leaving it out. Reporting less memory than a configuration will
-  use is the one way of being wrong that turns into "this fits" when it does not.
+  use is the one way of being wrong that turns into "this fits" when it does not. The always-on
+  shared experts are a line of their own, so a tensor override that sends just those to system
+  memory can be costed: on the reference machine it frees 239 MiB and turns Qwen3.8-Flash-Next
+  at 32,768 tokens from 29 MiB over an 8 GB card into 211 MiB inside it, which is the best
+  configuration anyone has measured on that machine.
 - `llamafit list` and `llamafit search`: browse the catalog, filtered by use case, capability,
   licence, vendor or text.
 - `llamafit info <model>`: one model in full, with every quant it publishes and the GGUF facts

@@ -7,8 +7,8 @@ Every figure this module produces is a sum of tensor sizes the GGUF header alrea
 reports, prorated by whole layers, so every line it returns is marked exact. What is
 *not* exact is the pool each line lands in: which tensors llama.cpp puts on the card for
 a given ``-ngl`` is a property of llama.cpp, not of the file, and the rules below are
-written from what it was observed to do rather than from what it promises. Two of them
-are worth stating out loud because they are surprising.
+written from what it was observed to do rather than from what it promises. Three of them
+are worth stating out loud.
 
 The input embedding table stays in system memory even at full offload. llama.cpp keeps it
 in a CPU buffer and gathers rows there, which is why a fully offloaded model still prints
@@ -18,6 +18,12 @@ reported 4,606, leaving no room on the card for the 644 MiB embedding table. The
 is a model with tied embeddings, where the output projection *is* the embedding table;
 there it has to follow the output layer, and a file says so by carrying no separate
 ``output.weight`` at all.
+
+The always-on shared experts are their own line, because a tensor override can send just
+those to system memory while every other block weight stays on the card, and that is what
+the best configuration measured on the reference machine does. Two independent routes now
+give the same figure for Qwen3.8-Flash-Next: the calibration record measured 239 MiB freed
+by ``-ot ffn_.*_shexp=CPU``, and the file's own ``_shexp`` tensors come to 239.5.
 
 ``--n-cpu-moe N`` is treated as claiming layers out of the set that is on the card. That
 is exactly true in the one placement that combines the two flags, ``-ngl 99 --n-cpu-moe
@@ -59,26 +65,6 @@ def _line(component: str, pool: Pool, size: int, note: str | None = None) -> Bud
     return BudgetLine(component=component, pool=pool, bytes=size, exact=True, note=note)
 
 
-SHARED_EXPERT_BUCKET = "bytes_shared_expert_weights"
-"""The GGUF facts field holding the always-on shared experts' bytes, once it exists.
-
-A shared expert runs for every token, so it belongs with the attention weights on the card
-even when the routed experts are in system memory -- and moving it off the card is worth a
-measured 239 MiB on Qwen3.8-Flash-Next, which is what ``-ot ffn_.*_shexp=CPU`` does in the
-configuration that won on the reference machine. Until those bytes are a bucket of their
-own they are inside ``bytes_dense_block_weights`` and cannot be moved, so this reads the
-bucket by name and finds nothing until the facts carry one. When they do, no other change
-is needed here: a bucket has to be carved out of the dense one to keep the byte buckets
-summing to the file, so there is nothing to subtract.
-"""
-
-
-def shared_expert_bytes(facts: GgufFacts) -> int:
-    """Bytes of always-on shared experts, or zero while the facts do not report them."""
-    value = getattr(facts, SHARED_EXPERT_BUCKET, 0)
-    return value if isinstance(value, int) and not isinstance(value, bool) else 0
-
-
 def weight_lines(
     facts: GgufFacts,
     *,
@@ -114,13 +100,13 @@ def weight_lines(
     lines: list[BudgetLine] = []
 
     dense_vram, dense_ram = split_by_layers(facts.bytes_dense_block_weights, on_gpu, n_layer)
-    dense_note = _("attention projections, feed-forward weights, norms and any shared experts")
+    dense_note = _("attention projections, feed-forward weights and norms")
     if dense_vram:
         lines.append(_line("dense-weights", "vram", dense_vram, dense_note))
     if dense_ram:
         lines.append(_line("dense-weights", "ram", dense_ram, dense_note))
 
-    shared = shared_expert_bytes(facts)
+    shared = facts.bytes_shared_expert_weights
     if shared:
         shared_note = _("always-on experts, which run for every token")
         if shared_experts_pool is None:

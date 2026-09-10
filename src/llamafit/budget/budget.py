@@ -202,8 +202,7 @@ def compute(
             disk rather than held in memory.
         shared_experts_pool: Where the always-on shared experts go, which is what an
             ``-ot ffn_.*_shexp=CPU`` override decides. ``None`` leaves them with their
-            layers. It has no effect until the GGUF facts carry those bytes as a bucket of
-            their own; see :data:`~llamafit.budget.weights.SHARED_EXPERT_BUCKET`.
+            layers, which is what happens without the override.
 
     Returns:
         The budget: every line, both totals, both pools' utilisation and the verdict.
