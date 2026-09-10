@@ -133,10 +133,9 @@ def diagnose(report: SystemReport) -> Diagnosis:
                 title=_("llama.cpp not found"),
                 detail="; ".join(llamacpp.problems) or _("no llama-server binary was found"),
                 hint=_(
-                    "Install llama.cpp (LlamaFit phase 2 will do this: `llamafit install "
-                    "llama.cpp`); until then download a release from "
-                    "https://github.com/ggml-org/llama.cpp/releases and put its bin "
-                    "directory on PATH or in LLAMA_CPP_PATH."
+                    "Run `llamafit install llama.cpp`, which picks the right build for "
+                    "this machine, checks it against its published checksum, and never "
+                    "touches an installation LlamaFit did not create."
                 ),
             )
         )
