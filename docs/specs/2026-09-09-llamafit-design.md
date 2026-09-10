@@ -419,7 +419,20 @@ t_token    = bytes_vram / (vram_bw × eff_vram) + bytes_ram / (ram_bw × eff_ram
 gen_tps    = 1 / t_token
 ```
 
-`active_expert_bytes = bytes_expert_weights × n_expert_used / n_expert`. `working_context` defaults to 8K tokens for the board and to the user's requested context for `plan`. Initial constants (with provenance): `eff_vram 0.60` (the fraction of peak bandwidth that decode kernels reach on consumer GPUs in published llama-bench results), `eff_ram 0.70`, `layer_overhead 0.20 ms`, `sampling_overhead 1 ms` (fitted to the reference machine: 22 to 24 tokens per second for a 3B-active MoE at 4.5 bits per weight with experts in DDR5-4200, 13 to 14 for a 6B-active one). When a pool's bandwidth is unknown, a per-backend fallback applies to the whole model, in GB/s-equivalent: CUDA 250, Metal 150, HIP 200, Vulkan 120, SYCL 100, CPU arm64 80, CPU x86_64 60. These fallbacks are deliberately conservative and always labelled `estimated`.
+`active_expert_bytes = bytes_expert_weights × n_expert_used / n_expert`. `working_context` defaults to 8K tokens for the board and to the user's requested context for `plan`.
+
+**System memory has two effective bandwidths, not one, and the difference is a factor of two.** A dense model's weights are read in large contiguous runs and reach `eff_ram_sequential 0.70` of the measured read bandwidth. A routed expert set is not: each token selects a different handful of experts, so a layer's read is a scatter of small blocks across tens of gigabytes, and the memory system never gets to stream. Treating the two alike overstates a mixture-of-experts model's speed roughly twofold, which is the difference between advising a model and advising the wrong one.
+
+`eff_ram_scattered` is **0.36**, derived on the reference machine from two models whose per-token traffic differs by 64 percent:
+
+| Model | Active expert bytes per token | Measured | Effective |
+|---|---|---|---|
+| Qwen3-Coder-Next UD-Q4_K_XL | 0.916 GB | 23.0 tok/s | 21.1 GB/s |
+| Qwen3.8-Flash-Next UD-Q4_K_XL | 1.504 GB | 13.9 tok/s | 20.9 GB/s |
+
+Against a measured sequential read of 55 to 60 GB/s on the same machine, that is 0.36. The two agree to within one percent while the traffic they carry differs by more than half, which is what makes it a constant of the access pattern rather than a fit to one model.
+
+Other initial constants, with provenance: `eff_vram 0.60` (the fraction of peak bandwidth that decode kernels reach on consumer GPUs in published llama-bench results), `layer_overhead 0.20 ms`, `sampling_overhead 1 ms`. When a pool's bandwidth is unknown, a per-backend fallback applies to the whole model, in GB/s-equivalent: CUDA 250, Metal 150, HIP 200, Vulkan 120, SYCL 100, CPU arm64 80, CPU x86_64 60. These fallbacks are deliberately conservative and always labelled `estimated`.
 
 ### 10.2 Prompt processing
 
