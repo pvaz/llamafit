@@ -61,6 +61,25 @@ the changelog says so when they do.
   identifier beside it.
 - `scripts/gen_messages.py` copies a `# Translators:` comment block above a call into the
   template as `#.` lines, for what a message cannot say about itself.
+- `CLA.md`, the contributor licence agreement: a contributor keeps their copyright and grants
+  the owner a licence broad enough to keep offering LlamaFit commercially alongside the AGPL.
+  `CONTRIBUTING.md` and the pull request template say how to agree to it, in one line, once.
+
+### Changed
+- **Licence: MIT is now the GNU Affero General Public License, version 3 or later**
+  (`AGPL-3.0-or-later`). `LICENSE` holds the Free Software Foundation's text verbatim, with
+  the notice the licence asks a program to carry appended and filled in. Using LlamaFit still
+  costs nothing and requires nothing; the obligations begin only on distributing a modified
+  version or running one as a network service. Section 13, the network clause, is why AGPL
+  rather than GPL: the phase 1D web dashboard is exactly the case a plain GPL does not reach.
+  The `README` says what this means for a user, and `NOTICE` records that every runtime
+  dependency is permissively licensed and combines with the AGPL.
+- Every module under `src/llamafit/` carries a three-line copyright and
+  `SPDX-License-Identifier` header, so a file copied out of the project on its own still says
+  what it is under.
+- Packaging metadata declares `license = "AGPL-3.0-or-later"` as a PEP 639 expression with a
+  matching trove classifier, and ships `LICENSE` and `NOTICE` in the wheel. The build backend
+  floor moves to `hatchling>=1.27`, the first release that writes `License-Expression`.
 
 ### Fixed
 - RAM bandwidth now measures sequential read throughput, not a copy: a copy moves each
