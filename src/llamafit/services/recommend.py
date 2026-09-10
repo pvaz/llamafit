@@ -38,13 +38,13 @@ from collections.abc import Iterable, Mapping, Sequence
 from pathlib import PurePath
 from typing import TypeVar
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 from llamafit.constants import DEFAULT_REQUESTED_CONTEXT, DEFAULT_WORKING_CONTEXT
 from llamafit.errors import LlamaFitError
 from llamafit.i18n import _
 from llamafit.models.catalog import Catalog, CatalogModel, Measured, Quant
-from llamafit.models.host import Host
+from llamafit.models.host import Host, Simulation
 from llamafit.models.llamacpp import LocalModel
 from llamafit.models.plan import (
     Candidate,
@@ -125,6 +125,8 @@ class Board(BaseModel):
             compares like with like.
         rows: The ranked candidates, best first.
         excluded: The candidates that were not ranked, each carrying its reason.
+        simulation: What was substituted for the machine these rows were computed on, or
+            ``None`` when they were computed on the machine the reader is sitting at.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -136,6 +138,21 @@ class Board(BaseModel):
     working_context: int
     rows: list[BoardRow] = Field(default_factory=list)
     excluded: list[BoardRow] = Field(default_factory=list)
+    simulation: Simulation | None = None
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def simulated(self) -> bool:
+        """Whether these rows describe a machine other than the one running LlamaFit.
+
+        The same pair of fields :class:`~llamafit.models.host.Host` carries, for the same
+        reason and with the same guarantee: computed, so it cannot drift from
+        ``simulation`` and cannot be left out of the serialised board. A board does not
+        carry the host, so without this a program reading ``recommend --json`` would have
+        no way at all to tell an answer about this machine from an answer about a
+        profile -- the terminal has a red line above the table and a script has nothing.
+        """
+        return self.simulation is not None
 
 
 class FitRow(BaseModel):
@@ -178,6 +195,8 @@ class FitBoard(BaseModel):
         planned_context: The context every placement was sized for.
         rows: The ranked models, best fit first.
         excluded: The ones with no placement at all, each carrying its reason.
+        simulation: What was substituted for the machine these rows were computed on, or
+            ``None`` when they were computed on the machine the reader is sitting at.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -185,6 +204,13 @@ class FitBoard(BaseModel):
     planned_context: int
     rows: list[FitRow] = Field(default_factory=list)
     excluded: list[FitRow] = Field(default_factory=list)
+    simulation: Simulation | None = None
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def simulated(self) -> bool:
+        """Whether these rows describe a machine other than the one running LlamaFit."""
+        return self.simulation is not None
 
 
 def local_index(local_models: Iterable[LocalModel]) -> dict[str, str]:
@@ -283,8 +309,12 @@ def planned_context(needs: Needs) -> int:
     for general and chat. Both are right about their own question and they are frequently
     different numbers, so anything that prints a sizing context reads it from here rather
     than from :func:`~llamafit.scoring.context_score.requested_context`.
+
+    ``max_context`` caps both, which is why the caption a board prints under this figure
+    never names a context the same board refused to plan.
     """
-    return max(needs.requested_context or DEFAULT_REQUESTED_CONTEXT, needs.min_context)
+    wanted = max(needs.requested_context or DEFAULT_REQUESTED_CONTEXT, needs.min_context)
+    return wanted if needs.max_context is None else min(wanted, needs.max_context)
 
 
 def quant_entries(model: CatalogModel) -> list[Quant]:
@@ -447,6 +477,7 @@ def build_board(
         working_context=DEFAULT_WORKING_CONTEXT,
         rows=scored,
         excluded=excluded,
+        simulation=host.simulation,
     )
 
 
@@ -519,7 +550,12 @@ def build_fit_board(
         kept = kept[:limit]
     for position, row in enumerate(kept, start=1):
         row.rank = position
-    return FitBoard(planned_context=planned_context(needs), rows=kept, excluded=excluded)
+    return FitBoard(
+        planned_context=planned_context(needs),
+        rows=kept,
+        excluded=excluded,
+        simulation=host.simulation,
+    )
 
 
 def _passes_fit_filters(row: FitRow, *, min_fit: Verdict, perfect: bool) -> bool:

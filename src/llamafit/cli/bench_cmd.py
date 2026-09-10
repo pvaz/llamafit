@@ -57,7 +57,12 @@ from llamafit.bench import (
 from llamafit.bench.calibrate import refusal_text
 from llamafit.bench.fingerprint import host_fingerprint
 from llamafit.cli.app import CliState, app
-from llamafit.cli.common import find_model, load_catalog_or_warn, scan
+from llamafit.cli.common import (
+    find_model,
+    load_catalog_or_warn,
+    refuse_substitution,
+    scan,
+)
 from llamafit.cli.plan_cmd import choose_quant
 from llamafit.constants import MICRO_BATCH_LADDER
 from llamafit.errors import NotInstalledError, ProbeError
@@ -178,6 +183,7 @@ def bench_command(
 ) -> None:
     """Measure a model on this machine and show the measurement beside the estimate."""
     state: CliState = ctx.obj
+    refuse_substitution(state, command="bench")
     system = scan()
     fingerprint = host_fingerprint(system.host)
 

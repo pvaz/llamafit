@@ -60,7 +60,13 @@ from starlette.middleware.trustedhost import TrustedHostMiddleware
 import llamafit.cli.app  # noqa: F401
 from llamafit import __version__
 from llamafit.catalog.loader import Problem, load_catalog
-from llamafit.cli.common import check_capabilities, check_size, check_use_case, find_model
+from llamafit.cli.common import (
+    check_capabilities,
+    check_context_ceiling,
+    check_size,
+    check_use_case,
+    find_model,
+)
 from llamafit.cli.plan_cmd import choose_quant
 from llamafit.data import packaged_dir, packaged_text
 from llamafit.errors import (
@@ -111,6 +117,7 @@ BOARD_PARAMETERS: frozenset[str] = frozenset(
         "prefer",
         "license",
         "min_context",
+        "max_context",
         "max_download",
         "all_quants",
         "limit",
@@ -536,6 +543,7 @@ def board_query(
     prefer: str = "balanced",
     license_: Annotated[list[str] | None, Query(alias="license")] = None,
     min_context: Annotated[int, Query(ge=0)] = 0,
+    max_context: Annotated[int | None, Query(ge=1)] = None,
     max_download: str | None = None,
     all_quants: bool = False,
     limit: Annotated[int, Query(ge=1)] = DEFAULT_LIMIT,
@@ -557,6 +565,7 @@ def board_query(
         license_: An SPDX identifier the request will accept; repeatable, and spelled
             ``license`` in the query string.
         min_context: Exclude candidates that cannot hold this many tokens.
+        max_context: Plan, report and score no context longer than this.
         max_download: Exclude anything larger to fetch, as a size such as ``40G``.
         all_quants: Every quantisation rather than the best one per model.
         limit: How many ranked rows to keep.
@@ -580,6 +589,12 @@ def board_query(
             use_case=check_use_case(use_case),
             capabilities=check_capabilities(require or [], option="require"),
             min_context=min_context,
+            max_context=check_context_ceiling(
+                max_context,
+                min_context=min_context,
+                ceiling_option="max_context",
+                floor_option="min_context",
+            ),
             max_download_bytes=(
                 None if max_download is None else check_size(max_download, option="max_download")
             ),

@@ -21,7 +21,7 @@ from typing import cast
 import typer
 
 from llamafit.cli.app import CliState, app
-from llamafit.cli.common import find_model, load_catalog_or_warn, scan
+from llamafit.cli.common import checked_max_context, find_model, load_catalog_or_warn, machine
 from llamafit.cli.render_board import render_plan
 from llamafit.errors import CatalogError
 from llamafit.i18n import _, lazy_gettext
@@ -151,13 +151,17 @@ def plan_command(
     state: CliState = ctx.obj
     catalog = load_catalog_or_warn(state)
     model = find_model(catalog, model_id)
-    report = scan()
+    report = machine(state)
     chosen = choose_quant(model, report.host, quant)
     report_out = plan_report(
         model,
         chosen,
         report.host,
-        needs=Needs(use_case=model.use_cases[0], requested_context=context),
+        needs=Needs(
+            use_case=model.use_cases[0],
+            requested_context=context,
+            max_context=checked_max_context(state),
+        ),
         vision=not no_vision,
         micro_batch=ub,
         target_tps=target_tps,
