@@ -10,7 +10,8 @@ weights.
 
 import pytest
 
-from llamafit.budget import compute
+from llamafit.budget import compute, kv_cache_bytes
+from llamafit.budget import weights as weights_module
 from llamafit.budget.budget import pool_verdict, utilisation
 from llamafit.catalog import load_catalog
 from llamafit.constants import GIB, MIB, VRAM_RESERVE_BYTES
@@ -119,22 +120,79 @@ def test_the_reference_machine_sizes_flash_next_at_32k() -> None:
     )
     lines = {(line.component, line.pool): line for line in budget.lines}
 
-    # llama-server printed 4,606 MiB of model, 113 of recurrent state and 1,337 of compute
-    # buffer for exactly this configuration.
+    # llama-server printed 4,606 MiB of model, 1,056 of cache, 113 of recurrent state and
+    # 1,337 of compute buffer for exactly this configuration.
     on_card = sum(line.bytes_ for line in budget.lines if line.pool == "vram")
     model_buffer = sum(
         line.bytes_
         for (component, pool), line in lines.items()
         if pool == "vram" and component in WEIGHT_COMPONENTS
     )
+    cache = lines[("kv-cache", "vram")].bytes_ + lines[("kv-cache-unaccounted", "vram")].bytes_
     assert abs(model_buffer - 4606 * MIB) < MIB
+    assert cache == 1056 * MIB
     assert abs(lines[("recurrent-state", "vram")].bytes_ - 113 * MIB) < MIB
     assert abs(lines[("compute-buffer", "vram")].bytes_ - 1337 * MIB) <= MIB
     assert on_card == budget.vram_required
 
+    # llama.cpp used about 7,232 MiB here: 7,112 of buffers plus its CUDA context. The
+    # budget is above that and never below it, and every mebibyte of the difference is the
+    # 300 MiB context the specification plans with against the 120 measured.
+    assert 0 < budget.vram_required - 7232 * MIB < 200 * MIB
+
     assert budget.vram_available == (8188 - 550) * MIB - VRAM_RESERVE_BYTES
     assert budget.ram_available == 100 * GIB
-    assert budget.verdict == "too-tight", "7.0 GB of a 7.4 GB budget, with the projector off"
+    assert budget.vram_required > budget.vram_available, "29 MiB over an 8 GB card"
+    assert budget.verdict == "too-tight", "the driver pages and the server starts anyway"
+
+
+def test_a_cache_the_facts_cannot_account_for_is_carried_and_named() -> None:
+    """Never quietly short: the part the header misses is a line saying whose it is."""
+    model, quant = model_and_quant("qwen3.8-flash-next")
+    budget = compute(
+        model, quant, reference_host(), context=32768, mode="moe-offload", micro_batch=1024
+    )
+    named = next(line for line in budget.lines if line.component == "kv-cache-unaccounted")
+    assert named.pool == "vram" and named.bytes_ == 288 * MIB and named.exact is False
+    assert "qwen4exp" in (named.note or "")
+
+    derived = next(line for line in budget.lines if line.component == "kv-cache")
+    assert derived.exact is False, "a figure known to be short is not an exact figure"
+    assert "qwen4exp" in (derived.note or "")
+
+    cache = sum(line.bytes_ for line in budget.lines if line.component.startswith("kv-cache"))
+    assert cache == kv_cache_bytes(quant.gguf_facts, context=32768, kv_type="f16")
+
+
+def test_a_model_whose_header_describes_its_whole_cache_carries_no_such_line() -> None:
+    model, quant = model_and_quant("llama-3.1-8b-instruct")
+    budget = compute(model, quant, machine(vram_total=24 * GIB), context=8192, mode="gpu")
+    assert not [line for line in budget.lines if line.component == "kv-cache-unaccounted"]
+    assert next(line for line in budget.lines if line.component == "kv-cache").exact is True
+
+
+def test_the_shared_expert_override_moves_a_bucket_between_pools(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """`-ot ffn_.*_shexp=CPU`, once the facts carry those bytes as a bucket of their own."""
+    model, quant = model_and_quant("qwen3.8-flash-next")
+    host = reference_host()
+    before = compute(model, quant, host, context=32768, mode="moe-offload", micro_batch=1024)
+
+    monkeypatch.setattr(weights_module, "shared_expert_bytes", lambda _: 239 * MIB)
+    on_card = compute(model, quant, host, context=32768, mode="moe-offload", micro_batch=1024)
+    off_card = compute(
+        model,
+        quant,
+        host,
+        context=32768,
+        mode="moe-offload",
+        micro_batch=1024,
+        shared_experts_pool="ram",
+    )
+    assert on_card.vram_required == before.vram_required + 239 * MIB
+    assert off_card.vram_required == before.vram_required
+    assert off_card.ram_required == before.ram_required + 239 * MIB
 
 
 def test_the_lines_come_in_the_order_a_reader_should_meet_them() -> None:
@@ -161,9 +219,10 @@ def test_a_budget_says_of_every_line_whether_it_was_measured_or_modelled() -> No
     exact = {line.component for line in budget.lines if line.exact}
     modelled = {line.component for line in budget.lines if not line.exact}
     assert exact | {"lazy-tables"} >= WEIGHT_COMPONENTS
-    assert "kv-cache" in exact
     assert "vision-projector" in exact
     assert modelled == {
+        "kv-cache",
+        "kv-cache-unaccounted",
         "recurrent-state",
         "compute-buffer",
         "output-buffer",

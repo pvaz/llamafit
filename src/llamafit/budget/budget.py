@@ -46,12 +46,14 @@ from .weights import weight_lines
 
 _COMPONENT_ORDER = (
     "dense-weights",
+    "shared-expert-weights",
     "expert-weights",
     "token-embedding",
     "output-head",
     "global-weights",
     "lazy-tables",
     "kv-cache",
+    "kv-cache-unaccounted",
     "recurrent-state",
     "compute-buffer",
     "output-buffer",
@@ -174,6 +176,7 @@ def compute(
     projector: Extra | None = None,
     projector_pool: Pool | None = None,
     stream_lazy_tables: bool = True,
+    shared_experts_pool: Pool | None = None,
 ) -> Budget:
     """What one configuration of one model needs, component by component.
 
@@ -194,6 +197,10 @@ def compute(
         projector_pool: Where the projector was placed, or ``None`` for vision off.
         stream_lazy_tables: Whether tensors the catalog marks streamable are read from
             disk rather than held in memory.
+        shared_experts_pool: Where the always-on shared experts go, which is what an
+            ``-ot ffn_.*_shexp=CPU`` override decides. ``None`` leaves them with their
+            layers. It has no effect until the GGUF facts carry those bytes as a bucket of
+            their own; see :data:`~llamafit.budget.weights.SHARED_EXPERT_BUCKET`.
 
     Returns:
         The budget: every line, both totals, both pools' utilisation and the verdict.
@@ -217,6 +224,7 @@ def compute(
             facts,
             gpu_layers=ngl,
             cpu_moe_layers=cpu_moe,
+            shared_experts_pool=shared_experts_pool,
             stream_lazy_tables=stream_lazy_tables,
         ),
         *cache_lines(facts, context=context, kv_type=kv_type, gpu_layers=ngl),

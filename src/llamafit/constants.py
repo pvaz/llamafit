@@ -102,16 +102,37 @@ COMPUTE_BUFFER_FIT: dict[int, ComputeBufferFit] = {
 The bases and the slopes are section 8.2's own table: 1,090, 1,240 and 2,080 MiB, and 1.5,
 3.0 and 8.0 MiB per 1,024 tokens of context, the last rising to 25 beyond 64K.
 
-The slopes are applied per 1,024 tokens of context and **not** multiplied again by the
-micro-batch, although section 8.2's formula line reads ``base(ub) + k(ub) x ub x c /
-1024`` and its column header calls ``k`` a figure per 1K of micro-batch. Those two would
-have the slope counted twice, since ``k`` is already indexed by the micro-batch, and the
-calibration record the table was fitted to says so in words: "the compute buffer at
-``-ub 1024`` grows about 3 MiB per 1K tokens of context; at ``-ub 2048`` about 8 MiB per
-1K up to 64K and about 25 MiB per 1K beyond". Read that way the model reproduces every row
-of the record at ``-ub`` 1024 and 2048 to better than one percent, and reading the ``x
-ub`` literally overstates the buffer at ``-ub 2048`` by 262 MiB at 32K context, which on an
-8 GB card is the difference between a configuration that is offered and one that is not.
+Each slope belongs to the micro-batch it is filed under and is applied once, per 1,024
+tokens of context: at ``-ub 1024`` the buffer grows about 3 MiB per 1K of context, at
+``-ub 2048`` about 8 MiB per 1K up to 64K and about 25 MiB per 1K beyond. That is how the
+calibration record states the fit these constants came from, and it reproduces every row of
+that record at ``-ub`` 1024 and 2048 to better than one percent -- 1,336 MiB predicted
+against 1,337 measured at 32K, 2,336 against 2,330, 4,192 against 4,168.
+"""
+
+UNACCOUNTED_KV_CACHE_BYTES_PER_1K: dict[str, int] = {
+    "qwen4exp": 9 * MIB,
+}
+"""Cache an architecture allocates per 1,024 tokens that its GGUF header does not describe.
+
+Section 7.2 derives the key and value caches from the shapes the file declares, and for
+almost every architecture that is the whole cache. Qwen4exp is not one of those. The
+calibration record measured 33 MiB per 1,024 tokens on Qwen3.8-Flash-Next -- "two caches,
+24 and 9 MiB per 1K" -- where the declared shape (12 attention layers, 2 key/value heads,
+256 for each of the key and value lengths) accounts for 24. The remaining 9 MiB per 1,024
+tokens is real memory llama.cpp allocates, most likely the index Qwen Sparse Attention
+keeps over past keys, and nothing in the header predicts it.
+
+It is here rather than absent because the direction of the error decides what it costs
+somebody. At 32K it is 288 MiB, 27 percent of that model's cache, and it grows with the
+context: at 128K it is 1.1 GB. A budget that left it out would report a configuration
+fitting a card it would page off, which is the one way of being wrong that section 8 exists
+to prevent. It is carried on a line of its own so that nobody mistakes a figure measured on
+one machine for one derived from the file.
+
+Measured at ``f16``, the only cache type this model's catalog entry allows, and applied
+whatever the cache type is asked for, since nothing says how it would quantise. An
+architecture added here whose cache can be quantised needs that question answered first.
 """
 
 MIN_BATCH_TOKENS = 2048
