@@ -61,7 +61,7 @@ def test_the_ui_payload_carries_the_words_and_the_punctuation(client: TestClient
     assert body["direction"] == "ltr"
     assert body["strings"]["panel.board"] == "Board"
     assert body["labels"]["verdict"]["too-tight"] == "pages"
-    assert body["columns"]["gen"] == "Gen/s"
+    assert body["columns"]["gen"] == "Tok/s"
     assert body["format"] == {"group": ",", "decimal": ".", "unknown_size": "unknown"}
 
 

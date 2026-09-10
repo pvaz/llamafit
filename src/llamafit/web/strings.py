@@ -163,16 +163,22 @@ def column_headings() -> dict[str, str]:
 
     Every entry repeats a ``pgettext("column heading", ...)`` call that
     :mod:`llamafit.cli.render_board` already makes, so both interfaces read one catalog
-    entry per heading and a column meaning the same thing is spelled the same way. The
-    page is not eighty columns wide and drops none of them, which is the only difference
-    between this table and the one the terminal picks from.
+    entry per heading and a column meaning the same thing is spelled the same way. That
+    is why ``Tok/s`` was renamed in three places at once rather than one: a reader who
+    could not find the tokens-per-second column behind ``Gen/s`` could not find it in the
+    terminal either.
+
+    Every heading the terminal can draw is served, whether or not the board draws it
+    today. A heading is a word, and which words a table spends its width on is a decision
+    ``app.js`` makes -- the page's board keeps seven columns and puts the rest inside the
+    row -- while this table's job is only that the word exists and is the terminal's own.
     """
     return {
         "rank": pgettext("column heading", "#"),
         "model": pgettext("column heading", "Model"),
         "quant": pgettext("column heading", "Quant"),
         "score": pgettext("column heading", "Score"),
-        "gen": pgettext("column heading", "Gen/s"),
+        "gen": pgettext("column heading", "Tok/s"),
         "confidence": pgettext("column heading", "How"),
         "verdict": pgettext("column heading", "Fit"),
         "mode": pgettext("column heading", "Runs"),
@@ -182,7 +188,7 @@ def column_headings() -> dict[str, str]:
         "context_full": pgettext("column heading", "Context"),
         "quality": pgettext("column heading", "Qual"),
         "vram": pgettext("column heading", "Card"),
-        "prompt": pgettext("column heading", "PP/s"),
+        "prompt": pgettext("column heading", "Prompt tok/s"),
         "size": pgettext("column heading", "Size"),
         "ram": pgettext("column heading", "RAM"),
         "component": pgettext("column heading", "Component"),
@@ -198,7 +204,6 @@ def column_headings() -> dict[str, str]:
         "seconds": pgettext("column heading", "Seconds"),
         "share": pgettext("column heading", "Share"),
         "run": pgettext("column heading", "Run"),
-        "prompt_per_second": pgettext("column heading", "Prompt/s"),
         "date": pgettext("column heading", "Date"),
     }
 

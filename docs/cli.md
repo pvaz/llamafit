@@ -289,7 +289,7 @@ the command the program exists for, and it scans the machine to answer.
 ```
 $ llamafit recommend --use-case coding
                                  Recommended
- #   Model                Quant        Score   Gen/s   Fit     Runs             Ctx
+ #   Model                Quant        Score   Tok/s   Fit     Runs             Ctx
  1   qwen3-coder-next     UD-Q4_K_XL    84.8    23.7   tight   experts in RAM   32K
  2   qwen3.8-flash-next   UD-Q4_K_XL    67.2    13.5   tight   experts in RAM   17K
  3   qwen3-0.6b           Q8_0          54.0   114.6   fits    GPU              32K
