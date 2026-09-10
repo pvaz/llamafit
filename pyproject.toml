@@ -38,12 +38,17 @@ dependencies = [
 
 [project.optional-dependencies]
 fast = ["numpy>=1.26"]
+# The dashboard and its JSON API. Kept out of the base install on purpose: somebody who
+# only ever types `llamafit recommend` should not be made to install a web server.
+web = ["fastapi>=0.111", "uvicorn>=0.30"]
 dev = [
   "pytest>=8.2",
   "pytest-cov>=5.0",
   "ruff>=0.5",
   "mypy>=1.10",
   "numpy>=1.26", # so the suite and CI exercise the NumPy bandwidth measurement
+  "fastapi>=0.111", # so the suite and CI exercise the web API through its test client
+  "uvicorn>=0.30",
   "types-psutil",
   "types-PyYAML",
 ]
