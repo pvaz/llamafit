@@ -46,10 +46,6 @@ from llamafit.tui.state import Dashboard, Request
 from llamafit.tui.summary import speed_band
 from llamafit.tui.widgets import RichPane
 
-_DEFAULT_WIDTH = 80
-"""The width to lay out for before the terminal has told us its own, and the narrowest
-this screen is designed for."""
-
 
 class BoardPane(Vertical):
     """The ranked table, the line that says what to do with it, and the explanation."""
@@ -117,8 +113,23 @@ class BoardPane(Vertical):
         self._draw_why()
 
     def _width(self) -> int:
-        """The width to lay the table out for, before the first resize has arrived."""
-        return self.size.width or _DEFAULT_WIDTH
+        """How many cells the table has to lay itself out in.
+
+        ``self.size`` reports the last layout pass, and it is zero twice over: before the
+        first pass, and for as long as this pane sits behind another tab. Neither zero is
+        a width. Standing a constant in for one lays the table out for a terminal nobody
+        is looking at and then jumps to the real one a frame later, when the resize
+        arrives -- which is a column appearing and disappearing under a reader who did
+        nothing, and a redraw that says something different depending on when it is read.
+
+        The terminal's width was never the unknown. The application is told it before a
+        widget is mounted and again before any widget hears it has been resized, and
+        ``TabPane { padding: 0 }`` in ``styles.tcss`` hands this pane the whole of it. So
+        the measured width answers when there is one and the terminal's answers when
+        there is not, and both give the same number -- which is what makes a redraw from
+        behind another tab draw the same table as a redraw in front of it.
+        """
+        return self.size.width or self.app.size.width
 
     def _wanted_columns(self) -> tuple[board_view.Column, ...]:
         """Which columns this width and this board's speed labels ask for."""
