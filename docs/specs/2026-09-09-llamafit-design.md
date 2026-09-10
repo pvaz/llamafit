@@ -457,7 +457,9 @@ Every estimate carries one label, in this precedence: `measured` (a stored bench
 
 - `baseline` from the catalog. Rubric for curators: 90+ frontier open weights on their primary task; 80 to 89 strong current generation; 70 to 79 solid previous generation; 50 to 69 small or dated; below 50 experimental. Cite the benchmarks used.
 - `quant_penalty`: Q8 0, Q6 1, Q5 2, Q4_K_XL and Q4_K_M 4, IQ4 6, Q3 10, IQ3 12, Q2 20, IQ2 24, IQ1 35. Dynamic (`UD-`) quants use the penalty of their base level minus 1.
-- `alignment_bonus`: +5 when the model's primary use case matches the request, +3 per required capability it has beyond the request's use case, capped at +10; a missing required capability excludes the candidate entirely.
+- `alignment_bonus`: +5 when the requested use case is the model's *primary* one, meaning the first entry in its `use_cases`, and 0 when the model merely lists it. That distinguishes a model built for the job from one that also does it, and unlike a bonus counted over required capabilities it actually varies between surviving candidates: every survivor has every required capability by definition, so a term counting them changes no ordering and only looks as though it does.
+
+**A model is excluded when the requested use case is not in its `use_cases` at all**, with the reason said plainly, and likewise when a required capability is missing. The catalog is curated by hand precisely so that a model's declared purpose means something; a request for coding must not return a model whose own entry says it is for general chat and reasoning. Without this rule the seeded Llama 3.1 8B, which declares neither the coding use case nor the coding capability, ranks second for a coding request on the reference machine, carried there by fit and a capped speed score. No weighting fixes that, because the defect is that an unsuitable candidate was allowed to compete at all. When a model really is good at something its entry does not claim, the fix is a one-line catalog change, which is the kind of correction this project wants to be easy.
 
 ### 11.2 Context
 
