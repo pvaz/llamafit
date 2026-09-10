@@ -135,8 +135,10 @@ def test_a_raised_floor_is_named_under_the_board_and_in_every_reason() -> None:
     text = flat(result.output)
     assert "--min-tps 12" in text
     assert "at least that many tokens per second" in text
-    # The reason wraps inside its cell, so only the part that survives one line is asserted.
-    assert "the 12 this request asks for" in text
+    # The reason wraps inside its cell, so only the part that survives one line is asserted,
+    # and that cell narrows every time the catalog gains a model with a longer id than the
+    # ones already excluded. A fragment, not a sentence.
+    assert "below the 12" in text
 
 
 def test_a_speed_floor_below_zero_is_refused_by_the_flag() -> None:

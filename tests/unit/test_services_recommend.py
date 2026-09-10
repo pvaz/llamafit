@@ -101,7 +101,12 @@ def test_the_general_board_no_longer_leads_with_a_model_slower_than_its_reader()
     """
     board = build_board(catalog(), reference_host(), Needs(use_case="general"))
     assert board.rows, "something on this machine should be readable"
-    assert board.rows[0].model_id == "llama-3.1-8b-instruct"
+    # Which model leads is a fact about the catalog on the day, and the catalog grows; the
+    # defect was never about that name. It was that the leader typed slower than a person
+    # reads, so that is what is asserted here.
+    leader = board.rows[0].candidate
+    assert leader.speed is not None, "the leading row is judged on a speed, not on nothing"
+    assert leader.speed.gen_tps > 2.3, "the board leads with something a person can read"
     assert "gemma-3-27b-it" not in ids(board.rows)
 
     slow = next(row for row in board.excluded if row.model_id == "gemma-3-27b-it")
