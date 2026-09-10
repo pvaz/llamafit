@@ -33,15 +33,18 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <!--
+      The page is one screen: a band at the top that does not move, the list between, and
+      a line at the bottom. Nothing about the request or the machine scrolls away from
+      the answer it produced, and the only thing that scrolls is the thing worth
+      scrolling.
+    -->
     <header class="top">
-      <div class="title">
-        <h1>LlamaFit<span id="sim-badge" class="badge" hidden></span></h1>
-        <p id="subtitle" class="muted" data-t="app.subtitle"></p>
-      </div>
+      <h1>LlamaFit<span id="sim-badge" class="badge" hidden></span></h1>
       <p id="host-line" class="muted"></p>
+      <button type="button" id="about-open" class="link" data-t="app.about"></button>
     </header>
 
-    <p id="estimate-notice" class="notice"></p>
     <p id="catalog-problems" class="notice warn" hidden></p>
     <p id="failure" class="notice error" hidden></p>
 
@@ -135,17 +138,28 @@
     </form>
 
     <main>
-      <h2 data-t="panel.board"></h2>
       <p id="board-empty" class="muted" hidden></p>
-      <!--
-        What the figures are is said above the list, not under it. Under it was fine for
-        three rows and is never read at fifty.
-      -->
-      <div id="board-captions" class="captions"></div>
       <div id="board-table"></div>
     </main>
 
+    <!--
+      Everything the page has to explain is here, one button away, rather than spread over
+      the four paragraphs that used to sit between the request and its answer. A person
+      reading a list of sixty models is not reading prose, and a person who wants to know
+      what "estimated" means wants it all in one place when they ask.
+    -->
+    <dialog id="about">
+      <h2 data-t="app.about"></h2>
+      <p id="subtitle" class="muted" data-t="app.subtitle"></p>
+      <p id="estimate-notice" class="notice"></p>
+      <div id="board-captions" class="captions"></div>
+      <div class="actions">
+        <button type="button" id="about-close" data-t="app.close"></button>
+      </div>
+    </dialog>
+
     <footer>
+      <span id="board-count" class="muted"></span>
       <a id="source-link" href="https://github.com/pvaz/llamafit" data-t="app.source"></a>
       <span class="muted" data-t="app.local_only"></span>
     </footer>

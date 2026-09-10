@@ -281,6 +281,12 @@ class Candidate(BaseModel):
         excluded_because: Why it is not a candidate at all, when it is not. A candidate
             that fails is kept rather than dropped, because "this one was excluded and
             here is why" is far more use than a silently shorter list.
+        excluded_tag: The same answer in one or two words -- "no room", "too slow", "no
+            vision" -- for a surface that has a cell rather than a paragraph. A list that
+            gives one row a sentence and its neighbours a number stops being a list, and
+            fifty sentences are read by nobody; the tag keeps the grid a grid and the
+            sentence keeps its place where the row is opened. Both are decided in the same
+            branch of the same function, so they cannot come to disagree.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -292,6 +298,7 @@ class Candidate(BaseModel):
     quality: QualityBreakdown | None = None
     score: ScoreBreakdown | None = None
     excluded_because: str | None = None
+    excluded_tag: str | None = None
 
 
 class Needs(BaseModel):

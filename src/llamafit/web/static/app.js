@@ -205,11 +205,7 @@ function table(columns, rows, options = {}) {
     ),
   );
   const body = rows.map((row) => {
-    // A row may stop early and give the rest of its width to one cell. That is how a
-    // candidate that was never ranked says why in the same list as the ones that were,
-    // on the same line, without a column of its own that every other row would pay for.
-    const upto = row.span ? columns.slice(0, row.span.at) : columns;
-    const cells = upto.map((column) =>
+    const cells = columns.map((column) =>
       el("td", {
         text: row.cells[column.key] === undefined ? "" : row.cells[column.key],
         class:
@@ -222,16 +218,6 @@ function table(columns, rows, options = {}) {
             .join(" ") || null,
       }),
     );
-    if (row.span) {
-      cells.push(
-        el("td", {
-          text: row.span.text,
-          title: row.span.text,
-          class: row.span.class || null,
-          colspan: columns.length - row.span.at,
-        }),
-      );
-    }
     return el("tr", row.attrs || {}, cells);
   });
   const parts = [el("thead", {}, head), el("tbody", {}, body)];
@@ -259,24 +245,43 @@ function facts(pairs) {
 // inside the row, where the figure that produced them is. A browser has room for all
 // fourteen and that is exactly the trap: fourteen columns of one weight is a table with
 // no answer in it, and the answer is the reason somebody opened this.
+/* Thirteen columns, and the width they cost is the point of the page.
+ *
+ * An earlier draft kept seven and put the rest inside the row, which made every
+ * comparison a matter of opening two rows and remembering the first. What a person
+ * actually does here is run an eye down a column -- the fastest, the smallest download,
+ * the one that fits on the card alone -- and that only works when the figure is in the
+ * list. Density is not clutter when every row has the same shape: it is the shape that
+ * makes fifty rows scannable, and the restraint is in the colour, not in the count.
+ */
 const BOARD_COLUMNS = [
   { key: "rank", name: "rank", number: true, cell: "rank" },
   { key: "model", name: "model", cell: "name" },
   { key: "quant", name: "quant", cell: "quant" },
+  { key: "size", name: "size", number: true, cell: "size" },
   { key: "score", name: "score", number: true, sort: "score", cell: "score" },
+  { key: "quality", name: "quality", number: true, cell: "qual" },
   { key: "gen", name: "gen", number: true, sort: "speed", cell: "tps" },
+  { key: "prompt", name: "prompt", number: true, cell: "pmt" },
   { key: "confidence", name: "confidence", cell: "how" },
+  { key: "mode", name: "mode", cell: "mode" },
+  { key: "vram", name: "vram", number: true, cell: "vram" },
+  { key: "ram", name: "ram", number: true, cell: "ram" },
   { key: "verdict", name: "verdict", cell: "fit" },
   { key: "context", name: "context", number: true, sort: "context", cell: "ctx" },
 ];
 
-/** Where an unranked row stops and its reason begins: after the three that identify it. */
-const IDENTITY_COLUMNS = 3;
-
 /** The columns actually drawn, kept so an expanded row knows how wide to be. */
 let drawnColumns = BOARD_COLUMNS;
 
-/** One board row's cells, read straight off the document the API returned. */
+/** One board row's cells, read straight off the document the API returned.
+ *
+ * A candidate that was not ranked fills in every cell it has an answer for, because it
+ * usually has most of them: a model excluded for running at four tokens a second was
+ * placed, sized and estimated first, and those figures are exactly what tells the reader
+ * whether a smaller quantisation would rescue it. Only the conclusion changes -- the
+ * score column, which it has no score for, carries the word that says why not.
+ */
 function boardCells(row) {
   const candidate = row.candidate;
   const placement = candidate.placement;
@@ -287,9 +292,15 @@ function boardCells(row) {
     rank: row.rank === null ? "" : number(row.rank, 0),
     model: row.model_id,
     quant: row.quant,
-    score: score ? number(score.total) : "",
+    size: row.download_bytes ? bytes(row.download_bytes) : "",
+    score: score ? number(score.total) : candidate.excluded_tag || "",
+    quality: candidate.quality ? number(candidate.quality.total, 0) : "",
     gen: speed ? number(speed.gen_tps) : "",
+    prompt: speed ? number(speed.pp_tps, 0) : "",
     confidence: speed ? label("confidence", speed.confidence) : "",
+    mode: placement ? label("mode", placement.mode) : "",
+    vram: budget ? bytes(budget.vram_required) : "",
+    ram: budget ? bytes(budget.ram_required) : "",
     verdict: budget ? label("verdict", budget.verdict) : "",
     context: placement ? context(placement.max_context_fit) : "",
   };
@@ -310,12 +321,11 @@ function oneConfidence() {
 /** Every candidate this request produced: the ranked ones, then the ones that were not.
  *
  * One list rather than two tables. A second table of failures is a second page to find
- * and lose your place in, and the reason a candidate was refused is the most useful
- * sentence on this page -- it is the one that says what to change about the request. An
- * unranked row keeps the three columns that identify it, aligned with every other row,
- * and spends the rest of its width on that sentence instead of on figures it has none
- * of. Ranked first and unranked after, because a candidate with no score has no place
- * in an order made of scores.
+ * and lose your place in. An unranked row keeps every column the ranked ones have and
+ * fills in every figure it has -- its size, its speed, what it would take on the card --
+ * because those are what tell a reader whether a smaller quantisation would rescue it.
+ * The only cell that differs is the conclusion. Ranked first and unranked after, because
+ * a candidate with no score has no place in an order made of scores.
  */
 function boardRows() {
   const ranked = board.rows.map((row) => ({
@@ -328,8 +338,19 @@ function boardRows() {
   }));
   const rest = board.excluded.map((row) => ({
     cells: boardCells(row),
-    attrs: { class: "row out", "data-model": row.model_id, "data-quant": row.quant },
-    span: { at: IDENTITY_COLUMNS, text: row.candidate.excluded_because || "", class: "why" },
+    attrs: {
+      class: "row out",
+      "data-model": row.model_id,
+      "data-quant": row.quant,
+      // The whole sentence is one hover away and one click away, and the row is quieter
+      // than its neighbours, so the list reads as a list and the reason is never lost.
+      title: row.candidate.excluded_because || "",
+    },
+    classes: {
+      score: "why",
+      verdict:
+        row.candidate.placement && `verdict-${row.candidate.placement.budget.verdict}`,
+    },
   }));
   return ranked.concat(rest);
 }
@@ -382,6 +403,10 @@ function renderCaptions() {
   }
   captions.push(el("p", { text: format(t("board.weights"), { weights }) }));
   fill(document.getElementById("board-captions"), captions);
+  document.getElementById("board-count").textContent = format(t("app.showing"), {
+    shown: number(board.rows.length + board.excluded.length, 0),
+    total: number(board.ranked_total + board.excluded.length, 0),
+  });
 }
 
 /** Expand a row into what produced it, or sort the board by a column heading. */
@@ -914,6 +939,16 @@ function listen() {
   });
 
   document.getElementById("rescan").addEventListener("click", () => loadSystem(true));
+
+  // The prose lives in a dialog. `showModal` gives the escape key and the focus trap for
+  // nothing, and a click on the backdrop -- which is the dialog element itself, since its
+  // own content sits in a child -- closes it the way people expect a sheet to.
+  const about = document.getElementById("about");
+  document.getElementById("about-open").addEventListener("click", () => about.showModal());
+  document.getElementById("about-close").addEventListener("click", () => about.close());
+  about.addEventListener("click", (event) => {
+    if (event.target === about) about.close();
+  });
 }
 
 /** Fetch the words, wire the page up, then ask for the machine and the board. */
