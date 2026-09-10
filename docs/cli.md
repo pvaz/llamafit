@@ -281,7 +281,7 @@ the command the program exists for, and it scans the machine to answer.
 | `--limit N` | Show at most this many rows. Defaults to 10. |
 | `--all-quants` | Show every quantisation instead of the best one per model. |
 | `--no-vision` | Plan without a vision projector, freeing its memory for context. |
-| `--explain` | Expand every row shown into the four scores, the weights, the quality it was built from, the memory budget line by line, the context ladder and where a token's time goes. Combine with `--limit 1` for one model. |
+| `--explain` | Expand every row shown into the four scores, the weights, the quality it was built from, the memory budget line by line, the context ladder, where a token's time goes and where a prompt token's goes. Combine with `--limit 1` for one model. |
 
 ```
 $ llamafit recommend --use-case coding
@@ -321,8 +321,17 @@ is ever allowed to become the other.
 
 `llamafit plan <model>`: place one model on this machine and print the command line that runs
 it. The output is the memory budget component by component with the source of every figure,
-the context ladder a launch script chooses from, where a token's time goes, any run the
-catalog records for comparison, and last, on a line of its own, the `llama-server` command.
+the context ladder a launch script chooses from, where a token's time goes and where a
+prompt token's goes, any run the catalog records for comparison, and last, on a line of its
+own, the `llama-server` command.
+
+Both speed tables are read the same way: each is the terms of the formula behind one figure,
+and each trio adds up to one over that figure, so a reader can see which term dominates
+rather than being asked to believe a total. The prompt table's link row is the term this
+project knows least about — its rate was fitted on the single model whose expert set does
+not fit in system memory, and a model whose set stays in the page cache streams about three
+times faster — so it is printed as its own row, with a note saying so, instead of being
+folded into a number nobody can question.
 
 | Option | Effect |
 |---|---|

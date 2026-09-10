@@ -695,3 +695,81 @@ def test_a_flag_that_moves_no_byte_is_not_compared() -> None:
         == "measured"
     )
     assert confidence_for("-ngl 99 --n-cpu-moe 48 -ub 1024 --temp 0.7 --jinja") == "measured"
+
+
+# --- prompt processing, term by term --------------------------------------------------
+
+
+def test_the_three_prompt_shares_add_up_to_the_figure_shown() -> None:
+    estimate = estimate_speed(placement(), moe_facts(), reference_host(), active_params=3e9)
+    total = (
+        estimate.prompt_compute_seconds_per_token
+        + estimate.prompt_link_seconds_per_token
+        + estimate.prompt_ram_seconds_per_token
+    )
+    assert total == pytest.approx(1 / estimate.pp_tps)
+
+
+def test_the_prompt_shares_are_rescaled_to_a_benchmark_that_overturns_them() -> None:
+    """A benchmark moves the level the formula predicted, not the proportions."""
+    estimate = estimate_speed(
+        placement(),
+        moe_facts(),
+        reference_host(),
+        active_params=3e9,
+        quant="UD-Q4_K_XL",
+        measurements=[measured_at("-ngl 99 --n-cpu-moe 48 -ub 1024")],
+    )
+    total = (
+        estimate.prompt_compute_seconds_per_token
+        + estimate.prompt_link_seconds_per_token
+        + estimate.prompt_ram_seconds_per_token
+    )
+    assert estimate.pp_tps == 323.0
+    assert total == pytest.approx(1 / 323.0)
+
+
+def test_the_link_term_dominates_an_expert_offload_prompt() -> None:
+    estimate = estimate_speed(placement(), moe_facts(), reference_host(), active_params=3e9)
+    assert estimate.prompt_link_seconds_per_token > estimate.prompt_compute_seconds_per_token
+    assert estimate.prompt_ram_seconds_per_token == 0.0
+
+
+def test_the_link_term_says_what_it_assumes_and_where_that_breaks_down() -> None:
+    """The gap is printed beside the term, not hidden inside a total.
+
+    Section 10.2's link constant was fitted on the one model whose expert set does not fit
+    in system memory; the other streams three times faster out of the page cache. Two
+    physical paths, one constant, and a reader looking at the terms is the person most
+    likely to notice before we do.
+    """
+    estimate = estimate_speed(placement(), moe_facts(), reference_host(), active_params=3e9)
+    joined = " ".join(estimate.notes)
+    assert "streamed across the link" in joined
+    assert "does not fit in system memory" in joined
+    assert "three times faster" in joined
+
+
+def test_without_a_card_the_expert_set_is_charged_to_system_memory() -> None:
+    """Section 10.2's third term, which is a different path and says so."""
+    estimate = estimate_speed(
+        placement(mode="cpu", gpu_layers=0, cpu_moe_layers=None),
+        moe_facts(),
+        reference_host(with_gpu=False),
+        active_params=3e9,
+    )
+    assert estimate.prompt_link_seconds_per_token == 0.0
+    assert estimate.prompt_ram_seconds_per_token > 0.0
+    assert "no card to stream it to" in " ".join(estimate.notes)
+
+
+def test_a_dense_model_streams_nothing_and_its_prompt_time_is_all_arithmetic() -> None:
+    estimate = estimate_speed(
+        placement(mode="gpu", cpu_moe_layers=None),
+        dense_facts(),
+        reference_host(),
+        active_params=8e9,
+    )
+    assert estimate.prompt_link_seconds_per_token == 0.0
+    assert estimate.prompt_ram_seconds_per_token == 0.0
+    assert estimate.prompt_compute_seconds_per_token == pytest.approx(1 / estimate.pp_tps)
