@@ -76,8 +76,8 @@ next to the "No GPU detected" warning, because one of them is usually the reason
 ## Architectures
 
 `x86_64` and `arm64` are first-class. Other architectures scan, but llama.cpp release binaries
-may not exist for them, which `doctor` reports when the installer (phase 2) is asked to fetch
-one.
+may not exist for them, which `llamafit install llama.cpp` says by name rather than installing
+something else.
 
 ## Backends
 

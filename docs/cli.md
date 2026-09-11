@@ -5,9 +5,10 @@ options below, and every
 command can print JSON instead of tables so scripts can consume it. The JSON is the serialised
 data model of the command's result; the tables show the same data.
 
-Every heading names the phase its command belongs to and says whether it has shipped.
-Phases 1A and 1B have; the rest are documented so their shape is agreed before they are
-built, and their flags may still change. The [roadmap](../ROADMAP.md) says what lands when.
+Every heading names the phase its command belongs to. Every command on this page has shipped.
+What has not is named in the [roadmap](../ROADMAP.md): two screens of the terminal dashboard,
+the install and benchmark endpoints of the web API, and the path by which a benchmark corrects
+the estimator.
 
 ## Global options
 
@@ -109,19 +110,25 @@ Scan the machine and show CPU, memory, GPUs, disks and the llama.cpp installatio
 
 ```
 $ llamafit system
-Host
-  OS         windows Windows-11-10.0.26200-SP0 (x86_64)
-  CPU        Intel(R) Core(TM) i9-14900KF; 24 cores / 32 threads, 8 performance cores; avx2
-  Memory     127.8 GiB total, 100.8 GiB available; DDR5 4200 MT/s, 4 modules, 2 channels; bandwidth 57.3 GB/s (measured)
-  GPU 0      NVIDIA GeForce RTX 4060 (cuda); 8.0 GiB VRAM, 7.2 GiB free; 272.0 GB/s and 60.4 TFLOPS fp16 (spec), driver 610.88
-  Disk       C:\Dev\Projectos Pessoais\2026\llamafit: 355.6 GiB free of 1.8 TiB
-  Disk       D:\llama.cpp\bin: 417.9 GiB free of 1.8 TiB
+                                               Host
+OS      windows Windows-11-10.0.26200-SP0 (x86_64)
+CPU     Intel(R) Core(TM) i9-14900KF; 24 cores / 32 threads, 8 performance cores; avx2
+Memory  127.8 GiB total, 95.2 GiB available; DDR5 at 4200 MT/s, 4 modules across 2 channels;
+        bandwidth 38.3 GB/s (measured)
+GPU 0   NVIDIA GeForce RTX 4060 (cuda); 8.0 GiB VRAM, 7.3 GiB free; 272.0 GB/s and 60.4 TFLOPS fp16
+        (spec), driver 610.88
+Disk    C:\projects\llamafit: 356.5 GiB free of 1.8 TiB
+Disk    D:\llama.cpp\bin: 417.9 GiB free of 1.8 TiB
 
-llama.cpp
-  Installed     yes, b10867 at D:\llama.cpp\bin
-  Backends      cuda, rpc, cpu
-  Local models  5
+                  llama.cpp
+Installed     yes, b10867 at D:\llama.cpp\bin
+Backends      cuda, rpc, cpu
+Local models  5
 ```
+
+The paths on the disk lines are the ones LlamaFit cares about — where it was run, where it
+downloads to, where llama.cpp is — reported once per distinct volume, so a machine with all
+three on one drive shows one line.
 
 With `--json` the output is a `SystemReport`: `{"host": {...}, "llamacpp": {...}, "version": "..."}`.
 Every bandwidth figure carries its `bandwidth_source`: `measured`, `estimated`, `assumed` or `unknown`.
@@ -150,22 +157,26 @@ List the catalog, narrowed by any filters given.
 | `--limit N` | Show at most this many. |
 
 ```
-$ llamafit list
-                                   Models
-┌───────────────────────┬──────────┬────────┬─────────┬─────────────────────┐
-│ ID                    │ Quality* │ Params │ Context │ Capabilities        │
-├───────────────────────┼──────────┼────────┼─────────┼─────────────────────┤
-│ qwen3-coder-next      │       85 │  80/3B │    256K │ coding, tools +1    │
-│ qwen3.8-flash-next    │       84 │ 125/6B │    256K │ coding, thinking +4 │
-│ gemma-3-27b-it        │       74 │    27B │    128K │ vision +3           │
-│ llama-3.1-8b-instruct │       62 │     8B │    128K │ tools +2            │
-│ qwen3-0.6b            │       35 │   0.6B │     32K │ coding, tools +1    │
-└───────────────────────┴──────────┴────────┴─────────┴─────────────────────┘
-   Quality is the editorial baseline, before any quantisation penalty; run
-   `llamafit info <model>` for the sourced benchmarks behind it. Params is
-total/active billions for a mixture-of-experts model, or one number when they
-                                 are equal.
+$ llamafit list --limit 5
+                                         Models
+┌────────────────────────┬──────────┬───────────┬─────────┬─────────────────────────────┐
+│ ID                     │ Quality* │    Params │ Context │ Capabilities                │
+├────────────────────────┼──────────┼───────────┼─────────┼─────────────────────────────┤
+│ glm-5.3                │       92 │   744/40B │      1M │ coding, thinking, tools +1  │
+│ kimi-k3                │       92 │ 2800/104B │      1M │ coding, thinking, vision +2 │
+│ deepseek-v4-pro-0813   │       91 │  1600/49B │      1M │ coding, thinking, tools +1  │
+│ glm-5.3-flash          │       89 │   320/18B │      1M │ coding, thinking, vision +2 │
+│ deepseek-v4-flash-0731 │       88 │   284/13B │      1M │ coding, thinking, tools +1  │
+└────────────────────────┴──────────┴───────────┴─────────┴─────────────────────────────┘
+ Quality is the editorial baseline, before any quantisation penalty; run `llamafit info
+  <model>` for the sourced benchmarks behind it. Params is total/active billions for a
+              mixture-of-experts model, or one number when they are equal.
 ```
+
+Without `--limit` that table is sixty-two rows long, one per model in the catalog. `list` adds
+no caption saying what a limit cut, where `fit` and `recommend` do: there the rows below the
+cut were ranked against this machine and their absence is worth knowing about, and here the
+whole list is one command away.
 
 Columns: id, quality, parameters (one number for a dense model, total/active for a
 mixture-of-experts one), native context and capabilities (as many complete names as fit, plus
@@ -186,12 +197,16 @@ quant names, and the largest quant size that is known (`null` until `catalog ref
 
 ```
 $ llamafit search coder
-                               Models
-┌──────────────────┬──────────┬────────┬─────────┬──────────────────┐
-│ ID               │ Quality* │ Params │ Context │ Capabilities     │
-├──────────────────┼──────────┼────────┼─────────┼──────────────────┤
-│ qwen3-coder-next │       85 │  80/3B │    256K │ coding, tools +1 │
-└──────────────────┴──────────┴────────┴─────────┴──────────────────┘
+                                     Models
+┌──────────────────┬──────────┬────────┬─────────┬─────────────────────────────┐
+│ ID               │ Quality* │ Params │ Context │ Capabilities                │
+├──────────────────┼──────────┼────────┼─────────┼─────────────────────────────┤
+│ qwen3-coder-next │       85 │  80/3B │    256K │ coding, tools, long-context │
+└──────────────────┴──────────┴────────┴─────────┴─────────────────────────────┘
+    Quality is the editorial baseline, before any quantisation penalty; run
+    `llamafit info <model>` for the sourced benchmarks behind it. Params is
+ total/active billions for a mixture-of-experts model, or one number when they
+                                   are equal.
 ```
 
 ### `llamafit info` `<model>` — phase 1B, shipped
@@ -202,7 +217,7 @@ weight and GGUF architecture facts.
 
 ```
 $ llamafit info qwen3-coder-next
-                      Qwen3-Coder-Next (qwen3-coder-next)
+                                Qwen3-Coder-Next (qwen3-coder-next)
 Vendor            Alibaba Qwen
 Family            qwen3
 Release date      2026-02-03
@@ -210,32 +225,30 @@ Licence           Apache-2.0 (https://www.apache.org/licenses/LICENSE-2.0)
 Parameters        80B total, 3B active
 Context           262,144 tokens native
 Architecture      moe-hybrid, gguf_arch=qwen3next
-Notes             48 layers combining Gated DeltaNet linear-attention blocks
-                  with Gated Attention (full-attention) blocks; 512 routed
-                  experts, 10 used per token, plus 1 shared expert. Hidden
-                  dimension 2,048.
+Notes             48 layers combining Gated DeltaNet linear-attention blocks with Gated Attention
+                  (full-attention) blocks; 512 routed experts, 10 used per token, plus 1 shared
+                  expert. Hidden dimension 2,048.
 Capabilities      coding, tools, long-context
 Use cases         coding
 Quality baseline  85
-Benchmark         SWE-bench Verified: 70.6
-                  (https://huggingface.co/Qwen/Qwen3-Coder-Next)
-Benchmark         SWE-bench Pro: 44.3
-                  (https://huggingface.co/Qwen/Qwen3-Coder-Next)
-Benchmark         Terminal-Bench 2.0: 36.2
-                  (https://huggingface.co/Qwen/Qwen3-Coder-Next)
+Benchmark         SWE-bench Verified: 70.6 (https://huggingface.co/Qwen/Qwen3-Coder-Next)
+Benchmark         SWE-bench Pro: 44.3 (https://huggingface.co/Qwen/Qwen3-Coder-Next)
+Benchmark         Terminal-Bench 2.0: 36.2 (https://huggingface.co/Qwen/Qwen3-Coder-Next)
 Source 1          unsloth/Qwen3-Coder-Next-GGUF (gguf, trust=unsloth)
 
-                     Quants
-┌────────────┬─────────┬─────────┬──────────────┐
-│ Name       │    Size │     BPW │ Facts        │
-├────────────┼─────────┼─────────┼──────────────┤
-│ UD-Q4_K_XL │ unknown │ unknown │ not read yet │
-└────────────┴─────────┴─────────┴──────────────┘
+                                Quants
+┌────────────┬──────────┬──────┬──────────────────────────────────────┐
+│ Name       │     Size │  BPW │ Facts                                │
+├────────────┼──────────┼──────┼──────────────────────────────────────┤
+│ UD-Q4_K_XL │ 46.2 GiB │ 4.96 │ qwen3next, 48 layers, 512/10 experts │
+└────────────┴──────────┴──────┴──────────────────────────────────────┘
 ```
 
-Size, bits per weight and facts read `unknown` and `not read yet` until `catalog refresh` has
-filled them in for that quant; the bundled catalog carries no refreshed facts today, which is
-why the example shows none. See
+Those three columns are filled in by `catalog refresh`, and the bundled catalog ships them
+already refreshed: a generated `<family>.facts.json` sits beside every `<family>.yaml` in the
+wheel, so the figures above are what a fresh install prints. A quant nobody has refreshed —
+one you added yourself, or one added to the catalog since the last refresh — reads `unknown`,
+`unknown` and `not read yet` until it has been. See
 [catalog.md](catalog.md#where-the-facts-live) for where those numbers live.
 
 An unknown id exits 1, naming the catalog id that shares the longest prefix with it when one
@@ -247,7 +260,8 @@ no model named 'qwen3-coder' in the catalog
 Hint: Did you mean: qwen3-coder-next?
 ```
 
-Per-host budgets per quant (`--quant`, `--context`) are phase 1C; nothing here estimates one.
+Nothing here estimates a per-host budget: `info` reads the catalog and never the machine.
+`llamafit plan <model> --quant NAME --context N` is where a quant is sized for this one.
 
 With `--json` the output is a `ModelDetail`: the whole catalog entry, plus every quant with its
 `bytes`, `bpw`, `files` and `facts`.
@@ -266,13 +280,15 @@ With `--json` the output is a `ModelDetail`: the whole catalog entry, plus every
 
 ```
 $ llamafit catalog validate
-4 file(s) checked, no problems found.
+25 files checked, no problems found.
 
 $ llamafit catalog refresh --model qwen3-0.6b --dry-run
-qwen3-0.6b: sources[0].quants[0].files, sources[0].quants[0].bytes,
-sources[0].quants[0].sha256, sources[0].quants[0].gguf_facts,
-sources[0].quants[0].bpw
+No changes.
 ```
+
+`No changes.` is what a refreshed catalog says, and the bundled one ships refreshed. A model
+whose repository has moved on prints the fields instead, one line per model:
+`qwen3-0.6b: sources[0].quants[0].bytes, sources[0].quants[0].sha256`.
 
 `refresh` prints one line per model that changed, naming the fields; warnings and errors come
 first, each naming the model. A repository that cannot be listed leaves its whole model exactly
@@ -293,16 +309,26 @@ the largest each one holds in the mode shown.
 | `--all-quants` | Show every quantisation instead of the best-fitting one per model. |
 
 ```
-$ llamafit fit
-                            Fit on this machine
- #   Model                  Quant        Fit     Runs             Ctx    Card      RAM
- 1   gemma-3-27b-it         Q4_K_M       tight   split            33K    6.2 GiB   32.1 GiB
- 2   qwen3.8-flash-next     UD-Q4_K_XL   tight   experts in RAM   17K    6.3 GiB   75.5 GiB
- 3   qwen3-coder-next       UD-Q4_K_XL   tight   experts in RAM   32K    6.3 GiB   46.4 GiB
- 4   llama-3.1-8b-instruct  Q4_K_M       tight   split            35K    6.1 GiB    7.8 GiB
- 5   qwen3-0.6b             Q8_0         fits    GPU              32K    5.5 GiB    2.2 GiB
+$ llamafit fit --limit 5
+                                        Fit on this machine
+┌───┬────────────────────────────┬────────────┬───────┬────────────────┬─────┬─────────┬──────────┐
+│ # │ Model                      │ Quant      │ Fit   │ Runs           │ Ctx │    Card │      RAM │
+├───┼────────────────────────────┼────────────┼───────┼────────────────┼─────┼─────────┼──────────┤
+│ 1 │ kimi-linear-48b-a3b-instru │ Q6_K       │ fits  │ split          │ 64K │ 4.7 GiB │ 64.2 GiB │
+│   │ ct                         │            │       │                │     │         │          │
+│ 2 │ mistral-small-4-119b       │ UD-Q2_K_XL │ fits  │ experts in RAM │ 49K │ 5.8 GiB │ 39.3 GiB │
+│ 3 │ qwen3.5-122b-a10b          │ UD-Q2_K_XL │ tight │ experts in RAM │ 57K │ 5.9 GiB │ 39.1 GiB │
+│ 4 │ llama-3.3-70b-instruct     │ Q4_K_M     │ tight │ split          │ 50K │ 6.0 GiB │ 48.9 GiB │
+│ 5 │ qwen3.8-27b                │ UD-Q6_K_XL │ fits  │ split          │ 79K │ 5.7 GiB │ 28.4 GiB │
+└───┴────────────────────────────┴────────────┴───────┴────────────────┴─────┴─────────┴──────────┘
 Sized for 32K tokens. The context column is the largest each one holds in the mode shown.
+Showing the best 5 of 55 that qualified; --limit sets how many, and the rest are neither
+worse-behaved nor hidden, only further down.
 ```
+
+That second caption is the point of `--limit`: a cut list says so and says how much it cut,
+because a reader who was not told would take five rows for the whole answer. It appears only
+when something was actually cut.
 
 Models that cannot be placed at all are listed under **Not placed** with the reason, never
 dropped. `--limit` cuts the ranked rows and never the reasons.
@@ -327,32 +353,43 @@ the command the program exists for, and it scans the machine to answer.
 | `--explain` | Expand every row shown into the four scores, the weights, the quality it was built from, the memory budget line by line, the context ladder, where a token's time goes and where a prompt token's goes. Combine with `--limit 1` for one model. |
 
 ```
-$ llamafit recommend --use-case coding
-                                 Recommended
- #   Model                Quant        Score   Tok/s   Fit     Runs             Ctx
- 1   qwen3-coder-next     UD-Q4_K_XL    84.8    23.7   tight   experts in RAM   32K
- 2   qwen3.8-flash-next   UD-Q4_K_XL    67.2    13.5   tight   experts in RAM   17K
- 3   qwen3-0.6b           Q8_0          54.0   114.6   fits    GPU              32K
-Speeds are for 8K tokens of context so every row compares like with like; the context
-column is the largest each one holds. Sized and scored for coding at 32K tokens.
-Speeds are section 10's formula on its default constants. Nothing has been benchmarked
-on this machine yet, so no figure here is a measurement.
+$ llamafit recommend --use-case coding --limit 3
+                                      Recommended
+┌───┬─────────────────────┬────────────┬───────┬───────┬───────┬────────────────┬─────┐
+│ # │ Model               │ Quant      │ Score │ Tok/s │ Fit   │ Runs           │ Ctx │
+├───┼─────────────────────┼────────────┼───────┼───────┼───────┼────────────────┼─────┤
+│ 1 │ qwen3-coder-next    │ UD-Q4_K_XL │  87.5 │  22.5 │ tight │ experts in RAM │ 40K │
+│ 2 │ north-mini-code-1.0 │ UD-Q4_K_XL │  84.6 │  21.0 │ tight │ experts in RAM │ 34K │
+│ 3 │ qwen3.6-35b-a3b     │ UD-Q6_K_XL │  83.7 │  23.7 │ tight │ experts in RAM │ 38K │
+└───┴─────────────────────┴────────────┴───────┴───────┴───────┴────────────────┴─────┘
+Speeds are for 8K tokens of context so every row compares like with like; the context column is the
+largest each one holds. Sized and scored for coding at 32K tokens.
+Showing the best 3 of 27 that qualified; --limit sets how many, and the rest are neither
+worse-behaved nor hidden, only further down.
+Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this
+machine yet, so no figure here is a measurement.
 Weights: quality 0.40, speed 0.20, fit 0.20, context 0.20.
 
-                                  Not ranked
- Model                   Quant    Why not
- gemma-3-27b-it          Q4_K_M   no coding capability, which coding needs; ask for a
-                                  different use case, or add it to the entry when the
-                                  model really has it
- llama-3.1-8b-instruct   Q4_K_M   no coding capability, which coding needs; ask for a
-                                  different use case, or add it to the entry when the
-                                  model really has it
+                                            Not ranked
+┌────────────────────────────────────┬────────────┬───────────────────────────────────────────────┐
+│ Model                              │ Quant      │ Why not                                       │
+├────────────────────────────────────┼────────────┼───────────────────────────────────────────────┤
+│ command-a-plus-05-2026             │ Q4_K_M     │ no run mode supports this model on this       │
+│                                    │            │ machine                                       │
+│ deepseek-v4-flash-0731             │ UD-IQ2_XXS │ generates 4.2 tokens per second, below the 6  │
+│                                    │            │ a person reads at: a batch tool on this       │
+│                                    │            │ machine and not one to sit in front of; a     │
+│                                    │            │ smaller model or quantisation would keep up   │
 ```
 
+The **Not ranked** table is cut off above; the real one runs to a row for every candidate the
+request excluded, and `--limit` never touches it.
+
 Which columns appear depends on the width of the terminal. The rank, model, quantisation and
-score are never dropped; the rest are added in the order gen/s, fit, run mode, context,
-quality, card, prompt/s, download size, RAM, each only while its whole content fits. A column
-that cannot fit is dropped rather than shrunk.
+score are never dropped; the rest are added in the order `Tok/s`, `How` (only when the rows
+disagree about how their speeds were arrived at), `Fit`, `Runs`, `Ctx`, `Qual`, `Card`,
+`Prompt tok/s`, `Size`, `RAM`, each only while its whole content fits. A column that cannot
+fit is dropped rather than shrunk.
 
 **No row is ever dropped for failing.** A candidate the request excludes appears under **Not
 ranked** with the reason: the capability the job needs and it lacks, a capability the request
@@ -367,10 +404,12 @@ ask for nothing, so a model built for one job is ranked on its merits for either
 `--use-case` filter on `llamafit list` is a different thing: there you are browsing the catalog
 and asking to see what an entry offers itself for.
 
-**Nothing is labelled `measured`.** Section 10.3 reserves that word for a benchmark taken on
-*this* machine, and phase 3's `bench` is what will store one. A catalog entry's own `measured`
-block is a record from the curator's machine; `plan` shows it beside the estimate, and neither
-is ever allowed to become the other.
+**Nothing on this board is labelled `measured`.** Section 10.3 reserves that word for a
+benchmark taken on *this* machine. `llamafit bench` takes and stores one, but nothing reads
+the benchmark database back into the board: `recommend`, `fit` and `plan` run the formula on
+the constants that ship with LlamaFit, so every speed here is `estimated`. A catalog entry's
+own `measured` block is a record from the curator's machine; `plan` shows it beside the
+estimate, and neither is ever allowed to become the other.
 
 ### `llamafit plan` — phase 1C, shipped
 
@@ -402,7 +441,7 @@ section 8.4's failure and the one a person cannot diagnose for themselves; `no r
 system memory could not absorb either. A table showing only yes and no would file the second
 under the third and lose the only one worth warning about.
 
-### `llamafit hardware` `list|show|validate|path` — phase 1B, shipped
+### `llamafit hardware` `list|show|validate|path` — phase 1C, shipped
 
 Hardware profiles: a machine described in a file, so LlamaFit can answer for a machine
 that is not this one. See [hardware-profiles.md](hardware-profiles.md) for the format.
@@ -420,15 +459,14 @@ that is not this one. See [hardware-profiles.md](hardware-profiles.md) for the f
 
 ```
 $ llamafit hardware list
-                                Hardware profiles
-┌─────────────────────────┬─────────┬───────────────────────┬───────────────────────┐
-│ Name                    │ From    │ Machine               │ Description           │
-├─────────────────────────┼─────────┼───────────────────────┼───────────────────────┤
-│ reference-rtx4060-128gb │ bundled │ 128.0 GiB RAM, NVIDIA │ Reference machine:    │
-│                         │         │ GeForce RTX 4060 with │ RTX 4060 8 GB,        │
-│                         │         │ 8.0 GiB               │ i9-14900KF, 128 GiB   │
-│                         │         │                       │ DDR5-4200, Windows 11 │
-└─────────────────────────┴─────────┴───────────────────────┴───────────────────────┘
+                                         Hardware profiles
+┌─────────────────────────┬─────────┬──────────────────────────────┬──────────────────────────────┐
+│ Name                    │ From    │ Machine                      │ Description                  │
+├─────────────────────────┼─────────┼──────────────────────────────┼──────────────────────────────┤
+│ reference-rtx4060-128gb │ bundled │ 128.0 GiB RAM, NVIDIA        │ Reference machine: RTX 4060  │
+│                         │         │ GeForce RTX 4060 with 8.0    │ 8 GB, i9-14900KF, 128 GiB    │
+│                         │         │ GiB                          │ DDR5-4200, Windows 11        │
+└─────────────────────────┴─────────┴──────────────────────────────┴──────────────────────────────┘
 
 $ llamafit hardware show reference-rtx4060-128gb --as-host
 Host
@@ -443,7 +481,7 @@ the problems, whichever the subcommand is about. A host built from a profile car
 `"simulated": true` and a `simulation` object naming the profile and its file, so a script
 can tell a what-if from a scan without reading a heading.
 
-### `llamafit serve`
+### `llamafit serve` — phase 1D, shipped
 
 Start the web dashboard and JSON API on this machine.
 
@@ -465,7 +503,7 @@ The dashboard speaks the language `--language` chose, like everything else, and 
 carry the same labels the tables above use. See [web.md](web.md) for the API, the safety
 rules and what the page does about languages.
 
-### `llamafit` (no command) — shipped
+### `llamafit` (no command) — phase 1D, shipped
 
 Opens the terminal dashboard: the board, the request as a form, the machine, the plan for a
 chosen row and the simulation controls, over one scan and one catalog. It is what somebody
@@ -475,7 +513,7 @@ Where there is no terminal to draw one in — a pipe, a redirect, a CI job — i
 standard error and prints exactly what `llamafit recommend` would print, with the same
 defaults, read off that command rather than repeated here. See [tui.md](tui.md).
 
-### `llamafit install` — phase 2
+### `llamafit install` — phase 2, shipped
 
 The `install` group puts onto the machine what it takes to run a model: llama.cpp itself,
 and the weights. Both commands have shipped, and both keep the same rule — the whole plan
@@ -687,8 +725,12 @@ under the size that row actually ran at.
 on the reference machine and two would not have pinned three, so a constant whose column is
 empty, whose configurations are too few, or whose fit comes out impossible is refused by name
 with the reason. `layer_overhead_ms` is never fitted at all: section 10.1 removed the
-per-layer term, so a number fitted for it would be read by nothing. See
-[benchmarking.md](benchmarking.md).
+per-layer term, so a number fitted for it would be read by nothing.
+
+**A fit is printed and stored, and nothing reads it back yet.** `recommend`, `fit` and `plan`
+run the formula on the constants that ship in the package, so a calibrated machine's board
+still says `estimated`. [benchmarking.md](benchmarking.md) says what is missing and why it was
+left rather than bodged.
 
 ## Environment variables
 

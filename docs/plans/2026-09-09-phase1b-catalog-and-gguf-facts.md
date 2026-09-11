@@ -20,7 +20,7 @@
 - Every number that reaches the user carries its provenance. Facts read from a GGUF header are exact; anything derived by a family rule instead is marked so.
 - No network access in any test that is not marked `hardware`. Hugging Face and GGUF reads go through injectable clients with recorded responses.
 - Commit after every task with a plain conventional-commit message and **no trailer lines of any kind**. If your editor or tooling appends co-author or session trailers, strip them with `git commit --amend` before reporting.
-- Repository root is `C:\Dev\Projectos Pessoais\2026\llamafit`. Run every tool through the virtual environment interpreter: `.venv\Scripts\python.exe -m pytest`, `... -m ruff`, `... -m mypy`.
+- Work from the repository root. Run every tool through the virtual environment interpreter: `.venv\Scripts\python.exe -m pytest`, `... -m ruff`, `... -m mypy`.
 - `main` is protected: work happens on a branch and lands through a pull request with the six CI jobs green.
 
 ---

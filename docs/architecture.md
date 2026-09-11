@@ -11,11 +11,11 @@ repeat it.
 Interfaces    cli/ (Typer)      tui/ (Textual)      web/ (FastAPI + static dashboard)
               render only; call services; never compute
 
-Services      scan · recommend · plan · install · bench · catalog · doctor
+Services      scan · recommend · plan · catalog · doctor
               compose core modules; take plain inputs; return pydantic models; never print
 
 Core          hardware · hwprofile · llamacpp · catalog · gguf · budget · placement
-              speed · quality · scoring · presets · download
+              speed · quality · scoring · presets · download · bench
               pure functions over typed data; OS access behind small protocols
 
 Foundation    models (pydantic) · constants · paths · logging · errors · units
@@ -41,7 +41,7 @@ Rules that keep it that way:
 | `i18n` | choose a language and translate a message; see [translations.md](translations.md) | nothing internal |
 | `hardware` | host detection: CPU, memory, bandwidth, GPUs, disks; `scan()` | foundation |
 | `hwprofile` | hardware profiles: load, match, validate, simulate | foundation, `hardware.gputable` |
-| `llamacpp` | find the installation, read version and backends, discover servers; later install and launch | `hardware.runner` |
+| `llamacpp` | find the installation, read version and backends, discover servers, install a release build, start and stop a server | `hardware.runner` |
 | `catalog` | load, validate, refresh and merge the YAML catalog | `gguf` |
 | `gguf` | read GGUF headers locally or over HTTP range requests; derive architecture facts | foundation |
 | `budget` | memory need by component for a candidate under a placement | `gguf`, `catalog` |

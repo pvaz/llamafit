@@ -23,7 +23,8 @@ For a model, quant and context (default: the plan's choice):
 
 Results are stored in `benchmarks.sqlite` in the data directory with the host fingerprint,
 llama.cpp build, model, quant, the settings the run reported about itself, and the timestamp.
-`llamafit bench --show` lists them; the Benchmarks screen is phase 1D.
+`llamafit bench --show` lists them. The Benchmarks screen the design sketches is not built;
+`--show` and `--calibrate` are the whole of the interface to the database today.
 
 **A result is refused rather than stored when its conditions are not knowable.** llama.cpp
 clamps a context it cannot honour and expands `-ub 512,1024,2048` into a run apiece, so what a
@@ -35,24 +36,46 @@ direction, since the label then falls back to `estimated`, which is true.
 ## Reading estimate versus measured
 
 ```
-$ llamafit bench qwen3.8-flash-next
-                          estimated   measured   ratio
-generation tok/s (tg128)     12.9       13.0     1.01
-prompt tok/s (pp2048)        74         77       1.04
-generation, 1K prompt        13.4       13.9     1.04
-prompt, 1K request           48         49.4     1.03
-peak VRAM                    7.2 GB     7.6 GB   1.05
-verdict                      Fits       Fits
+$ llamafit bench qwen3-0.6b --no-store
+                 Estimated against measured
+┌───────────────────────────┬───────────┬──────────┬───────┐
+│ figure                    │ estimated │ measured │ ratio │
+├───────────────────────────┼───────────┼──────────┼───────┤
+│ prompt (llama-bench)      │  21643.33 │ 18231.12 │  0.84 │
+│ generation (llama-bench)  │     41.34 │   279.76 │  6.77 │
+│ generation, first request │     41.34 │   254.88 │  6.17 │
+│ generation, 1K prompt     │     41.34 │   224.74 │  5.44 │
+│ prompt, 1K request        │  21643.33 │ 19126.99 │  0.88 │
+│ peak VRAM                 │   6.5 GiB │  5.1 GiB │  0.79 │
+└───────────────────────────┴───────────┴──────────┴───────┘
+4 figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in.
+This configuration was not paging.
+Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page.
+Nothing was written to the database, so no estimate will be relabelled.
 ```
 
-Ratios between 0.8 and 1.25 are normal before calibration. Anything outside is worth a look:
-a generation ratio far below 1 with VRAM at the ceiling is paging; a prompt ratio far below 1
-usually means the micro-batch or PCIe assumption is off for this machine.
+One line of that run is left out above: between the paging verdict and the last line the
+command prints a sentence quoting the VRAM percentage and the speed ratio, and on a card that
+stayed clear there is no speed ratio to quote, so the sentence comes out malformed. That is a
+bug in the renderer rather than something to read.
+
+Ratios between 0.8 and 1.25 are normal before calibration, and the command counts the ones
+that are not. Anything outside is worth a look: a generation ratio far below 1 with VRAM at
+the ceiling is paging; a prompt ratio far below 1 usually means the micro-batch or PCIe
+assumption is off for this machine.
+
+**The generation rows of that run are not a like-for-like comparison, and the page keeps them
+anyway.** The estimate is the plan's, which sizes this model for 32,768 tokens and so charges
+3.5 GiB of key-value cache against the card on every token; `llama-bench`'s `tg128` generates
+128 tokens into a cache that is almost empty, and the server questions beside it are barely
+longer. The measurement is right, the estimate is right for the context it was made at, and
+the ratio between them is measuring the difference in context. A comparison worth trusting has
+to estimate at the context the run actually used, and this one does not yet — which is exactly
+the kind of thing a sample that only ever showed ratios near 1 would have hidden.
 
 ## Calibration
 
-`llamafit bench --calibrate` (or the Benchmarks screen) fits, from every stored result on this
-host:
+`llamafit bench --calibrate` fits, from every stored result on this host:
 
 | Factor | What it explains | What it needs |
 |---|---|---|
@@ -94,11 +117,16 @@ What it is not yet is *applied*: the estimator reads its constants from
 `llamafit.constants.speed`, and the hardware profile block that would carry a per-host set has
 one `ram_efficiency` where the estimator has two — a contiguous read and a scattered one reach
 meaningfully different fractions of the same memory controller, and collapsing them into one
-field would be exactly the kind of quietly wrong number this page is about. Until that block
-holds both, the route by which a benchmark changes what you see is the stored run itself: a
-run of this model on this machine at these flags makes the figure `measured` and carries its
-date, and a run of another configuration of the same model corrects the formula and makes it
-`calibrated` (section 10.3).
+field would be exactly the kind of quietly wrong number this page is about.
+
+**Nor is a stored run read back.** The estimator can be handed measurements and will prefer
+them to its own formula, producing section 10.3's `measured` and `calibrated` labels — and
+nothing hands it any. `fit`, `recommend` and `plan` hand it none: the catalog's own `measured`
+blocks are printed beside the estimate rather than fed into it, and `benchmarks.sqlite` is not
+opened at all. So a machine with a hundred runs behind it gets the same `estimated` board as
+one with none. Until that wiring exists, what a benchmark buys you is the comparison `bench`
+prints: your number beside the estimate, with the ratio between them, which is the thing the
+estimate was never going to tell you on its own.
 
 ## Recording a measurement by hand
 

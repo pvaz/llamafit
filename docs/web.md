@@ -69,7 +69,8 @@ whole of it is in the row when the row is opened.
 Behind the machine's line are two disclosures: **Host**, with the machine, the llama.cpp
 installation and every finding `doctor` reports, and **Simulate**, with a hardware profile
 or an override of VRAM, RAM or cores, and a `SIMULATED` badge while one is in force.
-Phase 2 adds downloads with progress; phase 3 adds benchmarks.
+Downloads with progress, and benchmarks, are still to come: the commands behind them ship,
+the endpoints and the page controls do not.
 
 Colour marks two things and nothing else: how fast it runs, and whether it fits. The page
 is dark and does not follow the viewer's theme.
@@ -77,9 +78,10 @@ is dark and does not follow the viewer's theme.
 It is plain HTML, CSS and JavaScript served from the package. There is no build step, no
 package manager and no framework: it calls the API below and renders the JSON.
 
-Nothing has been benchmarked on any machine yet, so every speed on the page is a computed
-estimate. The page says so, once, under the header, in the same sentence the command line
-prints under the same table.
+Nothing feeds a benchmark into the board, so every speed on the page is a computed estimate.
+The page says so, once, under the header, in the same sentence the command line prints under
+the same table — and it is the sentence for the confidence the rows actually carry, so it will
+say something else on the day a calibration reaches them.
 
 ### The page's own language
 
@@ -147,7 +149,11 @@ words:
 A candidate that did not qualify is never dropped: it comes back in `excluded` with the
 reason, exactly as `recommend` prints it.
 
-### Phase 2
+### Phase 2 — designed, not built
+
+None of the paths in this table answers today. The work they would wrap is done and reachable
+from the command line (`llamafit install`, `preset`, `launch`); what is missing is the job
+model that would let a browser start one and watch it.
 
 | Method and path | Effect |
 |---|---|
@@ -158,7 +164,9 @@ reason, exactly as `recommend` prints it.
 | `POST /api/v1/preset` | write launch scripts for a plan; returns the paths |
 | `POST /api/v1/launch`, `POST /api/v1/launch/{id}/stop` | start and stop a server LlamaFit manages |
 
-### Phase 3
+### Phase 3 — designed, not built
+
+Nor does any of these. `llamafit bench` ships; the HTTP surface for it does not.
 
 | Method and path | Effect |
 |---|---|
