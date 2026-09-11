@@ -8,6 +8,12 @@ remote file costs a network round trip; caching the parsed header, keyed by the 
 file's size and modification time or the remote file's URL and ETag, avoids repeating
 that cost for a file that has not changed.
 
+Every key also carries a fingerprint of the tensor-size table. A parsed header stores
+each tensor's size in bytes, which is not something the file says but something the
+table said about the file, and a table that gains or corrects a row must not go on
+being answered by headers sized under the old one. A file's ETag never changes for
+that reason, so the key has to.
+
 A split model is several files, and each one is read and cached under its own identity;
 nothing is ever stored against the set as a whole. A set therefore cannot collide with
 another set, not even one that shares some of its shards, and it costs no extra
@@ -27,6 +33,7 @@ import httpx
 from llamafit.gguf.facts import derive_facts
 from llamafit.gguf.reader import merge_shard_headers, read_header
 from llamafit.gguf.source import ByteSource, HttpRangeSource, LocalSource
+from llamafit.gguf.types import table_digest
 from llamafit.models.gguf import GgufFacts, GgufHeader
 
 GgufTarget: TypeAlias = Path | str
@@ -34,20 +41,28 @@ GgufTarget: TypeAlias = Path | str
 
 
 def cache_key_for_path(path: Path) -> str:
-    """A key that changes whenever the local file's size or modification time does."""
+    """A key that changes whenever the local file's size or modification time does.
+
+    It changes with the tensor-size table too, since the sizes stored under it did.
+    """
     stat = path.stat()
     digest = hashlib.sha256()
     digest.update(str(path.resolve()).encode("utf-8"))
     digest.update(str(stat.st_size).encode("utf-8"))
     digest.update(str(stat.st_mtime).encode("utf-8"))
+    digest.update(table_digest().encode("ascii"))
     return digest.hexdigest()
 
 
 def cache_key_for_url(url: str, etag: str | None) -> str:
-    """A key that changes whenever the remote file's URL or ETag does."""
+    """A key that changes whenever the remote file's URL or ETag does.
+
+    It changes with the tensor-size table too, since the sizes stored under it did.
+    """
     digest = hashlib.sha256()
     digest.update(url.encode("utf-8"))
     digest.update((etag or "").encode("utf-8"))
+    digest.update(table_digest().encode("ascii"))
     return digest.hexdigest()
 
 

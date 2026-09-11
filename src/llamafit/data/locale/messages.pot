@@ -298,13 +298,13 @@ msgstr ""
 msgid "Check that the repository id is correct and public."
 msgstr ""
 
-#: src/llamafit/catalog/loader.py:691
+#: src/llamafit/catalog/loader.py:717
 msgid "the catalog has %(count)d problem"
 msgid_plural "the catalog has %(count)d problems"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/llamafit/catalog/loader.py:698
+#: src/llamafit/catalog/loader.py:724
 msgid "Run `llamafit catalog validate` for details."
 msgstr ""
 
@@ -3163,84 +3163,100 @@ msgstr ""
 msgid "This file may use a newer GGUF metadata type than LlamaFit supports."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:142
+#: src/llamafit/gguf/reader.py:155
 msgid "not a GGUF file: bad magic %(magic)s at offset 0"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:143
+#: src/llamafit/gguf/reader.py:156
 msgid "Check that this file is actually a .gguf model."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:148
+#: src/llamafit/gguf/reader.py:161
 msgid "unsupported GGUF version %(version)d at offset 4"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:149
+#: src/llamafit/gguf/reader.py:162
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:206
+#: src/llamafit/gguf/reader.py:211
+msgid "A memory budget built without these tensors would be too small, so none is built. If llama.cpp loads the file, LlamaFit's tensor-size table is missing the type."
+msgstr ""
+
+#: src/llamafit/gguf/reader.py:224
+msgid "%(type)d (%(count)d tensor, first %(name)s)"
+msgid_plural "%(type)d (%(count)d tensors, first %(name)s)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/gguf/reader.py:233
+msgid "cannot size this GGUF file: %(count)d tensor uses a GGML type LlamaFit does not know: %(details)s"
+msgid_plural "cannot size this GGUF file: %(count)d tensors use GGML types LlamaFit does not know: %(details)s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/llamafit/gguf/reader.py:249
 msgid "%(count)d shard"
 msgid_plural "%(count)d shards"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/llamafit/gguf/reader.py:251
+#: src/llamafit/gguf/reader.py:294
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:256
+#: src/llamafit/gguf/reader.py:299
 msgid "Pass the shards of one model, not of several."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:311
+#: src/llamafit/gguf/reader.py:354
 msgid "no GGUF header to read facts from"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:312
+#: src/llamafit/gguf/reader.py:355
 msgid "Pass the model's file, or every shard of a split model."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:327
+#: src/llamafit/gguf/reader.py:370
 msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
 msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/llamafit/gguf/reader.py:335
+#: src/llamafit/gguf/reader.py:378
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:344
+#: src/llamafit/gguf/reader.py:387
 msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:354
-#: src/llamafit/gguf/reader.py:391
+#: src/llamafit/gguf/reader.py:397
+#: src/llamafit/gguf/reader.py:434
 msgid "Pass every shard of the split model."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:360
+#: src/llamafit/gguf/reader.py:403
 msgid "the shard holding the model's metadata is missing: got %(key)s %(numbers)s, expected one of them to be 0"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:365
+#: src/llamafit/gguf/reader.py:408
 msgid "Pass every shard of the split model, including the first."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:369
+#: src/llamafit/gguf/reader.py:412
 msgid "incomplete shard set: expected %(key)s 0 to %(last)d, got %(numbers)s"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:371
+#: src/llamafit/gguf/reader.py:414
 msgid "Pass each shard of the split model exactly once."
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:381
+#: src/llamafit/gguf/reader.py:424
 msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
 msgstr ""
 
-#: src/llamafit/gguf/reader.py:386
+#: src/llamafit/gguf/reader.py:429
 msgid "%(count)d tensor"
 msgid_plural "%(count)d tensors"
 msgstr[0] ""

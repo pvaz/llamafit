@@ -3,8 +3,11 @@ import re
 from pathlib import Path
 
 import httpx
+import pytest
 
+from llamafit.errors import CatalogError
 from llamafit.gguf import read_facts
+from llamafit.gguf import types as gguf_types
 from llamafit.gguf.cache import HeaderCache, cache_key_for_path, cache_key_for_url
 from llamafit.gguf.reader import read_header
 from llamafit.gguf.source import FakeSource
@@ -72,6 +75,36 @@ def test_the_url_key_changes_with_the_etag() -> None:
     first = cache_key_for_url("https://x/y.gguf", "abc")
     second = cache_key_for_url("https://x/y.gguf", "def")
     assert first != second
+
+
+def test_both_keys_change_when_the_size_table_does(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    target = tmp_path / "m.gguf"
+    target.write_bytes(b"a" * 10)
+    path_key = cache_key_for_path(target)
+    url_key = cache_key_for_url("https://x/y.gguf", "abc")
+    monkeypatch.setitem(gguf_types.GGML_TYPES, 4242, ("NEW", 32, 17))
+    assert cache_key_for_path(target) != path_key
+    assert cache_key_for_url("https://x/y.gguf", "abc") != url_key
+
+
+def test_a_header_sized_under_an_older_table_is_not_served(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # The mirror of test_read_facts_uses_the_cache_the_second_time: the same unchanged
+    # file, but the table gained a row, so the header must be parsed again. The file is
+    # corrupted in between to prove it was, because a served cache entry would not notice.
+    target = tmp_path / "m.gguf"
+    target.write_bytes(dense_header())
+    cache = HeaderCache(tmp_path / "cache")
+    read_facts(target, cache=cache)
+    stat = target.stat()
+    target.write_bytes(b"XXXX" + dense_header()[4:])
+    os.utime(target, (stat.st_atime, stat.st_mtime))
+    monkeypatch.setitem(gguf_types.GGML_TYPES, 4242, ("NEW", 32, 17))
+    with pytest.raises(CatalogError, match="not a GGUF file"):
+        read_facts(target, cache=cache)
 
 
 def test_read_facts_from_a_local_file(tmp_path: Path) -> None:

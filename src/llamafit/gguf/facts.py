@@ -224,6 +224,43 @@ def kv_bytes_per_token(facts: GgufFacts, kv_type: str) -> int | None:
     return key_bytes + value_bytes
 
 
+HEADER_ALLOWANCE_BYTES = 64 * 1024 * 1024
+"""How much of a quant's files may lie outside its tensor table before the facts are wrong.
+
+What a file holds beyond its tensors is its header, which is the metadata block and so
+mostly the tokenizer's vocabulary, plus up to one alignment of padding per tensor. Across
+every quant in the catalog today the gap runs from 0.76 MB (Mistral 7B, a 32K vocabulary)
+to 15.8 MB (Gemma 4, 262K tokens), and a split model's tail shards add a few hundred
+bytes each. Sixty-four mebibytes is four times the largest of those. A gap past it is
+not a header, it is a tensor the table sized wrong, and there are only two ways that
+happens: a type the table does not know, which the reader now refuses, and a row that is
+wrong, which nothing but this check would ever notice. The finding this exists for was
+not near the line: the shipped facts for gpt-oss-120b accounted for 3.9 percent of the
+file.
+"""
+
+
+def accounts_for_file(facts: GgufFacts, file_bytes: int) -> bool:
+    """Whether ``facts`` describes files of ``file_bytes``: the tensors plus a header, no more.
+
+    The tensor table can sum to less than the files by a header's worth and never to
+    more, since every tensor's bytes are on disk. The catalog loader, which knows both
+    figures, refuses facts that fail this, so a mis-sized tensor becomes a problem
+    ``llamafit catalog validate`` reports rather than a budget that says a model fits.
+
+    Args:
+        facts: The facts derived from the files' headers, every shard's included.
+        file_bytes: The size of those files, every shard's included, as the repository
+            lists them.
+
+    Returns:
+        ``True`` when the gap between the two is zero or more and at most
+        :data:`HEADER_ALLOWANCE_BYTES`.
+    """
+    gap = file_bytes - facts.bytes_total
+    return 0 <= gap <= HEADER_ALLOWANCE_BYTES
+
+
 def bits_per_weight(file_bytes: int, lazy_table_bytes: int, total_b: float) -> float:
     """Bits per weight, counting only the bytes of the download that are weights.
 
