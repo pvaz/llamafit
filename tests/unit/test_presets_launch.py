@@ -58,7 +58,12 @@ class Clock:
 
 
 def test_a_batch_preset_is_run_through_cmd_because_it_is_not_an_executable() -> None:
-    assert script_command(Path("C:/p/start-x.cmd")) == ["cmd", "/c", "C:\\p\\start-x.cmd"]
+    # The path comes out the way the host writes it: `script_command` is given the path of
+    # a script that exists, so on Windows it is always a Windows path. Spelling the
+    # separator here asserted the host's flavour rather than the claim, and failed on every
+    # Linux and macOS build. The claim is that a .cmd goes through `cmd /c`.
+    script = Path("C:/p/start-x.cmd")
+    assert script_command(script) == ["cmd", "/c", str(script)]
 
 
 def test_a_shell_preset_is_run_through_sh_so_a_missing_execute_bit_does_not_stop_it() -> None:

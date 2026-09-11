@@ -76,15 +76,46 @@ def drawn(renderable: object, width: int) -> str:
     return console.export_text()
 
 
+# A drawn table's vertical rule is not one character. Rich draws this table with its
+# heavy-headed box, whose header row is separated by U+2503 and whose body rows are
+# separated by U+2502 -- and on Windows it substitutes the whole box for the square one,
+# so both rows come out as U+2502 there. A helper that looked for U+2502 therefore found
+# the header on Windows and nothing at all on Linux and macOS, where it walked off the end
+# of the generator and raised StopIteration; inside Textual's async pilot that arrived as
+# `RuntimeError: coroutine raised StopIteration`, which says nothing about box characters.
+# Splitting on any of them is what a reader does, and it is true on every platform.
+_RULE = re.compile(r"[\u2502\u2503|]")
+
+
+def headings_in(text: str) -> list[str]:
+    """The headings of the one drawn table in ``text``, left to right.
+
+    Args:
+        text: A rendered board, as :func:`drawn` returns it.
+
+    Returns:
+        The header cells, stripped.
+
+    Raises:
+        AssertionError: If no row carries the model heading, showing what was drawn --
+            a bare ``StopIteration`` from a generator says only that the search failed.
+    """
+    for line in text.splitlines():
+        if _RULE.search(line) and rb.column_heading("model") in line:
+            return [cell.strip() for cell in _RULE.split(line.strip()) if cell.strip()]
+    raise AssertionError(
+        f"no table row carries {rb.column_heading('model')!r}; drawn:\n"
+        + "\n".join(text.splitlines()[:6])
+    )
+
+
 def cli_headings(board: Any, width: int) -> list[str]:
     """The headings the command line actually draws at this width, left to right."""
-    text = drawn(
-        rb.render_board(board, console_width=width, budget=rb.column_budget(catalog())), width
+    return headings_in(
+        drawn(
+            rb.render_board(board, console_width=width, budget=rb.column_budget(catalog())), width
+        )
     )
-    header = next(
-        line for line in text.splitlines() if "│" in line and rb.column_heading("model") in line
-    )
-    return [cell.strip() for cell in header.strip().strip("│").split("│")]
 
 
 def page_order() -> list[str]:
@@ -482,10 +513,8 @@ def test_columns_draws_exactly_those_in_that_order_and_wide_draws_everything() -
 
 
 def cli_headings_of(text: str) -> list[str]:
-    header = next(
-        line for line in text.splitlines() if "│" in line and rb.column_heading("model") in line
-    )
-    return [cell.strip() for cell in header.strip().strip("│").split("│")]
+    """The headings of an already-drawn board. See :func:`headings_in`."""
+    return headings_in(text)
 
 
 @pytest.mark.parametrize(

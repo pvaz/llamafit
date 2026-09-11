@@ -1218,6 +1218,31 @@ def _profile_file(home: Path, env: Mapping[str, str]) -> Path:
     return home / ".profile"
 
 
+def _same_windows_path(entry: str, parts: Sequence[str]) -> bool:
+    r"""Whether ``entry`` is already one of ``parts``, as Windows would judge it.
+
+    Args:
+        entry: The directory being proposed.
+        parts: The PATH, split on its separator.
+
+    Returns:
+        Whether Windows would consider the directory already listed.
+
+    Windows treats a forward slash and a backslash as the same separator and ignores
+    case, so ``C:/Tools`` and ``C:\Tools`` are one directory. Comparing the strings
+    as written made this function answer about the machine it was running on rather
+    than the one it was asked about: on a Linux host, ``str(Path("C:/Tools"))`` keeps
+    the forward slash, no PATH entry matched, and the plan proposed adding a directory
+    that was already there. The same is true of a real Windows user whose PATH happens
+    to be written with forward slashes.
+    """
+
+    def normal(text: str) -> str:
+        return text.strip().replace("/", "\\").rstrip("\\").casefold()
+
+    return normal(entry) in [normal(part) for part in parts]
+
+
 def plan_path_change(
     directory: Path, *, os_name: OsName, runner: Runner, home: Path, env: Mapping[str, str]
 ) -> PathChange:
@@ -1240,7 +1265,7 @@ def plan_path_change(
                 description=_("Your PATH could not be read, so it will not be changed."),
                 undo=_("Nothing to undo."),
             )
-        if entry.lower() in [part.strip().lower() for part in current.split(";")]:
+        if _same_windows_path(entry, current.split(";")):
             return PathChange(
                 kind="present",
                 where="HKCU\\Environment",

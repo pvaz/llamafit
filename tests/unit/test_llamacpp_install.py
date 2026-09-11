@@ -710,13 +710,16 @@ def test_applying_the_windows_change_writes_the_user_scope_registry_value(
     tmp_path: Path,
 ) -> None:
     runner = FakeRunner(responses={_REG_QUERY: _REG_OUTPUT, "reg": CommandResult([], 0, "", "", 1)})
-    change = plan_path_change(
-        Path("C:/llamafit/bin"), os_name="windows", runner=runner, home=tmp_path, env={}
-    )
+    added = Path("C:/llamafit/bin")
+    change = plan_path_change(added, os_name="windows", runner=runner, home=tmp_path, env={})
     apply_path_change(change, runner=runner)
     written = runner.calls[-1]
     assert written[:3] == ["reg", "add", "HKCU\\Environment"]
-    assert "C:\\Tools;C:\\Bin;C:\\llamafit\\bin" in written
+    # The directory is appended as the caller spelled it. Hard-coding the separator here
+    # asserted that the host builds Windows paths, which is true of Windows and of nothing
+    # else; what this test is for is that the existing PATH is kept and the new entry put
+    # after it.
+    assert f"C:\\Tools;C:\\Bin;{added}" in written
 
 
 def test_a_registry_write_that_fails_says_so_and_names_the_command(tmp_path: Path) -> None:
