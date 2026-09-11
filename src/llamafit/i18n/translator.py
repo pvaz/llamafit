@@ -19,8 +19,10 @@ All five are plain module-level functions taking literal strings, so the extract
 
 Choosing a language is a one-off at start-up: ``set_language`` installs the translator
 and returns what it decided, including the sentence the interface should print when a
-request could not be honoured. That sentence is handed over once per process, so a
-request for a language LlamaFit does not speak is reported and not repeated.
+request could not be honoured, when it was honoured by another region's catalog, or when
+the catalog that was loaded turns out to be only part written. That sentence is handed
+over once per process, so a request for a language LlamaFit does not speak is reported
+and not repeated.
 """
 
 from __future__ import annotations
@@ -32,6 +34,12 @@ from typing import Protocol
 
 from llamafit.errors import ConfigError
 from llamafit.i18n.catalogs import load_language
+from llamafit.i18n.completeness import (
+    SHORTFALL_HINT,
+    completeness,
+    shortfall_after,
+    shortfall_notice,
+)
 from llamafit.i18n.detect import LocaleProvider
 from llamafit.i18n.po import PoCatalog
 from llamafit.i18n.select import LanguageChoice, resolve_language, substitution_notice
@@ -219,7 +227,50 @@ def set_language(
         )
     set_translator(CatalogTranslator(choice.language, catalog))
     _log.debug("speaking %s, chosen by %s", choice.language, choice.source)
-    return _once(_unusable(_named(choice, catalog), catalog))
+    named = _named(choice, catalog)
+    return _once(_unusable(_incomplete(named, catalog, directory=directory), catalog))
+
+
+def _incomplete(
+    choice: LanguageChoice, catalog: PoCatalog, *, directory: Path | None = None
+) -> LanguageChoice:
+    """Say out loud when the catalog that was loaded is only part written.
+
+    Six of the languages LlamaFit ships are finished and the rest are about a quarter
+    done, and because a catalog is filled in from the top of the template down, the
+    quarter that exists is the short fragments and the three quarters that do not are the
+    prose. A reader who asked for one of those meets their own words in the column
+    headings and English in every sentence that explains anything, with nothing anywhere
+    to say which of the two they are looking at. That is the notice.
+
+    A substitution notice is not dropped for this one and does not swallow it either: a
+    request for a region no catalog covers, served by a catalog that is itself a quarter
+    written, is two things wrong with the same run, and a reader told only the first would
+    put the English down to the region they did not get. The second sentence is added to
+    the first, and the hint stays the substitution's, which already points at the file
+    this one would have pointed at.
+
+    This runs before :func:`_unusable` rather than after it, so when a catalog is both
+    part written and carrying a message the reader had to drop, the line goes to the one
+    about most of the interface instead of the one about a handful of entries.
+    """
+    measured = completeness(catalog, directory=directory)
+    _log.debug(
+        "the %s catalog has %d of %d messages",
+        choice.language,
+        measured.translated,
+        measured.total,
+    )
+    if measured.nearly_complete:
+        return choice
+    if choice.notice is not None:
+        return replace(choice, notice=shortfall_after(choice.notice, measured))
+    team = catalog.headers.get("Language-Team", "").strip()
+    return replace(
+        choice,
+        notice=shortfall_notice(team or choice.language, measured),
+        hint=SHORTFALL_HINT,
+    )
 
 
 def _unusable(choice: LanguageChoice, catalog: PoCatalog) -> LanguageChoice:
