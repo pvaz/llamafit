@@ -37,4 +37,5 @@ jobs:
         run: |
           python scripts/gen_schema.py
           python scripts/gen_models_md.py
+          python scripts/gen_messages.py --check
           git diff --exit-code

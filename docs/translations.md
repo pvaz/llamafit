@@ -281,6 +281,26 @@ fix: it is one separator, and where the separators go is decided in the code. Sa
 issue if it matters to your language — the fix is a grouping pattern per language, and it
 has to be made once for all of them.
 
+### What your console can write
+
+A translation is only as good as the stream it is printed to. A Windows console on a
+Western code page cannot represent Japanese, Arabic or Hindi, and a terminal that is asked
+to write a character it has no byte for either raises or prints a substitute.
+
+LlamaFit settles this before it says anything. If the output stream's encoding can carry
+the language's own script, it speaks it, and any single character that will not fit — a
+typographic dash, a curly quote — is written as `?` with a count at the end saying how
+many. If the stream cannot carry the script at all, the language is **refused**: English
+is spoken instead and a line on standard error names the encoding and the language, and
+says that `PYTHONUTF8=1` makes Python write UTF-8 and carries every language. A page of
+question marks is not a translation, and a reader can fill in a hole in a familiar
+language but not a screen of them.
+
+This is why redirecting output to a file is not always the same as watching it: the file's
+encoding is Python's, not your terminal's, and on Windows that is the code page unless
+`PYTHONUTF8=1` is set. It also means a test that writes into an in-memory buffer proves
+nothing about any of this — the buffer has no encoding to refuse.
+
 ### Right-to-left languages
 
 Three of the catalogs are written right to left: Arabic (`ar.po`), Hebrew (`he.po`) and
@@ -433,7 +453,13 @@ python scripts/gen_messages.py
 
 It reads the syntax tree of every source, finds each call to `_()`, `ngettext()`,
 `pgettext()`, `pgettext_literal()`, `npgettext()` and the four `lazy_` counterparts, and
-rewrites `messages.pot`. Give it paths to read something else.
+rewrites `messages.pot`. `--root DIR`, repeatable, reads somewhere else instead.
+
+`--check` writes nothing and fails when the committed template is not what the sources
+say it should be. That is what continuous integration runs, beside the other two
+generators. It exists because a stale template reached the main branch twice in one week:
+a bare argument used to be taken as a source root, so a stray word produced a template
+with almost nothing in it and the script reported success.
 
 ### Leaving a note for the translator
 

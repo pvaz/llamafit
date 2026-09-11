@@ -310,12 +310,15 @@ def checked_max_context(state: CliState, *, min_context: int = 0) -> int | None:
     return check_context_ceiling(state.max_context, min_context=min_context)
 
 
-def refuse_substitution(state: CliState, *, command: str) -> None:
+def refuse_substitution(state: CliState, *, command: str, hint: str | None = None) -> None:
     """Refuse a stand-in machine for a command whose whole subject is this one.
 
     Args:
         state: The global options.
         command: What to name in the message, as the user typed it.
+        hint: Where to send the reader instead, when this command has a better answer
+            than the general one. ``serve`` does: the page it opens can substitute a
+            machine per request, which is a nearer door than the one everybody else uses.
 
     Raises:
         ConfigError: A machine was substituted.
@@ -324,13 +327,18 @@ def refuse_substitution(state: CliState, *, command: str) -> None:
     a command that cannot honour the substitution says so instead of answering about the
     machine the reader did not ask about. ``--max-context`` is not refused here: it caps a
     context and every command that plans one can honour it.
+
+    The commands that read no machine at all -- ``list``, ``search``, ``info``,
+    ``catalog`` -- do not call this and do not refuse. Nothing about their answer could
+    have been different, so a refusal there would be a rule enforced for its own sake.
     """
     if not state.substituting:
         return
     raise ConfigError(
         _("`llamafit %(command)s` reports on the machine LlamaFit is running on")
         % {"command": command},
-        hint=_(
+        hint=hint
+        or _(
             "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a "
             "profile describes, run `llamafit hardware show NAME --as-host`."
         ),

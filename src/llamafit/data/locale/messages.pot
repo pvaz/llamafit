@@ -120,7 +120,8 @@ msgid "could not start llama-server"
 msgstr ""
 
 #: src/llamafit/bench/run.py:488
-#: src/llamafit/hardware/runner.py:172
+#: src/llamafit/hardware/runner.py:187
+#: src/llamafit/llamacpp/detect.py:130
 #: src/llamafit/llamacpp/install.py:1320
 msgid "no output"
 msgstr ""
@@ -879,11 +880,11 @@ msgstr ""
 msgid "Raise %(ceiling)s, or lower %(floor)s."
 msgstr ""
 
-#: src/llamafit/cli/common.py:331
+#: src/llamafit/cli/common.py:338
 msgid "`llamafit %(command)s` reports on the machine LlamaFit is running on"
 msgstr ""
 
-#: src/llamafit/cli/common.py:333
+#: src/llamafit/cli/common.py:341
 msgid "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a profile describes, run `llamafit hardware show NAME --as-host`."
 msgstr ""
 
@@ -2946,26 +2947,30 @@ msgstr ""
 msgid "stopped"
 msgstr ""
 
-#: src/llamafit/cli/serve_cmd.py:35
+#: src/llamafit/cli/serve_cmd.py:36
 msgid "Bind to this address instead of 127.0.0.1. Anything but loopback puts the dashboard on your network, where there is no password and no login; it prints what that exposes before it starts."
 msgstr ""
 
-#: src/llamafit/cli/serve_cmd.py:47
+#: src/llamafit/cli/serve_cmd.py:48
 msgid "Listen on this port."
 msgstr ""
 
-#: src/llamafit/cli/serve_cmd.py:55
+#: src/llamafit/cli/serve_cmd.py:56
 msgid ""
 "Open the dashboard in a browser: the board, the machine and the plans.\n"
 "\n"
 "It serves the same numbers `--json` prints, from the same code, on this machine only. Nothing is fetched from the internet to draw the page."
 msgstr ""
 
-#: src/llamafit/cli/serve_cmd.py:67
+#: src/llamafit/cli/serve_cmd.py:68
 msgid "Open the page in your browser."
 msgstr ""
 
-#: src/llamafit/cli/serve_cmd.py:84
+#: src/llamafit/cli/serve_cmd.py:81
+msgid "Drop --profile, --memory, --ram and --cpu-cores, then open the Simulate panel on the page: it substitutes a machine for as long as you want it, and marks every answer it produces."
+msgstr ""
+
+#: src/llamafit/cli/serve_cmd.py:97
 msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
 msgstr ""
 
@@ -3395,7 +3400,7 @@ msgstr ""
 msgid "%(program)s: not found"
 msgstr ""
 
-#: src/llamafit/hardware/runner.py:173
+#: src/llamafit/hardware/runner.py:188
 msgid "exit code %(code)d: %(detail)s"
 msgstr ""
 
@@ -3447,11 +3452,15 @@ msgstr ""
 msgid "%(option)s needs a value above zero"
 msgstr ""
 
-#: src/llamafit/llamacpp/detect.py:181
+#: src/llamafit/llamacpp/detect.py:130
+msgid "no build number in the version output: %(text)s"
+msgstr ""
+
+#: src/llamafit/llamacpp/detect.py:228
 msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
 msgstr ""
 
-#: src/llamafit/llamacpp/detect.py:208
+#: src/llamafit/llamacpp/detect.py:259
 msgid "no ggml backend libraries found next to llama-server; the build may be static"
 msgstr ""
 

@@ -158,7 +158,7 @@ def test_the_template_ends_with_a_newline_and_has_a_reference_per_entry(tmp_path
 def test_a_run_over_clean_sources_writes_the_template(tmp_path: Path) -> None:
     before = DEST.read_text(encoding="utf-8")
     try:
-        assert main([str(_write(tmp_path, '_("only this")\n'))]) == 0
+        assert main(["--root", str(_write(tmp_path, '_("only this")\n'))]) == 0
         assert 'msgid "only this"' in DEST.read_text(encoding="utf-8")
     finally:
         DEST.write_text(before, encoding="utf-8", newline="\n")
@@ -168,7 +168,7 @@ def test_a_run_that_finds_a_problem_writes_nothing_and_fails(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
     before = DEST.read_text(encoding="utf-8")
-    assert main([str(_write(tmp_path, "_(name)\n"))]) == 1
+    assert main(["--root", str(_write(tmp_path, "_(name)\n"))]) == 1
     assert DEST.read_text(encoding="utf-8") == before
     captured = capsys.readouterr()
     assert "not a literal string" in captured.err
