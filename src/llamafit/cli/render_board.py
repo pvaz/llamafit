@@ -39,9 +39,10 @@ from rich.console import Group, RenderableType
 from rich.table import Table
 from rich.text import Text
 
-from llamafit.cli.render import render_simulation
+from llamafit.cli.render import bandwidth_sentence, simulated_answer
 from llamafit.i18n import _, for_display, isolate, mirror_justify, ngettext, pgettext, reading_order
 from llamafit.models.catalog import Measured
+from llamafit.models.host import MachineFacts
 from llamafit.models.plan import (
     Budget,
     Candidate,
@@ -811,7 +812,21 @@ def render_board(board: Board, *, console_width: int = 80) -> Group:
 
     Returns:
         The table, and the caption saying what the speed column is and what it is not.
+        A board that ranked nothing is that sentence instead of the table, rendered here
+        rather than by the command, so that it is drawn under the same banner and beside
+        the same record of the machine every other shape of this answer carries.
     """
+    if not board.rows:
+        return simulated_answer(
+            board.simulation,
+            _cell(
+                _(
+                    "Nothing was ranked. Every candidate is listed below with the reason; "
+                    "widen the request or free some memory."
+                )
+            ),
+            *_machine_captions(board.machine, speeds=False),
+        )
     model_width, quant_width, included = _board_columns(
         board.rows, console_width, show_confidence=_mixed_confidence(board.rows)
     )
@@ -852,9 +867,7 @@ def render_board(board: Board, *, console_width: int = 80) -> Group:
 
     for row in board.rows:
         _add_row(table, *_board_cells(row, included))
-    banner = render_simulation(board.simulation)
-    parts: list[RenderableType] = [] if banner is None else [banner]
-    return Group(*parts, table, *_board_captions(board))
+    return simulated_answer(board.simulation, table, *_board_captions(board))
 
 
 def _mixed_confidence(rows: Sequence[BoardRow]) -> bool:
@@ -981,6 +994,7 @@ def _board_captions(board: Board) -> list[RenderableType]:
             "requested": _context(board.requested_context),
         }
     captions: list[RenderableType] = [_cell(first)]
+    captions += _machine_captions(board.machine)
     cut = _truncation_caption(len(board.rows), board.ranked_total)
     if cut is not None:
         captions.append(_cell(cut))
@@ -1000,6 +1014,72 @@ def _board_captions(board: Board) -> list[RenderableType]:
             }
         )
     )
+    return captions
+
+
+def _machine_captions(machine: MachineFacts | None, *, speeds: bool = True) -> list[RenderableType]:
+    """Which machine produced the rows above, in the figures that make one answer differ.
+
+    Args:
+        machine: What the board recorded, or ``None`` on a board built before this
+            existed or by hand.
+        speeds: Whether there are speeds above to attribute. False on a listing that
+            ranked nothing, where the pools are still the reason and the bandwidth is
+            the divisor of an empty set.
+
+    Returns:
+        One line for the pools and, when there are speeds, one for the bandwidth, plus a
+        line saying the bandwidth was kept from an earlier run when it was.
+
+    This file's own rule -- no number appears without saying how it was arrived at -- was
+    being kept for every figure on the table and broken for the one underneath it. The
+    speeds are all divided by a memory bandwidth the scan times, and the fits are all
+    measured against memory that was free at the moment somebody asked; run the same
+    command twice and both move, and the board moves with them while saying nothing. So
+    the board says what it used, in the same voice every other line here uses.
+    """
+    if machine is None:
+        return []
+    if machine.gpu_name is None:
+        first = _("Computed with %(ram_free)s of %(ram_total)s system memory free, no card.") % {
+            "ram_free": _size(machine.ram_available_bytes),
+            "ram_total": _size(machine.ram_total_bytes),
+        }
+    else:
+        first = _(
+            "Computed with %(ram_free)s of %(ram_total)s system memory free and %(vram_free)s "
+            "of %(vram_total)s free on the %(gpu)s."
+        ) % {
+            "ram_free": _size(machine.ram_available_bytes),
+            "ram_total": _size(machine.ram_total_bytes),
+            "vram_free": _size(machine.vram_free_bytes),
+            "vram_total": _size(machine.vram_total_bytes),
+            "gpu": isolate(machine.gpu_name),
+        }
+    captions: list[RenderableType] = [_cell(first)]
+    if not speeds:
+        return captions
+    captions.append(
+        _cell(
+            _("Every speed above is derived from %(bandwidth)s of memory bandwidth.")
+            % {
+                "bandwidth": bandwidth_sentence(
+                    machine.ram_bandwidth_gbps,
+                    machine.ram_bandwidth_source,
+                    cached=machine.ram_bandwidth_cached,
+                )
+            }
+        )
+    )
+    if machine.ram_bandwidth_cached:
+        captions.append(
+            _cell(
+                _(
+                    "That bandwidth was kept from an earlier run on this machine; "
+                    "`llamafit system --refresh-bandwidth` times it again."
+                )
+            )
+        )
     return captions
 
 
@@ -1077,7 +1157,22 @@ def render_fit(board: FitBoard, *, console_width: int = 80) -> Group:
     ``fit`` asks a narrower question than ``recommend``, so the table is narrower: no
     score, no weights, no use case. What it does carry is the verdict and both pools, since
     "how well does it fit" is the only question being asked and those are the answer.
+
+    A listing where nothing passed the threshold is the sentence saying so, drawn here for
+    the reason :func:`render_board` gives: an empty answer about somebody else's machine
+    has to say whose machine it was as loudly as a full one does.
     """
+    if not board.rows:
+        return simulated_answer(
+            board.simulation,
+            _cell(
+                _(
+                    "Nothing fits this machine at that threshold. Try --min-fit tight, or "
+                    "drop --perfect."
+                )
+            ),
+            *_machine_captions(board.machine, speeds=False),
+        )
     model_width = min(
         _ID_COLUMN_MAX_WIDTH,
         max(
@@ -1142,9 +1237,8 @@ def render_fit(board: FitBoard, *, console_width: int = 80) -> Group:
     cut = _truncation_caption(len(board.rows), board.ranked_total)
     if cut is not None:
         captions.append(_cell(cut))
-    banner = render_simulation(board.simulation)
-    parts: list[RenderableType] = [] if banner is None else [banner]
-    return Group(*parts, table, *captions)
+    captions += _machine_captions(board.machine, speeds=False)
+    return simulated_answer(board.simulation, table, *captions)
 
 
 def render_fit_excluded(rows: Sequence[FitRow]) -> Group | None:
@@ -1218,9 +1312,7 @@ def render_plan(report: PlanReport) -> Group:
     a broken line.
     """
     placement = report.placement
-    banner = render_simulation(report.simulation)
-    pieces: list[RenderableType] = [] if banner is None else [banner]
-    pieces += [
+    pieces: list[RenderableType] = [
         Text(
             for_display(
                 _("%(name)s %(quant)s")
@@ -1260,7 +1352,7 @@ def render_plan(report: PlanReport) -> Group:
     pieces.extend(_file_lines(report))
     pieces.append(Text(for_display(_("Command line"))))
     pieces.append(Text(" ".join(report.command)))
-    return Group(*pieces)
+    return simulated_answer(report.simulation, *pieces)
 
 
 def _file_lines(report: PlanReport) -> list[RenderableType]:

@@ -50,6 +50,7 @@ from collections.abc import Iterable, Mapping, Sequence
 from typing import Any
 
 from rich.cells import cell_len
+from rich.console import Group, RenderableType
 from rich.table import Table
 from rich.text import Text
 
@@ -156,6 +157,31 @@ def _bandwidth_source_label(source: Source) -> str:
     return labels.get(source, source)
 
 
+def bandwidth_sentence(gbps: float | None, source: Source, *, cached: bool = False) -> str:
+    """A memory bandwidth figure with how it was arrived at, and whether it was kept.
+
+    Args:
+        gbps: The figure, or ``None`` when nothing produced one.
+        source: How it was arrived at.
+        cached: Whether it was read back from an earlier run rather than timed on this one.
+
+    Returns:
+        The phrase to drop into whichever line is naming it.
+
+    Written once and public because two places name this figure and they have to name it
+    identically: the host table, where it is one of the machine's properties, and the
+    board, where it is the constant every speed on the table was divided by. A number that
+    read ``measured`` in one of them and ``measured, cached`` in the other would be two
+    numbers as far as anybody comparing two answers is concerned.
+    """
+    if not gbps:
+        return pgettext("memory bandwidth", "unknown")
+    values = {"gbps": localise_number(str(gbps)), "source": _bandwidth_source_label(source)}
+    if cached:
+        return _("%(gbps)s GB/s (%(source)s, cached)") % values
+    return _("%(gbps)s GB/s (%(source)s)") % values
+
+
 def _override_label(field: Override) -> str:
     """The name of a pool somebody substituted by hand, in the reader's language.
 
@@ -223,6 +249,30 @@ def render_simulation(simulation: Simulation | None) -> Text | None:
     line.append("  ")
     line.append(for_display(_simulation_note(simulation)), style="red")
     return line
+
+
+def simulated_answer(simulation: Simulation | None, *parts: RenderableType) -> Group:
+    """Whatever a command is about to print, under the red line when it is not this machine.
+
+    Args:
+        simulation: What was substituted, off the answer itself rather than off the
+            command's own flags: a document that says which machine it describes is the
+            only thing that can still say so once it has been handed somewhere else.
+        parts: The answer, in the order it should be drawn.
+
+    Returns:
+        The parts, with the banner above them when there is one to draw.
+
+    This exists because :func:`render_simulation` was being consulted by each renderer that
+    had a table to put it over, and a *renderer* is not what the promise can hang on: a
+    board that ranked nothing has no table, so the branch that printed "nothing was ranked"
+    printed it without the line and a reader met an empty answer with no way of knowing it
+    was empty for a machine that is not theirs. Every path that prints something computed
+    from a substituted host goes through this function, including the paths where what is
+    printed is a sentence saying there is nothing to print.
+    """
+    banner = render_simulation(simulation)
+    return Group(*([] if banner is None else [banner]), *parts)
 
 
 def _capability_label(capability: str) -> str:
@@ -462,14 +512,8 @@ def render_host(host: Host) -> Table:
         ),
     )
     mem = host.memory
-    bandwidth = (
-        _("%(gbps)s GB/s (%(source)s)")
-        % {
-            "gbps": localise_number(str(mem.bandwidth_gbps)),
-            "source": _bandwidth_source_label(mem.bandwidth_source),
-        }
-        if mem.bandwidth_gbps
-        else pgettext("memory bandwidth", "unknown")
+    bandwidth = bandwidth_sentence(
+        mem.bandwidth_gbps, mem.bandwidth_source, cached=mem.bandwidth_cached
     )
     _add_row(
         table,

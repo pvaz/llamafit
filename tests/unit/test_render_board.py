@@ -34,6 +34,7 @@ from llamafit.cli.render_board import (
     verdict_sentence,
     verdict_style,
 )
+from llamafit.hwprofile.simulate import override_host
 from llamafit.models.catalog import Measured
 from llamafit.models.plan import ContextTier, Needs, SpeedEstimate
 from llamafit.services.plan import plan_report
@@ -275,6 +276,76 @@ def test_the_board_says_both_contexts_when_they_differ() -> None:
     assert "Sized for" in text and "scored for" in text
     coding = build_board(catalog(), reference_host(), Needs(use_case="coding"))
     assert "Sized and scored" in drawn(render_board(coding, console_width=200))
+
+
+def test_a_board_that_ranked_nothing_still_says_whose_machine_it_is_about() -> None:
+    """The finding: the banner lived inside the table, so no table was no banner.
+
+    An empty board is the answer most in need of the line. A person looking at nothing at
+    all has no figure to be suspicious of, and "nothing runs here" about a machine they
+    are not sitting at is exactly the sentence they would otherwise act on.
+    """
+    tiny = override_host(
+        machine(vram_total=None, ram_total=2 * GIB, ram_available=1 * GIB), ram=GIB
+    )
+    board = build_board(catalog(), tiny, Needs(use_case="coding"))
+    assert board.rows == [], "this machine has to rank nothing for the test to mean anything"
+    text = drawn(render_board(board, console_width=200), width=200)
+    assert "SIMULATED" in text
+    assert "not what was scanned" in text
+    assert "Nothing was ranked" in text
+
+
+def test_a_fit_listing_that_placed_nothing_says_it_too() -> None:
+    tiny = override_host(
+        machine(vram_total=None, ram_total=2 * GIB, ram_available=1 * GIB), ram=GIB
+    )
+    board = build_fit_board(catalog(), tiny)
+    assert board.rows == []
+    text = drawn(render_fit(board, console_width=200), width=200)
+    assert "SIMULATED" in text
+    assert "Nothing fits this machine at that threshold" in text
+
+
+def test_a_board_that_ranked_nothing_on_this_machine_carries_no_banner() -> None:
+    """Absence is worth asserting: the line must appear only when something was substituted."""
+    tiny = machine(vram_total=None, ram_total=2 * GIB, ram_available=1 * GIB)
+    board = build_board(catalog(), tiny, Needs(use_case="coding"))
+    assert board.rows == []
+    assert "SIMULATED" not in drawn(render_board(board, console_width=200), width=200)
+
+
+# --- which machine produced the answer ------------------------------------------------
+
+
+def test_the_board_says_what_was_free_and_how_fast_the_memory_measured() -> None:
+    """Two runs can order this board differently; the board has to say why it could."""
+    host = machine(ram_total=64 * GIB, ram_available=48 * GIB, vram_total=8 * GIB, vram_used=GIB)
+    host.memory.bandwidth_gbps = 42.5
+    host.memory.bandwidth_source = "measured"
+    board = build_board(catalog(), host, Needs(use_case="coding"))
+    text = drawn(render_board(board, console_width=200), width=200)
+    assert "48.0 GiB of 64.0 GiB system memory free" in text
+    assert "7.0 GiB of 8.0 GiB free on the Test GPU" in text
+    assert "42.5 GB/s (measured)" in text
+
+
+def test_a_kept_bandwidth_says_it_was_kept_and_how_to_take_it_again() -> None:
+    host = machine(ram_total=64 * GIB, ram_available=48 * GIB)
+    host.memory.bandwidth_gbps = 42.5
+    host.memory.bandwidth_source = "measured"
+    host.memory.bandwidth_cached = True
+    board = build_board(catalog(), host, Needs(use_case="coding"))
+    text = drawn(render_board(board, console_width=200), width=200)
+    assert "42.5 GB/s (measured, cached)" in text
+    assert "--refresh-bandwidth" in text
+
+
+def test_a_machine_with_no_card_is_described_without_one() -> None:
+    host = machine(vram_total=None, ram_total=64 * GIB, ram_available=48 * GIB)
+    board = build_board(catalog(), host, Needs(use_case="coding"))
+    text = drawn(render_board(board, console_width=200), width=200)
+    assert "48.0 GiB of 64.0 GiB system memory free, no card." in text
 
 
 def test_an_empty_exclusion_list_draws_nothing_at_all() -> None:

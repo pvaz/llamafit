@@ -217,16 +217,12 @@ def recommend_command(
         typer.echo(board.model_dump_json(indent=2, by_alias=True))
         return
 
+    # Printed through the renderer whether or not anything ranked. The sentence for an
+    # empty board lives in `render_board` with the table it replaces, because the red line
+    # saying these rows are not this machine has to be above both of them, and a command
+    # that chose between a renderer and a bare `print` was the one place it was not.
     console = state.console
-    if board.rows:
-        console.print(render_board(board, console_width=console.width))
-    else:
-        console.print(
-            _(
-                "Nothing was ranked. Every candidate is listed below with the reason; "
-                "widen the request or free some memory."
-            )
-        )
+    console.print(render_board(board, console_width=console.width))
     # The explanations come before the exclusions, because they belong to the rows above
     # them: a reader who asked for the working behind row 1 should not have to scroll past
     # a table of models that are not on the board to reach it.
@@ -293,15 +289,7 @@ def fit_command(
         return
 
     console = state.console
-    if board.rows:
-        console.print(render_fit(board, console_width=console.width))
-    else:
-        console.print(
-            _(
-                "Nothing fits this machine at that threshold. Try --min-fit tight, or "
-                "drop --perfect."
-            )
-        )
+    console.print(render_fit(board, console_width=console.width))
     excluded = render_fit_excluded(board.excluded)
     if excluded is not None:
         console.print()

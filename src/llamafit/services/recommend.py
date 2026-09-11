@@ -30,6 +30,13 @@ exists while the two are different numbers.
 **Every candidate is compared at the same context.** Section 10.1 fixes the board's
 working context at 8K tokens so the speed column compares like with like; ``plan`` is
 where a user's own context is estimated for.
+
+**The board says which machine produced it.** Two of its inputs move on their own -- what
+was free when the question was asked, and the memory bandwidth every speed is divided by
+-- so a board that did not record them was a document two copies of which could disagree
+with nothing in either to say why. :class:`~llamafit.models.host.MachineFacts` goes on the
+board and into ``--json`` beside the simulation mark, for the same reason and under the
+same rule: an answer has to say what it is an answer about.
 """
 
 from __future__ import annotations
@@ -44,7 +51,7 @@ from llamafit.constants import DEFAULT_REQUESTED_CONTEXT, DEFAULT_WORKING_CONTEX
 from llamafit.errors import LlamaFitError
 from llamafit.i18n import _
 from llamafit.models.catalog import Catalog, CatalogModel, Measured, Quant
-from llamafit.models.host import Host, Simulation
+from llamafit.models.host import Host, MachineFacts, Simulation, machine_facts
 from llamafit.models.llamacpp import LocalModel
 from llamafit.models.plan import (
     Candidate,
@@ -131,6 +138,10 @@ class Board(BaseModel):
         excluded: The candidates that were not ranked, each carrying its reason.
         simulation: What was substituted for the machine these rows were computed on, or
             ``None`` when they were computed on the machine the reader is sitting at.
+        machine: The figures the ranking rests on -- what was free, and how fast the
+            memory measured. Two runs minutes apart can order this board differently and
+            report different speeds; this is what lets a reader holding both work out
+            which of them was about which machine, without having to have been there.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -144,6 +155,7 @@ class Board(BaseModel):
     ranked_total: int = 0
     excluded: list[BoardRow] = Field(default_factory=list)
     simulation: Simulation | None = None
+    machine: MachineFacts | None = None
 
     @computed_field  # type: ignore[prop-decorator]
     @property
@@ -203,6 +215,7 @@ class FitBoard(BaseModel):
         excluded: The ones with no placement at all, each carrying its reason.
         simulation: What was substituted for the machine these rows were computed on, or
             ``None`` when they were computed on the machine the reader is sitting at.
+        machine: The figures the ranking rests on, for the reason :class:`Board` gives.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -212,6 +225,7 @@ class FitBoard(BaseModel):
     ranked_total: int = 0
     excluded: list[FitRow] = Field(default_factory=list)
     simulation: Simulation | None = None
+    machine: MachineFacts | None = None
 
     @computed_field  # type: ignore[prop-decorator]
     @property
@@ -490,6 +504,7 @@ def build_board(
         ranked_total=ranked_total,
         excluded=excluded,
         simulation=host.simulation,
+        machine=machine_facts(host),
     )
 
 
@@ -569,6 +584,7 @@ def build_fit_board(
         ranked_total=ranked_total,
         excluded=excluded,
         simulation=host.simulation,
+        machine=machine_facts(host),
     )
 
 

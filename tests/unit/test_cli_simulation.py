@@ -197,6 +197,117 @@ def test_a_context_ceiling_is_not_a_machine_and_doctor_accepts_it(scanned: None)
     assert result.exit_code in (0, 2), result.output
 
 
+def test_a_smaller_machine_is_not_an_empty_one(scanned: None) -> None:
+    """Finding 03: ``--ram`` below what this machine is using left nothing free at all.
+
+    The reference machine has 128 GB with about 100 free, so 16 GiB of it used to come
+    back as 16 GiB total and zero available: every board empty, including for a model
+    that would have sat entirely on the card. The figure that matters is that something
+    is free; how much follows from the share the real machine was carrying.
+    """
+    payload = json.loads(runner.invoke(app, ["--json", "--ram", "16GiB", "system"]).output)
+    memory = payload["host"]["memory"]
+    assert memory["total_bytes"] == 16 * 1024**3
+    assert memory["available_bytes"] > 0
+
+
+def test_a_smaller_machine_still_ranks_what_fits_on_it(scanned: None) -> None:
+    board = json.loads(
+        runner.invoke(app, ["--json", "--ram", "16GiB", "recommend", "--limit", "5"]).output
+    )
+    assert board["rows"], "a 16 GiB machine with an 8 GiB card runs something"
+
+
+def test_a_machine_the_size_it_already_is_answers_the_same_question(scanned: None) -> None:
+    """The rule has to hold for a machine exactly this size, and holding means unchanged."""
+    as_scanned = json.loads(runner.invoke(app, ["--json", "system"]).output)["host"]["memory"]
+    same = json.loads(
+        runner.invoke(app, ["--json", "--ram", str(as_scanned["total_bytes"]), "system"]).output
+    )["host"]["memory"]
+    assert same["total_bytes"] == as_scanned["total_bytes"]
+    assert same["available_bytes"] == as_scanned["available_bytes"]
+
+
+def test_a_smaller_card_is_not_a_full_one(scanned: None) -> None:
+    payload = json.loads(runner.invoke(app, ["--json", "--memory", "2GiB", "system"]).output)
+    gpu = payload["host"]["gpus"][0]
+    assert gpu["vram_total_bytes"] == 2 * 1024**3
+    assert gpu["vram_used_bytes"] < gpu["vram_total_bytes"]
+
+
+# --- an answer with nothing in it still says whose machine it is about -------------------
+
+
+@pytest.mark.parametrize(
+    "command,sentence",
+    [
+        ("recommend", "Nothing was ranked"),
+        ("fit", "Nothing fits this machine at that threshold"),
+    ],
+)
+def test_a_board_with_no_rows_still_carries_the_banner(
+    scanned: None, command: str, sentence: str
+) -> None:
+    """Finding 04: the red line was drawn inside the table, so no table was no line.
+
+    A machine this small ranks nothing at all, which is exactly when a reader has no
+    figure to be suspicious of and most needs to be told the machine was not theirs.
+    """
+    flags = ["--language", "en", "--memory", "1GiB", "--ram", "2GiB", command]
+    text = flat(runner.invoke(app, [*flags, "--limit", "1"]).output)
+    assert sentence in text
+    assert "SIMULATED" in text
+    assert "not what was scanned" in text
+
+
+def test_a_board_with_no_rows_on_this_machine_carries_no_banner(scanned: None) -> None:
+    """Absence asserted: the line appears when something was substituted and not otherwise."""
+    text = flat(runner.invoke(app, ["--language", "en", "recommend", "--min-tps", "100000"]).output)
+    assert "Nothing was ranked" in text
+    assert "SIMULATED" not in text
+
+
+def test_a_preset_written_for_a_machine_nobody_is_sitting_at_says_so(
+    scanned: None, tmp_path: object
+) -> None:
+    """Files left on the disk, sized for a card this machine has not got, said nothing."""
+    flags = ["--language", "en", "--memory", "24G", "preset", "qwen3-0.6b", "--dir", str(tmp_path)]
+    text = flat(runner.invoke(app, flags).output)
+    assert "SIMULATED" in text
+    assert "Preset for" in text
+
+
+# --- which machine produced the answer ---------------------------------------------------
+
+
+@pytest.mark.parametrize("command", ["recommend", "fit"])
+def test_a_board_records_the_machine_it_was_computed_on(scanned: None, command: str) -> None:
+    """Finding 09: two answers minutes apart have to be tellable apart by reading them."""
+    board = json.loads(runner.invoke(app, ["--json", command, "--limit", "1"]).output)
+    facts = board["machine"]
+    assert facts["ram_available_bytes"] > 0
+    assert facts["ram_total_bytes"] > facts["ram_available_bytes"]
+    assert facts["ram_bandwidth_gbps"] is not None
+    assert facts["ram_bandwidth_source"] in ("measured", "estimated", "assumed")
+    assert facts["ram_bandwidth_cached"] in (True, False)
+    assert facts["vram_free_bytes"] is not None
+    assert facts["scanned_at"]
+
+
+def test_the_board_prints_the_bandwidth_every_speed_on_it_is_divided_by(scanned: None) -> None:
+    text = flat(runner.invoke(app, ["--language", "en", "recommend", "--limit", "1"]).output)
+    assert "system memory free" in text
+    assert "of memory bandwidth" in text
+
+
+def test_the_substituted_pool_is_the_one_the_board_reports(scanned: None) -> None:
+    """The record is of the machine the answer was computed for, not the one underneath it."""
+    board = json.loads(
+        runner.invoke(app, ["--json", "--ram", "16GiB", "fit", "--limit", "1"]).output
+    )
+    assert board["machine"]["ram_total_bytes"] == 16 * 1024**3
+
+
 # --- --max-context caps every context that is planned, reported or scored ---------------
 
 
