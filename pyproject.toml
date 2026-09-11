@@ -67,6 +67,32 @@ Changelog = "https://github.com/pvaz/llamafit/blob/main/CHANGELOG.md"
 [tool.hatch.build.targets.wheel]
 packages = ["src/llamafit"]
 
+# What goes into the source distribution, named rather than excluded. hatchling honours
+# the top-level .gitignore and not a nested one, so a directory that git ignores can still
+# be packaged -- and a file uploaded to an index can never be replaced, only yanked. An
+# allow-list cannot make that mistake: something new in the tree is absent from the sdist
+# until somebody adds it here, which is a build that is missing a file rather than a
+# release that carries one it should not.
+[tool.hatch.build.targets.sdist]
+include = [
+  "/src",
+  "/tests",
+  "/docs",
+  "/scripts",
+  "/pyproject.toml",
+  "/README.md",
+  "/CHANGELOG.md",
+  "/CONTRIBUTING.md",
+  "/CODE_OF_CONDUCT.md",
+  "/SECURITY.md",
+  "/SUPPORT.md",
+  "/ROADMAP.md",
+  "/MODELS.md",
+  "/CLA.md",
+  "/LICENSE",
+  "/NOTICE",
+]
+
 [tool.ruff]
 line-length = 100
 target-version = "py310"
