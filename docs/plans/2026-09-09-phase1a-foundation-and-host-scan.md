@@ -21,7 +21,7 @@
 - Package layout is `src/llamafit/...` exactly as in spec section 3.2.
 - Commit after every task with a conventional-commit message.
 
-- Repository root is `C:\Dev\Projectos Pessoais\2026\llamaconfigurator` (the folder name is not the project name; the package and PyPI name are `llamafit`). Run all commands from the repository root. On Windows use PowerShell or Git Bash; the commands below are shell-neutral unless noted.
+- Work from the repository root; the checkout's own directory name is not the project name, and the package and PyPI name are `llamafit` whatever it is called on disk. Run all commands from there. On Windows use PowerShell or Git Bash; the commands below are shell-neutral unless noted.
 
 ---
 

@@ -11,34 +11,39 @@
 LlamaFit scans your computer, keeps a curated catalog of GGUF models, computes exact memory
 budgets from the model files themselves, ranks what fits for what you need (coding, thinking,
 vision, tool calling, long context), and turns the winner into a working `llama-server`
-configuration. Then it installs llama.cpp and the model, writes tuned launch scripts, measures
-the real speed, and uses those measurements to sharpen its own estimates.
+configuration. Then it installs llama.cpp and the model, writes tuned launch scripts, and
+measures the real speed so you can see what the estimate got wrong.
 
 It works on Windows, macOS and Linux, installs with `pip`, speaks 37 languages, and never uses
 a language model to do any of this: every number is computed, labelled with how it was
 obtained, and explainable.
 
 ```console
-$ llamafit list
-                                       Models
-┌───────────────────────┬──────────┬────────┬─────────┬─────────────────────────────┐
-│ ID                    │ Quality* │ Params │ Context │ Capabilities                │
-├───────────────────────┼──────────┼────────┼─────────┼─────────────────────────────┤
-│ qwen3-coder-next      │       85 │  80/3B │    256K │ coding, tools, long-context │
-│ qwen3.8-flash-next    │       84 │ 125/6B │    256K │ coding, thinking, vision +3 │
-│ gemma-3-27b-it        │       74 │    27B │    128K │ vision, multilingual +2     │
-│ llama-3.1-8b-instruct │       62 │     8B │    128K │ tools, multilingual +1      │
-│ qwen3-0.6b            │       35 │   0.6B │     32K │ coding, tools, multilingual │
-└───────────────────────┴──────────┴────────┴─────────┴─────────────────────────────┘
-  Quality is the editorial baseline, before any quantisation penalty; run `llamafit
- info <model>` for the sourced benchmarks behind it. Params is total/active billions
-         for a mixture-of-experts model, or one number when they are equal.
+$ llamafit list --limit 5
+                                         Models
+┌────────────────────────┬──────────┬───────────┬─────────┬─────────────────────────────┐
+│ ID                     │ Quality* │    Params │ Context │ Capabilities                │
+├────────────────────────┼──────────┼───────────┼─────────┼─────────────────────────────┤
+│ glm-5.3                │       92 │   744/40B │      1M │ coding, thinking, tools +1  │
+│ kimi-k3                │       92 │ 2800/104B │      1M │ coding, thinking, vision +2 │
+│ deepseek-v4-pro-0813   │       91 │  1600/49B │      1M │ coding, thinking, tools +1  │
+│ glm-5.3-flash          │       89 │   320/18B │      1M │ coding, thinking, vision +2 │
+│ deepseek-v4-flash-0731 │       88 │   284/13B │      1M │ coding, thinking, tools +1  │
+└────────────────────────┴──────────┴───────────┴─────────┴─────────────────────────────┘
+ Quality is the editorial baseline, before any quantisation penalty; run `llamafit info
+  <model>` for the sourced benchmarks behind it. Params is total/active billions for a
+              mixture-of-experts model, or one number when they are equal.
 ```
 
-> **Status.** The host scan, the diagnostics, the model catalog and its commands ship and are
-> tested on three operating systems. The memory budget, the placement planner, the speed
-> estimator and the ranking are being built now. The terminal and web dashboards, the
-> installer and the benchmark verifier follow. See the [roadmap](ROADMAP.md); the design is
+Sixty-two models, strongest first; `--limit` is what keeps five of them on this page.
+
+> **Status.** 0.1.0. Every command in the table below ships and is tested on Windows, macOS
+> and Linux: the host scan and the diagnostics, the catalog, the memory budget, the placement
+> planner, the speed estimator and the ranking, the terminal and web dashboards, the installer
+> and the benchmark verifier. Three pieces named in the design are not built — the terminal
+> dashboard's Downloads and Benchmarks screens, the install and benchmark endpoints of the web
+> API, and the path by which a benchmark corrects the estimator, which is why every speed is
+> still labelled `estimated`. The [roadmap](ROADMAP.md) says so line by line; the design is
 > in [`docs/specs/`](docs/specs/2026-09-09-llamafit-design.md).
 
 ## How it differs
@@ -89,7 +94,8 @@ LlamaFit exists to make that chain explicit, correct, and reproducible.
 6. **Makes it run.** `plan` prints the exact `llama-server` command line. `install` fetches
    llama.cpp release builds and model files with verification. `preset` writes launch scripts
    that pick the context size from the VRAM that is free at start. `bench` measures the result,
-   stores it, and calibrates the estimator for your machine.
+   stores it beside the estimate it is compared with, and fits the estimator's constants to
+   your machine — refusing by name the ones your measurements do not determine.
 
 ## The command line
 
@@ -105,12 +111,12 @@ Every command has a `--json` form for scripts. The Textual terminal dashboard op
 | `llamafit fit` | every model ranked by fit on this machine | 1C (done) |
 | `llamafit recommend` | the board for your needs: use case, required capabilities, minimum context, size and license limits; `--explain` shows the working | 1C (done) |
 | `llamafit plan <model>` | placement, memory budget, context tiers, flags and the command line | 1C (done) |
-| `llamafit hardware` | hardware profiles, to score against a machine you are not on | 1C |
-| `llamafit` | the terminal dashboard | 1D |
+| `llamafit hardware` | hardware profiles, to score against a machine you are not on | 1C (done) |
+| `llamafit` | the terminal dashboard | 1D (done) |
 | `llamafit serve` | the web dashboard and JSON API on localhost | 1D (done) |
-| `llamafit install llama.cpp`, `install model` | install the runtime and download models | 2 |
-| `llamafit preset`, `launch` | write launch scripts and start a server | 2 |
-| `llamafit bench` | measure, compare with the estimate, calibrate | 3 |
+| `llamafit install llama.cpp`, `install model` | install the runtime and download models | 2 (done) |
+| `llamafit preset`, `launch` | write launch scripts and start a server | 2 (done) |
+| `llamafit bench` | measure, compare with the estimate, calibrate | 3 (done) |
 
 ## An example
 
@@ -151,12 +157,17 @@ llamafit doctor                        # what was detected, what failed, what wo
 llamafit --json recommend              # the same as JSON for scripts
 ```
 
-Speeds are estimates from the formulas in [how-it-works.md](docs/how-it-works.md), never
-benchmarks of your machine: `plan` prints the runs the catalog records beside its own estimate
-rather than in place of them, and phase 3's `bench` is what will measure yours.
+Speeds on the board are estimates from the formulas in
+[how-it-works.md](docs/how-it-works.md), never benchmarks of your machine: `plan` prints the
+runs the catalog records beside its own estimate rather than in place of them, and
+`llamafit bench` measures yours and prints the measurement beside the estimate. What a
+benchmark records does not yet reach the board, which is why every speed there stays labelled
+`estimated`; [benchmarking.md](docs/benchmarking.md) says what is missing.
 
-Sizes and GGUF facts read `unknown` until `llamafit catalog refresh` fills them in from
-Hugging Face; nothing is downloaded but file metadata and headers.
+Sizes and GGUF facts ship filled in: a generated `<family>.facts.json` beside each catalog
+file carries them, so `llamafit info` prints real figures on a fresh install.
+`llamafit catalog refresh` brings them up to date from Hugging Face; nothing is downloaded
+but file metadata and headers.
 
 ## Your language
 
@@ -228,7 +239,7 @@ about them.
 
 ### Why AGPL and not GPL or MIT
 
-Phase 1D adds a web dashboard, and a hosted dashboard is exactly what a plain GPL does not
+LlamaFit ships a web dashboard, and a hosted dashboard is exactly what a plain GPL does not
 reach: someone could take LlamaFit, sharpen the estimator, run it as a service, and never
 publish a line, because they never *distribute* anything. Section 13 of the AGPL — the network
 clause — closes that gap: if people interact with a modified LlamaFit over a network, they are
