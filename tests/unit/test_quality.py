@@ -53,6 +53,9 @@ def test_the_baseline_is_the_curators_own_figure(catalog: Catalog) -> None:
         ("Q4_K_M", 4.0),
         ("Q4_K_XL", 4.0),
         ("Q4_0", 4.0),
+        # Not in the specification's table: priced as the four-bit quant it is, and the
+        # module docstring says on what basis.
+        ("MXFP4", 4.0),
         ("IQ4_XS", 6.0),
         ("Q3_K_M", 10.0),
         ("IQ3_XXS", 12.0),
@@ -100,6 +103,12 @@ def test_case_and_whitespace_do_not_change_a_quants_cost(quant: str) -> None:
         "Q7_K",
         "IQ8_0",
         "Q0",
+        # Ternary: exact for a model trained ternary and a different model for any other,
+        # so no one number is its cost. Left unpriced on purpose; see the module docstring.
+        "TQ1_0",
+        "UD-TQ2_0",
+        # Sizable now, but nothing published in it has a measured cost to price it by.
+        "NVFP4",
     ],
 )
 def test_an_unrecognised_quantisation_is_none_rather_than_a_guess(quant: str) -> None:
