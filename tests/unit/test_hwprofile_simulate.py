@@ -111,12 +111,37 @@ def test_overriding_vram_marks_the_host_and_keeps_what_is_in_use() -> None:
     assert host.primary_gpu.vram_total_bytes == 8 * GIB, "the original is untouched"
 
 
-def test_shrinking_a_card_below_what_is_in_use_clamps_rather_than_going_negative() -> None:
+def test_a_smaller_card_is_a_smaller_card_and_not_a_full_one() -> None:
+    """``--memory`` names a card, so a card a quarter the size is a quarter as busy.
+
+    The rule this replaces carried the whole 4 GiB across and clamped it, which left a
+    card with nothing free on it at all -- a card nothing could ever be placed on,
+    returned as the answer to a question somebody asked in good faith.
+    """
     host = machine(vram_total=24 * GIB, vram_used=4 * GIB)
+    smaller = override_host(host, gpu_memory=6 * GIB)
+    assert smaller.primary_gpu is not None
+    assert smaller.primary_gpu.vram_used_bytes == 1 * GIB, "a sixth of the card, as before"
+    assert smaller.primary_gpu.vram_free_bytes == 5 * GIB
+
+
+def test_a_card_the_size_it_already_is_moves_nothing() -> None:
+    host = machine(vram_total=8 * GIB, vram_used=3 * GIB)
+    same = override_host(host, gpu_memory=8 * GIB)
+    assert same.primary_gpu is not None
+    assert same.primary_gpu.vram_used_bytes == 3 * GIB
+    assert same.primary_gpu.vram_free_bytes == 5 * GIB
+
+
+def test_a_card_whose_size_nobody_could_read_is_still_clamped() -> None:
+    """No total is no share to scale, so the load is held to the new size and no further."""
+    host = machine(vram_total=8 * GIB, vram_used=0)
+    host.gpus[0] = host.gpus[0].model_copy(
+        update={"vram_total_bytes": None, "vram_used_bytes": 4 * GIB}
+    )
     smaller = override_host(host, gpu_memory=2 * GIB)
     assert smaller.primary_gpu is not None
     assert smaller.primary_gpu.vram_used_bytes == 2 * GIB
-    assert smaller.primary_gpu.vram_free_bytes == 0
 
 
 def test_only_the_primary_card_is_resized() -> None:
@@ -135,10 +160,33 @@ def test_overriding_memory_keeps_what_is_in_use_rather_than_what_is_free() -> No
     assert bigger.memory.available_bytes == 112 * GIB, "16 GiB was in use and still is"
 
 
-def test_shrinking_memory_below_what_is_in_use_leaves_nothing_free() -> None:
+def test_a_smaller_machine_has_memory_on_it() -> None:
+    """The finding itself: ``--ram`` below what this machine is using left nothing free.
+
+    56 GiB of a 64 GiB machine in use is seven eighths of it; a quarter-sized machine is
+    seven eighths busy too, which is 14 GiB in use and 2 GiB free. What it is not is zero,
+    which is what subtracting 56 from 16 and clamping produced, and which emptied every
+    board on every machine smaller than this one.
+    """
     host = machine(ram_total=64 * GIB, ram_available=8 * GIB)
     smaller = override_host(host, ram=16 * GIB)
-    assert smaller.memory.available_bytes == 0
+    assert smaller.memory.total_bytes == 16 * GIB
+    assert smaller.memory.available_bytes == 2 * GIB
+
+
+def test_a_machine_the_size_it_already_is_moves_nothing() -> None:
+    """The rule has to hold for a machine exactly this size, and holding means byte-exact."""
+    host = machine(ram_total=64 * GIB, ram_available=8 * GIB)
+    same = override_host(host, ram=64 * GIB)
+    assert same.memory.total_bytes == 64 * GIB
+    assert same.memory.available_bytes == 8 * GIB
+
+
+def test_an_idle_machine_shrinks_to_an_idle_one() -> None:
+    """Nothing in use scales to nothing in use, whatever the size asked for."""
+    host = machine(ram_total=128 * GIB, ram_available=128 * GIB)
+    smaller = override_host(host, ram=8 * GIB)
+    assert smaller.memory.available_bytes == 8 * GIB
 
 
 def test_overriding_cores_keeps_the_threads_per_core_ratio() -> None:

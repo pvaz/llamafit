@@ -20,7 +20,7 @@ the estimator.
 | `--language TAG` | Speak this language, for example `pt_PT`. It is read before anything is rendered, so `--language pt_PT --help` comes out in Portuguese too. Without it LlamaFit reads `LLAMAFIT_LANGUAGE`, then the operating system's locale, then falls back to English. A language it does not have falls back to English and names the ones it does have; a request served by another region's catalog says so. The notice goes to stderr, so `--json` stays machine-readable. See [translations.md](translations.md). |
 | `--version` | Print the version and exit. |
 | `--profile NAME\|FILE` | Answer for the machine a hardware profile describes instead of this one. Nothing about this machine is probed. `llamafit hardware list` names the profiles you have; a path to a `.json` file works too. |
-| `--memory SIZE`, `--ram SIZE`, `--cpu-cores N` | Substitute one pool of the live scan for a what-if: the card's memory, the system memory, the physical core count. Everything else stays as scanned. Sizes accept `8G`, `7.5GiB`, `512M`. |
+| `--memory SIZE`, `--ram SIZE`, `--cpu-cores N` | Substitute one pool of the live scan for a what-if: the card's memory, the system memory, the physical core count. Everything else stays as scanned. Sizes accept `8G`, `7.5GiB`, `512M`. A size names a machine: `--ram 16GiB` is a 16 GiB machine, not this one with the difference subtracted. |
 | `--max-context N` | Plan, report and score no context longer than this. It is not a machine; see below. |
 
 ### The four flags that replace a machine
@@ -34,7 +34,15 @@ Whatever they produce is marked, and marked in the data rather than only in a he
   a board carries no host and a script reading `--json` would otherwise have nothing to
   read. `"simulated": false` on a scan is part of the promise: absence is not evidence.
 - On the terminal the first line above the table is red, says `SIMULATED`, and says which
-  profile or which pools, before the reader meets a figure.
+  profile or which pools, before the reader meets a figure. It is above the *answer*, not
+  above the table, so a board that ranked nothing carries it too — that is the answer most
+  worth being warned about, because there is no figure in it to be suspicious of.
+
+**What the sizes mean.** `--ram 16GiB` describes a 16 GiB machine and `--memory 4G` a 4 GiB
+card. What this machine has in use is carried across unchanged onto a pool the same size or
+larger, because a bigger card does not empty itself; onto a smaller one the same *share* is
+carried, because this machine's open applications could not have fitted on it. A flag naming
+the size the machine already has moves nothing at all.
 
 They apply to `system`, `fit`, `recommend`, `plan` and `preset`, and to `llamafit` with no
 arguments, which opens the dashboard already simulating that machine with its badge
@@ -106,7 +114,8 @@ Scan the machine and show CPU, memory, GPUs, disks and the llama.cpp installatio
 
 | Option | Effect |
 |---|---|
-| `--no-measure` | Skip the RAM bandwidth measurement (about 50 ms of reading); the estimate from DDR facts or the assumed default is used instead. |
+| `--no-measure` | Skip the RAM bandwidth measurement; the estimate from DDR facts or the assumed default is used instead. |
+| `--refresh-bandwidth` | Measure RAM bandwidth again rather than reading back the figure kept for this machine, and keep the new one. |
 
 ```
 $ llamafit system
@@ -132,6 +141,18 @@ three on one drive shows one line.
 
 With `--json` the output is a `SystemReport`: `{"host": {...}, "llamacpp": {...}, "version": "..."}`.
 Every bandwidth figure carries its `bandwidth_source`: `measured`, `estimated`, `assumed` or `unknown`.
+
+RAM bandwidth is measured as the best of five short windows — contention can only make the
+reading low, never high, so the largest of several is the machine rather than its load — and
+then kept in the platform's cache directory, filed under the processor, the pool and the
+modules' type, speed and channel count. Every later scan reads it back, which is why the same
+board no longer reports a different tokens-per-second from one minute to the next. A figure
+read back says so (`bandwidth_cached` in the JSON, *cached* in the table); `--refresh-bandwidth`
+times it again.
+
+`recommend --json` and `fit --json` carry a `machine` object with the same figures — what was
+free, and the bandwidth with its source — so two answers taken minutes apart can be told apart
+by reading them. The table says the same thing under the rows.
 
 ### `llamafit doctor` — phase 1A, shipped
 

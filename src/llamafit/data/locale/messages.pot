@@ -407,7 +407,7 @@ msgstr ""
 #: src/llamafit/cli/catalog_cmd.py:430
 #: src/llamafit/cli/install_cmd.py:83
 #: src/llamafit/cli/plan_cmd.py:35
-#: src/llamafit/cli/preset_cmd.py:59
+#: src/llamafit/cli/preset_cmd.py:61
 msgid "A catalog model id."
 msgstr ""
 
@@ -585,7 +585,7 @@ msgid "The largest context on the ladder that would not page is %(tokens)s."
 msgstr ""
 
 #: src/llamafit/cli/bench_cmd.py:477
-#: src/llamafit/cli/render.py:1353
+#: src/llamafit/cli/render.py:1397
 msgid "Calibration"
 msgstr ""
 
@@ -681,12 +681,12 @@ msgid "Exclude candidates that cannot hold at least this many tokens."
 msgstr ""
 
 #: src/llamafit/cli/board_cmd.py:167
-#: src/llamafit/cli/board_cmd.py:269
+#: src/llamafit/cli/board_cmd.py:265
 msgid "Show at most this many rows."
 msgstr ""
 
 #: src/llamafit/cli/board_cmd.py:172
-#: src/llamafit/cli/board_cmd.py:274
+#: src/llamafit/cli/board_cmd.py:270
 msgid "Show every quantisation instead of the best one per model."
 msgstr ""
 
@@ -698,24 +698,15 @@ msgstr ""
 msgid "Plan without a vision projector, freeing its memory."
 msgstr ""
 
-#: src/llamafit/cli/board_cmd.py:225
-#: src/llamafit/web/strings.py:252
-msgid "Nothing was ranked. Every candidate is listed below with the reason; widen the request or free some memory."
-msgstr ""
-
-#: src/llamafit/cli/board_cmd.py:246
+#: src/llamafit/cli/board_cmd.py:242
 msgid ""
 "Rank every model by how well it uses this machine, whatever it is for.\n"
 "\n"
 "No use case, no weights and no score: this is the memory question on its own. Models are sized for 32K tokens of context, and the context column is the largest each one holds in the mode shown."
 msgstr ""
 
-#: src/llamafit/cli/board_cmd.py:261
+#: src/llamafit/cli/board_cmd.py:257
 msgid "Only the configurations that use the machine well: at least half its memory held in weights, and no pool past four fifths."
-msgstr ""
-
-#: src/llamafit/cli/board_cmd.py:300
-msgid "Nothing fits this machine at that threshold. Try --min-fit tight, or drop --perfect."
 msgstr ""
 
 #: src/llamafit/cli/catalog_cmd.py:48
@@ -811,7 +802,7 @@ msgid "%(model)s: error: %(error)s"
 msgstr ""
 
 #: src/llamafit/cli/catalog_cmd.py:388
-#: src/llamafit/cli/render.py:668
+#: src/llamafit/cli/render.py:712
 #: src/llamafit/errors.py:43
 msgid "Hint: %(hint)s"
 msgstr ""
@@ -880,19 +871,19 @@ msgstr ""
 msgid "Sizes look like 8G, 7.5GiB or 512M; a bare number is bytes."
 msgstr ""
 
-#: src/llamafit/cli/common.py:287
+#: src/llamafit/cli/common.py:295
 msgid "%(ceiling)s %(max)s is below %(floor)s %(min)s"
 msgstr ""
 
-#: src/llamafit/cli/common.py:294
+#: src/llamafit/cli/common.py:302
 msgid "Raise %(ceiling)s, or lower %(floor)s."
 msgstr ""
 
-#: src/llamafit/cli/common.py:323
+#: src/llamafit/cli/common.py:331
 msgid "`llamafit %(command)s` reports on the machine LlamaFit is running on"
 msgstr ""
 
-#: src/llamafit/cli/common.py:325
+#: src/llamafit/cli/common.py:333
 msgid "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a profile describes, run `llamafit hardware show NAME --as-host`."
 msgstr ""
 
@@ -1097,7 +1088,7 @@ msgid "Nothing was written."
 msgstr ""
 
 #: src/llamafit/cli/plan_cmd.py:42
-#: src/llamafit/cli/preset_cmd.py:81
+#: src/llamafit/cli/preset_cmd.py:83
 msgid "Plan this quantisation instead of the one that scores best on this machine."
 msgstr ""
 
@@ -1140,1600 +1131,1629 @@ msgstr ""
 msgid "Leave the vision projector out, freeing its memory for context."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:66
+#: src/llamafit/cli/preset_cmd.py:68
 msgid "Write the files here instead of in LlamaFit's own presets directory."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:74
+#: src/llamafit/cli/preset_cmd.py:76
 msgid "Bind this port instead of llama.cpp's default 8080."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:90
+#: src/llamafit/cli/preset_cmd.py:92
 msgid "Size for this many tokens. It becomes the top of the ladder the script chooses from; the script never goes above it."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:164
+#: src/llamafit/cli/preset_cmd.py:170
 msgid "%(model)s does not fit this machine in any configuration"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:165
+#: src/llamafit/cli/preset_cmd.py:171
 msgid "Run `llamafit plan %(model)s` to see what it would need."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:193
+#: src/llamafit/cli/preset_cmd.py:199
 msgid ""
 "Write launch scripts for one model: a script that picks its context from free card memory at start time, a router section, and a README.\n"
 "\n"
 "A file you have edited is never overwritten without --force."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:212
+#: src/llamafit/cli/preset_cmd.py:218
 msgid "Overwrite files you have edited. It says which ones it discarded."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:232
+#: src/llamafit/cli/preset_cmd.py:238
 msgid "Run a model's preset, wait for the server to answer, and print its endpoints. --stop stops the server LlamaFit started."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:246
+#: src/llamafit/cli/preset_cmd.py:252
 msgid "Stop the server LlamaFit started for this model."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:254
+#: src/llamafit/cli/preset_cmd.py:260
 msgid "Seconds to wait for /health before reporting that it has not answered."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:273
+#: src/llamafit/cli/preset_cmd.py:282
 msgid "the preset could not be written"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:276
+#: src/llamafit/cli/preset_cmd.py:285
 msgid "Wrote a preset first: %(path)s"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:315
+#: src/llamafit/cli/preset_cmd.py:324
 msgid "Nothing to stop: LlamaFit has no record of starting %(model)s."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:324
+#: src/llamafit/cli/preset_cmd.py:333
 msgid "Stopped %(model)s, which was serving on %(url)s."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:377
+#: src/llamafit/cli/preset_cmd.py:386
 msgid "Preset for %(name)s (%(quant)s) in %(dir)s"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:390
+#: src/llamafit/cli/preset_cmd.py:399
 msgid "The server will answer on %(url)s."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:398
+#: src/llamafit/cli/preset_cmd.py:407
 msgid "Your edits were kept. Nothing above was written to those files; run the command again with --force to replace them."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:412
+#: src/llamafit/cli/preset_cmd.py:421
 msgid "At start time the script reads how much card memory is free, keeps %(reserve)s MiB back, and takes the largest context that still fits."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:416
+#: src/llamafit/cli/preset_cmd.py:425
 msgid "This machine has nothing the script can ask for free card memory, so it will start at %(context)s tokens; the script's header says why."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:424
+#: src/llamafit/cli/preset_cmd.py:433
 msgid "Files"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:428
+#: src/llamafit/cli/preset_cmd.py:437
 #: src/llamafit/tui/screens/host.py:54
 msgctxt "column heading"
 msgid "File"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:429
+#: src/llamafit/cli/preset_cmd.py:438
 msgctxt "column heading"
 msgid "What happened"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:440
+#: src/llamafit/cli/preset_cmd.py:449
 msgid "Context tiers the script may choose"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:442
-#: src/llamafit/cli/render.py:781
-#: src/llamafit/cli/render_board.py:392
-#: src/llamafit/cli/render_board.py:559
+#: src/llamafit/cli/preset_cmd.py:451
+#: src/llamafit/cli/render.py:825
+#: src/llamafit/cli/render_board.py:393
+#: src/llamafit/cli/render_board.py:560
 #: src/llamafit/web/strings.py:188
 msgctxt "column heading"
 msgid "Context"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:445
-#: src/llamafit/cli/render_board.py:394
+#: src/llamafit/cli/preset_cmd.py:454
+#: src/llamafit/cli/render_board.py:395
 #: src/llamafit/web/strings.py:201
 msgctxt "column heading"
 msgid "Card needs"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:448
+#: src/llamafit/cli/preset_cmd.py:457
 msgctxt "column heading"
 msgid "Free card memory to reach it"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:464
+#: src/llamafit/cli/preset_cmd.py:473
 msgid "%(value)s MiB"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:470
+#: src/llamafit/cli/preset_cmd.py:479
 msgid "written"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:471
+#: src/llamafit/cli/preset_cmd.py:480
 msgid "brought up to date"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:472
+#: src/llamafit/cli/preset_cmd.py:481
 msgid "already up to date"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:473
+#: src/llamafit/cli/preset_cmd.py:482
 msgid "kept: you edited it"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:474
+#: src/llamafit/cli/preset_cmd.py:483
 msgid "overwritten: your edits are gone"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:494
+#: src/llamafit/cli/preset_cmd.py:503
 msgid "The preset could not be started: %(error)s"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:504
+#: src/llamafit/cli/preset_cmd.py:513
 msgid "Started, but %(url)s has not answered yet. A large model can spend minutes reading its weights; try the health endpoint again in a moment, or run `llamafit launch %(model)s --stop`."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:515
+#: src/llamafit/cli/preset_cmd.py:524
 msgid "%(model)s was already serving on %(url)s."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:517
+#: src/llamafit/cli/preset_cmd.py:526
 msgid "%(model)s is serving on %(url)s."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:527
+#: src/llamafit/cli/preset_cmd.py:536
 msgid "Stop it with `llamafit launch %(model)s --stop`."
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:536
+#: src/llamafit/cli/preset_cmd.py:545
 msgid "Endpoints"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:537
+#: src/llamafit/cli/preset_cmd.py:546
 #: src/llamafit/tui/screens/host.py:56
 msgctxt "column heading"
 msgid "What"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:538
-#: src/llamafit/cli/render_board.py:304
+#: src/llamafit/cli/preset_cmd.py:547
+#: src/llamafit/cli/render_board.py:305
 #: src/llamafit/tui/screens/host.py:55
 #: src/llamafit/web/strings.py:195
 msgctxt "column heading"
 msgid "Where"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:540
+#: src/llamafit/cli/preset_cmd.py:549
 msgid "Web interface"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:541
+#: src/llamafit/cli/preset_cmd.py:550
 msgid "Chat completions"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:542
-#: src/llamafit/cli/render.py:943
+#: src/llamafit/cli/preset_cmd.py:551
+#: src/llamafit/cli/render.py:987
 msgid "Models"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:543
+#: src/llamafit/cli/preset_cmd.py:552
 msgid "Health"
 msgstr ""
 
-#: src/llamafit/cli/preset_cmd.py:548
+#: src/llamafit/cli/preset_cmd.py:557
 msgid "Ask for the model by the alias %(alias)s."
-msgstr ""
-
-#: src/llamafit/cli/render.py:137
-msgctxt "finding level"
-msgid "OK"
 msgstr ""
 
 #: src/llamafit/cli/render.py:138
 msgctxt "finding level"
-msgid "WARN"
+msgid "OK"
 msgstr ""
 
 #: src/llamafit/cli/render.py:139
 msgctxt "finding level"
-msgid "ERROR"
+msgid "WARN"
 msgstr ""
 
-#: src/llamafit/cli/render.py:151
-msgctxt "bandwidth source"
-msgid "measured"
+#: src/llamafit/cli/render.py:140
+msgctxt "finding level"
+msgid "ERROR"
 msgstr ""
 
 #: src/llamafit/cli/render.py:152
 msgctxt "bandwidth source"
-msgid "estimated"
+msgid "measured"
 msgstr ""
 
 #: src/llamafit/cli/render.py:153
 msgctxt "bandwidth source"
-msgid "assumed"
+msgid "estimated"
 msgstr ""
 
 #: src/llamafit/cli/render.py:154
 msgctxt "bandwidth source"
+msgid "assumed"
+msgstr ""
+
+#: src/llamafit/cli/render.py:155
+msgctxt "bandwidth source"
 msgid "unknown"
 msgstr ""
 
-#: src/llamafit/cli/render.py:167
+#: src/llamafit/cli/render.py:178
+#: src/llamafit/cli/render.py:1259
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr ""
+
+#: src/llamafit/cli/render.py:181
+msgid "%(gbps)s GB/s (%(source)s, cached)"
+msgstr ""
+
+#: src/llamafit/cli/render.py:182
+#: src/llamafit/cli/render.py:1261
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr ""
+
+#: src/llamafit/cli/render.py:193
 msgctxt "simulation override"
 msgid "VRAM"
 msgstr ""
 
-#: src/llamafit/cli/render.py:168
+#: src/llamafit/cli/render.py:194
 msgctxt "simulation override"
 msgid "system memory"
 msgstr ""
 
-#: src/llamafit/cli/render.py:169
+#: src/llamafit/cli/render.py:195
 msgctxt "simulation override"
 msgid "CPU cores"
 msgstr ""
 
-#: src/llamafit/cli/render.py:184
+#: src/llamafit/cli/render.py:210
 msgid "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
 msgid_plural "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/llamafit/cli/render.py:192
+#: src/llamafit/cli/render.py:218
 msgid "these figures come from the hardware profile %(profile)s; they are not this machine"
 msgstr ""
 
-#: src/llamafit/cli/render.py:196
+#: src/llamafit/cli/render.py:222
 msgid "%(fields)s was overridden for a what-if; these figures are not what was scanned"
 msgid_plural "%(fields)s were overridden for a what-if; these figures are not what was scanned"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/llamafit/cli/render.py:201
+#: src/llamafit/cli/render.py:227
 msgid "these figures are not this machine"
 msgstr ""
 
-#: src/llamafit/cli/render.py:222
-#: src/llamafit/cli/render.py:460
+#: src/llamafit/cli/render.py:248
+#: src/llamafit/cli/render.py:510
 #: src/llamafit/tui/summary.py:120
 #: src/llamafit/web/strings.py:349
 msgid "SIMULATED"
 msgstr ""
 
-#: src/llamafit/cli/render.py:253
+#: src/llamafit/cli/render.py:303
 #: src/llamafit/tui/labels.py:42
 #: src/llamafit/web/strings.py:108
 msgctxt "model capability"
 msgid "coding"
 msgstr ""
 
-#: src/llamafit/cli/render.py:254
+#: src/llamafit/cli/render.py:304
 #: src/llamafit/tui/labels.py:43
 #: src/llamafit/web/strings.py:109
 msgctxt "model capability"
 msgid "thinking"
 msgstr ""
 
-#: src/llamafit/cli/render.py:255
+#: src/llamafit/cli/render.py:305
 #: src/llamafit/tui/labels.py:44
 #: src/llamafit/web/strings.py:110
 msgctxt "model capability"
 msgid "vision"
 msgstr ""
 
-#: src/llamafit/cli/render.py:256
+#: src/llamafit/cli/render.py:306
 #: src/llamafit/tui/labels.py:45
 #: src/llamafit/web/strings.py:111
 msgctxt "model capability"
 msgid "tools"
 msgstr ""
 
-#: src/llamafit/cli/render.py:257
+#: src/llamafit/cli/render.py:307
 #: src/llamafit/tui/labels.py:46
 #: src/llamafit/web/strings.py:112
 msgctxt "model capability"
 msgid "multilingual"
 msgstr ""
 
-#: src/llamafit/cli/render.py:258
+#: src/llamafit/cli/render.py:308
 #: src/llamafit/tui/labels.py:47
 #: src/llamafit/web/strings.py:113
 msgctxt "model capability"
 msgid "long-context"
 msgstr ""
 
-#: src/llamafit/cli/render.py:259
+#: src/llamafit/cli/render.py:309
 #: src/llamafit/tui/labels.py:48
 #: src/llamafit/web/strings.py:114
 msgctxt "model capability"
 msgid "embeddings"
 msgstr ""
 
-#: src/llamafit/cli/render.py:260
+#: src/llamafit/cli/render.py:310
 #: src/llamafit/tui/labels.py:49
 #: src/llamafit/web/strings.py:115
 msgctxt "model capability"
 msgid "audio"
 msgstr ""
 
-#: src/llamafit/cli/render.py:277
+#: src/llamafit/cli/render.py:327
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr ""
 
-#: src/llamafit/cli/render.py:282
+#: src/llamafit/cli/render.py:332
 msgid "%(bandwidth)s GB/s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:283
+#: src/llamafit/cli/render.py:333
 msgid "%(compute)s TFLOPS fp16"
 msgstr ""
 
-#: src/llamafit/cli/render.py:298
+#: src/llamafit/cli/render.py:348
 msgid "%(count)d core"
 msgid_plural "%(count)d cores"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/llamafit/cli/render.py:301
+#: src/llamafit/cli/render.py:351
 msgid "%(count)d thread"
 msgid_plural "%(count)d threads"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/llamafit/cli/render.py:305
+#: src/llamafit/cli/render.py:355
 msgid "%(cores)s / %(threads)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:306
+#: src/llamafit/cli/render.py:356
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/llamafit/cli/render.py:311
+#: src/llamafit/cli/render.py:361
 msgid "%(cores)s / %(threads)s, %(performance)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:331
+#: src/llamafit/cli/render.py:381
 msgid "%(type)s at %(speed)d MT/s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:338
+#: src/llamafit/cli/render.py:388
 msgid "%(speed)d MT/s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:356
+#: src/llamafit/cli/render.py:406
 msgid "%(count)d module"
 msgid_plural "%(count)d modules"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/llamafit/cli/render.py:362
+#: src/llamafit/cli/render.py:412
 msgid "%(count)d channel"
 msgid_plural "%(count)d channels"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/llamafit/cli/render.py:368
+#: src/llamafit/cli/render.py:418
 msgid "%(kind)s, %(modules)s across %(channels)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:374
+#: src/llamafit/cli/render.py:424
 msgid "%(kind)s, %(modules)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:376
+#: src/llamafit/cli/render.py:426
 msgid "%(kind)s, %(channels)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:380
+#: src/llamafit/cli/render.py:430
 msgid "%(modules)s across %(channels)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:385
+#: src/llamafit/cli/render.py:435
 msgctxt "memory type"
 msgid "type unknown"
 msgstr ""
 
-#: src/llamafit/cli/render.py:405
+#: src/llamafit/cli/render.py:455
 msgid "%(specs)s (spec), driver %(driver)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:410
+#: src/llamafit/cli/render.py:460
 msgid "%(specs)s (spec)"
 msgstr ""
 
-#: src/llamafit/cli/render.py:412
+#: src/llamafit/cli/render.py:462
 msgid "driver %(driver)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:413
+#: src/llamafit/cli/render.py:463
 msgctxt "GPU specifications"
 msgid "no specs"
 msgstr ""
 
-#: src/llamafit/cli/render.py:428
+#: src/llamafit/cli/render.py:478
 msgid "%(total)s VRAM, %(free)s free (Vulkan driver)"
 msgstr ""
 
-#: src/llamafit/cli/render.py:432
-#: src/llamafit/cli/render.py:1250
+#: src/llamafit/cli/render.py:482
+#: src/llamafit/cli/render.py:1294
 msgid "%(total)s VRAM, %(free)s free"
 msgstr ""
 
-#: src/llamafit/cli/render.py:437
+#: src/llamafit/cli/render.py:487
 msgid "%(total)s VRAM, free unknown"
 msgstr ""
 
-#: src/llamafit/cli/render.py:438
+#: src/llamafit/cli/render.py:488
 msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr ""
 
-#: src/llamafit/cli/render.py:455
+#: src/llamafit/cli/render.py:505
 #: src/llamafit/tui/app.py:102
 #: src/llamafit/web/strings.py:246
 #: src/llamafit/web/strings.py:311
 msgid "Host"
 msgstr ""
 
-#: src/llamafit/cli/render.py:465
-#: src/llamafit/cli/render.py:1326
+#: src/llamafit/cli/render.py:515
+#: src/llamafit/cli/render.py:1370
 #: src/llamafit/web/strings.py:314
 msgid "OS"
 msgstr ""
 
-#: src/llamafit/cli/render.py:467
-#: src/llamafit/cli/render.py:1328
+#: src/llamafit/cli/render.py:517
+#: src/llamafit/cli/render.py:1372
 msgid "%(os)s %(version)s (%(arch)s)"
 msgstr ""
 
-#: src/llamafit/cli/render.py:477
-#: src/llamafit/cli/render.py:1336
+#: src/llamafit/cli/render.py:527
+#: src/llamafit/cli/render.py:1380
 #: src/llamafit/web/strings.py:315
 msgid "CPU"
 msgstr ""
 
-#: src/llamafit/cli/render.py:491
-#: src/llamafit/cli/render.py:1217
-msgid "%(gbps)s GB/s (%(source)s)"
-msgstr ""
-
-#: src/llamafit/cli/render.py:497
-#: src/llamafit/cli/render.py:1215
-msgctxt "memory bandwidth"
-msgid "unknown"
-msgstr ""
-
-#: src/llamafit/cli/render.py:501
-#: src/llamafit/cli/render.py:1337
+#: src/llamafit/cli/render.py:545
+#: src/llamafit/cli/render.py:1381
 #: src/llamafit/web/strings.py:316
 msgid "Memory"
 msgstr ""
 
-#: src/llamafit/cli/render.py:503
+#: src/llamafit/cli/render.py:547
 msgid "%(total)s total, %(available)s available; %(details)s; bandwidth %(bandwidth)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:513
-#: src/llamafit/cli/render.py:1339
+#: src/llamafit/cli/render.py:557
+#: src/llamafit/cli/render.py:1383
 #: src/llamafit/web/strings.py:317
 msgid "GPU"
 msgstr ""
 
-#: src/llamafit/cli/render.py:513
-#: src/llamafit/cli/render.py:1339
+#: src/llamafit/cli/render.py:557
+#: src/llamafit/cli/render.py:1383
 msgctxt "GPU"
 msgid "none detected"
 msgstr ""
 
-#: src/llamafit/cli/render.py:517
-#: src/llamafit/cli/render.py:1341
+#: src/llamafit/cli/render.py:561
+#: src/llamafit/cli/render.py:1385
 msgid "GPU %(index)d"
 msgstr ""
 
-#: src/llamafit/cli/render.py:532
+#: src/llamafit/cli/render.py:576
 msgid "Card memory"
 msgstr ""
 
-#: src/llamafit/cli/render.py:534
+#: src/llamafit/cli/render.py:578
 msgid "%(gpus)s: nothing here could read how much of the card is free, so every budget on this machine was computed as if there were no card at all. Install the Vulkan tools, or write the size into a hardware profile."
 msgstr ""
 
-#: src/llamafit/cli/render.py:544
-#: src/llamafit/cli/render.py:1343
+#: src/llamafit/cli/render.py:588
+#: src/llamafit/cli/render.py:1387
 msgid "Memory pool"
 msgstr ""
 
-#: src/llamafit/cli/render.py:544
-#: src/llamafit/cli/render.py:1343
+#: src/llamafit/cli/render.py:588
+#: src/llamafit/cli/render.py:1387
 msgid "unified (GPU shares system memory)"
 msgstr ""
 
-#: src/llamafit/cli/render.py:548
+#: src/llamafit/cli/render.py:592
 #: src/llamafit/web/strings.py:318
 msgid "Disk"
 msgstr ""
 
-#: src/llamafit/cli/render.py:550
+#: src/llamafit/cli/render.py:594
 msgid "%(path)s: %(free)s free of %(total)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:571
-#: src/llamafit/cli/render.py:584
+#: src/llamafit/cli/render.py:615
+#: src/llamafit/cli/render.py:628
 #: src/llamafit/web/strings.py:319
 msgid "Installed"
 msgstr ""
 
-#: src/llamafit/cli/render.py:571
+#: src/llamafit/cli/render.py:615
 msgctxt "llama.cpp is installed"
 msgid "no"
 msgstr ""
 
-#: src/llamafit/cli/render.py:574
+#: src/llamafit/cli/render.py:618
 msgid "b%(build)d (%(commit)s)"
 msgstr ""
 
-#: src/llamafit/cli/render.py:579
+#: src/llamafit/cli/render.py:623
 msgid "b%(build)d"
 msgstr ""
 
-#: src/llamafit/cli/render.py:581
+#: src/llamafit/cli/render.py:625
 msgctxt "llama.cpp build"
 msgid "unknown build"
 msgstr ""
 
-#: src/llamafit/cli/render.py:586
+#: src/llamafit/cli/render.py:630
 msgid "yes, %(build)s at %(path)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:591
-#: src/llamafit/cli/render.py:1345
+#: src/llamafit/cli/render.py:635
+#: src/llamafit/cli/render.py:1389
 msgid "Backends"
 msgstr ""
 
-#: src/llamafit/cli/render.py:595
+#: src/llamafit/cli/render.py:639
 #: src/llamafit/services/doctor.py:130
 msgctxt "backends"
 msgid "none detected"
 msgstr ""
 
-#: src/llamafit/cli/render.py:598
+#: src/llamafit/cli/render.py:642
 msgid "Local models"
 msgstr ""
 
-#: src/llamafit/cli/render.py:602
+#: src/llamafit/cli/render.py:646
 msgid "Running"
 msgstr ""
 
-#: src/llamafit/cli/render.py:604
+#: src/llamafit/cli/render.py:648
 msgid "%(url)s: %(model)s, context %(context)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:609
+#: src/llamafit/cli/render.py:653
 msgctxt "model name"
 msgid "unknown model"
 msgstr ""
 
-#: src/llamafit/cli/render.py:610
+#: src/llamafit/cli/render.py:654
 #: src/llamafit/services/doctor.py:266
 msgctxt "context length"
 msgid "unknown"
 msgstr ""
 
-#: src/llamafit/cli/render.py:615
+#: src/llamafit/cli/render.py:659
 msgid "Problem"
 msgstr ""
 
-#: src/llamafit/cli/render.py:625
+#: src/llamafit/cli/render.py:669
 msgid "Probes"
 msgstr ""
 
-#: src/llamafit/cli/render.py:629
+#: src/llamafit/cli/render.py:673
 msgid "probe"
 msgstr ""
 
-#: src/llamafit/cli/render.py:630
+#: src/llamafit/cli/render.py:674
 msgid "result"
 msgstr ""
 
-#: src/llamafit/cli/render.py:631
+#: src/llamafit/cli/render.py:675
 msgid "ms"
 msgstr ""
 
-#: src/llamafit/cli/render.py:636
+#: src/llamafit/cli/render.py:680
 msgctxt "probe result"
 msgid "ok"
 msgstr ""
 
-#: src/llamafit/cli/render.py:638
+#: src/llamafit/cli/render.py:682
 msgctxt "probe result"
 msgid "no server"
 msgstr ""
 
-#: src/llamafit/cli/render.py:640
+#: src/llamafit/cli/render.py:684
 msgctxt "probe result"
 msgid "failed"
 msgstr ""
 
-#: src/llamafit/cli/render.py:660
+#: src/llamafit/cli/render.py:704
 #: src/llamafit/web/strings.py:310
 msgid "Findings"
 msgstr ""
 
-#: src/llamafit/cli/render.py:661
+#: src/llamafit/cli/render.py:705
 msgid "level"
 msgstr ""
 
-#: src/llamafit/cli/render.py:661
+#: src/llamafit/cli/render.py:705
 msgid "finding"
 msgstr ""
 
-#: src/llamafit/cli/render.py:778
+#: src/llamafit/cli/render.py:822
 msgctxt "column heading"
 msgid "ID"
 msgstr ""
 
-#: src/llamafit/cli/render.py:779
+#: src/llamafit/cli/render.py:823
 msgctxt "column heading"
 msgid "Quality"
 msgstr ""
 
-#: src/llamafit/cli/render.py:780
+#: src/llamafit/cli/render.py:824
 msgctxt "column heading"
 msgid "Params"
 msgstr ""
 
-#: src/llamafit/cli/render.py:782
+#: src/llamafit/cli/render.py:826
 msgctxt "column heading"
 msgid "Capabilities"
 msgstr ""
 
-#: src/llamafit/cli/render.py:805
+#: src/llamafit/cli/render.py:849
 msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
 msgstr ""
 
-#: src/llamafit/cli/render.py:810
+#: src/llamafit/cli/render.py:854
 msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
 msgstr ""
 
-#: src/llamafit/cli/render.py:1003
+#: src/llamafit/cli/render.py:1047
 msgid "Vendor"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1004
+#: src/llamafit/cli/render.py:1048
 msgid "Family"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1005
+#: src/llamafit/cli/render.py:1049
 msgid "Release date"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1008
+#: src/llamafit/cli/render.py:1052
 msgid "Licence"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1010
+#: src/llamafit/cli/render.py:1054
 msgid "%(spdx)s (%(url)s)"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1020
+#: src/llamafit/cli/render.py:1064
 msgid "Parameters"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1022
+#: src/llamafit/cli/render.py:1066
 msgid "%(total)s total, %(active)s active"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1030
+#: src/llamafit/cli/render.py:1074
 msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1035
+#: src/llamafit/cli/render.py:1079
 msgctxt "context extension method"
 msgid "unspecified method"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1038
+#: src/llamafit/cli/render.py:1082
 msgid "%(tokens)s tokens native"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1041
+#: src/llamafit/cli/render.py:1085
 msgctxt "table row label"
 msgid "Context"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1044
+#: src/llamafit/cli/render.py:1088
 msgid "Architecture"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1048
+#: src/llamafit/cli/render.py:1092
 #: src/llamafit/web/strings.py:332
 msgid "Notes"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1051
+#: src/llamafit/cli/render.py:1095
 msgctxt "table row label"
 msgid "Capabilities"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1054
+#: src/llamafit/cli/render.py:1098
 msgid "Use cases"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1055
+#: src/llamafit/cli/render.py:1099
 msgid "Quality baseline"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1059
+#: src/llamafit/cli/render.py:1103
 msgid "Benchmark"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1071
+#: src/llamafit/cli/render.py:1115
 msgid "Source %(index)d"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1086
+#: src/llamafit/cli/render.py:1130
 msgctxt "GGUF facts"
 msgid "not read yet"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1089
+#: src/llamafit/cli/render.py:1133
 msgid "%(count)d layer"
 msgid_plural "%(count)d layers"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/llamafit/cli/render.py:1095
+#: src/llamafit/cli/render.py:1139
 msgid "%(arch)s, %(layers)s, %(experts)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1101
+#: src/llamafit/cli/render.py:1145
 msgid "%(arch)s, %(layers)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1103
+#: src/llamafit/cli/render.py:1147
 msgid "%(arch)s, %(experts)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1122
+#: src/llamafit/cli/render.py:1166
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/llamafit/cli/render.py:1125
+#: src/llamafit/cli/render.py:1169
 msgid "%(count)d/%(used)d expert"
 msgid_plural "%(count)d/%(used)d experts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/llamafit/cli/render.py:1138
+#: src/llamafit/cli/render.py:1182
 msgid "Quants"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1142
-#: src/llamafit/cli/render.py:1270
+#: src/llamafit/cli/render.py:1186
+#: src/llamafit/cli/render.py:1314
 msgid "Name"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1143
+#: src/llamafit/cli/render.py:1187
 #: src/llamafit/cli/render_install.py:168
 #: src/llamafit/cli/render_install.py:300
 msgid "Size"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1144
+#: src/llamafit/cli/render.py:1188
 msgid "BPW"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1145
+#: src/llamafit/cli/render.py:1189
 msgid "Facts"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1155
+#: src/llamafit/cli/render.py:1199
 msgctxt "bits per weight"
 msgid "unknown"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1164
+#: src/llamafit/cli/render.py:1208
 msgctxt "profile origin"
 msgid "bundled"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1166
+#: src/llamafit/cli/render.py:1210
 msgctxt "profile origin"
 msgid "yours"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1181
+#: src/llamafit/cli/render.py:1225
 msgid "%(ram)s RAM, no graphics card"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1183
+#: src/llamafit/cli/render.py:1227
 msgid "%(ram)s RAM shared with %(gpu)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1184
+#: src/llamafit/cli/render.py:1228
 msgid "%(ram)s RAM, %(gpu)s with %(vram)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1194
+#: src/llamafit/cli/render.py:1238
 msgid "%(cores)d core / %(threads)d thread"
 msgid_plural "%(cores)d cores / %(threads)d threads"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/llamafit/cli/render.py:1199
-#: src/llamafit/cli/render.py:485
+#: src/llamafit/cli/render.py:1243
+#: src/llamafit/cli/render.py:535
 msgctxt "CPU instruction sets"
 msgid "isa unknown"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1200
-#: src/llamafit/cli/render.py:479
+#: src/llamafit/cli/render.py:1244
+#: src/llamafit/cli/render.py:529
 msgid "%(model)s; %(cores)s; %(isa)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1221
+#: src/llamafit/cli/render.py:1265
 msgid "%(total)s total, %(available)s available; bandwidth %(bandwidth)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1240
+#: src/llamafit/cli/render.py:1284
 msgctxt "GPU specifications"
 msgid "no bandwidth or compute figure"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1242
+#: src/llamafit/cli/render.py:1286
 msgid "%(specs)s (from the profile)"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1244
+#: src/llamafit/cli/render.py:1288
 msgid "%(specs)s (from the specification table)"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1248
+#: src/llamafit/cli/render.py:1292
 msgctxt "GPU VRAM"
 msgid "VRAM from the shared pool"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1256
-#: src/llamafit/cli/render.py:519
+#: src/llamafit/cli/render.py:1300
+#: src/llamafit/cli/render.py:563
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1266
+#: src/llamafit/cli/render.py:1310
 msgid "Hardware profiles"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1272
+#: src/llamafit/cli/render.py:1316
 msgid "Machine"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1293
+#: src/llamafit/cli/render.py:1337
 msgid "a graphics card whose name contains %(text)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1298
+#: src/llamafit/cli/render.py:1342
 msgid "a processor whose model contains %(text)s"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1302
+#: src/llamafit/cli/render.py:1346
 msgid "at least %(ram)s of memory"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1304
+#: src/llamafit/cli/render.py:1348
 msgctxt "profile match rules"
 msgid "none, so this profile is never chosen for you"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1321
-#: src/llamafit/cli/render.py:1273
+#: src/llamafit/cli/render.py:1365
+#: src/llamafit/cli/render.py:1317
 msgid "Description"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1322
-#: src/llamafit/cli/render.py:1271
+#: src/llamafit/cli/render.py:1366
+#: src/llamafit/cli/render.py:1315
 msgid "From"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1323
+#: src/llamafit/cli/render.py:1367
 #: src/llamafit/cli/render_install.py:166
 msgid "File"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1346
+#: src/llamafit/cli/render.py:1390
 msgid "Matches"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1348
+#: src/llamafit/cli/render.py:1392
 msgid "Recorded"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1349
+#: src/llamafit/cli/render.py:1393
 msgid "Provenance"
 msgstr ""
 
-#: src/llamafit/cli/render.py:1355
+#: src/llamafit/cli/render.py:1399
 msgid "recorded from %(source)s; this build stores it but does not apply it yet"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:123
+#: src/llamafit/cli/render_board.py:124
 #: src/llamafit/tui/format.py:38
 msgctxt "utilisation"
 msgid "n/a"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:143
+#: src/llamafit/cli/render_board.py:144
 msgctxt "run mode"
 msgid "GPU"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:144
+#: src/llamafit/cli/render_board.py:145
 msgctxt "run mode"
 msgid "experts in RAM"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:145
+#: src/llamafit/cli/render_board.py:146
 msgctxt "run mode"
 msgid "split"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:146
+#: src/llamafit/cli/render_board.py:147
 msgctxt "run mode"
 msgid "CPU"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:147
+#: src/llamafit/cli/render_board.py:148
 msgctxt "run mode"
 msgid "nowhere"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:166
+#: src/llamafit/cli/render_board.py:167
 msgctxt "fit verdict"
 msgid "roomy"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:167
+#: src/llamafit/cli/render_board.py:168
 msgctxt "fit verdict"
 msgid "fits"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:168
+#: src/llamafit/cli/render_board.py:169
 msgctxt "fit verdict"
 msgid "tight"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:169
+#: src/llamafit/cli/render_board.py:170
 msgctxt "fit verdict"
 msgid "pages"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:170
+#: src/llamafit/cli/render_board.py:171
 msgctxt "fit verdict"
 msgid "no room"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:194
+#: src/llamafit/cli/render_board.py:195
 msgid "Roomy: there is room for a longer context or a second model."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:195
+#: src/llamafit/cli/render_board.py:196
 msgid "Fits: the intended configuration runs as planned."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:196
+#: src/llamafit/cli/render_board.py:197
 msgid "Tight: it runs, but a browser or a second process can push it over."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:197
+#: src/llamafit/cli/render_board.py:198
 msgid "Pages: this needs more of the graphics card than is free. The driver will not refuse it — it moves the overflow to system memory, the server starts, the log looks healthy, and generation runs at a fraction of its speed with nothing saying why."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:203
+#: src/llamafit/cli/render_board.py:204
 msgid "No room: more memory than this machine has, with nothing to page to."
-msgstr ""
-
-#: src/llamafit/cli/render_board.py:211
-msgctxt "confidence"
-msgid "measured"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:212
 msgctxt "confidence"
-msgid "calibrated"
+msgid "measured"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:213
 msgctxt "confidence"
-msgid "estimated"
+msgid "calibrated"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:214
 msgctxt "confidence"
+msgid "estimated"
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:215
+msgctxt "confidence"
 msgid "no estimate"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:222
+#: src/llamafit/cli/render_board.py:223
 msgid "Speeds are benchmarks taken on this machine, not predictions."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:223
+#: src/llamafit/cli/render_board.py:224
 msgid "Speeds are section 10's formula corrected by benchmarks taken on this machine."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:226
+#: src/llamafit/cli/render_board.py:227
 msgid "Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:230
+#: src/llamafit/cli/render_board.py:231
 msgid "No speed could be estimated."
-msgstr ""
-
-#: src/llamafit/cli/render_board.py:238
-msgctxt "memory pool"
-msgid "card"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:239
 msgctxt "memory pool"
-msgid "system"
+msgid "card"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:240
 msgctxt "memory pool"
-msgid "disk"
+msgid "system"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:253
-msgctxt "budget component"
-msgid "dense weights"
+#: src/llamafit/cli/render_board.py:241
+msgctxt "memory pool"
+msgid "disk"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:254
 msgctxt "budget component"
-msgid "shared experts"
+msgid "dense weights"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:255
 msgctxt "budget component"
-msgid "routed experts"
+msgid "shared experts"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:256
 msgctxt "budget component"
-msgid "token embedding"
+msgid "routed experts"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:257
 msgctxt "budget component"
-msgid "output head"
+msgid "token embedding"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:258
 msgctxt "budget component"
-msgid "other weights"
+msgid "output head"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:259
 msgctxt "budget component"
-msgid "streamed tables"
+msgid "other weights"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:260
 msgctxt "budget component"
-msgid "KV cache"
+msgid "streamed tables"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:261
 msgctxt "budget component"
-msgid "KV cache, undeclared"
+msgid "KV cache"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:262
 msgctxt "budget component"
-msgid "recurrent state"
+msgid "KV cache, undeclared"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:263
 msgctxt "budget component"
-msgid "compute buffer"
+msgid "recurrent state"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:264
 msgctxt "budget component"
-msgid "output buffer"
+msgid "compute buffer"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:265
 msgctxt "budget component"
-msgid "vision projector"
+msgid "output buffer"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:266
 msgctxt "budget component"
-msgid "vision compute"
+msgid "vision projector"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:267
 msgctxt "budget component"
-msgid "backend overhead"
+msgid "vision compute"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:268
 msgctxt "budget component"
-msgid "process overhead"
+msgid "backend overhead"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:276
-msgctxt "budget line source"
-msgid "file"
+#: src/llamafit/cli/render_board.py:269
+msgctxt "budget component"
+msgid "process overhead"
 msgstr ""
 
 #: src/llamafit/cli/render_board.py:277
 msgctxt "budget line source"
+msgid "file"
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:278
+msgctxt "budget line source"
 msgid "formula"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:303
+#: src/llamafit/cli/render_board.py:304
 #: src/llamafit/web/strings.py:194
 msgctxt "column heading"
 msgid "Component"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:306
+#: src/llamafit/cli/render_board.py:307
 #: src/llamafit/web/strings.py:196
 msgctxt "column heading"
 msgid "From"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:324
+#: src/llamafit/cli/render_board.py:325
 #: src/llamafit/web/strings.py:292
 msgid "Card: %(required)s of %(available)s free, %(share)s used."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:332
+#: src/llamafit/cli/render_board.py:333
 #: src/llamafit/web/strings.py:293
 msgid "System memory: %(required)s of %(available)s free, %(share)s used."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:359
+#: src/llamafit/cli/render_board.py:360
 msgid "%(component)s: %(note)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:388
+#: src/llamafit/cli/render_board.py:389
 #: src/llamafit/web/strings.py:330
 msgid "Context tiers"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:398
+#: src/llamafit/cli/render_board.py:399
 #: src/llamafit/web/strings.py:202
 msgctxt "column heading"
 msgid "On this machine"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:409
+#: src/llamafit/cli/render_board.py:410
 #: src/llamafit/web/strings.py:288
 msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:436
+#: src/llamafit/cli/render_board.py:437
 #: src/llamafit/web/strings.py:284
 msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:449
+#: src/llamafit/cli/render_board.py:450
 #: src/llamafit/web/strings.py:203
 msgctxt "column heading"
 msgid "A token's time"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:451
+#: src/llamafit/cli/render_board.py:452
 #: src/llamafit/web/strings.py:151
 msgctxt "token time"
 msgid "reading the card"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:452
+#: src/llamafit/cli/render_board.py:453
 #: src/llamafit/web/strings.py:152
 msgctxt "token time"
 msgid "reading system memory"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:453
+#: src/llamafit/cli/render_board.py:454
 #: src/llamafit/web/strings.py:153
 msgctxt "token time"
 msgid "everything else"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:457
+#: src/llamafit/cli/render_board.py:458
 msgctxt "column heading"
 msgid "A prompt token's time"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:460
+#: src/llamafit/cli/render_board.py:461
 msgctxt "prompt token time"
 msgid "doing the arithmetic"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:464
+#: src/llamafit/cli/render_board.py:465
 msgctxt "prompt token time"
 msgid "streaming the experts across the link"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:468
+#: src/llamafit/cli/render_board.py:469
 msgctxt "prompt token time"
 msgid "reading the experts from system memory"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:498
+#: src/llamafit/cli/render_board.py:499
 #: src/llamafit/web/strings.py:204
 msgctxt "column heading"
 msgid "Seconds"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:502
+#: src/llamafit/cli/render_board.py:503
 #: src/llamafit/web/strings.py:205
 msgctxt "column heading"
 msgid "Share"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:531
+#: src/llamafit/cli/render_board.py:532
 msgid "Measured on %(date)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:548
+#: src/llamafit/cli/render_board.py:549
 #: src/llamafit/web/strings.py:333
 msgid "Recorded elsewhere"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:552
+#: src/llamafit/cli/render_board.py:553
 #: src/llamafit/web/strings.py:206
 msgctxt "column heading"
 msgid "Run"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:560
+#: src/llamafit/cli/render_board.py:561
 #: src/llamafit/web/strings.py:207
 msgctxt "column heading"
 msgid "Date"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:574
+#: src/llamafit/cli/render_board.py:575
 msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:586
+#: src/llamafit/cli/render_board.py:587
 msgid "%(profile)s: %(flags)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:602
+#: src/llamafit/cli/render_board.py:603
 msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:611
+#: src/llamafit/cli/render_board.py:612
 msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:630
+#: src/llamafit/cli/render_board.py:631
 msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:639
+#: src/llamafit/cli/render_board.py:640
 msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:652
+#: src/llamafit/cli/render_board.py:653
 msgid "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool is %(share)s full. The score wants at least %(low)s of the memory taken and no more than %(high)s of any one pool."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:667
+#: src/llamafit/cli/render_board.py:668
 msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:696
+#: src/llamafit/cli/render_board.py:697
 #: src/llamafit/web/strings.py:283
 msgid "Score %(total)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:702
+#: src/llamafit/cli/render_board.py:703
 #: src/llamafit/web/strings.py:198
 msgctxt "column heading"
 msgid "Part"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:704
+#: src/llamafit/cli/render_board.py:705
 #: src/llamafit/web/strings.py:199
 msgctxt "column heading"
 msgid "Weight"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:705
+#: src/llamafit/cli/render_board.py:706
 #: src/llamafit/web/strings.py:200
 msgctxt "column heading"
 msgid "Adds"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:709
+#: src/llamafit/cli/render_board.py:710
 #: src/llamafit/web/strings.py:145
 msgctxt "score part"
 msgid "quality"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:710
+#: src/llamafit/cli/render_board.py:711
 #: src/llamafit/web/strings.py:146
 msgctxt "score part"
 msgid "speed"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:711
+#: src/llamafit/cli/render_board.py:712
 #: src/llamafit/web/strings.py:147
 msgctxt "score part"
 msgid "fit"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:712
+#: src/llamafit/cli/render_board.py:713
 #: src/llamafit/web/strings.py:148
 msgctxt "score part"
 msgid "context"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:818
+#: src/llamafit/cli/render_board.py:823
+#: src/llamafit/web/strings.py:252
+msgid "Nothing was ranked. Every candidate is listed below with the reason; widen the request or free some memory."
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:833
 #: src/llamafit/web/strings.py:250
 msgid "Recommended"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:820
-#: src/llamafit/cli/render_board.py:1122
+#: src/llamafit/cli/render_board.py:835
+#: src/llamafit/cli/render_board.py:1217
 #: src/llamafit/tui/board_view.py:203
 #: src/llamafit/web/strings.py:177
 msgctxt "column heading"
 msgid "#"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:822
-#: src/llamafit/cli/render_board.py:1124
-#: src/llamafit/cli/render_board.py:1048
-#: src/llamafit/cli/render_board.py:1201
-#: src/llamafit/cli/render_board.py:766
-#: src/llamafit/cli/render_board.py:1113
+#: src/llamafit/cli/render_board.py:837
+#: src/llamafit/cli/render_board.py:1219
+#: src/llamafit/cli/render_board.py:1128
+#: src/llamafit/cli/render_board.py:1295
+#: src/llamafit/cli/render_board.py:767
+#: src/llamafit/cli/render_board.py:1208
 #: src/llamafit/tui/board_view.py:204
 #: src/llamafit/web/strings.py:178
 msgctxt "column heading"
 msgid "Model"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:827
+#: src/llamafit/cli/render_board.py:842
+#: src/llamafit/cli/render_board.py:1224
 #: src/llamafit/cli/render_board.py:1129
-#: src/llamafit/cli/render_board.py:1049
-#: src/llamafit/cli/render_board.py:1202
-#: src/llamafit/cli/render_board.py:771
+#: src/llamafit/cli/render_board.py:1296
+#: src/llamafit/cli/render_board.py:772
 #: src/llamafit/tui/board_view.py:205
 #: src/llamafit/web/strings.py:179
 msgctxt "column heading"
 msgid "Quant"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:828
-#: src/llamafit/cli/render_board.py:703
+#: src/llamafit/cli/render_board.py:843
+#: src/llamafit/cli/render_board.py:704
 #: src/llamafit/tui/board_view.py:206
 #: src/llamafit/web/strings.py:180
 msgctxt "column heading"
 msgid "Score"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:831
-#: src/llamafit/cli/render_board.py:553
+#: src/llamafit/cli/render_board.py:846
+#: src/llamafit/cli/render_board.py:554
 #: src/llamafit/tui/board_view.py:207
 #: src/llamafit/web/strings.py:181
 msgctxt "column heading"
 msgid "Tok/s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:832
+#: src/llamafit/cli/render_board.py:847
 #: src/llamafit/tui/board_view.py:208
 #: src/llamafit/web/strings.py:182
 msgctxt "column heading"
 msgid "How"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:833
-#: src/llamafit/cli/render_board.py:1130
+#: src/llamafit/cli/render_board.py:848
+#: src/llamafit/cli/render_board.py:1225
 #: src/llamafit/tui/board_view.py:209
 #: src/llamafit/web/strings.py:183
 msgctxt "column heading"
 msgid "Fit"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:834
-#: src/llamafit/cli/render_board.py:1135
+#: src/llamafit/cli/render_board.py:849
+#: src/llamafit/cli/render_board.py:1230
 #: src/llamafit/tui/board_view.py:210
 #: src/llamafit/web/strings.py:184
 msgctxt "column heading"
 msgid "Runs"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:835
-#: src/llamafit/cli/render_board.py:1136
+#: src/llamafit/cli/render_board.py:850
+#: src/llamafit/cli/render_board.py:1231
 #: src/llamafit/tui/board_view.py:211
 #: src/llamafit/web/strings.py:185
 msgctxt "column heading"
 msgid "Ctx"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:836
+#: src/llamafit/cli/render_board.py:851
 #: src/llamafit/tui/board_view.py:212
 #: src/llamafit/web/strings.py:189
 msgctxt "column heading"
 msgid "Qual"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:837
-#: src/llamafit/cli/render_board.py:1137
+#: src/llamafit/cli/render_board.py:852
+#: src/llamafit/cli/render_board.py:1232
 #: src/llamafit/tui/board_view.py:213
 #: src/llamafit/web/strings.py:190
 msgctxt "column heading"
 msgid "Card"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:838
-#: src/llamafit/cli/render_board.py:555
-#: src/llamafit/cli/render_board.py:789
+#: src/llamafit/cli/render_board.py:853
+#: src/llamafit/cli/render_board.py:556
+#: src/llamafit/cli/render_board.py:790
 #: src/llamafit/tui/board_view.py:214
 #: src/llamafit/web/strings.py:191
 msgctxt "column heading"
 msgid "Prompt tok/s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:839
-#: src/llamafit/cli/render_board.py:305
+#: src/llamafit/cli/render_board.py:854
+#: src/llamafit/cli/render_board.py:306
 #: src/llamafit/tui/board_view.py:215
 #: src/llamafit/web/strings.py:192
 msgctxt "column heading"
 msgid "Size"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:840
-#: src/llamafit/cli/render_board.py:1138
+#: src/llamafit/cli/render_board.py:855
+#: src/llamafit/cli/render_board.py:1233
 #: src/llamafit/tui/board_view.py:216
 #: src/llamafit/web/strings.py:193
 msgctxt "column heading"
 msgid "RAM"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:923
+#: src/llamafit/cli/render_board.py:936
 msgid "--min-tps 0: nobody is waiting on these tokens, so nothing was excluded for generating more slowly than a person reads."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:927
+#: src/llamafit/cli/render_board.py:940
 msgid "--min-tps %(tps)s: this board wanted at least that many tokens per second, and anything slower is excluded below rather than ranked here."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:950
+#: src/llamafit/cli/render_board.py:963
 msgid "Showing the best %(shown)s of %(total)s that qualified; --limit sets how many, and the rest are neither worse-behaved nor hidden, only further down."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:979
+#: src/llamafit/cli/render_board.py:992
 msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every speed above is a CPU-only speed. `llamafit doctor` says how to fix that."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:989
+#: src/llamafit/cli/render_board.py:1002
 #: src/llamafit/web/strings.py:263
 msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:999
+#: src/llamafit/cli/render_board.py:1012
 #: src/llamafit/web/strings.py:268
 msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1023
+#: src/llamafit/cli/render_board.py:1037
 #: src/llamafit/web/strings.py:282
 msgid "Weights: %(weights)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1044
+#: src/llamafit/cli/render_board.py:1073
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free, no card."
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:1078
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free and %(vram_free)s of %(vram_total)s free on the %(gpu)s."
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:1093
+msgid "Every speed above is derived from %(bandwidth)s of memory bandwidth."
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:1106
+msgid "That bandwidth was kept from an earlier run on this machine; `llamafit system --refresh-bandwidth` times it again."
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:1124
 #: src/llamafit/web/strings.py:251
 msgid "Not ranked"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1050
-#: src/llamafit/cli/render_board.py:1203
+#: src/llamafit/cli/render_board.py:1130
+#: src/llamafit/cli/render_board.py:1297
 #: src/llamafit/web/strings.py:197
 msgctxt "column heading"
 msgid "Why not"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1075
+#: src/llamafit/cli/render_board.py:1155
 msgid "%(rank)s. %(name)s %(quant)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1119
+#: src/llamafit/cli/render_board.py:1198
+msgid "Nothing fits this machine at that threshold. Try --min-fit tight, or drop --perfect."
+msgstr ""
+
+#: src/llamafit/cli/render_board.py:1214
 msgid "Fit on the simulated machine"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1119
+#: src/llamafit/cli/render_board.py:1214
 msgid "Fit on this machine"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1164
+#: src/llamafit/cli/render_board.py:1259
 msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1177
+#: src/llamafit/cli/render_board.py:1272
 msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every row was sized as if there were no card. `llamafit doctor` says how to fix that."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1197
+#: src/llamafit/cli/render_board.py:1291
 msgid "Not placed"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1218
+#: src/llamafit/cli/render_board.py:1312
 msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1237
+#: src/llamafit/cli/render_board.py:1331
 msgid "This reaches the %(target)s tokens per second asked for."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1241
+#: src/llamafit/cli/render_board.py:1335
 msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1249
+#: src/llamafit/cli/render_board.py:1343
 msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1269
+#: src/llamafit/cli/render_board.py:1361
 #: src/llamafit/tui/explain.py:43
 msgid "%(name)s %(quant)s"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1280
+#: src/llamafit/cli/render_board.py:1372
 #: src/llamafit/web/strings.py:329
 msgid "Memory budget"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1286
+#: src/llamafit/cli/render_board.py:1378
 #: src/llamafit/web/strings.py:339
 msgid "The %(context)s tokens asked for would have cost"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1304
+#: src/llamafit/cli/render_board.py:1396
 #: src/llamafit/web/strings.py:325
 msgid "Command line"
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1318
+#: src/llamafit/cli/render_board.py:1410
 #: src/llamafit/web/strings.py:334
 msgid "Model file: %(path)s."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1320
+#: src/llamafit/cli/render_board.py:1412
 #: src/llamafit/web/strings.py:335
 msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
 msgstr ""
 
-#: src/llamafit/cli/render_board.py:1329
+#: src/llamafit/cli/render_board.py:1421
 msgid "%(shown)d of %(total)d candidate shown."
 msgid_plural "%(shown)d of %(total)d candidates shown."
 msgstr[0] ""
@@ -2949,12 +2969,16 @@ msgstr ""
 msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
 msgstr ""
 
-#: src/llamafit/cli/system_cmd.py:34
+#: src/llamafit/cli/system_cmd.py:41
 msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
 msgstr ""
 
-#: src/llamafit/cli/system_cmd.py:42
+#: src/llamafit/cli/system_cmd.py:49
 msgid "Skip the RAM bandwidth measurement."
+msgstr ""
+
+#: src/llamafit/cli/system_cmd.py:56
+msgid "Measure RAM bandwidth again instead of reading back the figure kept for this machine, and keep the new one."
 msgstr ""
 
 #: src/llamafit/download/engine.py:230
@@ -3403,23 +3427,23 @@ msgstr ""
 msgid "Run `llamafit hardware path` to see where your own profiles go."
 msgstr ""
 
-#: src/llamafit/hwprofile/simulate.py:127
+#: src/llamafit/hwprofile/simulate.py:173
 msgid "this machine has no graphics card, so there is no VRAM to override"
 msgstr ""
 
-#: src/llamafit/hwprofile/simulate.py:128
+#: src/llamafit/hwprofile/simulate.py:174
 msgid "Describe the whole machine in a hardware profile and pass --profile."
 msgstr ""
 
-#: src/llamafit/hwprofile/simulate.py:132
+#: src/llamafit/hwprofile/simulate.py:178
 msgid "this machine has one memory pool shared with the graphics card"
 msgstr ""
 
-#: src/llamafit/hwprofile/simulate.py:133
+#: src/llamafit/hwprofile/simulate.py:179
 msgid "Use --ram to resize the pool; --memory would change only half of it."
 msgstr ""
 
-#: src/llamafit/hwprofile/simulate.py:207
+#: src/llamafit/hwprofile/simulate.py:262
 msgid "%(option)s needs a value above zero"
 msgstr ""
 
@@ -4013,11 +4037,11 @@ msgstr ""
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr ""
 
-#: src/llamafit/services/recommend.py:445
+#: src/llamafit/services/recommend.py:459
 msgid "licensed %(spdx)s, which this request does not allow"
 msgstr ""
 
-#: src/llamafit/services/recommend.py:562
+#: src/llamafit/services/recommend.py:577
 msgid "no placement of it fits this machine at any context"
 msgstr ""
 

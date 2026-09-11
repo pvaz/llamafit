@@ -33,6 +33,7 @@ from llamafit.models.host import (
     Disk,
     Gpu,
     Host,
+    MachineFacts,
     Memory,
     OsName,
     Override,
@@ -40,6 +41,7 @@ from llamafit.models.host import (
     Simulation,
     Source,
     Vendor,
+    machine_facts,
 )
 from llamafit.models.hwprofile import (
     PROFILE_SCHEMA_VERSION,
@@ -78,6 +80,7 @@ __all__ = [
     "LlamaCpp",
     "LlamaCppNeeds",
     "LocalModel",
+    "MachineFacts",
     "Measured",
     "Memory",
     "ModelSource",
@@ -101,4 +104,5 @@ __all__ = [
     "Trust",
     "UseCase",
     "Vendor",
+    "machine_facts",
 ]

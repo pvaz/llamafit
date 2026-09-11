@@ -22,14 +22,19 @@ host without it: the mark is set in the two constructors below and nowhere else.
 
 The overrides' arithmetic is written down rather than guessed at each call site:
 
-* ``gpu_memory`` resizes the primary card's VRAM. What the desktop was already using
-  stays used, capped at the new size, because a bigger card does not empty itself.
-* ``ram`` resizes the system pool and keeps *what is in use* rather than what is free:
-  the same applications are still open on the larger machine, so the free figure moves by
-  the whole difference.
+* ``gpu_memory`` resizes the primary card's VRAM and ``ram`` resizes the system pool.
+  Both move what is *in use* by :func:`_carried_load`, which is the one rule below.
 * ``cpu_cores`` sets the physical core count and scales the thread count by the ratio the
   host had, so a machine with simultaneous multithreading keeps it and one without does
   not acquire it. Performance cores cannot outnumber the cores that remain.
+
+**A size names a machine.** ``--ram 16GiB`` describes a 16 GiB machine, and ``--memory
+4GiB`` a 4 GiB card; neither asks for this machine's occupancy to be subtracted from the
+figure typed. The flag's own help says *pretend the machine has this much system memory*,
+and a reader who says 16 GiB means a 16 GiB machine, not their 128 GiB one with 112 GiB
+taken off the top. :func:`_carried_load` is the whole of how that is honoured, and it is
+one rule for both pools rather than one per flag, because a person who has understood
+``--ram`` has already understood ``--memory``.
 """
 
 from __future__ import annotations
@@ -114,8 +119,49 @@ def host_from_profile(loaded: LoadedProfile) -> Host:
     )
 
 
+def _carried_load(in_use: int, was_total: int, now_total: int) -> int:
+    """How much of a resized pool the machine's own load takes, in bytes.
+
+    Args:
+        in_use: What was in use when the pool was its real size.
+        was_total: The real size of the pool.
+        now_total: The size the flag asked for.
+
+    Returns:
+        The same load on a pool that is the same size or larger, and the same *share* of
+        one that is smaller.
+
+    Three directions and one rule, which is the point.
+
+    Growing, the load does not grow with the machine: the browser and the desktop do not
+    swell to fill a bigger card, so a 24 GiB card asked about from an 8 GiB one with 700
+    MiB in use has 700 MiB in use and 23.3 GiB free. This is the rule the module was
+    written with and it was right about this direction.
+
+    Shrinking, that same load cannot be carried over unchanged, and subtracting it is what
+    made a 16 GiB machine asked about from a 128 GiB one come back with nothing free at
+    all: 112 GiB of somebody's open applications charged against a machine that could
+    never have held them, an empty board for a four-billion-parameter model that would
+    have fitted on the card. So the *share* is carried instead -- a machine asked to be a
+    quarter of the size is a quarter as busy -- which is the only reading of "pretend the
+    machine has this much memory" that leaves a small machine usable and still says
+    something true about how busy it is.
+
+    Exactly the same size, in either arm, gives exactly the figure that was scanned: the
+    division is integer and ``in_use * total // total`` is ``in_use``. A flag naming the
+    size the machine already has must not move a single byte of the answer.
+    """
+    if was_total <= 0:
+        return 0
+    return min(in_use, in_use * now_total // was_total)
+
+
 def _overridden_gpu(host: Host, vram_total_bytes: int) -> list[Gpu]:
     """Every card, with the primary one resized to ``vram_total_bytes``.
+
+    What the desktop was using is carried across by :func:`_carried_load`, so a card
+    asked to be smaller than the one in the machine comes back with room on it rather
+    than filled to the brim by a compositor that never ran on it.
 
     Raises:
         ConfigError: There is no card to resize, or the machine has one memory pool and
@@ -136,7 +182,14 @@ def _overridden_gpu(host: Host, vram_total_bytes: int) -> list[Gpu]:
         gpu.model_copy(
             update={
                 "vram_total_bytes": vram_total_bytes,
-                "vram_used_bytes": min(gpu.vram_used_bytes or 0, vram_total_bytes),
+                "vram_used_bytes": _carried_load(
+                    gpu.vram_used_bytes or 0,
+                    # A card whose size nobody could read has no share to scale, so the
+                    # load is carried whole and clamped by the new size -- which is what
+                    # the equal-size arm of the rule does anyway.
+                    gpu.vram_total_bytes or (gpu.vram_used_bytes or 0),
+                    vram_total_bytes,
+                ),
                 # Nothing read this card; a person asked for it to be this size. That is
                 # what ``assumed`` means everywhere else a figure carries a label, and it
                 # keeps ``--memory`` from dressing a what-if as a measurement.
@@ -150,8 +203,10 @@ def _overridden_gpu(host: Host, vram_total_bytes: int) -> list[Gpu]:
 
 
 def _overridden_memory(memory: Memory, total_bytes: int) -> Memory:
-    """The system pool resized, keeping what was in use rather than what was free."""
-    in_use = max(memory.total_bytes - memory.available_bytes, 0)
+    """The system pool resized, carrying this machine's load across by :func:`_carried_load`."""
+    in_use = _carried_load(
+        max(memory.total_bytes - memory.available_bytes, 0), memory.total_bytes, total_bytes
+    )
     return memory.model_copy(
         update={
             "total_bytes": total_bytes,
