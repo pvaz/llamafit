@@ -5,9 +5,16 @@
 
 These commands put the catalog services in front of a person: ``list`` and
 ``search`` narrow it down, ``info`` shows one model in full, and ``catalog
-validate|refresh|show`` maintain the underlying YAML files. Nothing here computes
-a memory budget for a quant on this host; that is phase 1C's job, once it exists
-to compute it (see ``llamafit.services.catalog.ModelDetail``).
+validate|refresh|show`` maintain the underlying YAML files.
+
+``info`` is the one that reads the machine, and section 13.1 is where the line is drawn.
+It answers *what is this model, and what would each of its quantisations cost here* -- one
+line per quantisation, the verdict, both pools, a speed and the largest context it holds.
+It does not answer *how do I launch it*: the budget component by component, the context
+ladder, where a token's time goes and the command line all belong to ``plan``, which is
+about one quantisation and can afford the depth. Two commands printing the same screen is
+a defect of its own, so this one stops one step short and the caption under its last table
+says where the next step is.
 """
 
 from __future__ import annotations
@@ -21,6 +28,7 @@ from typing import cast
 import httpx
 import typer
 import yaml
+from rich.console import RenderableType
 from rich.text import Text
 
 from llamafit.catalog.hf import HttpHfClient
@@ -31,15 +39,26 @@ from llamafit.cli.app import CliState, app
 from llamafit.cli.common import (
     check_capabilities,
     check_use_case,
+    checked_max_context,
     find_model,
     load_catalog_or_warn,
+    machine,
 )
-from llamafit.cli.render import render_catalog_list, render_model_facts, render_quants
+from llamafit.cli.render import (
+    render_catalog_list,
+    render_model_facts,
+    render_quant_budgets,
+    render_quants,
+    simulated_answer,
+)
 from llamafit.gguf.cache import HeaderCache, read_facts
 from llamafit.i18n import _, lazy_gettext, ngettext
 from llamafit.models.catalog import CatalogModel
+from llamafit.models.plan import Needs
 from llamafit.paths import get_paths
 from llamafit.services.catalog import ModelFilters, describe, filter_models, summarise
+from llamafit.services.plan import quant_named, size_quants, sizing_context
+from llamafit.services.recommend import quant_entries
 
 catalog_app = typer.Typer(
     name="catalog",
@@ -71,6 +90,23 @@ _LICENSE_OPTION: list[str] = typer.Option(
     [],
     "--license",
     help=cast(str, lazy_gettext("Keep only these licence identifiers (repeatable).")),
+)
+_INFO_QUANT_OPTION: str | None = typer.Option(
+    None,
+    "--quant",
+    help=cast(
+        str,
+        lazy_gettext("Show only this quantisation, matched case-insensitively, in both tables."),
+    ),
+)
+_INFO_CONTEXT_OPTION: int | None = typer.Option(
+    None,
+    "--context",
+    min=1,
+    help=cast(
+        str,
+        lazy_gettext("Size every quantisation for this many tokens instead of the usual 32,768."),
+    ),
 )
 _VALIDATE_FILE_ARGUMENT: Path | None = typer.Argument(
     None,
@@ -191,26 +227,57 @@ def search_command(
 
 @app.command(
     name="info",
-    help=cast(str, lazy_gettext("Show one model's facts, sources and every quant it publishes.")),
+    help=cast(
+        str,
+        lazy_gettext(
+            "Show one model: its facts, the quants it publishes, and what each would "
+            "cost on this machine.\n\n"
+            "The last table is sized against this machine, so the first run scans it. "
+            "One line per quantisation; plan opens one of those rows into the memory "
+            "budget, the context ladder and the command line."
+        ),
+    ),
 )
 def info_command(
     ctx: typer.Context,
     model_id: str = typer.Argument(
         ..., metavar="MODEL", help=cast(str, lazy_gettext("A catalog model id."))
     ),
+    quant: str | None = _INFO_QUANT_OPTION,
+    context: int | None = _INFO_CONTEXT_OPTION,
 ) -> None:
-    """Show one model's facts, sources and every quant it publishes."""
+    """Show one model's facts, its quants, and what each costs on this machine."""
     state: CliState = ctx.obj
     catalog = load_catalog_or_warn(state)
     model = find_model(catalog, model_id)
-    detail = describe(model)
+    report = machine(state)
+    detail = describe(model, report.llamacpp.local_models)
+    if quant is not None:
+        chosen = quant_named(model.id, quant_entries(model), quant).name
+        detail = detail.model_copy(
+            update={"quants": [q for q in detail.quants if q.name == chosen]}
+        )
+    needs = Needs(
+        use_case=model.use_cases[0],
+        requested_context=context,
+        max_context=checked_max_context(state),
+    )
+    detail = size_quants(detail, report.host, needs=needs)
     if state.json_output:
         typer.echo(detail.model_dump_json(indent=2, by_alias=True))
         return
-    console = state.console
-    console.print(render_model_facts(detail.model))
-    console.print()
-    console.print(render_quants(detail.quants))
+    parts: list[RenderableType] = [
+        render_model_facts(detail.model),
+        Text(""),
+        render_quants(detail.quants),
+    ]
+    budgets = render_quant_budgets(detail.quants, context=sizing_context(model, needs))
+    if budgets is not None:
+        parts.extend((Text(""), budgets))
+    # Wrapped whole rather than round the last table alone: the line saying these figures
+    # are about somebody else's machine has to be above everything it is about, and the
+    # facts table is the first thing on the page.
+    state.console.print(simulated_answer(report.host.simulation, *parts))
 
 
 def _default_catalog_paths() -> list[Path]:

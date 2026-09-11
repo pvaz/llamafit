@@ -117,7 +117,7 @@ missing, an installation missing its own data).
 | `GET /api/v1/doctor` | `Diagnosis` |
 | `GET /api/v1/models` | `Board`: every quantisation of every model, planned and scored |
 | `GET /api/v1/models/top` | `Board`: the best quant per model, ranked |
-| `GET /api/v1/models/{id}` | `ModelDetail`: one model with its quants and the facts read from their headers |
+| `GET /api/v1/models/{id}` | `ModelDetail`: one model with its quants and the facts read from their headers. The per-quant `placement`, `speed` and `unplaceable_because` that `llamafit info` fills in come back empty here: this endpoint does not size the quants against a host yet. |
 | `POST /api/v1/plan` | body `{"model": id, "quant": name?, "context": n?, "ub": n?, "vision": bool?, "target_tps": n?, "profile": name?, "memory": size?, "ram": size?, "cpu_cores": n?}` → `PlanReport` |
 | `GET /api/v1/profiles` | bundled and user hardware profiles, in the shape `hardware list --json` prints |
 | `GET /api/v1/catalog/schema` | the JSON schema of catalog entries |

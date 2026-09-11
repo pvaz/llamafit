@@ -21,6 +21,7 @@ from __future__ import annotations
 from typing import cast
 
 import typer
+from rich.console import Console
 
 from llamafit.cli.app import CliState, app
 from llamafit.cli.common import (
@@ -31,6 +32,7 @@ from llamafit.cli.common import (
     load_catalog_or_warn,
     machine,
 )
+from llamafit.cli.render import render_counterfactuals
 from llamafit.cli.render_board import (
     render_board,
     render_excluded,
@@ -40,9 +42,19 @@ from llamafit.cli.render_board import (
 )
 from llamafit.errors import CatalogError
 from llamafit.i18n import _, lazy_gettext
+from llamafit.models.catalog import Catalog
+from llamafit.models.host import Host
 from llamafit.models.plan import Needs, Verdict
 from llamafit.scoring import PREFERENCES
-from llamafit.services.recommend import MIN_FIT_VERDICTS, build_board, build_fit_board
+from llamafit.services.plan import counterfactuals
+from llamafit.services.recommend import (
+    MIN_FIT_VERDICTS,
+    Board,
+    BoardRow,
+    build_board,
+    build_fit_board,
+    quant_entries,
+)
 
 # Module-level singletons rather than inline ``typer.Option(...)`` calls: ruff's B008 does
 # not recognise every annotation shape (a ``list``, an optional string) as safe to call in
@@ -131,6 +143,56 @@ def _check_prefer(value: str) -> str:
             hint=_("Valid values: %(values)s") % {"values": ", ".join(PREFERENCES)},
         )
     return value
+
+
+def _explain_alternatives(
+    console: Console,
+    row: BoardRow,
+    board: Board,
+    catalog: Catalog,
+    host: Host,
+    *,
+    vision: bool,
+) -> None:
+    """Print what would move one row, after the working that put it where it is.
+
+    Section 12.3 asks an explanation to end with what would change the answer, and until
+    now it ended with the context ladder. The two counterfactuals are computed here rather
+    than inside :func:`~llamafit.services.recommend.build_board` because each one costs a
+    whole placement search, and a board plans sixty candidates before it prints anything:
+    paying for a sixty-first and a sixty-second per row, on every run, to print them on
+    none of them, is not a trade this command should make. ``--explain`` is where the
+    specification puts the sentence and where a reader has already asked for the working.
+
+    A row whose candidate could not be placed at all is skipped: there is no placement to
+    compare an alternative against, and "what would move it up a tier" has no meaning for
+    something that has no tier.
+    """
+    candidate = row.candidate
+    placement = candidate.placement
+    model = catalog.by_id.get(row.model_id)
+    if placement is None or model is None:
+        return
+    quants = quant_entries(model)
+    current = next((q for q in quants if q.name == row.quant), None)
+    if current is None:  # pragma: no cover - the board's rows come from these same quants
+        return
+    found = counterfactuals(
+        model,
+        current,
+        host,
+        placement,
+        quants=quants,
+        needs=board.needs,
+        vision=vision,
+        gen_tps=None if candidate.speed is None else candidate.speed.gen_tps,
+        working_context=board.working_context,
+    )
+    rendered = render_counterfactuals(
+        found, placement, gen_tps=None if candidate.speed is None else candidate.speed.gen_tps
+    )
+    if rendered is not None:
+        console.print(rendered)
 
 
 @app.command(
@@ -229,6 +291,7 @@ def recommend_command(
     if explain:
         for row in board.rows:
             console.print(render_explanation(row, board))
+            _explain_alternatives(console, row, board, catalog, report.host, vision=not no_vision)
     excluded = render_excluded(board.excluded)
     if excluded is not None:
         console.print()

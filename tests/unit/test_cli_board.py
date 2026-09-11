@@ -8,12 +8,15 @@ bundled catalog, because a board is only worth testing against real entries.
 from __future__ import annotations
 
 import json
+import re
 
 import pytest
 from typer.testing import CliRunner
 
+from llamafit.catalog import load_catalog
 from llamafit.cli.app import app
 from llamafit.errors import CatalogError
+from llamafit.services.recommend import quant_entries
 from tests.fixtures.board import report
 from tests.fixtures.budget_hosts import machine
 
@@ -85,6 +88,54 @@ def test_explain_expands_a_row_into_its_parts_weights_budget_and_speed() -> None
     assert "compute buffer" in result.output  # a budget line
     assert "A token's time" in result.output  # the speed breakdown
     assert "Context tiers" in result.output
+
+
+def test_explain_ends_with_what_would_change_the_answer() -> None:
+    """Section 12.3's last clause, and the half that was never built.
+
+    ``--explain`` printed the scores, the weights, the budget and the speed, and then
+    stopped: an explanation of a decision already taken, with nothing a reader could act
+    on. Two things can be changed without changing the machine or the model, and both are
+    costed rather than reasoned about.
+    """
+    result = runner.invoke(
+        app, ["--language", "en", "recommend", "--use-case", "coding", "--limit", "1", "--explain"]
+    )
+    assert result.exit_code == 0, result.output
+    output = flat(result.output)
+    assert "What would change it" in output
+    assert "on the graphics card" in output
+
+
+def test_the_quantisation_offered_is_one_the_model_actually_publishes() -> None:
+    """A promise about a file nobody could fetch is worse than no promise."""
+    result = runner.invoke(
+        app,
+        ["--language", "en", "recommend", "--use-case", "reasoning", "--limit", "6", "--explain"],
+    )
+    assert result.exit_code == 0, result.output
+    output = flat(result.output)
+    assert "the next quantisation down" in output
+    catalog, problems = load_catalog()
+    assert problems == []
+    published = {q.name for m in catalog.models for q in quant_entries(m)}
+    offered = re.findall(r"(\S+), the next quantisation down", output)
+    assert offered
+    assert set(offered) <= published
+
+
+def test_a_model_publishing_one_quantisation_is_offered_no_other() -> None:
+    """qwen3-coder-next has exactly one, so the sentence must not appear under its row."""
+    result = runner.invoke(
+        app, ["--language", "en", "recommend", "--use-case", "coding", "--limit", "1", "--explain"]
+    )
+    assert "qwen3-coder-next" in result.output
+    assert "the next quantisation down" not in flat(result.output)
+
+
+def test_nothing_is_said_about_what_would_change_without_explain() -> None:
+    result = runner.invoke(app, ["--language", "en", "recommend", "--use-case", "coding"])
+    assert "What would change it" not in flat(result.output)
 
 
 def test_a_limit_cuts_the_board_and_never_the_reasons() -> None:

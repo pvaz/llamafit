@@ -233,8 +233,8 @@ $ llamafit search coder
 ### `llamafit info` `<model>` — phase 1B, shipped
 
 One model's curated facts (licence, parameters, context, architecture, capabilities, quality
-with its sourced benchmarks, sources) and every quant it publishes, with its size, bits per
-weight and GGUF architecture facts.
+with its sourced benchmarks, sources), every quant it publishes with its size, bits per weight
+and GGUF architecture facts, and what each of those quants would cost on this machine.
 
 ```
 $ llamafit info qwen3-coder-next
@@ -281,11 +281,48 @@ no model named 'qwen3-coder' in the catalog
 Hint: Did you mean: qwen3-coder-next?
 ```
 
-Nothing here estimates a per-host budget: `info` reads the catalog and never the machine.
-`llamafit plan <model> --quant NAME --context N` is where a quant is sized for this one.
+`info` reads the machine as well as the catalog, so a third table follows the two above: one
+line per quantisation, sized for this host.
+
+```
+                              On this machine
+┌────────────┬────────────────┬─────────┬──────────┬───────┬─────┬───────┐
+│ Quant      │ Runs           │    Card │      RAM │ Tok/s │ Ctx │ Fit   │
+├────────────┼────────────────┼─────────┼──────────┼───────┼─────┼───────┤
+│ UD-Q4_K_XL │ experts in RAM │ 6.3 GiB │ 46.4 GiB │  17.6 │ 48K │ tight │
+└────────────┴────────────────┴─────────┴──────────┴───────┴─────┴───────┘
+Sized for 32,768 tokens, with every figure from a placement computed for this machine.
+`llamafit plan MODEL --quant NAME` opens one of these rows into the budget line by line, the
+context ladder and the command line that runs it.
+```
+
+| Option | Effect |
+|---|---|
+| `--quant NAME` | Show only this quantisation, matched case-insensitively, in both the `Quants` table and the one above. An unknown name exits 1 and lists the ones the model publishes — the same sentence `plan --quant` gives, from the same matcher. |
+| `--context N` | Size every quantisation for this many tokens instead of the 32,768 the planner defaults to, never above what the model holds or what `--max-context` allows. The caption names the figure that was actually used, not the one you typed. |
+
+**One line each, and no more than that — the depth belongs to `plan`.** The question `info`
+answers is the one before the plan: *which of these quantisations can this machine run, and how
+fast*. The memory budget component by component, the context ladder, where a token's time goes
+and the `llama-server` command line are all about a quantisation already chosen, and printing
+them here for three quants would be three copies of `plan` under a different heading. So this
+table stops at the verdict, both pools, a speed and the largest context each one holds, and the
+caption says where the rest is.
+
+Every figure comes from a placement the planner actually searched for, not from arithmetic on
+another one. A quantisation nobody can size — no GGUF header read yet — is named under the table
+with the reason rather than dropped from it, and one that fits nowhere gets a row saying
+`nowhere` and `no room` rather than a blank. Its speed column reads `unknown`, not `0.0`: a
+configuration that does not run is not a configuration that runs slowly.
+
+The four flags that replace a machine work here as they do everywhere else, and the answer is
+marked: a red `SIMULATED` line above the whole page, and `simulation` with `simulated` on the
+JSON.
 
 With `--json` the output is a `ModelDetail`: the whole catalog entry, plus every quant with its
-`bytes`, `bpw`, `files` and `facts`.
+`bytes`, `bpw`, `files` and `facts`, and now its `placement`, `speed` and `unplaceable_because`
+as well. The web API's `GET /api/v1/models/{id}` returns the same shape; it does not size the
+quants today, so those three fields come back empty there.
 
 ### `llamafit catalog` `validate|refresh|show` — phase 1B, shipped
 
@@ -371,7 +408,7 @@ the command the program exists for, and it scans the machine to answer.
 | `--limit N` | Show at most this many rows. Defaults to 10. |
 | `--all-quants` | Show every quantisation instead of the best one per model. |
 | `--no-vision` | Plan without a vision projector, freeing its memory for context. |
-| `--explain` | Expand every row shown into the four scores, the weights, the quality it was built from, the memory budget line by line, the context ladder, where a token's time goes and where a prompt token's goes. Combine with `--limit 1` for one model. |
+| `--explain` | Expand every row shown into the four scores, the weights, the quality it was built from, the memory budget line by line, the context ladder, where a token's time goes and where a prompt token's goes — and then what would change the answer. Combine with `--limit 1` for one model. |
 
 ```
 $ llamafit recommend --use-case coding --limit 3
@@ -424,6 +461,42 @@ reasoning for thinking, multimodal for vision, embedding for embeddings; `genera
 ask for nothing, so a model built for one job is ranked on its merits for either of those. The
 `--use-case` filter on `llamafit list` is a different thing: there you are browsing the catalog
 and asking to see what an entry offers itself for.
+
+**`--explain` ends with what would change the answer.** Everything above it explains a decision
+already taken; the last block is the only part a reader can act on, and section 12.3 of the
+design asks for it by name. There are exactly two things that can change without changing the
+machine or the model — how much of the card is free, and which quantisation you fetch — so there
+are at most two lines:
+
+```
+What would change it
+To reach 64K tokens, free 61.6 MiB more on the graphics card: that rung needs 6.9 GiB, which
+is 96% of what is free and over the line where the driver starts paging.
+UD-Q4_K_XL, the next quantisation down, was planned here too: experts in RAM, fits, up to
+62,464 tokens at 25.1 tokens per second.
+It generates 25.1 tokens per second rather than 18.9.
+```
+
+**Neither line is arithmetic on the row above it.** The context line quotes a rung of the ladder
+whose budget was computed for that rung; the quantisation line quotes a placement the planner
+searched for that quantisation, at the same 8K working context every speed on the board uses. A
+file four fifths the size does not make a budget four fifths the size — the cache, the compute
+buffer and the overheads do not shrink with the weights — so nothing is scaled and nothing is
+guessed. That is also why each line can be absent: a model publishing one quantisation is offered
+no other, and a placement already at the top of its ladder is offered no rung. **A sentence
+saying a smaller quantisation would fit, when it would not, is worse than no sentence.**
+
+The figure to free is what the rung needs to come back inside the band this program will
+recommend, which is a *tight* fit and not a comfortable one. It is only offered where freeing the
+card is the answer at all: a rung system memory could not absorb either is named as out of reach,
+with no figure attached, because closing a browser would not get there. And the second line says
+one thing, not four — the whole model reaching the card beats a better verdict, a better verdict
+beats more room, and more room beats a speed the estimator only claims to within five per cent.
+When nothing changes it says so, which saves a reader a download.
+
+This costs one extra placement search per row explained, which is why it is printed under
+`--explain` and nowhere else. It is a terminal expansion: `recommend --json` carries the board,
+and the counterfactuals are not on it.
 
 **Nothing on this board is labelled `measured`.** Section 10.3 reserves that word for a
 benchmark taken on *this* machine. `llamafit bench` takes and stores one, but nothing reads

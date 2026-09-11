@@ -14,11 +14,13 @@ from __future__ import annotations
 from collections.abc import Sequence
 from pathlib import PurePath
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 from llamafit.models.catalog import Capability, Catalog, CatalogModel, UseCase
 from llamafit.models.gguf import GgufFacts
+from llamafit.models.host import Simulation
 from llamafit.models.llamacpp import LocalModel
+from llamafit.models.plan import Placement, SpeedEstimate
 
 
 class ModelFilters(BaseModel):
@@ -154,6 +156,14 @@ class QuantDetail(BaseModel):
         facts: Architecture facts read from this quant's GGUF header, filled in by
             the refresh command; ``None`` until then.
         files: The GGUF file names that make up this quant.
+        placement: Where this quant's bytes would go on one machine, with the budget
+            that decided it. Empty until somebody sizes the detail against a host --
+            :func:`describe` reads the catalog and never the machine, and
+            :func:`~llamafit.services.plan.size_quants` is what fills these three in.
+        speed: How fast that placement is estimated to run, filled in with it.
+        unplaceable_because: Why this quant could not be sized at all, when it could
+            not: nobody has read its header, or no run mode holds it on this machine.
+            A row that says so is the answer; a row silently missing is not.
     """
 
     model_config = ConfigDict(populate_by_name=True)
@@ -163,32 +173,57 @@ class QuantDetail(BaseModel):
     bpw: float | None
     facts: GgufFacts | None
     files: list[str]
+    placement: Placement | None = None
+    speed: SpeedEstimate | None = None
+    unplaceable_because: str | None = None
 
 
 class ModelDetail(BaseModel):
     """Everything about one model: its catalog entry plus every quant's facts and sizes.
 
-    This reports facts and sizes only. Whether a given quant fits in the memory this
-    host has is phase 1C's question, not this one: that budget belongs on
-    :class:`QuantDetail`, computed against a hardware profile, once phase 1C exists
-    to compute it. Nothing here estimates or guesses at it in the meantime.
+    :func:`describe` reports facts and sizes only, because the catalog is all it reads.
+    Whether a given quant fits the memory a machine has goes on :class:`QuantDetail`
+    beside those facts, computed against a scanned host or a hardware profile by
+    :func:`~llamafit.services.plan.size_quants`; nothing here estimates or guesses at it.
+    Keeping the two apart is what lets one shape carry both the answer that is true on
+    every machine and the answer that is true on one.
 
     Attributes:
         model: The catalog entry itself.
         quants: Every quant across every source, each with its facts.
         local_paths: Full paths of the local files that match one of this model's
             quant file names.
+        simulation: What was substituted for the machine the quants were sized against,
+            or ``None`` when they were sized for the machine the reader is sitting at --
+            or not sized at all. It travels on the document for the reason it travels on
+            a board and a plan: a detail carries no host, so without this a program
+            reading ``info --json --profile`` would have a budget and no way at all to
+            tell whose machine it is about. The terminal has a red line above the page
+            and a script has nothing.
     """
 
     model: CatalogModel
     quants: list[QuantDetail]
     local_paths: list[str]
+    simulation: Simulation | None = None
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def simulated(self) -> bool:
+        """Whether these figures describe a machine other than the one running LlamaFit.
+
+        Computed, so it cannot drift from ``simulation`` and cannot be left out of the
+        serialised detail; the same pair, with the same guarantee, that
+        :class:`~llamafit.models.host.Host` and every board carry.
+        """
+        return self.simulation is not None
 
 
 def describe(model: CatalogModel, local_files: Sequence[LocalModel] = ()) -> ModelDetail:
     """Describe one model in full: every quant it publishes, with its facts.
 
-    See :class:`ModelDetail` for why no memory budget appears here.
+    The per-quant budget fields come back empty, because this reads the catalog and never
+    the machine. :func:`~llamafit.services.plan.size_quants` is what fills them in.
     """
     local_by_name = {PurePath(local.path).name: local.path for local in local_files}
     quants: list[QuantDetail] = []

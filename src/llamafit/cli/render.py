@@ -46,7 +46,7 @@ treated as an identifier.
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from typing import Any
 
 from rich.cells import cell_len
@@ -70,8 +70,10 @@ from llamafit.models.gguf import GgufFacts
 from llamafit.models.host import Cpu, Gpu, Host, Memory, Override, Probe, Simulation, Source
 from llamafit.models.hwprofile import ProfileCpu, ProfileGpu, ProfileMemory
 from llamafit.models.llamacpp import LlamaCpp
+from llamafit.models.plan import Placement
 from llamafit.services.catalog import ModelSummary, QuantDetail
 from llamafit.services.doctor import Finding
+from llamafit.services.plan import ContextReach, Counterfactuals, QuantSwap
 from llamafit.units import billions_suffix, format_bytes, format_grouped, localise_number
 
 _LEVEL_STYLE = {"ok": "green", "warn": "yellow", "error": "red"}
@@ -1200,6 +1202,240 @@ def render_quants(quants: Sequence[QuantDetail]) -> Table:
             _cell(_facts_summary(quant.facts)),
         )
     return table
+
+
+def _tps_figure(value: float) -> str:
+    """A tokens-per-second figure to one decimal, as one directional island."""
+    return isolate(localise_number(f"{value:,.1f}"))
+
+
+def _labels() -> tuple[Callable[[str], str], Callable[[str], str], Callable[[str], str]]:
+    """The run-mode and verdict words, fetched at render time rather than at import.
+
+    :mod:`llamafit.cli.render_board` imports this module, so importing it back at the top
+    would be a cycle. These three are the vocabulary of a budget and they live there with
+    the tables that invented them; ``info`` and the counterfactuals below say the same
+    words about the same verdicts, and a second copy of the mapping is a second thing to
+    keep in step with thirty-seven translations.
+    """
+    from llamafit.cli.render_board import mode_label, verdict_label, verdict_style
+
+    return mode_label, verdict_label, verdict_style
+
+
+def render_quant_budgets(quants: Sequence[QuantDetail], *, context: int) -> Group | None:
+    """What each of a model's quantisations would cost on this machine, one line each.
+
+    Section 13.1's "budget on this host per quant". One line, not one budget: a model with
+    three quantisations would otherwise print three of everything ``plan`` prints, and the
+    question this table answers is the one before that — which of these can this machine
+    run at all, and how fast. ``plan`` is where the chosen one is opened up, and the
+    caption says so rather than leaving a reader to find out.
+
+    A quantisation nobody could size does not vanish from the table. It comes back under
+    it with the reason, for the reason the board keeps its excluded rows: a shorter list
+    says nothing, and "nobody has read this file's header yet" is an answer a reader can
+    act on.
+    """
+    if not quants:
+        return None
+    mode_label, verdict_label, verdict_style = _labels()
+    table = Table(title=for_display(_("On this machine")))
+    _add_columns(
+        table,
+        [
+            {"header": pgettext("column heading", "Quant")},
+            {"header": pgettext("column heading", "Runs")},
+            {"header": pgettext("column heading", "Card"), "justify": "right", "no_wrap": True},
+            {"header": pgettext("column heading", "RAM"), "justify": "right", "no_wrap": True},
+            {"header": pgettext("column heading", "Tok/s"), "justify": "right", "no_wrap": True},
+            {"header": pgettext("column heading", "Ctx"), "justify": "right", "no_wrap": True},
+            {"header": pgettext("column heading", "Fit"), "no_wrap": True},
+        ],
+    )
+    unsized: list[RenderableType] = []
+    rows = 0
+    for quant in quants:
+        placement = quant.placement
+        if placement is None:
+            unsized.append(
+                _cell(
+                    _("%(quant)s: %(reason)s")
+                    % {
+                        "quant": isolate(quant.name),
+                        "reason": quant.unplaceable_because or "",
+                    }
+                )
+            )
+            continue
+        rows += 1
+        budget = placement.budget
+        verdict = budget.verdict
+        _add_row(
+            table,
+            _cell(isolate(quant.name)),
+            _cell(mode_label(placement.mode)),
+            _size(budget.vram_required),
+            _size(budget.ram_required),
+            # A placement that fits nowhere is estimated at zero, which is arithmetic
+            # and not a claim: a speed column reading 0.0 would tell a reader the model
+            # runs very slowly here, when what is true is that it does not run.
+            _tps_figure(quant.speed.gen_tps)
+            if quant.speed is not None and quant.speed.confidence != "unsupported"
+            else pgettext("tokens per second", "unknown"),
+            isolate(_fmt_context_compact(placement.max_context_fit))
+            if placement.max_context_fit
+            else pgettext("context length", "none"),
+            Text(for_display(verdict_label(verdict)), style=verdict_style(verdict)),
+        )
+    caption = _cell(
+        _(
+            "Sized for %(context)s tokens, with every figure from a placement computed for "
+            "this machine. `llamafit plan MODEL --quant NAME` opens one of these rows into "
+            "the budget line by line, the context ladder and the command line that runs it."
+        )
+        % {"context": isolate(format_grouped(context))}
+    )
+    if not rows:
+        return Group(*unsized) if unsized else None
+    return Group(table, caption, *unsized)
+
+
+def _reach_sentence(reach: ContextReach) -> str:
+    """What standing on the next rung of the ladder would take, from that rung's own budget.
+
+    Two answers, because there are two ways a rung fails and only one of them is a card
+    problem. A rung in section 8.4's paging band is reached by freeing the card, and the
+    figure says how much. A rung nothing would absorb is not reached that way at all, and
+    saying "free 1.2 GB" about it would be the exact false promise this whole page exists
+    to avoid.
+    """
+    if reach.verdict == "too-tight":
+        # The share rather than the two sizes side by side. A rung that pages is a rung
+        # whose requirement is a hair over what is free, and both figures round to the
+        # same tenth of a gibibyte: "needs 2.5 GiB against the 2.5 GiB free" reads as a
+        # contradiction, where "97% of what is free" reads as the fact it is.
+        share = reach.vram_required / reach.vram_available if reach.vram_available else float("inf")
+        return _(
+            "To reach %(context)s tokens, free %(free)s more on the graphics card: that rung "
+            "needs %(needed)s, which is %(share)s of what is free and over the line where the "
+            "driver starts paging."
+        ) % {
+            "context": isolate(_fmt_context_compact(reach.tokens)),
+            "free": _size(reach.vram_to_free),
+            "needed": _size(reach.vram_required),
+            "share": isolate(localise_number(f"{share * 100:.0f}%")),
+        }
+    return _(
+        "%(context)s tokens is past what this machine holds: that rung needs %(needed)s on "
+        "the graphics card and there is nothing left to absorb what would not fit, so "
+        "freeing the card is not the change that reaches it."
+    ) % {
+        "context": isolate(_fmt_context_compact(reach.tokens)),
+        "needed": _size(reach.vram_required),
+    }
+
+
+def _swap_facts(swap: QuantSwap) -> str:
+    """The next quantisation down, described only from the placement computed for it."""
+    if swap.unplaceable_because is not None:
+        return _("%(quant)s, the next quantisation down, could not be sized: %(reason)s") % {
+            "quant": isolate(swap.quant),
+            "reason": swap.unplaceable_because,
+        }
+    mode_label, verdict_label, _style = _labels()
+    if swap.mode == "unsupported":
+        return _("%(quant)s, the next quantisation down, does not fit this machine either.") % {
+            "quant": isolate(swap.quant)
+        }
+    if swap.gen_tps is None:
+        return _(
+            "%(quant)s, the next quantisation down, was planned here too: %(mode)s, "
+            "%(verdict)s, up to %(context)s tokens."
+        ) % {
+            "quant": isolate(swap.quant),
+            "mode": mode_label(swap.mode or ""),
+            "verdict": verdict_label(swap.verdict or ""),
+            "context": isolate(format_grouped(swap.max_context_fit)),
+        }
+    return _(
+        "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, "
+        "up to %(context)s tokens at %(tps)s tokens per second."
+    ) % {
+        "quant": isolate(swap.quant),
+        "mode": mode_label(swap.mode or ""),
+        "verdict": verdict_label(swap.verdict or ""),
+        "context": isolate(format_grouped(swap.max_context_fit)),
+        "tps": _tps_figure(swap.gen_tps),
+    }
+
+
+def _swap_verdict(swap: QuantSwap, placement: Placement, gen_tps: float | None) -> str | None:
+    """The one thing dropping to it would change, or the sentence saying nothing would.
+
+    One sentence, not four. The order is what a reader would act on first: getting the
+    whole model onto the card beats a better verdict, a better verdict beats more room,
+    and more room beats a speed the estimator only claims to five per cent. Saying all of
+    them at once would bury the one that decides.
+    """
+    if swap.unplaceable_because is not None or swap.mode == "unsupported":
+        return None
+    _mode, verdict_label, _style = _labels()
+    if swap.entirely_on_card and placement.mode != "gpu":
+        return _("It fits entirely on the graphics card, which this one does not.")
+    if swap.better_verdict:
+        return _("It fits better: %(theirs)s rather than %(mine)s.") % {
+            "theirs": verdict_label(swap.verdict or ""),
+            "mine": verdict_label(placement.budget.verdict),
+        }
+    if swap.more_context:
+        return _("It holds %(theirs)s tokens rather than %(mine)s.") % {
+            "theirs": isolate(format_grouped(swap.max_context_fit)),
+            "mine": isolate(format_grouped(placement.max_context_fit)),
+        }
+    if swap.faster and swap.gen_tps is not None and gen_tps is not None:
+        return _("It generates %(theirs)s tokens per second rather than %(mine)s.") % {
+            "theirs": _tps_figure(swap.gen_tps),
+            "mine": _tps_figure(gen_tps),
+        }
+    return _("It is no better here, so there is nothing to gain by dropping to it.")
+
+
+def render_counterfactuals(
+    found: Counterfactuals, placement: Placement, *, gen_tps: float | None = None
+) -> Group | None:
+    """What would move this candidate, each line from a placement actually computed.
+
+    Section 12.3's last clause, and the one that was missing: an explanation that prints
+    the scores, the weights, the budget and the speed and never says what to change is an
+    explanation of a decision already taken. There are two things a reader can change
+    without changing the machine or the model, so there are at most two lines here.
+
+    Nothing is said on a hunch. The context line quotes a rung of the ladder whose budget
+    was computed; the quantisation line quotes a placement that was searched for. Where
+    neither exists — a model publishing one quantisation whose ladder this machine already
+    tops out — nothing is printed, which is the honest answer and not an oversight.
+    """
+    lines: list[RenderableType] = []
+    if found.context is not None:
+        lines.append(_cell(_reach_sentence(found.context)))
+    elif found.every_context_fits:
+        lines.append(
+            _cell(
+                _(
+                    "Every context this model offers already fits here; the machine is not "
+                    "what limits it."
+                )
+            )
+        )
+    if found.quant is not None:
+        lines.append(_cell(_swap_facts(found.quant)))
+        verdict = _swap_verdict(found.quant, placement, gen_tps)
+        if verdict is not None:
+            lines.append(_cell(verdict))
+    if not lines:
+        return None
+    return Group(Text(for_display(_("What would change it")), style="bold"), *lines)
 
 
 def _profile_origin(loaded: LoadedProfile) -> str:

@@ -328,9 +328,11 @@ def refuse_substitution(state: CliState, *, command: str, hint: str | None = Non
     machine the reader did not ask about. ``--max-context`` is not refused here: it caps a
     context and every command that plans one can honour it.
 
-    The commands that read no machine at all -- ``list``, ``search``, ``info``,
-    ``catalog`` -- do not call this and do not refuse. Nothing about their answer could
-    have been different, so a refusal there would be a rule enforced for its own sake.
+    The commands that read no machine at all -- ``list``, ``search``, ``catalog`` -- do not
+    call this and do not refuse. Nothing about their answer could have been different, so a
+    refusal there would be a rule enforced for its own sake. ``info`` used to be on that
+    list and is not any more: it sizes each quantisation against a host now, so a
+    substituted machine changes its answer, and the answer carries the mark saying so.
     """
     if not state.substituting:
         return
