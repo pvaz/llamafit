@@ -24,10 +24,15 @@
 # recurrent state instead of attention with a KV cache that grows with the context. That is
 # why the long-context memory figures for these models look nothing like a transformer's of
 # the same size, and it is the single most useful thing to know before budgeting one.
+#
+# llama_cpp.kv_types_allowed is deliberately absent on every entry. The attention layers these
+# models do keep are a small minority of a Mamba-2 stack and neither NVIDIA nor llama.cpp
+# publishes which KV cache types survive that mix. An empty list records that nobody has
+# measured it, not that nothing works.
 - id: nemotron-3-nano-4b
   name: NVIDIA Nemotron 3 Nano 4B
   vendor: NVIDIA
-  family: nemotron
+  family: nemotron-3
   release_date: 2026-03-16
   license:
     spdx: nvidia-nemotron-open-model-license
@@ -45,7 +50,11 @@
       hold a fixed-size state rather than a KV cache. Reasoning is switched on or off from
       the system prompt.
   context: { native: 262144 }
-  capabilities: [coding, thinking, tools, long-context]
+  # multilingual on the same footing as its four siblings: NVIDIA's cards describe one
+  # post-training recipe and one language set across the Nemotron 3 family and publish no
+  # multilingual benchmark for any of them, so there is nothing here that distinguishes this
+  # model from the others and it was missing by oversight rather than by judgement.
+  capabilities: [coding, thinking, tools, multilingual, long-context]
   use_cases: [general, chat, reasoning, coding]
   quality:
     baseline: 58
@@ -82,7 +91,7 @@
 - id: nemotron-3-nano-30b-a3b
   name: NVIDIA Nemotron 3 Nano 30B A3B
   vendor: NVIDIA
-  family: nemotron
+  family: nemotron-3
   release_date: 2025-12-15
   license:
     spdx: nvidia-nemotron-open-model-license
@@ -132,7 +141,7 @@
 - id: nemotron-3.5-lightning-30b-a3b
   name: NVIDIA Nemotron 3.5 Lightning 30B A3B
   vendor: NVIDIA
-  family: nemotron
+  family: nemotron-3.5
   release_date: 2026-08-11
   license:
     # OpenMDW-1.1, a permissive community model licence, not NVIDIA's own Nemotron licence
@@ -185,7 +194,7 @@
 - id: nemotron-3-super-120b-a12b
   name: NVIDIA Nemotron 3 Super 120B A12B
   vendor: NVIDIA
-  family: nemotron
+  family: nemotron-3
   release_date: 2026-03-11
   license:
     spdx: nvidia-nemotron-open-model-license
@@ -235,7 +244,7 @@
 - id: nemotron-3-ultra-550b-a55b
   name: NVIDIA Nemotron 3 Ultra 550B A55B
   vendor: NVIDIA
-  family: nemotron
+  family: nemotron-3
   release_date: 2026-06-04
   license:
     spdx: openmdw-1.1

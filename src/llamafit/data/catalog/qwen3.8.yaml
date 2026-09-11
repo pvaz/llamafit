@@ -23,6 +23,10 @@
 # prediction head as a block of its own. Both numbers are right about their own subject and
 # neither is a typo for the other.
 #
+# The other Qwen3.8 model in the catalog, qwen3.8-flash-next, is curated in qwen3.yaml
+# because it shares a calibration record with the entry beside it there. It carries the same
+# `family: qwen3.8` as this one; the generation is not the file.
+#
 # llama_cpp.kv_types_allowed is deliberately absent: this is a Gated DeltaNet hybrid and
 # nothing published says which KV cache types it accepts. An empty list records that nobody
 # has measured it, not that nothing works.
