@@ -94,6 +94,15 @@ from llamafit.i18n.catalogs import (
     catalog_path,
     load_language,
 )
+from llamafit.i18n.completeness import (
+    NEARLY_COMPLETE,
+    SHORTFALL_HINT,
+    Completeness,
+    completeness,
+    shortfall_after,
+    shortfall_notice,
+    template_message_count,
+)
 from llamafit.i18n.detect import FixedLocale, LocaleProvider, SystemLocale, windows_ui_language
 from llamafit.i18n.encoding import (
     ERROR_HANDLER,
@@ -155,12 +164,15 @@ __all__ = [
     "ERROR_HANDLER",
     "FIRST_STRONG_ISOLATE",
     "LANGUAGE_ENV_VAR",
+    "NEARLY_COMPLETE",
     "POP_DIRECTIONAL_ISOLATE",
     "RIGHT_TO_LEFT_MARK",
     "RTL_LANGUAGES",
+    "SHORTFALL_HINT",
     "SOURCE_LANGUAGE",
     "TEMPLATE_NAME",
     "CatalogTranslator",
+    "Completeness",
     "EnglishTranslator",
     "FixedLocale",
     "LanguageChoice",
@@ -180,6 +192,7 @@ __all__ = [
     "catalog_dir",
     "catalog_path",
     "clear_replacements",
+    "completeness",
     "current_language",
     "encoding_of",
     "for_display",
@@ -211,7 +224,10 @@ __all__ = [
     "resolve_language",
     "set_language",
     "set_translator",
+    "shortfall_after",
+    "shortfall_notice",
     "substitution_notice",
+    "template_message_count",
     "tolerate",
     "windows_ui_language",
 ]
