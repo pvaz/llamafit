@@ -30,11 +30,13 @@ from llamafit import __version__
 from llamafit.cli.app import CliState, app
 from llamafit.cli.common import checked_max_context, find_model, load_catalog_or_warn, machine
 from llamafit.cli.plan_cmd import choose_quant
+from llamafit.cli.render import render_simulation, simulated_answer
 from llamafit.constants import DEFAULT_SERVER_PORT
 from llamafit.errors import BudgetError, NotInstalledError
 from llamafit.i18n import _, for_display, isolate, lazy_gettext, pgettext
 from llamafit.llamacpp.detect import exe_name
 from llamafit.llamacpp.server import HttpClient, HttpxClient
+from llamafit.models.host import Simulation
 from llamafit.models.plan import Needs
 from llamafit.models.report import SystemReport
 from llamafit.paths import get_paths
@@ -121,7 +123,7 @@ def spec_for(
     context: int | None = None,
     port: int | None = None,
     today: date | None = None,
-) -> PresetSpec:
+) -> tuple[PresetSpec, Simulation | None]:
     """Plan one model on this machine and freeze the plan into a preset specification.
 
     Args:
@@ -133,7 +135,11 @@ def spec_for(
         today: The date to stamp the files with; today's when unset.
 
     Returns:
-        The specification both renderers read.
+        The specification both renderers read, and what was substituted for the machine it
+        was planned on -- ``None`` when that machine is the one the reader is sitting at.
+        The second half is returned rather than kept, because a preset sized for a card
+        this machine has not got is the answer here most worth being warned about: a board
+        is read and forgotten, and these are files left on the disk to be run later.
 
     Raises:
         CatalogError: If the model or the quantisation is not one the catalog has.
@@ -183,7 +189,7 @@ def spec_for(
         port=options.port,
         generated=today or date.today(),
         version=__version__,
-    )
+    ), report.host.simulation
 
 
 @app.command(
@@ -215,14 +221,14 @@ def preset_command(
 ) -> None:
     """Write the launch scripts for one model."""
     state: CliState = ctx.obj
-    spec = spec_for(model_id, state, quant=quant, context=context, port=port)
+    spec, simulation = spec_for(model_id, state, quant=quant, context=context, port=port)
     target = preset_directory(directory)
     results = write_files(render_files(spec), target, force=force)
     report = report_of(spec, target, results)
     if state.json_output:
         typer.echo(report.model_dump_json(indent=2))
         return
-    state.console.print(render_preset(report))
+    state.console.print(simulated_answer(simulation, render_preset(report)))
 
 
 @app.command(
@@ -266,7 +272,10 @@ def launch_command(
         # Writing it first is the friendly half of "from nothing to a running server":
         # a person who has just been told to run this should not be sent away to run a
         # different command and come back.
-        spec = spec_for(model_id, state, port=port)
+        spec, simulation = spec_for(model_id, state, port=port)
+        banner = render_simulation(simulation)
+        if banner is not None:
+            state.console.print(banner)
         write_files(render_files(spec), target)
         script = _script_in(target, model_id)
         if script is None:  # pragma: no cover - write_files creates it or raises

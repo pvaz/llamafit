@@ -9,6 +9,13 @@ stands in for, under the same red ``SIMULATED`` line ``hardware show NAME --as-h
 prints it under, with this machine's llama.cpp beside it. The llama.cpp half is never
 substituted, because the binary and the GGUF files on this disk are real whichever
 machine the numbers describe.
+
+This is also where the memory bandwidth is re-timed. The figure is measured once per
+machine and kept, because re-timing it on every scan is what made the same board report a
+different tokens-per-second from one minute to the next; the host table says *cached* when
+it was read back, and ``--refresh-bandwidth`` here is how somebody who has changed
+something, or does not believe the number, makes it take the measurement again. Every
+other command then reads what this one leaves behind.
 """
 
 from __future__ import annotations
@@ -41,10 +48,21 @@ def system_command(
         "--no-measure",
         help=cast(str, lazy_gettext("Skip the RAM bandwidth measurement.")),
     ),
+    refresh_bandwidth: bool = typer.Option(
+        False,
+        "--refresh-bandwidth",
+        help=cast(
+            str,
+            lazy_gettext(
+                "Measure RAM bandwidth again instead of reading back the figure kept for "
+                "this machine, and keep the new one."
+            ),
+        ),
+    ),
 ) -> None:
     """Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."""
     state: CliState = ctx.obj
-    report = machine(state, measure_bandwidth=not no_measure)
+    report = machine(state, measure_bandwidth=not no_measure, refresh_bandwidth=refresh_bandwidth)
     if state.json_output:
         typer.echo(report.model_dump_json(indent=2))
         return

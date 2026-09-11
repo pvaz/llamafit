@@ -201,23 +201,31 @@ def check_size(value: str, *, option: str) -> int:
         ) from exc
 
 
-def scan(*, measure_bandwidth: bool = True) -> SystemReport:
+def scan(*, measure_bandwidth: bool = True, refresh_bandwidth: bool = False) -> SystemReport:
     """The machine and its llama.cpp installation, for a command that has to size something.
 
     One call rather than two so that every command sizes against the same scan: the free
     memory a budget is computed from and the local files a command line names have to come
     from one moment, or a plan can name a file the same run decided was missing.
+
+    ``refresh_bandwidth`` times the memory bandwidth again instead of reading back what
+    was kept for this machine. Only ``llamafit system`` offers it, because it is the
+    command whose subject is the machine; every other command reads what that one leaves
+    behind, which is the point of keeping it.
     """
-    return scan_system(measure_bandwidth=measure_bandwidth)
+    return scan_system(measure_bandwidth=measure_bandwidth, refresh_bandwidth=refresh_bandwidth)
 
 
-def machine(state: CliState, *, measure_bandwidth: bool = True) -> SystemReport:
+def machine(
+    state: CliState, *, measure_bandwidth: bool = True, refresh_bandwidth: bool = False
+) -> SystemReport:
     """The machine a command should answer about, after section 13.1's substitutions.
 
     Args:
         state: The global options, carrying ``--profile``, ``--memory``, ``--ram`` and
             ``--cpu-cores`` exactly as they were typed.
         measure_bandwidth: Whether the scan should time a memory copy.
+        refresh_bandwidth: Whether to time it again rather than read back what was kept.
 
     Returns:
         A :class:`~llamafit.models.report.SystemReport` whose ``host`` is the scan, a
@@ -241,7 +249,7 @@ def machine(state: CliState, *, measure_bandwidth: bool = True) -> SystemReport:
 
     def scan_host() -> Host:
         nonlocal scanned
-        scanned = scan(measure_bandwidth=measure_bandwidth)
+        scanned = scan(measure_bandwidth=measure_bandwidth, refresh_bandwidth=refresh_bandwidth)
         return scanned.host
 
     host = resolve_host(
