@@ -107,9 +107,20 @@ def test_the_plan_is_printed_before_anything_is_fetched(tmp_path: Path) -> None:
     result = runner.invoke(
         app,
         ["install", "model", "acme-model", "--dir", str(tmp_path / "out"), "--dry-run"],
+        # A width, so the screen this test reads is the same screen everywhere. Left to the
+        # environment, a narrow one shortens a file name inside its cell and the assertion
+        # fails over the terminal rather than over the program.
+        env={"COLUMNS": "100"},
     )
     assert result.exit_code == 0, result.output
-    output = result.output
+    # Read with the wrapping taken back out. Rich breaks a line wherever the width runs
+    # out, and where that falls depends on how long the temporary directory's path is --
+    # which is a property of the machine, not of the program. An earlier version guessed
+    # which phrases would survive the wrap and picked wrong: on macOS, whose temporary
+    # paths are the longest, the break landed inside "would be left" and the build failed
+    # over a line ending. What the test is for is that every part of the plan is printed
+    # before a byte is fetched.
+    output = " ".join(result.output.split())
     assert "Acme Model" in output
     assert "Q4_K_M" in output
     assert "acme/model-gguf" in output
@@ -117,8 +128,6 @@ def test_the_plan_is_printed_before_anything_is_fetched(tmp_path: Path) -> None:
     assert "model-00002-of-00002.gguf" in output
     assert "2 files" in output
     assert "4.0 KiB" in output  # the total the catalog records
-    # Rich wraps a long path across lines, so the assertion is on the parts that
-    # survive that: the last segment of the directory and the free-space sentence.
     assert "out, which has" in output
     assert "free" in output
     assert "would be left" in output
