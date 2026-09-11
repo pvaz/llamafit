@@ -21,6 +21,14 @@ For a model, quant and context (default: the plan's choice):
    generation below 60 percent of the estimate is flagged as driver paging, with the tier that
    would avoid it.
 
+**Each measurement is judged against the estimate for its own conditions, not the plan's.**
+The formula is run once per row, at the key-value cache that row filled and the micro-batch it
+used: 128 tokens for `tg128`, about eleven hundred for the thousand-token request, 2,048 for
+`pp2048`. Section 10.1 charges a token for the cache it reads, so an estimate made at the
+planned context and a measurement taken at an empty one are two answers to two questions, and
+their quotient is not an error. The plan's own figure is printed under the table, quoted and
+never given a ratio, because nothing in a benchmark fills 32,768 tokens.
+
 Results are stored in `benchmarks.sqlite` in the data directory with the host fingerprint,
 llama.cpp build, model, quant, the settings the run reported about itself, and the timestamp.
 `llamafit bench --show` lists them. The Benchmarks screen the design sketches is not built;
@@ -37,41 +45,57 @@ direction, since the label then falls back to `estimated`, which is true.
 
 ```
 $ llamafit bench qwen3-0.6b --no-store
-                 Estimated against measured
-┌───────────────────────────┬───────────┬──────────┬───────┐
-│ figure                    │ estimated │ measured │ ratio │
-├───────────────────────────┼───────────┼──────────┼───────┤
-│ prompt (llama-bench)      │  21643.33 │ 18231.12 │  0.84 │
-│ generation (llama-bench)  │     41.34 │   279.76 │  6.77 │
-│ generation, first request │     41.34 │   254.88 │  6.17 │
-│ generation, 1K prompt     │     41.34 │   224.74 │  5.44 │
-│ prompt, 1K request        │  21643.33 │ 19126.99 │  0.88 │
-│ peak VRAM                 │   6.5 GiB │  5.1 GiB │  0.79 │
-└───────────────────────────┴───────────┴──────────┴───────┘
-4 figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in.
+                             Estimated against measured
+┌───────────────────────────┬─────────┬─────────────┬───────────┬──────────┬───────┐
+│ figure                    │ context │ micro-batch │ estimated │ measured │ ratio │
+├───────────────────────────┼─────────┼─────────────┼───────────┼──────────┼───────┤
+│ prompt (llama-bench)      │   2,048 │       2,048 │  21643.33 │ 18125.33 │  0.84 │
+│ generation (llama-bench)  │     128 │       2,048 │    274.00 │   274.83 │  1.00 │
+│ generation, first request │     139 │       2,048 │    273.48 │   261.23 │  0.96 │
+│ generation, 1K prompt     │   1,184 │       2,048 │    231.79 │   230.37 │  0.99 │
+│ prompt, 1K request        │   1,184 │       2,048 │  21643.33 │ 20308.62 │  0.94 │
+│ peak VRAM                 │  32,768 │             │   6.5 GiB │  5.2 GiB │  0.80 │
+└───────────────────────────┴─────────┴─────────────┴───────────┴──────────┴───────┘
+The plan sizes this configuration for 32,768 tokens and estimates 41.34 generated tokens per
+second there. Nothing above ran at that context, so that figure is reported and not compared.
 This configuration was not paging.
 Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page.
+Peak VRAM was 65 percent of the card. Generation was not compared with the estimate.
 Nothing was written to the database, so no estimate will be relabelled.
 ```
-
-One line of that run is left out above: between the paging verdict and the last line the
-command prints a sentence quoting the VRAM percentage and the speed ratio, and on a card that
-stayed clear there is no speed ratio to quote, so the sentence comes out malformed. That is a
-bug in the renderer rather than something to read.
 
 Ratios between 0.8 and 1.25 are normal before calibration, and the command counts the ones
 that are not. Anything outside is worth a look: a generation ratio far below 1 with VRAM at
 the ceiling is paging; a prompt ratio far below 1 usually means the micro-batch or PCIe
 assumption is off for this machine.
 
-**The generation rows of that run are not a like-for-like comparison, and the page keeps them
-anyway.** The estimate is the plan's, which sizes this model for 32,768 tokens and so charges
-3.5 GiB of key-value cache against the card on every token; `llama-bench`'s `tg128` generates
-128 tokens into a cache that is almost empty, and the server questions beside it are barely
-longer. The measurement is right, the estimate is right for the context it was made at, and
-the ratio between them is measuring the difference in context. A comparison worth trusting has
-to estimate at the context the run actually used, and this one does not yet — which is exactly
-the kind of thing a sample that only ever showed ratios near 1 would have hidden.
+**The first two columns are why the last one means anything.** An earlier version of this
+page showed the same run with generation at 6.77 times the estimate, which read as a badly
+wrong formula and was nothing of the kind: the estimate in that column was the plan's, made
+at 32,768 tokens of key-value cache, and the measurement beside it was `tg128` generating
+into a cache that starts empty. Section 10.1 charges `kv_bytes_per_token × working_context`
+on every token, so the two were 3.5 GiB per token apart before anything was measured. The
+measurement was right — `docs/calibration/` records the same machine at 279.5 tokens per
+second under `tg128`, which the 279.76 in that sample matched to a tenth of a percent — and
+the estimate was right for the context it was made at. The comparison was what was wrong.
+
+Three fixes were available: run `llama-bench` at the planned context with `-d`, estimate at
+the context `llama-bench` used, or print both figures and compare neither. The command takes
+the second. `-d` needs a build new enough to have the flag and costs a full 32,768-token
+prefill per row, and it cannot be done at all for the three fixed server requests without
+making them something other than the fixed questions they are; estimating at the measured
+depth costs nothing, works on every build, and is how the rest of the project already works —
+[the reference machine's record](calibration/2026-09-09-reference-machine.md) gives
+"generation, short context, `llama-bench tg128`" and "generation at 32K tokens of context" as
+two measurements on two lines. What it gives up is stated rather than hidden: at 128 tokens the
+key-value term is a rounding error, so a benchmark checks every term of section 10.1 **except
+the growth of the cache**, and the plan's figure for the planned context — the line under the
+table — is the one number here that nothing has checked.
+
+The paging block under the table is three lines — the verdict, the reason it was reached, and
+the figures behind it. A card that stayed clear of full is cleared on the memory signal
+alone, so the speed half of section 16.4 is never reached and there is no ratio to quote; the
+third line says so rather than leaving a gap where the number would have been.
 
 ## Calibration
 
@@ -85,6 +109,16 @@ the kind of thing a sample that only ever showed ratios near 1 would have hidden
 | `fixed_overhead_s` | everything a token costs that is not a byte moved | always in the fit; it is the intercept |
 | `eff_pp` and `pcie_effective_gbps` | prompt compute, and what an expert set really streams at | two micro-batches (`bench --sweep`) |
 | compute-buffer base and slope per micro-batch | the least predictable allocation | two contexts at that micro-batch |
+
+**A run is one equation only if its recorded conditions are its own.** Each row carries the
+traffic the estimator believed it read, at that row's context and micro-batch, and that
+record is what the fit does arithmetic on. Sharing one traffic record across a whole
+benchmark — which is what happened until the comparison above was fixed — gave the solver
+five rows with an identical column, and identical columns cannot separate parameters: on this
+machine `eff_vram` and `fixed_overhead_s` were both refused as "not identifiable" from a
+sweep that contained exactly the measurements needed to pin them. The same benchmark now fits
+both: `eff_vram` at 0.70 against the shipped 0.67, and a fixed overhead of 1.03 ms against
+the shipped 1 ms.
 
 **Only what the data determines is fitted.** The four generation constants are the four terms
 of section 10.1's formula, so each run is one linear equation in them, and a constant is

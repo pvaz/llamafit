@@ -3,15 +3,24 @@
 # This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """``llamafit bench``: measure what the rest of the tool has been calculating.
 
-Section 16.1's command. It plans the model exactly as ``llamafit plan`` would, keeps the
-estimate that plan produced, runs ``llama-bench`` and a real server at those flags, and
-prints the two side by side.
+Section 16.1's command. It plans the model exactly as ``llamafit plan`` would, runs
+``llama-bench`` and a real server at those flags, and prints each measurement beside the
+estimate for the conditions that measurement turned out to have.
 
 The table is the point of the command, and the column that matters is the last one. A tool
 that measured a model and then showed only the measurement would leave its reader better
 informed about that model and no better informed about the next one. The ratio is what says
 whether the next estimate can be trusted, so the estimate is shown even -- and especially --
 when it was wrong.
+
+**Which is why the first two columns are the conditions and not a figure.** A ratio is only
+an error when its halves answer the same question, and this table used to print an estimate
+made at the planned context -- 32,768 tokens by default -- against a ``tg128`` measurement
+taken at 128, under a heading that said "ratio" and meant nothing of the kind.
+:class:`~llamafit.bench.run.Estimator` is where the choice of comparison is argued;
+:class:`~llamafit.bench.types.ComparisonRow` is what stops a ratio being printed without
+the context it belongs to. The planned figure is not thereby lost: it is the line under the
+table, reported and not compared, because no row of the table reaches that context.
 
 Three things this command will not do. It will not benchmark a simulated machine, because a
 measurement of a machine nobody is sitting at is not a measurement. It will not benchmark a
@@ -252,7 +261,9 @@ def bench_command(
     result = result.model_copy(
         update={
             "comparison": compare(
-                result.runs, predicted_vram_bytes=plan.placement.budget.vram_required
+                result.runs,
+                predicted_vram_bytes=plan.placement.budget.vram_required,
+                predicted_at_context=plan.placement.context,
             )
         }
     )
@@ -398,9 +409,25 @@ def render_bench(result: BenchReport) -> RenderableType:
 
 
 def render_comparison(result: BenchReport) -> RenderableType:
-    """The estimate beside the measurement, with the ratio between them."""
+    """The estimate beside the measurement, with the conditions both of them are for.
+
+    Args:
+        result: What the benchmark produced.
+
+    Returns:
+        The table, the count of figures outside the tolerance band, and the plan's own
+        estimate -- which is at a context nothing here measured and so is quoted rather
+        than compared.
+
+    The ``context`` and ``micro-batch`` columns come first because they govern the row: the
+    estimate and the measurement in it are both for those conditions, which is the only
+    arrangement under which their quotient is the estimator's error rather than the gap
+    between two different questions.
+    """
     table = Table(title=for_display(_("Estimated against measured")))
     table.add_column(for_display(_("figure")), overflow="fold")
+    table.add_column(for_display(_("context")), justify="right")
+    table.add_column(for_display(_("micro-batch")), justify="right")
     table.add_column(for_display(_("estimated")), justify="right")
     table.add_column(for_display(_("measured")), justify="right")
     table.add_column(for_display(_("ratio")), justify="right")
@@ -408,11 +435,28 @@ def render_comparison(result: BenchReport) -> RenderableType:
         in_bytes = row.unit == "bytes"
         table.add_row(
             _cell(metric_label(row.metric)),
+            _tokens(row.context),
+            _tokens(row.micro_batch),
             _size(row.estimated) if in_bytes else _number(row.estimated),
             _size(row.measured) if in_bytes else _number(row.measured),
             _ratio(row.ratio),
         )
     blocks: list[RenderableType] = [table]
+    if result.planned_gen_tps and result.planned_context:
+        blocks.append(
+            Text(
+                _(
+                    "The plan sizes this configuration for %(context)s tokens and estimates"
+                    " %(tps)s generated tokens per second there. Nothing above ran at that"
+                    " context, so that figure is reported and not compared."
+                )
+                % {
+                    "context": localise_number(f"{result.planned_context:,}"),
+                    "tps": localise_number(f"{result.planned_gen_tps:.2f}"),
+                },
+                style="dim",
+            )
+        )
     outside = [row for row in result.comparison if within_tolerance(row.ratio) is False]
     if outside:
         blocks.append(
@@ -444,24 +488,26 @@ def render_paging(result: BenchReport) -> RenderableType:
         style, headline = "yellow", _("Paging could not be checked.")
     lines: list[RenderableType] = [Text(headline, style=style), Text(reason_text(check.reason))]
     if check.vram_ratio is not None:
-        speed = (
-            localise_number(f"{check.speed_ratio * 100:.0f}")
-            if check.speed_ratio is not None
-            else None
-        )
-        lines.append(
-            Text(
-                _(
-                    "Peak VRAM was %(percent)s percent of the card, and generation was"
-                    " %(speed)s percent of the estimate."
-                )
-                % {
-                    "percent": localise_number(f"{check.vram_ratio * 100:.0f}"),
-                    "speed": speed if speed is not None else _("not compared"),
-                },
-                style="dim",
-            )
-        )
+        # Two sentences and not one with a hole in it. A card that stayed clear of full is
+        # cleared on the memory signal alone, so the speed half is never reached and there
+        # is no ratio to quote -- the common case, which is how "generation was not
+        # compared percent of the estimate" reached the sample output in the documentation
+        # with nothing in the suite asserting on a single word this command says.
+        percent = localise_number(f"{check.vram_ratio * 100:.0f}")
+        if check.speed_ratio is not None:
+            said = _(
+                "Peak VRAM was %(percent)s percent of the card, and generation was"
+                " %(speed)s percent of the estimate."
+            ) % {
+                "percent": percent,
+                "speed": localise_number(f"{check.speed_ratio * 100:.0f}"),
+            }
+        else:
+            said = _(
+                "Peak VRAM was %(percent)s percent of the card. Generation was not compared"
+                " with the estimate."
+            ) % {"percent": percent}
+        lines.append(Text(said, style="dim"))
     if check.suggested_context:
         lines.append(
             Text(
@@ -554,6 +600,15 @@ def _number(value: float | None) -> str | None:
 def _size(value: float | None) -> str | None:
     """A byte count in the reader's punctuation, or ``None``."""
     return None if value is None else localise_number(format_bytes(int(value)))
+
+
+def _tokens(value: int | None) -> str | None:
+    """A token count in the reader's punctuation, or ``None`` for a cell with no figure.
+
+    An empty cell here is a statement: the row's two figures were not taken at a context
+    this command can name, so there is no ratio beside them either.
+    """
+    return None if value is None else localise_number(f"{value:,}")
 
 
 def _ratio(value: float | None) -> Text:

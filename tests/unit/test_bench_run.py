@@ -188,10 +188,61 @@ def test_the_estimate_kept_beside_a_measurement_is_the_one_made_before_it() -> N
         sampler=FakeVramSampler(readings=[7 * 1024**3]),
         sleep=lambda _seconds: None,
     )
-    assert plan.speed is not None
     generation = next(run for run in result.runs if run.kind == "llama-bench-tg")
-    assert generation.estimated_gen_tps == pytest.approx(plan.speed.gen_tps)
+    assert generation.estimated_gen_tps is not None
     assert generation.estimated_gen_tps != generation.gen_tps
+
+
+def test_each_row_is_estimated_at_the_context_that_row_actually_filled() -> None:
+    """The finding: one estimate, at the planned context, held up against every row.
+
+    ``tg128`` fills 128 tokens of cache and the warm request about a thousand, and section
+    10.1 charges a token for the cache it reads, so the three are three different
+    estimates. One shared figure made the ratio a measurement of context.
+    """
+    plan, model, quant = plan_for()
+    result = run_benchmark(
+        inputs_for(plan, model, quant),
+        runner=bench_runner(plan),
+        launcher=FakeServerLauncher(log_text=SERVER_LOG),
+        http=http_for(plan),
+        sampler=FakeVramSampler(readings=[7 * 1024**3]),
+        sleep=lambda _seconds: None,
+    )
+    assert plan.speed is not None
+    by_kind = {run.kind: run for run in result.runs}
+    shallow = by_kind["llama-bench-tg"]
+    warm = by_kind["server-1k"]
+
+    assert shallow.traffic is not None and shallow.traffic.working_context == 128
+    assert warm.traffic is not None and warm.traffic.working_context == 1056 + 64
+    assert plan.placement.context == 32768
+
+    # Deeper cache, more bytes per token, a slower estimate -- and the plan's own figure,
+    # made at the whole 32,768, slower again than either.
+    assert shallow.traffic.device_bytes < warm.traffic.device_bytes
+    assert shallow.estimated_gen_tps is not None
+    assert warm.estimated_gen_tps is not None
+    assert shallow.estimated_gen_tps > warm.estimated_gen_tps > plan.speed.gen_tps
+
+
+def test_the_context_a_row_is_estimated_at_never_exceeds_the_one_it_was_given() -> None:
+    """A request cannot fill more cache than the server allocated for it."""
+    plan, model, quant = plan_for("qwen3-0.6b")
+    small = plan.model_copy(
+        update={"placement": plan.placement.model_copy(update={"context": 512})}
+    )
+    result = run_benchmark(
+        inputs_for(small, model, quant),
+        runner=bench_runner(small),
+        launcher=FakeServerLauncher(log_text=SERVER_LOG),
+        http=http_for(small),
+        sampler=FakeVramSampler(readings=[7 * 1024**3]),
+        sleep=lambda _seconds: None,
+    )
+    warm = next(run for run in result.runs if run.kind == "server-1k")
+    assert warm.traffic is not None
+    assert warm.traffic.working_context == 512
 
 
 def test_the_server_s_own_buffer_sizes_are_kept_with_the_run() -> None:
@@ -362,11 +413,39 @@ def test_the_traffic_recorded_with_a_run_is_the_traffic_the_estimate_was_made_fr
         quant.gguf_facts,  # type: ignore[union-attr]
         reference_host(),
         active_params=model.params.active_b * 1e9,  # type: ignore[attr-defined]
+        working_context=1056,
+        micro_batch=plan.placement.micro_batch,
     )
     assert recorded.scattered_bytes > 0
     assert recorded.device_bytes > 0
     assert recorded.ram_gbps > 0
     assert recorded.micro_batch == plan.placement.micro_batch
+    assert recorded.working_context == 1056
+
+
+def test_a_swept_micro_batch_is_recorded_at_its_own_micro_batch() -> None:
+    """Three rows at one recorded micro-batch are three copies of one equation.
+
+    ``--sweep`` exists because section 10.2 has two free parameters and one micro-batch is
+    one equation; a sweep whose rows all claimed the planned micro-batch gave the fit a
+    column that does not vary, which is refused as not identifiable.
+    """
+    plan, model, quant = plan_for()
+    facts = quant.gguf_facts  # type: ignore[union-attr]
+    params = model.params.active_b * 1e9  # type: ignore[attr-defined]
+    at_512, at_2048 = (
+        traffic_of(
+            plan.placement,
+            facts,
+            reference_host(),
+            active_params=params,
+            working_context=128,
+            micro_batch=size,
+        )
+        for size in (512, 2048)
+    )
+    assert (at_512.micro_batch, at_2048.micro_batch) == (512, 2048)
+    assert at_512.streamed_expert_bytes != at_2048.streamed_expert_bytes
 
 
 def test_the_long_prompt_is_the_same_prompt_every_time() -> None:
