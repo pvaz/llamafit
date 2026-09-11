@@ -13,6 +13,12 @@
 #   - mistral-small-4 GGUF repository:
 #     https://huggingface.co/unsloth/Mistral-Small-4-119B-2603-GGUF
 #
+# THE TWO RELEASE DATES COME FROM DIFFERENT PLACES, in the order docs/catalog.md sets.
+# Mistral Small 4 has an announcement, linked above, and its date is what that entry records;
+# its repository was created on 23 January 2026, weeks earlier. Mistral Small 3.2 was published
+# to Hugging Face with no announcement at all, so it falls back to its repository's creation
+# date, 19 June 2025.
+#
 # Both entries are Apache-2.0, which is not true of every Mistral model: see the Mistral AI
 # Research License note on ministral-8b-instruct-2410 in ministral.yaml. Read the licence
 # on the card of the model you actually want; Mistral mixes Apache-2.0, the Mistral AI
@@ -21,7 +27,7 @@
 - id: mistral-small-3.2-24b-instruct
   name: Mistral Small 3.2 24B Instruct
   vendor: Mistral AI
-  family: mistral-small
+  family: mistral-small-3
   release_date: 2025-06-19
   license:
     spdx: Apache-2.0
@@ -78,7 +84,7 @@
 - id: mistral-small-4-119b
   name: Mistral Small 4 119B A6B
   vendor: Mistral AI
-  family: mistral-small
+  family: mistral-small-4
   release_date: 2026-03-16
   license:
     spdx: Apache-2.0

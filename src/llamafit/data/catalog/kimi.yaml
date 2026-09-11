@@ -9,6 +9,11 @@
 #
 # Release dates are the Hugging Face repository creation dates; neither model card states one.
 #
+# llama_cpp.kv_types_allowed is deliberately absent on both entries. Both are Kimi Delta
+# Attention hybrids, where most layers carry a recurrent state instead of a cache, and nothing
+# Moonshot or llama.cpp publishes says which KV cache types the remaining attention layers
+# accept. An empty list records that nobody has measured it, not that nothing works.
+#
 # Both models are built on Kimi Delta Attention, and they are the two ends of what that
 # architecture is for: one is the largest open-weight model published anywhere, the other is
 # small enough to run on a workstation. The licences differ — K3 has Moonshot's own terms,
@@ -16,7 +21,7 @@
 - id: kimi-k3
   name: Kimi K3
   vendor: Moonshot AI
-  family: kimi
+  family: kimi-k3
   release_date: 2026-06-13
   license:
     # MIT-like in substance with two conditions: an operator of a Model-as-a-Service
@@ -87,7 +92,9 @@
 - id: kimi-linear-48b-a3b-instruct
   name: Kimi-Linear-48B-A3B-Instruct
   vendor: Moonshot AI
-  family: kimi
+  # Kimi Linear is Moonshot's linear-attention research line, not a small K3; the two entries
+  # in this file share a vendor and an attention idea, not a generation.
+  family: kimi-linear
   release_date: 2025-10-30
   license:
     spdx: MIT

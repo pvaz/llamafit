@@ -10,6 +10,11 @@
 #
 # Release dates are the Hugging Face repository creation dates; neither model card states one.
 #
+# llama_cpp.kv_types_allowed is deliberately absent on both entries. M3 uses MiniMax Sparse
+# Attention, whose cache layout nothing MiniMax or llama.cpp publishes describes in those
+# terms, and M2.7's grouped-query attention has not been measured here either. An empty list
+# records that nobody has measured it, not that nothing works.
+#
 # Read the licences before planning anything commercial with either of these. Both are
 # non-commercial by default and they are not the same document: M3's permits commercial use
 # subject to attribution and a revenue-triggered authorisation, while M2.7's prohibits any
@@ -18,7 +23,7 @@
 - id: minimax-m3
   name: MiniMax-M3
   vendor: MiniMax
-  family: minimax
+  family: minimax-m3
   release_date: 2026-06-02
   license:
     # MiniMax Community Licence: non-commercial by default. Commercial use requires
@@ -78,7 +83,9 @@
 - id: minimax-m2.7
   name: MiniMax-M2.7
   vendor: MiniMax
-  family: minimax
+  # The M2 generation, of which 2.7 is a point release; M3 above is a generation of its own,
+  # on a different attention scheme and a different `gguf_arch`.
+  family: minimax-m2
   release_date: 2026-04-09
   license:
     # Stricter than M3's: any commercial use of the weights or of a derivative is

@@ -40,6 +40,11 @@
 # and audio projector is declared as an extra on every entry, because these models declare
 # the vision capability and a plan that does not charge the projector's bytes to a pool is
 # optimistic by the projector's whole size.
+#
+# llama_cpp.kv_types_allowed is deliberately absent on every entry. Attention here is a hybrid
+# of sliding-window and global layers, with the global layers sharing one tensor for keys and
+# values, and nothing Google or llama.cpp publishes says which KV cache types that arrangement
+# accepts. An empty list records that nobody has measured it, not that nothing works.
 
 - id: gemma-4-31b-it
   name: Gemma 4 31B
