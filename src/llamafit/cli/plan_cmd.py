@@ -28,7 +28,7 @@ from llamafit.i18n import _, lazy_gettext
 from llamafit.models.catalog import CatalogModel, Quant
 from llamafit.models.host import Host
 from llamafit.models.plan import Needs
-from llamafit.services.plan import plan_report
+from llamafit.services.plan import plan_report, quant_named
 from llamafit.services.recommend import best_quant, quant_entries
 
 _MODEL_ARGUMENT: str = typer.Argument(
@@ -100,19 +100,12 @@ def choose_quant(model: CatalogModel, host: Host, name: str | None) -> Quant:
     which is the kind of difference nobody would think to check.
     """
     quants = quant_entries(model)
+    if name is not None:
+        return quant_named(model.id, quants, name)
     if not quants:
         raise CatalogError(
             _("%(model)s publishes no quantisations") % {"model": model.id},
             hint=_("Run `llamafit catalog refresh --model %(model)s`.") % {"model": model.id},
-        )
-    if name is not None:
-        wanted = name.strip().casefold()
-        for quant in quants:
-            if quant.name.casefold() == wanted:
-                return quant
-        raise CatalogError(
-            _("%(model)s has no %(quant)s quantisation") % {"model": model.id, "quant": repr(name)},
-            hint=_("It publishes: %(names)s") % {"names": ", ".join(q.name for q in quants)},
         )
     if len(quants) == 1:
         return quants[0]

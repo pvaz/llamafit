@@ -22,6 +22,7 @@ from llamafit.errors import CatalogError
 from llamafit.models.catalog import Architecture, Catalog, License, ModelSource, Quant
 from llamafit.models.gguf import GgufFacts
 from llamafit.services.catalog import ModelSummary
+from tests.fixtures.board import report
 from tests.unit.test_models_catalog import minimal
 
 runner = CliRunner()
@@ -88,6 +89,17 @@ def patch_catalog(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
         "llamafit.cli.catalog_cmd._default_catalog_paths", lambda: [Path("fake-catalog.yaml")]
     )
+
+
+@pytest.fixture(autouse=True)
+def patch_machine(monkeypatch: pytest.MonkeyPatch) -> None:
+    """And the same machine. ``info`` sizes each quant, so it reads one now.
+
+    Without this the command would scan whatever runs the suite, which is slow, which
+    varies between two runs on the same laptop, and which would make the rest of this
+    file's assertions depend on a graphics card nobody chose.
+    """
+    monkeypatch.setattr("llamafit.cli.common.scan", lambda **_kwargs: report())
 
 
 # --- list / search -----------------------------------------------------------
@@ -261,6 +273,22 @@ def test_info_json_is_a_model_detail_with_aliased_quant_bytes() -> None:
     assert data["model"]["id"] == "coder-with-tools"
     assert data["quants"][0]["bytes"] == 1_000_000_000
     assert "bytes_" not in data["quants"][0]
+
+
+def test_a_quant_nobody_has_read_says_so_instead_of_vanishing_from_the_page(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The habit the whole program is built on: the answer that is missing carries a reason.
+
+    None of this file's quants has a tensor table, so none of them can be sized. A table
+    of nothing at all would leave a reader wondering whether the command had run.
+    """
+    monkeypatch.setenv("COLUMNS", "200")
+    result = runner.invoke(app, ["--language", "en", "info", "coder-only"])
+    assert result.exit_code == 0, result.output
+    output = " ".join(result.output.split())
+    assert "UD-Q4_K_XL" in output
+    assert "has not read" in output
 
 
 def test_info_on_an_unknown_id_exits_1_and_names_the_close_id() -> None:

@@ -208,6 +208,12 @@ and what would move it up a tier (for example "free 1.2 GB of VRAM to reach 64K 
 "the Q3 quant would fit entirely in VRAM at an estimated 18 tokens per second"). The CLI prints
 the same text with `--explain`; the dashboards show it in the detail pane.
 
+The last of those — what would move it up a tier — is printed by `recommend --explain` and
+nowhere else yet: the dashboards show the scores, the budget and the ladder, not the two
+counterfactual lines. Each of those lines costs a whole placement search, which is why it is not
+on the board or in `--json`, and each is read off a placement that was actually computed rather
+than scaled from the one it is compared with.
+
 ## 9. What changes after a benchmark
 
 `llamafit bench` runs `llama-bench` and a real server at the planned flags, records

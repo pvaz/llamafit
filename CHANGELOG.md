@@ -70,8 +70,12 @@ the changelog says so when they do.
   because 180 MiB on an 8 GB card is two rungs of the context ladder.
 - `llamafit list` and `llamafit search`: browse the catalog, filtered by use case, capability,
   licence, vendor or text.
-- `llamafit info <model>`: one model in full, with every quant it publishes and the GGUF facts
-  read from it.
+- `llamafit info <model>`: one model in full, with every quant it publishes, the GGUF facts
+  read from it, and what each of those quants would cost on this machine — the run mode, both
+  pools, an estimated speed, the largest context it holds and the verdict, one line each, with
+  `--quant` to narrow it to one and `--context` to size it for a length you name. One line and
+  no more: the budget component by component, the ladder and the command line are `plan`'s, and
+  two commands printing the same screen is a defect of its own.
 - `llamafit catalog validate|refresh|show`: check the catalog files, fill their volatile fields
   from Hugging Face without downloading any weights (`--dry-run`, `--check` and `--model`), and
   print one entry as JSON or YAML.
@@ -179,7 +183,12 @@ the changelog says so when they do.
   `--explain` expands a row into the four scores, the weights that combined them, the
   quality it was built from, the memory budget line by line, the context ladder and where a
   token's time goes, which is the project's standing promise that no number has to be taken
-  on faith.
+  on faith. It then says what would change the answer: the next rung of the context ladder
+  this machine cannot take and how much of the card would have to be free to reach it, and
+  the next quantisation down with what it would run as. Both come from a placement actually
+  computed rather than from arithmetic on the row above, and a row with no such answer — a
+  model publishing one quantisation, a placement already at the top of its ladder — is given
+  none, because a sentence promising a fit that is not there is worse than no sentence.
 - `llamafit fit`: every model ranked by how well it uses this machine and nothing else, with
   `--perfect`, `--min-fit`, `--limit` and `--all-quants`. It deliberately does not apply
   section 11's exclusions: a coding model is not left out of a fit listing for being one.

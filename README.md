@@ -151,7 +151,7 @@ llamafit recommend --explain --limit 1 # and every number that produced the firs
 llamafit plan qwen3-coder-next         # budget, context tiers and the command line to paste
 llamafit fit                           # every model ranked by how well it uses this machine
 llamafit list                          # the catalog, strongest first
-llamafit info qwen3-coder-next         # one model in full: facts, sources, every quant
+llamafit info qwen3-coder-next         # one model: facts, quants, what each costs here
 llamafit system                        # CPU, memory, GPUs, disks, llama.cpp installation
 llamafit doctor                        # what was detected, what failed, what would help
 llamafit --json recommend              # the same as JSON for scripts

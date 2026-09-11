@@ -388,8 +388,8 @@ def test_the_whole_root_help_screen_is_in_the_language_asked_for() -> None:
 
 @pytest.mark.parametrize("command", ["list", "info"])
 def test_the_whole_subcommand_help_screen_is_in_the_language_asked_for(command: str) -> None:
-    # `list` has options and no argument; `info` has an argument and no option. Between
-    # them every kind of help line Typer draws is covered.
+    # `list` has options and no argument; `info` has both, and its argument is required.
+    # Between them every kind of help line Typer draws is covered.
     description, parameters = _command_help(command)
     language, catalog = _a_language_that_translates(description, *parameters)
     result = runner.invoke(app, ["--language", language, command, "--help"])
