@@ -56,8 +56,12 @@ BOARD_KEYS: tuple[Key, ...] = (
     Key("slash", "search", "/", lazy_gettext("search")),
     Key("f", "cycle_fit", "f", lazy_gettext("fit")),
     Key("s", "cycle_sort", "s", lazy_gettext("sort")),
+    Key("S", "previous_sort", "S", lazy_gettext("sort back")),
+    Key("o", "reverse_sort", "o", lazy_gettext("reverse")),
     Key("a", "toggle_installed", "a", lazy_gettext("on disk")),
     Key("A", "toggle_quants", "A", lazy_gettext("all quants")),
+    Key("e", "toggle_excluded", "e", lazy_gettext("unranked rows")),
+    Key("c", "toggle_columns", "c", lazy_gettext("all columns")),
     Key("x", "toggle_why", "x", lazy_gettext("explanation")),
     Key("n", "not_ranked", "n", lazy_gettext("not ranked")),
 )

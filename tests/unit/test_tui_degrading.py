@@ -16,9 +16,9 @@ from rich.console import Console, RenderableType
 from textual.widgets import DataTable, Static
 
 from llamafit.catalog.loader import Problem as CatalogProblem
+from llamafit.cli import render_board
 from llamafit.errors import PackagedDataError
 from llamafit.models.host import Probe
-from llamafit.tui import board_view
 from llamafit.tui.app import LlamaFitApp
 from llamafit.tui.screens.board import BoardPane
 from llamafit.tui.state import Dashboard
@@ -44,7 +44,7 @@ def label(app: LlamaFitApp, selector: str) -> str:
     return str(app.query_one(selector, Static).render())
 
 
-def painted_column(app: LlamaFitApp, column: board_view.Column) -> list[str]:
+def painted_column(app: LlamaFitApp, column: render_board.Column) -> list[str]:
     """What one column of the board says on the screen, a folded cell rejoined.
 
     ``DataTable.get_row_at`` gives back the value the table was handed, which is the same
@@ -56,7 +56,7 @@ def painted_column(app: LlamaFitApp, column: board_view.Column) -> list[str]:
     """
     table = app.query_one("#board-table", DataTable)
     columns = list(table.ordered_columns)
-    index = [str(one.label) for one in columns].index(board_view.heading(column))
+    index = [str(one.label) for one in columns].index(render_board.column_heading(column))
     start = sum(one.get_render_width(table) for one in columns[:index])
     stop = start + columns[index].get_render_width(table)
     lines = [table.render_line(y).text for y in range(table.size.height)]
@@ -178,8 +178,8 @@ async def test_at_eighty_columns_every_row_can_still_be_identified_and_acted_on(
     async with app.run_test(size=(80, 24)):
         table = app.query_one("#board-table", DataTable)
         headings = [str(column.label) for column in table.columns.values()]
-        for wanted in board_view.REQUIRED:
-            assert board_view.heading(wanted) in headings
+        for wanted in render_board.BOARD_REQUIRED:
+            assert render_board.column_heading(wanted) in headings
         assert table.row_count > 0
 
 
@@ -190,12 +190,17 @@ async def test_a_model_name_is_never_the_thing_that_gets_shortened() -> None:
     # lines so that every row is painted rather than scrolled past, because a row the
     # table never drew is a row this test would pass without having read.
     app = LlamaFitApp(ready())
-    async with app.run_test(size=(80, 120)) as pilot:
+    async with app.run_test(size=(80, 160)) as pilot:
+        # The explanation pane takes three fifths of the screen; with the unranked rows
+        # on the table too, the table needs the whole of it to paint every row.
+        await pilot.press("x")
         await pilot.pause()
         board = app.query_one("#board", BoardPane)
-        assert any(len(row.model_id) > board_view.WIDTHS["model"] for row in board.shown), (
+        assert any(len(row.model_id) > render_board.ID_COLUMN_MAX_WIDTH for row in board.shown), (
             "nothing on this board is long enough for the test to be about anything"
         )
+        # The unranked rows are on the table too now, dimmed; their names fold the same way.
+        assert any(row.rank is None for row in board.shown)
         assert painted_column(app, "model") == [row.model_id for row in board.shown]
 
 
@@ -205,7 +210,7 @@ async def test_a_terminal_too_narrow_for_any_optional_column_still_draws() -> No
     async with app.run_test(size=(40, 20)):
         table = app.query_one("#board-table", DataTable)
         assert table.row_count > 0
-        assert len(table.columns) >= len(board_view.REQUIRED)
+        assert len(table.columns) >= len(render_board.BOARD_REQUIRED)
 
 
 @pytest.mark.asyncio
@@ -253,6 +258,6 @@ async def test_every_verdict_carries_its_word_so_a_colourless_screen_says_the_sa
     async with app.run_test(size=(120, 40)):
         table = app.query_one("#board-table", DataTable)
         headings = [str(column.label) for column in table.columns.values()]
-        index = headings.index(board_view.heading("verdict"))
+        index = headings.index(render_board.column_heading("verdict"))
         for position in range(table.row_count):
             assert str(table.get_row_at(position)[index]).strip()

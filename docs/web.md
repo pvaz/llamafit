@@ -50,21 +50,24 @@ under the title; the request is a row of controls that never scrolls out of reac
 list is everything else. Changing a control re-asks the server at once, so a person
 watches the list answer rather than filling in a form and pressing a button to find out.
 
-The list carries seven columns -- `#`, `Model`, `Quant`, `Score`, `Tok/s`, `Fit` and
-`Ctx` -- and an eighth, `How`, only when the rows disagree about how their speeds were
-arrived at. They are the first seven of the priority the terminal's board already works
-out in `_board_columns` and `board_view.MIXED_ORDER`. What the terminal admits after
-those -- `Runs`, `Qual`, `Card`, `Prompt tok/s`, `Size` and `RAM` -- is inside the row,
-which opens into the score with its parts, the speed with where a token's time goes, the
-memory budget line by line, the context ladder, and the command line to run it. A browser
-has room for all fourteen columns and that is the trap: fourteen columns of one weight is
-a table with no answer in it.
+The list carries thirteen columns -- `#`, `Model`, `Quant`, `Size`, `Score`, `Qual`,
+`Tok/s`, `Prompt tok/s`, `Runs`, `Card`, `RAM`, `Fit` and `Ctx` -- and a fourteenth, `How`,
+only when the rows disagree about how their speeds were arrived at. Every heading sorts
+when clicked, a figure largest first and a word A to Z, again to turn it round; under every
+heading but `#` is a box that narrows the list to what it says. The order is the one the
+terminal's board follows too: `BOARD_ORDER` in `llamafit/cli/render_board.py` is this
+list, and the terminal admits its columns by width and draws the admitted ones in this
+order, so a column lives in the same place on the page and in an eighty-column terminal.
+Whether a file is already on disk is inside the row rather than a column here. The row
+opens into the score with its parts, the speed with where a token's time goes, the memory
+budget line by line, the context ladder, and the command line to run it.
 
-A candidate that was not ranked is a row in that same list, quieter, keeping the three
-columns that identify it and spending the rest of its width on the reason it was refused.
-That sentence is the most useful one on the page, because it is the one that says what to
-change about the request; it is cut to a line so that fifty rows stay fifty rows, and the
-whole of it is in the row when the row is opened.
+A candidate that was not ranked is a row in that same list, quieter, with every column
+filled with whatever was computed for it and the word for the reason -- `too slow`, `no
+room` -- where its score would be. The sentence is one hover away and in the row when the
+row is opened, because it is the one that says what to change about the request. The
+terminal's board and dashboard have the same shape, with the sentences under the table
+grouped by reason.
 
 Behind the machine's line are two disclosures: **Host**, with the machine, the llama.cpp
 installation and every finding `doctor` reports, and **Simulate**, with a hardware profile

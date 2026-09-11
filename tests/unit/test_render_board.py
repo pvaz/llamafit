@@ -20,12 +20,12 @@ from llamafit.cli.render_board import (
     pool_label,
     render_board,
     render_budget,
-    render_excluded,
     render_fit,
-    render_fit_excluded,
+    render_fit_reasons,
     render_measurements,
     render_notes,
     render_plan,
+    render_reasons,
     render_speed,
     render_tiers,
     source_label,
@@ -349,15 +349,23 @@ def test_a_machine_with_no_card_is_described_without_one() -> None:
 
 
 def test_an_empty_exclusion_list_draws_nothing_at_all() -> None:
-    assert render_excluded([]) is None
-    assert render_fit_excluded([]) is None
-
-
-def test_the_exclusions_carry_the_reason_beside_the_model() -> None:
     board = build_board(catalog(), reference_host(), Needs(use_case="coding"))
-    text = drawn(render_excluded(board.excluded), width=200)
+    board.excluded = []
+    assert render_reasons(board) is None
+    fit = build_fit_board(catalog(), reference_host())
+    fit.excluded = []
+    assert render_fit_reasons(fit) is None
+
+
+def test_the_reasons_name_the_models_under_each_reason_said_once() -> None:
+    board = build_board(catalog(), reference_host(), Needs(use_case="coding"))
+    text = drawn(render_reasons(board), width=200)
     assert "Not ranked" in text
     assert "no coding capability" in text
+    assert "llama-3.1-8b-instruct" in text
+    # The finding: one sentence twenty-six times. Now once, with the ids after it.
+    assert text.count("a person reads at") == 1
+    assert text.count("no coding capability") == 1
 
 
 def test_the_fit_listing_drops_its_optional_columns_on_a_narrow_console() -> None:
@@ -370,8 +378,9 @@ def test_the_fit_listing_drops_its_optional_columns_on_a_narrow_console() -> Non
 def test_the_fit_listing_shows_the_models_it_could_not_place() -> None:
     tiny = machine(vram_total=None, ram_total=2 * GIB, ram_available=1 * GIB)
     board = build_fit_board(catalog(), tiny)
-    text = drawn(render_fit_excluded(board.excluded), width=200)
+    text = drawn(render_fit_reasons(board), width=200)
     assert "Not placed" in text
+    assert "no placement of it fits" in text
 
 
 # --- the plan -------------------------------------------------------------------------

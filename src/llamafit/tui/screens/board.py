@@ -20,31 +20,72 @@ every figure in the ``Tok/s`` column came out of a formula on default constants,
 sentence stays on the screen instead of sitting under the table where the eye does not go.
 
 The **third says what is on the screen**: how many of how many, in what order, under which
-filter. Four of this screen's keys can hide a row, and a reader who cannot find the model
-they came for is owed the reason.
+filter. Half of this screen's keys can hide a row or move it, and a reader who cannot find
+the model they came for is owed the reason.
 
 Below the table is the explanation, open by default. Section 12.3 says a recommendation
 expands into the inputs that produced it; on a command line that costs a page per row and
 is behind a flag, and here it costs nothing, so here it is not behind anything.
+
+The table is the command line's board, drawn by Textual instead of Rich: the same
+columns at the same width, chosen by :func:`llamafit.cli.render_board.board_columns`;
+the same cells from :func:`~llamafit.cli.render_board.board_cell`; the same order, filters
+and state line from the same :class:`~llamafit.cli.render_board.View`. Nothing here
+decides what a column is called or which one a narrow terminal loses first, and that is
+what keeps this screen from drifting away from the board a pipe prints.
 """
 
 from __future__ import annotations
 
+from dataclasses import replace
 from typing import ClassVar
 
+from rich.cells import cell_len
 from textual.app import ComposeResult
 from textual.binding import Binding, BindingType
 from textual.containers import Vertical, VerticalScroll
 from textual.message import Message
 from textual.widgets import DataTable, Input, Static
 
+from llamafit.cli.render_board import (
+    BOARD_ORDER,
+    FILTER_TERMS,
+    SORT_KEYS,
+    Column,
+    View,
+    board_cell,
+    board_columns,
+    column_budget,
+    column_heading,
+    column_widths,
+    default_descending,
+    exclusion_tag,
+    facts_of,
+    filter_terms,
+    mixed_confidence,
+    parse_filters,
+    state_line,
+    visible_rows,
+)
 from llamafit.i18n import _
+from llamafit.models.plan import Verdict
 from llamafit.services.recommend import BoardRow
-from llamafit.tui import board_view, explain
+from llamafit.tui import explain
 from llamafit.tui.keys import BOARD_KEYS, bindable
 from llamafit.tui.state import Dashboard, Request
 from llamafit.tui.summary import speed_band
 from llamafit.tui.widgets import RichPane
+
+_FIT_CYCLE: tuple[Verdict | None, ...] = (None, "tight", "fits", "comfortable")
+"""What ``f`` cycles through: every candidate, then each floor a verdict can be, best last.
+
+The ``/`` box can set a floor this cycle does not visit -- ``fit>=too-tight`` is a legal
+term -- so the key steps from wherever the filter is to the cycle's start rather than
+insisting the floor was one of its own.
+"""
+
+_NARROWEST_MODEL = 16
+"""How far the model column gives way to a wide tag before the names fold too hard to read."""
 
 
 class BoardPane(Vertical):
@@ -59,6 +100,9 @@ class BoardPane(Vertical):
     BoardPane > #board-hint { height: auto; padding: 0 1; text-style: bold; }
     BoardPane > #board-band { height: auto; padding: 0 1; color: $warning; }
     BoardPane > #board-state { height: auto; padding: 0 1; color: $text-muted; }
+    BoardPane > #board-error { height: auto; padding: 0 1; color: $error; }
+    BoardPane > #board-terms { display: none; height: auto; padding: 0 1; color: $text-muted; }
+    BoardPane > #board-terms.searching { display: block; }
     BoardPane > #board-search { display: none; }
     BoardPane > #board-search.searching { display: block; }
     BoardPane > #board-table { height: 2fr; min-height: 4; }
@@ -76,11 +120,8 @@ class BoardPane(Vertical):
     def __init__(self, dashboard: Dashboard, *, id: str | None = None) -> None:  # noqa: A002
         super().__init__(id=id)
         self.dashboard = dashboard
-        self.sort: board_view.Sort = "score"
-        self.fit: board_view.FitFilter = "all"
-        self.installed_only = False
-        self.search = ""
-        self.columns: tuple[board_view.Column, ...] = ()
+        self.view = View()
+        self.columns: tuple[Column, ...] = ()
         self.shown: list[BoardRow] = []
 
     def compose(self) -> ComposeResult:
@@ -95,6 +136,16 @@ class BoardPane(Vertical):
         )
         yield Static("", id="board-band", markup=False)
         yield Static("", id="board-state", markup=False)
+        yield Static("", id="board-error", markup=False)
+        yield Static(
+            _(
+                "Terms: %(terms)s; anything else is text to look for. Enter with the box "
+                "empty clears them."
+            )
+            % {"terms": ", ".join(FILTER_TERMS)},
+            id="board-terms",
+            markup=False,
+        )
         yield Input(placeholder=_("Part of a model name, then Enter"), id="board-search")
         yield DataTable(id="board-table", cursor_type="row", zebra_stripes=True)
         with VerticalScroll(id="board-why"):
@@ -131,11 +182,27 @@ class BoardPane(Vertical):
         """
         return self.size.width or self.app.size.width
 
-    def _wanted_columns(self) -> tuple[board_view.Column, ...]:
-        """Which columns this width and this board's speed labels ask for."""
-        return board_view.columns_for_width(
-            self._width(), uniform_confidence=board_view.one_confidence(self.dashboard.rows)
+    def _wanted_columns(self) -> tuple[Column, ...]:
+        """Which columns this width and this board's speed labels ask for.
+
+        The command line's own chooser with the command line's own budget, so that the
+        board a pipe prints and the board this screen draws have the same columns at the
+        same width. ``c`` asks for every column instead, and the table scrolls sideways.
+        """
+        if self.view.wide:
+            return BOARD_ORDER
+        return board_columns(
+            self._width(),
+            mixed_confidence=mixed_confidence(self.dashboard.rows),
+            budget=column_budget(self.dashboard.catalog),
         )
+
+    def _carried(self) -> list[BoardRow]:
+        """Every row the table may draw: the ranked ones, then the unranked ones if shown."""
+        board = self.dashboard.board
+        if board is None:
+            return []
+        return [*board.rows, *(board.excluded if self.view.excluded else [])]
 
     def _draw_band(self) -> None:
         rows = self.dashboard.rows
@@ -145,19 +212,22 @@ class BoardPane(Vertical):
 
     def _draw_table(self) -> None:
         table = self.query_one("#board-table", DataTable)
-        rows = self.dashboard.rows
-        self.shown = board_view.visible_rows(
-            rows,
-            search=self.search,
-            fit=self.fit,
-            installed_only=self.installed_only,
-            sort=self.sort,
-        )
+        carried = self._carried()
+        self.shown = visible_rows(carried, self.view)
         self.columns = self._wanted_columns()
+        widths = column_widths(column_budget(self.dashboard.catalog))
+        # A tag wider than the score column widens it, and the model column gives up
+        # the difference, which is what Rich does on the command line's board: a tag
+        # costs a few more folded names and never a column.
+        facts = [facts_of(row) for row in self.shown]
+        tags = [exclusion_tag(one) or "" for one in facts if not one.ranked]
+        extra = max([cell_len(tag) for tag in tags] + [widths["score"]]) - widths["score"]
+        widths["score"] += extra
+        widths["model"] = max(_NARROWEST_MODEL, widths["model"] - extra)
         table.clear(columns=True)
         for column in self.columns:
-            table.add_column(board_view.heading(column), width=board_view.WIDTHS[column])
-        for row in self.shown:
+            table.add_column(column_heading(column), width=widths[column], key=column)
+        for one in facts:
             # ``height=None`` is Textual's auto-height, and it is the whole of how this
             # table keeps its promise never to truncate a model's name. A row of a fixed
             # height is drawn with wrapping turned off, so a cell wider than its column is
@@ -166,15 +236,9 @@ class BoardPane(Vertical):
             # which is not that model or any other. Auto-height folds the cell onto a
             # second line instead, the way the command line's board already folds it, and
             # a row grows only when something in it actually needed the room.
-            table.add_row(*[board_view.cell(row, column) for column in self.columns], height=None)
+            table.add_row(*[board_cell(one, column) for column in self.columns], height=None)
         self.query_one("#board-state", Static).update(
-            board_view.state_line(
-                len(self.shown),
-                len(rows),
-                sort=self.sort,
-                fit=self.fit,
-                installed_only=self.installed_only,
-            )
+            state_line(len(self.shown), len(carried), self.view)
         )
 
     def _draw_why(self) -> None:
@@ -187,7 +251,7 @@ class BoardPane(Vertical):
             pane.show(explain.nothing_selected())
         else:
             # Nothing is ranked. The answer to "why is there nothing here" is the whole of
-            # the not-ranked table, so it is what the pane shows rather than a blank.
+            # the reasons list, so it is what the pane shows rather than a blank.
             pane.show(explain.not_ranked(board))
 
     @property
@@ -197,6 +261,11 @@ class BoardPane(Vertical):
         if not self.shown or not 0 <= index < len(self.shown):
             return None
         return self.shown[index]
+
+    def _redraw(self) -> None:
+        """The table and the explanation, after the view changed."""
+        self._draw_table()
+        self._draw_why()
 
     # --- what the reader does ----------------------------------------------------------
 
@@ -217,39 +286,70 @@ class BoardPane(Vertical):
         self._draw_why()
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
-        """Apply the typed search and put the cursor back on the table."""
+        """Apply the typed terms and put the cursor back on the table.
+
+        A term that cannot be read is said under the box and nothing is applied: a
+        filter half applied hides rows for a reason the state line could not name.
+        """
         event.stop()
-        self.search = event.value
+        error = self.query_one("#board-error", Static)
+        try:
+            filters = parse_filters(event.value)
+        except ValueError as exc:
+            error.update(str(exc))
+            return
+        error.update("")
+        self.view = replace(self.view, filters=filters)
         self.query_one("#board-search").set_class(False, "searching")
-        self._draw_table()
-        self._draw_why()
+        self.query_one("#board-terms").set_class(False, "searching")
+        self._redraw()
         self.query_one("#board-table", DataTable).focus()
 
     def action_search(self) -> None:
-        """Open the search box."""
+        """Open the filter box, showing the terms already in force so they can be edited."""
         box = self.query_one("#board-search", Input)
+        box.value = filter_terms(self.view.filters)
         box.set_class(True, "searching")
+        self.query_one("#board-terms").set_class(True, "searching")
         box.focus()
 
     def action_cycle_fit(self) -> None:
         """Show everything, then only what runs, then only what has room to spare."""
-        filters = board_view.FILTERS
-        self.fit = filters[(filters.index(self.fit) + 1) % len(filters)]
-        self._draw_table()
-        self._draw_why()
+        current = self.view.filters.min_fit
+        here = _FIT_CYCLE.index(current) if current in _FIT_CYCLE else -1
+        wanted = _FIT_CYCLE[(here + 1) % len(_FIT_CYCLE)]
+        self.view = replace(self.view, filters=replace(self.view.filters, min_fit=wanted))
+        self._redraw()
+
+    def _sort_by(self, step: int) -> None:
+        """Move along the sort keys; the direction goes back to the new key's own."""
+        here = SORT_KEYS.index(self.view.sort)
+        self.view = replace(
+            self.view, sort=SORT_KEYS[(here + step) % len(SORT_KEYS)], descending=None
+        )
+        self._redraw()
 
     def action_cycle_sort(self) -> None:
         """Reorder the rows; the rank column keeps saying where the ranking put each one."""
-        sorts = board_view.SORTS
-        self.sort = sorts[(sorts.index(self.sort) + 1) % len(sorts)]
-        self._draw_table()
-        self._draw_why()
+        self._sort_by(1)
+
+    def action_previous_sort(self) -> None:
+        """The sort key before this one, for a reader who went one too far."""
+        self._sort_by(-1)
+
+    def action_reverse_sort(self) -> None:
+        """Turn the current order round: smallest first, or largest again."""
+        descending = self.view.descending
+        if descending is None:
+            descending = default_descending(self.view.sort)
+        self.view = replace(self.view, descending=not descending)
+        self._redraw()
 
     def action_toggle_installed(self) -> None:
         """Show only the quantisations whose file llama.cpp already has."""
-        self.installed_only = not self.installed_only
-        self._draw_table()
-        self._draw_why()
+        filters = self.view.filters
+        self.view = replace(self.view, filters=replace(filters, installed=not filters.installed))
+        self._redraw()
 
     def action_toggle_quants(self) -> None:
         """Show every quantisation of a model rather than the one that scores best here."""
@@ -265,14 +365,43 @@ class BoardPane(Vertical):
         )
         self.refresh_board()
 
+    def action_toggle_excluded(self) -> None:
+        """Take the candidates that were not ranked off the table, or put them back."""
+        self.view = replace(self.view, excluded=not self.view.excluded)
+        self._redraw()
+
+    def action_toggle_columns(self) -> None:
+        """Every column whatever the width, or the ones the width admits again.
+
+        With every column the table is wider than the terminal and scrolls sideways
+        under the left and right arrows, which Textual binds for a row cursor.
+        """
+        self.view = replace(self.view, wide=not self.view.wide)
+        self._redraw()
+
     def action_toggle_why(self) -> None:
         """Close the explanation to give the table the whole screen, or open it again."""
         self.query_one("#board-why").toggle_class("hidden")
 
     def action_not_ranked(self) -> None:
-        """Show the candidates that did not qualify, each with the reason it did not."""
+        """Go to the first candidate that did not qualify, showing them if they were hidden.
+
+        The explanation pane follows the cursor, so landing on an unranked row reads its
+        reason with no further key. When there is no such row the pane shows the reasons
+        list itself, which for an empty board is the whole answer.
+        """
+        if not self.view.excluded:
+            self.view = replace(self.view, excluded=True)
+            self._draw_table()
+        first = next((i for i, row in enumerate(self.shown) if row.rank is None), None)
         self.query_one("#board-why").set_class(False, "hidden")
-        self.query_one("#board-why-pane", RichPane).show(explain.not_ranked(self.dashboard.board))
+        if first is None:
+            self.query_one("#board-why-pane", RichPane).show(
+                explain.not_ranked(self.dashboard.board)
+            )
+            return
+        self.query_one("#board-table", DataTable).move_cursor(row=first, scroll=True)
+        self._draw_why()
 
     def action_plan(self) -> None:
         """Ask for the placement, the budget and the command line for the selected row."""

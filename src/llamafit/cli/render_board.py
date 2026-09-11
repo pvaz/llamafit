@@ -31,25 +31,40 @@ and a context the planner had to retreat from is costed and shown beside the one
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
-from typing import Any
+from collections.abc import Callable, Iterable, Mapping, Sequence
+from dataclasses import dataclass
+from typing import Any, Literal, TypeVar, cast, get_args
 
 from rich.cells import cell_len
 from rich.console import Group, RenderableType
+from rich.padding import Padding
 from rich.table import Table
 from rich.text import Text
 
 from llamafit.cli.render import bandwidth_sentence, simulated_answer
-from llamafit.i18n import _, for_display, isolate, mirror_justify, ngettext, pgettext, reading_order
-from llamafit.models.catalog import Measured
+from llamafit.i18n import (
+    _,
+    for_display,
+    isolate,
+    mirror_justify,
+    ngettext,
+    pgettext,
+    pgettext_literal,
+    reading_order,
+)
+from llamafit.models.catalog import Capability, Catalog, Measured
 from llamafit.models.host import MachineFacts
 from llamafit.models.plan import (
     Budget,
     Candidate,
+    Confidence,
     ContextTier,
+    Needs,
     Placement,
     QualityBreakdown,
+    RunMode,
     SpeedEstimate,
+    Verdict,
 )
 from llamafit.scoring.fit_score import (
     IDEAL_HIGH,
@@ -57,22 +72,13 @@ from llamafit.scoring.fit_score import (
     resident_model_bytes,
     worst_pool_utilisation,
 )
-from llamafit.scoring.speed_score import prompt_penalty, target_tps
+from llamafit.scoring.speed_score import floor_tps, prompt_penalty, target_tps
 from llamafit.services.plan import PlanReport, TargetCheck
-from llamafit.services.recommend import Board, BoardRow, FitBoard, FitRow
-from llamafit.units import format_bytes, format_grouped, localise_number
+from llamafit.services.recommend import Board, BoardRow, FitBoard, FitRow, quant_entries
+from llamafit.units import format_bytes, format_grouped, localise_number, parse_size
 
 Cell = str | Text
 """What one cell of a table may be: markup-free text, or a plain string of labels."""
-
-_ID_COLUMN_MAX_WIDTH = 28
-"""How wide the model column may grow, in terminal cells, before it folds."""
-
-_COLUMN_OVERHEAD = 3
-"""What one more column costs beyond its content: a border and the padding either side."""
-
-_TABLE_OVERHEAD = 1
-"""The table's own leading border, charged once."""
 
 
 def _cell(text: str) -> Text:
@@ -93,10 +99,10 @@ def _add_columns(table: Table, columns: Sequence[Mapping[str, Any]]) -> None:
         table.add_column(for_display(header), **options)
 
 
-def _add_row(table: Table, *cells: Cell) -> None:
+def _add_row(table: Table, *cells: Cell, style: str | None = None) -> None:
     """Add one row, its cells in the same order :func:`_add_columns` put the columns."""
     prepared: list[Cell] = [c if isinstance(c, Text) else for_display(c) for c in cells]
-    table.add_row(*reading_order(prepared))
+    table.add_row(*reading_order(prepared), style=style)
 
 
 def _size(n: int | None) -> str:
@@ -741,81 +747,1134 @@ def render_notes(notes: Sequence[str]) -> Group | None:
     return Group(*[_cell(note) for note in notes])
 
 
-def _speed_cell(speed: SpeedEstimate | None) -> str:
-    """The generation figure for a board row, or the mark for a row that has none."""
-    return format_bytes(None) if speed is None else _number(speed.gen_tps)
+# --- the vocabulary the three interfaces share ----------------------------------------
+#
+# Column keys, sort keys and filter terms, and the words for each. ``board_cmd`` reads the
+# tuples for its flags, ``llamafit.tui.screens.board`` for its keys, ``llamafit.web.api``
+# for ``sort=`` and ``llamafit.web.strings`` for the page's headings, so a word added here
+# reaches all three interfaces and a word spelled differently in one of them cannot exist.
+
+Column = Literal[
+    "rank",
+    "model",
+    "quant",
+    "size",
+    "have",
+    "score",
+    "quality",
+    "gen",
+    "prompt",
+    "confidence",
+    "mode",
+    "vram",
+    "ram",
+    "verdict",
+    "context",
+]
+"""One column of a board, named as ``--json`` names the figure it holds."""
+
+BOARD_ORDER: tuple[Column, ...] = (
+    "rank",
+    "model",
+    "quant",
+    "size",
+    "have",
+    "score",
+    "quality",
+    "gen",
+    "prompt",
+    "confidence",
+    "mode",
+    "vram",
+    "ram",
+    "verdict",
+    "context",
+)
+"""Every column the board can draw, in the order it draws them.
+
+The web page's order, which is the reference, with ``have`` beside ``size`` because the
+page keeps that fact inside the row. Which columns a width admits is decided by
+:data:`BOARD_PRIORITY`; where an admitted column goes is decided here, so a column keeps
+its place whatever the width. Widening a terminal by twenty cells puts ``Qual`` between
+``Score`` and ``Tok/s``, where the page has it, rather than on the far right, and a reader
+who knows where a figure lives at one width knows where it lives at every width.
+"""
+
+BOARD_REQUIRED: tuple[Column, ...] = ("rank", "model", "quant", "score")
+"""The four columns a row cannot be told apart or acted on without; never dropped."""
+
+BOARD_PRIORITY: tuple[Column, ...] = (
+    "gen",
+    "verdict",
+    "mode",
+    "context",
+    "quality",
+    "vram",
+    "size",
+    "have",
+    "confidence",
+    "prompt",
+    "ram",
+)
+"""What a narrow terminal admits next, one whole column at a time.
+
+How fast it runs, then whether it runs, then how, then how much context it holds, the
+quality behind the score, what it takes on the card, what it costs to fetch, whether the
+file is already here, the confidence word, the prompt speed and the system memory. The
+download moved up from where the command line once had it: a download figure decides
+more choices than a prompt speed does, and the page's ``≤ GiB`` box is on it.
+
+``confidence`` sits here for a board whose rows all carry the same label, which the
+caption under the table then says once. When the rows disagree no sentence under the
+table is true of all of them, so the word is admitted together with ``gen`` or not at
+all: a figure without the word that says what kind of figure it is would be the thing
+the rule at the top of this file forbids.
+"""
+
+FIT_ORDER: tuple[Column, ...] = (
+    "rank",
+    "model",
+    "quant",
+    "size",
+    "have",
+    "mode",
+    "vram",
+    "ram",
+    "verdict",
+    "context",
+)
+"""The columns ``llamafit fit`` can draw, in :data:`BOARD_ORDER`'s order.
+
+No score, no speed, no quality: ``fit`` asks the memory question on its own.
+"""
+
+FIT_REQUIRED: tuple[Column, ...] = ("rank", "model", "quant", "verdict")
+"""What a fit row cannot be read without: its identity and the one answer it carries."""
+
+FIT_PRIORITY: tuple[Column, ...] = ("mode", "context", "vram", "ram", "size", "have")
+"""What a fit listing admits next, one whole column at a time."""
+
+ID_COLUMN_MAX_WIDTH = 28
+"""How wide the model column may grow, in terminal cells, before a name folds.
+
+Six of the sixty-two bundled ids are longer than this and the longest is thirty-four; a
+column wide enough for that one would spend nearly half an eighty-cell terminal on it.
+So this is where a name *folds* onto a second line, which is the one thing this column
+may do. A name cut at a width is not a shorter name but a different and wrong one:
+``nemotron-3.5-lightning-30b-a3b`` arriving as ``nemotron-3.5-lightning-3`` is a model
+nobody can look up or type. ``llamafit.cli.render`` holds the same number under its own
+name for a different table.
+"""
+
+SortKey = Literal[
+    "score",
+    "speed",
+    "quality",
+    "context",
+    "size",
+    "prompt",
+    "card",
+    "ram",
+    "fit",
+    "model",
+    "quant",
+]
+"""What a board can be ordered by: ``--sort`` on the command line, ``s`` on the dashboard,
+``sort=`` on the API. One word each, and the same word in all three places."""
+
+SORT_KEYS: tuple[SortKey, ...] = (
+    "score",
+    "speed",
+    "quality",
+    "context",
+    "size",
+    "prompt",
+    "card",
+    "ram",
+    "fit",
+    "model",
+    "quant",
+)
+"""Every sort key, ``score`` -- the board's own order -- first, then in column order."""
+
+FIT_SORT_KEYS: tuple[SortKey, ...] = (
+    "score",
+    "context",
+    "size",
+    "card",
+    "ram",
+    "fit",
+    "model",
+    "quant",
+)
+"""The sort keys a fit row has a value for. ``score`` is the fit score, the listing's own order."""
+
+_FIGURE_SORTS: frozenset[str] = frozenset(
+    {"score", "speed", "quality", "context", "size", "prompt", "card", "ram", "fit"}
+)
+"""The keys that order a figure, which a reader wants largest -- or best -- first."""
+
+_SORT_DIRECTIONS: dict[str, bool] = {"asc": False, "desc": True}
+"""The two words ``--sort KEY:asc`` and ``KEY:desc`` accept, and what each means."""
 
 
-def _board_columns(
-    rows: Sequence[BoardRow], console_width: int, *, show_confidence: bool
-) -> tuple[int, int, list[str]]:
-    """Decide which of the board's optional columns fit, in a fixed priority.
+def parse_sort(text: str, *, allowed: Sequence[str] = SORT_KEYS) -> tuple[SortKey, bool | None]:
+    """Read ``KEY``, ``KEY:asc`` or ``KEY:desc`` into a key and a direction.
 
-    The rank, the model, the quantisation and the score are never dropped: without them a
-    row cannot be told apart from another or acted on. Everything else is admitted only
-    while its whole content fits, in the order below, and the first column that does not
-    fit ends the list rather than being shrunk — a figure missing a digit is worse than a
-    column that is honestly absent, and a wider terminal shows every one of them.
+    Args:
+        text: What the flag or the query parameter carried.
+        allowed: The keys this listing has a value for; ``fit`` has fewer than the board.
 
-    The order is what a reader decides on. How fast it runs, then how well it fits, then
-    how it runs at all, then how much context it holds, then the quality behind the score,
-    then the memory, the prompt speed and the download.
+    Returns:
+        The key, and ``True`` for largest first, ``False`` for smallest first, or ``None``
+        when nothing was said and the key's own default applies.
+
+    Raises:
+        ValueError: The key is not one of ``allowed``, or the suffix is not one of the
+            two words. The message is the offending text; the caller says which flag or
+            parameter it came from and lists what would have been accepted.
     """
-    model_width = min(
-        _ID_COLUMN_MAX_WIDTH,
-        max(
-            [cell_len(pgettext("column heading", "Model"))]
-            + [cell_len(row.model_id) for row in rows]
+    key, _colon, direction = text.partition(":")
+    if key not in allowed or (direction and direction not in _SORT_DIRECTIONS):
+        raise ValueError(text)
+    return cast("SortKey", key), _SORT_DIRECTIONS.get(direction)
+
+
+def default_descending(key: SortKey) -> bool:
+    """Which way a key runs when nobody said: largest first for a figure, A to Z for a word.
+
+    The page's rule (``app.js``), kept here so a heading clicked on the page and a flag
+    typed on the command line put the same row first. ``fit`` counts as a figure whose
+    largest value is ``comfortable``, so the best verdict comes first.
+    """
+    return key in _FIGURE_SORTS
+
+
+def sort_label(key: SortKey) -> str:
+    """What the rows are ordered by, in a word the state line can carry."""
+    labels: dict[SortKey, str] = {
+        "score": pgettext("board sort", "score"),
+        "speed": pgettext("board sort", "speed"),
+        "quality": pgettext("board sort", "quality"),
+        "context": pgettext("board sort", "context"),
+        "size": pgettext("board sort", "download size"),
+        "prompt": pgettext("board sort", "prompt speed"),
+        "card": pgettext("board sort", "card memory"),
+        "ram": pgettext("board sort", "system memory"),
+        "fit": pgettext("board sort", "fit"),
+        "model": pgettext("board sort", "model id"),
+        "quant": pgettext("board sort", "quantisation"),
+    }
+    return labels[key]
+
+
+def column_heading(column: Column) -> str:
+    """One column's heading, in the reader's language.
+
+    The one table of headings for the command line, the dashboard and, through
+    :mod:`llamafit.web.strings`, the page. ``Tok/s`` was once renamed in three places at
+    once because each interface spelled it for itself; now there is one place.
+    """
+    headings: dict[Column, str] = {
+        "rank": pgettext("column heading", "#"),
+        "model": pgettext("column heading", "Model"),
+        "quant": pgettext("column heading", "Quant"),
+        "size": pgettext("column heading", "Size"),
+        "have": pgettext("column heading", "Have"),
+        "score": pgettext("column heading", "Score"),
+        "quality": pgettext("column heading", "Qual"),
+        "gen": pgettext("column heading", "Tok/s"),
+        "prompt": pgettext("column heading", "Prompt tok/s"),
+        "confidence": pgettext("column heading", "How"),
+        "mode": pgettext("column heading", "Runs"),
+        "vram": pgettext("column heading", "Card"),
+        "ram": pgettext("column heading", "RAM"),
+        "verdict": pgettext("column heading", "Fit"),
+        "context": pgettext("column heading", "Ctx"),
+    }
+    return headings[column]
+
+
+def parse_columns(text: str, *, allowed: Sequence[Column] = BOARD_ORDER) -> tuple[Column, ...]:
+    """Read ``--columns``' comma-separated list into column keys, in the order typed.
+
+    Args:
+        text: What was typed, for example ``model,quant,gen,size``.
+        allowed: The columns this listing can draw.
+
+    Returns:
+        The columns, in the order given.
+
+    Raises:
+        ValueError: A name that is not a column of this listing. The message is the name;
+            the caller lists what would have been accepted.
+    """
+    columns: list[Column] = []
+    for name in (part.strip() for part in text.split(",")):
+        if name not in allowed:
+            raise ValueError(name)
+        columns.append(cast("Column", name))
+    return tuple(columns)
+
+
+@dataclass(frozen=True)
+class ColumnBudget:
+    """What the two identity columns whose width varies cost on this catalog.
+
+    Attributes:
+        model: The model column's width, capped at :data:`ID_COLUMN_MAX_WIDTH`.
+        quant: The quantisation column's width.
+
+    Measured from the catalog, never from the rows a limit left on the board. The
+    admission of every optional column depends on these two, and a width that admitted
+    nine columns under ``--limit 2`` and seven under the default ten was a table that
+    changed shape for a reason no reader could see.
+    """
+
+    model: int = ID_COLUMN_MAX_WIDTH
+    quant: int = 10
+
+
+def column_budget(catalog: Catalog | None) -> ColumnBudget:
+    """The identity columns' widths for this catalog, or the defaults without one.
+
+    Args:
+        catalog: The models the board was built from, or ``None`` when the caller has no
+            catalog at hand, in which case the bundled catalog's own figures serve.
+    """
+    if catalog is None or not catalog.models:
+        return ColumnBudget()
+    ids = [cell_len(model.id) for model in catalog.models]
+    quants = [cell_len(quant.name) for model in catalog.models for quant in quant_entries(model)]
+    return ColumnBudget(
+        model=min(ID_COLUMN_MAX_WIDTH, max([cell_len(column_heading("model")), *ids])),
+        quant=max([cell_len(column_heading("quant")), *quants]),
+    )
+
+
+def column_widths(budget: ColumnBudget | None = None) -> dict[Column, int]:
+    """What each column costs in terminal cells before its padding, in this language.
+
+    Measured from the labels a column can hold rather than written down, because a
+    translated word is not the width of its English: ``experts in RAM`` is fourteen
+    cells and its Portuguese is longer, and a table budgeted on the English admitted a
+    column the Portuguese then overflowed. The figures are the widest a figure of that
+    kind gets on any board: a score is ``100.0``, a size ``123.4 GiB``.
+    """
+    words = {
+        "have": (
+            pgettext("model file on this machine", "yes"),
+            pgettext("model file on this machine", "no"),
         ),
-    )
-    quant_width = max(
-        [cell_len(pgettext("column heading", "Quant"))] + [cell_len(row.quant) for row in rows]
-    )
-    fixed = (
-        _TABLE_OVERHEAD
-        + (2 + _COLUMN_OVERHEAD)
-        + (model_width + _COLUMN_OVERHEAD)
-        + (quant_width + _COLUMN_OVERHEAD)
-        + (5 + _COLUMN_OVERHEAD)
-    )
-    optional: list[tuple[str, int]] = [("gen", 5)]
-    if show_confidence:
-        optional.append(("confidence", cell_len(confidence_label("calibrated"))))
-    optional += [
-        ("verdict", cell_len(verdict_label("does-not-fit"))),
-        ("mode", cell_len(mode_label("moe-offload"))),
-        ("context", 7),
-        ("quality", 4),
-        ("vram", 9),
-        ("prompt", cell_len(pgettext("column heading", "Prompt tok/s"))),
-        ("size", 9),
-        ("ram", 9),
-    ]
-    remaining = console_width - fixed
-    included: list[str] = []
-    for name, width in optional:
-        cost = max(width, 4) + _COLUMN_OVERHEAD
-        if cost > remaining:
+        "confidence": tuple(confidence_label(value) for value in get_args(Confidence)),
+        "mode": tuple(mode_label(value) for value in get_args(RunMode)),
+        "verdict": tuple(verdict_label(value) for value in get_args(Verdict)),
+    }
+    figures: dict[Column, int] = {
+        "rank": 2,
+        "size": 9,
+        "score": 5,
+        "quality": 3,
+        "gen": 5,
+        "prompt": 5,
+        "vram": 9,
+        "ram": 9,
+        "context": 7,
+    }
+    budget = budget or ColumnBudget()
+    widths: dict[Column, int] = {}
+    for column in BOARD_ORDER:
+        heading = cell_len(column_heading(column))
+        if column == "model":
+            widths[column] = max(heading, budget.model)
+        elif column == "quant":
+            widths[column] = max(heading, budget.quant)
+        elif column in words:
+            widths[column] = max(heading, *(cell_len(word) for word in words[column]))
+        else:
+            widths[column] = max(heading, figures[column])
+    return widths
+
+
+_COLUMN_OVERHEAD = 3
+"""What one more column costs beyond its content: a border and the padding either side."""
+
+_TABLE_OVERHEAD = 1
+"""The table's own leading border, charged once."""
+
+
+def choose_columns(
+    width: int,
+    *,
+    order: Sequence[Column],
+    required: Sequence[Column],
+    priority: Sequence[Column],
+    widths: Mapping[Column, int],
+    mixed_confidence: bool = False,
+) -> tuple[Column, ...]:
+    """The columns that fit in ``width`` cells, admitted by priority and drawn in order.
+
+    Args:
+        width: How many terminal cells the table has.
+        order: Every column the listing can draw, in the order it draws them.
+        required: The columns never dropped, even when they do not fit.
+        priority: The rest, in the order they are admitted.
+        widths: What each column costs before its padding.
+        mixed_confidence: Whether the rows disagree about how their speeds were arrived
+            at, which is what binds ``confidence`` to ``gen``.
+
+    Returns:
+        The columns to draw, in ``order``'s order.
+
+    The required columns are never dropped: a table too narrow for them is a table that
+    folds its names harder, and a row a reader cannot identify is worse than one that
+    takes two lines. Everything else is admitted only while its whole cost fits, and the
+    first column that does not fit ends the list rather than being shrunk -- a figure
+    missing a digit is worse than a column that is honestly absent, and a wider terminal
+    shows every one of them.
+
+    The cost is a Rich table's: a leading border, then a border and a cell of padding on
+    either side of every column. The dashboard's table is cheaper by a cell a column and
+    budgets with the same figures anyway, so that the two interfaces draw the same
+    columns at the same width and the only difference is a cell or two of slack.
+    """
+
+    def cost(column: Column) -> int:
+        return widths[column] + _COLUMN_OVERHEAD
+
+    remaining = width - _TABLE_OVERHEAD - sum(cost(column) for column in required)
+    admitted: set[Column] = set(required)
+    for column in priority:
+        if column == "confidence" and mixed_confidence:
+            continue
+        group: tuple[Column, ...] = (
+            ("gen", "confidence") if column == "gen" and mixed_confidence else (column,)
+        )
+        needed = sum(cost(member) for member in group)
+        if needed > remaining:
             break
-        included.append(name)
-        remaining -= cost
-    return model_width, quant_width, included
+        admitted.update(group)
+        remaining -= needed
+    return tuple(column for column in order if column in admitted)
 
 
-def render_board(board: Board, *, console_width: int = 80) -> Group:
+def board_columns(
+    width: int, *, mixed_confidence: bool, budget: ColumnBudget | None = None
+) -> tuple[Column, ...]:
+    """The board's columns at this width: the one chooser every interface draws with."""
+    return choose_columns(
+        width,
+        order=BOARD_ORDER,
+        required=BOARD_REQUIRED,
+        priority=BOARD_PRIORITY,
+        widths=column_widths(budget),
+        mixed_confidence=mixed_confidence,
+    )
+
+
+def fit_columns(width: int, *, budget: ColumnBudget | None = None) -> tuple[Column, ...]:
+    """The fit listing's columns at this width, chosen the way the board's are."""
+    return choose_columns(
+        width,
+        order=FIT_ORDER,
+        required=FIT_REQUIRED,
+        priority=FIT_PRIORITY,
+        widths=column_widths(budget),
+    )
+
+
+@dataclass(frozen=True)
+class RowFacts:
+    """What one row of either listing carries, read once so every cell reads the same.
+
+    A :class:`~llamafit.services.recommend.BoardRow` holds its figures inside a
+    :class:`~llamafit.models.plan.Candidate` and a
+    :class:`~llamafit.services.recommend.FitRow` holds them on itself. Everything that
+    draws, sorts or filters a row reads this instead, so the two shapes are one shape
+    from here on and nothing below has to know which listing a row came from.
+
+    Attributes:
+        rank: Its place, or ``None`` when it was not ranked.
+        model_id: The catalog id.
+        name: The display name.
+        quant: The quantisation.
+        download_bytes: What fetching it would cost, when known.
+        local_path: Where it already is on disk, when it is.
+        placement: Where its bytes would go, when a placement was found.
+        speed: How fast it would run there, when one was estimated.
+        score: The board's composite, or the fit score on a fit row, or ``None``.
+        quality: The quality behind the score, when one was worked out.
+        excluded_because: Why it was not ranked, as a sentence, when it was not.
+        excluded_tag: The same in a word or two, or ``None`` when the service gave none.
+    """
+
+    rank: int | None
+    model_id: str
+    name: str
+    quant: str
+    download_bytes: int | None
+    local_path: str | None
+    placement: Placement | None
+    speed: SpeedEstimate | None
+    score: float | None
+    quality: float | None
+    excluded_because: str | None
+    excluded_tag: str | None
+
+    @property
+    def ranked(self) -> bool:
+        """Whether this row is on the board proper rather than under it."""
+        return self.rank is not None
+
+
+def facts_of(row: BoardRow | FitRow) -> RowFacts:
+    """One row's facts, whichever listing it belongs to."""
+    if isinstance(row, BoardRow):
+        candidate = row.candidate
+        return RowFacts(
+            rank=row.rank,
+            model_id=row.model_id,
+            name=row.name,
+            quant=row.quant,
+            download_bytes=row.download_bytes,
+            local_path=row.local_path,
+            placement=candidate.placement,
+            speed=candidate.speed,
+            score=candidate.score.total if candidate.score is not None else None,
+            quality=candidate.quality.quality if candidate.quality is not None else None,
+            excluded_because=candidate.excluded_because,
+            excluded_tag=candidate.excluded_tag,
+        )
+    return RowFacts(
+        rank=row.rank,
+        model_id=row.model_id,
+        name=row.name,
+        quant=row.quant,
+        download_bytes=row.download_bytes,
+        local_path=row.local_path,
+        placement=row.placement,
+        speed=None,
+        score=row.fit,
+        quality=None,
+        excluded_because=row.excluded_because,
+        excluded_tag=_fit_tag(row),
+    )
+
+
+def _fit_tag(row: FitRow) -> str | None:
+    """The one-cell reason a fit row was not placed, read off the sentence it carries.
+
+    ``fit`` has two reasons and no tag field. One reason is a fixed sentence the service
+    writes for a model no placement of fits; the other is whatever the planner said
+    when it refused to size the file, which is a sentence about the file's facts. The
+    same catalog entry is read here as the service read there, so the comparison holds
+    in every language.
+    """
+    if row.rank is not None or row.excluded_because is None:
+        return None
+    if row.excluded_because == _("no placement of it fits this machine at any context"):
+        return pgettext("exclusion tag", "no room")
+    return pgettext("exclusion tag", "no facts")
+
+
+def exclusion_tag(facts: RowFacts) -> str | None:
+    """The word for an unranked row's cell, with a plain one for a reason that has none.
+
+    Every exclusion the scorer makes carries a tag; the licence refusal and the planner's
+    refusal to size a file are made elsewhere and carry only a sentence. A cell for those
+    reads *not ranked* rather than nothing, because a blank in a column of scores reads
+    as a zero, and the sentence is under the table and in the row's explanation.
+    """
+    if facts.ranked:
+        return None
+    if facts.excluded_tag:
+        return facts.excluded_tag
+    if facts.excluded_because:
+        return pgettext("exclusion tag", "not ranked")
+    return None
+
+
+def mixed_confidence(rows: Iterable[BoardRow]) -> bool:
+    """Whether the rows disagree about how their speeds were arrived at.
+
+    When every row carries the same label there is nothing a column per row can say that
+    one sentence under the table does not say better, and the space buys a column that
+    does vary. When they differ, the label has to be on the row it belongs to. A board
+    with no speeds at all counts as agreeing: there is no figure whose label could be
+    lost.
+    """
+    labels = {row.candidate.speed.confidence for row in rows if row.candidate.speed is not None}
+    return len(labels) > 1
+
+
+def _no_figure() -> str:
+    """The mark for a cell whose figure was never computed, one cell wide.
+
+    Not a blank, which reads as a zero, and not the word for an unknown size, which is
+    seven cells and would widen every column an unplanned row has nothing for. A row
+    that was never planned -- refused for its licence, say -- has nothing in seven of
+    these columns, and the reason is in the one column that says why.
+    """
+    return pgettext_literal("board cell with no figure", "–")  # noqa: RUF001  - a dash, on purpose
+
+
+def board_cell(facts: RowFacts, column: Column, *, tag_column: Column = "score") -> Text:
+    """One cell of one row, as text no style tag can be read out of.
+
+    Args:
+        facts: The row.
+        column: Which cell.
+        tag_column: Where an unranked row's reason goes in a word: the score column on
+            the board, which such a row has no score for, and the verdict column on a
+            fit listing, which has no score column at all.
+
+    Returns:
+        The cell, coloured for a verdict and dimmed for an unranked row.
+    """
+    placement = facts.placement
+    speed = facts.speed
+    budget = placement.budget if placement is not None else None
+    # An unsupported placement carries a speed of zero rather than none and a budget of
+    # nothing on the card, and a zero is a figure where "nothing was placed" is the truth.
+    estimated = speed if speed is not None and speed.confidence != "unsupported" else None
+    placed = placement if placement is not None and placement.mode != "unsupported" else None
+    sized = placed.budget if placed is not None else None
+    none = _no_figure()
+    if column == tag_column and not facts.ranked:
+        return Text(for_display(exclusion_tag(facts) or none), style="dim")
+    values: dict[Column, str] = {
+        "rank": isolate(str(facts.rank)) if facts.rank is not None else "",
+        "model": isolate(facts.model_id),
+        "quant": isolate(facts.quant),
+        "size": _size(facts.download_bytes) if facts.download_bytes is not None else none,
+        "have": (
+            pgettext("model file on this machine", "yes")
+            if facts.local_path
+            else pgettext("model file on this machine", "no")
+        ),
+        "score": _number(facts.score) if facts.score is not None else none,
+        "quality": _number(facts.quality, 0) if facts.quality is not None else none,
+        "gen": _number(estimated.gen_tps) if estimated is not None else none,
+        "prompt": _number(estimated.pp_tps, 0) if estimated is not None else none,
+        "confidence": confidence_label(speed.confidence) if speed is not None else none,
+        "mode": mode_label(placement.mode) if placement is not None else none,
+        "vram": _size(sized.vram_required) if sized is not None else none,
+        "ram": _size(sized.ram_required) if sized is not None else none,
+        "verdict": verdict_label(budget.verdict) if budget is not None else none,
+        "context": _context(placed.max_context_fit) if placed is not None else none,
+    }
+    style = ""
+    if column == "verdict" and budget is not None:
+        style = verdict_style(budget.verdict)
+    elif column == "model":
+        style = "bold"
+    if not facts.ranked:
+        style = f"{style} dim".strip()
+    return Text(for_display(values[column]), style=style)
+
+
+# --- filters, sorts and the line that says what is on the screen ----------------------
+
+
+@dataclass(frozen=True)
+class Filters:
+    """What a reader asked to see of the rows a board already produced.
+
+    None of these change the ranking or ``ranked_total``: a *request* filter such as
+    ``--min-tps`` changes what is ranked and is said on the board, while a filter here
+    changes only what is drawn. The page has a box under every heading for the same
+    purpose; the dashboard's ``/`` box takes the same terms as text, and the command
+    line takes the four a person types most as flags.
+
+    Attributes:
+        search: Text the id, the name or the quantisation must contain.
+        min_fit: The worst verdict to draw, or ``None`` for every verdict.
+        installed: Only rows whose file is already on this machine.
+        mode: Only rows that run in this mode.
+        min_speed: At least this many tokens per second generated.
+        max_size: At most this many bytes to download.
+        max_card: At most this many bytes on the card.
+        max_ram: At most this many bytes of system memory.
+        min_context: Holding at least this many tokens.
+        min_quality: A quality figure at least this high.
+    """
+
+    search: str = ""
+    min_fit: Verdict | None = None
+    installed: bool = False
+    mode: RunMode | None = None
+    min_speed: float | None = None
+    max_size: int | None = None
+    max_card: int | None = None
+    max_ram: int | None = None
+    min_context: int | None = None
+    min_quality: float | None = None
+
+    @property
+    def active(self) -> bool:
+        """Whether anything at all is being hidden."""
+        return self != Filters()
+
+
+FILTER_TERMS: tuple[str, ...] = (
+    "fit>=VERDICT",
+    "speed>=N",
+    "size<=SIZE",
+    "card<=SIZE",
+    "ram<=SIZE",
+    "ctx>=N",
+    "quality>=N",
+    "runs=MODE",
+    "have",
+)
+"""The terms :func:`parse_filters` reads, as a reader is shown them when one is refused.
+
+Each names the page's box under the same heading, with the sign the box shows: a floor
+on a figure a reader wants more of, a ceiling on one they pay for. Anything else typed
+is text the model's id, name or quantisation must contain.
+"""
+
+_VERDICT_ORDER: tuple[Verdict, ...] = get_args(Verdict)
+"""The verdicts best first, which is the order the type declares them in."""
+
+
+def parse_filters(text: str) -> Filters:
+    """Read the dashboard's filter box, or a ``--filter`` string, into :class:`Filters`.
+
+    Args:
+        text: Terms separated by spaces, from :data:`FILTER_TERMS`; whatever is not a
+            term is text to search for.
+
+    Returns:
+        The filters.
+
+    Raises:
+        ValueError: A term's value cannot be read -- a verdict that is not one of the
+            five, a run mode that is not one of the four, a size that is not a size, a
+            number that is not a number. The message names the term and the values it
+            takes, and nothing is applied, because a filter half applied hides rows for
+            a reason the state line cannot then name.
+    """
+    search: list[str] = []
+    fields: dict[str, Any] = {}
+    for term in text.split():
+        key, sign, value = _split_term(term)
+        if key is None:
+            if term.casefold() == "have":
+                fields["installed"] = True
+            else:
+                search.append(term)
+            continue
+        if key == "fit" and sign == ">=":
+            fields["min_fit"] = _checked_verdict(value)
+        elif key == "runs" and sign == "=":
+            fields["mode"] = _checked_mode(value)
+        elif key == "speed" and sign == ">=":
+            fields["min_speed"] = _checked_number(term, value)
+        elif key == "quality" and sign == ">=":
+            fields["min_quality"] = _checked_number(term, value)
+        elif key == "ctx" and sign == ">=":
+            fields["min_context"] = int(_checked_number(term, value.upper().removesuffix("K")))
+            if value.upper().endswith("K"):
+                fields["min_context"] *= 1024
+        elif key in ("size", "card", "ram") and sign == "<=":
+            fields[f"max_{key}"] = _checked_size(term, value)
+        else:
+            raise ValueError(
+                _(
+                    "%(term)s is not a filter; the terms are %(terms)s, and anything else "
+                    "is text to look for."
+                )
+                % {"term": term, "terms": ", ".join(FILTER_TERMS)}
+            )
+    return Filters(search=" ".join(search), **fields)
+
+
+def _split_term(term: str) -> tuple[str | None, str, str]:
+    """A term as key, sign and value, or no key at all for plain text."""
+    for sign in (">=", "<=", "="):
+        key, found, value = term.partition(sign)
+        if found and key.isalpha():
+            return key.casefold(), sign, value
+    return None, "", term
+
+
+def _checked_verdict(value: str) -> Verdict:
+    """The verdict a term named, or the five it could have."""
+    if value not in _VERDICT_ORDER:
+        raise ValueError(_("fit>= takes one of %(values)s") % {"values": ", ".join(_VERDICT_ORDER)})
+    return value
+
+
+def _checked_mode(value: str) -> RunMode:
+    """The run mode a term named, or the ones it could have."""
+    modes = [mode for mode in get_args(RunMode) if mode != "unsupported"]
+    if value not in modes:
+        raise ValueError(_("runs= takes one of %(values)s") % {"values": ", ".join(modes)})
+    return cast("RunMode", value)
+
+
+def _checked_number(term: str, value: str) -> float:
+    """A figure typed into a term, in either decimal punctuation."""
+    try:
+        return float(value.replace(",", "."))
+    except ValueError as exc:
+        raise ValueError(_("%(term)s needs a number") % {"term": term}) from exc
+
+
+def _checked_size(term: str, value: str) -> int:
+    """A size typed into a term, read the way every size flag is read."""
+    try:
+        return parse_size(value)
+    except ValueError as exc:
+        raise ValueError(
+            _("%(term)s needs a size such as 8G, 7.5GiB or 512M") % {"term": term}
+        ) from exc
+
+
+def filter_terms(filters: Filters) -> str:
+    """The filters as the text :func:`parse_filters` would read them back from.
+
+    What the dashboard's box shows when it opens, so a filter set by a key is one a
+    reader can see and edit, and an empty box on Enter clears every one of them.
+    """
+    terms: list[str] = []
+    if filters.search.strip():
+        terms.append(filters.search.strip())
+    if filters.min_fit is not None:
+        terms.append(f"fit>={filters.min_fit}")
+    if filters.mode is not None:
+        terms.append(f"runs={filters.mode}")
+    if filters.min_speed is not None:
+        terms.append(f"speed>={filters.min_speed:g}")
+    if filters.max_size is not None:
+        terms.append(f"size<={filters.max_size}")
+    if filters.max_card is not None:
+        terms.append(f"card<={filters.max_card}")
+    if filters.max_ram is not None:
+        terms.append(f"ram<={filters.max_ram}")
+    if filters.min_context is not None:
+        terms.append(f"ctx>={filters.min_context}")
+    if filters.min_quality is not None:
+        terms.append(f"quality>={filters.min_quality:g}")
+    if filters.installed:
+        terms.append("have")
+    return " ".join(terms)
+
+
+def passes(facts: RowFacts, filters: Filters) -> bool:
+    """Whether one row survives every filter.
+
+    A row with no figure at all is not hidden by a threshold on that figure: it has not
+    failed the test, it was never given one, and hiding it would be the board quietly
+    deciding. The fit filter is the exception, because "does it run" is a question about
+    a placement and a row with none has no answer to it that puts it on a list of things
+    that run.
+    """
+    placement = facts.placement
+    budget = placement.budget if placement is not None else None
+    wanted = filters.search.strip().casefold()
+    if wanted and not any(
+        wanted in field.casefold() for field in (facts.model_id, facts.name, facts.quant)
+    ):
+        return False
+    if filters.min_fit is not None and (
+        budget is None
+        or _VERDICT_ORDER.index(budget.verdict) > _VERDICT_ORDER.index(filters.min_fit)
+    ):
+        return False
+    if filters.installed and facts.local_path is None:
+        return False
+    if filters.mode is not None and placement is not None and placement.mode != filters.mode:
+        return False
+    speed = facts.speed
+    checks: list[tuple[float | None, float | None, bool]] = [
+        (speed.gen_tps if speed is not None else None, filters.min_speed, True),
+        (facts.download_bytes, filters.max_size, False),
+        (budget.vram_required if budget is not None else None, filters.max_card, False),
+        (budget.ram_required if budget is not None else None, filters.max_ram, False),
+        (placement.max_context_fit if placement is not None else None, filters.min_context, True),
+        (facts.quality, filters.min_quality, True),
+    ]
+    for value, limit, floor in checks:
+        if value is None or limit is None:
+            continue
+        if (value < limit) if floor else (value > limit):
+            return False
+    return True
+
+
+def filter_label(min_fit: Verdict | None) -> str:
+    """Which verdicts are showing, in a phrase the state line can carry."""
+    if min_fit is None:
+        return pgettext("board filter", "every candidate")
+    labels: dict[str, str] = {
+        "comfortable": pgettext("board filter", "the ones with room to spare"),
+        "fits": pgettext("board filter", "the ones that fit"),
+        "tight": pgettext("board filter", "the ones that run"),
+    }
+    return labels.get(min_fit, filter_label(None))
+
+
+def filter_phrases(filters: Filters) -> list[str]:
+    """Every active term but the fit filter and the on-disk one, each as a phrase."""
+    phrases: list[str] = []
+    if filters.search.strip():
+        phrases.append(_("matching %(text)s") % {"text": isolate(filters.search.strip())})
+    if filters.mode is not None:
+        phrases.append(_("running as %(mode)s") % {"mode": mode_label(filters.mode)})
+    if filters.min_speed is not None:
+        phrases.append(_("at least %(tps)s tokens per second") % {"tps": _tps(filters.min_speed)})
+    if filters.max_size is not None:
+        phrases.append(_("no more than %(size)s to download") % {"size": _size(filters.max_size)})
+    if filters.max_card is not None:
+        phrases.append(_("no more than %(size)s on the card") % {"size": _size(filters.max_card)})
+    if filters.max_ram is not None:
+        phrases.append(
+            _("no more than %(size)s of system memory") % {"size": _size(filters.max_ram)}
+        )
+    if filters.min_context is not None:
+        phrases.append(
+            _("holding at least %(context)s tokens")
+            % {"context": isolate(format_grouped(filters.min_context))}
+        )
+    if filters.min_quality is not None:
+        phrases.append(
+            _("a quality of at least %(quality)s") % {"quality": _number(filters.min_quality, 0)}
+        )
+    return phrases
+
+
+_Row = TypeVar("_Row", BoardRow, FitRow)
+
+
+def sort_value(facts: RowFacts, key: SortKey) -> float | str | None:
+    """The figure or word one key orders a row by, or ``None`` when the row has none."""
+    placement = facts.placement
+    budget = placement.budget if placement is not None else None
+    speed = facts.speed
+    if key == "score":
+        return facts.score
+    if key == "speed":
+        return speed.gen_tps if speed is not None else None
+    if key == "prompt":
+        return speed.pp_tps if speed is not None else None
+    if key == "quality":
+        return facts.quality
+    if key == "context":
+        return float(placement.max_context_fit) if placement is not None else None
+    if key == "size":
+        return float(facts.download_bytes) if facts.download_bytes is not None else None
+    if key == "card":
+        return float(budget.vram_required) if budget is not None else None
+    if key == "ram":
+        return float(budget.ram_required) if budget is not None else None
+    if key == "fit":
+        # Best first is largest first, so the order the type declares is turned round.
+        return float(len(_VERDICT_ORDER) - _VERDICT_ORDER.index(budget.verdict)) if budget else None
+    if key == "model":
+        return facts.model_id.casefold()
+    return facts.quant.casefold()
+
+
+def sorted_rows(rows: Sequence[_Row], key: SortKey, descending: bool | None = None) -> list[_Row]:
+    """The rows in the order one key puts them, with the ranking breaking every tie.
+
+    Args:
+        rows: The rows, in the order the service ranked them.
+        key: What to order by.
+        descending: Largest first, or ``None`` for the key's own default.
+
+    Returns:
+        A new list. The rank travels with each row and is never rewritten: a column sort
+        is a way of looking at an answer, not a second opinion about it, and a table that
+        renumbered itself would quietly claim it was. A row with nothing to order by --
+        no placement, no speed, no size filled in -- goes last whichever way the key
+        runs: "nobody has filled this in" is not the same claim as "this is the
+        smallest one".
+
+    Every value read here was produced by a service. The sort is stable, so two rows a
+    key cannot tell apart come back in the order the ranking put them.
+    """
+    if descending is None:
+        descending = default_descending(key)
+    valued: list[tuple[float | str, _Row]] = []
+    unvalued: list[_Row] = []
+    for row in rows:
+        value = sort_value(facts_of(row), key)
+        if value is None:
+            unvalued.append(row)
+        else:
+            valued.append((value, row))
+    valued.sort(key=lambda pair: pair[0], reverse=descending)
+    return [row for _value, row in valued] + unvalued
+
+
+@dataclass(frozen=True)
+class View:
+    """How the drawn listing differs from the ranked one: order, filters, columns, rows.
+
+    Attributes:
+        sort: What the rows are ordered by.
+        descending: Largest first, or ``None`` for the key's own default.
+        filters: What is hidden.
+        columns: Exactly these columns, in this order, or ``None`` to let the width choose.
+        wide: Every column the listing has, whatever the width.
+        excluded: Draw the rows that were not ranked, dimmed, under the ranked ones.
+    """
+
+    sort: SortKey = "score"
+    descending: bool | None = None
+    filters: Filters = Filters()
+    columns: tuple[Column, ...] | None = None
+    wide: bool = False
+    excluded: bool = True
+
+    @property
+    def reordered(self) -> bool:
+        """Whether the rows are in any order but the ranking's own."""
+        return self.sort != "score" or (
+            self.descending is not None and self.descending != default_descending(self.sort)
+        )
+
+
+def visible_rows(rows: Sequence[_Row], view: View) -> list[_Row]:
+    """The rows on screen: what survives the filters, in the order the sort asks for."""
+    kept = [row for row in rows if passes(facts_of(row), view.filters)]
+    return sorted_rows(kept, view.sort, view.descending)
+
+
+def state_line(shown: int, total: int, view: View) -> str:
+    """One line saying what is on the screen, why it is in that order and what is hidden.
+
+    The shapes are the dashboard's own, kept because six catalogs carry them. "Already
+    on this machine" is a claim about the list the other words do not make, so it keeps
+    the sentence it had; every other term joins the phrase after "showing", and a reader
+    who cannot see the model they came for is told which of the filters is hiding it.
+    """
+    counted = _("%(shown)d of %(total)d shown") % {"shown": shown, "total": total}
+    sort = sort_label(view.sort)
+    if view.descending is not None and view.descending != default_descending(view.sort):
+        sort = _("%(sort)s in reverse") % {"sort": sort}
+    filters = view.filters
+    phrases = [filter_label(filters.min_fit), *filter_phrases(filters)]
+    if filters.installed and len(phrases) == 1:
+        return _("%(counted)s, by %(sort)s, showing %(filter)s already on this machine.") % {
+            "counted": counted,
+            "sort": sort,
+            "filter": phrases[0],
+        }
+    if filters.installed:
+        phrases.append(pgettext("board filter", "already on this machine"))
+    return _("%(counted)s, by %(sort)s, showing %(filter)s.") % {
+        "counted": counted,
+        "sort": sort,
+        "filter": ", ".join(phrases),
+    }
+
+
+# --- the board ------------------------------------------------------------------------
+
+
+def _column_spec(column: Column, budget: ColumnBudget) -> dict[str, Any]:
+    """How Rich should lay one column out: its heading, alignment and what may fold.
+
+    Only the model and the quantisation may wrap, and the model column has the cap
+    that makes a long id fold rather than push every other column off the screen. The
+    figures never wrap: a number split across two lines is two numbers. When an
+    unranked row's tag is wider than the score column, Rich takes the difference from
+    the widest column that may wrap, which is the model column -- so a tag costs a few
+    more folded names and never a column.
+    """
+    numeric = column in {
+        "rank",
+        "size",
+        "score",
+        "quality",
+        "gen",
+        "prompt",
+        "vram",
+        "ram",
+        "context",
+    }
+    spec: dict[str, Any] = {
+        "header": column_heading(column),
+        "justify": "right" if numeric else "left",
+        "no_wrap": column not in {"model", "quant", "mode"},
+    }
+    if column == "model":
+        spec |= {"max_width": budget.model, "overflow": "fold"}
+    if column == "quant":
+        spec["max_width"] = budget.quant
+    return spec
+
+
+def _drawn_columns(
+    view: View, console_width: int, *, mixed: bool, budget: ColumnBudget, order: Sequence[Column]
+) -> tuple[Column, ...]:
+    """The columns a view draws: the ones it named, all of them, or what the width admits."""
+    if view.columns is not None:
+        return view.columns
+    if view.wide:
+        return tuple(order)
+    if order is FIT_ORDER:
+        return fit_columns(console_width, budget=budget)
+    return board_columns(console_width, mixed_confidence=mixed, budget=budget)
+
+
+def _draw_listing(
+    title: str,
+    rows: Sequence[RowFacts],
+    columns: Sequence[Column],
+    budget: ColumnBudget,
+    *,
+    tag_column: Column,
+) -> Table:
+    """One table of rows, ranked and unranked alike, the unranked ones dimmed."""
+    table = Table(title=for_display(title))
+    _add_columns(table, [_column_spec(column, budget) for column in columns])
+    for facts in rows:
+        cells = [board_cell(facts, column, tag_column=tag_column) for column in columns]
+        _add_row(table, *cells, style=None if facts.ranked else "dim")
+    return table
+
+
+def render_board(
+    board: Board,
+    *,
+    console_width: int = 80,
+    view: View | None = None,
+    budget: ColumnBudget | None = None,
+) -> Group:
     """The ranked board: the answer a person came for, with its provenance attached.
 
     Args:
         board: The ranked candidates and the request they answer.
         console_width: The console's width; 80, the narrowest this table is designed for,
             when the caller does not know.
+        view: How to draw it -- the order, the filters, the columns, whether the unranked
+            rows are on it -- or the default, which is the ranking's own order with every
+            column the width admits.
+        budget: The identity columns' widths, measured from the catalog; the bundled
+            catalog's when the caller has none.
 
     Returns:
-        The table, and the caption saying what the speed column is and what it is not.
-        A board that ranked nothing is that sentence instead of the table, rendered here
-        rather than by the command, so that it is drawn under the same banner and beside
-        the same record of the machine every other shape of this answer carries.
+        The table, the caption saying what the speed column is and what it is not, and
+        a line saying what the view hid or reordered when it did either. A board that
+        ranked nothing is that sentence instead of the table, rendered here rather than
+        by the command, so that it is drawn under the same banner and beside the same
+        record of the machine every other shape of this answer carries.
+
+    The candidates that were not ranked are rows of the same table, dimmed, every column
+    filled with whatever was computed for them and the word for the reason where the
+    score would be. A row excluded for running at four tokens a second was placed, sized
+    and estimated first, and those figures are what tell a reader whether a smaller
+    quantisation would rescue it; a second table of sentences told them none of that
+    and said one sentence twenty-six times. The sentence is under the table now, once
+    per reason, from :func:`render_reasons`.
     """
+    view = view or View()
+    budget = budget or ColumnBudget()
     if not board.rows:
         return simulated_answer(
             board.simulation,
@@ -827,92 +1886,16 @@ def render_board(board: Board, *, console_width: int = 80) -> Group:
             ),
             *_machine_captions(board.machine, speeds=False),
         )
-    model_width, quant_width, included = _board_columns(
-        board.rows, console_width, show_confidence=_mixed_confidence(board.rows)
+    columns = _drawn_columns(
+        view, console_width, mixed=mixed_confidence(board.rows), budget=budget, order=BOARD_ORDER
     )
-    table = Table(title=for_display(_("Recommended")))
-    columns: list[Mapping[str, Any]] = [
-        {"header": pgettext("column heading", "#"), "justify": "right", "no_wrap": True},
-        {
-            "header": pgettext("column heading", "Model"),
-            "style": "bold",
-            "max_width": model_width,
-            "overflow": "fold",
-        },
-        {"header": pgettext("column heading", "Quant"), "max_width": quant_width},
-        {"header": pgettext("column heading", "Score"), "justify": "right", "no_wrap": True},
-    ]
-    headings = {
-        "gen": pgettext("column heading", "Tok/s"),
-        "confidence": pgettext("column heading", "How"),
-        "verdict": pgettext("column heading", "Fit"),
-        "mode": pgettext("column heading", "Runs"),
-        "context": pgettext("column heading", "Ctx"),
-        "quality": pgettext("column heading", "Qual"),
-        "vram": pgettext("column heading", "Card"),
-        "prompt": pgettext("column heading", "Prompt tok/s"),
-        "size": pgettext("column heading", "Size"),
-        "ram": pgettext("column heading", "RAM"),
-    }
-    numeric = {"gen", "context", "quality", "vram", "prompt", "size", "ram"}
-    for name in included:
-        columns.append(
-            {
-                "header": headings[name],
-                "justify": "right" if name in numeric else "left",
-                "no_wrap": True,
-            }
-        )
-    _add_columns(table, columns)
-
-    for row in board.rows:
-        _add_row(table, *_board_cells(row, included))
-    return simulated_answer(board.simulation, table, *_board_captions(board))
-
-
-def _mixed_confidence(rows: Sequence[BoardRow]) -> bool:
-    """Whether the rows disagree about how their speeds were arrived at.
-
-    When every row carries the same label there is nothing a column per row can say that
-    one sentence under the table does not say better, and the space buys a column that
-    does vary. When they differ, the label has to be on the row it belongs to.
-    """
-    labels = {row.candidate.speed.confidence for row in rows if row.candidate.speed is not None}
-    return len(labels) > 1
-
-
-def _board_cells(row: BoardRow, included: Sequence[str]) -> list[Cell]:
-    """One board row's cells, in the order :func:`render_board` put its columns."""
-    candidate = row.candidate
-    score = candidate.score
-    placement = candidate.placement
-    speed = candidate.speed
-    budget = placement.budget if placement is not None else None
-    cells: list[Cell] = [
-        _cell(isolate(str(row.rank))),
-        _cell(isolate(row.model_id)),
-        _cell(isolate(row.quant)),
-        _cell(_number(score.total) if score is not None else format_bytes(None)),
-    ]
-    values: dict[str, Cell] = {
-        "gen": _cell(_speed_cell(speed)),
-        "confidence": _cell(
-            confidence_label(speed.confidence) if speed is not None else format_bytes(None)
-        ),
-        "verdict": Text(
-            for_display(verdict_label(budget.verdict)) if budget is not None else "",
-            style=verdict_style(budget.verdict) if budget is not None else "",
-        ),
-        "mode": _cell(mode_label(placement.mode) if placement is not None else ""),
-        "context": _cell(_context(placement.max_context_fit) if placement is not None else ""),
-        "quality": _cell(_number(score.quality, 0) if score is not None else ""),
-        "vram": _cell(_size(budget.vram_required) if budget is not None else ""),
-        "prompt": _cell(_number(speed.pp_tps, 0) if speed is not None else ""),
-        "size": _cell(_size(row.download_bytes)),
-        "ram": _cell(_size(budget.ram_required) if budget is not None else ""),
-    }
-    cells += [values[name] for name in included]
-    return cells
+    carried = [*board.rows, *(board.excluded if view.excluded else [])]
+    drawn = [facts_of(row) for row in visible_rows(carried, view)]
+    table = _draw_listing(_("Recommended"), drawn, columns, budget, tag_column="score")
+    captions = _board_captions(board)
+    if view.filters.active or view.reordered:
+        captions.append(_cell(state_line(len(drawn), len(carried), view)))
+    return simulated_answer(board.simulation, table, *captions)
 
 
 def _min_tps_caption(min_tps: float | None) -> str | None:
@@ -1112,32 +2095,182 @@ def _machine_captions(machine: MachineFacts | None, *, speeds: bool = True) -> l
     return captions
 
 
-def render_excluded(rows: Sequence[BoardRow]) -> Group | None:
-    """The candidates that did not qualify, each with the reason and what to change.
+_Figure = Callable[[RowFacts], str | None]
+"""What one exclusion's figure is for one row: the speed that was too slow, the size that
+was too big, the context that was too short, or nothing for a reason with no figure."""
 
-    A shorter list tells a reader nothing. "Llama 3.1 8B was excluded because its entry
-    lists general, chat and reasoning, not coding" tells them why a model they expected is
-    missing and what would bring it back — the request, or a one-line catalog change.
+
+def _no_figure_for(_facts: RowFacts) -> str | None:
+    """The figure of a reason that has none: a licence, a run mode, a missing capability."""
+    return None
+
+
+def _reason_groups(needs: Needs) -> dict[str, tuple[str, _Figure]]:
+    """One sentence per exclusion the scorer makes, keyed by the tag it puts in the cell.
+
+    Args:
+        needs: The request, whose floor, ceiling and minimum the sentences name.
+
+    Returns:
+        The sentence and the figure-reader for each tag, in this language.
+
+    The tags are read from the same catalog entries :mod:`llamafit.scoring.rank` reads,
+    so a tag matches its group in every language. The sentences are the scorer's own
+    with the row's figure lifted out, because the figure is what differed between the
+    twenty-six copies of the sentence the old table printed; it goes beside the id
+    instead. A tag this table has not met -- a reason made outside the scorer, or one
+    added after this was written -- is not dropped: :func:`_render_reasons` lists its
+    rows under the tag with each row's own sentence.
     """
-    if not rows:
-        return None
-    table = Table(title=for_display(_("Not ranked")))
-    _add_columns(
-        table,
-        [
-            {"header": pgettext("column heading", "Model"), "style": "bold"},
-            {"header": pgettext("column heading", "Quant"), "no_wrap": True},
-            {"header": pgettext("column heading", "Why not")},
-        ],
-    )
-    for row in rows:
-        _add_row(
-            table,
-            _cell(isolate(row.model_id)),
-            _cell(isolate(row.quant)),
-            _cell(row.candidate.excluded_because or ""),
+    floor = _tps(floor_tps(needs.use_case, needs.min_tps))
+    if needs.min_tps is not None:
+        slow = _(
+            "generates fewer than the %(floor)s tokens per second this request asks for; "
+            "lower --min-tps or choose a smaller model or quantisation"
+        ) % {"floor": floor}
+    else:
+        slow = _(
+            "generates fewer than the %(floor)s tokens per second a person reads at: a "
+            "batch tool on this machine and not one to sit in front of; a smaller model "
+            "or quantisation would keep up"
+        ) % {"floor": floor}
+    ceiling = needs.max_download_bytes
+
+    def tps(facts: RowFacts) -> str | None:
+        if facts.speed is None:
+            return None
+        return _("%(tps)s tok/s") % {"tps": _number(facts.speed.gen_tps)}
+
+    def size(facts: RowFacts) -> str | None:
+        return None if facts.download_bytes is None else _size(facts.download_bytes)
+
+    def context(facts: RowFacts) -> str | None:
+        return None if facts.placement is None else _context(facts.placement.max_context_fit)
+
+    groups: dict[str, tuple[str, _Figure]] = {
+        pgettext("exclusion tag", "too slow"): (slow, tps),
+        pgettext("exclusion tag", "too big"): (
+            _("larger to download than the %(limit)s this request allows")
+            % {"limit": _size(int(ceiling)) if ceiling is not None else format_bytes(None)},
+            size,
+        ),
+        pgettext("exclusion tag", "unknown quant"): (
+            _("a quantisation whose cost in quality is not known, so it cannot be scored"),
+            _no_figure_for,
+        ),
+        pgettext("exclusion tag", "no room"): (
+            _("needs more memory than this machine has, even at its smallest context"),
+            _no_figure_for,
+        ),
+        pgettext("exclusion tag", "unsupported"): (
+            _("no run mode supports this model on this machine"),
+            _no_figure_for,
+        ),
+        pgettext("exclusion tag", "short context"): (
+            _(
+                "holds fewer than the %(minimum)s tokens asked for; lower the minimum "
+                "context or free memory to see it ranked"
+            )
+            % {"minimum": isolate(format_grouped(needs.min_context))},
+            context,
+        ),
+        pgettext("exclusion tag", "no estimate"): (
+            _("no speed estimate, so it cannot be ranked against models that have one"),
+            _no_figure_for,
+        ),
+    }
+    for capability in get_args(Capability):
+        tag = pgettext("exclusion tag", "no %(capability)s") % {"capability": capability}
+        groups[tag] = (
+            _(
+                "no %(capability)s capability; drop it from the request, or ask for a use "
+                "case that does not need it"
+            )
+            % {"capability": capability},
+            _no_figure_for,
         )
-    return Group(table)
+    return groups
+
+
+def render_reasons(board: Board) -> Group | None:
+    """Why each unranked candidate is not on the board, one sentence per reason.
+
+    A shorter list tells a reader nothing, and so does a longer one that says the same
+    thing twenty-six times. The old ``Not ranked`` table was a hundred and eighty lines
+    under a twenty-line board, one row per candidate, most of them carrying the same
+    forty words with one figure changed. This says each reason once, then the ids with
+    the figure that failed: "too slow (26): generates fewer than the 6 tokens per
+    second a person reads at … — deepseek-v4-flash-0731 UD-IQ2_XXS (4.6 tok/s), …". The
+    row itself is on the board above, dimmed, with every figure that was computed for
+    it, and ``--explain`` still prints the whole sentence under an expanded row.
+    """
+    if not board.excluded:
+        return None
+    facts = [facts_of(row) for row in board.excluded]
+    return _render_reasons(_("Not ranked"), facts, _reason_groups(board.needs))
+
+
+def render_fit_reasons(board: FitBoard) -> Group | None:
+    """Why each model with no placement is under the fit listing rather than on it."""
+    if not board.excluded:
+        return None
+    groups: dict[str, tuple[str, _Figure]] = {
+        pgettext("exclusion tag", "no room"): (
+            _("no placement of it fits this machine at any context"),
+            _no_figure_for,
+        ),
+    }
+    return _render_reasons(_("Not placed"), [facts_of(row) for row in board.excluded], groups)
+
+
+def _render_reasons(
+    title: str, rows: Sequence[RowFacts], groups: Mapping[str, tuple[str, _Figure]]
+) -> Group:
+    """The reasons, grouped by tag, the largest group first.
+
+    A group this file knows gets its sentence once and its ids on the line below, each
+    with the figure that failed. A group it does not know -- a reason the scorer did not
+    make, or a tag added after this was written -- gets its ids one per line, each with
+    the sentence it actually carries, which is longer and never wrong.
+    """
+    by_tag: dict[str, list[RowFacts]] = {}
+    for facts in rows:
+        by_tag.setdefault(exclusion_tag(facts) or "", []).append(facts)
+    pieces: list[RenderableType] = [Text(for_display(title), style="bold")]
+    for tag, members in sorted(by_tag.items(), key=lambda item: (-len(item[1]), item[0])):
+        count = isolate(localise_number(str(len(members))))
+        group = groups.get(tag)
+        if group is None:
+            heading = _cell(_("%(tag)s (%(count)s):") % {"tag": tag, "count": count})
+            heading.highlight_words([tag], "bold")
+            pieces.append(heading)
+            for facts in members:
+                line = _("%(model)s %(quant)s: %(reason)s") % {
+                    "model": isolate(facts.model_id),
+                    "quant": isolate(facts.quant),
+                    "reason": facts.excluded_because or "",
+                }
+                pieces.append(Padding(_cell(line), (0, 0, 0, 2)))
+            continue
+        sentence, figure = group
+        heading = _cell(
+            _("%(tag)s (%(count)s): %(sentence)s.")
+            % {"tag": tag, "count": count, "sentence": sentence}
+        )
+        heading.highlight_words([tag], "bold")
+        pieces.append(heading)
+        entries: list[str] = []
+        for facts in members:
+            value = figure(facts)
+            entries.append(
+                _("%(name)s %(quant)s")
+                % {"name": isolate(facts.model_id), "quant": isolate(facts.quant)}
+                if value is None
+                else _("%(model)s %(quant)s (%(figure)s)")
+                % {"model": isolate(facts.model_id), "quant": isolate(facts.quant), "figure": value}
+            )
+        pieces.append(Padding(_cell(", ".join(entries)), (0, 0, 0, 2)))
+    return Group(*pieces)
 
 
 def render_explanation(row: BoardRow, board: Board) -> Group:
@@ -1148,20 +2281,20 @@ def render_explanation(row: BoardRow, board: Board) -> Group:
     source of each, the context ladder, and where a token's time goes.
     """
     candidate = row.candidate
-    pieces: list[RenderableType] = [
-        Text(""),
-        Text(
-            for_display(
-                _("%(rank)s. %(name)s %(quant)s")
-                % {
-                    "rank": isolate(str(row.rank)),
-                    "name": isolate(row.name),
-                    "quant": isolate(row.quant),
-                }
-            ),
-            style="bold",
-        ),
-    ]
+    if row.rank is None:
+        # An unranked row has no place to lead with, so it leads with the reason.
+        heading = _("%(name)s %(quant)s (%(tag)s)") % {
+            "name": isolate(row.name),
+            "quant": isolate(row.quant),
+            "tag": exclusion_tag(facts_of(row)) or pgettext("exclusion tag", "not ranked"),
+        }
+    else:
+        heading = _("%(rank)s. %(name)s %(quant)s") % {
+            "rank": isolate(str(row.rank)),
+            "name": isolate(row.name),
+            "quant": isolate(row.quant),
+        }
+    pieces: list[RenderableType] = [Text(""), Text(for_display(heading), style="bold")]
     scored = render_score(
         candidate, use_case=board.needs.use_case, requested_context=board.requested_context
     )
@@ -1180,17 +2313,28 @@ def render_explanation(row: BoardRow, board: Board) -> Group:
     return Group(*pieces)
 
 
-def render_fit(board: FitBoard, *, console_width: int = 80) -> Group:
+def render_fit(
+    board: FitBoard,
+    *,
+    console_width: int = 80,
+    view: View | None = None,
+    budget: ColumnBudget | None = None,
+) -> Group:
     """Every model ranked by how well it uses this machine, and nothing else.
 
     ``fit`` asks a narrower question than ``recommend``, so the table is narrower: no
     score, no weights, no use case. What it does carry is the verdict and both pools, since
-    "how well does it fit" is the only question being asked and those are the answer.
+    "how well does it fit" is the only question being asked and those are the answer. The
+    columns are chosen the way the board's are, from :data:`FIT_PRIORITY`, and the models
+    with no placement are rows of the same table, dimmed, with the word for the reason
+    where the verdict would be.
 
     A listing where nothing passed the threshold is the sentence saying so, drawn here for
     the reason :func:`render_board` gives: an empty answer about somebody else's machine
     has to say whose machine it was as loudly as a full one does.
     """
+    view = view or View()
+    budget = budget or ColumnBudget()
     if not board.rows:
         return simulated_answer(
             board.simulation,
@@ -1202,58 +2346,13 @@ def render_fit(board: FitBoard, *, console_width: int = 80) -> Group:
             ),
             *_machine_captions(board.machine, speeds=False),
         )
-    model_width = min(
-        _ID_COLUMN_MAX_WIDTH,
-        max(
-            [cell_len(pgettext("column heading", "Model"))]
-            + [cell_len(row.model_id) for row in board.rows]
-        ),
-    )
     # The heading is the one place the simulated banner would have been contradicted in
     # its own words: "Fit on this machine" one line under "they are not this machine".
     title = _("Fit on the simulated machine") if board.simulation else _("Fit on this machine")
-    table = Table(title=for_display(title))
-    columns: list[Mapping[str, Any]] = [
-        {"header": pgettext("column heading", "#"), "justify": "right", "no_wrap": True},
-        {
-            "header": pgettext("column heading", "Model"),
-            "style": "bold",
-            "max_width": model_width,
-            "overflow": "fold",
-        },
-        {"header": pgettext("column heading", "Quant"), "no_wrap": True},
-        {"header": pgettext("column heading", "Fit"), "no_wrap": True},
-    ]
-    optional = console_width >= 80
-    if optional:
-        columns += [
-            {"header": pgettext("column heading", "Runs"), "no_wrap": True},
-            {"header": pgettext("column heading", "Ctx"), "justify": "right", "no_wrap": True},
-            {"header": pgettext("column heading", "Card"), "justify": "right", "no_wrap": True},
-            {"header": pgettext("column heading", "RAM"), "justify": "right", "no_wrap": True},
-        ]
-    _add_columns(table, columns)
-    for row in board.rows:
-        placement = row.placement
-        cells: list[Cell] = [
-            _cell(isolate(str(row.rank))),
-            _cell(isolate(row.model_id)),
-            _cell(isolate(row.quant)),
-            Text(
-                for_display(verdict_label(placement.budget.verdict)) if placement else "",
-                style=verdict_style(placement.budget.verdict) if placement else "",
-            ),
-        ]
-        if optional and placement is not None:
-            cells += [
-                _cell(mode_label(placement.mode)),
-                _cell(_context(placement.max_context_fit)),
-                _cell(_size(placement.budget.vram_required)),
-                _cell(_size(placement.budget.ram_required)),
-            ]
-        elif optional:
-            cells += ["", "", "", ""]
-        _add_row(table, *cells)
+    columns = _drawn_columns(view, console_width, mixed=False, budget=budget, order=FIT_ORDER)
+    carried = [*board.rows, *(board.excluded if view.excluded else [])]
+    drawn = [facts_of(row) for row in visible_rows(carried, view)]
+    table = _draw_listing(title, drawn, columns, budget, tag_column="verdict")
     captions: list[RenderableType] = [
         _cell(
             _(
@@ -1281,30 +2380,9 @@ def render_fit(board: FitBoard, *, console_width: int = 80) -> Group:
     if cut is not None:
         captions.append(_cell(cut))
     captions += _machine_captions(board.machine, speeds=False)
+    if view.filters.active or view.reordered:
+        captions.append(_cell(state_line(len(drawn), len(carried), view)))
     return simulated_answer(board.simulation, table, *captions)
-
-
-def render_fit_excluded(rows: Sequence[FitRow]) -> Group | None:
-    """The models with no placement at all, each carrying the reason."""
-    if not rows:
-        return None
-    table = Table(title=for_display(_("Not placed")))
-    _add_columns(
-        table,
-        [
-            {"header": pgettext("column heading", "Model"), "style": "bold"},
-            {"header": pgettext("column heading", "Quant"), "no_wrap": True},
-            {"header": pgettext("column heading", "Why not")},
-        ],
-    )
-    for row in rows:
-        _add_row(
-            table,
-            _cell(isolate(row.model_id)),
-            _cell(isolate(row.quant)),
-            _cell(row.excluded_because or ""),
-        )
-    return Group(table)
 
 
 def _placement_sentence(placement: Placement) -> str:

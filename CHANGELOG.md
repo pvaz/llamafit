@@ -10,6 +10,19 @@ the changelog says so when they do.
 ## [0.1.0] - 2026-09-11
 
 ### Added
+- `recommend` and `fit` take view flags that change what is drawn and never what is
+  ranked: `--sort KEY[:asc|:desc]` over eleven keys (`score`, `speed`, `quality`,
+  `context`, `size`, `prompt`, `card`, `ram`, `fit`, `model`, `quant`), `--search`,
+  `--installed`, `--runs`, `--min-fit` on `recommend`, `--columns LIST`, `--wide` and
+  `--hide-excluded`; each says so in a line under the table. The same eleven words are
+  the dashboard's `s` cycle and the API's `sort=`, and a test asserts the three agree.
+- Dashboard keys: `S` the previous sort key, `o` reverse the order, `e` hide or show the
+  unranked rows, `c` every column with the table scrolling sideways; `n` now moves the
+  cursor to the first unranked row, whose reason the explanation pane shows. The Needs
+  form gained the slowest generation worth having, the command line's `--min-tps`.
+- `llamafit --json` with no command prints `recommend --json` rather than opening a
+  full-screen application over a document, and `llamafit --help` says what the bare command
+  does: it opens the dashboard, and in a pipe prints what `recommend` would.
 - Project scaffold: packaging, CI matrix, lint, type-check and test configuration.
 - Design specification covering host detection, llama.cpp integration, the model catalog,
   GGUF facts, memory budgets, placement planning, speed estimation, scoring, the CLI, TUI
@@ -351,6 +364,33 @@ the changelog says so when they do.
   promised, beside `min_context`.
 
 ### Changed
+- **The terminal's board is the web page's board.** One list: the ranked rows, then the
+  candidates that were not ranked, dimmed, every column filled with whatever was computed
+  for them and the word for the reason -- `too slow`, `no room`, `unsupported` -- where the
+  score would be, in the command line and in the terminal dashboard alike. The separate
+  `Not ranked` and `Not placed` tables are gone; on the reference machine the first said the
+  same forty words twenty-six times under a twenty-line board. The reasons are under the
+  table, once each, with the ids and the figure that failed after them. `--explain` still
+  prints the whole sentence under an expanded row, and `--json` is unchanged.
+- **One column chooser for three interfaces.** The command line and the dashboard each had
+  one, with different orders, a model column that folded at 28 in one and was cut at 24 in
+  the other, and different padding; the command line's also budgeted the model column from
+  the rows a limit left, so `--limit 2` drew nine columns where the default ten drew seven.
+  `board_columns` in `llamafit/cli/render_board.py` is now the only one: a fixed priority
+  (`Tok/s`, `Fit`, `Runs`, `Ctx`, `Qual`, `Card`, `Size`, `Have`, `How`, `Prompt tok/s`,
+  `RAM`), a column admitted only whole, the model column measured from the catalog, the
+  labels measured in the language in force so a Portuguese board admits a column later
+  rather than overflowing, and the admitted columns drawn in the web page's order so each
+  keeps its place at every width. A test draws the command line's board, the dashboard's
+  table and the page's heading list at 80, 100, 120, 140, 160 and 200 columns and asserts
+  the same headings in the same order. The dashboard gained the `Have` column the command
+  line lacked.
+- The dashboard's `/` box is a filter box: it takes the page's terms (`fit>=fits`,
+  `speed>=20`, `size<=30G`, `card<=6G`, `ram<=32G`, `ctx>=32K`, `quality>=70`, `runs=gpu`,
+  `have`) beside plain text, `f` and `a` set terms in the same model, and the state line
+  names every term in force. The API's `sort=` accepts the same eleven keys `--sort` does,
+  with `:asc` and `:desc`, from the same function; `sort=size` now puts the largest download
+  first, as the page's heading does, and `sort=size:asc` the smallest.
 - **`Gen/s` is now `Tok/s`, in the command line, the terminal dashboard and the browser.**
   `Gen/s` was an abbreviation of something the reader had to already know, and the figure it
   named is the one the whole tool exists to produce; a person looking for tokens per second

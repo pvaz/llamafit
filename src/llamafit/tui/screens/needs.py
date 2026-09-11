@@ -13,9 +13,10 @@ licences the catalog actually carries are all read from the catalog's own types 
 entries, never typed out again, which is also why a capability added tomorrow appears on
 this form without anybody remembering to add it.
 
-Two fields still take free text -- the minimum context in tokens, and a download ceiling
-like ``40G`` -- because neither has a list to offer. Both are checked before they are
-applied, and a value that is not a size says so on the form rather than raising past it.
+Three fields still take free text -- the minimum context in tokens, a download ceiling
+like ``40G``, and the slowest generation worth having -- because none has a list to
+offer. Each is checked before it is applied, and a value that is not a size or a number
+says so on the form rather than raising past it.
 """
 
 from __future__ import annotations
@@ -85,6 +86,14 @@ class NeedsPane(VerticalScroll):
         yield Input(value="0", id="needs-min-context")
         yield Label(_("Willing to download at most, for example 40G (blank for no limit):"))
         yield Input(value="", id="needs-max-download")
+        yield Label(
+            _(
+                "Slowest generation worth having, in tokens per second (blank for the speed "
+                "a person reads at; 0 when nobody is waiting on the tokens):"
+            ),
+            markup=False,
+        )
+        yield Input(value="", id="needs-min-tps")
         yield Label(_("Licences you will accept (tick none to accept any):"), markup=False)
         yield SelectionList[str](id="needs-licenses")
         yield Label(_("Lean the score:"), markup=False)
@@ -146,6 +155,7 @@ class NeedsPane(VerticalScroll):
         self.query_one("#needs-capabilities", SelectionList).deselect_all()
         self.query_one("#needs-min-context", Input).value = "0"
         self.query_one("#needs-max-download", Input).value = ""
+        self.query_one("#needs-min-tps", Input).value = ""
         self.query_one("#needs-licenses", SelectionList).deselect_all()
         self.query_one("#needs-prefer", Select).value = "balanced"
         self.query_one("#needs-vision", Checkbox).value = True
@@ -170,6 +180,7 @@ class NeedsPane(VerticalScroll):
                 use_case=str(self.query_one("#needs-use-case", Select).value),
                 capabilities=tuple(str(name) for name in capabilities),
                 min_context=self._tokens(),
+                min_tps=self._min_tps(),
                 max_download_bytes=self._download_ceiling(),
             ),
             prefer=str(self.query_one("#needs-prefer", Select).value),
@@ -193,6 +204,25 @@ class NeedsPane(VerticalScroll):
         if tokens < 0:
             raise ValueError(_("The minimum context cannot be below zero."))
         return tokens
+
+    def _min_tps(self) -> float | None:
+        """The speed floor in tokens per second, or ``None`` for the reading floor.
+
+        Zero is kept apart from blank, as ``--min-tps`` keeps it: blank means the figure
+        the specification derived from reading rates, zero means nobody is waiting.
+        """
+        typed = self.query_one("#needs-min-tps", Input).value.strip()
+        if not typed:
+            return None
+        try:
+            tps = float(typed.replace(",", "."))
+        except ValueError as exc:
+            raise ValueError(
+                _("The minimum speed is a number of tokens per second, for example 12.")
+            ) from exc
+        if tps < 0:
+            raise ValueError(_("The minimum speed cannot be below zero."))
+        return tps
 
     def _download_ceiling(self) -> int | None:
         """The download ceiling in bytes, or ``None`` when the field is empty."""
