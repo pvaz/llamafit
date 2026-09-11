@@ -191,7 +191,11 @@ def test_json_output_never_holds_a_direction_mark(command: list[str]) -> None:
     result = runner.invoke(app, command)
     assert result.exit_code == 0, result.output
     assert marks_in(result.output) == set()
-    json.loads(result.output)  # still parses, and parses as what it was
+    # The document is what went to stdout. Each of these languages has a catalog that is
+    # only part written, so a start-up notice goes to stderr saying so, and the runner
+    # hands both streams back joined in `output`; parsing that would be asserting that no
+    # remark is ever made rather than that no remark lands in the document.
+    json.loads(result.stdout)  # still parses, and parses as what it was
 
 
 def test_the_service_layer_that_feeds_json_is_where_no_mark_is_added(arabic: None) -> None:
