@@ -75,8 +75,20 @@ def test_an_empty_section_is_refused() -> None:
 
 
 def test_the_committed_changelog_still_parses() -> None:
-    """The real file, in its real format: this is what fails if the changelog drifts."""
+    """The real file, in its real format: this is what fails if the changelog drifts.
+
+    It reads the newest released section rather than `Unreleased`, because `Unreleased` is
+    empty between a release and the first change after it, and an empty section is refused
+    by design. `test_docs_truth.py` is what checks that the *right* version has a section.
+    """
     text = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
-    section = extract_section(text, "Unreleased")
+    released = next(
+        version
+        for line in text.splitlines()
+        if (version := heading_version(line)) is not None and version != "Unreleased"
+    )
+    section = extract_section(text, released)
     assert section.startswith("### ")
-    assert not section.rstrip().endswith("]: https://github.com/pvaz/llamafit/commits/main")
+    assert not section.rstrip().endswith(
+        f"]: https://github.com/pvaz/llamafit/releases/tag/v{released}"
+    )
