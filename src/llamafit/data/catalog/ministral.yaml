@@ -25,6 +25,20 @@
 # Mistral. Two models called "Ministral 8B" sit in this file and only one of them may be
 # put into a product.
 #
+# Release dates are the dates of Mistral's own announcements, both linked above: 2 December
+# 2025 for the Ministral 3 generation and 16 October 2024 for the 2410 model. They are not the
+# repository creation dates — the five Ministral 3 repositories were created on 31 October
+# 2025, a month before the announcement, which is exactly why docs/catalog.md makes a
+# repository's creation date the fallback and not the source.
+#
+# THE PUBLISHED NUMBERS ARE FRACTIONS AND THE RECORDED ONES ARE NOT. Mistral prints Arena
+# Hard, MATH, AIME, GPQA and LiveCodeBench on the Ministral 3 cards as fractions on 0 to 1
+# (0.305, 0.830). They are recorded below on 0 to 100, the scale docs/catalog.md fixes and
+# every other family in this catalog uses, because the alternative is a file whose units
+# change halfway down with nothing marking the switch — and 0.860 next to the 86.0 the
+# DeepSeek entry cites for the same benchmark reads as a hundredth of it. MTBench and
+# MM MTBench are a judge's rating from 1 to 10, not a percentage, and keep their own scale.
+#
 # The Ministral 3 benchmark tables are split into Reasoning, Instruct and Base sections.
 # Each entry below quotes only its own section: the Instruct entries carry Instruct-table
 # numbers and the Reasoning entries carry Reasoning-table numbers. No base-checkpoint score
@@ -32,7 +46,7 @@
 - id: ministral-3-3b-instruct
   name: Ministral 3 3B Instruct 2512
   vendor: Mistral AI
-  family: ministral
+  family: ministral-3
   release_date: 2025-12-02
   license:
     spdx: Apache-2.0
@@ -54,16 +68,16 @@
   quality:
     baseline: 60
     benchmarks:
-      # From the "Instruct" table. Arena Hard and MATH are published as fractions and
-      # recorded here exactly as published; WildBench and MM MTBench are not.
+      # From the "Instruct" table. Arena Hard and MATH are published as fractions on 0 to 1
+      # (0.305, 0.830) and converted to 0 to 100 here; see the note at the top of this file.
       - name: Arena Hard
-        score: 0.305
+        score: 30.5
         source: "https://huggingface.co/mistralai/Ministral-3-3B-Instruct-2512"
       - name: WildBench
         score: 56.8
         source: "https://huggingface.co/mistralai/Ministral-3-3B-Instruct-2512"
       - name: MATH (maj@1)
-        score: 0.830
+        score: 83.0
         source: "https://huggingface.co/mistralai/Ministral-3-3B-Instruct-2512"
       - name: MM MTBench
         score: 7.83
@@ -85,7 +99,7 @@
 - id: ministral-3-8b-instruct
   name: Ministral 3 8B Instruct 2512
   vendor: Mistral AI
-  family: ministral
+  family: ministral-3
   release_date: 2025-12-02
   license:
     spdx: Apache-2.0
@@ -105,13 +119,13 @@
     baseline: 70
     benchmarks:
       - name: Arena Hard
-        score: 0.509
+        score: 50.9
         source: "https://huggingface.co/mistralai/Ministral-3-8B-Instruct-2512"
       - name: WildBench
         score: 66.8
         source: "https://huggingface.co/mistralai/Ministral-3-8B-Instruct-2512"
       - name: MATH (maj@1)
-        score: 0.876
+        score: 87.6
         source: "https://huggingface.co/mistralai/Ministral-3-8B-Instruct-2512"
       - name: MM MTBench
         score: 8.08
@@ -131,7 +145,7 @@
 - id: ministral-3-14b-instruct
   name: Ministral 3 14B Instruct 2512
   vendor: Mistral AI
-  family: ministral
+  family: ministral-3
   release_date: 2025-12-02
   license:
     spdx: Apache-2.0
@@ -152,13 +166,13 @@
     baseline: 75
     benchmarks:
       - name: Arena Hard
-        score: 0.551
+        score: 55.1
         source: "https://huggingface.co/mistralai/Ministral-3-14B-Instruct-2512"
       - name: WildBench
         score: 68.5
         source: "https://huggingface.co/mistralai/Ministral-3-14B-Instruct-2512"
       - name: MATH (maj@1)
-        score: 0.904
+        score: 90.4
         source: "https://huggingface.co/mistralai/Ministral-3-14B-Instruct-2512"
       - name: MM MTBench
         score: 8.49
@@ -178,7 +192,7 @@
 - id: ministral-3-8b-reasoning
   name: Ministral 3 8B Reasoning 2512
   vendor: Mistral AI
-  family: ministral
+  family: ministral-3
   release_date: 2025-12-02
   license:
     spdx: Apache-2.0
@@ -197,20 +211,26 @@
   capabilities: [coding, thinking, vision, tools, multilingual, long-context]
   use_cases: [reasoning, coding, general, chat, multimodal]
   quality:
+    # 72 holds against the rubric and against its neighbours. On the same four benchmarks
+    # phi-4-reasoning-plus (also 72) posts AIME25 78.0 and GPQA 68.9 against this model's
+    # 78.7 and 66.8, and deepseek-r1-0528-qwen3-8b (70) is one to six points below it on
+    # three of the four. "Solid previous generation" is what a December 2025 8B is in a
+    # catalog whose frontier entries are from August 2026.
     baseline: 72
     benchmarks:
-      # From the "Reasoning" table, which is the table for this checkpoint.
+      # From the "Reasoning" table, which is the table for this checkpoint. All four are
+      # published as fractions on 0 to 1 and converted to 0 to 100 here.
       - name: AIME25
-        score: 0.787
+        score: 78.7
         source: "https://huggingface.co/mistralai/Ministral-3-8B-Reasoning-2512"
       - name: AIME24
-        score: 0.860
+        score: 86.0
         source: "https://huggingface.co/mistralai/Ministral-3-8B-Reasoning-2512"
       - name: GPQA Diamond
-        score: 0.668
+        score: 66.8
         source: "https://huggingface.co/mistralai/Ministral-3-8B-Reasoning-2512"
       - name: LiveCodeBench
-        score: 0.616
+        score: 61.6
         source: "https://huggingface.co/mistralai/Ministral-3-8B-Reasoning-2512"
   # "Use a temperature of 1 for most environments"; TOP_P = 0.95 in the card's examples.
   sampling: { temp: 1.0, top_p: 0.95 }
@@ -227,7 +247,7 @@
 - id: ministral-3-14b-reasoning
   name: Ministral 3 14B Reasoning 2512
   vendor: Mistral AI
-  family: ministral
+  family: ministral-3
   release_date: 2025-12-02
   license:
     spdx: Apache-2.0
@@ -248,16 +268,16 @@
     baseline: 77
     benchmarks:
       - name: AIME25
-        score: 0.850
+        score: 85.0
         source: "https://huggingface.co/mistralai/Ministral-3-14B-Reasoning-2512"
       - name: AIME24
-        score: 0.898
+        score: 89.8
         source: "https://huggingface.co/mistralai/Ministral-3-14B-Reasoning-2512"
       - name: GPQA Diamond
-        score: 0.712
+        score: 71.2
         source: "https://huggingface.co/mistralai/Ministral-3-14B-Reasoning-2512"
       - name: LiveCodeBench
-        score: 0.646
+        score: 64.6
         source: "https://huggingface.co/mistralai/Ministral-3-14B-Reasoning-2512"
   sampling: { temp: 1.0, top_p: 0.95 }
   sources:
@@ -274,6 +294,8 @@
 - id: ministral-8b-instruct-2410
   name: Ministral 8B Instruct 2410
   vendor: Mistral AI
+  # The generation before Ministral 3, which Mistral shipped without numbering the line; the
+  # five 2512 entries above are `ministral-3` and this one is not one of them.
   family: ministral
   release_date: 2024-10-16
   license:

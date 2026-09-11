@@ -10,13 +10,19 @@
 #
 # Release dates are the Hugging Face repository creation dates; neither model card states one.
 #
+# llama_cpp.kv_types_allowed is deliberately absent on both entries. GLM-5.3's attention is
+# DeepSeek Sparse Attention on a single wide key/value head and GLM-5.3-Flash mixes three
+# linear-attention layers into every four; nothing Z.ai or llama.cpp publishes says which KV
+# cache types either arrangement accepts. An empty list records that nobody has measured it,
+# not that nothing works.
+#
 # The two models carry different licences, which is easy to miss because they were published
 # on the same day under the same name: GLM-5.3 is under Z.ai's own GLM-5.3 licence, and
 # GLM-5.3-Flash is plain MIT. Both licence fields below were read from the repositories.
 - id: glm-5.3
   name: GLM-5.3
   vendor: Z.ai
-  family: glm
+  family: glm5
   release_date: 2026-08-25
   license:
     # MIT-like in substance, with one condition worth knowing about: an operator of a
@@ -76,7 +82,7 @@
 - id: glm-5.3-flash
   name: GLM-5.3-Flash
   vendor: Z.ai
-  family: glm
+  family: glm5
   release_date: 2026-08-25
   license:
     spdx: MIT
