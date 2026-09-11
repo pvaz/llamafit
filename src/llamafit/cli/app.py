@@ -442,6 +442,51 @@ def _report_replacements(console: Console) -> None:
     )
 
 
+def _global_option_hint(console: Console, argv: Sequence[str]) -> None:
+    """Print where a global option goes, when one was typed after the command.
+
+    Args:
+        console: Where the hint goes, which is the same stderr Click used.
+        argv: The arguments as typed, without the program name.
+
+    `llamafit --json recommend` works and `llamafit recommend --json` does not, because
+    these options are the program's rather than any one command's. Click says only that
+    the option does not exist, which is true where it was typed and unhelpful everywhere
+    else: a reader who has just seen `--json` documented concludes the documentation is
+    wrong. Silent when the run failed for any other reason.
+    """
+    # Asked of the built command rather than listed here, so this cannot fall behind the
+    # options it is about.
+    from typer.main import get_command
+
+    root = {
+        name
+        for parameter in get_command(app).params
+        for name in parameter.opts
+        if name.startswith("--")
+    }
+    seen_command = False
+    for argument in argv:
+        if not argument.startswith("-"):
+            seen_command = True
+            continue
+        if seen_command and argument.split("=", 1)[0] in root:
+            console.print(
+                Text(
+                    _(
+                        "%(option)s is an option of llamafit itself, so it goes before the "
+                        "command: `llamafit %(option)s %(rest)s`."
+                    )
+                    % {
+                        "option": argument.split("=", 1)[0],
+                        "rest": " ".join(a for a in argv if a != argument),
+                    },
+                    style="dim",
+                )
+            )
+            return
+
+
 def main() -> None:
     """Run the app, turning known errors into messages and unexpected ones into a short report.
 
@@ -466,6 +511,15 @@ def main() -> None:
         _chosen_by_main = requested
         _speak(requested)
         app(standalone_mode=True)
+    except SystemExit as exit_:
+        # Click has already printed "No such option: --json" and chosen its own code. The
+        # options below belong to `llamafit` itself and have to come before the command,
+        # which is a rule nothing on that screen states -- and `--json` is the one people
+        # reach for first, on the command they are already typing. One line, after Click's
+        # message, naming the form that works.
+        if exit_.code == 2:
+            _global_option_hint(console, sys.argv[1:])
+        raise
     except LlamaFitError as exc:
         console.print(Text(exc.render(), style="red"))
         # 1 is a user or configuration error, 2 an environment problem: llama.cpp or a

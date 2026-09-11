@@ -594,3 +594,38 @@ def test_the_error_report_itself_survives_a_stream_that_cannot_write_it(
     assert code == 2
     assert "llama.cpp" in err and "?" in err
     assert "Traceback" not in err
+
+def test_a_global_option_after_the_command_says_where_it_goes(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """``llamafit recommend --json`` is the form people try first, and it does not work.
+
+    The options that describe the run rather than the command belong to ``llamafit``
+    itself, so they come before it. Click says only that the option does not exist, which
+    is true where it was typed and misleading everywhere else: a reader who has just seen
+    ``--json`` documented concludes the documentation is wrong.
+
+    Driven through ``main`` rather than the runner because the hint is printed where
+    Click's own exit is caught, which is a thing only ``main`` does.
+    """
+    from llamafit.cli.app import main
+
+    monkeypatch.setattr(sys, "argv", ["llamafit", "recommend", "--json", "--limit", "1"])
+    with pytest.raises(SystemExit) as exit_:
+        main()
+    assert exit_.value.code == 2
+    printed = " ".join(capsys.readouterr().err.split())
+    assert "--json is an option of llamafit itself" in printed
+    assert "llamafit --json recommend --limit 1" in printed
+
+
+def test_a_command_that_simply_fails_gets_no_option_hint(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Silence when the run failed for any other reason, or the hint becomes noise."""
+    from llamafit.cli.app import main
+
+    monkeypatch.setattr(sys, "argv", ["llamafit", "recommend", "--nonsense"])
+    with pytest.raises(SystemExit):
+        main()
+    assert "option of llamafit itself" not in capsys.readouterr().err

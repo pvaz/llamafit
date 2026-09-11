@@ -104,7 +104,9 @@ tables do and how far it goes.
 |---|---|
 | 0 | Success. |
 | 1 | A user or configuration error; the message says what to change. |
-| 2 | An environment problem: llama.cpp missing, a required tool missing, an installation missing the data that ships inside it, or `doctor` found an error. |
+| 2 | An environment problem: llama.cpp missing, a required tool missing, an installation missing the data that ships inside it, or `doctor` found an error. A command line that cannot be parsed at all — an unknown option, a missing argument — also exits 2, which is the convention every tool built on this argument parser follows. |
+
+The global options above belong to `llamafit` itself, so they come **before** the command: `llamafit --json recommend`, not `llamafit recommend --json`. The second form exits 2 and says where the option goes.
 
 ## Commands
 
