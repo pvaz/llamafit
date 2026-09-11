@@ -585,4 +585,17 @@ the changelog says so when they do.
   names it, so a model built for the task still outranks one that merely can do it, and
   `llamafit list --use-case` still browses on the whole list.
 
+- **`--ram` and `--memory` below what this machine is using produced a machine with nothing
+  free on it.** The overrides kept the absolute bytes this machine had in use and subtracted
+  them from the pool the flag named, so `--ram 16GiB` on a 128 GiB machine with 28 GiB in use
+  computed 16 minus 28 and clamped to zero: `16.0 GiB total, 0 B available`, every board
+  empty, including for a four-billion-parameter model that would have sat entirely on the
+  card. It survived because the obvious thing to test is a bigger machine, where the old rule
+  was right. A size names a machine now — `--ram 16GiB` is a 16 GiB machine, not this one with
+  the difference taken off the top — and one rule, `_carried_load`, serves both pools: the
+  same load on a pool the same size or larger, because a bigger card does not empty itself,
+  and the same *share* of a smaller one, because this machine's open applications could never
+  have fitted on it. A flag naming the size the machine already has moves nothing, byte for
+  byte, in either direction.
+
 [Unreleased]: https://github.com/pvaz/llamafit/commits/main
