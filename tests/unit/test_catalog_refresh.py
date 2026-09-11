@@ -130,6 +130,9 @@ class RaisingHfClient:
 
 
 def facts_stub(*args: object, **kwargs: object) -> GgufFacts:
+    # Sized to the 700,000,000-byte file the fixtures publish, less a header's worth. The
+    # loader refuses facts whose tensors do not account for the file, and a stub three
+    # bytes long would be refused, and rewritten, on every second run.
     return GgufFacts(
         arch="llama",
         n_layer=16,
@@ -141,11 +144,11 @@ def facts_stub(*args: object, **kwargs: object) -> GgufFacts:
         attention_layers=16,
         attention_layers_source="tensors",
         bytes_expert_weights=0,
-        bytes_dense_block_weights=1,
-        bytes_output_head=1,
-        bytes_token_embd=1,
+        bytes_dense_block_weights=697_000_000,
+        bytes_output_head=1_000_000,
+        bytes_token_embd=1_000_000,
         bytes_lazy_tables=0,
-        bytes_total=3,
+        bytes_total=699_000_000,
         has_shared_experts=False,
     )
 

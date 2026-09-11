@@ -264,16 +264,20 @@ def test_the_single_file_path_is_unchanged(tmp_path: Path) -> None:
     assert read_facts(str(single)) == read_facts(single)
 
 
-def test_a_merged_header_keeps_every_shards_unknown_tensor_types() -> None:
-    """A diagnostic raised by a later shard must not be dropped with that shard's metadata."""
+def test_a_shard_with_an_unknown_tensor_type_is_refused_before_any_merge() -> None:
+    """One shard the table cannot size fails its read; a union short of its bytes is a lie.
+
+    This used to record the tensor as zero bytes under a diagnostic key and check that the
+    key survived the merge, which it did. Nothing ever read the key, and the zero was
+    summed into a facts file that reported a 63 GB model as 2.4 GB.
+    """
     odd = [("blk.3.attn_q.weight", [2560, 256])]
     total = _TENSOR_TOTAL - len(_SHARD_TENSORS[3]) + len(odd)
-    shards = [shard(index, tensors_total=total) for index in range(3)]
-    shards.append(shard(3, tensors_total=total, tensors=_encode(odd, _UNKNOWN_TYPE)))
-    merged = merge_shard_headers([read_header(FakeSource(data)) for data in shards])
-    assert merged.metadata["_unknown_tensor_types"] == [
-        f"blk.3.attn_q.weight:unknown({_UNKNOWN_TYPE})"
-    ]
+    tail = shard(3, tensors_total=total, tensors=_encode(odd, _UNKNOWN_TYPE))
+    with pytest.raises(
+        CatalogError, match=rf"{_UNKNOWN_TYPE} \(1 tensor, first blk\.3\.attn_q\.weight\)"
+    ):
+        read_header(FakeSource(tail))
 
 
 def test_a_merged_header_counts_the_whole_union() -> None:

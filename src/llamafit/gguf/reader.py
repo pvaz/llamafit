@@ -17,7 +17,7 @@ from collections.abc import Sequence
 
 from llamafit.errors import CatalogError
 from llamafit.gguf.source import ByteSource
-from llamafit.gguf.types import ValueType, is_misaligned, tensor_bytes, type_name
+from llamafit.gguf.types import GGML_TYPES, ValueType, is_misaligned, tensor_bytes, type_name
 from llamafit.i18n import _, ngettext
 from llamafit.models.gguf import GgufHeader, TensorInfo
 
@@ -28,7 +28,7 @@ _SPLIT_NO = "split.no"
 _SPLIT_COUNT = "split.count"
 _SPLIT_TENSORS_COUNT = "split.tensors.count"
 _SPLIT_KEYS = (_SPLIT_NO, _SPLIT_COUNT, _SPLIT_TENSORS_COUNT)
-_DIAGNOSTIC_KEYS = ("_unknown_tensor_types", "_misaligned_tensors")
+_DIAGNOSTIC_KEYS = ("_misaligned_tensors",)
 _SCALARS: dict[int, tuple[str, int]] = {
     ValueType.UINT8: ("<B", 1),
     ValueType.INT8: ("<b", 1),
@@ -125,12 +125,25 @@ def _value(cursor: _Cursor, value_type: int) -> object:
 def read_header(source: ByteSource) -> GgufHeader:
     """Parse a GGUF header from ``source``, fetching only the bytes it needs.
 
+    A tensor whose type is not in :data:`~llamafit.gguf.types.GGML_TYPES` fails the
+    read. It used to be recorded as zero bytes with its name kept under a diagnostic
+    metadata key, on the argument that one odd tensor should not cost a whole header.
+    What that produced was gpt-oss-120b: a 63 GB file whose expert tensors are MXFP4,
+    read as 2.4 GB of weights and reported as fitting an 8 GB card, with the diagnostic
+    key dropped before anything looked at it. The tensor table exists to be summed, and
+    to a sum a zero is not "unknown"; it is a number, and the wrong direction to be
+    wrong in. The specification's rule is that a budget must never quietly report less
+    than a configuration will use, so a header that cannot be sized is a header that is
+    not read: nothing downstream can build on it, and nothing caches it. The other
+    honest outcome, facts marked incomplete for the planner to refuse, would have to
+    survive every place a header is stored or copied to be worth anything, and this one
+    error has nothing to survive. Every unknown type is named in it at once, so the fix
+    is one edit to the table rather than one per type.
+
     Raises:
         CatalogError: If the magic is wrong, the version is unsupported, the
-            header is truncated, or it contains an unknown value type. One
-            tensor with an unrecognised type does not fail the whole read;
-            its size is recorded as 0 and its name and type are listed under
-            the ``_unknown_tensor_types`` metadata key. A tensor whose element
+            header is truncated, it contains an unknown value type, or a tensor
+            has a type the size table does not know. A tensor whose element
             count is not an exact multiple of its type's block size has its
             size rounded up rather than truncated, and is listed under the
             ``_misaligned_tensors`` metadata key.
@@ -163,7 +176,8 @@ def read_header(source: ByteSource) -> GgufHeader:
         alignment = _DEFAULT_ALIGNMENT
 
     tensors: list[TensorInfo] = []
-    unknown_types: list[str] = []
+    # type id -> the names of the tensors that use it, for a type the table lacks
+    unknown: dict[int, list[str]] = {}
     misaligned: list[str] = []
     for _tensor in range(tensor_count):
         name = _string(cursor)
@@ -171,18 +185,16 @@ def read_header(source: ByteSource) -> GgufHeader:
         dims = [struct.unpack("<Q", cursor.take(8))[0] for _dim in range(n_dims)]
         (type_id,) = struct.unpack("<I", cursor.take(4))
         (offset,) = struct.unpack("<Q", cursor.take(8))
-        try:
-            size = tensor_bytes(dims, type_id)
-        except KeyError:
-            size = 0
-            unknown_types.append(f"{name}:{type_name(type_id)}")
-        else:
-            if is_misaligned(dims, type_id):
-                misaligned.append(f"{name}:{type_name(type_id)}")
+        if type_id not in GGML_TYPES:
+            unknown.setdefault(type_id, []).append(name)
+            continue
+        size = tensor_bytes(dims, type_id)
+        if is_misaligned(dims, type_id):
+            misaligned.append(f"{name}:{type_name(type_id)}")
         tensors.append(TensorInfo(name=name, dims=dims, type=type_id, offset=offset, bytes_=size))
 
-    if unknown_types:
-        metadata["_unknown_tensor_types"] = unknown_types
+    if unknown:
+        raise CatalogError(_unknown_types_message(unknown), hint=_UNKNOWN_TYPES_HINT)
     if misaligned:
         metadata["_misaligned_tensors"] = misaligned
 
@@ -194,6 +206,37 @@ def read_header(source: ByteSource) -> GgufHeader:
         tensors=tensors,
         header_bytes=cursor.offset,
     )
+
+
+_UNKNOWN_TYPES_HINT = _(
+    "A memory budget built without these tensors would be too small, so none is built. "
+    "If llama.cpp loads the file, LlamaFit's tensor-size table is missing the type."
+)
+
+
+def _unknown_types_message(unknown: dict[int, list[str]]) -> str:
+    """Name every tensor type the table lacks, with how many tensors use each and the first.
+
+    One error for all of them: a person fixing the table wants the whole list, and a
+    file with two unknown types would otherwise fail twice, once per edit.
+    """
+    details = ", ".join(
+        ngettext(
+            "%(type)d (%(count)d tensor, first %(name)s)",
+            "%(type)d (%(count)d tensors, first %(name)s)",
+            len(names),
+        )
+        % {"type": type_id, "count": len(names), "name": names[0]}
+        for type_id, names in sorted(unknown.items())
+    )
+    total = sum(len(names) for names in unknown.values())
+    return ngettext(
+        "cannot size this GGUF file: %(count)d tensor uses a GGML type LlamaFit does not "
+        "know: %(details)s",
+        "cannot size this GGUF file: %(count)d tensors use GGML types LlamaFit does not "
+        "know: %(details)s",
+        total,
+    ) % {"count": total, "details": details}
 
 
 def _shards(count: int) -> str:
