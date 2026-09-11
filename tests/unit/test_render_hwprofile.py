@@ -194,3 +194,32 @@ def test_a_size_with_no_free_figure_says_so_rather_than_printing_a_dash() -> Non
 
 def test_a_machine_whose_card_was_read_gets_no_card_memory_row() -> None:
     assert "as if there were no card at all" not in _drawn(render_host(machine()))
+
+
+def test_the_profile_name_survives_a_narrow_screen_whole(tmp_path: Path) -> None:
+    """The name is the one cell here a reader has to retype, so it cannot be cut.
+
+    At eighty columns Rich gave every column an equal share and the bundled profile
+    arrived as `reference-rtx4060-1...`, which is not a name `--profile` accepts. Folded
+    across two lines it is still the name; shortened it is a command that does not run.
+    """
+    # The bundled profile, as it ships: the long description is half the reason the name
+    # was being squeezed, so a fixture with a short one does not reproduce this at all.
+    document = dict(profiles.with_gpu())
+    document["name"] = "reference-rtx4060-128gb"
+    document["description"] = (
+        "Reference machine: RTX 4060 8 GB, i9-14900KF, 128 GiB DDR5-4200, Windows 11"
+    )
+    narrow = Console(width=80, no_color=True, highlight=False, record=True)
+    narrow.print(render_profiles([_loaded(tmp_path, document)]))
+    drawn = narrow.export_text()
+    assert "\u2026" not in drawn and "..." not in drawn
+    # Read down the first column and put its pieces back together, which is what a reader
+    # does with a folded cell. Joining the whole drawing instead would glue the halves to
+    # the table's own borders and prove nothing.
+    name = "".join(
+        line.split("\u2502")[1].strip()
+        for line in drawn.splitlines()
+        if line.count("\u2502") > 3 and "Name" not in line
+    )
+    assert name == "reference-rtx4060-128gb"

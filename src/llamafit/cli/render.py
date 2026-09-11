@@ -1306,15 +1306,24 @@ def _profile_gpu(card: ProfileGpu) -> str:
 
 
 def render_profiles(profiles: Sequence[LoadedProfile]) -> Table:
-    """Every hardware profile LlamaFit can reach, bundled ones first."""
+    """Every hardware profile LlamaFit can reach, bundled ones first.
+
+    The name is the one cell on this screen a reader has to retype, into
+    ``--profile``, so it is the one cell that must never be shortened. At eighty
+    columns Rich was giving every column an equal share and the only bundled profile
+    arrived as ``reference-rtx4060-1…``. It folds now, and the two columns that are
+    prose give way for it: a description that wraps is read the same, and a name that
+    wraps is still a name, while a name with a full stop in the middle of it is a
+    command that does not run.
+    """
     table = Table(title=for_display(_("Hardware profiles")))
     _add_columns(
         table,
         [
-            {"header": _("Name")},
-            {"header": _("From")},
-            {"header": _("Machine")},
-            {"header": _("Description")},
+            {"header": _("Name"), "overflow": "fold", "ratio": None, "no_wrap": False},
+            {"header": _("From"), "no_wrap": True},
+            {"header": _("Machine"), "ratio": 2},
+            {"header": _("Description"), "ratio": 2},
         ],
     )
     for loaded in profiles:

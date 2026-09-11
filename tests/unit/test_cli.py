@@ -595,6 +595,7 @@ def test_the_error_report_itself_survives_a_stream_that_cannot_write_it(
     assert "llama.cpp" in err and "?" in err
     assert "Traceback" not in err
 
+
 def test_a_global_option_after_the_command_says_where_it_goes(
     monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
