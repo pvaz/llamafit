@@ -53,6 +53,19 @@ translator, so nothing about it appears in a catalog::
 ``llamafit.i18n.bidi`` has the whole story, and every function in it returns its input
 unchanged for a left-to-right language.
 
+None of that looks at where the words are going, and a file or a pipe on Windows takes
+the system code page, which has no Japanese and no direction mark in it. An interface
+that writes to a stream makes the stream forgiving first, and tells the choice what the
+stream can write, so a language the stream cannot carry is refused with a reason rather
+than raised over half-way down a table::
+
+    from llamafit.i18n import encoding_of, tolerate
+
+    tolerate(sys.stdout)
+    choice = set_language(language_option, encoding=encoding_of(sys.stdout))
+
+``llamafit.i18n.encoding`` argues both halves of that.
+
 The catalogs are GNU gettext ``.po`` files under ``llamafit/data/locale/``, read as text.
 Nothing is compiled and no binary is committed, so a translator edits the same file the
 program reads. Every message that is missing, or left empty, falls back to English, and
@@ -82,6 +95,14 @@ from llamafit.i18n.catalogs import (
     load_language,
 )
 from llamafit.i18n.detect import FixedLocale, LocaleProvider, SystemLocale, windows_ui_language
+from llamafit.i18n.encoding import (
+    ERROR_HANDLER,
+    can_write,
+    clear_replacements,
+    encoding_of,
+    replacements,
+    tolerate,
+)
 from llamafit.i18n.lazy import (
     LazyString,
     lazy_gettext,
@@ -131,6 +152,7 @@ from llamafit.i18n.translator import (
 __all__ = [
     "CATALOG_SUFFIX",
     "DEFAULT_PLURAL_FORMS",
+    "ERROR_HANDLER",
     "FIRST_STRONG_ISOLATE",
     "LANGUAGE_ENV_VAR",
     "POP_DIRECTIONAL_ISOLATE",
@@ -154,9 +176,12 @@ __all__ = [
     "Translator",
     "_",
     "available_languages",
+    "can_write",
     "catalog_dir",
     "catalog_path",
+    "clear_replacements",
     "current_language",
+    "encoding_of",
     "for_display",
     "get_translator",
     "gettext",
@@ -181,10 +206,12 @@ __all__ = [
     "placeholders",
     "read_po",
     "reading_order",
+    "replacements",
     "reset",
     "resolve_language",
     "set_language",
     "set_translator",
     "substitution_notice",
+    "tolerate",
     "windows_ui_language",
 ]
