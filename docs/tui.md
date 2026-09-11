@@ -80,6 +80,11 @@ cannot advertise a key nothing is bound to.
 - It degrades on narrow terminals by dropping the least important columns first, in a fixed
   priority, and never by truncating a model's name. The four columns that identify a row —
   rank, model, quantisation and score — are never dropped.
+- A name wider than the model column folds onto a second line, exactly as it does on the
+  command line's board, and the row grows a line to hold it. That is what "never truncated"
+  costs, and it is the cheaper of the two: a name cut at the column's edge is not a shorter
+  name but a different one, and `nemotron-3.5-lightning-30b-a3b` arriving as
+  `nemotron-3.5-lightning-3` is a model nobody can look up.
 - Colour is used for verdicts only and always paired with a word, so the screen reads the
   same without it.
 - A scan that failed, a catalog that would not load and a substitution the machine cannot

@@ -120,7 +120,7 @@ longer the thing a narrow terminal must keep at the cost of the verdict.
 
 WIDTHS: dict[Column, int] = {
     "rank": 3,
-    "model": 24,
+    "model": 28,
     "quant": 11,
     "score": 5,
     "gen": 6,
@@ -137,9 +137,21 @@ WIDTHS: dict[Column, int] = {
 }
 """What each column costs in terminal cells before its padding.
 
-``model`` is the widest catalog id plus room, because section 13.2's own note on this
-screen is that it degrades by hiding the least important columns and never by truncating a
-model's name: a reader who cannot read the name cannot ask for the model.
+``model`` is the only one that is not the width of its widest value: six of the sixty-two
+bundled ids are longer than this and the longest is thirty-four, and a column wide enough
+for that one would spend nearly half an eighty-cell terminal on it. It is therefore where
+the name *folds* onto a second line, which is the one thing this column may do -- section
+13.2's note on this screen is that it degrades by hiding the least important columns and
+never by truncating a model's name, and a name cut at a width is not a shorter name but a
+different and wrong one: ``nemotron-3.5-lightning-30b-a3b`` arrives as
+``nemotron-3.5-lightning-3``, which a reader can neither recognise nor type. The folding
+itself is Textual's, asked for by the row height in
+:meth:`~llamafit.tui.screens.board.BoardPane._draw_table`.
+
+Twenty-eight because that is where the command line's board folds the same column, and
+until the two tables are drawn by one panel they can at least fold a name in the same
+place. ``llamafit.cli.render_board`` holds that number under its own name, and so, for a
+different table, does ``llamafit.cli.render``.
 """
 
 _CELL_PADDING = 2
