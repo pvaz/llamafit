@@ -7,6 +7,8 @@ the changelog says so when they do.
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-09-11
+
 ### Added
 - Project scaffold: packaging, CI matrix, lint, type-check and test configuration.
 - Design specification covering host detection, llama.cpp integration, the model catalog,
@@ -585,4 +587,5 @@ the changelog says so when they do.
   names it, so a model built for the task still outranks one that merely can do it, and
   `llamafit list --use-case` still browses on the whole list.
 
-[Unreleased]: https://github.com/pvaz/llamafit/commits/main
+[Unreleased]: https://github.com/pvaz/llamafit/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/pvaz/llamafit/releases/tag/v0.1.0
