@@ -172,11 +172,44 @@ def test_an_unknown_attribute_still_fails_as_a_string_would() -> None:
         lazy_gettext("No GPU detected").no_such_method()
 
 
-def test_a_typer_help_string_built_by_the_decorator_still_follows_the_language() -> None:
-    # The decorator runs at import time, so this is the case the eager form loses. It is
-    # asserted rather than assumed: Click could normalise help text when the decorator
-    # runs, which would render the message to English there and then. It does not, and
-    # this test is what says so if that ever changes.
+def test_click_freezes_a_deferred_option_help_when_the_command_is_built() -> None:
+    # In the order the program actually runs: build the command, then choose the language,
+    # then draw. The decorator keeps the LazyString, but Click renders an option's help
+    # with inspect.cleandoc as it builds the option and keeps the str, so the language
+    # chosen afterwards never reaches it; an argument's help is kept as given and rendered
+    # when the screen is drawn. An earlier version of this test chose first and built
+    # second, and passed for the wrong reason. This is the limit that decides what
+    # llamafit.cli.app has to do -- choose before building, and put the deferred messages
+    # back for a caller that did not -- and tests/unit/test_cli.py proves that on the real
+    # application. If Click ever stops freezing, this fails and the workaround can go.
+    import typer
+    from typer.main import get_command
+
+    app = typer.Typer()
+    help_text = lazy_gettext("If a GPU is present, check that its driver tools are installed.")
+
+    @app.command()
+    def demo(
+        name: str = typer.Argument(..., help=help_text),
+        check: bool = typer.Option(False, "--check", help=help_text),
+    ) -> None:
+        """A command."""
+
+    command = get_command(app)
+    _portuguese()
+    by_name = {param.name: param for param in command.params}
+    option_help = by_name["check"].help  # type: ignore[attr-defined]
+    argument_help = by_name["name"].help  # type: ignore[attr-defined]
+    assert isinstance(option_help, str)
+    assert option_help == "If a GPU is present, check that its driver tools are installed."
+    assert isinstance(argument_help, LazyString)
+    assert str(argument_help).startswith("Se existir uma GPU")
+
+
+def test_a_command_built_after_the_language_is_chosen_renders_it() -> None:
+    # The order llamafit.cli.app.main arranges: choose, then build, then draw. Click's
+    # cleandoc renders the LazyString in the language installed at build time, which is
+    # then the right one.
     import typer
     from typer.testing import CliRunner
 
