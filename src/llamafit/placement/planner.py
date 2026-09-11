@@ -308,6 +308,19 @@ def placement_notes(
         )
     elif settings.mode == "cpu":
         notes.append(_("Nothing runs on a graphics card: every weight is in system memory."))
+        # The note above is true and, on a machine with an unreadable card, misleading on
+        # its own: it reads as a fact about the machine when it is a consequence of what
+        # LlamaFit could not find out about it. The second note is the one that says so.
+        unsized = host.unsized_gpus
+        if unsized:
+            notes.append(
+                _(
+                    "%(gpus)s is here, but nothing could read how much of it is free, so "
+                    "this plan was made as if it were not. The real machine will be "
+                    "faster than these figures."
+                )
+                % {"gpus": ", ".join(gpu.name for gpu in unsized)}
+            )
 
     if settings.context < requested_context:
         notes.append(

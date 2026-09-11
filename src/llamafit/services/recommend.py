@@ -131,6 +131,12 @@ class Board(BaseModel):
         excluded: The candidates that were not ranked, each carrying its reason.
         simulation: What was substituted for the machine these rows were computed on, or
             ``None`` when they were computed on the machine the reader is sitting at.
+        unsized_gpus: Names of the cards that were on the machine and could not be sized,
+            so every row was planned as if they were not there. Carried for the reason
+            ``simulation`` is: a board does not carry the host, and without this a program
+            reading ``recommend --json`` could not tell a CPU-only answer for a machine
+            with no card from a CPU-only answer for a machine whose card nothing could
+            read. Empty on every machine where the question does not arise.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -144,6 +150,7 @@ class Board(BaseModel):
     ranked_total: int = 0
     excluded: list[BoardRow] = Field(default_factory=list)
     simulation: Simulation | None = None
+    unsized_gpus: list[str] = Field(default_factory=list)
 
     @computed_field  # type: ignore[prop-decorator]
     @property
@@ -203,6 +210,8 @@ class FitBoard(BaseModel):
         excluded: The ones with no placement at all, each carrying its reason.
         simulation: What was substituted for the machine these rows were computed on, or
             ``None`` when they were computed on the machine the reader is sitting at.
+        unsized_gpus: Names of the cards that were on the machine and could not be sized,
+            so every row was planned as if they were not there. See :class:`Board`.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -212,6 +221,7 @@ class FitBoard(BaseModel):
     ranked_total: int = 0
     excluded: list[FitRow] = Field(default_factory=list)
     simulation: Simulation | None = None
+    unsized_gpus: list[str] = Field(default_factory=list)
 
     @computed_field  # type: ignore[prop-decorator]
     @property
@@ -490,6 +500,7 @@ def build_board(
         ranked_total=ranked_total,
         excluded=excluded,
         simulation=host.simulation,
+        unsized_gpus=[gpu.name for gpu in host.unsized_gpus],
     )
 
 
@@ -569,6 +580,7 @@ def build_fit_board(
         ranked_total=ranked_total,
         excluded=excluded,
         simulation=host.simulation,
+        unsized_gpus=[gpu.name for gpu in host.unsized_gpus],
     )
 
 
