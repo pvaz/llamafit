@@ -147,6 +147,10 @@ def test_with_no_template_to_measure_against_nothing_is_claimed_either_way() -> 
     unknown = Completeness(translated=3, total=0)
     assert not unknown.known
     assert unknown.nearly_complete, "an unanswerable question is not an accusation"
+    # And the share is one rather than a division by zero or a nought: whatever is being
+    # asked, the answer must not be a figure that reads as "this catalog is empty".
+    assert unknown.share == 1.0
+    assert unknown.percent == 100
 
 
 def test_a_missing_template_counts_as_nothing_known_rather_than_raising(tmp_path: Path) -> None:
