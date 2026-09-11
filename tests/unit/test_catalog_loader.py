@@ -5,6 +5,7 @@ import pytest
 
 from llamafit.catalog.loader import custom_models_path, load_catalog, load_models_from_file
 from llamafit.errors import CatalogError
+from llamafit.gguf.facts import HEADER_ALLOWANCE_BYTES
 
 ENTRY = """
 - id: tiny-1b
@@ -137,7 +138,7 @@ def test_the_loader_merges_a_facts_file_into_the_quants(tmp_path: Path) -> None:
                         "bytes": 700_000_000,
                         "sha256": ["abc123"],
                         "bpw": 5.6,
-                        "gguf_facts": {"arch": "llama", "n_layer": 16},
+                        "gguf_facts": GGUF_FACTS_FOR_700MB,
                     }
                 }
             }
@@ -309,12 +310,22 @@ DUPLICATE_QUANT_ENTRY = """
         - {name: Q4_K_M}
 """
 
+# Facts that account for the 700,000,000-byte file the fixtures publish, less a header's
+# worth. The loader refuses facts whose tensors do not add up to the file, so a fixture
+# that says nothing about its bytes is a fixture that fails to merge.
+GGUF_FACTS_FOR_700MB = {
+    "arch": "llama",
+    "n_layer": 16,
+    "bytes_dense_block_weights": 699_000_000,
+    "bytes_total": 699_000_000,
+}
+
 GOOD_QUANT_FACTS = {
     "files": ["tiny-1b-Q4_K_M.gguf"],
     "bytes": 700_000_000,
     "sha256": ["abc123"],
     "bpw": 5.6,
-    "gguf_facts": {"arch": "llama", "n_layer": 16},
+    "gguf_facts": GGUF_FACTS_FOR_700MB,
 }
 
 
@@ -702,3 +713,87 @@ def test_checksums_that_do_not_pair_with_the_files_are_a_problem(tmp_path: Path)
     assert quant.files == ["a.gguf", "b.gguf"]
     assert quant.sha256 == []
     assert quant.bytes_ == 700
+
+
+# --- the facts have to account for the file --------------------------------------
+
+
+def _facts_summing_to(bytes_total: int) -> dict[str, object]:
+    return {"arch": "llama", "bytes_dense_block_weights": bytes_total, "bytes_total": bytes_total}
+
+
+def test_gguf_facts_whose_tensors_do_not_account_for_the_files_are_a_problem(
+    tmp_path: Path,
+) -> None:
+    # The shipped facts for gpt-oss-120b summed its tensors to 2.4 GB of a 63 GB file, and
+    # every budget built on them said the model fit an 8 GB card. The file's own size is
+    # the witness the loader has, and it is a witness a wrong table row cannot coach.
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    quant_facts = {**GOOD_QUANT_FACTS, "gguf_facts": _facts_summing_to(27_000_000)}
+    write_facts(tmp_path, {"tiny-1b": {"quants": {"Q4_K_M": quant_facts}}})
+
+    models, problems = load_models_from_file(path)
+
+    assert [p.location for p in problems] == ["quants.Q4_K_M.gguf_facts"]
+    assert "27,000,000" in problems[0].message and "700,000,000" in problems[0].message
+    assert "refresh" in problems[0].message
+    quant = models[0].sources[0].quants[0]
+    assert quant.gguf_facts is None
+    assert quant.bytes_ == 700_000_000  # the size was never in doubt, and stays
+
+
+def test_gguf_facts_whose_tensors_exceed_the_files_are_a_problem_too(tmp_path: Path) -> None:
+    # Over is the safe direction for a budget and still a wrong row somewhere.
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    quant_facts = {**GOOD_QUANT_FACTS, "gguf_facts": _facts_summing_to(700_000_001)}
+    write_facts(tmp_path, {"tiny-1b": {"quants": {"Q4_K_M": quant_facts}}})
+
+    models, problems = load_models_from_file(path)
+
+    assert [p.location for p in problems] == ["quants.Q4_K_M.gguf_facts"]
+    assert models[0].sources[0].quants[0].gguf_facts is None
+
+
+@pytest.mark.parametrize(
+    "gap",
+    [
+        0,
+        # gpt-oss-20b's header is 13,008,263 bytes: a 201K-token vocabulary, all metadata.
+        13_008_263,
+        HEADER_ALLOWANCE_BYTES,
+    ],
+)
+def test_a_gap_no_larger_than_a_header_is_not_a_problem(tmp_path: Path, gap: int) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    quant_facts = {**GOOD_QUANT_FACTS, "gguf_facts": _facts_summing_to(700_000_000 - gap)}
+    write_facts(tmp_path, {"tiny-1b": {"quants": {"Q4_K_M": quant_facts}}})
+
+    models, problems = load_models_from_file(path)
+
+    assert problems == []
+    facts = models[0].sources[0].quants[0].gguf_facts
+    assert facts is not None and facts.bytes_total == 700_000_000 - gap
+
+
+def test_a_gap_one_byte_past_the_allowance_is_a_problem(tmp_path: Path) -> None:
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    total = 700_000_000 - HEADER_ALLOWANCE_BYTES - 1
+    quant_facts = {**GOOD_QUANT_FACTS, "gguf_facts": _facts_summing_to(total)}
+    write_facts(tmp_path, {"tiny-1b": {"quants": {"Q4_K_M": quant_facts}}})
+
+    _, problems = load_models_from_file(path)
+
+    assert [p.location for p in problems] == ["quants.Q4_K_M.gguf_facts"]
+
+
+def test_facts_without_a_file_size_are_not_cross_checked(tmp_path: Path) -> None:
+    # Nothing to check against is not the same as a contradiction.
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    quant_facts = {**GOOD_QUANT_FACTS, "bytes": None, "gguf_facts": _facts_summing_to(3)}
+    write_facts(tmp_path, {"tiny-1b": {"quants": {"Q4_K_M": quant_facts}}})
+
+    models, problems = load_models_from_file(path)
+
+    assert problems == []
+    facts = models[0].sources[0].quants[0].gguf_facts
+    assert facts is not None and facts.bytes_total == 3

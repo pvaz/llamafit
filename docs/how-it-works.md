@@ -160,10 +160,10 @@ this host's measurements), `estimated` (formula with defaults), or `unsupported`
 Four scores from 0 to 100:
 
 - **Quality**: the catalog's baseline for the model (set by curators from published benchmarks,
-  with sources), minus a penalty for the quantisation (Q8 0, Q6 1, Q5 2, Q4 4, IQ4 6, Q3 10,
-  IQ3 12, Q2 20, IQ2 24, IQ1 35; dynamic quants one less than their base), plus a small bonus
-  when the request names the job the entry was built for. A missing capability excludes the
-  candidate, and a request asks for one two ways: by naming it, and by naming a job that needs
+  with sources), minus a penalty for the quantisation (Q8 0, Q6 1, Q5 2, Q4 4, MXFP4 4, IQ4 6,
+  Q3 10, IQ3 12, Q2 20, IQ2 24, IQ1 35; dynamic quants one less than their base), plus a small
+  bonus when the request names the job the entry was built for. A missing capability excludes
+  the candidate, and a request asks for one two ways: by naming it, and by naming a job that needs
   it — coding needs the coding capability, reasoning needs thinking, multimodal needs vision,
   embedding needs embeddings. `general` and `chat` need none, so on those two nothing is
   excluded for what was asked. The filter is on what a model can do and never on the jobs its
