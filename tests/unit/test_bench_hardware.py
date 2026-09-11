@@ -79,7 +79,12 @@ def test_a_real_measurement_lands_beside_the_estimate_for_its_own_context(
 def test_the_planned_figure_is_carried_without_being_compared(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """The estimate `plan` prints is at a context no row here reaches, and says so."""
+    """The estimate `plan` prints is at a context no *speed* here reaches, and says so.
+
+    Peak VRAM is the exception and not an oversight: a key-value cache is allocated whole
+    at load time, so the memory prediction really is for the planned context, and that row
+    names it.
+    """
     skip_unless_installed()
     monkeypatch.setenv("LLAMA_CPP_PATH", str(BIN))
     monkeypatch.setenv("LLAMAFIT_HOME", str(tmp_path / "home"))
@@ -88,5 +93,12 @@ def test_the_planned_figure_is_carried_without_being_compared(
 
     report = json.loads(result.output)
     assert report["planned_gen_tps"] is not None
-    contexts = {row["context"] for row in report["comparison"] if row["context"] is not None}
-    assert report["planned_context"] not in contexts
+    speeds = {
+        row["context"]
+        for row in report["comparison"]
+        if row["unit"] == "tok/s" and row["context"] is not None
+    }
+    assert speeds
+    assert report["planned_context"] not in speeds
+    memory = next(row for row in report["comparison"] if row["metric"] == "peak-vram")
+    assert memory["context"] == report["planned_context"]
