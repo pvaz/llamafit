@@ -14,11 +14,25 @@ expands into the four scores, the weights that combined them, the quality it was
 from, the budget line by line with the source of every line, the context ladder and where
 a token's time goes. Nothing in this program should ever have to be taken on faith, and
 this is the command where that is hardest and matters most.
+
+Two families of flag, kept apart on purpose. A **request** flag -- ``--use-case``,
+``--require``, ``--min-tps``, ``--max-download`` and the rest -- changes what is ranked,
+and the board says so under itself: a candidate it excludes is listed with the reason.
+A **view** flag -- ``--sort``, ``--search``, ``--installed``, ``--runs``, ``--min-fit``
+on ``recommend``, ``--columns``, ``--wide``, ``--hide-excluded`` -- changes only what is
+drawn: the ranking, the count that qualified and the ``--json`` document are untouched,
+except that ``--sort`` reorders the document's rows and leaves their ranks alone, as the
+web API's ``sort=`` does. The numeric boxes the web page has under every heading are not
+flags here. ``--min-tps`` excludes and says so; a ``--min-speed`` that merely hid would
+sit one line under it in ``--help`` and differ in a word, and a reader who picked the
+wrong one would get a board whose caption disagreed with its rows for a reason nothing
+named. The page needed boxes because a pointer cannot type a flag; a terminal has
+``--sort``, ``--limit`` and ``--json``, and the dashboard's ``/`` box takes the terms.
 """
 
 from __future__ import annotations
 
-from typing import cast
+from typing import cast, get_args
 
 import typer
 
@@ -32,15 +46,27 @@ from llamafit.cli.common import (
     machine,
 )
 from llamafit.cli.render_board import (
+    BOARD_ORDER,
+    FIT_ORDER,
+    FIT_SORT_KEYS,
+    SORT_KEYS,
+    Column,
+    Filters,
+    View,
+    column_budget,
+    parse_columns,
+    parse_sort,
     render_board,
-    render_excluded,
     render_explanation,
     render_fit,
-    render_fit_excluded,
+    render_fit_reasons,
+    render_reasons,
+    sorted_rows,
+    visible_rows,
 )
 from llamafit.errors import CatalogError
 from llamafit.i18n import _, lazy_gettext
-from llamafit.models.plan import Needs, Verdict
+from llamafit.models.plan import Needs, RunMode, Verdict
 from llamafit.scoring import PREFERENCES
 from llamafit.services.recommend import MIN_FIT_VERDICTS, build_board, build_fit_board
 
@@ -111,6 +137,88 @@ _MIN_TPS_OPTION: float | None = typer.Option(
     ),
 )
 
+# The view flags. None of them changes what is ranked; each changes what is drawn.
+_SORT_OPTION: str = typer.Option(
+    "score",
+    "--sort",
+    metavar="KEY[:asc|:desc]",
+    help=cast(
+        str,
+        lazy_gettext(
+            "Order the rows drawn: score, speed, quality, context, size, prompt, card, "
+            "ram, fit, model or quant, largest or best first unless :asc says otherwise. "
+            "The # column keeps the ranking."
+        ),
+    ),
+)
+_SEARCH_OPTION: str | None = typer.Option(
+    None,
+    "--search",
+    metavar="TEXT",
+    help=cast(
+        str, lazy_gettext("Draw only rows whose id, name or quantisation contains this text.")
+    ),
+)
+_INSTALLED_OPTION: bool = typer.Option(
+    False,
+    "--installed",
+    help=cast(str, lazy_gettext("Draw only rows whose file is already on this machine.")),
+)
+_RUNS_OPTION: str | None = typer.Option(
+    None,
+    "--runs",
+    metavar="MODE",
+    help=cast(
+        str,
+        lazy_gettext("Draw only rows that run this way: gpu, moe-offload, hybrid or cpu."),
+    ),
+)
+_VIEW_MIN_FIT_OPTION: str | None = typer.Option(
+    None,
+    "--min-fit",
+    help=cast(
+        str,
+        lazy_gettext(
+            "Draw only rows at or above this verdict: comfortable, fits or tight. The "
+            "ranking is unchanged and a hidden row is still counted."
+        ),
+    ),
+)
+_COLUMNS_OPTION: str | None = typer.Option(
+    None,
+    "--columns",
+    metavar="LIST",
+    help=cast(
+        str,
+        lazy_gettext(
+            "Draw exactly these columns, comma-separated, in this order, named as --json "
+            "names them: rank, model, quant, size, have, score, quality, gen, prompt, "
+            "confidence, mode, vram, ram, verdict, context."
+        ),
+    ),
+)
+_WIDE_OPTION: bool = typer.Option(
+    False,
+    "--wide",
+    help=cast(
+        str,
+        lazy_gettext(
+            "Draw every column whatever the terminal's width; a cell that does not fit folds."
+        ),
+    ),
+)
+_HIDE_EXCLUDED_OPTION: bool = typer.Option(
+    False,
+    "--hide-excluded",
+    help=cast(
+        str,
+        lazy_gettext(
+            "Leave the candidates that were not ranked off the table. The reasons are "
+            "still printed under it."
+        ),
+    ),
+)
+
 
 def _check_min_fit(value: str) -> Verdict:
     """Return the verdict ``--min-fit`` named, or refuse it and list the three."""
@@ -131,6 +239,67 @@ def _check_prefer(value: str) -> str:
             hint=_("Valid values: %(values)s") % {"values": ", ".join(PREFERENCES)},
         )
     return value
+
+
+def _check_runs(value: str) -> RunMode:
+    """Return the run mode ``--runs`` named, or refuse it and list the four."""
+    modes = [mode for mode in get_args(RunMode) if mode != "unsupported"]
+    if value not in modes:
+        raise CatalogError(
+            _("invalid --runs %(value)s") % {"value": repr(value)},
+            hint=_("Valid values: %(values)s") % {"values": ", ".join(modes)},
+        )
+    return cast("RunMode", value)
+
+
+def _check_view(
+    *,
+    sort: str,
+    sort_keys: tuple[str, ...],
+    search: str | None,
+    installed: bool,
+    runs: str | None,
+    min_fit: str | None,
+    columns: str | None,
+    column_keys: tuple[Column, ...],
+    wide: bool,
+    hide_excluded: bool,
+) -> View:
+    """The view flags as one :class:`~llamafit.cli.render_board.View`, each checked by name.
+
+    Every refusal lists what would have been accepted, in the words the other checkers
+    in this module use, because a flag that says "invalid" and stops is a flag that
+    sends a reader to the documentation for a list this program already holds.
+    """
+    try:
+        key, descending = parse_sort(sort, allowed=sort_keys)
+    except ValueError as exc:
+        raise CatalogError(
+            _("invalid --sort %(value)s") % {"value": repr(sort)},
+            hint=_("Valid values: %(values)s") % {"values": ", ".join(sort_keys)},
+        ) from exc
+    chosen: tuple[Column, ...] | None = None
+    if columns is not None:
+        try:
+            chosen = parse_columns(columns, allowed=column_keys)
+        except ValueError as exc:
+            raise CatalogError(
+                _("invalid --columns %(value)s") % {"value": repr(str(exc))},
+                hint=_("Valid values: %(values)s") % {"values": ", ".join(column_keys)},
+            ) from exc
+    return View(
+        sort=key,
+        descending=descending,
+        filters=Filters(
+            search=search or "",
+            min_fit=None if min_fit is None else _check_min_fit(min_fit),
+            installed=installed,
+            mode=None if runs is None else _check_runs(runs),
+        ),
+        columns=chosen,
+        wide=wide,
+        excluded=not hide_excluded,
+    )
 
 
 @app.command(
@@ -187,9 +356,29 @@ def recommend_command(
         "--no-vision",
         help=cast(str, lazy_gettext("Plan without a vision projector, freeing its memory.")),
     ),
+    sort: str = _SORT_OPTION,
+    search: str | None = _SEARCH_OPTION,
+    installed: bool = _INSTALLED_OPTION,
+    runs: str | None = _RUNS_OPTION,
+    min_fit: str | None = _VIEW_MIN_FIT_OPTION,
+    columns: str | None = _COLUMNS_OPTION,
+    wide: bool = _WIDE_OPTION,
+    hide_excluded: bool = _HIDE_EXCLUDED_OPTION,
 ) -> None:
     """Rank the catalog for what you want to do on this machine."""
     state: CliState = ctx.obj
+    view = _check_view(
+        sort=sort,
+        sort_keys=SORT_KEYS,
+        search=search,
+        installed=installed,
+        runs=runs,
+        min_fit=min_fit,
+        columns=columns,
+        column_keys=BOARD_ORDER,
+        wide=wide,
+        hide_excluded=hide_excluded,
+    )
     catalog = load_catalog_or_warn(state)
     report = machine(state)
     needs = Needs(
@@ -214,6 +403,12 @@ def recommend_command(
         vision=not no_vision,
     )
     if state.json_output:
+        # The one view flag the document honours, the way the API's ``sort=`` honours it:
+        # the rows reordered, every rank left where the scorer put it.
+        if view.reordered:
+            board = board.model_copy(
+                update={"rows": sorted_rows(board.rows, view.sort, view.descending)}
+            )
         typer.echo(board.model_dump_json(indent=2, by_alias=True))
         return
 
@@ -222,17 +417,21 @@ def recommend_command(
     # saying these rows are not this machine has to be above both of them, and a command
     # that chose between a renderer and a bare `print` was the one place it was not.
     console = state.console
-    console.print(render_board(board, console_width=console.width))
-    # The explanations come before the exclusions, because they belong to the rows above
+    console.print(
+        render_board(board, console_width=console.width, view=view, budget=column_budget(catalog))
+    )
+    # The explanations come before the reasons, because they belong to the rows above
     # them: a reader who asked for the working behind row 1 should not have to scroll past
-    # a table of models that are not on the board to reach it.
+    # every candidate that is not on the board to reach it. They follow the view -- the
+    # rows drawn, in the order drawn -- so ``--sort speed --explain`` explains the fastest
+    # first and a row a filter hid is not expanded.
     if explain:
-        for row in board.rows:
+        for row in visible_rows(board.rows, view):
             console.print(render_explanation(row, board))
-    excluded = render_excluded(board.excluded)
-    if excluded is not None:
+    reasons = render_reasons(board)
+    if reasons is not None:
         console.print()
-        console.print(excluded)
+        console.print(reasons)
 
 
 @app.command(
@@ -269,9 +468,31 @@ def fit_command(
         "--all-quants",
         help=cast(str, lazy_gettext("Show every quantisation instead of the best one per model.")),
     ),
+    sort: str = _SORT_OPTION,
+    search: str | None = _SEARCH_OPTION,
+    installed: bool = _INSTALLED_OPTION,
+    runs: str | None = _RUNS_OPTION,
+    columns: str | None = _COLUMNS_OPTION,
+    wide: bool = _WIDE_OPTION,
+    hide_excluded: bool = _HIDE_EXCLUDED_OPTION,
 ) -> None:
     """Rank every model by how well it uses this machine, whatever it is for."""
     state: CliState = ctx.obj
+    # ``--min-fit`` is a request flag here -- it decides what qualifies and the count says
+    # so -- which is why the view takes none: the same word cannot mean two things on one
+    # command.
+    view = _check_view(
+        sort=sort,
+        sort_keys=FIT_SORT_KEYS,
+        search=search,
+        installed=installed,
+        runs=runs,
+        min_fit=None,
+        columns=columns,
+        column_keys=FIT_ORDER,
+        wide=wide,
+        hide_excluded=hide_excluded,
+    )
     catalog = load_catalog_or_warn(state)
     report = machine(state)
     board = build_fit_board(
@@ -285,12 +506,18 @@ def fit_command(
         local_models=report.llamacpp.local_models,
     )
     if state.json_output:
+        if view.reordered:
+            board = board.model_copy(
+                update={"rows": sorted_rows(board.rows, view.sort, view.descending)}
+            )
         typer.echo(board.model_dump_json(indent=2, by_alias=True))
         return
 
     console = state.console
-    console.print(render_fit(board, console_width=console.width))
-    excluded = render_fit_excluded(board.excluded)
-    if excluded is not None:
+    console.print(
+        render_fit(board, console_width=console.width, view=view, budget=column_budget(catalog))
+    )
+    reasons = render_fit_reasons(board)
+    if reasons is not None:
         console.print()
-        console.print(excluded)
+        console.print(reasons)

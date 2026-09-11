@@ -68,6 +68,7 @@ from llamafit.cli.common import (
     find_model,
 )
 from llamafit.cli.plan_cmd import choose_quant
+from llamafit.cli.render_board import SORT_KEYS, parse_sort, sorted_rows
 from llamafit.data import packaged_dir, packaged_text
 from llamafit.errors import (
     CatalogError,
@@ -106,9 +107,6 @@ reads this API from their browser, which believes it is talking to that site's o
 so lets the site's JavaScript see every answer. Checking the ``Host`` header is what makes
 "bound to loopback" mean what a reader thinks it means.
 """
-
-SORT_KEYS: tuple[str, ...] = ("score", "speed", "quality", "context", "size")
-"""What ``sort`` accepts. Each reorders rows the board already produced; none recomputes one."""
 
 BOARD_PARAMETERS: frozenset[str] = frozenset(
     {
@@ -370,7 +368,8 @@ def _sorted_rows(rows: Sequence[BoardRow], sort: str) -> list[BoardRow]:
 
     Args:
         rows: The ranked rows.
-        sort: One of :data:`SORT_KEYS`.
+        sort: One of :data:`SORT_KEYS`, with ``:asc`` or ``:desc`` after it to turn the
+            key's own direction round.
 
     Returns:
         The same rows in the asked-for order. ``rank`` is left alone on purpose: it is the
@@ -379,24 +378,12 @@ def _sorted_rows(rows: Sequence[BoardRow], sort: str) -> list[BoardRow]:
         nothing to sort on -- no placement, no speed -- goes last rather than first,
         whichever direction the key runs.
 
-    Nothing here is computed. Every value read is one the services already put on the row.
+    The order is :func:`llamafit.cli.render_board.sorted_rows`, the same function
+    ``recommend --sort`` and the terminal dashboard's ``s`` key call, so the three
+    interfaces cannot put a different row first for the same word.
     """
-    if sort == "score":
-        return list(rows)
-
-    def key(row: BoardRow) -> tuple[int, float]:
-        candidate = row.candidate
-        if sort == "speed":
-            value = candidate.speed.gen_tps if candidate.speed else None
-        elif sort == "quality":
-            value = candidate.quality.quality if candidate.quality else None
-        elif sort == "context":
-            value = float(candidate.placement.max_context_fit) if candidate.placement else None
-        else:  # size: the smallest download first, so its order is the one that ascends
-            return (1, 0.0) if row.download_bytes is None else (0, float(row.download_bytes))
-        return (1, 0.0) if value is None else (0, -float(value))
-
-    return sorted(rows, key=key)
+    key, descending = parse_sort(sort)
+    return sorted_rows(rows, key, descending)
 
 
 @dataclass(frozen=True)
@@ -455,12 +442,14 @@ def _check_prefer(value: str) -> str:
 
 
 def _check_sort(value: str) -> str:
-    """Return the sort key asked for, or refuse it and list the ones that exist."""
-    if value not in SORT_KEYS:
+    """Return the sort asked for, or refuse it and list the keys that exist."""
+    try:
+        parse_sort(value)
+    except ValueError as exc:
         raise ConfigError(
             _("invalid sort %(value)s") % {"value": repr(value)},
             hint=_("Valid values: %(values)s") % {"values": ", ".join(SORT_KEYS)},
-        )
+        ) from exc
     return value
 
 

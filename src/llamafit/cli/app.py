@@ -160,6 +160,15 @@ app = typer.Typer(
             "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
         ),
     ),
+    # The bare command is not a command, so nothing in the command list can describe it,
+    # and a stranger who reads help first never finds the dashboard without this line.
+    epilog=cast(
+        str,
+        lazy_gettext(
+            "With no command, llamafit opens the terminal dashboard; in a pipe, or with "
+            "--json, it prints what `llamafit recommend` would."
+        ),
+    ),
     no_args_is_help=False,
     add_completion=True,
     rich_markup_mode="rich",

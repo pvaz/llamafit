@@ -224,7 +224,7 @@ async def test_sorting_reorders_the_screen_and_leaves_the_ranking_alone() -> Non
         await pilot.press("s")
         after = column_of(app, "#")
         assert sorted(after) == sorted(before)
-        assert app.query_one("#board", BoardPane).sort == "speed"
+        assert app.query_one("#board", BoardPane).view.sort == "speed"
         assert "speed" in label(app, "#board-state")
 
 
@@ -233,14 +233,19 @@ async def test_the_fit_filter_cycles_and_the_state_line_says_which_one_is_on() -
     async with running() as pilot:
         app = pilot.app
         board = app.query_one("#board", BoardPane)
+        every = table_of(app).row_count
         await pilot.press("f")
-        assert board.fit == "runs"
-        assert table_of(app).row_count <= len(board.dashboard.rows)
+        assert board.view.filters.min_fit == "tight"
+        assert table_of(app).row_count <= every
         await pilot.press("f")
-        assert board.fit == "roomy"
-        from llamafit.tui.board_view import filter_label
+        assert board.view.filters.min_fit == "fits"
+        await pilot.press("f")
+        assert board.view.filters.min_fit == "comfortable"
+        from llamafit.cli.render_board import filter_label
 
-        assert filter_label("roomy") in label(app, "#board-state")
+        assert filter_label("comfortable") in label(app, "#board-state")
+        await pilot.press("f")
+        assert board.view.filters.min_fit is None
 
 
 @pytest.mark.asyncio
@@ -251,7 +256,9 @@ async def test_showing_only_what_is_on_disk_empties_the_table_and_says_why() -> 
         assert table_of(app).row_count == 0
         state = label(app, "#board-state")
         assert "0" in state
-        assert str(len(app.query_one("#board", BoardPane).dashboard.rows)) in state
+        board = app.query_one("#board", BoardPane).dashboard.board
+        assert board is not None
+        assert str(len(board.rows) + len(board.excluded)) in state
 
 
 @pytest.mark.asyncio
@@ -294,9 +301,15 @@ async def test_the_candidates_that_did_not_qualify_are_one_key_away_with_their_r
     async with running() as pilot:
         app = pilot.app
         await pilot.press("n")
+        await pilot.pause()
+        board = app.query_one("#board", BoardPane)
+        row = board.selected_row
+        # The cursor lands on the first unranked row, which is on the table with the
+        # ranked ones, and the pane under it says why that one did not qualify.
+        assert row is not None and row.rank is None
+        assert row.candidate.excluded_because
         text = pane_text(app, "#board-why-pane", width=200)
-        assert "Not ranked" in text
-        assert "llama-3.1-8b-instruct" in text or "Why not" in text
+        assert " ".join(row.candidate.excluded_because.split())[:40] in text
 
 
 # --- asking a different question ---------------------------------------------------------
@@ -528,3 +541,129 @@ async def test_the_theme_key_changes_the_theme() -> None:
         before = pilot.app.theme
         await pilot.press("t")
         assert pilot.app.theme != before
+
+
+# --- the keys that make the terminal as rich as the page ---------------------------------
+
+
+@pytest.mark.asyncio
+async def test_the_sort_can_be_walked_back_and_turned_round() -> None:
+    from llamafit.cli.render_board import SORT_KEYS
+
+    async with running() as pilot:
+        app = pilot.app
+        board = app.query_one("#board", BoardPane)
+        await pilot.press("S")
+        assert board.view.sort == SORT_KEYS[-1]
+        await pilot.press("s")
+        assert board.view.sort == "score"
+        largest_first = column_of(app, "#")[:3]
+        await pilot.press("o")
+        assert board.view.descending is False
+        assert "reverse" in label(app, "#board-state")
+        # The ranked rows now run smallest score first -- two rows with one score keep
+        # the ranking's order between them -- and the unranked ones, which have no score,
+        # stay after them whichever way the key runs.
+        ranked = [rank for rank in column_of(app, "#") if rank]
+        assert int(ranked[0]) > int(largest_first[0])
+        scores = [float(score) for score in column_of(app, "Score")[: len(ranked)]]
+        assert scores == sorted(scores)
+        assert all(not rank for rank in column_of(app, "#")[len(ranked) :])
+
+
+@pytest.mark.asyncio
+async def test_the_unranked_rows_are_on_the_table_dimmed_and_e_takes_them_off() -> None:
+    async with running() as pilot:
+        app = pilot.app
+        board = app.query_one("#board", BoardPane)
+        ranked = len(board.dashboard.rows)
+        assert table_of(app).row_count > ranked
+        # Every column filled: the score column carries the word for why, not a blank.
+        scores = column_of(app, "Score")
+        assert "too slow" in scores or "unsupported" in scores
+        await pilot.press("e")
+        assert table_of(app).row_count == ranked
+        await pilot.press("e")
+        assert table_of(app).row_count > ranked
+
+
+@pytest.mark.asyncio
+async def test_c_draws_every_column_and_the_table_scrolls_sideways() -> None:
+    from llamafit.cli.render_board import BOARD_ORDER
+
+    async with running(size=(80, 44)) as pilot:
+        app = pilot.app
+        narrow = len(headings(app))
+        await pilot.press("c")
+        assert len(headings(app)) == len(BOARD_ORDER)
+        table = table_of(app)
+        assert table.virtual_size.width > table.size.width
+        await pilot.press("c")
+        assert len(headings(app)) == narrow
+
+
+@pytest.mark.asyncio
+async def test_the_filter_box_takes_the_page_s_terms_and_names_them_on_the_state_line() -> None:
+    async with running() as pilot:
+        app = pilot.app
+        board = app.query_one("#board", BoardPane)
+        await pilot.press("slash")
+        box = app.query_one("#board-search", Input)
+        box.value = "speed>=20 fit>=fits"
+        await pilot.press("enter")
+        assert board.view.filters.min_speed == 20.0
+        assert board.view.filters.min_fit == "fits"
+        for row in board.shown:
+            speed = row.candidate.speed
+            assert speed is None or speed.gen_tps >= 20.0
+        state = label(app, "#board-state")
+        assert "20" in state and "fit" in state
+        # The keys and the box share one model: f moves on from the box's own verdict,
+        # and opening the box again shows what is in force.
+        await pilot.press("f")
+        assert board.view.filters.min_fit == "comfortable"
+        await pilot.press("slash")
+        assert "fit>=comfortable" in app.query_one("#board-search", Input).value
+        assert "speed>=20" in app.query_one("#board-search", Input).value
+
+
+@pytest.mark.asyncio
+async def test_a_term_the_box_cannot_read_is_refused_by_name_and_hides_nothing() -> None:
+    async with running() as pilot:
+        app = pilot.app
+        board = app.query_one("#board", BoardPane)
+        before = table_of(app).row_count
+        await pilot.press("slash")
+        app.query_one("#board-search", Input).value = "fit>=snug"
+        await pilot.press("enter")
+        assert "comfortable" in label(app, "#board-error")
+        assert table_of(app).row_count == before
+        assert not board.view.filters.active
+        # An empty box on Enter clears the filters a key set.
+        await pilot.press("escape")
+        app.query_one("#board-search", Input).value = ""
+        await pilot.press("enter")
+        assert label(app, "#board-error") == ""
+
+
+@pytest.mark.asyncio
+async def test_the_needs_form_takes_the_speed_floor_the_command_line_has() -> None:
+    async with running() as pilot:
+        app = pilot.app
+        needs = app.query_one("#needs", NeedsPane)
+        app.query_one("#needs-min-tps", Input).value = "12"
+        needs.action_apply()
+        await pilot.pause()
+        assert needs.dashboard.request.needs.min_tps == 12.0
+        app.query_one("#needs-min-tps", Input).value = "0"
+        needs.action_apply()
+        await pilot.pause()
+        assert needs.dashboard.request.needs.min_tps == 0.0
+        app.query_one("#needs-min-tps", Input).value = "fast"
+        needs.action_apply()
+        await pilot.pause()
+        assert "tokens per second" in label(app, "#needs-error")
+        assert needs.dashboard.request.needs.min_tps == 0.0
+        needs.action_reset()
+        await pilot.pause()
+        assert needs.dashboard.request.needs.min_tps is None

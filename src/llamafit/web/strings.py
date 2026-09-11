@@ -40,6 +40,8 @@ from typing import get_args
 
 from llamafit import __version__
 from llamafit.cli.render_board import (
+    BOARD_ORDER,
+    column_heading,
     component_label,
     confidence_label,
     confidence_sentence,
@@ -161,36 +163,24 @@ def column_headings() -> dict[str, str]:
     Returns:
         Heading text keyed by the column name the page asks for it under.
 
-    Every entry repeats a ``pgettext("column heading", ...)`` call that
-    :mod:`llamafit.cli.render_board` already makes, so both interfaces read one catalog
-    entry per heading and a column meaning the same thing is spelled the same way. That
-    is why ``Tok/s`` was renamed in three places at once rather than one: a reader who
-    could not find the tokens-per-second column behind ``Gen/s`` could not find it in the
-    terminal either.
+    The board's headings come from :func:`llamafit.cli.render_board.column_heading`, in
+    :data:`~llamafit.cli.render_board.BOARD_ORDER`, which is the page's own column order
+    -- so the terminal and the page read one catalog entry per heading and a column
+    meaning the same thing is spelled the same way. That is why ``Tok/s`` was once
+    renamed in three places at once rather than one: a reader who could not find the
+    tokens-per-second column behind ``Gen/s`` could not find it in the terminal either.
+    Now there is one place.
 
-    Every heading the terminal can draw is served, whether or not the board draws it
-    today. A heading is a word, and which words a table spends its width on is a decision
-    ``app.js`` makes -- the page's board keeps seven columns and puts the rest inside the
-    row -- while this table's job is only that the word exists and is the terminal's own.
+    Every heading the terminal can draw is served, ``have`` included, which the page
+    keeps inside the row rather than in a column: a heading is a word, and which words a
+    table spends its width on is ``app.js``'s decision, while this table's job is only
+    that the word exists and is the terminal's own.
     """
     return {
-        "rank": pgettext("column heading", "#"),
-        "model": pgettext("column heading", "Model"),
-        "quant": pgettext("column heading", "Quant"),
-        "score": pgettext("column heading", "Score"),
-        "gen": pgettext("column heading", "Tok/s"),
-        "confidence": pgettext("column heading", "How"),
-        "verdict": pgettext("column heading", "Fit"),
-        "mode": pgettext("column heading", "Runs"),
-        "context": pgettext("column heading", "Ctx"),
+        **{column: column_heading(column) for column in BOARD_ORDER},
         # The board is a table of many columns and abbreviates; the context ladder has
         # three and does not. Both spellings are the terminal's, in the same two places.
         "context_full": pgettext("column heading", "Context"),
-        "quality": pgettext("column heading", "Qual"),
-        "vram": pgettext("column heading", "Card"),
-        "prompt": pgettext("column heading", "Prompt tok/s"),
-        "size": pgettext("column heading", "Size"),
-        "ram": pgettext("column heading", "RAM"),
         "component": pgettext("column heading", "Component"),
         "where": pgettext("column heading", "Where"),
         "from": pgettext("column heading", "From"),

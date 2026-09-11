@@ -100,7 +100,15 @@ def open_dashboard(ctx: typer.Context) -> None:
     Args:
         ctx: The root command's context, which carries the global options and is what the
             fallback is invoked through.
+
+    ``--json`` asked for a document, and a full-screen application is not one however
+    interactive the terminal is: ``llamafit --json`` prints what ``recommend --json``
+    prints, with no remark on stderr, since a document was what was asked for and it
+    was what came.
     """
+    if ctx.obj.json_output:
+        fall_back_to_recommend(ctx)
+        return
     if interactive():
         run_dashboard(seeded_dashboard(ctx.obj))
         return

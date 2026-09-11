@@ -24,7 +24,7 @@ from __future__ import annotations
 from rich.console import Group, RenderableType
 from rich.text import Text
 
-from llamafit.cli.render_board import render_excluded, render_explanation, render_measurements
+from llamafit.cli.render_board import render_explanation, render_measurements, render_reasons
 from llamafit.i18n import _, isolate
 from llamafit.models.catalog import Catalog
 from llamafit.services.recommend import Board, BoardRow, recorded_measurements
@@ -80,15 +80,17 @@ def nothing_selected() -> RenderableType:
 
 
 def not_ranked(board: Board | None) -> RenderableType:
-    """The candidates that did not qualify, each with the reason and what to change.
+    """The candidates that did not qualify, grouped by the reason, each reason said once.
 
     A board with nothing on it is the case this matters most for: the answer to "why is
-    there nothing here" is the whole of this table, and a screen that showed an empty list
-    and stopped would be telling a reader less than the command line does.
+    there nothing here" is the whole of this list, and a screen that showed an empty
+    table and stopped would be telling a reader less than the command line does. The
+    rows themselves are on the table, dimmed, with every figure that was computed for
+    them; this is the command line's own paragraph under that table.
     """
     if board is None:
         return Text(_("Nothing has been ranked yet."))
-    table = render_excluded(board.excluded)
-    if table is None:
+    reasons = render_reasons(board)
+    if reasons is None:
         return Text(_("Every candidate in the catalog was ranked; none was excluded."))
-    return table
+    return reasons

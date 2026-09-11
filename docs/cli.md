@@ -330,23 +330,36 @@ the largest each one holds in the mode shown.
 | `--perfect` | Only configurations that score a perfect fit under section 11.3: at least half the machine's memory held in the model's own weights, and no pool past four fifths full. |
 | `--limit N` | Show at most this many rows. |
 | `--all-quants` | Show every quantisation instead of the best-fitting one per model. |
+| `--sort`, `--search`, `--installed`, `--runs`, `--columns`, `--wide`, `--hide-excluded` | The view flags `recommend` has, with the same meanings; `--sort` takes the keys a fit row has a figure for: `score` (the fit score, the listing's own order), `context`, `size`, `card`, `ram`, `fit`, `model`, `quant`. `--min-fit` is a request flag here, so there is no view filter of that name. |
+
+The listing has the board's shape: its columns are chosen the same way (`Runs`, `Ctx`, `Card`,
+`RAM`, `Size`, `Have`, admitted in that order after `#`, `Model`, `Quant` and `Fit`), the
+models with no placement are rows of the same table, dimmed, with `no room` or `no facts`
+where the verdict would be, and the reasons are under it once each.
 
 ```
 $ llamafit fit --limit 5
-                                        Fit on this machine
-┌───┬────────────────────────────┬────────────┬───────┬────────────────┬─────┬─────────┬──────────┐
-│ # │ Model                      │ Quant      │ Fit   │ Runs           │ Ctx │    Card │      RAM │
-├───┼────────────────────────────┼────────────┼───────┼────────────────┼─────┼─────────┼──────────┤
-│ 1 │ kimi-linear-48b-a3b-instru │ Q6_K       │ fits  │ split          │ 64K │ 4.7 GiB │ 64.2 GiB │
-│   │ ct                         │            │       │                │     │         │          │
-│ 2 │ mistral-small-4-119b       │ UD-Q2_K_XL │ fits  │ experts in RAM │ 49K │ 5.8 GiB │ 39.3 GiB │
-│ 3 │ qwen3.5-122b-a10b          │ UD-Q2_K_XL │ tight │ experts in RAM │ 57K │ 5.9 GiB │ 39.1 GiB │
-│ 4 │ llama-3.3-70b-instruct     │ Q4_K_M     │ tight │ split          │ 50K │ 6.0 GiB │ 48.9 GiB │
-│ 5 │ qwen3.8-27b                │ UD-Q6_K_XL │ fits  │ split          │ 79K │ 5.7 GiB │ 28.4 GiB │
-└───┴────────────────────────────┴────────────┴───────┴────────────────┴─────┴─────────┴──────────┘
+                                     Fit on this machine
+┌───┬──────────────────────────────┬────────────┬────────────────┬─────────┬──────────┬─────┐
+│ # │ Model                        │ Quant      │ Runs           │    Card │ Fit      │ Ctx │
+├───┼──────────────────────────────┼────────────┼────────────────┼─────────┼──────────┼─────┤
+│ 1 │ gpt-oss-120b                 │ UD-Q4_K_XL │ experts in RAM │ 5.9 GiB │ fits     │ 44K │
+│ 2 │ mistral-small-4-119b         │ UD-Q2_K_XL │ experts in RAM │ 5.8 GiB │ fits     │ 54K │
+│ 3 │ kimi-linear-48b-a3b-instruct │ Q6_K       │ split          │ 4.7 GiB │ fits     │ 72K │
+│ 4 │ nemotron-3-super-120b-a12b   │ UD-Q4_K_XL │ split          │ 6.1 GiB │ fits     │ 74K │
+│ 5 │ qwen3.6-35b-a3b              │ UD-Q6_K_XL │ experts in RAM │ 6.0 GiB │ fits     │ 61K │
+│   │ command-a-plus-05-2026       │ Q4_K_M     │ nowhere        │       – │ no room  │   – │
+│   │ deepseek-v4-flash-0731       │ UD-Q4_K_XL │ nowhere        │       – │ no room  │   – │
+└───┴──────────────────────────────┴────────────┴────────────────┴─────────┴──────────┴─────┘
 Sized for 32K tokens. The context column is the largest each one holds in the mode shown.
-Showing the best 5 of 55 that qualified; --limit sets how many, and the rest are neither
+Showing the best 5 of 54 that qualified; --limit sets how many, and the rest are neither
 worse-behaved nor hidden, only further down.
+Computed with 100.0 GiB of 128.0 GiB system memory free and 7.5 GiB of 8.0 GiB free on the NVIDIA
+GeForce RTX 4060.
+
+Not placed
+no room (11): no placement of it fits this machine at any context.
+  command-a-plus-05-2026 Q4_K_M, deepseek-v4-flash-0731 UD-Q4_K_XL, deepseek-v4-pro-0813
 ```
 
 That second caption is the point of `--limit`: a cut list says so and says how much it cut,
@@ -375,49 +388,103 @@ the command the program exists for, and it scans the machine to answer.
 | `--no-vision` | Plan without a vision projector, freeing its memory for context. |
 | `--explain` | Expand every row shown into the four scores, the weights, the quality it was built from, the memory budget line by line, the context ladder, where a token's time goes and where a prompt token's goes. Combine with `--limit 1` for one model. |
 
+The flags above change what is *ranked*, and the board says so: a candidate they exclude is
+listed with the reason. The flags below change only what is *drawn*. The ranking, the count
+that qualified and the `--json` document are untouched by any of them but `--sort`, which
+reorders the document's rows and leaves every `rank` where the scorer put it, exactly as the
+web API's `sort=` does. Whenever one of them is in force the board says so in a line under
+the table, in the terminal dashboard's own words: `2 of 71 shown, by speed, showing the ones
+that run, matching qwen.`
+
+| Option | Effect |
+|---|---|
+| `--sort KEY[:asc\|:desc]` | Order the rows drawn by `score` (the default), `speed`, `quality`, `context`, `size`, `prompt`, `card`, `ram`, `fit`, `model` or `quant`. A figure comes largest first and a verdict best first; a word comes A to Z; `:asc` or `:desc` turns that round. A row with nothing to order by goes last either way. The `#` column keeps the ranking. |
+| `--min-fit comfortable\|fits\|tight` | Draw only rows at or above this verdict. The same name as `fit`'s flag, but here a view filter: the rows hidden are still counted as qualified. |
+| `--search TEXT` | Draw only rows whose id, name or quantisation contains the text. |
+| `--installed` | Draw only rows whose file is already on this machine — the `Have` column's `yes`. |
+| `--runs gpu\|moe-offload\|hybrid\|cpu` | Draw only rows that run in this mode. |
+| `--columns LIST` | Draw exactly these columns, comma-separated, in this order, named as `--json` names them: `rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context`. |
+| `--wide` | Draw every column whatever the width of the terminal; a cell that does not fit folds. `COLUMNS=200 llamafit recommend` is the other way to get a wide board. |
+| `--hide-excluded` | Leave the candidates that were not ranked off the table. The reasons under it stay. |
+
+There are no `--min-speed`, `--max-size` or `--max-card` flags, though the web page has a box
+for each under its headings. `--min-tps` excludes and says so; a `--min-speed` that merely hid
+would sit one line under it and differ in a word, and a reader who picked the wrong one would
+get a board whose caption disagreed with its rows for a reason nothing named. The page needed
+boxes because a pointer cannot type a flag; a terminal has `--sort`, `--limit` and `--json`,
+and the terminal dashboard's `/` box takes the same terms the page's boxes do.
+
 ```
 $ llamafit recommend --use-case coding --limit 3
-                                      Recommended
-┌───┬─────────────────────┬────────────┬───────┬───────┬───────┬────────────────┬─────┐
-│ # │ Model               │ Quant      │ Score │ Tok/s │ Fit   │ Runs           │ Ctx │
-├───┼─────────────────────┼────────────┼───────┼───────┼───────┼────────────────┼─────┤
-│ 1 │ qwen3-coder-next    │ UD-Q4_K_XL │  87.5 │  22.5 │ tight │ experts in RAM │ 40K │
-│ 2 │ north-mini-code-1.0 │ UD-Q4_K_XL │  84.6 │  21.0 │ tight │ experts in RAM │ 34K │
-│ 3 │ qwen3.6-35b-a3b     │ UD-Q6_K_XL │  83.7 │  23.7 │ tight │ experts in RAM │ 38K │
-└───┴─────────────────────┴────────────┴───────┴───────┴───────┴────────────────┴─────┘
+                                           Recommended
+┌───┬──────────────────────────────┬────────────┬─────────────┬───────┬────────────────┬─────────┐
+│ # │ Model                        │ Quant      │       Score │ Tok/s │ Runs           │ Fit     │
+├───┼──────────────────────────────┼────────────┼─────────────┼───────┼────────────────┼─────────┤
+│ 1 │ qwen3-coder-next             │ UD-Q4_K_XL │        89.6 │  23.9 │ experts in RAM │ tight   │
+│ 2 │ qwen3.6-35b-a3b              │ UD-Q6_K_XL │        88.3 │  24.4 │ experts in RAM │ fits    │
+│ 3 │ north-mini-code-1.0          │ UD-Q4_K_XL │        83.7 │  22.7 │ experts in RAM │ tight   │
+│   │ command-a-plus-05-2026       │ Q4_K_M     │ unsupported │     – │ nowhere        │ no room │
+│   │ deepseek-v4-flash-0731       │ UD-IQ2_XXS │    too slow │   4.6 │ split          │ tight   │
+│   │ deepseek-v4-pro-0813         │ UD-Q4_K_XL │ unsupported │     – │ nowhere        │ no room │
+│   │ deepseek-r1-0528-qwen3-8b    │ Q8_0       │    too slow │   6.0 │ split          │ tight   │
+└───┴──────────────────────────────┴────────────┴─────────────┴───────┴────────────────┴─────────┘
 Speeds are for 8K tokens of context so every row compares like with like; the context column is the
 largest each one holds. Sized and scored for coding at 32K tokens.
+Computed with 100.0 GiB of 128.0 GiB system memory free and 7.5 GiB of 8.0 GiB free on the NVIDIA
+GeForce RTX 4060.
+Every speed above is derived from 57.0 GB/s (measured) of memory bandwidth.
 Showing the best 3 of 27 that qualified; --limit sets how many, and the rest are neither
 worse-behaved nor hidden, only further down.
 Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this
 machine yet, so no figure here is a measurement.
 Weights: quality 0.40, speed 0.20, fit 0.20, context 0.20.
 
-                                            Not ranked
-┌────────────────────────────────────┬────────────┬───────────────────────────────────────────────┐
-│ Model                              │ Quant      │ Why not                                       │
-├────────────────────────────────────┼────────────┼───────────────────────────────────────────────┤
-│ command-a-plus-05-2026             │ Q4_K_M     │ no run mode supports this model on this       │
-│                                    │            │ machine                                       │
-│ deepseek-v4-flash-0731             │ UD-IQ2_XXS │ generates 4.2 tokens per second, below the 6  │
-│                                    │            │ a person reads at: a batch tool on this       │
-│                                    │            │ machine and not one to sit in front of; a     │
-│                                    │            │ smaller model or quantisation would keep up   │
+Not ranked
+too slow (19): generates fewer than the 6 tokens per second a person reads at: a batch tool on this
+machine and not one to sit in front of; a smaller model or quantisation would keep up.
+  deepseek-v4-flash-0731 UD-IQ2_XXS (4.6 tok/s), deepseek-r1-0528-qwen3-8b Q8_0 (6.0 tok/s),
+  devstral-small-2-24b-instruct Q4_K_M (2.9 tok/s), gemma-3-12b-it Q4_K_M (4.6 tok/s),
+  gemma-4-31b-it UD-Q3_K_XL (1.3 tok/s), gemma-4-26b-a4b-it UD-Q3_K_XL (3.8 tok/s), gemma-4-12b-it
 ```
 
-The **Not ranked** table is cut off above; the real one runs to a row for every candidate the
-request excluded, and `--limit` never touches it.
+The list is cut off above; the real one runs to a row for every candidate in the catalog,
+and `--limit` cuts only the ranked rows at the top of it.
 
-Which columns appear depends on the width of the terminal. The rank, model, quantisation and
-score are never dropped; the rest are added in the order `Tok/s`, `How` (only when the rows
-disagree about how their speeds were arrived at), `Fit`, `Runs`, `Ctx`, `Qual`, `Card`,
-`Prompt tok/s`, `Size`, `RAM`, each only while its whole content fits. A column that cannot
-fit is dropped rather than shrunk.
+Which columns appear depends on the width of the terminal, and on nothing else: not on
+`--limit`, not on which models happen to rank. The rank, model, quantisation and score are
+never dropped; the rest are admitted in the order `Tok/s`, `Fit`, `Runs`, `Ctx`, `Qual`,
+`Card`, `Size`, `Have`, `How`, `Prompt tok/s`, `RAM`, each only while its whole content fits
+(`How` is admitted together with `Tok/s`, or not at all, when the rows disagree about how
+their speeds were arrived at). A column that cannot fit is dropped rather than shrunk, and a
+column that is admitted is drawn in the place the web page gives it — `Size` between `Quant`
+and `Score`, `Fit` and `Ctx` last — so a figure lives in the same place at every width. The
+model column is measured from the longest id in the catalog and capped at 28 cells, where a
+longer name folds onto a second line; below about 68 columns it folds harder rather than
+anything being cut. The terminal dashboard chooses with the same function, so it and the
+command line draw the same columns at the same width. On this catalog, in English:
 
-**No row is ever dropped for failing.** A candidate the request excludes appears under **Not
-ranked** with the reason: the capability the job needs and it lacks, a capability the request
-named itself, the licence it carries, the download it exceeds, or the memory it needs. A
-shorter list would say none of that.
+| Width | Columns |
+|---|---|
+| 80 | `# Model Quant Score Tok/s Fit` |
+| 100 | + `Runs` |
+| 120 | + `Qual Ctx` |
+| 140 | + `Size Card` |
+| 160 | + `Have How` |
+| 182 and up | + `Prompt tok/s RAM`, all fifteen |
+
+A translated label is wider than its English — `experts in RAM` is fourteen cells and its
+Portuguese is longer — and the budget is measured from the labels in force, so a Portuguese
+board admits the next column a little later rather than overflowing.
+
+**No row is ever dropped for failing.** A candidate the request excludes is a row of the same
+list, dimmed, below the ranked ones, with every column filled with whatever was computed for
+it — a model excluded for running at four tokens a second was placed, sized and estimated
+first, and those figures are what tell a reader whether a smaller quantisation would rescue it
+— and the word for the reason where its score would be: `too slow`, `no room`, `unsupported`,
+`no coding`, `too big`, `short context`, `unknown quant`, `no estimate`. The sentence goes
+under the table, once per reason, with the ids and their failing figures after it, rather
+than once per row: on the reference machine the old **Not ranked** table said the same forty
+words twenty-six times. `--explain` still prints the whole sentence under an expanded row.
 
 **A model is filtered on what it can do, never on what it is offered for.** `use_cases` is the
 curator's emphasis and sets the primary-use-case bonus; `capabilities` is what the weights can
