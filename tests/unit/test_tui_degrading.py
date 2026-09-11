@@ -44,6 +44,32 @@ def label(app: LlamaFitApp, selector: str) -> str:
     return str(app.query_one(selector, Static).render())
 
 
+def painted_column(app: LlamaFitApp, column: board_view.Column) -> list[str]:
+    """What one column of the board says on the screen, a folded cell rejoined.
+
+    ``DataTable.get_row_at`` gives back the value the table was handed, which is the same
+    answer whether that value was drawn whole, folded onto a second line or cut off where
+    the column ends. Only the screen knows which of the three happened, so this reads the
+    cells back out of the drawn lines: the column's slice of every line the row occupies,
+    concatenated. A model id carries no spaces, so stripping each fragment and joining
+    them recovers exactly the identifier that was folded and nothing else.
+    """
+    table = app.query_one("#board-table", DataTable)
+    columns = list(table.ordered_columns)
+    index = [str(one.label) for one in columns].index(board_view.heading(column))
+    start = sum(one.get_render_width(table) for one in columns[:index])
+    stop = start + columns[index].get_render_width(table)
+    lines = [table.render_line(y).text for y in range(table.size.height)]
+    cells: list[str] = []
+    top = table.header_height
+    for key in table.rows:
+        height = table.rows[key].height
+        assert top + height <= len(lines), "the terminal is too short to read every row back"
+        cells.append("".join(lines[top + line][start:stop].strip() for line in range(height)))
+        top += height
+    return cells
+
+
 # --- nothing to recommend ----------------------------------------------------------------
 
 
@@ -159,14 +185,18 @@ async def test_at_eighty_columns_every_row_can_still_be_identified_and_acted_on(
 
 @pytest.mark.asyncio
 async def test_a_model_name_is_never_the_thing_that_gets_shortened() -> None:
+    # Eighty cells is the width the column priority is designed for and the one where
+    # several bundled ids are wider than the column they land in; a hundred and twenty
+    # lines so that every row is painted rather than scrolled past, because a row the
+    # table never drew is a row this test would pass without having read.
     app = LlamaFitApp(ready())
-    async with app.run_test(size=(80, 24)):
-        table = app.query_one("#board-table", DataTable)
-        headings = [str(column.label) for column in table.columns.values()]
-        index = headings.index(board_view.heading("model"))
+    async with app.run_test(size=(80, 120)) as pilot:
+        await pilot.pause()
         board = app.query_one("#board", BoardPane)
-        for position in range(table.row_count):
-            assert str(table.get_row_at(position)[index]) == board.shown[position].model_id
+        assert any(len(row.model_id) > board_view.WIDTHS["model"] for row in board.shown), (
+            "nothing on this board is long enough for the test to be about anything"
+        )
+        assert painted_column(app, "model") == [row.model_id for row in board.shown]
 
 
 @pytest.mark.asyncio

@@ -158,7 +158,15 @@ class BoardPane(Vertical):
         for column in self.columns:
             table.add_column(board_view.heading(column), width=board_view.WIDTHS[column])
         for row in self.shown:
-            table.add_row(*[board_view.cell(row, column) for column in self.columns])
+            # ``height=None`` is Textual's auto-height, and it is the whole of how this
+            # table keeps its promise never to truncate a model's name. A row of a fixed
+            # height is drawn with wrapping turned off, so a cell wider than its column is
+            # cut where the column ends with nothing on the screen to say it was, and
+            # ``nemotron-3.5-lightning-30b-a3b`` arrives as ``nemotron-3.5-lightning-3``,
+            # which is not that model or any other. Auto-height folds the cell onto a
+            # second line instead, the way the command line's board already folds it, and
+            # a row grows only when something in it actually needed the room.
+            table.add_row(*[board_view.cell(row, column) for column in self.columns], height=None)
         self.query_one("#board-state", Static).update(
             board_view.state_line(
                 len(self.shown),
