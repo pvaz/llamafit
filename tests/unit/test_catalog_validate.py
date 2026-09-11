@@ -36,6 +36,8 @@ def facts_for(context_length: int | None, quant: str = "Q4_K_M") -> dict[str, ob
                         "arch": "llama",
                         "n_layer": 16,
                         "context_length": context_length,
+                        "bytes_dense_block_weights": 699_000_000,
+                        "bytes_total": 699_000_000,
                     },
                 }
             }
@@ -96,3 +98,33 @@ def test_a_measured_context_is_never_compared_with_the_curated_one(tmp_path: Pat
     write_facts(tmp_path, facts_for(8192))
 
     assert validate_files([path]) == []
+
+
+def test_facts_whose_tensors_do_not_account_for_the_files_are_reported(tmp_path: Path) -> None:
+    # `catalog validate` said "no problems" over a tree whose gpt-oss facts summed a 63 GB
+    # file to 2.4 GB. The loader now refuses such facts, and validate is where it shows.
+    path = write(tmp_path, "tiny.yaml", ENTRY)
+    write_facts(
+        tmp_path,
+        {
+            "tiny-1b": {
+                "quants": {
+                    "Q4_K_M": {
+                        "files": ["tiny-1b-Q4_K_M.gguf"],
+                        "bytes": 700_000_000,
+                        "gguf_facts": {
+                            "arch": "llama",
+                            "bytes_expert_weights": 3,
+                            "bytes_total": 3,
+                        },
+                    }
+                }
+            }
+        },
+    )
+
+    problems = validate_files([path])
+
+    assert [p.location for p in problems] == ["quants.Q4_K_M.gguf_facts"]
+    assert problems[0].model_id == "tiny-1b"
+    assert "3 bytes" in problems[0].message and "700,000,000" in problems[0].message

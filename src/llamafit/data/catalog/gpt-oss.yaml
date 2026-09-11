@@ -67,10 +67,11 @@
       # and a smaller one would only lose accuracy the model was never measured at. Prefer
       # it over anything in the second source when the llama.cpp build supports it.
       #
-      # Note for whoever owns the ranking: LlamaFit cannot currently price MXFP4 — it is
-      # not in the quantisation penalty table — so a board drops this candidate as an
-      # unknown quantisation rather than scoring it. That is why the second source below
-      # exists at all, and it is a gap in the scorer, not in this entry.
+      # Note for whoever owns the ranking: the penalty table prices MXFP4 as a four-bit
+      # quant, four points, because that is all a name can say. For this model the file
+      # is the original, so the K-quant conversions below, charged three and zero points
+      # for wider attention weights around the same MXFP4 experts, outrank it on paper.
+      # Read that ordering as the table's limit, not as advice.
       quants:
         - { name: MXFP4 }
       extras:
@@ -137,8 +138,8 @@
     - repo: ggml-org/gpt-oss-120b-GGUF
       kind: gguf
       trust: official
-      # As for the 20B: MXFP4 is the native precision and the one to prefer, and it is
-      # also the one LlamaFit cannot yet price.
+      # As for the 20B: MXFP4 is the native precision and the one to prefer; the penalty
+      # table charges it four points as a four-bit quant, which the note above explains.
       quants:
         - { name: MXFP4 }
       extras:

@@ -40,6 +40,7 @@ from pydantic import ValidationError
 
 from llamafit.data import packaged_dir
 from llamafit.errors import CatalogError
+from llamafit.gguf.facts import accounts_for_file
 from llamafit.i18n import _, ngettext
 from llamafit.models.catalog import (
     MAX_BPW,
@@ -477,7 +478,12 @@ def _apply_quant_facts(
     bits-per-weight figure no real quant could have are refused here exactly as
     :class:`~llamafit.models.catalog.Quant` refuses them in a curated entry. The
     checksums are dropped, and reported, when they cannot be paired with the files
-    one to one, since then nobody can say which checksum covers which file.
+    one to one, since then nobody can say which checksum covers which file. The GGUF
+    facts are dropped, and reported, when their tensors do not account for the files'
+    own size (see :func:`~llamafit.gguf.facts.accounts_for_file`): those are facts
+    about some other file, and a budget built on them would be wrong by the difference.
+    The planner then has no facts for the quant and says so, which is the honest answer
+    until a refresh reads the file again.
 
     Returns:
         One :class:`Problem` per malformed field; empty when everything applied.
@@ -549,6 +555,26 @@ def _apply_quant_facts(
             )
     elif gguf_facts is not None:
         problems.append(problem("gguf_facts", gguf_facts, "an object"))
+
+    if (
+        quant.gguf_facts is not None
+        and quant.bytes_ is not None
+        and not accounts_for_file(quant.gguf_facts, quant.bytes_)
+    ):
+        problems.append(
+            Problem(
+                file=str(facts_path),
+                model_id=model_id,
+                location=f"quants.{quant_name}.gguf_facts",
+                message=(
+                    f"the facts file's GGUF facts for quant {quant_name!r} sum its tensors "
+                    f"to {quant.gguf_facts.bytes_total:,} bytes, but its files hold "
+                    f"{quant.bytes_:,}; a tensor was sized wrong, and a memory budget built "
+                    f"on these facts would be wrong by the difference; {_REWRITE_HINT}"
+                ),
+            )
+        )
+        quant.gguf_facts = None
 
     if quant.files and quant.sha256 and len(quant.files) != len(quant.sha256):
         problems.append(
