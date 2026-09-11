@@ -36,10 +36,16 @@
 # because a third of the layers hold no cache at all, which is part of why this model is
 # cheaper to run than its parameter count suggests. Teaching the reader to sum an array-valued
 # head count is what would make this model rankable; it is a code change, not a catalog one.
+#
+# release_date is the creation date of NVIDIA's Hugging Face repository, the fallback
+# docs/catalog.md names: nothing this file cites dates the release, so the repository's own
+# creation date stands in for it.
 - id: llama-3.3-nemotron-super-49b-v1.5
   name: Llama 3.3 Nemotron Super 49B v1.5
   vendor: NVIDIA
-  family: llama-nemotron
+  # NVIDIA ships a Nemotron of more than one Llama generation, so the generation is part of
+  # the family: this is the Llama 3.3 one.
+  family: llama3.3-nemotron
   release_date: 2025-07-25
   license:
     spdx: llama3.3

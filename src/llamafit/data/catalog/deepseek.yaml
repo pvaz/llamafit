@@ -20,7 +20,7 @@
 - id: deepseek-v4-flash-0731
   name: DeepSeek-V4-Flash-0731
   vendor: DeepSeek
-  family: deepseek
+  family: deepseek-v4
   release_date: 2026-07-31
   license:
     spdx: MIT
@@ -86,7 +86,7 @@
 - id: deepseek-v4-pro-0813
   name: DeepSeek-V4-Pro-0813
   vendor: DeepSeek
-  family: deepseek
+  family: deepseek-v4
   release_date: 2026-08-13
   license:
     spdx: MIT
@@ -138,7 +138,10 @@
 - id: deepseek-r1-0528-qwen3-8b
   name: DeepSeek-R1-0528-Qwen3-8B
   vendor: DeepSeek
-  family: deepseek
+  # R1, not V4: a different generation of a different line, and the two above are `deepseek-v4`
+  # for that reason. The Qwen3 body it was distilled onto is recorded in `gguf_arch` below —
+  # `family` is who trained the model, `architecture.gguf_arch` is what llama.cpp loads.
+  family: deepseek-r1
   release_date: 2025-05-29
   license:
     spdx: MIT
@@ -159,7 +162,15 @@
   capabilities: [coding, thinking]
   use_cases: [reasoning, general, chat, coding]
   quality:
-    baseline: 62
+    # Re-derived against its neighbours rather than in isolation. Its four cited scores sit one
+    # to six points below ministral-3-8b-reasoning's (72) on three benchmarks and level with it
+    # on the fourth, and a little below phi-4-reasoning-plus's (72); it is clearly under
+    # gpt-oss-20b (70, GPQA 71.5) on knowledge and over nemotron-3-nano-4b (58, GPQA 53.2) on
+    # everything. 70 is where that lands: a solid previous generation, which a May 2025
+    # distillation still posting AIME 2024 86.0 is. It was 62, which put ten points between two
+    # 8B reasoning models whose published numbers are within six of each other — a gap the
+    # evidence never supported, and the comparison a reader is most likely to make.
+    baseline: 70
     benchmarks:
       # From the model card's second table, the one headed with this model's own name.
       # The card's first table is DeepSeek-R1-0528 itself (AIME 2024 91.4, GPQA-Diamond

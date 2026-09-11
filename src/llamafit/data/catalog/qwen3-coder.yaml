@@ -4,10 +4,14 @@
 #   - Technical report: https://github.com/QwenLM/Qwen3-Coder/blob/main/qwen3_coder_next_tech_report.pdf
 #   - GGUF repository: https://huggingface.co/unsloth/Qwen3-Coder-Next-GGUF
 #   - Measured block: docs/calibration/2026-09-09-reference-machine.md (this repository)
+#
+# release_date is Qwen's own, not the repository's creation date, which was 30 January 2026.
 - id: qwen3-coder-next
   name: Qwen3-Coder-Next
   vendor: Alibaba Qwen
-  family: qwen3
+  # Qwen3-Coder is a line of its own, not a size of Qwen3: a different `gguf_arch`, a different
+  # release, and the only entry in the catalog whose use case is coding and nothing else.
+  family: qwen3-coder
   release_date: 2026-02-03
   license:
     spdx: Apache-2.0

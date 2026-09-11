@@ -7,6 +7,15 @@
 #   - qwen3.8-flash-next model card: https://huggingface.co/Qwen/Qwen3.8-Flash-Next
 #   - qwen3.8-flash-next GGUF repository: https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF
 #   - Measured block: docs/calibration/2026-09-09-reference-machine.md (this repository)
+#
+# Release dates are Qwen's own announcement dates, not the repositories' creation dates:
+# Qwen/Qwen3-0.6B was created on 27 April 2025 and Qwen/Qwen3.8-Flash-Next on 24 August 2026,
+# each a few days before Qwen announced it.
+#
+# TWO GENERATIONS IN ONE FILE. qwen3-0.6b is `family: qwen3` and qwen3.8-flash-next is
+# `family: qwen3.8`, alongside qwen3.8-27b in qwen3.8.yaml. The two entries here were added
+# together and share a calibration record, which is why they share a file; `family` follows
+# the generation the vendor shipped, not the file an entry happens to sit in.
 - id: qwen3-0.6b
   name: Qwen3-0.6B
   vendor: Alibaba Qwen
@@ -24,7 +33,11 @@
       the Qwen3 family; kept in the catalog as a fast, low-memory smoke test.
   context: { native: 32768 }
   capabilities: [coding, tools, multilingual]
-  use_cases: [general, coding]
+  # `chat` belongs here for the same reason it belongs on qwen3.8-flash-next below: this is an
+  # ordinary instruction-tuned chat model, nothing in its card scopes it away from a
+  # conversation, and leaving the job off hid it from `llamafit list --use-case chat` for no
+  # reason a reader could find. It is last because the baseline was not set against it.
+  use_cases: [general, coding, chat]
   quality:
     baseline: 35
     benchmarks:
@@ -72,7 +85,7 @@
 - id: qwen3.8-flash-next
   name: Qwen3.8-Flash-Next
   vendor: Alibaba Qwen
-  family: qwen3
+  family: qwen3.8
   release_date: 2026-08-27
   license:
     spdx: qwen-community-1.0
