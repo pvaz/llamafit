@@ -587,5 +587,39 @@ the changelog says so when they do.
   names it, so a model built for the task still outranks one that merely can do it, and
   `llamafit list --use-case` still browses on the whole list.
 
+- **`--ram` and `--memory` below what this machine is using produced a machine with nothing
+  free on it.** The overrides kept the absolute bytes this machine had in use and subtracted
+  them from the pool the flag named, so `--ram 16GiB` on a 128 GiB machine with 28 GiB in use
+  computed 16 minus 28 and clamped to zero: `16.0 GiB total, 0 B available`, every board
+  empty, including for a four-billion-parameter model that would have sat entirely on the
+  card. It survived because the obvious thing to test is a bigger machine, where the old rule
+  was right. A size names a machine now — `--ram 16GiB` is a 16 GiB machine, not this one with
+  the difference taken off the top — and one rule, `_carried_load`, serves both pools: the
+  same load on a pool the same size or larger, because a bigger card does not empty itself,
+  and the same *share* of a smaller one, because this machine's open applications could never
+  have fitted on it. A flag naming the size the machine already has moves nothing, byte for
+  byte, in either direction.
+- **The red `SIMULATED` line was drawn inside the board's table, so a board that ranked
+  nothing carried no warning at all** — an empty answer about somebody else's machine, which
+  is the answer most in need of one, because there is no figure in it to be suspicious of.
+  The line is a property of the answer now rather than of one renderer: `simulated_answer` in
+  `cli/render.py` is the single place it is attached, `recommend` and `fit` render their own
+  "nothing was ranked" sentence through it instead of the command choosing between a renderer
+  and a bare print, and `preset` and `launch` — which write launch scripts to disk sized for
+  the substituted machine — print it too, where they printed nothing before.
+- **The board did not say which machine produced it, and two of its inputs move on their
+  own.** Seven runs in forty minutes moved the top row between two quantisations, the speed
+  between 21 and 29 tokens per second and the ranked count between 30 and 38, with nothing in
+  the output admitting anything had changed. `recommend` and `fit` now carry `MachineFacts` —
+  what was free in both pools, and the RAM bandwidth with its source — on the board and in
+  `--json`, so two answers can be told apart by reading them. And the bandwidth itself has
+  stopped wandering: it is measured as the best of five short windows rather than one
+  (contention can only make a reading low, never high, so the maximum of several walks
+  towards the machine while the mean walks towards its load), and then kept in the platform's
+  cache directory under a key naming the processor, the pool and the modules' type, speed and
+  channel count. A figure read back says so — `bandwidth_cached`, *cached* in the table — and
+  `llamafit system --refresh-bandwidth` times it again. Free memory is left to move, because
+  reading it is the point of reading it; what that needed was the board saying what it used.
+
 [Unreleased]: https://github.com/pvaz/llamafit/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/pvaz/llamafit/releases/tag/v0.1.0

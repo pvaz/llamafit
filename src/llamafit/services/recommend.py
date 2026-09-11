@@ -30,6 +30,13 @@ exists while the two are different numbers.
 **Every candidate is compared at the same context.** Section 10.1 fixes the board's
 working context at 8K tokens so the speed column compares like with like; ``plan`` is
 where a user's own context is estimated for.
+
+**The board says which machine produced it.** Two of its inputs move on their own -- what
+was free when the question was asked, and the memory bandwidth every speed is divided by
+-- so a board that did not record them was a document two copies of which could disagree
+with nothing in either to say why. :class:`~llamafit.models.host.MachineFacts` goes on the
+board and into ``--json`` beside the simulation mark, for the same reason and under the
+same rule: an answer has to say what it is an answer about.
 """
 
 from __future__ import annotations
@@ -44,7 +51,7 @@ from llamafit.constants import DEFAULT_REQUESTED_CONTEXT, DEFAULT_WORKING_CONTEX
 from llamafit.errors import LlamaFitError
 from llamafit.i18n import _
 from llamafit.models.catalog import Catalog, CatalogModel, Measured, Quant
-from llamafit.models.host import Host, Simulation
+from llamafit.models.host import Host, MachineFacts, Simulation, machine_facts
 from llamafit.models.llamacpp import LocalModel
 from llamafit.models.plan import (
     Candidate,
@@ -137,6 +144,10 @@ class Board(BaseModel):
             reading ``recommend --json`` could not tell a CPU-only answer for a machine
             with no card from a CPU-only answer for a machine whose card nothing could
             read. Empty on every machine where the question does not arise.
+        machine: The figures the ranking rests on -- what was free, and how fast the
+            memory measured. Two runs minutes apart can order this board differently and
+            report different speeds; this is what lets a reader holding both work out
+            which of them was about which machine, without having to have been there.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -151,6 +162,7 @@ class Board(BaseModel):
     excluded: list[BoardRow] = Field(default_factory=list)
     simulation: Simulation | None = None
     unsized_gpus: list[str] = Field(default_factory=list)
+    machine: MachineFacts | None = None
 
     @computed_field  # type: ignore[prop-decorator]
     @property
@@ -212,6 +224,7 @@ class FitBoard(BaseModel):
             ``None`` when they were computed on the machine the reader is sitting at.
         unsized_gpus: Names of the cards that were on the machine and could not be sized,
             so every row was planned as if they were not there. See :class:`Board`.
+        machine: The figures the ranking rests on, for the reason :class:`Board` gives.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -222,6 +235,7 @@ class FitBoard(BaseModel):
     excluded: list[FitRow] = Field(default_factory=list)
     simulation: Simulation | None = None
     unsized_gpus: list[str] = Field(default_factory=list)
+    machine: MachineFacts | None = None
 
     @computed_field  # type: ignore[prop-decorator]
     @property
@@ -501,6 +515,7 @@ def build_board(
         excluded=excluded,
         simulation=host.simulation,
         unsized_gpus=[gpu.name for gpu in host.unsized_gpus],
+        machine=machine_facts(host),
     )
 
 
@@ -581,6 +596,7 @@ def build_fit_board(
         excluded=excluded,
         simulation=host.simulation,
         unsized_gpus=[gpu.name for gpu in host.unsized_gpus],
+        machine=machine_facts(host),
     )
 
 

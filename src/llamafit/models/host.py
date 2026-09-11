@@ -66,6 +66,14 @@ class Memory(BaseModel):
     """
     bandwidth_gbps: float | None = None
     bandwidth_source: Source = "unknown"
+    bandwidth_cached: bool = False
+    """Whether the figure was read back from an earlier run rather than timed on this one.
+
+    Beside ``bandwidth_source`` rather than folded into it: the source says *how* the
+    number was arrived at and stays ``measured`` when it was measured, because a
+    measurement filed away last week is still a measurement. This says *when*, which is
+    the other half a reader needs before deciding to go and take it again.
+    """
 
 
 class Gpu(BaseModel):
@@ -192,3 +200,54 @@ class Host(BaseModel):
         if self.unified_memory or (self.vram_available_bytes or 0) > 0:
             return []
         return [gpu for gpu in self.gpus if gpu.vram_free_bytes is None]
+
+
+class MachineFacts(BaseModel):
+    """The handful of figures an answer actually rests on, carried with the answer.
+
+    A board is not a host and has no business carrying one: a reader wants the models, and
+    a hundred fields of processor flags and disk paths under every ranking would bury
+    them. But two runs of the same command on the same machine minutes apart can order the
+    board differently, name a different quantisation first and report a different speed,
+    and until this existed neither the table nor its ``--json`` said a word about why. The
+    reasons are all here: what was free when the question was asked, and how fast the
+    memory turned out to be when it was timed.
+
+    Free memory is *supposed* to move -- reading it is the point -- so this is not an
+    attempt to stop it. It is the record that lets somebody holding two answers work out
+    which machine each of them was about.
+    """
+
+    scanned_at: datetime
+    ram_total_bytes: int
+    ram_available_bytes: int
+    ram_bandwidth_gbps: float | None = None
+    ram_bandwidth_source: Source = "unknown"
+    ram_bandwidth_cached: bool = False
+    gpu_name: str | None = None
+    vram_total_bytes: int | None = None
+    vram_free_bytes: int | None = None
+
+
+def machine_facts(host: Host) -> MachineFacts:
+    """Read the figures an answer rests on off the machine it was computed for.
+
+    Args:
+        host: The scanned machine, or one standing in for it.
+
+    Returns:
+        The record to hang on whatever is about to be computed. The primary card is the
+        one named, because it is the one the planner places on.
+    """
+    gpu = host.primary_gpu
+    return MachineFacts(
+        scanned_at=host.scanned_at,
+        ram_total_bytes=host.memory.total_bytes,
+        ram_available_bytes=host.memory.available_bytes,
+        ram_bandwidth_gbps=host.memory.bandwidth_gbps,
+        ram_bandwidth_source=host.memory.bandwidth_source,
+        ram_bandwidth_cached=host.memory.bandwidth_cached,
+        gpu_name=None if gpu is None else gpu.name,
+        vram_total_bytes=None if gpu is None else gpu.vram_total_bytes,
+        vram_free_bytes=None if gpu is None else gpu.vram_free_bytes,
+    )
