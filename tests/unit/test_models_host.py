@@ -72,3 +72,51 @@ def test_vram_free_clamps_at_zero_when_used_exceeds_total() -> None:
         vram_used_bytes=9 * 1024**3,
     )
     assert gpu.vram_free_bytes == 0
+
+
+# --- a card that is here and cannot be read ------------------------------------------
+
+
+def unsized_card(**overrides: object) -> Gpu:
+    """An AMD card as WMI reports one: a name, a backend, and no memory figures."""
+    fields: dict[str, object] = {
+        "index": 0,
+        "vendor": "amd",
+        "name": "AMD Radeon RX 7900 XTX",
+        "backend_hint": "vulkan",
+    }
+    fields.update(overrides)
+    return Gpu(**fields)  # type: ignore[arg-type]
+
+
+def test_an_unsized_card_is_not_the_same_machine_as_no_card_at_all() -> None:
+    host = make_host(gpus=[unsized_card()])
+    assert host.vram_available_bytes is None
+    assert [gpu.name for gpu in host.unsized_gpus] == ["AMD Radeon RX 7900 XTX"]
+    assert make_host(gpus=[]).unsized_gpus == [], "no card is no apology"
+
+
+def test_a_sized_card_beside_an_unsized_one_has_nothing_to_apologise_for() -> None:
+    """A desktop with a working card and an unreadable integrated chip is a working desktop."""
+    host = make_host(gpus=[make_host().gpus[0], unsized_card(index=1, vendor="intel")])
+    assert host.unsized_gpus == []
+
+
+def test_a_unified_memory_machine_has_no_separate_pool_to_have_failed_to_read() -> None:
+    host = make_host(
+        gpus=[unsized_card(vendor="apple", name="Apple M3 Max", backend_hint="metal")],
+        unified_memory=True,
+    )
+    assert host.unsized_gpus == []
+
+
+def test_a_card_read_as_completely_full_is_read_rather_than_unread() -> None:
+    """Zero free is an answer; ``None`` free is the absence of one, and they differ."""
+    full = unsized_card(vram_total_bytes=24 * 1024**3, vram_used_bytes=24 * 1024**3)
+    assert make_host(gpus=[full]).unsized_gpus == []
+
+
+def test_a_size_with_no_free_figure_is_still_a_card_nothing_can_be_planned_on() -> None:
+    """What a Vulkan driver too old for VK_EXT_memory_budget leaves behind."""
+    sized = unsized_card(vram_total_bytes=24 * 1024**3, vram_source="estimated")
+    assert [g.name for g in make_host(gpus=[sized]).unsized_gpus] == ["AMD Radeon RX 7900 XTX"]

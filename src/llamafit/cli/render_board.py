@@ -956,6 +956,32 @@ def _truncation_caption(shown: int, ranked_total: int) -> str | None:
     }
 
 
+def _unsized_caption(unsized_gpus: Sequence[str]) -> str | None:
+    """Say that a card was on the machine and none of these figures used it.
+
+    This is the caption this module's first rule was written for. Every row here has a
+    speed, and on a machine whose card could not be sized every one of those speeds is a
+    CPU-only speed -- arrived at not by measuring the machine but by assuming away the
+    part of it nobody could read. At eighty columns even the ``Runs`` column that would
+    have shown ``CPU`` is dropped for want of room, so without this sentence the table is
+    a column of speeds produced from an assumption with nothing beside them saying so,
+    which is the shape the rule at the top of this file exists to forbid.
+
+    Args:
+        unsized_gpus: The cards the scan found and could not size.
+
+    Returns:
+        The sentence to print under the table, or ``None`` when every card was sized --
+        which is to say, on nearly every machine, nothing at all.
+    """
+    if not unsized_gpus:
+        return None
+    return _(
+        "%(gpus)s is on this machine and nothing could read how much of it is free, so "
+        "every speed above is a CPU-only speed. `llamafit doctor` says how to fix that."
+    ) % {"gpus": ", ".join(isolate(name) for name in unsized_gpus)}
+
+
 def _board_captions(board: Board) -> list[RenderableType]:
     """What the board's numbers are, said once under the table rather than per row."""
     labels = {row.candidate.speed.confidence for row in board.rows if row.candidate.speed}
@@ -981,6 +1007,9 @@ def _board_captions(board: Board) -> list[RenderableType]:
             "requested": _context(board.requested_context),
         }
     captions: list[RenderableType] = [_cell(first)]
+    unsized = _unsized_caption(board.unsized_gpus)
+    if unsized is not None:
+        captions.append(_cell(unsized))
     cut = _truncation_caption(len(board.rows), board.ranked_total)
     if cut is not None:
         captions.append(_cell(cut))
@@ -1139,6 +1168,20 @@ def render_fit(board: FitBoard, *, console_width: int = 80) -> Group:
             % {"context": _context(board.planned_context)}
         )
     ]
+    # A whole sentence of its own rather than the board's, because ``fit`` prints no
+    # speeds: what an unsized card costs here is the card column, which reads 0 B down
+    # the page for a machine that has one.
+    if board.unsized_gpus:
+        captions.append(
+            _cell(
+                _(
+                    "%(gpus)s is on this machine and nothing could read how much of it is "
+                    "free, so every row was sized as if there were no card. `llamafit "
+                    "doctor` says how to fix that."
+                )
+                % {"gpus": ", ".join(isolate(name) for name in board.unsized_gpus)}
+            )
+        )
     cut = _truncation_caption(len(board.rows), board.ranked_total)
     if cut is not None:
         captions.append(_cell(cut))

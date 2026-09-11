@@ -39,7 +39,7 @@ from llamafit.models.plan import ContextTier, Needs, SpeedEstimate
 from llamafit.services.plan import plan_report
 from llamafit.services.recommend import build_board, build_fit_board
 from tests.fixtures.board import catalog, model_and_quant
-from tests.fixtures.budget_hosts import machine, reference_host
+from tests.fixtures.budget_hosts import machine, reference_host, unsized_card_host
 
 GIB = 1024**3
 
@@ -369,3 +369,37 @@ def test_a_slow_prompt_says_what_it_cost_the_speed_score() -> None:
     quick = SpeedEstimate(gen_tps=30.0, pp_tps=900.0, confidence="estimated")
     assert "reads a prompt" in _speed_sentence(slow, "coding")
     assert "reads a prompt" not in _speed_sentence(quick, "coding")
+
+
+# --- a card that is here and cannot be read -------------------------------------------
+
+
+def test_the_board_says_its_speeds_are_cpu_only_even_where_the_runs_column_will_not_fit() -> None:
+    """Eighty columns is where this finding was invisible: the ``Runs`` column is dropped.
+
+    The caption is not an alternative to the column, it is the thing the column could not
+    have said anyway -- that a card is here and none of these figures used it.
+    """
+    board = build_board(catalog(), unsized_card_host(), Needs())
+    for width in (80, 200):
+        text = drawn(render_board(board, console_width=width), width=width)
+        assert "AMD Radeon RX 7900 XTX" in text
+        assert "CPU-only speed" in text
+        assert "llamafit doctor" in text
+
+
+def test_the_fit_board_says_its_rows_were_sized_without_the_card() -> None:
+    board = build_fit_board(catalog(), unsized_card_host())
+    text = drawn(render_fit(board, console_width=200), width=200)
+    assert "as if there were no card" in text
+
+
+def test_a_board_for_a_machine_whose_card_was_read_prints_no_such_caption() -> None:
+    board = build_board(catalog(), reference_host(), Needs())
+    assert "CPU-only speed" not in drawn(render_board(board, console_width=200), width=200)
+
+
+def test_a_board_for_a_machine_with_no_card_prints_no_such_caption() -> None:
+    """A CPU-only machine is not apologised to for a card it does not have."""
+    board = build_board(catalog(), machine(vram_total=None, ram_available=48 * GIB), Needs())
+    assert "CPU-only speed" not in drawn(render_board(board, console_width=200), width=200)
