@@ -14,7 +14,12 @@ from llamafit.models.catalog import CatalogModel, Quant
 from llamafit.models.plan import Needs
 from llamafit.placement import LaunchOptions, command_line
 from llamafit.services.plan import budget_for, plan_model
-from tests.fixtures.budget_hosts import first_quant, machine, reference_host
+from tests.fixtures.budget_hosts import (
+    first_quant,
+    machine,
+    reference_host,
+    unsized_card_host,
+)
 
 GIB = 1024**3
 MIB = 1024**2
@@ -97,3 +102,30 @@ def test_the_adapter_costs_what_the_planner_chose() -> None:
     )
     assert again.vram_required == placement.budget.vram_required
     assert again.verdict == placement.budget.verdict
+
+
+# --- the machine nobody was testing: a card that is there and cannot be read ----------
+
+
+def test_a_cpu_plan_on_an_unreadable_card_says_the_card_is_there() -> None:
+    """ "Nothing runs on a graphics card" is true here and, alone, reads as the wrong fact.
+
+    On a machine with no card it is a description. On an AMD card off Linux, or an Intel
+    card anywhere, it is a consequence of what the probes could not find out, and a
+    reader has no way to tell those two plans apart from the notes on them.
+    """
+    model, quant = model_and_quant("qwen3-0.6b")
+    placement = plan_model(model, quant, unsized_card_host())
+
+    assert placement.mode == "cpu"
+    notes = " ".join(placement.notes)
+    assert "AMD Radeon RX 7900 XTX" in notes
+    assert "as if it were not" in notes
+
+
+def test_a_cpu_plan_on_a_machine_with_no_card_apologises_for_nothing() -> None:
+    model, quant = model_and_quant("qwen3-0.6b")
+    placement = plan_model(model, quant, machine(vram_total=None, ram_available=48 * GIB))
+
+    assert placement.mode == "cpu"
+    assert not any("as if it were not" in note for note in placement.notes)

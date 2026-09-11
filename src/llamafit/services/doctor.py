@@ -48,6 +48,11 @@ PROBE_HINTS: dict[str, LazyString] = {
         "llama-server exists but did not report a version; the binary may be broken."
     ),
     "system-profiler": lazy_gettext("system_profiler failed; GPU information is unavailable."),
+    "vulkaninfo": lazy_gettext(
+        "Install the Vulkan tools (vulkan-tools on Linux, the vendor's Vulkan runtime on "
+        "Windows) so an unsized card's memory can be read from its driver. This probe "
+        "runs only when no vendor tool sized the card, so it is the last source there is."
+    ),
 }
 """What would unlock each probe, deferred because this table is built at import time.
 
@@ -186,6 +191,30 @@ def diagnose(report: SystemReport) -> Diagnosis:
                     hint=_hint(_VRAM_HINT_PROBE.get(gpu.vendor, ""), _GENERIC_VRAM_HINT),
                 )
             )
+    # The finding above says a size is missing. This one says what LlamaFit did about it,
+    # and they are not the same thing: a reader told only that a figure is unknown has no
+    # reason to suspect that the speeds on the board were produced by pretending their
+    # card is not there. Every figure this program prints says where it came from, and a
+    # figure that came from an assumption has to say that it did.
+    unsized = host.unsized_gpus
+    if unsized:
+        findings.append(
+            Finding(
+                level="warn",
+                title=_("%(gpus)s: planned around, not planned on")
+                % {"gpus": ", ".join(gpu.name for gpu in unsized)},
+                detail=_(
+                    "with no reading of how much of the card is free, every budget and "
+                    "every speed on this machine was computed as if there were no card: "
+                    "they are CPU-only figures, and the real machine will be faster."
+                ),
+                hint=_(
+                    "Install the Vulkan tools so the size can be read from the driver, or "
+                    "record it in a hardware profile (`llamafit hardware path` says where "
+                    "those go) and pass --profile."
+                ),
+            )
+        )
     if not host.gpus:
         findings.append(
             Finding(

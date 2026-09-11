@@ -78,6 +78,40 @@ def card_with_free(free_bytes: int, *, ram_available: int = 100 * GIB) -> Host:
     )
 
 
+def unsized_card_host() -> Host:
+    """A machine with a real card that nothing could size: the AMD-on-Windows machine.
+
+    No `rocm-smi` outside Linux, no VRAM probe for Intel anywhere, and nothing at all for
+    a discrete card in an Intel Mac: all three arrive here in the same shape, and until
+    this fixture no test in the suite put any of them through the planner. The card is
+    named and its backend is the one llama.cpp would drive it with; what is missing is
+    the only thing the planner asks for, which is how much of it is free.
+    """
+    return Host(
+        os="windows",
+        os_version="11",
+        arch="x86_64",
+        cpu=Cpu(model="AMD Ryzen 9 7950X", physical_cores=16, logical_cores=32),
+        memory=Memory(
+            total_bytes=64 * GIB,
+            available_bytes=52 * GIB,
+            bandwidth_gbps=60.0,
+            bandwidth_source="estimated",
+        ),
+        gpus=[
+            Gpu(
+                index=0,
+                vendor="amd",
+                name="AMD Radeon RX 7900 XTX",
+                backend_hint="vulkan",
+                bandwidth_gbps=960.0,
+                compute_tflops_fp16=123.0,
+            )
+        ],
+        scanned_at=datetime(2026, 9, 9, tzinfo=timezone.utc),
+    )
+
+
 def first_quant(model: CatalogModel) -> Quant:
     """The first quantisation of a catalog model, which is the only one the seed carries."""
     return model.sources[0].quants[0]

@@ -8,6 +8,8 @@ against the seeded entries would pass every other test in the suite.
 
 from __future__ import annotations
 
+import json
+
 from llamafit.models.llamacpp import LocalModel
 from llamafit.models.plan import Needs
 from llamafit.scoring import DEFAULT_WEIGHTS, READING_TPS
@@ -23,7 +25,7 @@ from llamafit.services.recommend import (
     recorded_measurements,
 )
 from tests.fixtures.board import catalog, model_and_quant
-from tests.fixtures.budget_hosts import machine, reference_host
+from tests.fixtures.budget_hosts import machine, reference_host, unsized_card_host
 
 GIB = 1024**3
 
@@ -267,3 +269,44 @@ def test_a_quant_is_on_disk_when_its_first_shard_is() -> None:
     index = local_index([LocalModel(path=f"/models/{quant.files[0]}", bytes=1)])
     assert local_path_for(quant, index) == f"/models/{quant.files[0]}"
     assert local_path_for(quant, {}) is None
+
+
+# --- the machine nobody was testing: a card that is there and cannot be read ----------
+
+
+def test_a_board_for_an_unreadable_card_says_it_was_planned_around() -> None:
+    """Every row here is a CPU-only row, and the board has to carry the reason why.
+
+    No AMD, Intel or Intel-Mac host had ever been put through this function. The rows it
+    produces for one are not wrong -- they are honest CPU speeds -- but a reader handed
+    them with nothing beside them would take them for what this machine can do.
+    """
+    board = build_board(catalog(), unsized_card_host(), Needs())
+    assert board.rows, "a 64 GiB machine runs something even with no card"
+    assert board.unsized_gpus == ["AMD Radeon RX 7900 XTX"]
+    modes = {row.candidate.placement.mode for row in board.rows if row.candidate.placement}
+    assert modes == {"cpu"}, "an unsized card is a card the planner cannot place on"
+
+
+def test_a_fit_board_for_an_unreadable_card_carries_the_same_names() -> None:
+    board = build_fit_board(catalog(), unsized_card_host())
+    assert board.unsized_gpus == ["AMD Radeon RX 7900 XTX"]
+
+
+def test_a_board_for_the_reference_machine_has_nothing_to_apologise_for() -> None:
+    assert build_board(catalog(), reference_host(), Needs()).unsized_gpus == []
+    assert build_fit_board(catalog(), reference_host()).unsized_gpus == []
+
+
+def test_a_machine_with_no_card_is_not_reported_as_a_card_nobody_could_read() -> None:
+    """``no card`` and ``a card nothing sized`` must not print the same sentence."""
+    board = build_board(catalog(), machine(vram_total=None, ram_available=48 * GIB), Needs())
+    assert board.unsized_gpus == []
+
+
+def test_the_unsized_names_reach_the_json_a_script_reads() -> None:
+    """The terminal gets a caption; without this field a script would get nothing at all."""
+    board = build_board(catalog(), unsized_card_host(), Needs())
+    assert json.loads(board.model_dump_json(by_alias=True))["unsized_gpus"] == [
+        "AMD Radeon RX 7900 XTX"
+    ]
