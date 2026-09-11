@@ -730,7 +730,11 @@ The last column of the table is the point of the command. A tool that measured a
 then showed only the measurement would leave you better informed about that model and no
 better informed about the next one, so the estimate stays on the page — and the estimate
 shown is the one made *before* the run, never one recomputed afterwards from a database that
-by then contains the answer.
+by then contains the answer. The first two columns are what make the last one an error rather
+than an artefact: each row's estimate is the formula run at the context that row filled and
+the micro-batch it used, and the plan's own figure — for a context no row reaches — is quoted
+under the table and never given a ratio. [benchmarking.md](benchmarking.md) has the
+arithmetic and the comparison that was rejected.
 
 **The paging check** has three states and not two: it fires when peak VRAM was within three
 percent of the card's total **and** generation came in below three fifths of the estimate

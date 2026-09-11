@@ -237,6 +237,22 @@ def traffic(
 
 _COUNTER = {"n": 0}
 
+TOKEN_COUNTS: dict[BenchKind, tuple[int | None, int | None]] = {
+    "llama-bench-tg": (0, 128),
+    "llama-bench-pp": (2048, 0),
+    "server-short": (24, 128),
+    "server-1k": (1056, 64),
+    "server-toolcall": (None, None),
+}
+"""What each kind of run evaluates and generates, as the real ones report it.
+
+A run that does not say how many tokens it moved cannot say what context its figures
+belong to, and a comparison row without a context carries no ratio -- correct, and it
+would otherwise make every builder here produce a run nothing can be compared against.
+The tool call keeps its ``None``s: it reports no counts because it is not a speed
+measurement, and a fixture that invented some would be testing a shape that never occurs.
+"""
+
 
 def run_of(
     *,
@@ -252,9 +268,18 @@ def run_of(
     estimated_gen_tps: float | None = None,
     estimated_pp_tps: float | None = None,
 ) -> BenchRun:
-    """A stored run built by hand, with a unique identifier and an increasing timestamp."""
+    """A stored run built by hand, with a unique identifier and an increasing timestamp.
+
+    Conditions the caller does not supply carry the token counts and, for the server kinds,
+    the server context that the real run of that kind would report.
+    """
     _COUNTER["n"] += 1
-    settings = conditions_ or conditions()
+    prompt_tokens, generated = TOKEN_COUNTS[kind]
+    settings = conditions_ or conditions(
+        n_prompt=prompt_tokens,
+        n_gen=generated,
+        context=32768 if kind.startswith("server") else None,
+    )
     return BenchRun(
         id=f"run{_COUNTER['n']:04d}",
         schema_version=BENCH_SCHEMA_VERSION,

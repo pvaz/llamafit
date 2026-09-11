@@ -29,9 +29,39 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from llamafit.models.catalog import Measured
+
+
+def measured_context(n_prompt: int | None, n_gen: int | None) -> int | None:
+    """How much key-value cache a measurement's tokens were actually read against.
+
+    Args:
+        n_prompt: Prompt tokens the run evaluated, or ``None`` when the tool did not say.
+        n_gen: Tokens it generated, likewise.
+
+    Returns:
+        The depth the cache had reached by the end of the run, or ``None`` when neither
+        count is known.
+
+    A generated token reads every key and value in front of it, so the context a
+    measurement belongs to is the one it filled, not the one the server allocated.
+    ``llama-bench``'s ``tg128`` sizes its whole context at ``n_prompt + n_gen`` and fills
+    it; a server started at 32,768 tokens and asked a thousand-token question fills about
+    a thousand. Section 10.1's ``working_context`` is that figure and nothing else, and
+    ``docs/calibration/`` already knows it: the reference machine's table gives
+    "generation, short context, ``llama-bench tg128``" at 24.7 tokens per second and
+    "generation at 32K tokens of context" at 21.7 on one line each, as two measurements
+    rather than one.
+
+    ``None`` rather than zero when nothing was reported, because zero is a context and
+    would be estimated against as one.
+    """
+    if n_prompt is None and n_gen is None:
+        return None
+    return (n_prompt or 0) + (n_gen or 0)
+
 
 BENCH_SCHEMA_VERSION = 1
 """The layout of the stored result this build reads and writes.
@@ -203,6 +233,18 @@ class RunConditions(BaseModel):
     micro_batch: int | None = Field(default=None, ge=0)
     n_prompt: int | None = Field(default=None, ge=0)
     n_gen: int | None = Field(default=None, ge=0)
+
+    @property
+    def measured_context(self) -> int | None:
+        """The key-value cache this run filled, which is what its figures are for.
+
+        Not :attr:`context`, which is what the server was *started* at. A server holding a
+        32,768-token cache and answering a thousand-token question reads a thousand tokens
+        of it per generated token, and section 10.1 charges the read and not the
+        allocation. The two are different numbers and only one of them is comparable with
+        an estimate.
+        """
+        return measured_context(self.n_prompt, self.n_gen)
 
     @property
     def flag_string(self) -> str:
@@ -419,12 +461,28 @@ class Calibration(BaseModel):
 class ComparisonRow(BaseModel):
     """One figure the estimator predicted, beside the one that was measured.
 
+    **A row's conditions belong to the whole row, not to one column of it.** Both figures
+    are for :attr:`context` and :attr:`micro_batch`, and the validator below is what keeps
+    that true: a row may not carry a ratio without saying what context its two halves were
+    taken at. The finding that put it there was a table which printed an estimate made at
+    32,768 tokens next to a ``tg128`` measurement taken at 128, called the quotient a
+    ratio, and so reported a 6.77 error in a formula that was right -- the two numbers
+    answered different questions and the column heading did not say so.
+
     Attributes:
         metric: Which figure, as a key.
-        estimated: What the formula said before the run.
-        measured: What the run produced.
+        estimated: What the formula said, for the conditions below.
+        measured: What the run produced, under the same conditions.
         ratio: Measured over estimated, when both exist and the estimate is not zero.
         unit: ``tok/s``, ``ms`` or ``bytes``.
+        context: Tokens of key-value cache both figures are for. For a speed that is what
+            the run filled; for peak VRAM it is what the server allocated, since an
+            allocation is what a memory prediction is about.
+        micro_batch: The micro-batch the run was made at. ``None`` only on peak VRAM,
+            which is an allocation rather than a run. A generation row carries one even
+            though section 10.1 has no micro-batch term: the run had one, and a sweep
+            produces a generation row per rung of the ladder that nothing else tells
+            apart.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -434,6 +492,15 @@ class ComparisonRow(BaseModel):
     measured: float | None = None
     ratio: float | None = None
     unit: str = "tok/s"
+    context: int | None = Field(default=None, ge=0)
+    micro_batch: int | None = Field(default=None, ge=0)
+
+    @model_validator(mode="after")
+    def _a_ratio_names_the_context_it_was_taken_at(self) -> ComparisonRow:
+        """Refuse a quotient of two figures the row cannot say were comparable."""
+        if self.ratio is not None and self.context is None:
+            raise ValueError("a comparison row with a ratio must name the context both halves")
+        return self
 
 
 class BenchReport(BaseModel):
@@ -450,6 +517,13 @@ class BenchReport(BaseModel):
         paging: The paging verdict for the configuration as a whole.
         calibration: The fit, when ``--calibrate`` asked for one.
         stored: Whether the results were written to the store.
+        planned_context: The context the plan sized this configuration for, which is the
+            context the rest of LlamaFit quotes a speed at.
+        planned_gen_tps: What the estimator says generation will run at *there*. It is
+            reported and never compared: no row of :attr:`comparison` reaches that
+            context, because filling a 32,768-token cache to measure one token is minutes
+            of prompt processing per figure. Carried anyway, so that the number `plan`
+            prints does not silently vanish from the command that exists to check it.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -462,5 +536,7 @@ class BenchReport(BaseModel):
     runs: list[BenchRun] = Field(default_factory=list)
     comparison: list[ComparisonRow] = Field(default_factory=list)
     paging: PagingCheck | None = None
+    planned_context: int | None = Field(default=None, ge=0)
+    planned_gen_tps: float | None = Field(default=None, ge=0)
     calibration: Calibration | None = None
     stored: bool = False

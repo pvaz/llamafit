@@ -72,10 +72,14 @@ def detect_paging(
             ``None`` when no vendor tool answered.
         vram_total_bytes: The card's total, or ``None`` when it is not known.
         measured_gen_tps: What the run generated at.
-        estimated_gen_tps: What the estimate said before the run. It has to be the figure
-            from *before*, because an estimate corrected by this very measurement would
-            agree with it by construction and the ratio would be one however badly the
-            configuration was paging.
+        estimated_gen_tps: What the estimate said before the run, **for the context the
+            run filled**. Before, because an estimate corrected by this very measurement
+            would agree with it by construction and the ratio would be one however badly
+            the configuration was paging. At the run's own context, because section 10.1
+            charges a token for the cache it reads: a plan's estimate at 32,768 tokens
+            sits well below the truth at the thousand a fixed request fills, so comparing
+            the two raises the ratio on the difference alone -- in the direction that
+            clears a configuration which really was paging.
         tiers: The plan's context ladder, so a run that paged can be told what would not.
 
     Returns:

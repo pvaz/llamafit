@@ -144,6 +144,7 @@ def test_a_model_that_is_not_on_the_disk_is_not_benchmarked(
 def canned_report(fingerprint: str) -> BenchReport:
     """What a benchmark of the reference machine would have produced."""
     settings = {"ngl": "99", "n-cpu-moe": "47", "ub": "2048"}
+    micro_batch = 2048
     return BenchReport(
         model_id="qwen3-coder-next",
         quant="UD-Q4_K_XL",
@@ -153,18 +154,32 @@ def canned_report(fingerprint: str) -> BenchReport:
         runs=[
             run_of(
                 kind="llama-bench-tg",
-                conditions_=conditions(fingerprint=fingerprint, settings=settings),
+                conditions_=conditions(
+                    fingerprint=fingerprint,
+                    settings=settings,
+                    micro_batch=micro_batch,
+                    n_prompt=0,
+                    n_gen=128,
+                ),
                 gen_tps=24.7,
                 estimated_gen_tps=19.0,
             ),
             run_of(
                 kind="llama-bench-pp",
-                conditions_=conditions(fingerprint=fingerprint, settings=settings),
+                conditions_=conditions(
+                    fingerprint=fingerprint,
+                    settings=settings,
+                    micro_batch=micro_batch,
+                    n_prompt=2048,
+                    n_gen=0,
+                ),
                 pp_tps=323.0,
                 estimated_pp_tps=300.0,
             ),
         ],
         paging=PagingCheck(paged=False, vram_ratio=0.5, reason="card-not-full"),
+        planned_context=32768,
+        planned_gen_tps=17.5,
     )
 
 
@@ -190,10 +205,65 @@ def test_the_table_shows_the_estimate_the_measurement_and_the_gap(measured: Path
     assert "outside the 0.8 to 1.25 band" in line
 
 
+def test_the_table_says_what_context_and_micro_batch_each_row_is_for(measured: Path) -> None:
+    """A ratio is only an error when both its halves answer the same question."""
+    result = runner.invoke(app, ["--language", "en", "bench", "qwen3-coder-next"])
+    line = flat(result.output)
+    assert "context" in line
+    assert "micro-batch" in line
+    assert "128" in line  # the tg128 row's own cache depth, not the planned 32,768
+    assert "2,048" in line
+
+
+def test_the_planned_estimate_is_quoted_and_never_given_a_ratio(measured: Path) -> None:
+    """The figure `plan` prints is at a context no row reaches, so it is not compared."""
+    result = runner.invoke(app, ["--language", "en", "bench", "qwen3-coder-next"])
+    line = flat(result.output)
+    assert "sizes this configuration for 32,768 tokens" in line
+    assert "17.50" in line
+    assert "reported and not compared" in line
+
+
 def test_the_paging_verdict_is_printed_with_the_reason_it_reached(measured: Path) -> None:
     result = runner.invoke(app, ["--language", "en", "bench", "qwen3-coder-next"])
     assert "was not paging" in flat(result.output)
     assert "nothing for the driver to page" in flat(result.output)
+
+
+def verdict_line(monkeypatch: pytest.MonkeyPatch, check: PagingCheck) -> str:
+    """What the command prints for one paging verdict, as one line."""
+    fingerprint = host_fingerprint(reference_host())
+    report = canned_report(fingerprint).model_copy(update={"paging": check})
+    monkeypatch.setattr("llamafit.cli.bench_cmd.run_benchmark", lambda *_a, **_k: report)
+    return flat(runner.invoke(app, ["--language", "en", "bench", "qwen3-coder-next"]).output)
+
+
+def test_a_card_that_stayed_clear_gets_a_sentence_and_not_a_gap(
+    machine: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The line that shipped read "generation was not compared percent of the estimate".
+
+    It was printed whenever the card stayed clear of full, which is the ordinary outcome
+    rather than the rare one: the detector clears such a run on the memory signal alone
+    and never reaches the speed half, so there is no ratio to substitute. Nothing tested
+    the words this command produces, so a sentence with a hole in it shipped.
+    """
+    line = verdict_line(
+        monkeypatch, PagingCheck(paged=False, vram_ratio=0.5, reason="card-not-full")
+    )
+    assert "not compared percent" not in line
+    assert "Peak VRAM was 50 percent of the card." in line
+    assert "Generation was not compared with the estimate." in line
+
+
+def test_a_card_that_filled_up_quotes_both_figures_in_one_sentence(
+    machine: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    line = verdict_line(
+        monkeypatch,
+        PagingCheck(paged=False, vram_ratio=0.98, speed_ratio=0.92, reason="speed-as-expected"),
+    )
+    assert "Peak VRAM was 98 percent of the card, and generation was 92 percent" in line
 
 
 def test_results_are_stored_and_come_back_from_show(measured: Path) -> None:
@@ -217,8 +287,14 @@ def test_the_json_is_the_report_the_table_was_drawn_from(measured: Path) -> None
     data = json.loads(result.output)
     assert data["model_id"] == "qwen3-coder-next"
     assert data["stored"] is True
-    ratios = {row["metric"]: row["ratio"] for row in data["comparison"]}
-    assert ratios["generation-bench"] == pytest.approx(24.7 / 19.0)
+    rows = {row["metric"]: row for row in data["comparison"]}
+    assert rows["generation-bench"]["ratio"] == pytest.approx(24.7 / 19.0)
+    assert rows["generation-bench"]["context"] == 128
+    assert rows["generation-bench"]["micro_batch"] == 2048
+    assert rows["prompt-bench"]["context"] == 2048
+    assert rows["prompt-bench"]["micro_batch"] == 2048
+    assert data["planned_context"] == 32768
+    assert data["planned_gen_tps"] == pytest.approx(17.5)
     assert data["paging"]["paged"] is False
 
 

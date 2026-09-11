@@ -63,6 +63,7 @@ from llamafit.bench.types import (
     PagingCheck,
     RunConditions,
     RunTraffic,
+    measured_context,
 )
 from llamafit.constants import EFF_PCIE, KV_TYPE_DEFAULT, SHARED_EXPERT_OVERRIDE
 from llamafit.errors import ProbeError
@@ -72,7 +73,12 @@ from llamafit.models.gguf import GgufFacts
 from llamafit.models.host import Host
 from llamafit.models.plan import Placement
 from llamafit.services.plan import PlanReport
-from llamafit.speed import expert_bytes_in_ram, per_token_traffic, resolve_bandwidths
+from llamafit.speed import (
+    expert_bytes_in_ram,
+    formula_estimate,
+    per_token_traffic,
+    resolve_bandwidths,
+)
 from llamafit.speed.traffic import streamed_expert_fraction
 
 SHORT_PROMPT = "Write one short paragraph about why local inference is useful."
@@ -718,15 +724,25 @@ def _server_context(http: BenchHttp, base_url: str) -> int | None:
 
 
 def traffic_of(
-    placement: Placement, facts: GgufFacts, host: Host, *, active_params: float | None
+    placement: Placement,
+    facts: GgufFacts,
+    host: Host,
+    *,
+    active_params: float | None,
+    working_context: int,
+    micro_batch: int,
 ) -> RunTraffic:
-    """What the estimator believes this placement reads, in the shape a result stores.
+    """What the estimator believes one run reads, in the shape a result stores.
 
     Args:
         placement: Where the bytes go.
         facts: The file's derived facts.
         host: The machine.
         active_params: Parameters active per token, from the catalog.
+        working_context: Tokens of key-value cache this run's generated tokens read
+            against, which is what the run filled and not what the server allocated.
+        micro_batch: The micro-batch this run's prompt figures belong to, which for one
+            row of a ``--sweep`` is one of the several the command line asked for.
 
     Returns:
         The traffic, with the raw bandwidths it would be charged against.
@@ -735,12 +751,18 @@ def traffic_of(
     months later out of a stored command line, against a catalog and a set of GGUF facts
     that have both moved since, is the same "a record matched a configuration it did not
     describe" failure arriving through a different door.
+
+    **The last two arguments have no defaults on purpose.** They used to be read off the
+    placement, so every row of a benchmark was recorded as having read the key-value cache
+    of a 32,768-token context it never filled, and every row of a micro-batch sweep was
+    recorded at the planned micro-batch. The first made the generation comparison a
+    measurement of context rather than of the formula; the second gave the prompt fit
+    three rows whose only free column was identical, which is a rank-deficient system and
+    the one thing ``--sweep`` exists to avoid. A caller has to say what the run did.
     """
     bandwidths = resolve_bandwidths(host)
-    traffic = per_token_traffic(placement, facts, working_context=placement.context)
-    streamed = expert_bytes_in_ram(placement, facts) * streamed_expert_fraction(
-        facts, placement.micro_batch
-    )
+    traffic = per_token_traffic(placement, facts, working_context=working_context)
+    streamed = expert_bytes_in_ram(placement, facts) * streamed_expert_fraction(facts, micro_batch)
     return RunTraffic(
         device_bytes=traffic.device_bytes,
         sequential_bytes=traffic.sequential_bytes,
@@ -753,8 +775,8 @@ def traffic_of(
         # `EffectiveBandwidths.pcie` already carries section 10.2's efficiency; the fit
         # wants the rated link, because that efficiency is the thing being fitted.
         pcie_gbps=bandwidths.pcie / (EFF_PCIE * 1e9),
-        micro_batch=placement.micro_batch,
-        working_context=placement.context,
+        micro_batch=micro_batch,
+        working_context=working_context,
     )
 
 
@@ -783,6 +805,121 @@ class BenchInputs:
     base_url: str
     llama_cpp_build: int | None = None
     llama_cpp_commit: str | None = None
+
+
+@dataclass(frozen=True)
+class Prediction:
+    """What the formula says about one set of conditions, before anything has run.
+
+    Attributes:
+        context: Tokens of key-value cache the figures are for.
+        micro_batch: The micro-batch the prompt figure is for.
+        traffic: The bytes the estimator believes a token at that context reads.
+        gen_tps: Generated tokens per second, or ``None`` when there is no estimate.
+        pp_tps: Prompt tokens per second, likewise.
+    """
+
+    context: int
+    micro_batch: int
+    traffic: RunTraffic | None
+    gen_tps: float | None
+    pp_tps: float | None
+
+
+@dataclass
+class Estimator:
+    """Section 10's formula, asked again for each set of conditions a run turns out to have.
+
+    This class is the answer to the question the ``bench`` finding posed, and the question
+    was which of three honest comparisons to make: run ``llama-bench`` at the planned
+    context, estimate at the context ``llama-bench`` used, or print both figures and
+    compare neither.
+
+    **It estimates at the context each measurement reached, and it is not a compromise.**
+    Section 10.1 charges ``kv_bytes_per_token x working_context`` for the cache a token
+    reads, and a token reads the cache that exists, not the one that was allocated: the
+    quantity in the formula is the depth the run filled. So the comparable estimate is the
+    formula at that depth, and this project already works that way everywhere else:
+    ``docs/calibration/`` gives "generation, short context, ``llama-bench tg128``" and
+    "generation at 32K tokens of context" as two measurements on two lines, and the four
+    reference runs the estimator's constants were identified from are stated at 128, 128,
+    128 and about a thousand tokens against placements sized for 4,096 and 262,144.
+
+    The alternative -- ``llama-bench -d 32768``, which prefills the cache before it times
+    anything -- was rejected on three counts. It needs a build new enough to have the
+    flag, and a benchmark that silently measures something else on an older one is the
+    failure this package exists to refuse. It costs a full 32,768-token prefill per row,
+    minutes on a large model, for a figure the same run already yields at a depth nobody
+    waited for. And it cannot be done at all for the three server requests, which are
+    fixed questions of fixed length and would have to be lengthened into something no
+    longer comparable with last month's. What it would buy is the one thing this choice
+    gives up: at 128 tokens the key-value term is a rounding error, so a benchmark here
+    checks every term of section 10.1 *except* the growth of the cache. That term is worth
+    checking and is not checked; :attr:`BenchReport.planned_gen_tps` is where the
+    unchecked figure is at least shown.
+
+    Answers are cached because a benchmark asks for a handful of distinct conditions and
+    repeats them -- a micro-batch sweep runs ``tg128`` once per rung, all at 128 tokens --
+    while each call rebuilds the whole traffic breakdown and every note that goes with it.
+    """
+
+    inputs: BenchInputs
+    _answers: dict[tuple[int, int], Prediction] = field(default_factory=dict)
+
+    def at(self, *, context: int | None, micro_batch: int) -> Prediction:
+        """The estimate for one context and micro-batch, capped at the placement's own.
+
+        Args:
+            context: Tokens of key-value cache the run filled, or ``None`` when the tool
+                reported no token counts and the depth is therefore unknown.
+            micro_batch: The micro-batch the run used.
+
+        Returns:
+            The prediction. Empty -- no traffic, no figures -- when the file's facts are
+            missing or the depth is unknown, because an estimate is a statement about
+            conditions and a guess at the conditions is not one. An empty prediction leaves
+            a measurement with no ratio, which is the honest shape of "not compared".
+        """
+        placement = self.inputs.plan.placement
+        facts = self.inputs.facts
+        if facts is None or context is None or placement.mode == "unsupported":
+            return Prediction(
+                context=context or 0,
+                micro_batch=micro_batch,
+                traffic=None,
+                gen_tps=None,
+                pp_tps=None,
+            )
+        # A run cannot fill more cache than the server allocated, and `estimate_speed`
+        # clamps the same way, so the two agree about the planned context.
+        key = (min(context, placement.context), micro_batch)
+        answer = self._answers.get(key)
+        if answer is None:
+            depth, ubatch = key
+            formula = formula_estimate(
+                placement,
+                facts,
+                resolve_bandwidths(self.inputs.host),
+                working_context=depth,
+                micro_batch=ubatch,
+                active_params=self.inputs.active_params,
+            )
+            answer = Prediction(
+                context=depth,
+                micro_batch=ubatch,
+                traffic=traffic_of(
+                    placement,
+                    facts,
+                    self.inputs.host,
+                    active_params=self.inputs.active_params,
+                    working_context=depth,
+                    micro_batch=ubatch,
+                ),
+                gen_tps=formula.gen_tps or None,
+                pp_tps=formula.pp_tps or None,
+            )
+            self._answers[key] = answer
+        return answer
 
 
 def run_benchmark(
@@ -816,17 +953,17 @@ def run_benchmark(
     Raises:
         ProbeError: If ``llama-bench`` could not run or produced nothing readable, or if
             the server never became healthy.
+
+    Every row gets its own estimate, from :class:`Estimator`, at the context that row
+    filled and the micro-batch it ran at. One estimate for the whole benchmark is what
+    there used to be, and a benchmark is five measurements of at least three different
+    configurations: ``tg128`` at 128 tokens of cache, a thousand-token request at about a
+    thousand, and with ``--sweep`` a prompt row per micro-batch on the ladder.
     """
     options = options or BenchOptions()
     plan = inputs.plan
     placement = plan.placement
-    traffic = (
-        None
-        if inputs.facts is None
-        else traffic_of(placement, inputs.facts, inputs.host, active_params=inputs.active_params)
-    )
-    estimated_gen = plan.speed.gen_tps if plan.speed else None
-    estimated_pp = plan.speed.pp_tps if plan.speed else None
+    estimator = Estimator(inputs)
     vram_total = _card_total(inputs.host)
 
     argv = llama_bench_argv(
@@ -835,29 +972,35 @@ def run_benchmark(
         model_path=plan.model_path,
         options=options,
     )
-    runs = [
-        _pending(
-            kind=row.kind,
-            conditions=_conditions(
-                inputs=inputs,
-                build=row.build or inputs.llama_cpp_build,
-                commit=row.commit or inputs.llama_cpp_commit,
-                argv=argv,
-                reported=row.settings,
-                context=None,
-                micro_batch=_int_or_none(row.settings.get("ub")) or placement.micro_batch,
-                n_prompt=row.n_prompt,
-                n_gen=row.n_gen,
-            ),
-            gen_tps=row.tokens_per_second if row.kind == "llama-bench-tg" else None,
-            pp_tps=None if row.kind == "llama-bench-tg" else row.tokens_per_second,
-            traffic=traffic,
-            estimated_gen_tps=estimated_gen if row.kind == "llama-bench-tg" else None,
-            estimated_pp_tps=None if row.kind == "llama-bench-tg" else estimated_pp,
-            vram_total_bytes=vram_total,
+    runs: list[BenchRun] = []
+    for row in run_llama_bench(runner, argv, timeout=options.bench_timeout_s):
+        generated = row.kind == "llama-bench-tg"
+        micro_batch = _int_or_none(row.settings.get("ub")) or placement.micro_batch
+        estimate = estimator.at(
+            context=measured_context(row.n_prompt, row.n_gen), micro_batch=micro_batch
         )
-        for row in run_llama_bench(runner, argv, timeout=options.bench_timeout_s)
-    ]
+        runs.append(
+            _pending(
+                kind=row.kind,
+                conditions=_conditions(
+                    inputs=inputs,
+                    build=row.build or inputs.llama_cpp_build,
+                    commit=row.commit or inputs.llama_cpp_commit,
+                    argv=argv,
+                    reported=row.settings,
+                    context=None,
+                    micro_batch=micro_batch,
+                    n_prompt=row.n_prompt,
+                    n_gen=row.n_gen,
+                ),
+                gen_tps=row.tokens_per_second if generated else None,
+                pp_tps=None if generated else row.tokens_per_second,
+                traffic=estimate.traffic,
+                estimated_gen_tps=estimate.gen_tps if generated else None,
+                estimated_pp_tps=None if generated else estimate.pp_tps,
+                vram_total_bytes=vram_total,
+            )
+        )
 
     paging: PagingCheck | None = None
     if options.with_server:
@@ -867,9 +1010,7 @@ def run_benchmark(
             http=http,
             sampler=sampler,
             options=options,
-            traffic=traffic,
-            estimated_gen=estimated_gen,
-            estimated_pp=estimated_pp,
+            estimator=estimator,
             vram_total=vram_total,
             sleep=sleep,
             clock=clock,
@@ -884,6 +1025,8 @@ def run_benchmark(
         server_command=list(inputs.server_argv) if options.with_server else [],
         runs=runs,
         paging=paging,
+        planned_context=placement.context,
+        planned_gen_tps=plan.speed.gen_tps if plan.speed else None,
     )
 
 
@@ -894,14 +1037,17 @@ def _server_phase(
     http: BenchHttp,
     sampler: VramSampler,
     options: BenchOptions,
-    traffic: RunTraffic | None,
-    estimated_gen: float | None,
-    estimated_pp: float | None,
+    estimator: Estimator,
     vram_total: int | None,
     sleep: Callable[[float], None],
     clock: Callable[[], float],
 ) -> tuple[list[BenchRun], PagingCheck | None]:
-    """Start the server, ask it the three questions, and stop it whatever happens."""
+    """Start the server, ask it the three questions, and stop it whatever happens.
+
+    The three questions fill three different amounts of cache -- a couple of dozen tokens,
+    about a thousand, and whatever a tool call costs -- so each gets its estimate from
+    ``estimator`` at its own depth rather than all three sharing the plan's.
+    """
     handle = launcher.start(inputs.server_argv)
     try:
         healthy = wait_for_health(
@@ -926,42 +1072,56 @@ def _server_phase(
         handle.stop()
 
     buffers = parse_buffer_sizes(log_text)
+    micro_batch = inputs.plan.placement.micro_batch
     warm = next((item for item in results if item.kind == "server-1k"), None)
+    # Section 16.4's speed half compares the warm request with the estimate, and the two
+    # have to be for the same cache or the ratio measures the context rather than the
+    # driver -- upwards, at that: a plan's estimate at 32,768 tokens is lower than the
+    # truth at one thousand, so a configuration that really was paging would clear the
+    # threshold on the difference alone.
+    warm_estimate = estimator.at(
+        context=measured_context(warm.n_prompt, warm.n_gen) if warm else None,
+        micro_batch=micro_batch,
+    )
     paging = detect_paging(
         peak_vram_bytes=peak,
         vram_total_bytes=vram_total,
         measured_gen_tps=warm.gen_tps if warm else None,
-        estimated_gen_tps=estimated_gen,
+        estimated_gen_tps=warm_estimate.gen_tps,
         tiers=inputs.plan.placement.tiers,
     )
-    runs = [
-        _pending(
-            kind=result.kind,
-            conditions=_conditions(
-                inputs=inputs,
-                build=inputs.llama_cpp_build,
-                commit=inputs.llama_cpp_commit,
-                argv=inputs.server_argv,
-                reported={},
-                context=context or inputs.plan.placement.context,
-                micro_batch=inputs.plan.placement.micro_batch,
-                n_prompt=result.n_prompt,
-                n_gen=result.n_gen,
-            ),
-            gen_tps=result.gen_tps,
-            pp_tps=result.pp_tps,
-            ttft_ms=result.ttft_ms,
-            traffic=traffic,
-            estimated_gen_tps=estimated_gen if result.gen_tps else None,
-            estimated_pp_tps=estimated_pp if result.pp_tps else None,
-            peak_vram_bytes=peak,
-            vram_total_bytes=vram_total,
-            paging=paging,
-            tool_call_ok=result.tool_call_ok,
-            buffer_bytes=buffers,
+    runs: list[BenchRun] = []
+    for result in results:
+        estimate = estimator.at(
+            context=measured_context(result.n_prompt, result.n_gen), micro_batch=micro_batch
         )
-        for result in results
-    ]
+        runs.append(
+            _pending(
+                kind=result.kind,
+                conditions=_conditions(
+                    inputs=inputs,
+                    build=inputs.llama_cpp_build,
+                    commit=inputs.llama_cpp_commit,
+                    argv=inputs.server_argv,
+                    reported={},
+                    context=context or inputs.plan.placement.context,
+                    micro_batch=micro_batch,
+                    n_prompt=result.n_prompt,
+                    n_gen=result.n_gen,
+                ),
+                gen_tps=result.gen_tps,
+                pp_tps=result.pp_tps,
+                ttft_ms=result.ttft_ms,
+                traffic=estimate.traffic,
+                estimated_gen_tps=estimate.gen_tps if result.gen_tps else None,
+                estimated_pp_tps=estimate.pp_tps if result.pp_tps else None,
+                peak_vram_bytes=peak,
+                vram_total_bytes=vram_total,
+                paging=paging,
+                tool_call_ok=result.tool_call_ok,
+                buffer_bytes=buffers,
+            )
+        )
     return runs, paging
 
 
