@@ -77,8 +77,8 @@ deletion would break are the ones who never file an issue.
 id: qwen3.8-flash-next                      # stable slug: lowercase, digits, dots, hyphens; unique
 name: Qwen3.8-Flash-Next
 vendor: Alibaba Qwen
-family: qwen3
-release_date: 2026-08-26
+family: qwen3.8
+release_date: 2026-08-27
 license: {spdx: Apache-2.0, url: https://huggingface.co/Qwen/Qwen3.8-Flash-Next/blob/main/LICENSE}
 params: {total_b: 125, active_b: 6, ngram_table_b: 51}
 architecture:
@@ -204,6 +204,49 @@ than a quantisation), and `sha256` must have exactly one checksum per entry in `
 otherwise nobody can say which checksum covers which file. A value outside those bounds is
 rejected when the catalog loads, not when a memory budget is computed from it.
 
+`family` is the generation, not the product line and not the architecture. Two entries share
+a `family` when the vendor shipped them as one generation of one line — Gemma 3's four sizes,
+Ministral 3's five, Llama 3.1 through 3.3 — and they do not share one when the vendor shipped
+them as different generations (`gemma3` and `gemma4`, `qwen3` and `qwen3.8`) or as different
+lines (`qwen3` and `qwen3-coder`, `command-a` and `north`, `deepseek-v4` and `deepseek-r1`).
+The value is the vendor's own name for that generation with the size, the tier and the role
+dropped: `ministral-3`, never `ministral-3-8b-instruct`. A point release stays inside the
+generation that numbers it — Llama 3.1, 3.2 and 3.3 are all `llama3`, Granite 4.2 is
+`granite4` — unless the vendor shipped it as a new line on a new architecture, which is why
+Qwen3.5, Qwen3.6 and Qwen3.8 are three families rather than three point releases of `qwen3`.
+Where a vendor has never numbered a line at all, its name stands alone: `gpt-oss`, `devstral`,
+`magistral`, `mistral-nemo`. One consequence is worth stating because a test enforces it: an
+entry's `id` begins with its `family`, ignoring hyphens and dots — `ministral-3-8b-instruct`
+is `ministral-3`, `deepseek-r1-0528-qwen3-8b` is `deepseek-r1`, `gemma-3-27b-it` is `gemma3`.
+An id that does not start with its family means one of the two is wrong, and it is usually the
+family.
+
+Two things `family` is not, both of which it has been mistaken for. It is not the
+architecture: one generation ships dense and mixture-of-experts members under one name
+(`qwen3.5` covers `qwen35` and `qwen35moe`), and a distillation keeps the architecture of the
+body it was trained onto while belonging to the vendor that trained it — so
+`deepseek-r1-0528-qwen3-8b` is `family: deepseek-r1` with `gguf_arch: qwen3`, and both fields
+are right. Filter on `architecture.gguf_arch` when the architecture is what you mean. And it
+is not the vendor, which `vendor` already is.
+
+`release_date` is the day the weights first became public, taken from the vendor: the date on
+the vendor's own announcement or release page, or failing that the date printed on the model
+card. A Hugging Face repository's creation date is the fallback and only the fallback, for the
+several labs that publish weights and date them nowhere, because a repository is routinely
+created private and opened weeks later and its creation date is then earlier than the release
+by exactly that gap — `google/gemma-3-27b-it` was created on 1 March 2025 and released on the
+12th, and the five Ministral 3 repositories were created on 31 October 2025 for a 2 December
+release. Every family file states in its header which of the three its dates are, because the
+three do not agree and nothing in a date says which kind it is.
+
+`llama_cpp.kv_types_allowed` names the KV cache types a model is known to tolerate, and it is
+empty far more often than it is filled. Empty has to be written down. An empty field means
+nobody has measured it, and nothing else in the file separates that from a curator who did not
+think to ask — so where the architecture makes the question live, which is every hybrid that
+mixes linear attention or state-space layers with ordinary attention, the entry carries a
+comment saying the field is empty because it is unmeasured. Do not guess a value in: a wrong
+`q8_0` here costs somebody a broken run, and llama.cpp's own defaults are safe.
+
 `capabilities` and `use_cases` are different kinds of claim and are used differently.
 `capabilities` is what the weights can do, and it is the only one a board filters on: a request
 asks for a capability by naming it, and by naming a job that needs one — coding needs the
@@ -273,6 +316,20 @@ Cite at least two published benchmarks. Prefer benchmarks that match the primary
 numbers are the only ones available, say so in the source URL's context. A pull request that
 changes a baseline explains why.
 
+Two baselines are only worth having if they can be read against each other, so a baseline is
+set by comparison as well as by rubric: find the entries already in the catalog whose cited
+numbers are closest to the model in hand, and land near them or say why not. Two 8B reasoning
+models citing the same four benchmarks to within a few points do not belong ten points apart,
+whatever each looked like on its own.
+
+`score` is on the scale the benchmark is published on, which for almost all of them is a
+percentage from 0 to 100. A vendor who publishes a fraction — Mistral prints Arena Hard as
+`0.305` — is converted to that scale, because a column mixing `0.86` and `86.0` cannot be
+read at all, and the reader who misreads it mistakes the best model in a family for the worst.
+The exceptions are the scores that are not percentages: MT-Bench and MM-MTBench are a judge's
+rating from 1 to 10 and keep it. Either way the `name` carries the scale it was measured on —
+`MATH (maj@1)`, not `MATH` — since two harnesses rarely produce the same number.
+
 ## Refreshing
 
 ```
@@ -325,6 +382,27 @@ routinely document less context than the file permits — Qwen3-0.6B is document
 tokens and its GGUF header declares 40,960 — and a check that flagged every conservative
 entry would only teach curators to ignore it. The `context` inside a `measured[]` entry is
 the context that measurement ran at, not a claim about the model, and is never compared.
+
+## What the catalog does not cover yet
+
+Two gaps, both real, both worth knowing before the catalog is asked a question it cannot
+answer.
+
+**No entry declares the `embeddings` capability or the `embedding` use case.** Both are valid
+values, and a request naming either is matched against them exactly as it is for any other
+capability — but the catalog ships no embedding model, so such a request matches nothing at
+all. Somebody building a retrieval pipeline gets an empty board rather than a bad
+recommendation, which is the right failure of the two, but it is still a whole capability
+class with no representative in the list.
+
+**Almost nothing here is measured on a machine with no discrete GPU.** `measured[]` is thin
+across the catalog by design — a measurement is a real run on real hardware, and there have
+not been many — but it is thinnest exactly where a first-time reader is most likely to be
+standing. One entry in the whole catalog carries a CPU-only run: `qwen3-0.6b`, at `-ngl 0
+-t 8`, and it was taken to calibrate the speed estimator rather than to recommend the model.
+Every other speed and memory figure for a machine without a card is that estimator
+extrapolating from runs made on one that had a card. LlamaFit labels an estimate as an
+estimate wherever it prints one, and this is where it is said for the catalog.
 
 ## Adding a model
 
