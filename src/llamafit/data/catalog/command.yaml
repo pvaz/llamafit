@@ -45,21 +45,22 @@
   use_cases: [general, chat, reasoning, coding]
   quality:
     baseline: 76
+    # The two Cohere published that this build can reproduce, and only those.
+    #
+    # The blog also reports MMMU 75.1, MathVista 80.6 and MMMU Pro 63.0. They were
+    # measured on the full model, which accepts images; this entry deliberately does not
+    # claim `vision`, because no projector accompanies the GGUF. Carrying them anyway put
+    # three vision scores in `llamafit info` beside a model the same screen says cannot
+    # see -- an entry arguing with itself in front of the reader. They are recorded here
+    # rather than in the table for whoever revisits this when a projector appears.
+    #
+    # What is left is a weak foundation and the weakest in this catalog: Cohere publishes
+    # nothing that overlaps what the other vendors report, so 76 is placed by the rubric's
+    # description rather than by comparison. A reader weighing this against another 76
+    # should know the two were not arrived at the same way.
     benchmarks:
-      # From Cohere's release blog. The multimodal rows were measured on the full model,
-      # which accepts images; they are reported here because they are what Cohere published
-      # about this checkpoint, and the text-only GGUF cannot reproduce them.
       - name: "Tau-squared-Bench Telecom"
         score: 85.0
-        source: "https://cohere.com/blog/command-a-plus"
-      - name: MMMU
-        score: 75.1
-        source: "https://cohere.com/blog/command-a-plus"
-      - name: MathVista
-        score: 80.6
-        source: "https://cohere.com/blog/command-a-plus"
-      - name: MMMU Pro
-        score: 63.0
         source: "https://cohere.com/blog/command-a-plus"
       - name: Terminal-Bench Hard
         score: 25.0
