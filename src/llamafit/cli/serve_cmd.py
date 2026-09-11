@@ -24,6 +24,7 @@ from rich.console import Console
 from rich.text import Text
 
 from llamafit.cli.app import CliState, app
+from llamafit.cli.common import refuse_substitution
 from llamafit.i18n import _, for_display, isolate, lazy_gettext
 
 _HOST_OPTION: str | None = typer.Option(
@@ -71,6 +72,18 @@ def serve_command(
     from llamafit.web import DEFAULT_HOST, is_loopback, remote_warning, serve
 
     state: CliState = ctx.obj
+    # The page has a Simulate panel of its own, and the API takes the same four values per
+    # request, so a global substitution here would set a default the panel then argues
+    # with -- two places to say the same thing, disagreeing. Refusing says which one wins.
+    refuse_substitution(
+        state,
+        command="serve",
+        hint=_(
+            "Drop --profile, --memory, --ram and --cpu-cores, then open the Simulate "
+            "panel on the page: it substitutes a machine for as long as you want it, and "
+            "marks every answer it produces."
+        ),
+    )
     address = host if host is not None else DEFAULT_HOST
     console = state.console
     if not is_loopback(address):

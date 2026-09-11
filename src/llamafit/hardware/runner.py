@@ -158,8 +158,23 @@ def probe(
     parse: Callable[[str], T],
     *,
     timeout: float = 10.0,
+    include_stderr: bool = False,
 ) -> tuple[T | None, Probe]:
-    """Run a command and parse its stdout, turning every failure into a ``Probe`` record.
+    """Run a command and parse its output, turning every failure into a ``Probe`` record.
+
+    Args:
+        name: What ``doctor`` calls this probe.
+        runner: How to run it.
+        argv: The command and its arguments.
+        parse: Reads the output. Raising is how a parser says it found nothing; a parser
+            that returns a hollow value instead leaves a probe reported ``ok`` after it
+            learned nothing, which is the shape of every "the tool said it worked" bug.
+        timeout: Seconds before the command is abandoned.
+        include_stderr: Read the error stream as well as the output stream. Off by
+            default, because most tools answer on stdout and stderr is where their noise
+            goes. On for the ones that do not: llama.cpp prints its own version banner to
+            stderr and nothing at all to stdout, which is why its build number read as
+            unknown on every machine whose llama.cpp LlamaFit had not installed itself.
 
     Returns:
         The parsed value (or ``None``) and the probe record for ``doctor``.
@@ -176,8 +191,9 @@ def probe(
         }
         _log.debug("probe %s failed: %s", name, error)
         return None, Probe(name=name, ok=False, duration_ms=result.duration_ms, error=error)
+    text = "\n".join((result.stdout, result.stderr)) if include_stderr else result.stdout
     try:
-        value = parse(result.stdout)
+        value = parse(text)
     except Exception as exc:  # any parse failure must become a probe record
         _log.debug("probe %s failed: %s", name, exc)
         return None, Probe(name=name, ok=False, duration_ms=result.duration_ms, error=str(exc))

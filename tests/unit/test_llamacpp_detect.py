@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from llamafit.hardware.runner import FakeRunner
+from llamafit.hardware.runner import CommandResult, FakeRunner
 from llamafit.llamacpp.detect import (
     detect_backends,
     detect_install,
@@ -29,6 +29,12 @@ def make_install(root: Path, *, windows: bool = True) -> Path:
 
 
 def test_parse_version_variants() -> None:
+    # What llama-server prints today. It was the one shape the parser did not know, so
+    # on every machine whose llama.cpp LlamaFit had not installed itself the build read
+    # as unknown -- the figure came from a VERSION.txt only the installer writes.
+    assert parse_version(
+        "version: 0.4.0-dev (build 10867, commit f3f1a8f27)\nbuilt with Clang 20.1.8"
+    ) == (10867, "f3f1a8f27")
     assert parse_version("version: 10867 (f3f1a8f27)\nbuilt with clang") == (10867, "f3f1a8f27")
     assert parse_version("build: 10867 (f3f1a8f2) with MSVC") == (10867, "f3f1a8f2")
     assert parse_version("llama-server b10867\n") == (10867, None)
@@ -129,7 +135,20 @@ def test_find_local_models_skips_split_models_without_their_first_shard(tmp_path
 def test_detect_install_reads_version_and_backends(tmp_path: Path) -> None:
     bin_dir = make_install(tmp_path)
     server = str(bin_dir / "llama-server.exe")
-    runner = FakeRunner({f"{server} --version": "version: 10867 (f3f1a8f27)\n"})
+    # On stderr with nothing on stdout, which is where the real binary answers. Read
+    # from stdout alone this is an empty string, the parser finds nothing, and the
+    # build is unknown on a machine that has one.
+    runner = FakeRunner(
+        {
+            f"{server} --version": CommandResult(
+                [server, "--version"],
+                0,
+                "",
+                "version: 0.4.0-dev (build 10867, commit f3f1a8f27)\nbuilt with Clang\n",
+                3,
+            )
+        }
+    )
     llamacpp, probes = detect_install(
         runner, "windows", env={"LLAMA_CPP_PATH": str(bin_dir)}, home=tmp_path, path_dirs=[]
     )
@@ -137,6 +156,26 @@ def test_detect_install_reads_version_and_backends(tmp_path: Path) -> None:
     assert llamacpp.build == 10867 and llamacpp.commit == "f3f1a8f27"
     assert llamacpp.backends == ["cuda", "rpc", "cpu"]
     assert [p.name for p in probes] == ["llama-server --version"]
+
+
+def test_a_version_probe_that_parsed_nothing_is_not_reported_ok(tmp_path: Path) -> None:
+    """``doctor`` said ``llama-server --version  ok`` about a run it learned nothing from.
+
+    A parser that answers with a hollow value leaves the probe recorded as a success, so
+    the one screen a person opens to find out what went wrong tells them nothing did.
+    """
+    bin_dir = make_install(tmp_path)
+    server = str(bin_dir / "llama-server.exe")
+    runner = FakeRunner({f"{server} --version": "some future banner nobody has seen"})
+    llamacpp, probes = detect_install(
+        runner, "windows", env={"LLAMA_CPP_PATH": str(bin_dir)}, home=tmp_path, path_dirs=[]
+    )
+    assert [(p.name, p.ok) for p in probes] == [("llama-server --version", False)]
+    assert "some future banner" in (probes[0].error or "")
+    # The build is still found, from the VERSION.txt this fixture writes. That is the
+    # fallback doing its job and is why the failure was invisible: a wrong probe and a
+    # right answer look the same from outside, until the machine has no VERSION.txt.
+    assert llamacpp.installed and llamacpp.build == 10867
 
 
 def test_detect_install_survives_a_version_file_that_is_not_utf8_text(tmp_path: Path) -> None:

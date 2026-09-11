@@ -144,7 +144,12 @@ Probes run in order; the first that succeeds for a vendor wins, others add infor
 | AMD | `rocm-smi --showmeminfo vram --json`, `amd-smi metric --mem --json` | name, VRAM total and used |
 | Apple | `system_profiler SPDisplaysDataType -json` | chip name, core count; memory comes from the unified pool |
 | Intel Arc | `sysfs` on Linux, WMI on Windows | name, VRAM |
-| Any | `vulkaninfo --summary` when present | device names and heap sizes as a fallback |
+| Any | `vulkaninfo` when present | device names and heap sizes as a fallback |
+
+> **Errata, 2026-09-11.** This row said `vulkaninfo --summary`. `--summary` prints no
+> memory at all, so the probe reads the default output instead. It was written from the
+> flag's name rather than from its output, which is the mistake this document exists to
+> stop the code making.
 | Any | WMI `Win32_VideoController`, `lspci -nn` | name only, VRAM unknown |
 
 Each GPU records `vendor`, `name`, `vram_total_bytes`, `vram_used_bytes`, `bandwidth_gbps` (from the profile table or unknown), `compute_tflops_fp16` (table or unknown), `backend_hint` (`cuda`, `hip`, `metal`, `vulkan`, `sycl`, `cpu`). Multi-GPU is recorded; phase 1 plans on the largest single GPU and reports the others.

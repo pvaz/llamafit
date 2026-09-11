@@ -14,9 +14,9 @@ vision, tool calling, long context), and turns the winner into a working `llama-
 configuration. Then it installs llama.cpp and the model, writes tuned launch scripts, and
 measures the real speed so you can see what the estimate got wrong.
 
-It works on Windows, macOS and Linux, installs with `pip`, speaks 37 languages, and never uses
-a language model to do any of this: every number is computed, labelled with how it was
-obtained, and explainable.
+It works on Windows, macOS and Linux, installs with `pip`, speaks English and 37 other
+languages, and never uses a language model to do any of this: every number is computed,
+labelled with how it was obtained, and explainable.
 
 ```console
 $ llamafit list --limit 5
@@ -171,10 +171,20 @@ but file metadata and headers.
 
 ## Your language
 
-The interface ships in 37 languages, chosen with `--language`, the `LLAMAFIT_LANGUAGE`
-variable, or your operating system's own setting, in that order. Ask for one that is not
-there and LlamaFit falls back to English **and says so**, because quietly ignoring what you
-asked for is its own kind of bug.
+The interface ships in English and 37 other languages, chosen with `--language`, the
+`LLAMAFIT_LANGUAGE` variable, or your operating system's own setting, in that order. Ask
+for one that is not there and LlamaFit falls back to English **and says so**, because
+quietly ignoring what you asked for is its own kind of bug.
+
+Six of the 37 are close to complete: Portuguese, Brazilian Portuguese, Spanish, French,
+German and Italian. The rest carry about a quarter of the messages — the column headings
+and the short phrases, not the sentences that explain anything — **and LlamaFit tells you
+so the first time you use one**, with the figure and where to help. A tool that lists a
+language it barely speaks is making a promise; saying how far it got is keeping one.
+
+If the console you are writing to cannot represent the script — a Windows code page and
+Japanese, say — LlamaFit speaks English instead and tells you which encoding refused
+which language, rather than printing a screen of question marks. `PYTHONUTF8=1` fixes it.
 
 No catalog has been read by a native speaker, and every one of them says so at the top and
 asks for that review. Correcting a line of your own language is the easiest useful

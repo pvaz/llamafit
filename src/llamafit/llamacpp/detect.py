@@ -17,7 +17,18 @@ from llamafit.models.llamacpp import LlamaCpp, LocalModel
 
 _SHARD_RE = re.compile(r"^(?P<stem>.+)-(?P<index>\d{5})-of-(?P<total>\d{5})\.gguf$", re.IGNORECASE)
 _BACKEND_ORDER = ["cuda", "hip", "metal", "vulkan", "sycl", "rpc", "cpu"]
+# Three shapes, most specific first, because a build number is a number and the loose
+# pattern would happily read one out of a release name.
+#
+#   version: 0.4.0-dev (build 10867, commit f3f1a8f27)   what llama-server prints today
+#   version: 10867 (f3f1a8f27)                           what it printed before that
+#   b10867                                               a release tag, and VERSION.txt
+#
+# The first was missing, which is why a build number was only ever known on a machine
+# whose llama.cpp LlamaFit installed itself: the installer writes VERSION.txt, and the
+# third pattern reads it back.
 _VERSION_PATTERNS = [
+    re.compile(r"\bbuild\s+(\d+)\s*,\s*commit\s+([0-9a-f]{6,})", re.IGNORECASE),
     re.compile(r"(?:version|build)\s*:?\s*(\d+)\s*\(([0-9a-f]{6,})\)", re.IGNORECASE),
     re.compile(r"\bb(\d{4,})\b"),
 ]
@@ -75,14 +86,50 @@ def find_llamacpp_dir(
 
 
 def parse_version(out: str) -> tuple[int | None, str | None]:
-    """Extract the build number and commit hash from ``llama-server --version`` output."""
-    match = _VERSION_PATTERNS[0].search(out)
-    if match:
-        return int(match.group(1)), match.group(2)
-    match = _VERSION_PATTERNS[1].search(out)
+    """Extract the build number and commit hash from ``llama-server --version`` output.
+
+    Args:
+        out: Whatever the binary printed, on either stream.
+
+    Returns:
+        The build number and the commit, either of which may be ``None`` when the text
+        does not carry it. Used directly on ``VERSION.txt``, where finding nothing is an
+        ordinary answer; the probe uses :func:`_parsed_version` instead, which refuses.
+    """
+    for pattern in _VERSION_PATTERNS[:-1]:
+        match = pattern.search(out)
+        if match:
+            return int(match.group(1)), match.group(2)
+    match = _VERSION_PATTERNS[-1].search(out)
     if match:
         return int(match.group(1)), None
     return None, None
+
+
+def _parsed_version(out: str) -> tuple[int, str | None]:
+    """The same, for a probe, refusing rather than returning nothing.
+
+    A probe whose parser hands back a hollow value is recorded ``ok``, and ``doctor`` then
+    prints ``llama-server --version  ok`` about a run it learned nothing from. Raising is
+    how a parser says "this ran and told me nothing", which is the honest record.
+
+    Args:
+        out: Whatever the binary printed, on either stream.
+
+    Returns:
+        The build number and the commit, when the text carries a build number.
+
+    Raises:
+        ValueError: When no pattern matched, naming the first line the binary printed so
+            a reader can see what shape it is in.
+    """
+    build, commit = parse_version(out)
+    if build is None:
+        first = next((line.strip() for line in out.splitlines() if line.strip()), "")
+        raise ValueError(
+            _("no build number in the version output: %(text)s") % {"text": first or _("no output")}
+        )
+    return build, commit
 
 
 def detect_backends(bin_dir: Path) -> list[str]:
@@ -187,7 +234,11 @@ def detect_install(
 
     server = bin_dir / exe_name("llama-server", os_name)
     version, rec = probe(
-        "llama-server --version", runner, [str(server), "--version"], parse_version
+        "llama-server --version",
+        runner,
+        [str(server), "--version"],
+        _parsed_version,
+        include_stderr=True,
     )
     probes.append(rec)
     build, commit = version if version else (None, None)

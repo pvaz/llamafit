@@ -26,6 +26,7 @@ maintains the code stays in the code.
 
 from __future__ import annotations
 
+import argparse
 import ast
 import sys
 from collections.abc import Iterable, Iterator, Sequence
@@ -198,11 +199,35 @@ def main(argv: Sequence[str] | None = None) -> int:
     such a message can never reach a translator, so the run fails loudly and names each
     one instead of writing a template that quietly omits it.
 
+    Args:
+        argv: Arguments, for a test. ``None`` reads the real ones.
+
     Returns:
-        ``0`` on success, ``1`` when a call could not be extracted.
+        ``0`` on success, ``1`` when a call could not be extracted, and ``1`` under
+        ``--check`` when the committed template is not what this run would write.
+
+    Every argument used to be taken as a source root, so a stray word produced a template
+    with almost nothing in it and the script said it had succeeded. Roots are now named by
+    ``--root``, which nothing passes in practice, and a bare argument is an error. The
+    other two generators are checked in CI and this one was not, which is how a stale
+    template reached the main branch twice in one week; ``--check`` is what CI runs.
     """
-    arguments = list(sys.argv[1:] if argv is None else argv)
-    roots = tuple(Path(a).resolve() for a in arguments) if arguments else SOURCE_ROOTS
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="write nothing; fail if the committed template is not what this run produces",
+    )
+    parser.add_argument(
+        "--root",
+        action="append",
+        type=Path,
+        default=None,
+        metavar="DIR",
+        help="a directory to extract from, repeatable (default: the package and the scripts)",
+    )
+    args = parser.parse_args(list(sys.argv[1:] if argv is None else argv))
+    roots = tuple(root.resolve() for root in args.root) if args.root else SOURCE_ROOTS
     found = extract(roots)
     if found.problems:
         for problem in found.problems:
@@ -215,7 +240,22 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 1
     # Newlines are forced to "\n": the template is committed and compared byte for byte,
     # so it must not depend on the platform it was generated on.
-    DEST.write_text(render_template(found, version=__version__), encoding="utf-8", newline="\n")
+    rendered = render_template(found, version=__version__)
+    if args.check:
+        try:
+            current = DEST.read_text(encoding="utf-8")
+        except OSError:
+            current = ""
+        if current == rendered:
+            print(f"{TEMPLATE_NAME} is current with {len(found.entries)} message(s)")
+            return 0
+        print(
+            f"{TEMPLATE_NAME} is not what the source says it should be; "
+            f"run `python scripts/gen_messages.py` and commit the result",
+            file=sys.stderr,
+        )
+        return 1
+    DEST.write_text(rendered, encoding="utf-8", newline="\n")
     print(f"wrote {DEST} with {len(found.entries)} message(s)")
     return 0
 
