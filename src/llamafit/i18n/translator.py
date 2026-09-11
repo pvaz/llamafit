@@ -21,6 +21,12 @@ Choosing a language is a one-off at start-up: ``set_language`` installs the tran
 and returns what it decided, including the sentence the interface should print when a
 request could not be honoured. That sentence is handed over once per process, so a
 request for a language LlamaFit does not speak is reported and not repeated.
+
+The choice looks at the person, and, when the interface says where the words are going,
+at the stream too. A catalog whose script the stream's encoding cannot write is not
+installed: a screen of ``?`` is not a translation, so English is spoken and the notice
+says which encoding refused which language. :mod:`llamafit.i18n.encoding` argues that
+rule and draws the line; this module only asks it.
 """
 
 from __future__ import annotations
@@ -33,6 +39,7 @@ from typing import Protocol
 from llamafit.errors import ConfigError
 from llamafit.i18n.catalogs import load_language
 from llamafit.i18n.detect import LocaleProvider
+from llamafit.i18n.encoding import can_write
 from llamafit.i18n.po import PoCatalog
 from llamafit.i18n.select import LanguageChoice, resolve_language, substitution_notice
 from llamafit.i18n.tags import SOURCE_LANGUAGE
@@ -175,11 +182,14 @@ def set_language(
     locale_provider: LocaleProvider | None = None,
     available: Sequence[str] | None = None,
     directory: Path | None = None,
+    encoding: str | None = None,
 ) -> LanguageChoice:
     """Choose a language, load its catalog and install it.
 
     A catalog that cannot be read is a broken install, not a reason to fail: it is
-    logged, English is installed instead, and the choice comes back with a notice.
+    logged, English is installed instead, and the choice comes back with a notice. A
+    catalog the output stream cannot write is not a reason to fail either, and ends the
+    same way: English, and a notice naming the encoding and the language it refused.
 
     Args:
         requested: The value of the ``--language`` option, if one was given.
@@ -187,6 +197,9 @@ def set_language(
         locale_provider: Where the operating system's locale comes from.
         available: The languages to choose among; the packaged ones when ``None``.
         directory: Where the catalogs live; the packaged directory when ``None``.
+        encoding: What the output stream writes in, when the interface has one to name;
+            ``None`` skips the question, which is right for an interface that draws its
+            own screen and for a test that has no stream.
 
     Returns:
         The choice. Its ``notice`` is set only the first time a given problem is met in
@@ -217,9 +230,43 @@ def set_language(
                 or "Reinstall LlamaFit, or report the file the log names.",
             )
         )
+    if encoding is not None and not can_write(_everything_said(catalog), encoding):
+        _log.debug("%s cannot write the %s catalog", encoding, choice.language)
+        set_translator(EnglishTranslator())
+        return _once(_unwritable(choice, catalog, encoding))
     set_translator(CatalogTranslator(choice.language, catalog))
     _log.debug("speaking %s, chosen by %s", choice.language, choice.source)
     return _once(_unusable(_named(choice, catalog), catalog))
+
+
+def _everything_said(catalog: PoCatalog) -> str:
+    """Every translation in the catalog as one text, which is what a stream is judged on."""
+    return "\n".join(form for message in catalog.messages.values() for form in message.translations)
+
+
+def _unwritable(choice: LanguageChoice, catalog: PoCatalog, encoding: str) -> LanguageChoice:
+    """The choice for a catalog the stream cannot write: English, and the reason.
+
+    The notice names the language the way the catalog names itself, as the substitution
+    notice does, because *Japanese* tells a reader more than *ja*. It names the encoding
+    the way the stream reports it, because that is the name they can search for. And the
+    hint names the one setting that makes a Python stream write UTF-8 whatever the
+    platform's default is, since the stream is the thing at fault and the person can fix
+    it without touching LlamaFit.
+
+    Whatever notice the choice carried before is replaced rather than kept. A substitution
+    notice explains why the wording looks foreign, and no wording is about to.
+    """
+    name = catalog.headers.get("Language-Team", "").strip() or choice.language
+    return replace(
+        choice,
+        language=SOURCE_LANGUAGE,
+        requested=choice.requested or choice.language,
+        notice=f"This output is written as {encoding}, which cannot carry {name}, "
+        "so LlamaFit is using English.",
+        hint="Set PYTHONUTF8=1 in the environment and run again: Python then writes "
+        "UTF-8, which carries every language.",
+    )
 
 
 def _unusable(choice: LanguageChoice, catalog: PoCatalog) -> LanguageChoice:
