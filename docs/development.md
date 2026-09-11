@@ -111,10 +111,13 @@ Messages to the user go through a small gettext layer in `src/llamafit/i18n/`, w
 the template. [translations.md](translations.md) documents the format, how a language is
 chosen, and what a translator needs to know.
 
-The machinery is in place; no interface message goes through it yet, so `llamafit` is English
-everywhere today. Read that page before you write a message that will one day be translated:
-anything built at import time needs `lazy_gettext` rather than `_()`, and the extractor
-refuses a message that is not a literal string.
+The whole interface goes through it: `messages.pot` carries a thousand-odd messages and
+thirty-seven catalogs ship beside it, so `llamafit --language pt_PT list` comes out in
+Portuguese, help screens included. None of the catalogs has been read by a native speaker,
+which [translations.md](translations.md) says at length and is the contribution it asks for.
+Read that page before you write a message: anything built at import time needs `lazy_gettext`
+rather than `_()`, the extractor refuses a message that is not a literal string, and changing
+an existing message is expensive because every catalog carries it.
 
 ## Style
 

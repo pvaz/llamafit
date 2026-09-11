@@ -210,9 +210,14 @@ the same text with `--explain`; the dashboards show it in the detail pane.
 
 ## 9. What changes after a benchmark
 
-`llamafit bench` (phase 3) runs `llama-bench` and a real server at the planned flags, records
-generation and prompt throughput and peak VRAM, and compares them with the estimate. From
-enough results it fits the efficiency factors, the PCIe bandwidth and the compute-buffer
-constants for your machine, and stores them in your hardware profile. Estimates then carry
-`calibrated`; the exact configurations you measured carry `measured`. The reference machine's
-first results are in [calibration/](calibration/).
+`llamafit bench` runs `llama-bench` and a real server at the planned flags, records
+generation and prompt throughput and peak VRAM, and prints them beside the estimate with the
+ratio between them. `bench --calibrate` fits the efficiency factors, the PCIe bandwidth and
+the compute-buffer constants from enough results, refuses by name the ones your measurements
+do not determine, and stores the fit beside the runs in `benchmarks.sqlite`.
+
+**Nothing on this page reads that back yet.** The scores above are computed from the constants
+that ship in `llamafit/constants/`, so every speed stays labelled `estimated` however much you
+have measured; [benchmarking.md](benchmarking.md) says what is missing. The reference
+machine's own measurements — the ones those constants were chosen against — are in
+[calibration/](calibration/).

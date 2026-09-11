@@ -7,27 +7,44 @@ standard error and prints what `llamafit recommend` would print instead.
 
 ## Layout
 
+The Board screen, on the reference machine, in an 88-column terminal:
+
 ```
-┌ LlamaFit ────────────────────────────────────────────────────────────────────────────┐
-│ RTX 4060, 7.2 GiB free of 8.0 GiB · 100 GiB free of 128 GiB RAM · i9-14900KF, 8 co… │
-│ [Board] [Needs] [Host] [Plan] [Simulate]                                              │
-├──────────────────────────────────────────────────────────────────────────────────────┤
-│ Move with the up and down arrows. Enter says why a row is where it is; p gives the    │
-│ command line that runs it.                                                            │
-│ Speeds are section 10's formula on its default constants. Nothing has been            │
-│ benchmarked on this machine yet, so no figure here is a measurement.                  │
-│ 3 of 3 shown, by score, showing every candidate.                                      │
-│  #  Model                  Quant       Score  Tok/s  Fit    Runs   Ctx    Have        │
-│  1  qwen3-coder-next       UD-Q4_K_XL   91.2   23.4  fits   split  262K   no          │
-│  2  qwen3.8-flash-next     UD-Q4_K_XL   84.0   14.1  tight  split   40K   no          │
-├──────────────────────────────────────────────────────────────────────────────────────┤
-│ Qwen3 Coder Next UD-Q4_K_XL, Alibaba, licensed Apache-2.0; it can: coding, tools      │
-│                          Score 91.2                                                   │
-│ ┌─────────┬───────┬────────┬──────┐                                                   │
-│ │ Part    │ Score │ Weight │ Adds │   … the budget, the ladder and a token's time      │
-│ └─────────┴───────┴────────┴──────┘     follow, exactly as `--explain` prints them     │
-└ ↑↓ choose  Enter why  p command line  / search  f fit  s sort  a on disk  A all … ───┘
+ ⭘                                     LlamaFit
+ NVIDIA GeForce RTX 4060, 7.2 GiB free of 8.0 GiB · 94.0 GiB free of 127.8 GiB RAM ·
+ Board  Needs  Host  Plan  Simulate
+╸━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ Move with the up and down arrows. Enter says why a row is where it is; p gives the
+ command line that runs it.
+ Speeds are section 10's formula on its default constants. Nothing has been benchmarked
+ on this machine yet, so no figure here is a measurement.
+ 37 of 37 shown, by score, showing every candidate.
+ #    Model                     Quant        Score  Tok/s   Fit      Runs
+ 1    qwen3.6-35b-a3b           UD-Q6_K_XL   83.7   24.1    tight    experts in RAM   ▅▅
+ 2    qwen3-coder-next          UD-Q4_K_XL   83.0   23.0    tight    experts in RAM
+ 3    mistral-small-4-119b      UD-Q2_K_XL   82.1   20.8    fits     experts in RAM
+ 4    north-mini-code-1.0       UD-Q4_K_XL   79.3   21.4    tight    experts in RAM
+ 5    nemotron-3-nano-30b-a3b   UD-Q4_K_XL   77.8   22.8    tight    experts in RAM
+ 6    nemotron-3.5-lightning-3  UD-Q4_K_XL   77.7   20.0    tight    experts in RAM
+────────────────────────────────────────────────────────────────────────────────────────
+Qwen3.6-35B-A3B UD-Q6_K_XL, Alibaba Qwen, licensed Apache-2.0; it can: coding,
+thinking, vision, tools, multilingual, long-context                                   ▆▆
+
+1. Qwen3.6-35B-A3B UD-Q6_K_XL
+            Score 83.7
+┏━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━┓
+┃ Part    ┃ Score ┃ Weight ┃ Adds ┃
+┡━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━┩
+│ quality │  85.0 │   0.35 │ 29.7 │
+│ speed   │  97.5 │   0.25 │ 24.4 │
+│ fit     │  58.3 │   0.25 │ 14.6 │
+ ↑↓ choose   Enter why   p command line   / search   f fit   s sort   a on disk   A all
+ quants   x explanation   n not ranked   ? keys   t theme   q quit
 ```
+
+Both panes scroll — the marks at the right edge are their scrollbars — so the explanation
+under the table continues into the context score, the memory budget, the ladder and where a
+token's time goes.
 
 Three lines come before the table and none of them is a footnote: what to do, what a speed
 is, and what is on the screen. The explanation is open by default — on a terminal it costs
@@ -53,8 +70,8 @@ cannot advertise a key nothing is bound to.
 - The dashboard draws whatever it already has and scans on a background thread, so the
   screen is never frozen while a probe runs. `R` scans again.
 - Nothing runs, downloads or changes on the machine from any of these five screens.
-- **No number appears without saying how it was arrived at.** Nothing has been benchmarked
-  on any machine yet, so every speed is section 10's formula on default constants, and the
+- **No number appears without saying how it was arrived at.** Nothing the dashboard draws is
+  fed a benchmark, so every speed is section 10's formula on default constants, and the
   sentence saying so is a band above the table rather than a caption under it. When rows
   disagree about how their speeds were arrived at, the label becomes a column beside each
   figure, and a terminal too narrow for the pair shows neither.
@@ -74,8 +91,10 @@ cannot advertise a key nothing is bound to.
 
 ## Not yet
 
-**Downloads** (phase 2) and **Benchmarks** (phase 3) are named in section 13.2 and are not
-built: there is nothing to download with and nothing to benchmark with yet. Section 12.3's
-"what would move it up a tier" is not a sentence any service produces, so the dashboard
-shows the context ladder with what each rung costs and leaves the reader to draw the
-conclusion, rather than inventing the arithmetic in the interface.
+**Downloads** and **Benchmarks** are named in section 13.2 and are not built. The commands
+behind them are: `llamafit install model`, `llamafit install llama.cpp` and `llamafit bench`
+all ship, and none of them has a screen here — which is also why nothing on these five
+screens downloads, runs or changes anything. Section 12.3's "what would move it up a tier" is
+not a sentence any service produces, so the dashboard shows the context ladder with what each
+rung costs and leaves the reader to draw the conclusion, rather than inventing the arithmetic
+in the interface.

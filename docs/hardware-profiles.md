@@ -171,9 +171,10 @@ name, so a profile that set it would have been quietly ignored. A field nothing 
 field that lies.
 
 `calibration` is accepted, validated and stored, and **this build does not apply it**.
-`hardware show` says so on the line that prints it. Phase 3 is where those factors start to
-count; until then the reference machine's fitted constants live in `llamafit/constants.py`,
-where they are applied.
+`hardware show` says so on the line that prints it. `llamafit bench --calibrate` ships and
+fits a machine's own factors, but nothing reads either that fit or this block back into the
+estimator: the constants that count are the reference machine's, in `llamafit/constants/`.
+[benchmarking.md](benchmarking.md) says what it would take to change that.
 
 ## Where profiles live
 
@@ -237,7 +238,10 @@ guessed at.
 
 ## Automatic use
 
-After `llamafit bench` has calibrated a machine (phase 3), the calibration is stored in a user
-profile whose `match` rules fit the live scan. Later runs pick it up automatically; `doctor`
-shows which profile is in effect and why. A match never overrides the live scan's own figures:
-the scan measured this machine and the profile did not.
+A profile is used when you name it: `--profile NAME`, or a path to its file. The `match` rules
+in the schema are read and validated, and nothing selects a profile by them yet — no command
+picks one up from the live scan, and `doctor` does not report one as being in effect. The
+design's plan for that stands: a calibration `bench` fitted would be stored in a user profile
+whose `match` rules fit the machine, and later runs would pick it up. When it exists, a match
+will never override the live scan's own figures — the scan measured this machine and the
+profile did not.
