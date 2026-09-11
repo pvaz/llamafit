@@ -76,6 +76,17 @@ class Gpu(BaseModel):
     name: str
     vram_total_bytes: int | None = None
     vram_used_bytes: int | None = None
+    vram_source: Source = "unknown"
+    """Where the two figures above came from, on the same terms as ``bandwidth_source``.
+
+    ``measured`` is a vendor tool reporting the card's own memory -- ``nvidia-smi``,
+    ``rocm-smi`` -- or a hardware profile whose author wrote the size down. ``estimated``
+    is the Vulkan driver's device-local heap and its allocation budget: what the driver
+    will let a process have rather than what is printed on the box, and the same figure
+    llama.cpp's Vulkan backend sizes itself against. ``unknown`` is a card nothing could
+    size, and it is the default, because a size that arrived without a provenance is the
+    one thing this field exists to prevent.
+    """
     bandwidth_gbps: float | None = None
     compute_tflops_fp16: float | None = None
     backend_hint: Backend = "cpu"
@@ -159,3 +170,25 @@ class Host(BaseModel):
         """Free VRAM on the primary GPU, ``None`` without a GPU or without figures."""
         gpu = self.primary_gpu
         return None if gpu is None else gpu.vram_free_bytes
+
+    @property
+    def unsized_gpus(self) -> list[Gpu]:
+        """The cards that are here, could not be read, and are why nothing can be placed.
+
+        A machine with one of these is not the same machine as one with no card at all,
+        and the difference is the whole reason this property exists: the planner treats
+        the two identically -- :func:`llamafit.placement.modes.has_gpu` asks for free
+        VRAM and an unsized card has none to report -- so every screen that shows a plan
+        has to say which of the two it was looking at.
+
+        The list is empty unless that is the whole story. A unified-memory machine has no
+        separate pool to have failed to read. A desktop with a sized card and an
+        unreadable integrated one has a card to plan on, and a caption apologising for
+        the integrated chip would be an apology for nothing -- worse, it would say the
+        speeds were CPU-only when they were not. So the condition here is exactly
+        ``has_gpu``'s, negated: nothing on this machine offers free VRAM, *and* a card
+        that might have is the reason.
+        """
+        if self.unified_memory or (self.vram_available_bytes or 0) > 0:
+            return []
+        return [gpu for gpu in self.gpus if gpu.vram_free_bytes is None]

@@ -16,7 +16,7 @@ from llamafit.cli.render import render_host, render_profile, render_profiles
 from llamafit.hwprofile.loader import LoadedProfile, load_profile_file
 from llamafit.hwprofile.simulate import host_from_profile, override_host
 from tests.fixtures import profiles
-from tests.fixtures.budget_hosts import GIB, machine
+from tests.fixtures.budget_hosts import GIB, machine, unsized_card_host
 
 
 def _drawn(renderable: object) -> str:
@@ -159,3 +159,38 @@ def test_the_bundled_profile_draws_every_row() -> None:
     loaded, _problems = load_profiles()
     text = _drawn(render_profile(loaded[0]))
     assert "Recorded" in text and "Backends" in text and "cuda, cpu" in text
+
+
+# --- a card that is here and cannot be read -------------------------------------------
+
+
+def test_the_host_table_says_an_unreadable_card_was_planned_around() -> None:
+    """``VRAM unknown`` beside the card names the gap; this row says what it cost."""
+    text = _drawn(render_host(unsized_card_host()))
+    assert "VRAM unknown" in text
+    assert "as if there were no card at all" in text
+    assert "AMD Radeon RX 7900 XTX" in text
+
+
+def test_the_host_table_says_when_a_size_came_from_the_vulkan_driver() -> None:
+    """A driver's allocation budget is not a vendor tool's reading, and says so."""
+    host = unsized_card_host()
+    host.gpus[0].vram_total_bytes = 24 * GIB
+    host.gpus[0].vram_used_bytes = 1 * GIB
+    host.gpus[0].vram_source = "estimated"
+    text = _drawn(render_host(host))
+    assert "23.0 GiB free (Vulkan driver)" in text
+    assert "as if there were no card at all" not in text
+
+
+def test_a_size_with_no_free_figure_says_so_rather_than_printing_a_dash() -> None:
+    host = unsized_card_host()
+    host.gpus[0].vram_total_bytes = 24 * GIB
+    host.gpus[0].vram_source = "estimated"
+    text = _drawn(render_host(host))
+    assert "24.0 GiB VRAM, free unknown" in text
+    assert "as if there were no card at all" in text
+
+
+def test_a_machine_whose_card_was_read_gets_no_card_memory_row() -> None:
+    assert "as if there were no card at all" not in _drawn(render_host(machine()))

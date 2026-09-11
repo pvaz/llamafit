@@ -413,6 +413,31 @@ def _gpu_specs(gpu: Gpu) -> str:
     return pgettext("GPU specifications", "no specs")
 
 
+def _vram(gpu: Gpu) -> str:
+    """One card's memory, saying which of the three things is known about it.
+
+    A size and a free figure is the whole answer, and a size the Vulkan driver supplied
+    says so: it is the driver's allocation budget rather than the card's own memory, and
+    the two are not the same claim any more than a measured bandwidth and an assumed one
+    are. A size with no free figure is the shape a driver without ``VK_EXT_memory_budget``
+    leaves behind -- it is worth printing, and it is not enough to plan on, which is what
+    the row below the cards is for.
+    """
+    if gpu.vram_total_bytes and gpu.vram_free_bytes is not None:
+        if gpu.vram_source == "estimated":
+            return _("%(total)s VRAM, %(free)s free (Vulkan driver)") % {
+                "total": _size(gpu.vram_total_bytes),
+                "free": _size(gpu.vram_free_bytes),
+            }
+        return _("%(total)s VRAM, %(free)s free") % {
+            "total": _size(gpu.vram_total_bytes),
+            "free": _size(gpu.vram_free_bytes),
+        }
+    if gpu.vram_total_bytes:
+        return _("%(total)s VRAM, free unknown") % {"total": _size(gpu.vram_total_bytes)}
+    return pgettext("GPU VRAM", "VRAM unknown")
+
+
 def render_host(host: Host) -> Table:
     """A two-column table with everything the scan found.
 
@@ -487,15 +512,6 @@ def render_host(host: Host) -> Table:
     if not host.gpus:
         _add_row(table, _("GPU"), pgettext("GPU", "none detected"))
     for gpu in host.gpus:
-        vram = (
-            _("%(total)s VRAM, %(free)s free")
-            % {
-                "total": _size(gpu.vram_total_bytes),
-                "free": _size(gpu.vram_free_bytes),
-            }
-            if gpu.vram_total_bytes
-            else pgettext("GPU VRAM", "VRAM unknown")
-        )
         _add_row(
             table,
             _("GPU %(index)d") % {"index": gpu.index},
@@ -504,9 +520,24 @@ def render_host(host: Host) -> Table:
                 % {
                     "name": isolate(gpu.name),
                     "backend": isolate(gpu.backend_hint),
-                    "vram": vram,
+                    "vram": _vram(gpu),
                     "specs": _gpu_specs(gpu),
                 }
+            ),
+        )
+    unsized = host.unsized_gpus
+    if unsized:
+        _add_row(
+            table,
+            _("Card memory"),
+            _cell(
+                _(
+                    "%(gpus)s: nothing here could read how much of the card is free, so "
+                    "every budget on this machine was computed as if there were no card "
+                    "at all. Install the Vulkan tools, or write the size into a hardware "
+                    "profile."
+                )
+                % {"gpus": ", ".join(isolate(gpu.name) for gpu in unsized)}
             ),
         )
     if host.unified_memory:

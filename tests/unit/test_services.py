@@ -230,3 +230,55 @@ def test_the_probe_hints_are_deferred_so_a_language_chosen_later_still_reaches_t
     assert PROBE_HINTS
     for hint in PROBE_HINTS.values():
         assert isinstance(hint, LazyString)
+
+
+# --- the card that is here and cannot be read ----------------------------------------
+
+UNSIZED_AMD = Gpu(index=0, vendor="amd", name="AMD Radeon RX 7900 XTX", backend_hint="vulkan")
+
+
+def test_an_unreadable_card_is_reported_as_planned_around_and_not_only_as_unknown() -> None:
+    """Two findings, because there are two facts: a size is missing, and a card was ignored.
+
+    ``VRAM size unknown`` says what could not be read. It does not say that every budget
+    and every speed this machine will be shown was computed by pretending the card is not
+    there, and that is the part a reader acts on.
+    """
+    llamacpp = LlamaCpp(installed=True, path="x", build=10867, backends=["vulkan", "cpu"])
+    diagnosis = diagnose(report_with(llamacpp, gpus=[UNSIZED_AMD]))
+
+    finding = next(f for f in diagnosis.findings if "planned around" in f.title)
+    assert finding.level == "warn"
+    assert "AMD Radeon RX 7900 XTX" in finding.title
+    assert "CPU-only" in finding.detail
+    assert finding.hint is not None and "Vulkan" in finding.hint
+    assert any("VRAM size unknown" in f.title for f in diagnosis.findings)
+
+
+def test_a_machine_whose_card_was_read_is_not_told_it_was_planned_around() -> None:
+    llamacpp = LlamaCpp(installed=True, path="x", build=10867, backends=["cuda", "cpu"])
+    diagnosis = diagnose(report_with(llamacpp))
+    assert not any("planned around" in f.title for f in diagnosis.findings)
+
+
+def test_a_unified_memory_machine_is_not_told_its_card_was_planned_around() -> None:
+    """There is no separate pool, so there was nothing to fail to read."""
+    llamacpp = LlamaCpp(installed=True, path="x", build=10867, backends=["metal", "cpu"])
+    gpus = [Gpu(index=0, vendor="apple", name="Apple M3 Max", backend_hint="metal")]
+    diagnosis = diagnose(report_with(llamacpp, gpus=gpus, unified_memory=True))
+    assert not any("planned around" in f.title for f in diagnosis.findings)
+
+
+def test_a_machine_with_no_card_gets_the_no_gpu_warning_and_not_this_one() -> None:
+    llamacpp = LlamaCpp(installed=True, path="x", build=10867, backends=["cpu"])
+    diagnosis = diagnose(report_with(llamacpp, gpus=[]))
+    assert any("No GPU detected" in f.title for f in diagnosis.findings)
+    assert not any("planned around" in f.title for f in diagnosis.findings)
+
+
+def test_a_failed_vulkaninfo_probe_says_what_installing_it_would_buy() -> None:
+    llamacpp = LlamaCpp(installed=True, path="x", build=10867, backends=["vulkan", "cpu"])
+    probes = [Probe(name="vulkaninfo", ok=False, duration_ms=1, error="vulkaninfo: not found")]
+    diagnosis = diagnose(report_with(llamacpp, gpus=[UNSIZED_AMD], probes=probes))
+    finding = next(f for f in diagnosis.findings if f.title.startswith("Probe vulkaninfo"))
+    assert finding.hint is not None and "vulkan-tools" in finding.hint

@@ -31,6 +31,7 @@ def reference_host(
                 name="NVIDIA GeForce RTX 4060",
                 vram_total_bytes=8188 * 1024**2,
                 vram_used_bytes=550 * 1024**2,
+                vram_source="measured",
                 bandwidth_gbps=272.0,
                 compute_tflops_fp16=60.4,
                 backend_hint="cuda",

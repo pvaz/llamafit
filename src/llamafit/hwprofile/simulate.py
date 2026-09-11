@@ -67,6 +67,11 @@ def host_from_profile(loaded: LoadedProfile) -> Host:
                 name=card.name,
                 vram_total_bytes=card.vram_total,
                 vram_used_bytes=card.vram_used,
+                # A stated size is a size somebody read off a machine and wrote down, and
+                # the profile's required ``provenance`` is where they say which machine.
+                # A card the profile leaves unsized is left unsized here too, rather than
+                # acquiring a provenance for a figure that does not exist.
+                vram_source="measured" if card.vram_total is not None else "unknown",
                 bandwidth_gbps=card.bandwidth_gbps,
                 compute_tflops_fp16=card.compute_tflops_fp16,
                 backend_hint=card.backend,
@@ -132,6 +137,10 @@ def _overridden_gpu(host: Host, vram_total_bytes: int) -> list[Gpu]:
             update={
                 "vram_total_bytes": vram_total_bytes,
                 "vram_used_bytes": min(gpu.vram_used_bytes or 0, vram_total_bytes),
+                # Nothing read this card; a person asked for it to be this size. That is
+                # what ``assumed`` means everywhere else a figure carries a label, and it
+                # keeps ``--memory`` from dressing a what-if as a measurement.
+                "vram_source": "assumed",
             }
         )
         if gpu is primary

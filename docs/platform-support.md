@@ -23,6 +23,7 @@ it, so a `doctor` warning can always be traced here.
 | `system-profiler` | macOS | `system_profiler SPDisplaysDataType -json` | Apple GPU name (the core count is not read) | no GPU listed |
 | `wmi-video` | Windows | PowerShell `Get-CimInstance Win32_VideoController` | names of all display adapters | vendor tools only |
 | `lspci` | Linux | `lspci -nn` | names of all display controllers | vendor tools only |
+| `vulkaninfo` | Windows, Linux | `vulkaninfo` (the text output, not `--summary`) | a discrete card's memory size and how much of it the driver will promise | a card no vendor tool sized stays unsized, and nothing is planned on it |
 | `llama-server --version` | all | `llama-server --version` | llama.cpp build number and commit | `bin/VERSION.txt` is read when present |
 | `server:<port>` | all | HTTP `GET /health` (1 s timeout), then `/v1/models`, `/props` (1.5 s timeout each) on 8080, 8081, 8098 and `LLAMA_SERVER_PORT` | running servers, their model and context | none listed |
 
@@ -65,13 +66,38 @@ when the machine has GPUs but none from that vendor: a host with only an NVIDIA 
 told that `rocm-smi` failed. When no GPU was detected at all, every failed probe is reported,
 next to the "No GPU detected" warning, because one of them is usually the reason.
 
+`vulkaninfo` is the last source there is for a card's memory, and it runs only when there is a
+card no vendor tool sized: on a machine where `nvidia-smi` answered, it is never executed and
+never reported. What it reads is the first *device-local* memory heap of each **discrete**
+device, which is the same heap llama.cpp's own Vulkan backend takes for that device's memory,
+together with the `VK_EXT_memory_budget` figures beside it — `heapBudget` is what the driver
+will let a process allocate given everything already on the card, and `heapUsage` is what this
+process has taken of it, so `budget - usage` is the free figure. It is labelled `estimated`
+rather than `measured`, and printed with `(Vulkan driver)` beside it, because it is the
+driver's promise rather than the card's nameplate: on the reference machine it reports 7.77 GiB
+where `nvidia-smi` reports 8,188 MiB, and 7.02 GiB free where `nvidia-smi` reports 7,638 MiB.
+Conservative is the safe direction for a memory budget to be wrong in.
+
+Integrated GPUs are deliberately skipped. An integrated device's device-local heap *is* system
+memory, already counted in the memory total, so reporting it as VRAM would describe a machine
+with twice the memory it has and let the planner fill both pools with the same bytes. A
+plausible wrong number is worse than no number, so those cards stay unsized. A driver too old
+for `VK_EXT_memory_budget` gives a size and no free figure, which `system` prints as
+`free unknown` and which is still not enough to plan on.
+
+A card that stays unsized is not silently treated as absent. `system` prints a **Card memory**
+row naming it, `doctor` raises *planned around, not planned on*, `recommend` and `fit` carry a
+caption under the table, and a CPU-only plan says in its notes that a card is present and was
+not used. The figures in all four cases are real; what they are figures *for* is a machine
+with one fewer card than the one in front of you.
+
 ## Operating systems
 
 | OS | Notes |
 |---|---|
-| Windows 10 and 11 | PowerShell 5 or 7 must be on `PATH` (it is by default). NVIDIA figures need the driver's `nvidia-smi`, installed with every driver. AMD VRAM is not readable without ROCm, so AMD cards are listed by name; llama.cpp's Vulkan backend still uses them and the budget treats the VRAM size as unknown until you set it in a hardware profile. Long paths and spaces in paths are supported. |
-| macOS 12 and later | Apple Silicon reports unified memory: there is no VRAM figure, the whole RAM pool is the budget, and the GPU table supplies bandwidth per chip. Intel Macs with discrete GPUs are listed by name. `system_profiler` can take a few seconds on first use. |
-| Linux | `dmidecode` needs root; everything else runs as a user. `pciutils` provides `lspci`. NVIDIA needs the proprietary driver for `nvidia-smi`; AMD needs ROCm for VRAM figures; Intel cards are listed by name only, since no tool LlamaFit runs reports their VRAM. |
+| Windows 10 and 11 | PowerShell 5 or 7 must be on `PATH` (it is by default). NVIDIA figures need the driver's `nvidia-smi`, installed with every driver. There is no vendor tool here for AMD (`rocm-smi` is Linux-only) or for Intel (there is none anywhere), so those cards fall back to the `vulkaninfo` probe above; the Vulkan runtime that provides it is installed with every current AMD, Intel and NVIDIA driver. Without it the card is listed by name, and the budget treats its size as unknown until you set it in a hardware profile. Long paths and spaces in paths are supported. |
+| macOS 12 and later | Apple Silicon reports unified memory: there is no VRAM figure, the whole RAM pool is the budget, and the GPU table supplies bandwidth per chip. Intel Macs with discrete GPUs are listed by name and nothing sizes them: `vulkaninfo` is not run on macOS, since MoltenVK is a developer installation rather than something a Mac has, and `system_profiler`'s own `spdisplays_vram` is not read yet. `system_profiler` can take a few seconds on first use. |
+| Linux | `dmidecode` needs root; everything else runs as a user. `pciutils` provides `lspci`. NVIDIA needs the proprietary driver for `nvidia-smi`; AMD needs ROCm for VRAM figures and Intel has no vendor tool at all, so both fall back to `vulkaninfo`, which `vulkan-tools` provides; without that package the card is listed by name only. |
 
 ## Architectures
 
