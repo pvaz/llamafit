@@ -28,15 +28,43 @@ from __future__ import annotations
 
 import argparse
 import ast
+import re
 import sys
 from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from llamafit import __version__
 from llamafit.i18n import DEFAULT_PLURAL_FORMS, TEMPLATE_NAME
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def project_version() -> str:
+    """The version in ``pyproject.toml``, which is the one this template belongs to.
+
+    Not ``llamafit.__version__``. That reads the installed distribution's metadata, which
+    is right at run time -- a wheel's version is its metadata -- and wrong here. In an
+    editable install the metadata is written once and does not move when the version in
+    ``pyproject.toml`` does, so the moment after a release bump this script would stamp
+    the template with the version that was current before it, `--check` would agree with
+    itself, and the first clean checkout would disagree with both. That is not a
+    hypothetical: it failed all six CI jobs on the 0.1.1 bump while passing locally.
+
+    The file is the source of truth the release already checks the tag against, so it is
+    the one to read. It is read with a regular expression and not a TOML parser for the
+    reason `tests/unit/test_docs_truth.py` gives for doing the same: Python 3.10 has no
+    `tomllib`, this script runs on 3.10 in CI, and this needs one line out of one file.
+
+    Raises:
+        SystemExit: `pyproject.toml` has no version line, which means the file this was
+            pointed at is not the one it was written for.
+    """
+    text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    match = re.search(r'^version = "([^"]+)"', text, re.M)
+    if match is None:
+        raise SystemExit("pyproject.toml has no version line")
+    return match.group(1)
+
 
 SINGULAR_NAMES = frozenset({"_", "gettext", "lazy_gettext"})
 """Names that translate one message; the first argument is the ``msgid``."""
@@ -240,7 +268,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 1
     # Newlines are forced to "\n": the template is committed and compared byte for byte,
     # so it must not depend on the platform it was generated on.
-    rendered = render_template(found, version=__version__)
+    rendered = render_template(found, version=project_version())
     if args.check:
         try:
             current = DEST.read_text(encoding="utf-8")

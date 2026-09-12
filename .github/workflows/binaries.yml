@@ -1,28 +1,30 @@
-# Build the standalone executables and attach them to a release.
+# Build the standalone executables. Nothing here publishes anything.
 #
 # `pip install llamafit` needs a Python. This workflow is for everyone else: it builds one
 # self-contained file per platform, with the interpreter, the dependencies and the
-# package's own data inside it, and hangs them off the GitHub release.
+# package's own data inside it, and leaves them on the run as artefacts. Two workflows
+# call it, and each decides what to do with what comes back:
 #
-# It is deliberately separate from `release.yml`. That workflow publishes to PyPI, where a
-# version number can be used exactly once and never again; this one only adds files to a
-# release that already exists. Keeping them apart means a binary can be built, or rebuilt,
-# for a version that has already shipped -- which is how v0.1.0 got its binaries -- without
-# going anywhere near an upload that cannot be repeated.
+#   - `release.yml`, on a version tag, the way it already calls `ci.yml`. The artefacts
+#     land in the same run and it puts them on the release it creates, so there is one
+#     release, made once, with everything on it.
+#   - `binaries-attach.yml`, by hand, for a tag whose release already exists -- which is
+#     how a platform gets rebuilt after a fix without going near PyPI, where a version
+#     number can be used exactly once and never again.
 #
-# Two ways in:
+# It builds and does not attach, and that division is not tidiness. A called workflow's
+# jobs may only ask for permissions the caller has already granted, so an attach job in
+# here -- asking for `contents: write` where `release.yml` grants `contents: read` --
+# refuses the entire calling run before a single job exists. The alternative was to hand
+# the call `contents: write`, which would give five PyInstaller builds a token that can
+# write to the repository in order to satisfy a job that is skipped on that path anyway.
+# Building is a read-only thing. It stays read-only.
 #
-#   - `release.yml` calls it on a version tag, the way it already calls `ci.yml`. The
-#     files come back as artefacts of the same run and that workflow puts them on the
-#     release it creates, so there is one release, made once, with everything on it.
-#   - Running it by hand from the Actions tab with a tag, for a release that already
-#     exists. That path attaches the files itself.
-#
-# The first of those used to be a tag trigger of its own, with a job here that polled for
-# the release the other workflow was about to create. The two ran at the same moment and
-# the poll gave up after 25 minutes against a release path measured at 57: it would have
-# built five binaries and attached none of them. Ordering belongs in a dependency, not in
-# a timeout.
+# An earlier arrangement had this workflow triggered by the tag itself, with a job that
+# polled for the release `release.yml` was about to create. The two started at the same
+# moment and the poll gave up after 25 minutes against a release path measured at 57: it
+# would have built five binaries and attached none of them. Ordering belongs in a
+# dependency, not in a timeout.
 #
 # PyInstaller is not a cross-compiler, so each target is built on its own operating system
 # and its own architecture: five machines, five files. What gets built is decided in
@@ -41,12 +43,6 @@ on:
       tag:
         description: "The tag to build. Defaults to the tag the calling run was started by."
         required: false
-        type: string
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: "The release tag to build and attach to, for example v0.1.1"
-        required: true
         type: string
 
 permissions:
@@ -227,61 +223,3 @@ jobs:
           name: ${{ matrix.asset }}
           path: out/
           if-no-files-found: error
-
-  attach:
-    name: Attach to the release
-    # Only the by-hand path. When release.yml is the caller it attaches these itself,
-    # to the release it is about to create, and there is nothing here to wait for.
-    if: github.event_name == 'workflow_dispatch'
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write # upload the files to the release, and nothing else
-    steps:
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
-        with:
-          pattern: llamafit-*
-          path: staging
-          merge-multiple: true
-
-      - name: One checksum file for all of them
-        working-directory: staging
-        run: |
-          set -euo pipefail
-          # The per-file .sha256 lines, gathered and sorted, so a person can verify every
-          # download with a single `sha256sum -c SHA256SUMS.txt` in the directory they
-          # landed in. The individual files stay -- somebody downloading one binary should
-          # not have to fetch a list of five to check it -- which is what docs/standalone.md
-          # tells them to do.
-          cat ./*.sha256 | sort -k2 > SHA256SUMS.txt
-          cat SHA256SUMS.txt
-          ls -lh
-
-      - name: The release must already exist
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        # This path is for a tag that has been released. Nothing is being created
-        # concurrently, so a release that is not here is a mistake to report rather than
-        # something to wait for -- the wrong tag, or a tag whose release workflow failed.
-        run: |
-          set -euo pipefail
-          if ! gh release view "$TAG" > /dev/null 2>&1; then
-            echo "::error::there is no release for $TAG. This workflow adds files to a" \
-                 "release that exists; a tag is released by pushing it, which runs" \
-                 "release.yml, which builds these binaries itself."
-            exit 1
-          fi
-          echo "release $TAG is there"
-
-      - name: Attach the binaries
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        # --clobber so a rerun replaces a file instead of refusing to, which is what makes
-        # rebuilding one platform after a fix a thing you can just do.
-        run: |
-          set -euo pipefail
-          gh release upload "$TAG" staging/* --clobber
-          echo "attached to $TAG:"
-          gh release view "$TAG" --json assets --jq '.assets[] | "\(.name)  \(.size) bytes"'

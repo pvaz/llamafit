@@ -1,0 +1,91 @@
+# Put the standalone binaries on a release that already exists.
+#
+# `release.yml` builds and attaches them for every tag it releases, so this is not the
+# normal path. It is the one for afterwards: a platform that failed, a build fixed after
+# the fact, a release that was made before this machinery existed. It touches nothing but
+# the release's files -- no PyPI upload, no tag, no notes -- because a version number on
+# PyPI can be used exactly once and a release asset can be replaced any number of times.
+#
+# The build itself is `binaries.yml`, called rather than repeated, so there is one
+# description of how a binary is made and both paths get the same file. The write
+# permission lives here, in a job of this workflow, and not in the one that builds:
+# a called workflow may only ask for what its caller already has, and building needs
+# nothing but read.
+name: Attach binaries to a release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "The release tag to build and attach to, for example v0.1.1"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: binaries-attach-${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/binaries.yml
+    with:
+      tag: ${{ inputs.tag }}
+
+  attach:
+    name: Attach to the release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # upload the files to the release, and nothing else
+    env:
+      TAG: ${{ inputs.tag }}
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: llamafit-*
+          path: staging
+          merge-multiple: true
+
+      - name: One checksum file covering every binary
+        working-directory: staging
+        # The per-file .sha256 lines gathered into one list, so a person can check every
+        # download at once; the individual files stay, because docs/standalone.md tells
+        # somebody who took a single binary to check that one.
+        run: |
+          set -euo pipefail
+          cat ./*.sha256 | sort -k2 > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+          ls -lh
+
+      - name: The release must already exist
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        # This path adds files to a release that has been made. Nothing is being created
+        # concurrently, so a release that is not here is a mistake to report rather than
+        # something to wait for -- the wrong tag, or a tag whose release workflow failed.
+        run: |
+          set -euo pipefail
+          if ! gh release view "$TAG" > /dev/null 2>&1; then
+            echo "::error::there is no release for $TAG. This workflow adds files to a" \
+                 "release that exists; a tag is released by pushing it, which runs" \
+                 "release.yml, which builds and attaches these binaries itself."
+            exit 1
+          fi
+          echo "release $TAG is there"
+
+      - name: Attach the binaries
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        # --clobber so a rerun replaces a file instead of refusing to, which is what makes
+        # rebuilding one platform after a fix a thing you can just do.
+        run: |
+          set -euo pipefail
+          gh release upload "$TAG" staging/* --clobber
+          echo "on $TAG:"
+          gh release view "$TAG" --json assets --jq '.assets[] | "\(.name)  \(.size) bytes"'

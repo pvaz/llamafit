@@ -21,10 +21,11 @@ the changelog says so when they do.
   to start there. `docs/standalone.md` covers which file to take, how to verify it, what
   Windows and macOS will say about a binary nobody has paid to sign, and the one thing
   the binary leaves out.
-- The build is a separate workflow from the one that publishes to PyPI, on purpose: a
-  version number on PyPI can be used once and never again, while a release asset can be
-  added at any time, so a platform can be rebuilt after a fix without going near an
-  upload that cannot be repeated.
+- `.github/workflows/binaries-attach.yml` puts binaries on a release that already exists,
+  by hand, calling the same build. It touches nothing else: a version number on PyPI can
+  be used once and never again, while a release asset can be replaced any number of
+  times, so a platform can be rebuilt after a fix without going near an upload that
+  cannot be repeated.
 
 ### Changed
 - **All 37 translation catalogs are complete.** Thirty-one of them carried about a
