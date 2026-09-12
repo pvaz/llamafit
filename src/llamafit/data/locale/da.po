@@ -16,6 +16,198 @@ msgstr ""
 "Language-Team: Danish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "nothing measured touches this term, so there is no equation it appears in"
+msgstr "intet af det, der er målt, berører dette led, så der er ingen ligning, det optræder i"
+
+msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
+msgstr "%(measurements)d forskellige konfigurationer til %(parameters)d frie parametre; færre punkter end parametre giver tal, der ser præcise ud og er vilkårlige"
+
+msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
+msgstr "de %(measurements)d konfigurationer varierer ikke uafhængigt nok til at adskille %(parameters)d parametre"
+
+msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "tilpasningen satte det til %(value).3f, hvilket dets egen definition ikke tillader; målingerne er indbyrdes uenige under modellen i afsnit 10.1"
+
+msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "det kom ud på %(value).3f, men en anden parameter i samme tilpasning var umulig, og mindste kvadraters metode valgte dem op mod hinanden"
+
+msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
+msgstr "estimatoren har ikke et sådant led: afsnit 10.1 fjernede overheadet pr. lag, som for en model med 28 lag oversteg hele det målte token"
+
+msgid "generation (llama-bench)"
+msgstr "generering (llama-bench)"
+
+msgid "prompt (llama-bench)"
+msgstr "prompt (llama-bench)"
+
+msgid "generation, first request"
+msgstr "generering, første forespørgsel"
+
+msgid "generation, 1K prompt"
+msgstr "generering, 1K prompt"
+
+msgid "prompt, 1K request"
+msgstr "prompt, 1K forespørgsel"
+
+msgid "peak VRAM"
+msgstr "top-VRAM"
+
+msgid "no graphics card"
+msgstr "intet grafikkort"
+
+msgid "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+msgstr "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+
+msgid "%(flag)s was asked for as %(wanted)s but the run reports %(actual)s"
+msgstr "%(flag)s blev bedt om som %(wanted)s, men kørslen melder %(actual)s"
+
+msgid "The card was full and generation came in below three fifths of the estimate: the driver was paging to system memory, which does not fail and does not appear in the log."
+msgstr "Kortet var fuldt, og genereringen kom ind under tre femtedele af estimatet: driveren swappede til systemhukommelsen, hvilket ikke fejler og ikke står i loggen."
+
+msgid "Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page."
+msgstr "Top-VRAM holdt sig fri af kortets samlede hukommelse, så der var intet for driveren at swappe."
+
+msgid "The card was full, which a good plan is meant to be, and the speed was close enough to the estimate that nothing was paging."
+msgstr "Kortet var fuldt, hvilket en god plan skal være, og hastigheden lå tæt nok på estimatet til, at intet swappede."
+
+msgid "No VRAM reading was taken during the run, so this configuration has not been cleared of paging; it has only not been checked."
+msgstr "Der blev ikke taget nogen VRAM-aflæsning under kørslen, så denne konfiguration er ikke frikendt for swapning; den er blot ikke blevet kontrolleret."
+
+msgid "The card's total memory is unknown, so a reading of what was in use says nothing about how close to full it was."
+msgstr "Kortets samlede hukommelse er ukendt, så en aflæsning af, hvad der var i brug, siger intet om, hvor tæt på fuldt det var."
+
+msgid "There was no estimate to compare the measured speed against, so the second half of the signature could not be tested."
+msgstr "Der var intet estimat at sammenligne den målte hastighed med, så anden halvdel af signaturen kunne ikke afprøves."
+
+msgid "llama-bench did not produce JSON"
+msgstr "llama-bench producerede ingen JSON"
+
+msgid "llama-bench JSON is not a list of results"
+msgstr "llama-bench-JSON er ikke en liste over resultater"
+
+msgid "llama-bench JSON held no readable results"
+msgstr "llama-bench-JSON indeholdt ingen læsbare resultater"
+
+msgid "no llama-bench result rows found"
+msgstr "ingen resultatrækker fra llama-bench fundet"
+
+msgid "could not open %(path)s for the server log"
+msgstr "kunne ikke åbne %(path)s til serverloggen"
+
+msgid "could not start llama-server"
+msgstr "kunne ikke starte llama-server"
+
+msgid "no output"
+msgstr "intet output"
+
+msgid "llama-bench exited with code %(code)d: %(detail)s"
+msgstr "llama-bench afsluttede med kode %(code)d: %(detail)s"
+
+msgid "llama-bench output could not be read: %(error)s"
+msgstr "llama-bench-outputtet kunne ikke læses: %(error)s"
+
+msgid "llama-server did not become healthy"
+msgstr "llama-server meldte sig aldrig sund"
+
+msgid "Its whole output is in the log file `bench` named; the end says why."
+msgstr "Hele dens output står i den logfil, `bench` nævnte; slutningen siger hvorfor."
+
+msgid "%(path)s was written by a newer LlamaFit (benchmark format %(found)d, this build reads %(known)d)"
+msgstr "%(path)s er skrevet af en nyere LlamaFit (benchmarkformat %(found)d, dette build læser %(known)d)"
+
+msgid "Upgrade LlamaFit, or move the file aside to start a new one."
+msgstr "Opgradér LlamaFit, eller flyt filen til side for at begynde på en ny."
+
+msgid "a benchmark cannot be recorded against a simulated machine"
+msgstr "en måling kan ikke registreres mod en simuleret maskine"
+
+msgid "Run `llamafit bench` on the machine itself, without --profile."
+msgstr "Kør `llamafit bench` på selve maskinen, uden --profile."
+
+msgid "the run did not use the settings it was given: %(problems)s"
+msgstr "kørslen brugte ikke de indstillinger, den fik: %(problems)s"
+
+msgid "Nothing was stored. A result filed under flags it was not taken with would be believed later by everything that reads it."
+msgstr "Intet blev gemt. Et resultat, der er lagt ind under flag, det ikke er taget med, ville blive troet senere af alt, der læser det."
+
+msgid "a conservative default; nobody has measured this card's backend overhead"
+msgstr "en forsigtig standardværdi; ingen har målt dette korts backend-overhead"
+
+msgid "measured on this card with driver %(driver)s and llama.cpp %(build)s; one machine"
+msgstr "målt på dette kort med driver %(driver)s og llama.cpp %(build)s; én maskine"
+
+msgid "A hybrid placement has to say how many layers are on the graphics card."
+msgstr "En hybrid placering skal sige, hvor mange lag der ligger på grafikkortet."
+
+msgid "Pass gpu_layers, which is what -ngl would be."
+msgstr "Angiv gpu_layers, som er det, -ngl ville være."
+
+msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
+msgstr "LlamaFit har ikke læst %(quant)s-filen til %(model)s og kan derfor ikke dimensionere den."
+
+msgid "Run `llamafit catalog refresh` to read the file's header."
+msgstr "Kør `llamafit catalog refresh` for at læse filens header."
+
+msgid "the server process before any model buffer"
+msgstr "serverprocessen før nogen modelbuffer"
+
+msgid "fitted to one machine's measurements; the least certain line here"
+msgstr "tilpasset til én maskines målinger; den mindst sikre linje her"
+
+msgid "room for one logit per vocabulary entry per token of the batch"
+msgstr "plads til én logit pr. ordforrådspost pr. token i batchen"
+
+msgid "LlamaFit cannot size a %(kv_type)s key-value cache."
+msgstr "LlamaFit kan ikke dimensionere en KV-cache af typen %(kv_type)s."
+
+msgid "Use one of: %(types)s."
+msgstr "Brug en af: %(types)s."
+
+msgid "This model's file does not say how large its key-value cache is per token."
+msgstr "Denne models fil siger ikke, hvor stor dens KV-cache er pr. token."
+
+msgid "Refresh the catalog so the file's header is read again."
+msgstr "Opdatér kataloget, så filens header læses igen."
+
+msgid "the attention-layer count was assumed, not counted"
+msgstr "antallet af attention-lag blev antaget, ikke talt"
+
+msgid "%(arch)s allocates more cache than its header describes; see the line below"
+msgstr "%(arch)s afsætter mere cache, end dens header beskriver; se linjen nedenfor"
+
+msgid "what %(arch)s allocates beyond its header, measured rather than derived"
+msgstr "hvad %(arch)s afsætter ud over sin header, målt frem for udledt"
+
+msgid "from the architecture's state dimensions; it does not grow with context"
+msgstr "ud fra arkitekturens tilstandsdimensioner; den vokser ikke med konteksten"
+
+msgid "the projector file itself"
+msgstr "selve projektorfilen"
+
+msgid "the projector's own compute space, measured at 248 MiB"
+msgstr "projektorens eget beregningsrum, målt til 248 MiB"
+
+msgid "attention projections, feed-forward weights and norms"
+msgstr "attention-projektioner, feed-forward-vægte og normer"
+
+msgid "always-on experts, which run for every token"
+msgstr "altid aktive eksperter, som kører for hvert token"
+
+msgid "routed experts, read across the bus once per micro-batch"
+msgstr "ruterede eksperter, læst over bussen én gang pr. mikrobatch"
+
+msgid "this model ties its output projection to its embedding table"
+msgstr "denne model binder sin udgangsprojektion til sin embedding-tabel"
+
+msgid "llama.cpp keeps the embedding table in memory even at full offload"
+msgstr "llama.cpp holder embedding-tabellen i hukommelsen, selv ved fuld offload"
+
+msgid "streamed from disk as it is needed, not held in memory"
+msgstr "streamet fra disken, efterhånden som der er brug for det, ikke holdt i hukommelsen"
+
+msgid "held in memory, since streaming from disk was turned off"
+msgstr "holdt i hukommelsen, da streaming fra disken er slået fra"
+
 msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
 msgstr "Hugging Face svarede %(status)d, da fillisten for %(repo)s blev hentet."
 
@@ -62,6 +254,9 @@ msgstr "Kør `llamafit catalog refresh` uden --model for at bygge hele filen op 
 msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
 msgstr "Find, dimensionér, installér og verificér LLM'er med åbne vægte til llama.cpp på din egen maskine."
 
+msgid "With no command, llamafit opens the terminal dashboard; in a pipe, or with --json, it prints what `llamafit recommend` would."
+msgstr "Uden en kommando åbner llamafit dashboardet i terminalen; i en pipe, eller med --json, skriver den det, `llamafit recommend` ville skrive."
+
 msgid "Print machine-readable JSON instead of tables."
 msgstr "Skriver maskinlæsbar JSON i stedet for tabeller."
 
@@ -71,17 +266,304 @@ msgstr "Skriver detaljerne til llamafit.log i logmappen og viser tracebacks."
 msgid "Disable colours."
 msgstr "Slår farverne fra."
 
+msgid "Answer for the machine this hardware profile describes instead of this one. Nothing about this machine is probed, and every answer is marked as simulated. `llamafit hardware list` names the profiles you have."
+msgstr "Svarer for den maskine, denne hardwareprofil beskriver, i stedet for denne. Der undersøges intet ved denne maskine, og hvert svar markeres som simuleret. `llamafit hardware list` nævner de profiler, du har."
+
+msgid "Pretend the graphics card has this much memory, for example 24G. Everything else stays as scanned, and every answer is marked as simulated."
+msgstr "Lader som om grafikkortet har så meget hukommelse, for eksempel 24G. Alt andet forbliver som scannet, og hvert svar markeres som simuleret."
+
+msgid "Pretend the machine has this much system memory, for example 128GiB. Every answer is marked as simulated."
+msgstr "Lader som om maskinen har så meget systemhukommelse, for eksempel 128GiB. Hvert svar markeres som simuleret."
+
+msgid "Pretend the processor has this many physical cores. Every answer is marked as simulated."
+msgstr "Lader som om processoren har så mange fysiske kerner. Hvert svar markeres som simuleret."
+
+msgid "Plan, report and score no context longer than this. It caps the model's own length; it does not describe a machine."
+msgstr "Planlægger, rapporterer og scorer ingen kontekst længere end denne. Den lægger loft over modellens egen længde; den beskriver ikke en maskine."
+
 msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
 msgstr "Taler dette sprog, for eksempel pt_PT. Et sprog, LlamaFit ikke har, falder tilbage til engelsk, og så oplyses det, hvilke sprog der findes."
 
 msgid "Print the version and exit."
 msgstr "Skriver versionen og afslutter."
 
+msgid "the output's encoding"
+msgstr "outputtets tegnkodning"
+
+msgid "%(count)d character could not be written in %(encoding)s and is shown as ?."
+msgid_plural "%(count)d characters could not be written in %(encoding)s and are shown as ?."
+msgstr[0] "%(count)d tegn kunne ikke skrives i %(encoding)s og vises som ?."
+msgstr[1] "%(count)d tegn kunne ikke skrives i %(encoding)s og vises som ?."
+
+msgid "Set PYTHONUTF8=1 in the environment and run again: Python then writes UTF-8, which carries every language."
+msgstr "Sæt PYTHONUTF8=1 i miljøet, og kør igen: så skriver Python UTF-8, som bærer alle sprog."
+
+msgid "%(option)s is an option of llamafit itself, so it goes before the command: `llamafit %(option)s %(rest)s`."
+msgstr "%(option)s er en indstilling for llamafit selv, så den kommer før kommandoen: `llamafit %(option)s %(rest)s`."
+
 msgid "Unexpected error: %(error)s"
 msgstr "Uventet fejl: %(error)s"
 
 msgid "Run again with --verbose for the full traceback."
 msgstr "Kør igen med --verbose for at se hele tracebacken."
+
+msgid "A catalog model id."
+msgstr "Et model-id fra kataloget."
+
+msgid "Benchmark this quantisation instead of the planned one."
+msgstr "Måler denne kvantisering i stedet for den planlagte."
+
+msgid "Size for this many tokens."
+msgstr "Dimensionerer til så mange tokens."
+
+msgid "Set the micro-batch by hand; the budget is rebuilt around it."
+msgstr "Sætter mikrobatchen i hånden; budgettet bygges op omkring den."
+
+msgid "Measure a model on this machine and show the measurement beside the estimate.\n\nRuns llama-bench and a real server at the planned flags, stores the result with the conditions it was taken under, and flags a configuration the driver was paging. With --calibrate, fits the estimator's constants to this machine from every stored result and says by name which ones the measurements do not determine."
+msgstr "Måler en model på denne maskine og viser målingen ved siden af estimatet.\n\nKører llama-bench og en rigtig server med de planlagte flag, gemmer resultatet sammen med de forhold, det er taget under, og markerer en konfiguration, hvor driveren swappede. Med --calibrate tilpasser den estimatorens konstanter til denne maskine ud fra hvert gemt resultat og siger ved navn, hvilke af dem målingerne ikke fastlægger."
+
+msgid "Measure prompt processing at every micro-batch of the ladder, not only the planned one. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all."
+msgstr "Måler promptbehandlingen ved hver mikrobatch på stigen, ikke kun ved den planlagte. Afsnit 10.2 har to frie parametre, og én mikrobatch er én ligning, så uden dette kan promptdelen af en kalibrering slet ikke tilpasses."
+
+msgid "Run llama-bench only. Faster, and it gives up the paging check, the buffer sizes and the tool-call test, all of which need a real server."
+msgstr "Kører kun llama-bench. Hurtigere, og den giver afkald på swapkontrollen, bufferstørrelserne og testen af værktøjskald, som alle kræver en rigtig server."
+
+msgid "Print the result without writing it to the database."
+msgstr "Viser resultatet uden at skrive det i databasen."
+
+msgid "Print the commands that would run, and run nothing."
+msgstr "Skriver de kommandoer, der ville køre, og kører ingenting."
+
+msgid "Fit the estimator's constants to this machine from every result."
+msgstr "Tilpasser estimatorens konstanter til denne maskine ud fra hvert resultat."
+
+msgid "List what is already stored and stop."
+msgstr "Viser, hvad der allerede er gemt, og stopper."
+
+msgid "`llamafit bench` needs a model to measure"
+msgstr "`llamafit bench` skal have en model at måle"
+
+msgid "Try `llamafit bench <model>`, `--calibrate` on its own, or `--show`."
+msgstr "Prøv `llamafit bench <model>`, `--calibrate` alene eller `--show`."
+
+msgid "llama.cpp was not found, so there is nothing to benchmark with"
+msgstr "llama.cpp blev ikke fundet, så der er intet at måle med"
+
+msgid "Run `llamafit doctor` to see where it was looked for."
+msgstr "Kør `llamafit doctor` for at se, hvor der blev ledt efter den."
+
+msgid "%(path)s has llama-server but no llama-bench"
+msgstr "%(path)s har llama-server, men ingen llama-bench"
+
+msgid "Some release archives leave it out; a full build has it beside the server."
+msgstr "Nogle udgivelsesarkiver udelader den; et fuldt build har den ved siden af serveren."
+
+msgid "this host is simulated, and a simulated machine cannot be measured"
+msgstr "denne maskine er simuleret, og en simuleret maskine kan ikke måles"
+
+msgid "Run `llamafit bench` on the machine itself."
+msgstr "Kør `llamafit bench` på selve maskinen."
+
+msgid "the model file is not on this machine: %(path)s"
+msgstr "modelfilen ligger ikke på denne maskine: %(path)s"
+
+msgid "Download it first; `llamafit plan` shows the path the command line uses."
+msgstr "Hent den først; `llamafit plan` viser den sti, kommandolinjen bruger."
+
+msgid "Would run:"
+msgstr "Ville køre:"
+
+msgid "Nothing has been measured on this machine yet."
+msgstr "Der er endnu ikke målt noget på denne maskine."
+
+msgid "Stored measurements"
+msgstr "Gemte målinger"
+
+msgid "model"
+msgstr "model"
+
+msgid "kind"
+msgstr "slags"
+
+msgid "gen tok/s"
+msgstr "gen tok/s"
+
+msgid "prompt tok/s"
+msgstr "prompt tok/s"
+
+msgid "taken"
+msgstr "taget"
+
+msgid "flags"
+msgstr "flag"
+
+msgid "Nothing was written to the database, so no estimate will be relabelled."
+msgstr "Intet blev skrevet i databasen, så intet estimat får ny mærkat."
+
+msgid "Estimated against measured"
+msgstr "Estimeret over for målt"
+
+msgid "figure"
+msgstr "tal"
+
+msgid "context"
+msgstr "kontekst"
+
+msgid "micro-batch"
+msgstr "mikrobatch"
+
+msgid "estimated"
+msgstr "estimeret"
+
+msgid "measured"
+msgstr "målt"
+
+msgid "ratio"
+msgstr "forhold"
+
+msgid "The plan sizes this configuration for %(context)s tokens and estimates %(tps)s generated tokens per second there. Nothing above ran at that context, so that figure is reported and not compared."
+msgstr "Planen dimensionerer denne konfiguration til %(context)s tokens og estimerer %(tps)s genererede tokens i sekundet der. Intet ovenfor kørte ved den kontekst, så det tal meldes og sammenlignes ikke."
+
+msgid "%(count)d figure is outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgid_plural "%(count)d figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgstr[0] "%(count)d tal ligger uden for båndet 0,8 til 1,25, som en ukalibreret formel forventes at lande i."
+msgstr[1] "%(count)d tal ligger uden for båndet 0,8 til 1,25, som en ukalibreret formel forventes at lande i."
+
+msgid "This configuration was paging."
+msgstr "Denne konfiguration swappede."
+
+msgid "This configuration was not paging."
+msgstr "Denne konfiguration swappede ikke."
+
+msgid "Paging could not be checked."
+msgstr "Swapning kunne ikke kontrolleres."
+
+msgid "Peak VRAM was %(percent)s percent of the card, and generation was %(speed)s percent of the estimate."
+msgstr "Top-VRAM var %(percent)s procent af kortet, og genereringen var %(speed)s procent af estimatet."
+
+msgid "Peak VRAM was %(percent)s percent of the card. Generation was not compared with the estimate."
+msgstr "Top-VRAM var %(percent)s procent af kortet. Genereringen blev ikke sammenlignet med estimatet."
+
+msgid "The largest context on the ladder that would not page is %(tokens)s."
+msgstr "Den største kontekst på stigen, der ikke ville swappe, er %(tokens)s."
+
+msgid "Calibration"
+msgstr "Kalibrering"
+
+msgid "constant"
+msgstr "konstant"
+
+msgid "value"
+msgstr "værdi"
+
+msgid "from"
+msgstr "fra"
+
+msgid "%(base)s + %(slope)s per 1K"
+msgstr "%(base)s + %(slope)s per 1K"
+
+msgid "%(count)d measured context"
+msgid_plural "%(count)d measured contexts"
+msgstr[0] "%(count)d målt kontekst"
+msgstr[1] "%(count)d målte kontekster"
+
+msgid "Nothing was fitted. Every line below says what its constant was missing; a calibration made from less than that would look precise and be arbitrary."
+msgstr "Intet blev tilpasset. Hver linje nedenfor siger, hvad dens konstant manglede; en kalibrering lavet ud fra mindre end det ville se præcis ud og være vilkårlig."
+
+msgid "%(name)s was not fitted: %(reason)s"
+msgstr "%(name)s blev ikke tilpasset: %(reason)s"
+
+msgid "%(count)d measured configuration"
+msgid_plural "%(count)d measured configurations"
+msgstr[0] "%(count)d målt konfiguration"
+msgstr[1] "%(count)d målte konfigurationer"
+
+msgid "What the model is for. It sets the score weights, the speed target and the context a candidate is measured against."
+msgstr "Hvad modellen skal bruges til. Det sætter scorevægtene, hastighedsmålet og den kontekst, en kandidat måles mod."
+
+msgid "Capability the model must have; a model without it is excluded "
+msgstr "Egenskab modellen skal have; en model uden den udelades."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Beholder kun disse licensbetegnelser (kan gentages)."
+
+msgid "balanced, quality or speed: moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights."
+msgstr "balanced, quality eller speed: flytter en tiendedel af vægten mellem kvalitet og hastighed. Det hælder ranglisten; det erstatter ikke vægtene."
+
+msgid "Exclude anything larger to download, for example 40G or 7.5GiB."
+msgstr "Udelader alt, der er større at hente, for eksempel 40G eller 7.5GiB."
+
+msgid "The worst verdict to list: comfortable, fits or tight."
+msgstr "Den dårligste dom, der stadig vises: comfortable, fits eller tight."
+
+msgid "Exclude candidates generating fewer tokens per second than this, in place of the speed a person reads at. Pass 0 when nobody is waiting on the tokens."
+msgstr "Udelader kandidater, der genererer færre tokens i sekundet end dette, i stedet for den hastighed, et menneske læser med. Angiv 0, når ingen venter på tokenne."
+
+msgid "Order the rows drawn: score, speed, quality, context, size, prompt, card, ram, fit, model or quant, largest or best first unless :asc says otherwise. The # column keeps the ranking."
+msgstr "Ordner de tegnede rækker: score, speed, quality, context, size, prompt, card, ram, fit, model eller quant, størst eller bedst først, medmindre :asc siger andet. Kolonnen # holder på rangordenen."
+
+msgid "Draw only rows whose id, name or quantisation contains this text."
+msgstr "Tegner kun rækker, hvis id, navn eller kvantisering indeholder denne tekst."
+
+msgid "Draw only rows whose file is already on this machine."
+msgstr "Tegner kun rækker, hvis fil allerede ligger på denne maskine."
+
+msgid "Draw only rows that run this way: gpu, moe-offload, hybrid or cpu."
+msgstr "Tegner kun rækker, der kører sådan: gpu, moe-offload, hybrid eller cpu."
+
+msgid "Draw only rows at or above this verdict: comfortable, fits or tight. The ranking is unchanged and a hidden row is still counted."
+msgstr "Tegner kun rækker på eller over denne dom: comfortable, fits eller tight. Rangordenen er uændret, og en skjult række tælles stadig med."
+
+msgid "Draw exactly these columns, comma-separated, in this order, named as --json names them: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+msgstr "Tegner præcis disse kolonner, kommaadskilt, i denne rækkefølge, med de navne --json bruger: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+
+msgid "Draw every column whatever the terminal's width; a cell that does not fit folds."
+msgstr "Tegner hver kolonne uanset terminalens bredde; en celle, der ikke er plads til, foldes."
+
+msgid "Leave the candidates that were not ranked off the table. The reasons are still printed under it."
+msgstr "Udelader de kandidater, der ikke blev rangeret, fra tabellen. Grundene skrives stadig under den."
+
+msgid "invalid --min-fit %(value)s"
+msgstr "ugyldig --min-fit: %(value)s"
+
+msgid "Valid values: %(values)s"
+msgstr "Gyldige værdier: %(values)s"
+
+msgid "invalid --prefer %(value)s"
+msgstr "ugyldig --prefer: %(value)s"
+
+msgid "invalid --runs %(value)s"
+msgstr "ugyldig --runs: %(value)s"
+
+msgid "invalid --sort %(value)s"
+msgstr "ugyldig --sort: %(value)s"
+
+msgid "invalid --columns %(value)s"
+msgstr "ugyldig --columns: %(value)s"
+
+msgid "Rank the catalog for what you want to do on this machine.\n\nEvery candidate is planned, sized and estimated here, so the first run scans the machine. Speeds compare candidates at 8K tokens of context; --explain expands a row into the scores, the weights, the budget and the speed breakdown that produced it."
+msgstr "Rangerer kataloget efter, hvad du vil lave på denne maskine.\n\nHver kandidat bliver planlagt, dimensioneret og estimeret her, så den første kørsel scanner maskinen. Hastighederne sammenligner kandidater ved 8K tokens kontekst; --explain folder en række ud i de scorer, de vægte, det budget og den hastighedsopdeling, der frembragte den."
+
+msgid "Exclude candidates that cannot hold at least this many tokens."
+msgstr "Udelader kandidater, der ikke kan rumme mindst så mange tokens."
+
+msgid "Show at most this many rows."
+msgstr "Viser højst så mange rækker."
+
+msgid "Show every quantisation instead of the best one per model."
+msgstr "Viser hver kvantisering i stedet for den bedste pr. model."
+
+msgid "Expand every row shown into the scores, weights, budget and speed breakdown behind it. Combine with --limit 1 for one model."
+msgstr "Folder hver vist række ud i de scorer, vægte, det budget og den hastighedsopdeling, der ligger bag. Kombinér med --limit 1 for én model."
+
+msgid "Plan without a vision projector, freeing its memory."
+msgstr "Planlægger uden billedprojektor, hvilket frigør dens hukommelse."
+
+msgid "Rank every model by how well it uses this machine, whatever it is for.\n\nNo use case, no weights and no score: this is the memory question on its own. Models are sized for 32K tokens of context, and the context column is the largest each one holds in the mode shown."
+msgstr "Rangerer hver model efter, hvor godt den udnytter denne maskine, uanset hvad den skal bruges til.\n\nIngen anvendelse, ingen vægte og ingen score: dette er hukommelsesspørgsmålet alene. Modeller dimensioneres til 32K tokens kontekst, og kontekstkolonnen er den største, hver enkelt rummer i den viste tilstand."
+
+msgid "Only the configurations that use the machine well: at least half its memory held in weights, and no pool past four fifths."
+msgstr "Kun de konfigurationer, der udnytter maskinen godt: mindst halvdelen af dens hukommelse holdt i vægte, og ingen pulje over fire femtedele."
 
 msgid "Maintain the catalog: validate its files, refresh volatile fields."
 msgstr "Vedligeholder kataloget: validerer dets filer, opdaterer de foranderlige felter."
@@ -92,46 +574,20 @@ msgstr "Beholder kun denne anvendelse."
 msgid "Keep only models with this capability (repeatable)."
 msgstr "Beholder kun modeller med denne egenskab (kan gentages)."
 
-msgid "Keep only these licence identifiers (repeatable)."
-msgstr "Beholder kun disse licensbetegnelser (kan gentages)."
+msgid "Show only this quantisation, matched case-insensitively, in both tables."
+msgstr "Viser kun denne kvantisering, matchet uden forskel på store og små bogstaver, i begge tabeller."
+
+msgid "Size every quantisation for this many tokens instead of the usual 32,768."
+msgstr "Dimensionerer hver kvantisering til så mange tokens i stedet for de sædvanlige 32.768."
 
 msgid "Validate only this file instead of the bundled catalog and custom overrides."
 msgstr "Validerer kun denne fil i stedet for det medfølgende katalog og de egne tilpasninger."
 
-msgid "Did you mean: %(ids)s?"
-msgstr "Mente du: %(ids)s?"
-
-msgid "Run `llamafit list` to see every model id."
-msgstr "Kør `llamafit list` for at se alle model-id'er."
-
-msgid "no model named %(id)s in the catalog"
-msgstr "ingen model ved navn %(id)s i kataloget"
-
-msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
-msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
-msgstr[0] "Fandt %(count)d problem i kataloget; kør `llamafit catalog validate` for at se detaljerne."
-msgstr[1] "Fandt %(count)d problemer i kataloget; kør `llamafit catalog validate` for at se detaljerne."
-
 msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
 msgstr "Ingen modeller passede. Prøv et bredere --use-case, --capability, --license, --vendor eller --search."
 
-msgid "invalid --use-case %(value)s"
-msgstr "ugyldig --use-case: %(value)s"
-
-msgid "Valid use cases: %(values)s"
-msgstr "Gyldige anvendelser: %(values)s"
-
-msgid "Valid capabilities: %(values)s"
-msgstr "Gyldige egenskaber: %(values)s"
-
-msgid ""
-"List the model catalog, narrowed by any filters given.\n"
-"\n"
-"The table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
-msgstr ""
-"Viser modelkataloget, afgrænset af de filtre, der er angivet.\n"
-"\n"
-"Tabellen viser højst tre egenskaber pr. model plus en markering +N for resten, og den er sorteret efter den viste kolonne Kvalitet; info eller --json har alle egenskaberne."
+msgid "List the model catalog, narrowed by any filters given.\n\nThe table shows at most three capabilities per model, plus a +N marker for the rest, and is sorted by the Quality column shown; info or --json has every capability."
+msgstr "Viser modelkataloget, afgrænset af de filtre, der er angivet.\n\nTabellen viser højst tre egenskaber pr. model plus en markering +N for resten, og den er sorteret efter den viste kolonne Kvalitet; info eller --json har alle egenskaberne."
 
 msgid "Keep only this vendor, case-insensitive."
 msgstr "Beholder kun denne leverandør, uden forskel på store og små bogstaver."
@@ -148,8 +604,8 @@ msgstr "Kort form for llamafit list --search TEKST."
 msgid "Text to match against id, name, vendor or family."
 msgstr "Tekst, der skal søges efter i id, navn, leverandør eller familie."
 
-msgid "A catalog model id."
-msgstr "Et model-id fra kataloget."
+msgid "Show one model: its facts, the quants it publishes, and what each would cost on this machine.\n\nThe last table is sized against this machine, so the first run scans it. One line per quantisation; plan opens one of those rows into the memory budget, the context ladder and the command line."
+msgstr "Viser én model: dens fakta, de kvantiseringer den udgiver, og hvad hver af dem ville koste på denne maskine.\n\nDen sidste tabel er dimensioneret mod denne maskine, så den første kørsel scanner den. Én linje pr. kvantisering; plan folder en af de rækker ud i hukommelsesbudgettet, kontekststigen og kommandolinjen."
 
 msgid "Validate catalog YAML files against the schema, printing one line per problem."
 msgstr "Validerer katalogets YAML-filer mod skemaet og skriver én linje pr. problem."
@@ -197,8 +653,366 @@ msgstr "Skriver den rå katalogpost for én model, som JSON til daglig eller som
 msgid "Print YAML instead of JSON."
 msgstr "Skriver YAML i stedet for JSON."
 
+msgid "Did you mean: %(ids)s?"
+msgstr "Mente du: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Kør `llamafit list` for at se alle model-id'er."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "ingen model ved navn %(id)s i kataloget"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "Fandt %(count)d problem i kataloget; kør `llamafit catalog validate` for at se detaljerne."
+msgstr[1] "Fandt %(count)d problemer i kataloget; kør `llamafit catalog validate` for at se detaljerne."
+
+msgid "invalid --use-case %(value)s"
+msgstr "ugyldig --use-case: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Gyldige anvendelser: %(values)s"
+
+msgid "invalid %(option)s value: %(values)s"
+msgid_plural "invalid %(option)s values: %(values)s"
+msgstr[0] "ugyldig værdi til %(option)s: %(values)s"
+msgstr[1] "ugyldige værdier til %(option)s: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Gyldige egenskaber: %(values)s"
+
+msgid "%(option)s is not a size: %(value)s"
+msgstr "%(option)s er ikke en størrelse: %(value)s"
+
+msgid "Sizes look like 8G, 7.5GiB or 512M; a bare number is bytes."
+msgstr "Størrelser ser ud som 8G, 7.5GiB eller 512M; et bart tal er bytes."
+
+msgid "%(ceiling)s %(max)s is below %(floor)s %(min)s"
+msgstr "%(ceiling)s %(max)s ligger under %(floor)s %(min)s"
+
+msgid "Raise %(ceiling)s, or lower %(floor)s."
+msgstr "Hæv %(ceiling)s, eller sænk %(floor)s."
+
+msgid "`llamafit %(command)s` reports on the machine LlamaFit is running on"
+msgstr "`llamafit %(command)s` rapporterer om den maskine, LlamaFit kører på"
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a profile describes, run `llamafit hardware show NAME --as-host`."
+msgstr "Drop --profile, --memory, --ram og --cpu-cores. Kør `llamafit hardware show NAVN --as-host` for at se den maskine, en profil beskriver."
+
 msgid "Explain what was detected, what failed, and what would unlock more."
 msgstr "Forklarer, hvad der blev fundet, hvad der gik galt, og hvad der ville give mere."
+
+msgid "Hardware profiles: describe a machine in a file and score models against it."
+msgstr "Hardwareprofiler: beskriver en maskine i en fil og scorer modeller mod den."
+
+msgid "Validate only this file instead of every bundled and user profile."
+msgstr "Validerer kun denne fil i stedet for hver medfølgende og egen profil."
+
+msgid "A profile name, or a path to a profile file."
+msgstr "Et profilnavn eller en sti til en profilfil."
+
+msgid "%(count)d hardware profile problem found; run `llamafit hardware validate` for details."
+msgid_plural "%(count)d hardware profile problems found; run `llamafit hardware validate` for details."
+msgstr[0] "Fandt %(count)d problem med en hardwareprofil; kør `llamafit hardware validate` for at se detaljerne."
+msgstr[1] "Fandt %(count)d problemer med hardwareprofiler; kør `llamafit hardware validate` for at se detaljerne."
+
+msgid "List the hardware profiles LlamaFit has: the bundled ones and your own."
+msgstr "Viser de hardwareprofiler, LlamaFit har: de medfølgende og dine egne."
+
+msgid "No hardware profiles. Run `llamafit hardware path` to see where yours would go."
+msgstr "Ingen hardwareprofiler. Kør `llamafit hardware path` for at se, hvor dine egne skal ligge."
+
+msgid "Show one profile; with --as-host, the machine it stands in for.\n\nA host built from a profile is marked as simulated, in the table and in the JSON, so a what-if is never mistaken for a scan of this machine."
+msgstr "Viser én profil; med --as-host den maskine, den står for.\n\nEn maskine bygget ud fra en profil markeres som simuleret, både i tabellen og i JSON, så et hvad-nu-hvis aldrig forveksles med en scanning af denne maskine."
+
+msgid "Show the host this profile substitutes, as `llamafit system` would."
+msgstr "Viser den maskine, denne profil træder i stedet for, som `llamafit system` ville gøre."
+
+msgid "Check hardware profile files against the schema, printing one line per problem."
+msgstr "Kontrollerer hardwareprofilfiler mod skemaet og skriver én linje pr. problem."
+
+msgid "Print the directory your own hardware profiles go in."
+msgstr "Skriver den mappe, dine egne hardwareprofiler skal ligge i."
+
+msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr "Den findes ikke endnu; opret den, og læg en %(suffix)s-fil i den."
+
+msgid "Install what it takes to run a model: llama.cpp itself, and the weights."
+msgstr "Installerer det, der skal til for at køre en model: llama.cpp selv og vægtene."
+
+msgid "Fetch this quantisation instead of the first the catalog publishes."
+msgstr "Henter denne kvantisering i stedet for den første, kataloget udgiver."
+
+msgid "Put the files here instead of under the configured downloads directory."
+msgstr "Lægger filerne her i stedet for i den indstillede mappe til hentede filer."
+
+msgid "Use at most this much bandwidth, for example 5M. Shared across every worker, so the figure is the figure whatever --workers says."
+msgstr "Bruger højst så meget båndbredde, for eksempel 5M. Delt på tværs af hver arbejder, så tallet er tallet, uanset hvad --workers siger."
+
+msgid "How many requests to keep in flight. More is not always faster, and a home connection is shared with whoever else is using it."
+msgstr "Hvor mange forespørgsler der må være undervejs. Flere er ikke altid hurtigere, og en hjemmeforbindelse deles med alle andre, der bruger den."
+
+msgid "Do not ask before starting."
+msgstr "Spørger ikke, før den går i gang."
+
+msgid "Show what would be fetched and stop before fetching it."
+msgstr "Viser, hvad der ville blive hentet, og stopper, før det hentes."
+
+msgid "Fetch only the weights, not the vision projector or the draft model."
+msgstr "Henter kun vægtene, ikke billedprojektoren eller udkastmodellen."
+
+msgid "Re-read files that are already here and check them against the catalog."
+msgstr "Læser filer, der allerede ligger her, igen og kontrollerer dem mod kataloget."
+
+msgid "Fetch files the catalog holds no checksum for. Nothing will be able to tell you whether they arrived intact."
+msgstr "Henter filer, kataloget ikke har nogen kontrolsum for. Intet vil kunne fortælle dig, om de kom uskadte frem."
+
+msgid "Show at most this many entries."
+msgstr "Viser højst så mange poster."
+
+msgid "Download a model's weights, resuming anything an earlier run left and checking every file against the catalog's checksum."
+msgstr "Henter en models vægte, genoptager det, en tidligere kørsel efterlod, og kontrollerer hver fil mod katalogets kontrolsum."
+
+msgid "Start the download?"
+msgstr "Skal hentningen begynde?"
+
+msgid "Show what has been downloaded, newest first."
+msgstr "Viser, hvad der er hentet, nyeste først."
+
+msgid "Nothing has been downloaded yet."
+msgstr "Der er endnu ikke hentet noget."
+
+msgid "Install this backend instead of the one chosen for your GPU: cuda, vulkan, hip, sycl, metal or cpu."
+msgstr "Installerer denne backend i stedet for den, der er valgt til din GPU: cuda, vulkan, hip, sycl, metal eller cpu."
+
+msgid "Install here instead of ~/.llamafit/llama.cpp."
+msgstr "Installerer her i stedet for i ~/.llamafit/llama.cpp."
+
+msgid "Install this release tag, for example b6100, not the latest."
+msgstr "Installerer dette udgivelsesmærke, for eksempel b6100, ikke det nyeste."
+
+msgid "invalid --backend %(value)s"
+msgstr "ugyldig --backend: %(value)s"
+
+msgid "Valid backends: %(values)s"
+msgstr "Gyldige backends: %(values)s"
+
+msgid "release %(tag)s publishes no %(backend)s build for %(os)s %(arch)s."
+msgstr "udgivelse %(tag)s udgiver ikke noget %(backend)s-build til %(os)s %(arch)s."
+
+msgid "Leave --backend out and LlamaFit will choose a published one."
+msgstr "Udelad --backend, så vælger LlamaFit et, der er udgivet."
+
+msgid "release %(tag)s publishes nothing for %(os)s %(arch)s."
+msgstr "udgivelse %(tag)s udgiver ikke noget til %(os)s %(arch)s."
+
+msgid "Build llama.cpp from source; see the project's own instructions."
+msgstr "Byg llama.cpp fra kildekoden; se projektets egen vejledning."
+
+msgid "Downloading"
+msgstr "Henter"
+
+msgid "Change your PATH?"
+msgstr "Skal din PATH ændres?"
+
+msgid "PATH left alone."
+msgstr "PATH blev ikke rørt."
+
+msgid "PATH changed. Open a new terminal for it to take effect."
+msgstr "PATH er ændret. Åbn en ny terminal, for at det får virkning."
+
+msgid "Download a published llama.cpp build and install it into ~/.llamafit/llama.cpp.\n\nThe plan is printed before anything is written. The archive's checksum is verified before it is unpacked, an interrupted download continues where it stopped, and a directory LlamaFit did not create is never overwritten."
+msgstr "Henter et udgivet llama.cpp-build og installerer det i ~/.llamafit/llama.cpp.\n\nPlanen skrives, før der skrives noget som helst. Arkivets kontrolsum verificeres, før det pakkes ud, en afbrudt hentning fortsætter, hvor den stoppede, og en mappe, LlamaFit ikke har oprettet, overskrives aldrig."
+
+msgid "Offer to add the bin directory to your PATH, showing the undo first."
+msgstr "Tilbyder at føje bin-mappen til din PATH og viser først, hvordan det fortrydes."
+
+msgid "Install over a directory LlamaFit did not create. Ask yourself twice."
+msgstr "Installerer oven i en mappe, LlamaFit ikke har oprettet. Tænk dig om to gange."
+
+msgid "Install an archive that publishes no checksum. Nothing can be checked."
+msgstr "Installerer et arkiv, der ikke udgiver nogen kontrolsum. Der er intet at kontrollere."
+
+msgid "Print the plan and write nothing."
+msgstr "Skriver planen og skriver ellers ingenting."
+
+msgid "Do not ask; assume yes."
+msgstr "Spørger ikke; går ud fra ja."
+
+msgid "Install this?"
+msgstr "Skal dette installeres?"
+
+msgid "Nothing was written."
+msgstr "Der blev ikke skrevet noget."
+
+msgid "Plan this quantisation instead of the one that scores best on this machine."
+msgstr "Planlægger denne kvantisering i stedet for den, der scorer bedst på denne maskine."
+
+msgid "Size for this many tokens. When it does not fit, the plan sizes down and shows what the context you asked for would have cost."
+msgstr "Dimensionerer til så mange tokens. Når der ikke er plads, dimensionerer planen ned og viser, hvad den kontekst, du bad om, ville have kostet."
+
+msgid "Set the micro-batch by hand. The whole budget is rebuilt around it, since it moves the compute buffer and with it the verdict."
+msgstr "Sætter mikrobatchen i hånden. Hele budgettet bygges op omkring den, for den flytter beregningsbufferen og dermed dommen."
+
+msgid "A generation speed to answer against: whether this reaches it, and what context would."
+msgstr "En genereringshastighed at svare imod: om dette når den, og hvilken kontekst der ville."
+
+msgid "%(model)s publishes no quantisations"
+msgstr "%(model)s udgiver ingen kvantiseringer"
+
+msgid "Run `llamafit catalog refresh --model %(model)s`."
+msgstr "Kør `llamafit catalog refresh --model %(model)s`."
+
+msgid "Place one model on this machine and print the command line that runs it.\n\nShows the memory budget component by component, the context ladder a launch script chooses from, where a token's time goes, and any run the catalog records for comparison."
+msgstr "Placerer én model på denne maskine og skriver den kommandolinje, der kører den.\n\nViser hukommelsesbudgettet komponent for komponent, den kontekststige et startscript vælger fra, hvor et tokens tid går hen, og enhver kørsel kataloget har noteret til sammenligning."
+
+msgid "Leave the vision projector out, freeing its memory for context."
+msgstr "Udelader billedprojektoren, hvilket frigør dens hukommelse til kontekst."
+
+msgid "Write the files here instead of in LlamaFit's own presets directory."
+msgstr "Skriver filerne her i stedet for i LlamaFits egen preset-mappe."
+
+msgid "Bind this port instead of llama.cpp's default 8080."
+msgstr "Binder denne port i stedet for llama.cpps standardport 8080."
+
+msgid "Size for this many tokens. It becomes the top of the ladder the script chooses from; the script never goes above it."
+msgstr "Dimensionerer til så mange tokens. Det bliver toppen af den stige, scriptet vælger fra; scriptet går aldrig højere."
+
+msgid "%(model)s does not fit this machine in any configuration"
+msgstr "%(model)s er der ikke plads til på denne maskine i nogen konfiguration"
+
+msgid "Run `llamafit plan %(model)s` to see what it would need."
+msgstr "Kør `llamafit plan %(model)s` for at se, hvad den ville kræve."
+
+msgid "Write launch scripts for one model: a script that picks its context from free card memory at start time, a router section, and a README.\n\nA file you have edited is never overwritten without --force."
+msgstr "Skriver startscripts til én model: et script, der vælger sin kontekst ud fra ledig korthukommelse ved opstart, et routerafsnit og en README.\n\nEn fil, du har rettet i, overskrives aldrig uden --force."
+
+msgid "Overwrite files you have edited. It says which ones it discarded."
+msgstr "Overskriver filer, du har rettet i. Den siger, hvilke den kasserede."
+
+msgid "Run a model's preset, wait for the server to answer, and print its endpoints. --stop stops the server LlamaFit started."
+msgstr "Kører en models preset, venter på, at serveren svarer, og skriver dens endpoints. --stop stopper den server, LlamaFit startede."
+
+msgid "Stop the server LlamaFit started for this model."
+msgstr "Stopper den server, LlamaFit startede til denne model."
+
+msgid "Seconds to wait for /health before reporting that it has not answered."
+msgstr "Sekunder at vente på /health, før det meldes, at den ikke har svaret."
+
+msgid "the preset could not be written"
+msgstr "presettet kunne ikke skrives"
+
+msgid "Wrote a preset first: %(path)s"
+msgstr "Skrev først et preset: %(path)s"
+
+msgid "Nothing to stop: LlamaFit has no record of starting %(model)s."
+msgstr "Intet at stoppe: LlamaFit har ikke noteret at have startet %(model)s."
+
+msgid "Stopped %(model)s, which was serving on %(url)s."
+msgstr "Stoppede %(model)s, som betjente på %(url)s."
+
+msgid "Preset for %(name)s (%(quant)s) in %(dir)s"
+msgstr "Preset til %(name)s (%(quant)s) i %(dir)s"
+
+msgid "The server will answer on %(url)s."
+msgstr "Serveren svarer på %(url)s."
+
+msgid "Your edits were kept. Nothing above was written to those files; run the command again with --force to replace them."
+msgstr "Dine rettelser blev bevaret. Intet af ovenstående blev skrevet til de filer; kør kommandoen igen med --force for at erstatte dem."
+
+msgid "At start time the script reads how much card memory is free, keeps %(reserve)s MiB back, and takes the largest context that still fits."
+msgstr "Ved opstart læser scriptet, hvor meget korthukommelse der er ledig, holder %(reserve)s MiB tilbage og tager den største kontekst, der stadig er plads til."
+
+msgid "This machine has nothing the script can ask for free card memory, so it will start at %(context)s tokens; the script's header says why."
+msgstr "Denne maskine har intet, scriptet kan spørge om ledig korthukommelse, så det starter ved %(context)s tokens; scriptets hoved siger hvorfor."
+
+msgid "Files"
+msgstr "Filer"
+
+msgctxt "column heading"
+msgid "File"
+msgstr "Fil"
+
+msgctxt "column heading"
+msgid "What happened"
+msgstr "Hvad der skete"
+
+msgid "Context tiers the script may choose"
+msgstr "Konteksttrin scriptet må vælge"
+
+msgctxt "column heading"
+msgid "Context"
+msgstr "Kontekst"
+
+msgctxt "column heading"
+msgid "Card needs"
+msgstr "Kort kræver"
+
+msgctxt "column heading"
+msgid "Free card memory to reach it"
+msgstr "Ledig korthukommelse til det"
+
+msgid "%(value)s MiB"
+msgstr "%(value)s MiB"
+
+msgid "written"
+msgstr "skrevet"
+
+msgid "brought up to date"
+msgstr "opdateret"
+
+msgid "already up to date"
+msgstr "allerede opdateret"
+
+msgid "kept: you edited it"
+msgstr "bevaret: du har rettet i den"
+
+msgid "overwritten: your edits are gone"
+msgstr "overskrevet: dine rettelser er væk"
+
+msgid "The preset could not be started: %(error)s"
+msgstr "Presettet kunne ikke startes: %(error)s"
+
+msgid "Started, but %(url)s has not answered yet. A large model can spend minutes reading its weights; try the health endpoint again in a moment, or run `llamafit launch %(model)s --stop`."
+msgstr "Startet, men %(url)s har ikke svaret endnu. En stor model kan bruge minutter på at læse sine vægte; prøv health-endpointet igen om et øjeblik, eller kør `llamafit launch %(model)s --stop`."
+
+msgid "%(model)s was already serving on %(url)s."
+msgstr "%(model)s betjente allerede på %(url)s."
+
+msgid "%(model)s is serving on %(url)s."
+msgstr "%(model)s betjener på %(url)s."
+
+msgid "Stop it with `llamafit launch %(model)s --stop`."
+msgstr "Stop den med `llamafit launch %(model)s --stop`."
+
+msgid "Endpoints"
+msgstr "Endpoints"
+
+msgctxt "column heading"
+msgid "What"
+msgstr "Hvad"
+
+msgctxt "column heading"
+msgid "Where"
+msgstr "Hvor"
+
+msgid "Web interface"
+msgstr "Webgrænseflade"
+
+# The name the OpenAI-compatible API gives this endpoint; the URL beside it spells
+# it, so it is read as that name and not as two Danish words.
+msgid "Chat completions"
+msgstr "Chat completions"
+
+msgid "Models"
+msgstr "Modeller"
+
+# The name of the /health endpoint beside it, not the Danish word for health.
+msgid "Health"
+msgstr "Health"
+
+msgid "Ask for the model by the alias %(alias)s."
+msgstr "Bed om modellen under aliasset %(alias)s."
 
 msgctxt "finding level"
 msgid "OK"
@@ -229,6 +1043,47 @@ msgstr "antaget"
 msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "ukendt"
+
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "ukendt"
+
+msgid "%(gbps)s GB/s (%(source)s, cached)"
+msgstr "%(gbps)s GB/s (%(source)s, fra cachen)"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+msgctxt "simulation override"
+msgid "VRAM"
+msgstr "VRAM"
+
+msgctxt "simulation override"
+msgid "system memory"
+msgstr "systemhukommelse"
+
+msgctxt "simulation override"
+msgid "CPU cores"
+msgstr "CPU-kerner"
+
+msgid "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgid_plural "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgstr[0] "disse tal kommer fra hardwareprofilen %(profile)s med %(fields)s tilsidesat; de er ikke denne maskine"
+msgstr[1] "disse tal kommer fra hardwareprofilen %(profile)s med %(fields)s tilsidesat; de er ikke denne maskine"
+
+msgid "these figures come from the hardware profile %(profile)s; they are not this machine"
+msgstr "disse tal kommer fra hardwareprofilen %(profile)s; de er ikke denne maskine"
+
+msgid "%(fields)s was overridden for a what-if; these figures are not what was scanned"
+msgid_plural "%(fields)s were overridden for a what-if; these figures are not what was scanned"
+msgstr[0] "%(fields)s blev tilsidesat til et hvad-nu-hvis; disse tal er ikke det, der blev scannet"
+msgstr[1] "%(fields)s blev tilsidesat til et hvad-nu-hvis; disse tal er ikke det, der blev scannet"
+
+msgid "these figures are not this machine"
+msgstr "disse tal er ikke denne maskine"
+
+msgid "SIMULATED"
+msgstr "SIMULERET"
 
 msgctxt "model capability"
 msgid "coding"
@@ -273,16 +1128,16 @@ msgstr "%(compute)s TFLOPS fp16"
 
 msgid "%(count)d core"
 msgid_plural "%(count)d cores"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d kerne"
+msgstr[1] "%(count)d kerner"
 
 msgid "%(count)d thread"
 msgid_plural "%(count)d threads"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d tråd"
+msgstr[1] "%(count)d tråde"
 
 msgid "%(cores)s / %(threads)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s"
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -290,10 +1145,10 @@ msgstr[0] "%(count)d ydelseskerne"
 msgstr[1] "%(count)d ydelseskerner"
 
 msgid "%(cores)s / %(threads)s, %(performance)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s, %(performance)s"
 
 msgid "%(type)s at %(speed)d MT/s"
-msgstr ""
+msgstr "%(type)s ved %(speed)d MT/s"
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -309,23 +1164,23 @@ msgstr[0] "%(count)d kanal"
 msgstr[1] "%(count)d kanaler"
 
 msgid "%(kind)s, %(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s fordelt på %(channels)s"
 
 msgid "%(kind)s, %(modules)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s"
 
 msgid "%(kind)s, %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(channels)s"
 
 msgid "%(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(modules)s fordelt på %(channels)s"
 
 msgctxt "memory type"
 msgid "type unknown"
 msgstr "type ukendt"
 
 msgid "%(specs)s (spec), driver %(driver)s"
-msgstr ""
+msgstr "%(specs)s (datablad), driver %(driver)s"
 
 # "(spec)" marks a figure that comes from the bundled specification table rather than
 # from this machine; "datablad" is what a Danish reader calls that table.
@@ -339,6 +1194,19 @@ msgctxt "GPU specifications"
 msgid "no specs"
 msgstr "ingen specifikationer"
 
+msgid "%(total)s VRAM, %(free)s free (Vulkan driver)"
+msgstr "%(total)s VRAM, heraf %(free)s ledig (Vulkan-driver)"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, heraf %(free)s ledig"
+
+msgid "%(total)s VRAM, free unknown"
+msgstr "%(total)s VRAM, ledig mængde ukendt"
+
+msgctxt "GPU VRAM"
+msgid "VRAM unknown"
+msgstr "VRAM ukendt"
+
 msgid "Host"
 msgstr "Maskine"
 
@@ -350,20 +1218,6 @@ msgstr "%(os)s %(version)s (%(arch)s)"
 
 msgid "CPU"
 msgstr "CPU"
-
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgctxt "CPU instruction sets"
-msgid "isa unknown"
-msgstr "isa ukendt"
-
-msgid "%(gbps)s GB/s (%(source)s)"
-msgstr "%(gbps)s GB/s (%(source)s)"
-
-msgctxt "memory bandwidth"
-msgid "unknown"
-msgstr "ukendt"
 
 msgid "Memory"
 msgstr "Hukommelse"
@@ -378,18 +1232,14 @@ msgctxt "GPU"
 msgid "none detected"
 msgstr "ingen fundet"
 
-msgid "%(total)s VRAM, %(free)s free"
-msgstr "%(total)s VRAM, heraf %(free)s ledig"
-
-msgctxt "GPU VRAM"
-msgid "VRAM unknown"
-msgstr "VRAM ukendt"
-
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
-msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgid "Card memory"
+msgstr "Korthukommelse"
+
+msgid "%(gpus)s: nothing here could read how much of the card is free, so every budget on this machine was computed as if there were no card at all. Install the Vulkan tools, or write the size into a hardware profile."
+msgstr "%(gpus)s: intet her kunne læse, hvor meget af kortet der er ledigt, så hvert budget på denne maskine blev regnet ud, som om der slet ikke var noget kort. Installér Vulkan-værktøjerne, eller skriv størrelsen ind i en hardwareprofil."
 
 msgid "Memory pool"
 msgstr "Hukommelsespulje"
@@ -500,21 +1350,14 @@ msgid "Params"
 msgstr "Param."
 
 msgctxt "column heading"
-msgid "Context"
-msgstr "Kontekst"
-
-msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Egenskaber"
 
 msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr ""
+msgstr "%(heading)s er den redaktionelle udgangsværdi, før enhver kvantiseringsstraf; kør `llamafit info <model>` for de kildeangivne målinger bag den."
 
 msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr ""
-
-msgid "Models"
-msgstr "Modeller"
+msgstr "%(heading)s er antal milliarder i alt/aktive for en mixture-of-experts-model, eller ét tal, når de er ens."
 
 msgid "Vendor"
 msgstr "Leverandør"
@@ -535,10 +1378,10 @@ msgid "Parameters"
 msgstr "Parametre"
 
 msgid "%(total)s total, %(active)s active"
-msgstr ""
+msgstr "%(total)s i alt, %(active)s aktive"
 
 msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
-msgstr ""
+msgstr "%(tokens)s tokens som standard, %(extended)s udvidet via %(method)s"
 
 msgctxt "context extension method"
 msgid "unspecified method"
@@ -583,13 +1426,13 @@ msgstr[0] "%(count)d lag"
 msgstr[1] "%(count)d lag"
 
 msgid "%(arch)s, %(layers)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s, %(experts)s"
 
 msgid "%(arch)s, %(layers)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s"
 
 msgid "%(arch)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(experts)s"
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
@@ -620,19 +1463,1164 @@ msgctxt "bits per weight"
 msgid "unknown"
 msgstr "ukendt"
 
+msgid "On this machine"
+msgstr "På denne maskine"
+
+msgctxt "column heading"
+msgid "Quant"
+msgstr "Kvant."
+
+msgctxt "column heading"
+msgid "Runs"
+msgstr "Kører"
+
+msgctxt "column heading"
+msgid "Card"
+msgstr "Kort"
+
+msgctxt "column heading"
+msgid "RAM"
+msgstr "RAM"
+
+msgctxt "column heading"
+msgid "Tok/s"
+msgstr "Tok/s"
+
+msgctxt "column heading"
+msgid "Ctx"
+msgstr "Ctx"
+
+msgctxt "column heading"
+msgid "Fit"
+msgstr "Plads"
+
+msgid "%(quant)s: %(reason)s"
+msgstr "%(quant)s: %(reason)s"
+
+msgctxt "tokens per second"
+msgid "unknown"
+msgstr "ukendt"
+
+msgctxt "context length"
+msgid "none"
+msgstr "ingen"
+
+msgid "Sized for %(context)s tokens, with every figure from a placement computed for this machine. `llamafit plan MODEL --quant NAME` opens one of these rows into the budget line by line, the context ladder and the command line that runs it."
+msgstr "Dimensioneret til %(context)s tokens, med hvert tal fra en placering, der er regnet ud for denne maskine. `llamafit plan MODEL --quant NAVN` folder en af disse rækker ud i budgettet linje for linje, kontekststigen og den kommandolinje, der kører den."
+
+msgid "To reach %(context)s tokens, free %(free)s more on the graphics card: that rung needs %(needed)s, which is %(share)s of what is free and over the line where the driver starts paging."
+msgstr "For at nå %(context)s tokens skal du frigøre %(free)s mere på grafikkortet: det trin kræver %(needed)s, hvilket er %(share)s af det ledige og over den grænse, hvor driveren begynder at swappe."
+
+msgid "%(context)s tokens is past what this machine holds: that rung needs %(needed)s on the graphics card and there is nothing left to absorb what would not fit, so freeing the card is not the change that reaches it."
+msgstr "%(context)s tokens er mere, end denne maskine rummer: det trin kræver %(needed)s på grafikkortet, og der er intet tilbage til at optage det, der ikke er plads til, så at frigøre kortet er ikke den ændring, der når derop."
+
+msgid "%(quant)s, the next quantisation down, could not be sized: %(reason)s"
+msgstr "%(quant)s, den næste kvantisering nedad, kunne ikke dimensioneres: %(reason)s"
+
+msgid "%(quant)s, the next quantisation down, does not fit this machine either."
+msgstr "%(quant)s, den næste kvantisering nedad, er der heller ikke plads til på denne maskine."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens."
+msgstr "%(quant)s, den næste kvantisering nedad, blev også planlagt her: %(mode)s, %(verdict)s, op til %(context)s tokens."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens at %(tps)s tokens per second."
+msgstr "%(quant)s, den næste kvantisering nedad, blev også planlagt her: %(mode)s, %(verdict)s, op til %(context)s tokens ved %(tps)s tokens i sekundet."
+
+msgid "It fits entirely on the graphics card, which this one does not."
+msgstr "Den er der plads til helt på grafikkortet, hvilket denne ikke er."
+
+msgid "It fits better: %(theirs)s rather than %(mine)s."
+msgstr "Den passer bedre: %(theirs)s frem for %(mine)s."
+
+msgid "It holds %(theirs)s tokens rather than %(mine)s."
+msgstr "Den rummer %(theirs)s tokens frem for %(mine)s."
+
+msgid "It generates %(theirs)s tokens per second rather than %(mine)s."
+msgstr "Den genererer %(theirs)s tokens i sekundet frem for %(mine)s."
+
+msgid "It is no better here, so there is nothing to gain by dropping to it."
+msgstr "Den er ikke bedre her, så der er intet at vinde ved at gå ned til den."
+
+msgid "Every context this model offers already fits here; the machine is not what limits it."
+msgstr "Der er allerede plads til hver kontekst, denne model tilbyder; maskinen er ikke det, der begrænser den."
+
+msgid "What would change it"
+msgstr "Hvad der ville ændre det"
+
+msgctxt "profile origin"
+msgid "bundled"
+msgstr "medfølgende"
+
+msgctxt "profile origin"
+msgid "yours"
+msgstr "dine egne"
+
+msgid "%(ram)s RAM, no graphics card"
+msgstr "%(ram)s RAM, intet grafikkort"
+
+msgid "%(ram)s RAM shared with %(gpu)s"
+msgstr "%(ram)s RAM delt med %(gpu)s"
+
+msgid "%(ram)s RAM, %(gpu)s with %(vram)s"
+msgstr "%(ram)s RAM, %(gpu)s med %(vram)s"
+
+msgid "%(cores)d core / %(threads)d thread"
+msgid_plural "%(cores)d cores / %(threads)d threads"
+msgstr[0] "%(cores)d kerne / %(threads)d tråd"
+msgstr[1] "%(cores)d kerner / %(threads)d tråde"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa ukendt"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "%(total)s total, %(available)s available; bandwidth %(bandwidth)s"
+msgstr "%(total)s i alt, %(available)s tilgængelig; båndbredde %(bandwidth)s"
+
+msgctxt "GPU specifications"
+msgid "no bandwidth or compute figure"
+msgstr "intet tal for båndbredde eller regnekraft"
+
+msgid "%(specs)s (from the profile)"
+msgstr "%(specs)s (fra profilen)"
+
+msgid "%(specs)s (from the specification table)"
+msgstr "%(specs)s (fra specifikationstabellen)"
+
+msgctxt "GPU VRAM"
+msgid "VRAM from the shared pool"
+msgstr "VRAM fra den fælles pulje"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "Hardware profiles"
+msgstr "Hardwareprofiler"
+
+msgid "Machine"
+msgstr "Maskine"
+
+msgid "a graphics card whose name contains %(text)s"
+msgstr "et grafikkort, hvis navn indeholder %(text)s"
+
+msgid "a processor whose model contains %(text)s"
+msgstr "en processor, hvis model indeholder %(text)s"
+
+msgid "at least %(ram)s of memory"
+msgstr "mindst %(ram)s hukommelse"
+
+msgctxt "profile match rules"
+msgid "none, so this profile is never chosen for you"
+msgstr "ingen, så denne profil bliver aldrig valgt til dig"
+
+msgid "Description"
+msgstr "Beskrivelse"
+
+msgid "From"
+msgstr "Fra"
+
+msgid "File"
+msgstr "Fil"
+
+msgid "Matches"
+msgstr "Matcher"
+
+msgid "Recorded"
+msgstr "Noteret"
+
+msgid "Provenance"
+msgstr "Herkomst"
+
+msgid "recorded from %(source)s; this build stores it but does not apply it yet"
+msgstr "noteret fra %(source)s; dette build gemmer det, men anvender det ikke endnu"
+
+msgctxt "utilisation"
+msgid "n/a"
+msgstr "n/a"
+
+msgctxt "run mode"
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "run mode"
+msgid "experts in RAM"
+msgstr "eksperter i RAM"
+
+msgctxt "run mode"
+msgid "split"
+msgstr "delt"
+
+msgctxt "run mode"
+msgid "CPU"
+msgstr "CPU"
+
+msgctxt "run mode"
+msgid "nowhere"
+msgstr "ingen steder"
+
+msgctxt "fit verdict"
+msgid "roomy"
+msgstr "rummeligt"
+
+msgctxt "fit verdict"
+msgid "fits"
+msgstr "passer"
+
+msgctxt "fit verdict"
+msgid "tight"
+msgstr "trangt"
+
+msgctxt "fit verdict"
+msgid "pages"
+msgstr "swapper"
+
+msgctxt "fit verdict"
+msgid "no room"
+msgstr "ingen plads"
+
+msgid "Roomy: there is room for a longer context or a second model."
+msgstr "Rummeligt: der er plads til en længere kontekst eller en model mere."
+
+msgid "Fits: the intended configuration runs as planned."
+msgstr "Passer: den tiltænkte konfiguration kører som planlagt."
+
+msgid "Tight: it runs, but a browser or a second process can push it over."
+msgstr "Trangt: den kører, men en browser eller en proces mere kan skubbe den over kanten."
+
+msgid "Pages: this needs more of the graphics card than is free. The driver will not refuse it — it moves the overflow to system memory, the server starts, the log looks healthy, and generation runs at a fraction of its speed with nothing saying why."
+msgstr "Swapper: dette kræver mere af grafikkortet, end der er ledigt. Driveren afviser det ikke — den flytter overskuddet til systemhukommelsen, serveren starter, loggen ser sund ud, og genereringen kører med en brøkdel af sin hastighed, uden at noget siger hvorfor."
+
+msgid "No room: more memory than this machine has, with nothing to page to."
+msgstr "Ingen plads: mere hukommelse, end denne maskine har, uden noget at swappe til."
+
+msgctxt "confidence"
+msgid "measured"
+msgstr "målt"
+
+msgctxt "confidence"
+msgid "calibrated"
+msgstr "kalibreret"
+
+msgctxt "confidence"
+msgid "estimated"
+msgstr "estimeret"
+
+msgctxt "confidence"
+msgid "no estimate"
+msgstr "intet estimat"
+
+msgid "Speeds are benchmarks taken on this machine, not predictions."
+msgstr "Hastighederne er målinger taget på denne maskine, ikke forudsigelser."
+
+msgid "Speeds are section 10's formula corrected by benchmarks taken on this machine."
+msgstr "Hastighederne er formlen fra afsnit 10 korrigeret med målinger taget på denne maskine."
+
+msgid "Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement."
+msgstr "Hastighederne er formlen fra afsnit 10 på dens standardkonstanter. Der er endnu ikke målt noget på denne maskine, så intet tal her er en måling."
+
+msgid "No speed could be estimated."
+msgstr "Der kunne ikke estimeres nogen hastighed."
+
+msgctxt "memory pool"
+msgid "card"
+msgstr "kort"
+
+msgctxt "memory pool"
+msgid "system"
+msgstr "system"
+
+msgctxt "memory pool"
+msgid "disk"
+msgstr "disk"
+
+msgctxt "budget component"
+msgid "dense weights"
+msgstr "tætte vægte"
+
+msgctxt "budget component"
+msgid "shared experts"
+msgstr "delte eksperter"
+
+msgctxt "budget component"
+msgid "routed experts"
+msgstr "ruterede eksperter"
+
+msgctxt "budget component"
+msgid "token embedding"
+msgstr "token-embedding"
+
+msgctxt "budget component"
+msgid "output head"
+msgstr "udgangshoved"
+
+msgctxt "budget component"
+msgid "other weights"
+msgstr "øvrige vægte"
+
+msgctxt "budget component"
+msgid "streamed tables"
+msgstr "streamede tabeller"
+
+msgctxt "budget component"
+msgid "KV cache"
+msgstr "KV-cache"
+
+msgctxt "budget component"
+msgid "KV cache, undeclared"
+msgstr "KV-cache, ikke angivet"
+
+msgctxt "budget component"
+msgid "recurrent state"
+msgstr "rekurrent tilstand"
+
+msgctxt "budget component"
+msgid "compute buffer"
+msgstr "beregningsbuffer"
+
+msgctxt "budget component"
+msgid "output buffer"
+msgstr "udgangsbuffer"
+
+msgctxt "budget component"
+msgid "vision projector"
+msgstr "billedprojektor"
+
+msgctxt "budget component"
+msgid "vision compute"
+msgstr "billedberegning"
+
+msgctxt "budget component"
+msgid "backend overhead"
+msgstr "backend-overhead"
+
+msgctxt "budget component"
+msgid "process overhead"
+msgstr "procesoverhead"
+
+msgctxt "budget line source"
+msgid "file"
+msgstr "fil"
+
+msgctxt "budget line source"
+msgid "formula"
+msgstr "formel"
+
+msgctxt "column heading"
+msgid "Component"
+msgstr "Komponent"
+
+msgctxt "column heading"
+msgid "From"
+msgstr "Fra"
+
+msgid "Card: %(required)s of %(available)s free, %(share)s used."
+msgstr "Kort: %(required)s af %(available)s ledige, %(share)s brugt."
+
+msgid "System memory: %(required)s of %(available)s free, %(share)s used."
+msgstr "Systemhukommelse: %(required)s af %(available)s ledige, %(share)s brugt."
+
+msgid "%(component)s: %(note)s"
+msgstr "%(component)s: %(note)s"
+
+msgid "Context tiers"
+msgstr "Konteksttrin"
+
+msgctxt "column heading"
+msgid "On this machine"
+msgstr "På denne maskine"
+
+msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
+msgstr "Et startscript sammenligner den ledige hukommelse, det ser, med kortkolonnen og tager det største trin, der er plads til (se docs/cli.md)."
+
+msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
+msgstr "%(gen)s tokens i sekundet genereret og %(prompt)s læst, ved %(context)s tokens kontekst (%(confidence)s)."
+
+msgctxt "column heading"
+msgid "A token's time"
+msgstr "Et tokens tid"
+
+msgctxt "token time"
+msgid "reading the card"
+msgstr "at læse kortet"
+
+msgctxt "token time"
+msgid "reading system memory"
+msgstr "at læse systemhukommelsen"
+
+msgctxt "token time"
+msgid "everything else"
+msgstr "alt andet"
+
+msgctxt "column heading"
+msgid "A prompt token's time"
+msgstr "Et prompttokens tid"
+
+msgctxt "prompt token time"
+msgid "doing the arithmetic"
+msgstr "at regne"
+
+msgctxt "prompt token time"
+msgid "streaming the experts across the link"
+msgstr "at streame eksperterne over forbindelsen"
+
+msgctxt "prompt token time"
+msgid "reading the experts from system memory"
+msgstr "at læse eksperterne fra systemhukommelsen"
+
+msgctxt "column heading"
+msgid "Seconds"
+msgstr "Sekunder"
+
+msgctxt "column heading"
+msgid "Share"
+msgstr "Andel"
+
+msgid "Measured on %(date)s."
+msgstr "Målt den %(date)s."
+
+msgid "Recorded elsewhere"
+msgstr "Noteret andetsteds"
+
+msgctxt "column heading"
+msgid "Run"
+msgstr "Kørsel"
+
+msgctxt "column heading"
+msgid "Date"
+msgstr "Dato"
+
+msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
+msgstr "Dette er kuratorens egne kørsler på hans maskine, ikke målinger af denne, så intet ovenfor er mærket som målt. Sammenlign dem med estimatet; `llamafit bench` måler denne maskine i fase 3."
+
+msgid "%(profile)s: %(flags)s"
+msgstr "%(profile)s: %(flags)s"
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
+msgstr "%(baseline)s fra kuratoren, minus %(penalty)s for denne kvantisering, plus %(bonus)s, fordi %(use_case)s er det arbejde, den er bygget til."
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
+msgstr "%(baseline)s fra kuratoren, minus %(penalty)s for denne kvantisering; den nævner %(use_case)s, men er ikke bygget til det."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
+msgstr "%(gen)s tokens i sekundet mod de %(target)s, denne anvendelse beder om, minus %(penalty)s, fordi den læser en prompt med %(prompt)s."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
+msgstr "%(gen)s tokens i sekundet mod de %(target)s, denne anvendelse beder om."
+
+msgid "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool is %(share)s full. The score wants at least %(low)s of the memory taken and no more than %(high)s of any one pool."
+msgstr "Dens vægte fylder %(weights)s af denne maskines %(memory)s, og den trangeste pulje er %(share)s fuld. Scoren vil have mindst %(low)s af hukommelsen taget og højst %(high)s af nogen enkelt pulje."
+
+msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
+msgstr "Rummer %(fit)s tokens af de %(requested)s, denne forespørgsel scores mod."
+
+msgid "Score %(total)s"
+msgstr "Score %(total)s"
+
+msgctxt "column heading"
+msgid "Part"
+msgstr "Del"
+
+msgctxt "column heading"
+msgid "Weight"
+msgstr "Vægt"
+
+msgctxt "column heading"
+msgid "Adds"
+msgstr "Bidrag"
+
+msgctxt "score part"
+msgid "quality"
+msgstr "kvalitet"
+
+msgctxt "score part"
+msgid "speed"
+msgstr "hastighed"
+
+msgctxt "score part"
+msgid "fit"
+msgstr "plads"
+
+msgctxt "score part"
+msgid "context"
+msgstr "kontekst"
+
+msgctxt "board sort"
+msgid "score"
+msgstr "score"
+
+msgctxt "board sort"
+msgid "speed"
+msgstr "hastighed"
+
+msgctxt "board sort"
+msgid "quality"
+msgstr "kvalitet"
+
+msgctxt "board sort"
+msgid "context"
+msgstr "kontekst"
+
+msgctxt "board sort"
+msgid "download size"
+msgstr "downloadstørrelse"
+
+msgctxt "board sort"
+msgid "prompt speed"
+msgstr "prompthastighed"
+
+msgctxt "board sort"
+msgid "card memory"
+msgstr "korthukommelse"
+
+msgctxt "board sort"
+msgid "system memory"
+msgstr "systemhukommelse"
+
+msgctxt "board sort"
+msgid "fit"
+msgstr "plads"
+
+msgctxt "board sort"
+msgid "model id"
+msgstr "model-id"
+
+msgctxt "board sort"
+msgid "quantisation"
+msgstr "kvantisering"
+
+msgctxt "column heading"
+msgid "#"
+msgstr "#"
+
+msgctxt "column heading"
+msgid "Model"
+msgstr "Model"
+
+msgctxt "column heading"
+msgid "Size"
+msgstr "Størrelse"
+
+msgctxt "column heading"
+msgid "Have"
+msgstr "Har"
+
+msgctxt "column heading"
+msgid "Score"
+msgstr "Score"
+
+msgctxt "column heading"
+msgid "Qual"
+msgstr "Kval."
+
+msgctxt "column heading"
+msgid "Prompt tok/s"
+msgstr "Prompt tok/s"
+
+msgctxt "column heading"
+msgid "How"
+msgstr "Hvordan"
+
+msgctxt "model file on this machine"
+msgid "yes"
+msgstr "ja"
+
+msgctxt "model file on this machine"
+msgid "no"
+msgstr "nej"
+
+msgid "no placement of it fits this machine at any context"
+msgstr "ingen placering af den er der plads til på denne maskine ved nogen kontekst"
+
+msgctxt "exclusion tag"
+msgid "no room"
+msgstr "ingen plads"
+
+msgctxt "exclusion tag"
+msgid "no facts"
+msgstr "ingen fakta"
+
+msgctxt "exclusion tag"
+msgid "not ranked"
+msgstr "ikke rangeret"
+
+msgctxt "board cell with no figure"
+msgid "–"
+msgstr "–"
+
+msgid "%(term)s is not a filter; the terms are %(terms)s, and anything else is text to look for."
+msgstr "%(term)s er ikke et filter; termerne er %(terms)s, og alt andet er tekst, der skal søges efter."
+
+msgid "fit>= takes one of %(values)s"
+msgstr "fit>= tager en af %(values)s"
+
+msgid "runs= takes one of %(values)s"
+msgstr "runs= tager en af %(values)s"
+
+msgid "%(term)s needs a number"
+msgstr "%(term)s skal have et tal"
+
+msgid "%(term)s needs a size such as 8G, 7.5GiB or 512M"
+msgstr "%(term)s skal have en størrelse som 8G, 7.5GiB eller 512M"
+
+msgctxt "board filter"
+msgid "every candidate"
+msgstr "hver kandidat"
+
+msgctxt "board filter"
+msgid "the ones with room to spare"
+msgstr "kandidaterne med plads til overs"
+
+msgctxt "board filter"
+msgid "the ones that fit"
+msgstr "kandidaterne, der er plads til"
+
+msgctxt "board filter"
+msgid "the ones that run"
+msgstr "kandidaterne, der kører"
+
+msgid "matching %(text)s"
+msgstr "der matcher %(text)s"
+
+msgid "running as %(mode)s"
+msgstr "der kører som %(mode)s"
+
+msgid "at least %(tps)s tokens per second"
+msgstr "med mindst %(tps)s tokens i sekundet"
+
+msgid "no more than %(size)s to download"
+msgstr "med højst %(size)s at hente"
+
+msgid "no more than %(size)s on the card"
+msgstr "med højst %(size)s på kortet"
+
+msgid "no more than %(size)s of system memory"
+msgstr "med højst %(size)s systemhukommelse"
+
+msgid "holding at least %(context)s tokens"
+msgstr "der rummer mindst %(context)s tokens"
+
+msgid "a quality of at least %(quality)s"
+msgstr "med en kvalitet på mindst %(quality)s"
+
+msgid "%(shown)d of %(total)d shown"
+msgstr "%(shown)d af %(total)d vist"
+
+msgid "%(sort)s in reverse"
+msgstr "%(sort)s omvendt"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s already on this machine."
+msgstr "%(counted)s, efter %(sort)s, viser %(filter)s, og kun det, der allerede ligger på denne maskine."
+
+msgctxt "board filter"
+msgid "already on this machine"
+msgstr "allerede på denne maskine"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s."
+msgstr "%(counted)s, efter %(sort)s, viser %(filter)s."
+
+msgid "Nothing was ranked. Every candidate is listed below with the reason; widen the request or free some memory."
+msgstr "Intet blev rangeret. Hver kandidat står nedenfor med grunden; udvid forespørgslen, eller frigør noget hukommelse."
+
+msgid "Recommended"
+msgstr "Anbefalet"
+
+msgid "--min-tps 0: nobody is waiting on these tokens, so nothing was excluded for generating more slowly than a person reads."
+msgstr "--min-tps 0: ingen venter på disse tokens, så intet blev udeladt for at generere langsommere, end et menneske læser."
+
+msgid "--min-tps %(tps)s: this board wanted at least that many tokens per second, and anything slower is excluded below rather than ranked here."
+msgstr "--min-tps %(tps)s: denne rangliste ville have mindst så mange tokens i sekundet, og alt langsommere udelades nedenfor i stedet for at blive rangeret her."
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; --limit sets how many, and the rest are neither worse-behaved nor hidden, only further down."
+msgstr "Viser de bedste %(shown)s af %(total)s, der kvalificerede sig; --limit sætter hvor mange, og resten er hverken ringere eller skjult, blot længere nede."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every speed above is a CPU-only speed. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s sidder i denne maskine, og intet kunne læse, hvor meget af det der er ledigt, så hver hastighed ovenfor er en hastighed med CPU alene. `llamafit doctor` siger, hvordan det rettes."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
+msgstr "Hastighederne gælder %(working)s tokens kontekst, så hver række sammenligner lige med lige; kontekstkolonnen er den største, hver enkelt rummer. Dimensioneret og scoret til %(use_case)s ved %(requested)s tokens."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
+msgstr "Hastighederne gælder %(working)s tokens kontekst, så hver række sammenligner lige med lige; kontekstkolonnen er den største, hver enkelt rummer. Dimensioneret til %(planned)s tokens og scoret til %(use_case)s mod %(requested)s."
+
+msgid "Weights: %(weights)s."
+msgstr "Vægte: %(weights)s."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free, no card."
+msgstr "Regnet ud med %(ram_free)s af %(ram_total)s systemhukommelse ledig, uden kort."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free and %(vram_free)s of %(vram_total)s free on the %(gpu)s."
+msgstr "Regnet ud med %(ram_free)s af %(ram_total)s systemhukommelse ledig og %(vram_free)s af %(vram_total)s ledig på %(gpu)s."
+
+msgid "Every speed above is derived from %(bandwidth)s of memory bandwidth."
+msgstr "Hver hastighed ovenfor er udledt af %(bandwidth)s hukommelsesbåndbredde."
+
+msgid "That bandwidth was kept from an earlier run on this machine; `llamafit system --refresh-bandwidth` times it again."
+msgstr "Den båndbredde blev gemt fra en tidligere kørsel på denne maskine; `llamafit system --refresh-bandwidth` måler den igen."
+
+msgid "generates fewer than the %(floor)s tokens per second this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "genererer færre end de %(floor)s tokens i sekundet, denne forespørgsel beder om; sænk --min-tps, eller vælg en mindre model eller kvantisering"
+
+msgid "generates fewer than the %(floor)s tokens per second a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "genererer færre end de %(floor)s tokens i sekundet, et menneske læser med: et batchværktøj på denne maskine og ikke et at sidde foran; en mindre model eller kvantisering ville kunne følge med"
+
+msgid "%(tps)s tok/s"
+msgstr "%(tps)s tok/s"
+
+msgctxt "exclusion tag"
+msgid "too slow"
+msgstr "for langsom"
+
+msgctxt "exclusion tag"
+msgid "too big"
+msgstr "for stor"
+
+msgid "larger to download than the %(limit)s this request allows"
+msgstr "større at hente end de %(limit)s, denne forespørgsel tillader"
+
+msgctxt "exclusion tag"
+msgid "unknown quant"
+msgstr "ukendt quant"
+
+msgid "a quantisation whose cost in quality is not known, so it cannot be scored"
+msgstr "en kvantisering, hvis pris i kvalitet ikke er kendt, så den kan ikke scores"
+
+msgid "needs more memory than this machine has, even at its smallest context"
+msgstr "kræver mere hukommelse, end denne maskine har, selv ved sin mindste kontekst"
+
+msgctxt "exclusion tag"
+msgid "unsupported"
+msgstr "ingen tilstand"
+
+msgid "no run mode supports this model on this machine"
+msgstr "ingen kørselstilstand understøtter denne model på denne maskine"
+
+msgctxt "exclusion tag"
+msgid "short context"
+msgstr "kort kontekst"
+
+msgid "holds fewer than the %(minimum)s tokens asked for; lower the minimum context or free memory to see it ranked"
+msgstr "rummer færre end de %(minimum)s tokens, der blev bedt om; sænk minimumskonteksten, eller frigør hukommelse for at se den rangeret"
+
+msgctxt "exclusion tag"
+msgid "no estimate"
+msgstr "intet estimat"
+
+msgid "no speed estimate, so it cannot be ranked against models that have one"
+msgstr "intet hastighedsestimat, så den kan ikke rangeres mod modeller, der har et"
+
+msgctxt "exclusion tag"
+msgid "no %(capability)s"
+msgstr "ingen %(capability)s"
+
+msgid "no %(capability)s capability; drop it from the request, or ask for a use case that does not need it"
+msgstr "ingen %(capability)s-egenskab; drop den fra forespørgslen, eller bed om en anvendelse, der ikke kræver den"
+
+msgid "Not ranked"
+msgstr "Ikke rangeret"
+
+msgid "Not placed"
+msgstr "Ikke placeret"
+
+msgid "%(tag)s (%(count)s):"
+msgstr "%(tag)s (%(count)s):"
+
+msgid "%(model)s %(quant)s: %(reason)s"
+msgstr "%(model)s %(quant)s: %(reason)s"
+
+msgid "%(tag)s (%(count)s): %(sentence)s."
+msgstr "%(tag)s (%(count)s): %(sentence)s."
+
+msgid "%(model)s %(quant)s (%(figure)s)"
+msgstr "%(model)s %(quant)s (%(figure)s)"
+
+msgid "%(name)s %(quant)s (%(tag)s)"
+msgstr "%(name)s %(quant)s (%(tag)s)"
+
+msgid "%(rank)s. %(name)s %(quant)s"
+msgstr "%(rank)s. %(name)s %(quant)s"
+
+msgid "Nothing fits this machine at that threshold. Try --min-fit tight, or drop --perfect."
+msgstr "Der er ikke plads til noget på denne maskine ved den tærskel. Prøv --min-fit tight, eller drop --perfect."
+
+msgid "Fit on the simulated machine"
+msgstr "Plads på den simulerede maskine"
+
+msgid "Fit on this machine"
+msgstr "Plads på denne maskine"
+
+msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
+msgstr "Dimensioneret til %(context)s tokens. Kontekstkolonnen er den største, hver enkelt rummer i den viste tilstand."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every row was sized as if there were no card. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s sidder i denne maskine, og intet kunne læse, hvor meget af det der er ledigt, så hver række blev dimensioneret, som om der ikke var noget kort. `llamafit doctor` siger, hvordan det rettes."
+
+msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
+msgstr "%(mode)s ved %(context)s tokens, mikrobatch %(ub)s, %(kv)s-cache, %(threads)s tråde."
+
+msgid "This reaches the %(target)s tokens per second asked for."
+msgstr "Dette når de %(target)s tokens i sekundet, der blev bedt om."
+
+msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
+msgstr "Den når ikke %(target)s tokens i sekundet her, men %(context)s tokens kontekst ville: angiv --context %(tokens)s."
+
+msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
+msgstr "Intet, denne model og kvantisering kan gøre på denne maskine, når %(target)s tokens i sekundet; den hurtigste konfiguration, der blev prøvet, er %(best)s. En mindre model eller en mindre kvantisering er den ændring, der ville."
+
+msgid "%(name)s %(quant)s"
+msgstr "%(name)s %(quant)s"
+
+msgid "Memory budget"
+msgstr "Hukommelsesbudget"
+
+msgid "The %(context)s tokens asked for would have cost"
+msgstr "De %(context)s tokens, der blev bedt om, ville have kostet"
+
+msgid "Command line"
+msgstr "Kommandolinje"
+
+msgid "Model file: %(path)s."
+msgstr "Modelfil: %(path)s."
+
+msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
+msgstr "Modelfil: %(path)s, som ikke ligger på denne maskine endnu; det er der, en hentning ville lægge den. %(size)s at hente."
+
+msgid "%(shown)d of %(total)d candidate shown."
+msgid_plural "%(shown)d of %(total)d candidates shown."
+msgstr[0] "%(shown)d af %(total)d kandidat vist."
+msgstr[1] "%(shown)d af %(total)d kandidater vist."
+
+msgid "Release"
+msgstr "Udgivelse"
+
+msgid "%(tag)s (build %(build)s)"
+msgstr "%(tag)s (build %(build)s)"
+
+msgid "Backend"
+msgstr "Backend"
+
+msgid "Archive"
+msgstr "Arkiv"
+
+msgid "Also"
+msgstr "Desuden"
+
+msgid "Download"
+msgstr "Hentning"
+
+msgid "%(size)s (%(done)s already on disk)"
+msgstr "%(size)s (%(done)s allerede på disken)"
+
+msgid "Checksum"
+msgstr "Kontrolsum"
+
+msgid "published, checked before anything is unpacked"
+msgstr "udgivet, kontrolleres før noget pakkes ud"
+
+msgid "none published"
+msgstr "ingen udgivet"
+
+msgid "Install into"
+msgstr "Installeres i"
+
+msgid "Directory"
+msgstr "Mappe"
+
+msgid "Free space"
+msgstr "Ledig plads"
+
+msgid "Free space (cache)"
+msgstr "Ledig plads (cache)"
+
+msgid "%(free)s on %(path)s, %(needed)s needed"
+msgstr "%(free)s på %(path)s, %(needed)s kræves"
+
+msgid "will be created"
+msgstr "oprettes"
+
+msgid "exists and is empty"
+msgstr "findes og er tom"
+
+msgid "holds %(tag)s, installed by LlamaFit; it will be replaced"
+msgstr "indeholder %(tag)s, installeret af LlamaFit; den bliver erstattet"
+
+msgid "installed by LlamaFit; it will be replaced"
+msgstr "installeret af LlamaFit; den bliver erstattet"
+
+msgid "was not installed by LlamaFit"
+msgstr "blev ikke installeret af LlamaFit"
+
+msgid "Installed llama.cpp %(tag)s into %(path)s."
+msgstr "Installerede llama.cpp %(tag)s i %(path)s."
+
+msgid "Replaced %(tag)s."
+msgstr "Erstattede %(tag)s."
+
+msgid "Backends found in it: %(backends)s"
+msgstr "Backends fundet i den: %(backends)s"
+
+msgid "none"
+msgstr "ingen"
+
+msgid "Check it with `llamafit doctor`."
+msgstr "Kontrollér den med `llamafit doctor`."
+
+msgid "already here"
+msgstr "allerede her"
+
+msgid "to fetch"
+msgstr "skal hentes"
+
+msgid "About to download"
+msgstr "Klar til at hente"
+
+msgid "Role"
+msgstr "Rolle"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "%(name)s %(quant)s from %(repo)s"
+msgstr "%(name)s %(quant)s fra %(repo)s"
+
+msgid "%(count)d file, %(total)s in all, %(needed)s still to fetch."
+msgid_plural "%(count)d files, %(total)s in all, %(needed)s still to fetch."
+msgstr[0] "%(count)d fil, %(total)s i alt, %(needed)s mangler stadig at blive hentet."
+msgstr[1] "%(count)d filer, %(total)s i alt, %(needed)s mangler stadig at blive hentet."
+
+msgid "Into %(path)s, which has %(free)s free; %(after)s would be left."
+msgstr "I %(path)s, som har %(free)s ledig; %(after)s ville være tilbage."
+
+msgid "The catalog holds no checksum for %(files)s."
+msgid_plural "The catalog holds no checksums for %(files)s."
+msgstr[0] "Kataloget har ingen kontrolsum for %(files)s."
+msgstr[1] "Kataloget har ingen kontrolsummer for %(files)s."
+
+msgid "%(model)s %(quant)s is already here; nothing to do."
+msgstr "%(model)s %(quant)s ligger her allerede; intet at gøre."
+
+msgid "Stopped. What arrived is kept; run `llamafit install model %(model)s` again to carry on from there."
+msgstr "Stoppet. Det, der nåede frem, beholdes; kør `llamafit install model %(model)s` igen for at fortsætte derfra."
+
+msgid "%(count)d file, %(size)s, checked against the catalog."
+msgid_plural "%(count)d files, %(size)s, checked against the catalog."
+msgstr[0] "%(count)d fil, %(size)s, kontrolleret mod kataloget."
+msgstr[1] "%(count)d filer, %(size)s, kontrolleret mod kataloget."
+
+msgid "In %(path)s. Run `llamafit plan %(model)s` for the command line that runs it."
+msgstr "I %(path)s. Kør `llamafit plan %(model)s` for den kommandolinje, der kører den."
+
+msgid "Downloads"
+msgstr "Hentede filer"
+
+msgid "When"
+msgstr "Hvornår"
+
+msgid "Model"
+msgstr "Model"
+
+msgid "Quant"
+msgstr "Kvant."
+
+msgid "Outcome"
+msgstr "Udfald"
+
+msgid "finished"
+msgstr "færdig"
+
+msgid "stopped"
+msgstr "stoppet"
+
+msgid "Bind to this address instead of 127.0.0.1. Anything but loopback puts the dashboard on your network, where there is no password and no login; it prints what that exposes before it starts."
+msgstr "Binder til denne adresse i stedet for 127.0.0.1. Alt andet end loopback lægger dashboardet ud på dit netværk, hvor der hverken er adgangskode eller login; den skriver, hvad det blotter, før den starter."
+
+msgid "Listen on this port."
+msgstr "Lytter på denne port."
+
+msgid "Open the dashboard in a browser: the board, the machine and the plans.\n\nIt serves the same numbers `--json` prints, from the same code, on this machine only. Nothing is fetched from the internet to draw the page."
+msgstr "Åbner dashboardet i en browser: ranglisten, maskinen og planerne.\n\nDen serverer de samme tal, som `--json` skriver, fra den samme kode, kun på denne maskine. Der hentes intet fra internettet for at tegne siden."
+
+msgid "Open the page in your browser."
+msgstr "Åbner siden i din browser."
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores, then open the Simulate panel on the page: it substitutes a machine for as long as you want it, and marks every answer it produces."
+msgstr "Drop --profile, --memory, --ram og --cpu-cores, og åbn derefter panelet Simulér på siden: det træder i stedet for en maskine, så længe du vil, og markerer hvert svar, det giver."
+
+msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
+msgstr "LlamaFit er på %(url)s. Tryk på Ctrl+C for at stoppe den."
+
 msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
 msgstr "Viser, hvad denne maskine har: CPU, hukommelse, GPU'er, diske og llama.cpp."
 
 msgid "Skip the RAM bandwidth measurement."
 msgstr "Springer målingen af RAM-båndbredden over."
 
+msgid "Measure RAM bandwidth again instead of reading back the figure kept for this machine, and keep the new one."
+msgstr "Måler RAM-båndbredden igen i stedet for at læse det tal tilbage, der er gemt for denne maskine, og gemmer det nye."
+
+msgid "%(url)s answered a range request with the whole file."
+msgstr "%(url)s besvarede en range-forespørgsel med hele filen."
+
+msgid "%(url)s is rate-limiting this download (HTTP %(status)d)."
+msgstr "%(url)s begrænser hastigheden på denne hentning (HTTP %(status)d)."
+
+msgid "Check your network connection and run the command again to resume."
+msgstr "Kontrollér din netværksforbindelse, og kør kommandoen igen for at fortsætte."
+
+msgid "%(file)s needs authorisation (HTTP %(status)d)."
+msgstr "%(file)s kræver godkendelse (HTTP %(status)d)."
+
+msgid "This repository is gated. Accept its terms on Hugging Face and set HF_TOKEN to a token that can read it."
+msgstr "Dette repositorie er lukket. Accepter dets betingelser på Hugging Face, og sæt HF_TOKEN til et token, der må læse det."
+
+msgid "%(file)s is not at %(url)s any more (HTTP 404)."
+msgstr "%(file)s ligger ikke på %(url)s længere (HTTP 404)."
+
+msgid "Run `llamafit catalog refresh` to pick up the repository's current files."
+msgstr "Kør `llamafit catalog refresh` for at hente repositoriets nuværende filer."
+
+msgid "%(url)s returned HTTP %(status)d."
+msgstr "%(url)s svarede HTTP %(status)d."
+
+msgid "Confirm the URL points at a downloadable file."
+msgstr "Bekræft, at adressen peger på en fil, der kan hentes."
+
+msgid "%(url)s did not say how big %(file)s is."
+msgstr "%(url)s sagde ikke, hvor stor %(file)s er."
+
+msgid "%(file)s is %(actual)s on the server but the catalog says %(expected)s; the repository has been re-uploaded since the catalog was refreshed."
+msgstr "%(file)s er %(actual)s på serveren, men kataloget siger %(expected)s; repositoriet er blevet lagt op igen, siden kataloget blev opdateret."
+
+msgid "Run `llamafit catalog refresh` and try again."
+msgstr "Kør `llamafit catalog refresh`, og prøv igen."
+
+msgid "%(file)s: the server sent %(actual)d bytes of a %(expected)d byte range."
+msgstr "%(file)s: serveren sendte %(actual)d bytes af et interval på %(expected)d bytes."
+
+msgid "Run the command again; the parts that did arrive are kept."
+msgstr "Kør kommandoen igen; de dele, der nåede frem, beholdes."
+
+msgid "Stopped."
+msgstr "Stoppet."
+
+msgid "%(file)s: the server asked for fewer connections; using %(count)d."
+msgstr "%(file)s: serveren bad om færre forbindelser; bruger %(count)d."
+
+msgid "%(file)s: this server will not serve byte ranges; fetching it in one stream."
+msgstr "%(file)s: denne server vil ikke levere byte-intervaller; henter den i én strøm."
+
+msgid "%(file)s does not match its checksum; fetching it again."
+msgstr "%(file)s passer ikke med sin kontrolsum; henter den igen."
+
+msgid "Check that the download directory is writable."
+msgstr "Kontrollér, at der kan skrives til mappen til hentede filer."
+
+msgid "%(needed)s is needed for this model but %(path)s has only %(free)s free, %(short)s short of what is wanted with %(headroom)s left spare."
+msgstr "Der kræves %(needed)s til denne model, men %(path)s har kun %(free)s ledig, %(short)s for lidt i forhold til det ønskede med %(headroom)s til overs."
+
+msgid "Free some space, or choose another directory with --dir, or a smaller quantisation with --quant."
+msgstr "Frigør noget plads, eller vælg en anden mappe med --dir, eller en mindre kvantisering med --quant."
+
+msgid "could not measure the free space on %(path)s: %(error)s"
+msgstr "kunne ikke måle den ledige plads på %(path)s: %(error)s"
+
+msgid "Check that the download directory's volume is available."
+msgstr "Kontrollér, at drevet med mappen til hentede filer er tilgængeligt."
+
+msgid "%(model)s has no downloadable source in the catalog."
+msgstr "%(model)s har ingen kilde i kataloget, der kan hentes."
+
+msgid "Only Hugging Face sources can be installed; this entry has none."
+msgstr "Kun kilder fra Hugging Face kan installeres; denne post har ingen."
+
+msgid "the catalog has no file list for %(model)s %(quant)s."
+msgstr "kataloget har ingen filliste for %(model)s %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the file names."
+msgstr "Kør `llamafit catalog refresh` for at udfylde filnavnene."
+
+msgid "%(model)s publishes no quantisations."
+msgstr "%(model)s udgiver ingen kvantiseringer."
+
+msgid "%(model)s does not publish a %(quant)s quantisation."
+msgstr "%(model)s udgiver ikke en %(quant)s-kvantisering."
+
+msgid "It publishes: %(quants)s"
+msgstr "Den udgiver: %(quants)s"
+
+msgid "the catalog does not record how big %(quant)s is."
+msgstr "kataloget noterer ikke, hvor stor %(quant)s er."
+
+msgid "Run `llamafit catalog refresh` to fill in the sizes."
+msgstr "Kør `llamafit catalog refresh` for at udfylde størrelserne."
+
+msgid "the catalog holds no checksum for %(files)s."
+msgid_plural "the catalog holds no checksums for %(files)s."
+msgstr[0] "kataloget har ingen kontrolsum for %(files)s."
+msgstr[1] "kataloget har ingen kontrolsummer for %(files)s."
+
+msgid "Run `llamafit catalog refresh` to fetch them, or pass --allow-unverified to download anyway and check the files yourself."
+msgstr "Kør `llamafit catalog refresh` for at hente dem, eller angiv --allow-unverified for at hente alligevel og selv kontrollere filerne."
+
+msgid "%(done)s of %(total)s"
+msgstr "%(done)s af %(total)s"
+
+msgid "%(rate)s/s"
+msgstr "%(rate)s/s"
+
+msgid "Fetching %(file)s (%(size)s)"
+msgstr "Henter %(file)s (%(size)s)"
+
+msgid "Checking %(file)s against its checksum"
+msgstr "Kontrollerer %(file)s mod dens kontrolsum"
+
+msgid "Done: %(file)s"
+msgstr "Færdig: %(file)s"
+
+msgid "could not create %(path)s: %(error)s"
+msgstr "kunne ikke oprette %(path)s: %(error)s"
+
+msgid "Check that the download directory is writable and has room."
+msgstr "Kontrollér, at der kan skrives til mappen til hentede filer, og at der er plads."
+
+msgid "could not move %(source)s into place: %(error)s"
+msgstr "kunne ikke flytte %(source)s på plads: %(error)s"
+
+msgid "could not record progress in %(path)s: %(error)s"
+msgstr "kunne ikke notere fremdriften i %(path)s: %(error)s"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "kunne ikke hente %(url)s: %(error)s"
+
+msgid "Stopped before the checksum was finished."
+msgstr "Stoppet, før kontrolsummen var færdig."
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "kunne ikke læse %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Kontrollér, at filen findes og kan læses."
+
+msgid "%(file)s is %(actual)d bytes, but the catalog says %(expected)d"
+msgstr "%(file)s er %(actual)d bytes, men kataloget siger %(expected)d"
+
+msgid "The transfer was cut short. Run the command again to fetch it properly."
+msgstr "Overførslen blev afbrudt. Kør kommandoen igen for at hente den ordentligt."
+
+msgid "%(file)s does not match the checksum the catalog holds."
+msgstr "%(file)s passer ikke med den kontrolsum, kataloget har."
+
+msgid "Expected %(expected)s but the file hashes to %(actual)s. The bad copy has been deleted; run the command again to fetch it."
+msgstr "Forventede %(expected)s, men filen hasher til %(actual)s. Den dårlige kopi er slettet; kør kommandoen igen for at hente den."
+
 msgid "Command: %(command)s"
 msgstr "Kommando: %(command)s"
 
 msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
 msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "afkortet GGUF-header: ville have %(wanted)d byte på position %(offset)d, fik %(got)d"
+msgstr[1] "afkortet GGUF-header: ville have %(wanted)d bytes på position %(offset)d, fik %(got)d"
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Filen hentes måske stadig, eller adressen peger ikke på en GGUF-fil."
@@ -655,10 +2643,23 @@ msgstr "GGUF-version %(version)d understøttes ikke, på position 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit understøtter GGUF-versionerne %(versions)s."
 
+msgid "A memory budget built without these tensors would be too small, so none is built. If llama.cpp loads the file, LlamaFit's tensor-size table is missing the type."
+msgstr "Et hukommelsesbudget bygget uden disse tensorer ville være for lille, så der bygges ingen. Hvis llama.cpp indlæser filen, mangler typen i LlamaFits tabel over tensorstørrelser."
+
+msgid "%(type)d (%(count)d tensor, first %(name)s)"
+msgid_plural "%(type)d (%(count)d tensors, first %(name)s)"
+msgstr[0] "%(type)d (%(count)d tensor, første %(name)s)"
+msgstr[1] "%(type)d (%(count)d tensorer, første %(name)s)"
+
+msgid "cannot size this GGUF file: %(count)d tensor uses a GGML type LlamaFit does not know: %(details)s"
+msgid_plural "cannot size this GGUF file: %(count)d tensors use GGML types LlamaFit does not know: %(details)s"
+msgstr[0] "kan ikke dimensionere denne GGUF-fil: %(count)d tensor bruger en GGML-type, LlamaFit ikke kender: %(details)s"
+msgstr[1] "kan ikke dimensionere denne GGUF-fil: %(count)d tensorer bruger GGML-typer, LlamaFit ikke kender: %(details)s"
+
 msgid "%(count)d shard"
 msgid_plural "%(count)d shards"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d shard"
+msgstr[1] "%(count)d shards"
 
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "disse GGUF-filer er ikke én opdelt model: de er uenige om '%(key)s' og angiver %(values)s"
@@ -676,14 +2677,14 @@ msgstr "Angiv modellens fil, eller hver shard i en opdelt model."
 
 msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
 msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d GGUF-fil ud af de %(total)d angivne bærer ingen '%(key)s'-nøgle, så dens plads i en opdelt model kan ikke fastslås"
+msgstr[1] "%(count)d GGUF-filer ud af de %(total)d angivne bærer ingen '%(key)s'-nøgle, så deres plads i en opdelt model kan ikke fastslås"
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Angiv enten én ikke-opdelt fil for sig, eller hver shard i én opdelt model."
 
 msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr ""
+msgstr "ufuldstændigt sæt shards: modellen angiver %(shards)s, og %(arrived)d nåede frem (%(key)s %(numbers)s)"
 
 msgid "Pass every shard of the split model."
 msgstr "Angiv hver shard i den opdelte model."
@@ -701,21 +2702,12 @@ msgid "Pass each shard of the split model exactly once."
 msgstr "Angiv hver shard i den opdelte model præcis én gang."
 
 msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
-msgstr ""
+msgstr "ufuldstændigt sæt shards: modellen angiver %(tensors)s, og dens %(shards)s rummer %(held)d tilsammen"
 
 msgid "%(count)d tensor"
 msgid_plural "%(count)d tensors"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "could not read %(path)s: %(error)s"
-msgstr "kunne ikke læse %(path)s: %(error)s"
-
-msgid "Check that the file exists and is readable."
-msgstr "Kontrollér, at filen findes og kan læses."
-
-msgid "could not fetch %(url)s: %(error)s"
-msgstr "kunne ikke hente %(url)s: %(error)s"
+msgstr[0] "%(count)d tensor"
+msgstr[1] "%(count)d tensorer"
 
 msgid "Check your network connection and that the URL is reachable."
 msgstr "Kontrollér din netværksforbindelse, og at adressen kan nås."
@@ -745,6 +2737,9 @@ msgstr "WMI gav ingen skærmcontrollere"
 msgid "lspci found no display controllers"
 msgstr "lspci fandt ingen skærmcontrollere"
 
+msgid "vulkaninfo reported no discrete device with a memory heap"
+msgstr "vulkaninfo meldte ingen diskret enhed med en hukommelsesheap"
+
 msgid "no populated memory modules"
 msgstr "ingen bestykkede hukommelsesmoduler"
 
@@ -753,8 +2748,8 @@ msgstr "ingen SPMemoryDataType"
 
 msgid "%(program)s: timed out after %(seconds)s second"
 msgid_plural "%(program)s: timed out after %(seconds)s seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(program)s: fik timeout efter %(seconds)s sekund"
+msgstr[1] "%(program)s: fik timeout efter %(seconds)s sekunder"
 
 msgid "empty command"
 msgstr "tom kommando"
@@ -765,11 +2760,47 @@ msgstr "%(program)s: %(error)s"
 msgid "%(program)s: not found"
 msgstr "%(program)s: ikke fundet"
 
-msgid "no output"
-msgstr "intet output"
-
 msgid "exit code %(code)d: %(detail)s"
 msgstr "afslutningskode %(code)d: %(detail)s"
+
+msgid "no hardware profile file at %(path)s"
+msgstr "ingen hardwareprofilfil på %(path)s"
+
+msgid "Run `llamafit hardware list` to see the profiles LlamaFit has."
+msgstr "Kør `llamafit hardware list` for at se de profiler, LlamaFit har."
+
+msgid "%(path)s is not a valid hardware profile: %(details)s"
+msgstr "%(path)s er ikke en gyldig hardwareprofil: %(details)s"
+
+msgid "Run `llamafit hardware validate FILE` for the whole list."
+msgstr "Kør `llamafit hardware validate FIL` for hele listen."
+
+msgid "no hardware profile named %(name)s"
+msgstr "ingen hardwareprofil ved navn %(name)s"
+
+msgid "Profiles LlamaFit has: %(names)s"
+msgstr "Profiler, LlamaFit har: %(names)s"
+
+msgid "Run `llamafit hardware path` to see where your own profiles go."
+msgstr "Kør `llamafit hardware path` for at se, hvor dine egne profiler skal ligge."
+
+msgid "this machine has no graphics card, so there is no VRAM to override"
+msgstr "denne maskine har intet grafikkort, så der er ingen VRAM at tilsidesætte"
+
+msgid "Describe the whole machine in a hardware profile and pass --profile."
+msgstr "Beskriv hele maskinen i en hardwareprofil, og angiv --profile."
+
+msgid "this machine has one memory pool shared with the graphics card"
+msgstr "denne maskine har én hukommelsespulje, der deles med grafikkortet"
+
+msgid "Use --ram to resize the pool; --memory would change only half of it."
+msgstr "Brug --ram til at ændre puljens størrelse; --memory ville kun ændre halvdelen af den."
+
+msgid "%(option)s needs a value above zero"
+msgstr "%(option)s skal have en værdi over nul"
+
+msgid "no build number in the version output: %(text)s"
+msgstr "intet buildnummer i versionsudskriften: %(text)s"
 
 msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
 msgstr "llama.cpp blev ikke fundet: ingen llama-server i PATH, i LLAMA_CPP_PATH eller i de sædvanlige mapper"
@@ -777,11 +2808,256 @@ msgstr "llama.cpp blev ikke fundet: ingen llama-server i PATH, i LLAMA_CPP_PATH 
 msgid "no ggml backend libraries found next to llama-server; the build may be static"
 msgstr "fandt ingen ggml-backend-biblioteker ved siden af llama-server; buildet er måske statisk"
 
+msgid "%(path)s is a file, not a directory."
+msgstr "%(path)s er en fil, ikke en mappe."
+
+msgid "%(path)s cannot be read: %(error)s"
+msgstr "%(path)s kan ikke læses: %(error)s"
+
+msgid "%(path)s has a marker file that cannot be read."
+msgstr "%(path)s har en markørfil, der ikke kan læses."
+
+msgid "%(path)s already holds %(count)d file that LlamaFit did not install."
+msgid_plural "%(path)s already holds %(count)d files that LlamaFit did not install."
+msgstr[0] "%(path)s indeholder allerede %(count)d fil, som LlamaFit ikke har installeret."
+msgstr[1] "%(path)s indeholder allerede %(count)d filer, som LlamaFit ikke har installeret."
+
+msgid "%(name)s has no published checksum, so it cannot be verified."
+msgstr "%(name)s har ingen udgivet kontrolsum og kan derfor ikke verificeres."
+
+msgid "Pass --allow-unverified to install it anyway, knowing the archive is unchecked."
+msgstr "Angiv --allow-unverified for at installere den alligevel, vel vidende at arkivet er ukontrolleret."
+
+msgid "could not download %(url)s: %(error)s"
+msgstr "kunne ikke hente %(url)s: %(error)s"
+
+msgid "the connection was closed"
+msgstr "forbindelsen blev lukket"
+
+msgid "Run the command again; it continues from where it stopped."
+msgstr "Kør kommandoen igen; den fortsætter, hvor den stoppede."
+
+msgid "the download of %(url)s stopped early: %(error)s"
+msgstr "hentningen af %(url)s stoppede for tidligt: %(error)s"
+
+msgid "%(got)s of %(want)s arrived"
+msgstr "%(got)s af %(want)s nåede frem"
+
+msgid "the disk holding %(path)s is full."
+msgstr "disken med %(path)s er fuld."
+
+msgid "Free some space and run the command again; the download resumes."
+msgstr "Frigør noget plads, og kør kommandoen igen; hentningen fortsætter."
+
+msgid "Check that the directory exists and is writable."
+msgstr "Kontrollér, at mappen findes, og at der kan skrives til den."
+
+msgid "%(name)s did not match its published checksum and was discarded."
+msgstr "%(name)s passede ikke med sin udgivne kontrolsum og blev kasseret."
+
+msgid "Nothing was unpacked. Run the command again: the archive arrived damaged, which a second download usually fixes."
+msgstr "Intet blev pakket ud. Kør kommandoen igen: arkivet kom beskadiget frem, hvilket en ny hentning som regel retter."
+
+msgid "%(archive)s contains %(name)s, which would be written outside the install directory."
+msgstr "%(archive)s indeholder %(name)s, som ville blive skrevet uden for installationsmappen."
+
+msgid "Do not install this archive; report it to the llama.cpp project."
+msgstr "Installér ikke dette arkiv; meld det til llama.cpp-projektet."
+
+msgid "%(name)s is not an archive LlamaFit knows how to unpack."
+msgstr "%(name)s er ikke et arkiv, LlamaFit ved, hvordan man pakker ud."
+
+msgid "%(name)s could not be unpacked: %(error)s"
+msgstr "%(name)s kunne ikke pakkes ud: %(error)s"
+
+msgid "Delete it and run the command again to download it afresh."
+msgstr "Slet den, og kør kommandoen igen for at hente den forfra."
+
+msgid "the archive holds no %(name)s."
+msgstr "arkivet indeholder ingen %(name)s."
+
+msgid "Report this; the release layout has changed."
+msgstr "Meld dette; udgivelsens opbygning er ændret."
+
+msgid "%(path)s was not installed by LlamaFit."
+msgstr "%(path)s blev ikke installeret af LlamaFit."
+
+msgid "Pass --force to replace it, or --dir to install somewhere else. LlamaFit never overwrites an installation it did not create."
+msgstr "Angiv --force for at erstatte den, eller --dir for at installere et andet sted. LlamaFit overskriver aldrig en installation, den ikke selv har oprettet."
+
+msgid "%(path)s has %(free)s free; this install needs %(needed)s."
+msgstr "%(path)s har %(free)s ledig; denne installation kræver %(needed)s."
+
+msgid "Free some space, or pass --dir to install on another volume."
+msgstr "Frigør noget plads, eller angiv --dir for at installere på et andet drev."
+
+msgid "the %(backend)s libraries are not in the installed directory."
+msgstr "%(backend)s-bibliotekerne ligger ikke i den installerede mappe."
+
+msgid "no ggml backend libraries were installed; the build may be a static one."
+msgstr "der blev ikke installeret nogen ggml-backend-biblioteker; buildet er måske statisk."
+
+msgid "Your PATH could not be read, so it will not be changed."
+msgstr "Din PATH kunne ikke læses, så den bliver ikke ændret."
+
+msgid "Add %(path)s to your user PATH (HKCU\\Environment)."
+msgstr "Føj %(path)s til din bruger-PATH (HKCU\\Environment)."
+
+msgid "To undo: run `setx PATH \"%(previous)s\"`, or remove the entry in System > About > Advanced system settings > Environment Variables."
+msgstr "Sådan fortrydes det: kør `setx PATH \"%(previous)s\"`, eller fjern posten i System > Om > Avancerede systemindstillinger > Miljøvariabler."
+
+msgid "%(path)s is already on your PATH."
+msgstr "%(path)s står allerede i din PATH."
+
+msgid "Nothing to undo."
+msgstr "Intet at fortryde."
+
+msgid "Append a PATH line for %(path)s to %(file)s."
+msgstr "Føj en PATH-linje for %(path)s til %(file)s."
+
+msgid "To undo: delete the two lines marked `%(mark)s` from %(file)s."
+msgstr "Sådan fortrydes det: slet de to linjer mærket `%(mark)s` fra %(file)s."
+
+msgid "your PATH could not be changed: %(error)s"
+msgstr "din PATH kunne ikke ændres: %(error)s"
+
+msgid "To remove it later, delete %(path)s."
+msgstr "For at fjerne den senere: slet %(path)s."
+
+msgid "the most recent %(count)d llama.cpp releases hold no build."
+msgstr "de %(count)d nyeste llama.cpp-udgivelser indeholder intet build."
+
+msgid "Name one with `llamafit install llama.cpp --tag ...`."
+msgstr "Nævn en med `llamafit install llama.cpp --tag ...`."
+
+msgid "could not reach GitHub at %(url)s: %(error)s"
+msgstr "kunne ikke nå GitHub på %(url)s: %(error)s"
+
+msgid "GitHub refused the request for %(url)s: the rate limit is exhausted."
+msgstr "GitHub afviste forespørgslen om %(url)s: hastighedsgrænsen er opbrugt."
+
+msgid "Wait for the limit to reset, or set GITHUB_TOKEN to a personal access token with no scopes."
+msgstr "Vent på, at grænsen nulstilles, eller sæt GITHUB_TOKEN til et personligt adgangstoken uden scopes."
+
+msgid "GitHub has no release at %(url)s."
+msgstr "GitHub har ingen udgivelse på %(url)s."
+
+msgid "Check the tag with `llamafit install llama.cpp --tag ...`."
+msgstr "Kontrollér mærket med `llamafit install llama.cpp --tag ...`."
+
+msgid "GitHub returned %(status)d for %(url)s."
+msgstr "GitHub svarede %(status)d for %(url)s."
+
+msgid "GitHub's answer for %(url)s was not JSON."
+msgstr "GitHubs svar for %(url)s var ikke JSON."
+
+msgid "GitHub's answer did not describe a release."
+msgstr "GitHubs svar beskrev ikke en udgivelse."
+
 msgid "no llama-server answering"
 msgstr "ingen llama-server svarer"
 
 msgid "unexpected response: %(error)s"
 msgstr "uventet svar: %(error)s"
+
+msgid "%(model)s holds %(native)s tokens, fewer than the %(minimum)s asked for."
+msgstr "%(model)s rummer %(native)s tokens, færre end de %(minimum)s, der blev bedt om."
+
+msgid "No configuration of this model fits this machine."
+msgstr "Ingen konfiguration af denne model er der plads til på denne maskine."
+
+msgid "Routed experts are held in system memory, and so are the always-on shared experts, which is what -ot ffn_.*_shexp=CPU does; attention and the KV cache stay on the card."
+msgstr "De ruterede eksperter holdes i systemhukommelsen, og det gør de altid aktive delte eksperter også, hvilket er det, -ot ffn_.*_shexp=CPU gør; attention og KV-cachen bliver på kortet."
+
+msgid "Routed experts are held in system memory; attention, the KV cache and the shared experts stay on the card."
+msgstr "De ruterede eksperter holdes i systemhukommelsen; attention, KV-cachen og de delte eksperter bliver på kortet."
+
+msgid "%(layers)s layers are on the card and the rest run on the processor."
+msgstr "%(layers)s lag ligger på kortet, og resten kører på processoren."
+
+msgid "Nothing runs on a graphics card: every weight is in system memory."
+msgstr "Intet kører på et grafikkort: hver vægt ligger i systemhukommelsen."
+
+msgid "%(gpus)s is here, but nothing could read how much of it is free, so this plan was made as if it were not. The real machine will be faster than these figures."
+msgstr "%(gpus)s sidder her, men intet kunne læse, hvor meget af det der er ledigt, så denne plan blev lagt, som om det ikke var der. Den virkelige maskine bliver hurtigere end disse tal."
+
+msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
+msgstr "Dimensioneret til %(context)s tokens frem for de %(requested)s, der blev bedt om."
+
+msgid "The KV cache is quantised to %(type)s to reach this context."
+msgstr "KV-cachen er kvantiseret til %(type)s for at nå denne kontekst."
+
+msgid "Vision is off: the projector did not fit, on the card or in system memory."
+msgstr "Billede er slået fra: der var ikke plads til projektoren, hverken på kortet eller i systemhukommelsen."
+
+msgid "The vision projector is in system memory (--no-mmproj-offload), which costs nothing measurable for text and makes images slower."
+msgstr "Billedprojektoren ligger i systemhukommelsen (--no-mmproj-offload), hvilket ikke koster noget målbart for tekst og gør billeder langsommere."
+
+msgid "%(threads)s threads, not the %(available)s this processor has: the efficiency cores are left out because generation measures slower with them, and what is left is the threads the performance cores provide."
+msgstr "%(threads)s tråde, ikke de %(available)s denne processor har: effektivitetskernerne udelades, fordi genereringen måler langsommere med dem, og det, der er tilbage, er de tråde, ydelseskernerne giver."
+
+msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
+msgstr "Trangt: %(vram)s af grafikkortet er ledigt, og dette kræver %(needed)s, så et andet program kan skubbe det over kanten. Tabellen med konteksttrin er den måde, et startscript retter op på det."
+
+msgid "no %(capability)s capability, which %(use_case)s needs; ask for a different use case, or add it to the entry when the model really has it"
+msgstr "ingen %(capability)s-egenskab, som %(use_case)s kræver; bed om en anden anvendelse, eller føj den til posten, når modellen virkelig har den"
+
+msgid "no %(capability)s capability; drop it from the request to see this model"
+msgstr "ingen %(capability)s-egenskab; drop den fra forespørgslen for at se denne model"
+
+msgid "%(size)s to download, over the %(limit)s this request allows"
+msgstr "%(size)s at hente, over de %(limit)s, denne forespørgsel tillader"
+
+msgid "unknown quantisation %(quant)s, so its cost in quality cannot be told"
+msgstr "ukendt kvantisering %(quant)s, så dens pris i kvalitet kan ikke opgøres"
+
+msgid "nowhere to put it: no placement fits this machine at any context"
+msgstr "ingen steder at lægge den: ingen placering er der plads til på denne maskine ved nogen kontekst"
+
+msgid "holds %(fit)s tokens at most, under the %(minimum)s asked for; lower the minimum context or free memory to see it ranked"
+msgstr "rummer højst %(fit)s tokens, under de %(minimum)s, der blev bedt om; sænk minimumskonteksten, eller frigør hukommelse for at se den rangeret"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "genererer %(tps)s tokens i sekundet, under de %(floor)s, denne forespørgsel beder om; sænk --min-tps, eller vælg en mindre model eller kvantisering"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "genererer %(tps)s tokens i sekundet, under de %(floor)s, et menneske læser med: et batchværktøj på denne maskine og ikke et at sidde foran; en mindre model eller kvantisering ville kunne følge med"
+
+msgid "unknown use case %(use_case)s"
+msgstr "ukendt anvendelse %(use_case)s"
+
+msgid "Known use cases: %(known)s."
+msgstr "Kendte anvendelser: %(known)s."
+
+msgid "unknown score part %(part)s in the weights for %(use_case)s"
+msgstr "ukendt scoredel %(part)s i vægtene for %(use_case)s"
+
+msgid "The parts are: %(parts)s."
+msgstr "Delene er: %(parts)s."
+
+msgid "the weights for %(use_case)s leave out %(part)s"
+msgstr "vægtene for %(use_case)s udelader %(part)s"
+
+msgid "Overriding a use case means giving all four parts: %(parts)s."
+msgstr "At tilsidesætte en anvendelse betyder at angive alle fire dele: %(parts)s."
+
+msgid "the weight for %(part)s in %(use_case)s is below zero"
+msgstr "vægten for %(part)s i %(use_case)s er under nul"
+
+msgid "A weight says how much a part counts; it cannot count less than none."
+msgstr "En vægt siger, hvor meget en del tæller; den kan ikke tælle mindre end intet."
+
+msgid "the weights for %(use_case)s add up to nothing"
+msgstr "vægtene for %(use_case)s lægger sammen til intet"
+
+msgid "At least one part has to count for something."
+msgstr "Mindst én del skal tælle for noget."
+
+msgid "unknown preference %(prefer)s"
+msgstr "ukendt præference %(prefer)s"
+
+msgid "Preferences: %(known)s."
+msgstr "Præferencer: %(known)s."
 
 msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
 msgstr "Installér eller reparér NVIDIA-driveren; nvidia-smi følger med den og skal ligge i PATH."
@@ -816,6 +3092,9 @@ msgstr "llama-server findes, men oplyste ingen version; programfilen er måske �
 msgid "system_profiler failed; GPU information is unavailable."
 msgstr "system_profiler mislykkedes; der er ingen oplysninger om GPU'en."
 
+msgid "Install the Vulkan tools (vulkan-tools on Linux, the vendor's Vulkan runtime on Windows) so an unsized card's memory can be read from its driver. This probe runs only when no vendor tool sized the card, so it is the last source there is."
+msgstr "Installér Vulkan-værktøjerne (vulkan-tools på Linux, leverandørens Vulkan-runtime på Windows), så hukommelsen på et umålt kort kan læses fra dets driver. Denne test kører kun, når intet værktøj fra leverandøren har målt kortet, så den er den sidste kilde, der er."
+
 msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
 msgstr "Intet værktøj fra leverandøren oplyste GPU'ens hukommelsesstørrelse; skriv størrelsen ind i en hardwareprofil, så der kan beregnes budgetter for denne maskine."
 
@@ -834,6 +3113,9 @@ msgstr "llama.cpp blev ikke fundet"
 
 msgid "no llama-server binary was found"
 msgstr "der blev ikke fundet nogen llama-server-programfil"
+
+msgid "Run `llamafit install llama.cpp`, which picks the right build for this machine, checks it against its published checksum, and never touches an installation LlamaFit did not create."
+msgstr "Kør `llamafit install llama.cpp`, som vælger det rigtige build til denne maskine, kontrollerer det mod dets udgivne kontrolsum og aldrig rører en installation, LlamaFit ikke selv har oprettet."
 
 msgid "Memory size unknown"
 msgstr "Hukommelsesstørrelsen er ukendt"
@@ -859,6 +3141,15 @@ msgstr "%(gpu)s: VRAM-størrelsen er ukendt"
 
 msgid "the vendor tool that reports memory was not available"
 msgstr "værktøjet fra leverandøren, der oplyser hukommelsen, var ikke tilgængeligt"
+
+msgid "%(gpus)s: planned around, not planned on"
+msgstr "%(gpus)s: planlagt uden om, ikke planlagt på"
+
+msgid "with no reading of how much of the card is free, every budget and every speed on this machine was computed as if there were no card: they are CPU-only figures, and the real machine will be faster."
+msgstr "uden en aflæsning af, hvor meget af kortet der er ledigt, blev hvert budget og hver hastighed på denne maskine regnet ud, som om der ikke var noget kort: det er tal for CPU alene, og den virkelige maskine bliver hurtigere."
+
+msgid "Install the Vulkan tools so the size can be read from the driver, or record it in a hardware profile (`llamafit hardware path` says where those go) and pass --profile."
+msgstr "Installér Vulkan-værktøjerne, så størrelsen kan læses fra driveren, eller notér den i en hardwareprofil (`llamafit hardware path` siger, hvor de skal ligge), og angiv --profile."
 
 msgid "No GPU detected"
 msgstr "Ingen GPU fundet"
@@ -904,6 +3195,389 @@ msgstr "%(size)s ledig"
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr "De fleste brugbare modeller kræver 5 til 120 GB; frigør plads, eller skift mappen til hentede filer."
 
+msgid "%(model)s has no %(quant)s quantisation"
+msgstr "%(model)s har ingen %(quant)s-kvantisering"
+
+msgid "It publishes: %(names)s"
+msgstr "Den udgiver: %(names)s"
+
+msgid "licensed %(spdx)s, which this request does not allow"
+msgstr "licenseret %(spdx)s, hvilket denne forespørgsel ikke tillader"
+
+msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
+msgstr "Systemhukommelsens båndbredde blev ikke målt; %(gbps).0f GB/s antaget for %(arch)s."
+
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
+msgstr "Båndbredden for %(gpu)s er ukendt; %(backend)s-reserveværdien på %(gbps).0f GB/s træder i stedet."
+
+msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
+msgstr "Intet tal for grafikkortets regnekraft: promptbehandlingen estimeres på CPU'en."
+
+msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "%(gb).2f GB ruterede eksperter læses fra systemhukommelsen pr. token ved %(eff).2f af dens %(raw).0f GB/s, fordi hvert token vælger en ny håndfuld eksperter, og læsningen er en spredning af små blokke frem for en strøm."
+
+msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
+msgstr "%(gb).2f GB sammenhængende vægte læses fra systemhukommelsen pr. token ved %(eff).2f af dens %(raw).0f GB/s."
+
+msgid "No active parameter count was supplied; it was inferred from the weight bytes."
+msgstr "Der blev ikke angivet noget antal aktive parametre; det blev udledt af vægtenes bytes."
+
+msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "%(pct).0f procent af lagene ligger i systemhukommelsen, så den andel af promptregnestykket henføres til CPU'en ved %(tflops).2f TFLOP/s frem for til kortet. Begge rater kommer fra én lille tæt model på én maskine."
+
+msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "%(gb).1f GB af ekspertsættet streames over forbindelsen én gang pr. mikrobatch ved %(gbps).1f GB/s. Den rate blev tilpasset på den ene model, hvis ekspertsæt der ikke er plads til i systemhukommelsen, så en del af dens læsning kommer fra disken; et ekspertsæt, der bliver i sidecachen, streamer omkring tre gange hurtigere, og for et sådant er dette led netop så meget for langsomt."
+
+msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+msgstr "%(gb).1f GB af ekspertsættet læses ud af systemhukommelsen én gang pr. mikrobatch ved %(gbps).1f GB/s, fordi der ikke er noget kort at streame det til."
+
+msgid "No placement of this model on this machine could run it."
+msgstr "Ingen placering af denne model på denne maskine kunne køre den."
+
+msgid "Generation is a benchmark of this configuration, not a prediction."
+msgstr "Genereringen er en måling af denne konfiguration, ikke en forudsigelse."
+
+msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "Genereringen er formlen korrigeret med %(factor).2f ud fra en måling af %(profile)s på denne maskine taget den %(date)s."
+
+msgid "Prompt processing is a benchmark of this configuration."
+msgstr "Promptbehandlingen er en måling af denne konfiguration."
+
+msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
+msgstr "Promptbehandlingen er formlen korrigeret med %(factor).2f ud fra en måling."
+
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr "Kommandolinjen for den måling noterer ikke, hvor mange lag der kom på kortet, så korrektionen går ud fra, at den kørte ved denne placering."
+
+msgid "This figure assumes nothing pages: a placement this tight often does, silently."
+msgstr "Dette tal går ud fra, at intet swapper: en placering så trang som denne gør det ofte, i stilhed."
+
+msgid "Board"
+msgstr "Rangliste"
+
+msgid "Needs"
+msgstr "Behov"
+
+msgid "Plan"
+msgstr "Plan"
+
+msgid "Simulate"
+msgstr "Simulér"
+
+msgid "There is no terminal here to draw the dashboard in, so this is what `llamafit recommend` would print."
+msgstr "Der er ingen terminal her at tegne dashboardet i, så dette er, hvad `llamafit recommend` ville skrive."
+
+msgid "%(name)s %(quant)s, %(vendor)s, licensed %(license)s; it can: %(capabilities)s"
+msgstr "%(name)s %(quant)s, %(vendor)s, licenseret %(license)s; den kan: %(capabilities)s"
+
+msgid "Choose a row to see what put it there."
+msgstr "Vælg en række for at se, hvad der bragte den derhen."
+
+msgid "Nothing has been ranked yet."
+msgstr "Der er endnu ikke rangeret noget."
+
+msgid "Every candidate in the catalog was ranked; none was excluded."
+msgstr "Hver kandidat i kataloget blev rangeret; ingen blev udeladt."
+
+msgid "keys"
+msgstr "taster"
+
+msgid "theme"
+msgstr "tema"
+
+msgid "quit"
+msgstr "afslut"
+
+msgid "choose"
+msgstr "vælg"
+
+msgid "why"
+msgstr "hvorfor"
+
+msgid "command line"
+msgstr "kommandolinje"
+
+msgid "search"
+msgstr "søg"
+
+msgid "fit"
+msgstr "plads"
+
+msgid "sort"
+msgstr "sortér"
+
+msgid "sort back"
+msgstr "sortér tilbage"
+
+msgid "reverse"
+msgstr "omvendt"
+
+msgid "on disk"
+msgstr "på disken"
+
+msgid "all quants"
+msgstr "alle quants"
+
+msgid "unranked rows"
+msgstr "urangerede rækker"
+
+msgid "all columns"
+msgstr "alle kolonner"
+
+msgid "explanation"
+msgstr "forklaring"
+
+msgid "not ranked"
+msgstr "ikke rangeret"
+
+msgid "apply"
+msgstr "anvend"
+
+msgid "reset"
+msgstr "nulstil"
+
+msgid "rescan"
+msgstr "scan igen"
+
+msgid "more context"
+msgstr "mere kontekst"
+
+msgid "less context"
+msgstr "mindre kontekst"
+
+msgid "vision"
+msgstr "billede"
+
+msgid "copy"
+msgstr "kopiér"
+
+msgid "this machine"
+msgstr "denne maskine"
+
+msgctxt "use case"
+msgid "general use"
+msgstr "almindelig brug"
+
+msgctxt "use case"
+msgid "writing code"
+msgstr "skrive kode"
+
+msgctxt "use case"
+msgid "reasoning"
+msgstr "ræsonnement"
+
+msgctxt "use case"
+msgid "chat"
+msgstr "chat"
+
+msgctxt "use case"
+msgid "images and text"
+msgstr "billeder og tekst"
+
+msgctxt "use case"
+msgid "embeddings"
+msgstr "embeddings"
+
+msgctxt "preference"
+msgid "balanced"
+msgstr "afbalanceret"
+
+msgctxt "preference"
+msgid "lean towards quality"
+msgstr "hælder mod kvalitet"
+
+msgctxt "preference"
+msgid "lean towards speed"
+msgstr "hælder mod hastighed"
+
+msgid "Move with the up and down arrows. Enter says why a row is where it is; p gives the command line that runs it."
+msgstr "Flyt dig med pil op og pil ned. Enter siger, hvorfor en række ligger, hvor den gør; p giver den kommandolinje, der kører den."
+
+msgid "Terms: %(terms)s; anything else is text to look for. Enter with the box empty clears them."
+msgstr "Termer: %(terms)s; alt andet er tekst, der skal søges efter. Enter med et tomt felt rydder dem."
+
+msgid "Part of a model name, then Enter"
+msgstr "En del af et modelnavn, så Enter"
+
+msgid "Keys"
+msgstr "Taster"
+
+msgctxt "column heading"
+msgid "Screen"
+msgstr "Skærm"
+
+msgctxt "column heading"
+msgid "Key"
+msgstr "Tast"
+
+msgctxt "column heading"
+msgid "What it does"
+msgstr "Hvad den gør"
+
+msgctxt "dashboard screen"
+msgid "Everywhere"
+msgstr "Overalt"
+
+msgctxt "dashboard screen"
+msgid "Board"
+msgstr "Rangliste"
+
+msgctxt "dashboard screen"
+msgid "Needs"
+msgstr "Behov"
+
+msgctxt "dashboard screen"
+msgid "Host"
+msgstr "Maskine"
+
+msgctxt "dashboard screen"
+msgid "Plan"
+msgstr "Plan"
+
+msgctxt "dashboard screen"
+msgid "Simulate"
+msgstr "Simulér"
+
+msgid "Press Escape to go back."
+msgstr "Tryk på Escape for at gå tilbage."
+
+msgid "Catalog files with a problem"
+msgstr "Katalogfiler med et problem"
+
+msgid "This machine has not been scanned yet."
+msgstr "Denne maskine er ikke scannet endnu."
+
+msgid "What do you want a model for?"
+msgstr "Hvad skal du bruge en model til?"
+
+msgid "It must be able to:"
+msgstr "Den skal kunne:"
+
+msgid "At least this much context, in tokens:"
+msgstr "Mindst så meget kontekst, i tokens:"
+
+msgid "Willing to download at most, for example 40G (blank for no limit):"
+msgstr "Villig til at hente højst, for eksempel 40G (tomt for ingen grænse):"
+
+msgid "Slowest generation worth having, in tokens per second (blank for the speed a person reads at; 0 when nobody is waiting on the tokens):"
+msgstr "Langsomste generering, der er værd at have, i tokens i sekundet (tomt for den hastighed, et menneske læser med; 0 når ingen venter på tokenne):"
+
+msgid "Licences you will accept (tick none to accept any):"
+msgstr "Licenser, du vil acceptere (sæt ingen kryds for at acceptere alle):"
+
+msgid "Lean the score:"
+msgstr "Hæld scoren:"
+
+msgid "Keep the vision projector when a model has one"
+msgstr "Behold billedprojektoren, når en model har en"
+
+msgid "Apply"
+msgstr "Anvend"
+
+msgid "Reset"
+msgstr "Nulstil"
+
+msgid "The minimum context is a number of tokens, for example %(example)s."
+msgstr "Minimumskonteksten er et antal tokens, for eksempel %(example)s."
+
+msgid "The minimum context cannot be below zero."
+msgstr "Minimumskonteksten kan ikke være under nul."
+
+msgid "The minimum speed is a number of tokens per second, for example 12."
+msgstr "Minimumshastigheden er et antal tokens i sekundet, for eksempel 12."
+
+msgid "The minimum speed cannot be below zero."
+msgstr "Minimumshastigheden kan ikke være under nul."
+
+msgid "Choose a row on the Board and press p, and its plan and command line appear here."
+msgstr "Vælg en række på Ranglisten, og tryk på p, så dukker dens plan og kommandolinje op her."
+
+msgid "%(model)s is no longer in the catalog this board was built from."
+msgstr "%(model)s er ikke længere i det katalog, denne rangliste blev bygget ud fra."
+
+msgid "Planned with the vision projector; press v to leave it out."
+msgstr "Planlagt med billedprojektoren; tryk på v for at udelade den."
+
+msgid "Planned without the vision projector; press v to put it back."
+msgstr "Planlagt uden billedprojektoren; tryk på v for at sætte den tilbage."
+
+msgid "The ladder has no rung above %(context)s."
+msgstr "Stigen har intet trin over %(context)s."
+
+msgid "The ladder has no rung below %(context)s."
+msgstr "Stigen har intet trin under %(context)s."
+
+msgid "There is no command line to copy yet."
+msgstr "Der er ingen kommandolinje at kopiere endnu."
+
+msgid "The command line is on the clipboard."
+msgstr "Kommandolinjen ligger i udklipsholderen."
+
+msgid "Everything on every screen answers about the machine chosen here. While it is not this one, the band at the top says SIMULATED."
+msgstr "Alt på hver skærm svarer om den maskine, der er valgt her. Så længe det ikke er denne, siger bjælken øverst SIMULERET."
+
+msgid "Answer for this machine instead:"
+msgstr "Svar for denne maskine i stedet:"
+
+msgid "Pretend the graphics card has this much memory (blank to leave it):"
+msgstr "Lad som om grafikkortet har så meget hukommelse (tomt for at lade det være):"
+
+msgid "Pretend the machine has this much system memory (blank to leave it):"
+msgstr "Lad som om maskinen har så meget systemhukommelse (tomt for at lade det være):"
+
+msgid "Pretend the processor has this many cores (blank to leave it):"
+msgstr "Lad som om processoren har så mange kerner (tomt for at lade det være):"
+
+msgid "Back to this machine"
+msgstr "Tilbage til denne maskine"
+
+msgctxt "hardware profile"
+msgid "this machine"
+msgstr "denne maskine"
+
+msgid "The core count is a whole number, for example 8."
+msgstr "Antallet af kerner er et helt tal, for eksempel 8."
+
+msgctxt "dashboard header separator"
+msgid " · "
+msgstr " · "
+
+msgctxt "dashboard header"
+msgid "no GPU detected"
+msgstr "ingen GPU fundet"
+
+msgid "%(name)s, VRAM unknown"
+msgstr "%(name)s, VRAM ukendt"
+
+msgid "%(name)s, %(free)s free of %(total)s"
+msgstr "%(name)s, %(free)s ledig af %(total)s"
+
+msgid "%(available)s free of %(total)s RAM"
+msgstr "%(available)s ledig af %(total)s RAM"
+
+msgid "%(model)s, %(count)d core"
+msgid_plural "%(model)s, %(count)d cores"
+msgstr[0] "%(model)s, %(count)d kerne"
+msgstr[1] "%(model)s, %(count)d kerner"
+
+msgctxt "dashboard header"
+msgid "llama.cpp not installed"
+msgstr "llama.cpp er ikke installeret"
+
+msgctxt "dashboard header"
+msgid "llama.cpp installed"
+msgstr "llama.cpp installeret"
+
+msgid "llama.cpp b%(build)d"
+msgstr "llama.cpp b%(build)d"
+
+msgctxt "dashboard header"
+msgid "scanning this machine…"
+msgstr "scanner denne maskine…"
+
+msgid "These speeds were not all arrived at the same way; the How column says which each row is."
+msgstr "Disse hastigheder er ikke alle nået frem på samme måde; kolonnen Hvordan siger, hvad hver række er."
+
 msgctxt "thousands separator"
 msgid ","
 msgstr "."
@@ -923,3 +3597,160 @@ msgstr "B"
 msgctxt "size"
 msgid "unknown"
 msgstr "ukendt"
+
+msgid "profile must be a name, not a path: %(value)s"
+msgstr "profil skal være et navn, ikke en sti: %(value)s"
+
+msgid "Ask GET /api/v1/profiles for the names this machine has."
+msgstr "Spørg GET /api/v1/profiles om de navne, denne maskine har."
+
+msgid "unknown query parameter: %(names)s"
+msgstr "ukendt forespørgselsparameter: %(names)s"
+
+msgid "This endpoint takes: %(names)s"
+msgstr "Dette endpoint tager: %(names)s"
+
+msgid "invalid prefer %(value)s"
+msgstr "ugyldig prefer: %(value)s"
+
+msgid "invalid sort %(value)s"
+msgstr "ugyldig sort: %(value)s"
+
+msgid "%(host)s:%(port)d is not this machine only. Anyone who can reach this computer on that port can read everything the dashboard shows -- your hardware, your disks, your file paths and the models you have downloaded. There is no password, because LlamaFit is meant for the person sitting at the keyboard. Press Ctrl+C now if you did not mean this."
+msgstr "%(host)s:%(port)d er ikke kun denne maskine. Alle, der kan nå denne computer på den port, kan læse alt, hvad dashboardet viser -- din hardware, dine diske, dine filstier og de modeller, du har hentet. Der er ingen adgangskode, for LlamaFit er ment for den person, der sidder ved tastaturet. Tryk på Ctrl+C nu, hvis du ikke mente det."
+
+msgid "the web dashboard needs FastAPI and uvicorn, which are not installed"
+msgstr "webdashboardet kræver FastAPI og uvicorn, som ikke er installeret"
+
+msgid "Install them with: pip install \"llamafit[web]\""
+msgstr "Installér dem med: pip install \"llamafit[web]\""
+
+msgid "%(host)s is not a loopback address, and the dashboard has no authentication"
+msgstr "%(host)s er ikke en loopback-adresse, og dashboardet har ingen godkendelse"
+
+msgid "Leave --host alone to serve this machine only, or pass it to mean it."
+msgstr "Lad --host være for kun at betjene denne maskine, eller angiv den, fordi du mener det."
+
+msgctxt "column heading"
+msgid "Why not"
+msgstr "Hvorfor ikke"
+
+msgid "Why this row"
+msgstr "Hvorfor denne række"
+
+msgid "Plan this"
+msgstr "Planlæg denne"
+
+msgid "Already on this machine"
+msgstr "Ligger allerede på denne maskine"
+
+msgid "Score"
+msgstr "Score"
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; raise “Rows to show” for the rest, which are neither worse-behaved nor hidden, only further down."
+msgstr "Viser de bedste %(shown)s af %(total)s, der kvalificerede sig; hæv “Rækker at vise” for resten, som hverken er ringere eller skjult, blot længere nede."
+
+msgid "What the model is for"
+msgstr "Hvad modellen skal bruges til"
+
+msgid "Capabilities it must have"
+msgstr "Egenskaber den skal have"
+
+msgid "Lean the weights"
+msgstr "Hæld vægtene"
+
+msgid "Smallest context worth having"
+msgstr "Mindste kontekst, der er værd at have"
+
+msgid "Most you will download"
+msgstr "Mest du vil hente"
+
+msgid "Show every quantisation"
+msgstr "Vis hver kvantisering"
+
+msgid "Keep the vision projector"
+msgstr "Behold billedprojektoren"
+
+msgid "Rows to show"
+msgstr "Rækker at vise"
+
+msgid "Scan again"
+msgstr "Scan igen"
+
+msgid "llama.cpp"
+msgstr "llama.cpp"
+
+msgid "Quantisation"
+msgstr "Kvantisering"
+
+msgid "Context"
+msgstr "Kontekst"
+
+msgid "Micro-batch"
+msgstr "Mikrobatch"
+
+msgid "Plan it"
+msgstr "Planlæg den"
+
+msgid "Copy"
+msgstr "Kopiér"
+
+msgid "Copied"
+msgstr "Kopieret"
+
+msgid "Flags"
+msgstr "Flag"
+
+msgid "Speed"
+msgstr "Hastighed"
+
+msgid "Choose a row on the board first."
+msgstr "Vælg først en række på ranglisten."
+
+msgid "Hardware profile"
+msgstr "Hardwareprofil"
+
+msgid "This machine, as scanned"
+msgstr "Denne maskine, som scannet"
+
+msgid "Graphics memory"
+msgstr "Grafikhukommelse"
+
+msgid "System memory"
+msgstr "Systemhukommelse"
+
+msgid "Processor cores"
+msgstr "Processorkerner"
+
+msgid "Score against that machine"
+msgstr "Score mod den maskine"
+
+msgid "What runs here, how fast, and with which settings."
+msgstr "Hvad der kører her, hvor hurtigt, og med hvilke indstillinger."
+
+msgid "Working…"
+msgstr "Arbejder…"
+
+msgid "Something went wrong"
+msgstr "Noget gik galt"
+
+msgid "Hint"
+msgstr "Tip"
+
+msgid "Command"
+msgstr "Kommando"
+
+msgid "About these figures"
+msgstr "Om disse tal"
+
+msgid "Close"
+msgstr "Luk"
+
+msgid "%(shown)s of %(total)s in the catalog"
+msgstr "%(shown)s af %(total)s i kataloget"
+
+msgid "Source code (AGPL-3.0-or-later)"
+msgstr "Kildekode (AGPL-3.0-or-later)"
+
+msgid "This dashboard is served from your own machine and sends nothing anywhere."
+msgstr "Dette dashboard serveres fra din egen maskine og sender intet nogen steder hen."
