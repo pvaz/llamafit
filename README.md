@@ -143,6 +143,21 @@ Requirements: Python 3.10 or newer. No compiler, no Node, no account. The option
 plain HTML, CSS and JavaScript that ships in the package and fetches nothing from the
 internet, so there is still no build step anywhere.
 
+### Or without a Python at all
+
+Every release also carries a single self-contained file — interpreter, dependencies,
+catalog and all 37 message catalogs inside it — for Windows, macOS and Linux on both
+x86-64 and ARM. Take the one for your machine from the
+[releases page](https://github.com/pvaz/llamafit/releases), and run it:
+
+```
+tar -xzf llamafit-0.1.0-linux-x86_64.tar.gz && ./llamafit recommend
+```
+
+It is about 33 MB, it is not code-signed, and your operating system will say something
+about that the first time. [docs/standalone.md](docs/standalone.md) covers the checksums,
+what Windows and macOS will ask you, and the one thing the binary leaves out.
+
 ## Use
 
 ```
@@ -195,7 +210,7 @@ contribution this project has: see [docs/translations.md](docs/translations.md).
 - [How it works](docs/how-it-works.md): the memory budget, placement search, speed model and scoring, with the formulas.
 - [Command-line reference](docs/cli.md)
 - [Terminal dashboard](docs/tui.md) and [web dashboard and API](docs/web.md)
-- [Platform support and probes](docs/platform-support.md)
+- [Platform support and probes](docs/platform-support.md) and the [standalone binary](docs/standalone.md)
 - [The catalog](docs/catalog.md) and the models it ships ([MODELS.md](MODELS.md)), [custom models](docs/custom-models.md) and [hardware profiles](docs/hardware-profiles.md)
 - [Benchmarking and calibration](docs/benchmarking.md)
 - [Architecture](docs/architecture.md) and the [design specification](docs/specs/2026-09-09-llamafit-design.md)

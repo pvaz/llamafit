@@ -7,6 +7,7 @@
 | [Terminal dashboard](tui.md) | you use the full-screen interface |
 | [Web dashboard and API](web.md) | you use `llamafit serve` or want the JSON API |
 | [Platform support](platform-support.md) | something is not detected on your machine |
+| [The standalone binary](standalone.md) | you want to run LlamaFit on a machine with no Python |
 | [The catalog](catalog.md) | you want to add or correct a model |
 | [The models it ships](../MODELS.md) | you want to see the catalog itself, generated from those files |
 | [Custom models](custom-models.md) | you want a model LlamaFit does not ship, without a pull request |

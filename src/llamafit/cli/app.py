@@ -42,6 +42,7 @@ these, and rendering is exactly what a ``LazyString`` does.
 from __future__ import annotations
 
 import inspect
+import multiprocessing
 import os
 import sys
 from collections.abc import Mapping, Sequence
@@ -509,6 +510,14 @@ def main() -> None:
     as ``Text`` and never parsed as Rich markup.
     """
     global _chosen_by_main
+    # Before anything else, and before the streams: in a frozen build a child process is
+    # started by re-running this executable with `--multiprocessing-fork`, and without this
+    # call that child reaches Click, which refuses an option it has never heard of and
+    # prints a usage error across whatever the real run was drawing. Nothing here starts a
+    # process itself -- the bandwidth measurement uses threads -- but a dependency does,
+    # and the failure appears only in a build nobody runs while developing. Outside a
+    # frozen build this returns immediately.
+    multiprocessing.freeze_support()
     verbose = "--verbose" in sys.argv or "-v" in sys.argv
     if verbose:
         setup_logging(get_paths().log_dir, verbose=True)

@@ -7,6 +7,15 @@ the changelog says so when they do.
 
 ## [Unreleased]
 
+### Added
+- Standalone executables for Windows, macOS and Linux on x86-64 and ARM: one
+  self-contained file per platform, built by `.github/workflows/binaries.yml` from
+  `packaging/llamafit.spec` and attached to the GitHub release with SHA-256 checksums.
+  Nothing to install and no Python needed. The build is kept separate from the PyPI
+  release so that binaries can be built, or rebuilt, for a version that has already
+  shipped. `docs/standalone.md` covers which file to take, how to verify it, and what
+  Windows and macOS will say about a binary nobody has paid to sign.
+
 ## [0.1.0] - 2026-09-11
 
 ### Added

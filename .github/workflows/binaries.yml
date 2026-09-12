@@ -1,0 +1,263 @@
+# Build the standalone executables and attach them to a release.
+#
+# `pip install llamafit` needs a Python. This workflow is for everyone else: it builds one
+# self-contained file per platform, with the interpreter, the dependencies and the
+# package's own data inside it, and hangs them off the GitHub release.
+#
+# It is deliberately separate from `release.yml`. That workflow publishes to PyPI, where a
+# version number can be used exactly once and never again; this one only adds files to a
+# release that already exists. Keeping them apart means a binary can be built, or rebuilt,
+# for a version that has already shipped -- which is how v0.1.0 got its binaries -- without
+# going anywhere near an upload that cannot be repeated.
+#
+# Two ways in, and they do the same thing:
+#
+#   - Pushing a version tag. `release.yml` starts at the same moment and creates the
+#     release; the attach job below waits for it rather than racing it.
+#   - Running it by hand from the Actions tab with a tag, for a release that already exists.
+#
+# PyInstaller is not a cross-compiler, so each target is built on its own operating system
+# and its own architecture: five machines, five files. What gets built is decided in
+# `packaging/llamafit.spec`, which is where the reasoning about what goes into the bundle
+# lives.
+#
+# Every action here is pinned to a commit rather than a moving tag, for the reason set out
+# at the top of `release.yml`: these jobs produce bytes that people download and run, and
+# an artefact is only as trustworthy as the job that produced it. `dependabot.yml` watches
+# the pins.
+name: Binaries
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "The release tag to build and attach to, for example v0.1.0"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: binaries-${{ inputs.tag || github.ref }}
+  cancel-in-progress: false
+
+env:
+  # One expression, resolved once, so no step has to work out which trigger it is under.
+  TAG: ${{ inputs.tag || github.ref_name }}
+
+jobs:
+  build:
+    name: ${{ matrix.label }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      # One platform failing should not hide what the other four would have told us.
+      fail-fast: false
+      matrix:
+        include:
+          # Built on the oldest Ubuntu still supported by GitHub, on purpose. A binary
+          # built against glibc 2.39 refuses to start on anything older, which is most
+          # long-term distributions in use; 22.04's glibc 2.35 runs on them and on
+          # everything newer. This is the whole reason the runner is pinned rather than
+          # left on `ubuntu-latest`.
+          - label: Linux x86_64
+            runner: ubuntu-22.04
+            asset: llamafit-linux-x86_64
+            archive: tar.gz
+          - label: Linux aarch64
+            runner: ubuntu-22.04-arm
+            asset: llamafit-linux-aarch64
+            archive: tar.gz
+          # macos-13 is the last Intel runner; macos-14 and later are Apple silicon. Both
+          # are needed, and neither can build the other's file.
+          - label: macOS x86_64
+            runner: macos-13
+            asset: llamafit-macos-x86_64
+            archive: tar.gz
+          - label: macOS arm64
+            runner: macos-14
+            asset: llamafit-macos-arm64
+            archive: tar.gz
+          - label: Windows x86_64
+            runner: windows-latest
+            asset: llamafit-windows-x86_64
+            archive: exe
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          # The tag, not the branch. Run by hand against v0.1.0 and this is the whole
+          # difference between shipping 0.1.0 and shipping whatever main happens to be.
+          ref: ${{ env.TAG }}
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.13"
+
+      - name: The tag must match the version in pyproject.toml
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os
+          import sys
+          import tomllib
+          from pathlib import Path
+
+          tag = os.environ["TAG"]
+          version = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"][
+              "version"
+          ]
+          if tag.removeprefix("v") != version:
+              sys.exit(
+                  f"tag {tag} was checked out, and its pyproject.toml says {version}. "
+                  "A binary named after one version and built from another is the kind of "
+                  "thing nobody finds until it matters."
+              )
+          print(f"tag {tag} matches the pyproject.toml version {version}")
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as handle:
+              handle.write(f"VERSION={version}\n")
+          PY
+
+      - name: Install the project and PyInstaller
+        shell: bash
+        # `[web]` and not `[fast]`: packaging/llamafit.spec says why.
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[web]" pyinstaller
+
+      - name: Build
+        shell: bash
+        run: python -m PyInstaller packaging/llamafit.spec --noconfirm --clean --log-level WARN
+
+      - name: Use the binary, on a machine that is not the one that built it
+        shell: bash
+        # A file that exists is not a file that works. Everything below reads one of the
+        # packaged data directories through importlib.resources, which is exactly what a
+        # frozen bundle gets wrong, and it runs outside the checkout so nothing can be
+        # answered by the source tree sitting next to it.
+        run: |
+          set -euo pipefail
+          if [ "${RUNNER_OS}" = "Windows" ]; then
+            binary="$PWD/dist/llamafit.exe"
+          else
+            binary="$PWD/dist/llamafit"
+          fi
+          cd "$RUNNER_TEMP"
+          export PYTHONUTF8=1
+          "$binary" --version
+          "$binary" list                      # the catalog YAML
+          "$binary" catalog validate          # it parses and checks out
+          "$binary" hardware list             # the bundled hardware profiles
+          "$binary" hardware validate
+          "$binary" system                    # CPU, memory and GPU probes
+          model=$("$binary" --json list | python -c 'import json,sys; print(json.load(sys.stdin)[0]["id"])')
+          "$binary" info "$model"             # the generated facts file
+          "$binary" plan "$model"             # the placement search and the speed model
+          "$binary" --language pt_PT list     # a message catalog, and the JSON schema behind it
+          "$binary" --json recommend > /dev/null
+          echo "the binary works away from its own source tree"
+
+      - name: Name it after the version and the platform, and package it
+        id: package
+        shell: bash
+        # tar for the Unix targets rather than zip, because tar keeps the execute bit and
+        # zip does not: a zipped binary arrives unrunnable and the first thing its owner
+        # meets is a permission error. Windows has no execute bit and no tar habit, so the
+        # .exe is offered bare -- one click, one file, nothing to unpack.
+        run: |
+          set -euo pipefail
+          name="llamafit-${VERSION}-${ASSET#llamafit-}"
+          mkdir -p out
+          if [ "${{ matrix.archive }}" = "exe" ]; then
+            file="${name}.exe"
+            cp dist/llamafit.exe "out/${file}"
+          else
+            file="${name}.tar.gz"
+            chmod +x dist/llamafit
+            # macOS tar otherwise writes an AppleDouble `._llamafit` beside the binary,
+            # which every Linux machine that opens the archive sees as a stray file.
+            COPYFILE_DISABLE=1 tar -czf "out/${file}" -C dist llamafit
+          fi
+          cd out
+          # BSD and GNU spell the tool differently; both print the same two fields.
+          if command -v sha256sum > /dev/null; then
+            sha256sum "${file}" > "${file}.sha256"
+          else
+            shasum -a 256 "${file}" > "${file}.sha256"
+          fi
+          cat "${file}.sha256"
+          ls -lh "${file}"
+          echo "file=${file}" >> "$GITHUB_OUTPUT"
+        env:
+          ASSET: ${{ matrix.asset }}
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ${{ matrix.asset }}
+          path: out/
+          if-no-files-found: error
+
+  attach:
+    name: Attach to the release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # upload the files to the release, and nothing else
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: llamafit-*
+          path: staging
+          merge-multiple: true
+
+      - name: One checksum file for all of them
+        working-directory: staging
+        run: |
+          set -euo pipefail
+          # The per-file .sha256 lines, gathered and sorted, so a person can verify every
+          # download with a single `sha256sum -c SHA256SUMS.txt` in the directory they
+          # landed in. The individual files stay: somebody downloading one binary should
+          # not have to fetch a list of five to check it.
+          cat ./*.sha256 | sort -k2 > SHA256SUMS.txt
+          rm -f ./*.sha256
+          cat SHA256SUMS.txt
+          ls -lh
+
+      - name: Wait for the release to exist
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        # On a tag push, release.yml is creating this release at the same moment, behind
+        # the full test suite and a PyPI upload. Waiting is not a race worth losing by a
+        # minute; twenty-five of them is longer than that path has ever taken, and if the
+        # release never appears the failure below says which of the two workflows to go
+        # and read.
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 50); do
+            if gh release view "$TAG" > /dev/null 2>&1; then
+              echo "release $TAG is there"
+              exit 0
+            fi
+            echo "attempt ${attempt}/50: no release $TAG yet"
+            sleep 30
+          done
+          echo "::error::release $TAG never appeared. If this was a tag push, look at the" \
+               "Release workflow for the same tag: it creates the release, and it will have" \
+               "stopped somewhere. The binaries are attached to this run as artefacts either way."
+          exit 1
+
+      - name: Attach the binaries
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        # --clobber so a rerun replaces a file instead of refusing to, which is what makes
+        # rebuilding one platform after a fix a thing you can just do.
+        run: |
+          set -euo pipefail
+          gh release upload "$TAG" staging/* --clobber
+          echo "attached to $TAG:"
+          gh release view "$TAG" --json assets --jq '.assets[] | "\(.name)  \(.size) bytes"'
