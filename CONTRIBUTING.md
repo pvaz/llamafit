@@ -28,7 +28,7 @@ small tasks with tests; picking a task from the current plan is the easiest way 
 
 ## Licence and the contributor agreement
 
-LlamaFit is under the **GNU Affero General Public License, version 3 or later**. Your
+LlamaFit is under the GNU Affero General Public License, version 3 or later. Your
 contribution is published under it too, and every new file under `src/llamafit/` carries the
 three-line header the licence asks for:
 
@@ -40,10 +40,10 @@ three-line header the licence asks for:
 
 Copy it verbatim into any source file you add. Tests, scripts and data files do not carry it.
 
-On top of that, contributions are covered by the **[contributor licence agreement](CLA.md)**.
+On top of that, contributions are covered by the [contributor licence agreement](CLA.md).
 You keep your copyright; you grant the owner a licence broad enough that LlamaFit can also be
-offered commercially to people who cannot accept the AGPL. Read [CLA.md](CLA.md) once — it is
-short — and then put this line in the description of your first pull request:
+offered commercially to people who cannot accept the AGPL. Read [CLA.md](CLA.md) once (it
+is short), then put this line in the description of your first pull request:
 
 ```
 I have read CLA.md and I agree to it, for this and my future contributions to LlamaFit.
@@ -52,9 +52,9 @@ I have read CLA.md and I agree to it, for this and my future contributions to Ll
 One line, once. It covers your later pull requests. If a term in it does not work for you,
 open an issue and say so before you write the code.
 
-If your contribution contains anything you did not write yourself — a snippet, a data table, an
-algorithm from a paper — say so in the pull request and name its source and its licence, so it
-can be checked against the AGPL before it lands.
+If your contribution contains anything you did not write yourself, such as a snippet, a data
+table or an algorithm from a paper, say so in the pull request and name its source and its
+licence, so it can be checked against the AGPL before it lands.
 
 ## Setting up
 
@@ -72,18 +72,18 @@ More in [`docs/development.md`](docs/development.md).
 
 ## What a pull request needs
 
-1. **Green checks.** `ruff check . && ruff format --check . && mypy && pytest` locally, and
+1. Green checks. `ruff check . && ruff format --check . && mypy && pytest` locally, and
    the CI matrix (Ubuntu, macOS, Windows; Python 3.10 and 3.13) on the pull request.
-2. **Tests for behaviour you change.** Detection code is tested with recorded command output,
+2. Tests for behaviour you change. Detection code is tested with recorded command output,
    never by running vendor tools in CI. Estimator changes are tested against the golden host
    profiles and the calibration measurements.
-3. **Documentation in the same pull request.** A new flag appears in `docs/cli.md`; a new probe
+3. Documentation in the same pull request. A new flag appears in `docs/cli.md`; a new probe
    appears in `docs/platform-support.md`; a user-visible change gets a line under
    *Unreleased* in `CHANGELOG.md`.
-4. **One topic.** A catalog fix and a refactor are two pull requests.
-5. **Sources.** Any number in data files or documentation has a link. "I remember" is not a
+4. One topic. A catalog fix and a refactor are two pull requests.
+5. Sources. Any number in data files or documentation has a link. "I remember" is not a
    source.
-6. **The contributor agreement**, once. The line from [CLA.md](CLA.md) in the description of
+6. The contributor agreement, once. The line from [CLA.md](CLA.md) in the description of
    your first pull request, and the AGPL header on any new file under `src/llamafit/`.
 
 ## Style

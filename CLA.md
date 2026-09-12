@@ -22,9 +22,9 @@ code; it is much easier to discuss beforehand.
 ## 1. Who this is between
 
 "You" is the person or organisation submitting the contribution. "The owner" is Paulo Vaz, the
-copyright holder of LlamaFit. "Contribution" means anything you deliberately submit to the
-project: code, tests, catalog entries, GPU data, translations, documentation, fixtures — any
-work of authorship, in any pull request, patch, issue or message meant to be included.
+copyright holder of LlamaFit. "Contribution" means any work of authorship you deliberately
+submit to the project, in any pull request, patch, issue or message meant to be included:
+code, tests, catalog entries, GPU data, translations, documentation, fixtures.
 
 ## 2. You keep your copyright
 
@@ -40,9 +40,8 @@ perform and display, distribute your contribution and works derived from it, and
 **sublicense these rights, on any terms, including terms that are not the AGPL**, through any
 number of tiers.
 
-That last clause is the whole point of this document, so it is worth saying in plain words:
-it is what lets the owner ship your contribution both as part of AGPL LlamaFit and as part of a
-commercially licensed LlamaFit. It does not let anybody take your contribution *out* of the
+That last clause is the whole point of this document. It is what lets the owner ship your
+contribution both as part of AGPL LlamaFit and as part of a commercially licensed LlamaFit. It does not let anybody take your contribution *out* of the
 AGPL release. Whatever the owner sells alongside it, the AGPL version stays published, and your
 contribution stays in it.
 
@@ -51,7 +50,7 @@ contribution stays in it.
 If you hold patent claims that your contribution would necessarily infringe, you grant the
 owner and every recipient of LlamaFit a worldwide, royalty-free, non-exclusive, perpetual and
 irrevocable licence to those claims, to make, use, sell, offer to sell, import and otherwise
-transfer the work — limited to the claims your contribution unavoidably reads on, alone or
+transfer the work, limited to the claims your contribution unavoidably reads on, alone or
 combined with the project as it stood when you contributed.
 
 If you start patent litigation claiming that LlamaFit or a contribution to it infringes a
@@ -67,8 +66,8 @@ By contributing, you say that each of these is true:
    employer's equipment or time, and your employer therefore has rights in it, you have their
    permission to contribute it under this agreement, or they have waived their rights.
 3. **You did not import somebody else's work silently.** Where the contribution contains
-   material you did not write — a snippet, an algorithm from a paper, a data table, a
-   translation — you have said so in the pull request, named the source, and named its licence,
+   material you did not write, such as a snippet, an algorithm from a paper, a data table or a
+   translation, you have said so in the pull request, named the source, and named its licence,
    and that licence permits the use.
 4. **No numbers from memory.** Every fact in a data file or in documentation carries a primary
    source, as `CONTRIBUTING.md` requires. This is a licensing matter as well as a quality one:
@@ -101,8 +100,8 @@ I have read CLA.md and I agree to it, for this and my future contributions to Ll
 ```
 
 That is all. The pull request template carries it as a checklist item. Agreement covers your
-later pull requests too, so you write the line once. If your circumstances change — you take a
-job with a claim on your work, say — tell the maintainers before your next contribution.
+later pull requests too, so you write the line once. If your circumstances change (you take a
+job with a claim on your work, say), tell the maintainers before your next contribution.
 
 If you would rather sign something explicit, or you are contributing on behalf of a company
 whose legal team wants a countersigned document, open an issue and ask.

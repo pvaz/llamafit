@@ -4,7 +4,7 @@
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](docs/platform-support.md)
-[![Languages](https://img.shields.io/badge/interface-37%20languages-brightgreen.svg)](docs/translations.md)
+[![Languages](https://img.shields.io/badge/interface-38%20languages-brightgreen.svg)](docs/translations.md)
 
 **Find, size, install and verify open-weight LLMs for llama.cpp on your own machine.**
 
@@ -35,12 +35,12 @@ $ llamafit list --limit 5
               mixture-of-experts model, or one number when they are equal.
 ```
 
-Sixty-two models, strongest first; `--limit` is what keeps five of them on this page.
+Sixty-two models, strongest first; `--limit` keeps five of them on this page.
 
 > **Status.** 0.1.1. Every command in the table below ships and is tested on Windows, macOS
 > and Linux: the host scan and the diagnostics, the catalog, the memory budget, the placement
 > planner, the speed estimator and the ranking, the terminal and web dashboards, the installer
-> and the benchmark verifier. Three pieces named in the design are not built — the terminal
+> and the benchmark verifier. Three pieces named in the design are not built: the terminal
 > dashboard's Downloads and Benchmarks screens, the install and benchmark endpoints of the web
 > API, and the path by which a benchmark corrects the estimator, which is why every speed is
 > still labelled `estimated`. The [roadmap](ROADMAP.md) says so line by line; the design is
@@ -50,11 +50,11 @@ Sixty-two models, strongest first; `--limit` is what keeps five of them on this 
 
 | | The usual approach | LlamaFit |
 |---|---|---|
-| **Memory** | one RAM and VRAM minimum per model | per-component budget from the file's own tensor table: weights by class, cache per 1K tokens, compute buffer by micro-batch, projector |
-| **Result** | "you need 16 GB" | a runnable `llama-server` command line and launch scripts |
-| **Speed** | a guess, or numbers from someone else's machine | computed from your measured bandwidth, then checked against real benchmarks on your machine |
-| **Honesty** | one confident number | every figure labelled measured, calibrated or estimated, and expandable into its inputs |
-| **Failure** | silence | names the case where the driver pages to system memory and the server starts anyway at half speed |
+| Memory | one RAM and VRAM minimum per model | per-component budget from the file's own tensor table: weights by class, cache per 1K tokens, compute buffer by micro-batch, projector |
+| Result | "you need 16 GB" | a runnable `llama-server` command line and launch scripts |
+| Speed | a guess, or numbers from someone else's machine | computed from your measured bandwidth, then checked against real benchmarks on your machine |
+| Honesty | one confident number | every figure labelled measured, calibrated or estimated, and expandable into its inputs |
+| Failure | silence | names the case where the driver pages to system memory and the server starts anyway at half speed |
 
 ## Why
 
@@ -62,40 +62,38 @@ Running a model locally with llama.cpp involves a chain of decisions that are ea
 wrong and hard to see when you do: which model family has the capability you need, which
 quantisation of it fits, how much of it goes on the GPU, how big a context the remaining
 memory allows, which micro-batch size keeps prompt processing fast, where the vision
-projector should live, and whether the result is actually running at the speed the hardware
-can deliver. A wrong answer rarely fails loudly. On NVIDIA drivers a configuration that asks
-for more VRAM than the card has simply starts, pages silently into system RAM, and runs at
-half speed for weeks before anyone notices.
-
-LlamaFit exists to make that chain explicit, correct, and reproducible.
+projector should live, and whether the result runs at the speed the hardware can deliver.
+A wrong answer rarely fails loudly. On NVIDIA drivers a configuration that asks for more
+VRAM than the card has simply starts, pages silently into system RAM, and runs at half
+speed for weeks before anyone notices.
 
 ## What it does
 
-1. **Scans the host.** CPU model, cores and instruction sets; RAM totals, type, speed and
+1. Scans the host. CPU model, cores and instruction sets; RAM totals, type, speed and
    measured bandwidth; every GPU with its free VRAM, bandwidth and compute; free disk space.
    Each probe reports whether it worked so you know what the numbers rest on.
-2. **Detects llama.cpp.** Binaries on `PATH` or in the usual places, build number, compiled
+2. Detects llama.cpp. Binaries on `PATH` or in the usual places, build number, compiled
    backends (CUDA, Metal, HIP, Vulkan, SYCL, CPU), local GGUF files, and any `llama-server`
    already running.
-3. **Reads the catalog.** Curated YAML, one file per model family, with parameters, architecture
+3. Reads the catalog. Curated YAML, one file per model family, with parameters, architecture
    class, capabilities, context, license, published benchmark scores and the Hugging Face
-   repositories that carry the GGUF files. What changes — file names, sizes, checksums, bits per
-   weight and GGUF header facts — is refreshed from the Hugging Face API into a generated file
+   repositories that carry the GGUF files. What changes (file names, sizes, checksums, bits per
+   weight and GGUF header facts) is refreshed from the Hugging Face API into a generated file
    beside it, without downloading a single weight. Every model it ships is listed in
    [MODELS.md](MODELS.md).
-4. **Computes the budget.** From the GGUF header of each file: weight bytes by tensor class,
+4. Computes the budget. From the GGUF header of each file: weight bytes by tensor class,
    KV cache per thousand tokens, compute buffer as a function of micro-batch and context,
    projector cost. It then searches placements (all on GPU; attention on GPU with experts in
    RAM; hybrid; CPU) and context sizes for the best one that fits, and estimates generation
    and prompt speed from memory bandwidth and PCIe throughput.
-5. **Ranks and explains.** Four scores from 0 to 100 (quality, speed, fit, context) weighted by
+5. Ranks and explains. Four scores from 0 to 100 (quality, speed, fit, context) weighted by
    your use case, a verdict (Comfortable, Fits, Tight, Does not fit), and a plain-language
    explanation of why each candidate is where it is and what would move it up.
-6. **Makes it run.** `plan` prints the exact `llama-server` command line. `install` fetches
+6. Makes it run. `plan` prints the exact `llama-server` command line. `install` fetches
    llama.cpp release builds and model files with verification. `preset` writes launch scripts
    that pick the context size from the VRAM that is free at start. `bench` measures the result,
    stores it beside the estimate it is compared with, and fits the estimator's constants to
-   your machine — refusing by name the ones your measurements do not determine.
+   your machine, refusing by name the ones your measurements do not determine.
 
 ## The command line
 
@@ -139,15 +137,15 @@ pip install "llamafit[web]"     # and the browser dashboard, if you want one
 
 Requirements: Python 3.10 or newer. No compiler, no Node, no account. The optional
 `llamafit[fast]` extra adds NumPy for a more accurate memory-bandwidth measurement, and
-`llamafit[web]` adds FastAPI and uvicorn for `llamafit serve` — the dashboard itself is
+`llamafit[web]` adds FastAPI and uvicorn for `llamafit serve`. The dashboard itself is
 plain HTML, CSS and JavaScript that ships in the package and fetches nothing from the
 internet, so there is still no build step anywhere.
 
 ### Or without a Python at all
 
-Every release also carries a single self-contained file — interpreter, dependencies,
-catalog and all 37 message catalogs inside it — for Windows, macOS and Linux on both
-x86-64 and ARM. Take the one for your machine from the
+Every release also carries a single self-contained file, with the interpreter, the
+dependencies, the catalog and all 37 message catalogs inside it, for Windows, macOS and
+Linux on both x86-64 and ARM. Take the one for your machine from the
 [releases page](https://github.com/pvaz/llamafit/releases), and run it:
 
 ```
@@ -189,19 +187,18 @@ but file metadata and headers.
 The interface ships in English and 37 other languages, chosen with `--language`, the
 `LLAMAFIT_LANGUAGE` variable, or your operating system's own setting, in that order. Ask
 for one that is not there and LlamaFit falls back to English **and says so**, because
-quietly ignoring what you asked for is its own kind of bug.
+ignoring what you asked for without mentioning it is its own kind of bug.
 
 All 37 carry every message. Thirty-one of them did not until recently: they held the
 column headings and the short phrases and nothing that explained anything, which reads
 less like a translation in progress than like one that has gone wrong. LlamaFit still
-measures what it loaded against the template on every run and **says so when a catalog
-falls materially short**, with the figure and where to help — a language added tomorrow,
-or one left behind by a release that adds messages, gets the same sentence those
-thirty-one used to. A tool that lists a language it barely speaks is making a promise;
-saying how far it got is keeping one.
+measures what it loaded against the template on every run and says so when a catalog
+falls materially short, with the figure and where to help. A language added tomorrow, or
+one left behind by a release that adds messages, gets the same sentence those thirty-one
+used to.
 
-If the console you are writing to cannot represent the script — a Windows code page and
-Japanese, say — LlamaFit speaks English instead and tells you which encoding refused
+If the console you are writing to cannot represent the script, say a Windows code page
+and Japanese, LlamaFit speaks English instead and tells you which encoding refused
 which language, rather than printing a screen of question marks. `PYTHONUTF8=1` fixes it,
 except in the standalone binary, which reads no `PYTHON*` variable at all:
 [docs/standalone.md](docs/standalone.md) says what does.
@@ -223,15 +220,13 @@ contribution this project has: see [docs/translations.md](docs/translations.md).
 
 ## Principles
 
-- **No number without a label.** Measured, calibrated, estimated or assumed; the label travels
-  with the number into every table, screen and JSON document.
-- **Exact where it can be.** Memory budgets come from the GGUF headers and real file sizes,
-  not from a size class.
-- **Nothing hidden.** Every recommendation expands into the inputs that produced it.
-- **The host is the truth.** Estimates are starting points; measurements on your machine
-  replace them.
-- **Deterministic.** No model in the loop, no randomness, the same inputs give the same board.
-- **Small dependency surface.** A handful of well-known Python libraries, listed in
+- Every number says whether it was measured, calibrated, estimated or assumed, and the
+  label travels with it into every table, screen and JSON document.
+- Memory budgets come from the GGUF headers and the real file sizes, not from a size class.
+- Every recommendation expands into the inputs that produced it.
+- Estimates are starting points. A measurement on your machine replaces one.
+- No model in the loop and no randomness: the same inputs give the same board.
+- A handful of well-known Python libraries, listed in
   [`docs/development.md`](docs/development.md) with a reason for each.
 
 ## Contributing
@@ -245,7 +240,7 @@ pull request confirms in one line.
 
 ## License
 
-LlamaFit is free software under the **GNU Affero General Public License, version 3 or later**
+LlamaFit is free software under the GNU Affero General Public License, version 3 or later
 (`AGPL-3.0-or-later`). The full text is in [LICENSE](LICENSE).
 
 ### What that means if you just want to use it
@@ -271,8 +266,8 @@ about them.
 
 LlamaFit ships a web dashboard, and a hosted dashboard is exactly what a plain GPL does not
 reach: someone could take LlamaFit, sharpen the estimator, run it as a service, and never
-publish a line, because they never *distribute* anything. Section 13 of the AGPL — the network
-clause — closes that gap: if people interact with a modified LlamaFit over a network, they are
+publish a line, because they never *distribute* anything. Section 13 of the AGPL, the network
+clause, closes that gap: if people interact with a modified LlamaFit over a network, they are
 entitled to its source. LlamaFit's whole value is numbers that can be checked and corrected,
 so corrections should come back to the people relying on them. MIT asked for nothing; this
 project asks for that one thing and nothing more.

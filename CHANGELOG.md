@@ -14,8 +14,8 @@ the changelog says so when they do.
   self-contained file per platform, with the interpreter, the dependencies, the catalog,
   the generated facts, the hardware profiles, the schemas and all 37 message catalogs
   inside it. Nothing to install and no Python needed. Built by
-  `.github/workflows/binaries.yml` from `packaging/llamafit.spec` on five machines --
-  PyInstaller is not a cross-compiler -- and attached to the GitHub release with SHA-256
+  `.github/workflows/binaries.yml` from `packaging/llamafit.spec` on five machines, because
+  PyInstaller is not a cross-compiler, and attached to the GitHub release with SHA-256
   checksums. The Linux builds are made on Ubuntu 22.04 so that they need glibc 2.35 and
   not 2.39, which is the difference between running on Debian 12 and RHEL 9 and refusing
   to start there. `docs/standalone.md` covers which file to take, how to verify it, what
@@ -29,8 +29,8 @@ the changelog says so when they do.
 
 ### Changed
 - **All 37 translation catalogs are complete.** Thirty-one of them carried about a
-  quarter of the messages -- the column headings and the short phrases, not the sentences
-  that explain anything -- and now carry all 1,153. Every one of them still says at the
+  quarter of the messages, the column headings and the short phrases without the sentences
+  that explain anything, and now carry all 1,153. Every one of them still says at the
   top that it has not been read by a speaker of its language, because it has not, and
   that is still the most useful contribution anyone can make here.
 - Every number a reader sees uses their own decimal separator. Eleven messages formatted
@@ -42,7 +42,7 @@ the changelog says so when they do.
 
 ### Fixed
 - `multiprocessing.freeze_support()` is called before anything else in `main()`. Nothing
-  in LlamaFit starts a process -- the bandwidth measurement uses threads -- but
+  in LlamaFit starts a process, since the bandwidth measurement uses threads, but
   py-cpuinfo does, and in a frozen build a child process is started by re-running the
   executable with `--multiprocessing-fork`, which Click meets as an option it has never
   heard of and answers with a usage error printed across whatever the real run was
