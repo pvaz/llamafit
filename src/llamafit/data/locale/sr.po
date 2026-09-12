@@ -16,6 +16,198 @@ msgstr ""
 "Language-Team: Serbian (Cyrillic)\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
+msgid "nothing measured touches this term, so there is no equation it appears in"
+msgstr "ниједно мерење не додирује овај члан, па не постоји једначина у којој се појављује"
+
+msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
+msgstr "%(measurements)d различитих конфигурација за %(parameters)d слободних параметара; мање тачака него параметара даје бројеве који изгледају прецизно, а произвољни су"
+
+msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
+msgstr "тих %(measurements)d конфигурација не варира довољно независно да би се раздвојило %(parameters)d параметара"
+
+msgid "the fit put it at %(value)s, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "прилагођавање га је сместило на %(value)s, што његова сопствена дефиниција не дозвољава; мерења се међусобно не слажу по моделу из одељка 10.1"
+
+msgid "it came out at %(value)s, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "испао је %(value)s, али други параметар истог прилагођавања био је немогућ, па их је метода најмањих квадрата изабрала једно против другог"
+
+msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
+msgstr "процењивач нема такав члан: одељак 10.1 уклонио је режију по слоју, која је за модел са 28 слојева премашивала цео измерени токен"
+
+msgid "generation (llama-bench)"
+msgstr "генерисање (llama-bench)"
+
+msgid "prompt (llama-bench)"
+msgstr "промпт (llama-bench)"
+
+msgid "generation, first request"
+msgstr "генерисање, први захтев"
+
+msgid "generation, 1K prompt"
+msgstr "генерисање, промпт од 1K"
+
+msgid "prompt, 1K request"
+msgstr "промпт, захтев од 1K"
+
+msgid "peak VRAM"
+msgstr "вршни VRAM"
+
+msgid "no graphics card"
+msgstr "нема графичке картице"
+
+msgid "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+msgstr "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+
+msgid "%(flag)s was asked for as %(wanted)s but the run reports %(actual)s"
+msgstr "%(flag)s је затражен као %(wanted)s, али покретање пријављује %(actual)s"
+
+msgid "The card was full and generation came in below three fifths of the estimate: the driver was paging to system memory, which does not fail and does not appear in the log."
+msgstr "Картица је била пуна, а генерисање је пало испод три петине процене: драјвер је страничио у системску меморију, што не пада и не појављује се у дневнику."
+
+msgid "Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page."
+msgstr "Вршни VRAM остао је испод укупне меморије картице, па драјвер није имао шта да страничи."
+
+msgid "The card was full, which a good plan is meant to be, and the speed was close enough to the estimate that nothing was paging."
+msgstr "Картица је била пуна, какав добар план и треба да буде, а брзина је била довољно близу процени да ништа није страничило."
+
+msgid "No VRAM reading was taken during the run, so this configuration has not been cleared of paging; it has only not been checked."
+msgstr "Током покретања VRAM није очитан, па ова конфигурација није ослобођена сумње на страничење; само није проверена."
+
+msgid "The card's total memory is unknown, so a reading of what was in use says nothing about how close to full it was."
+msgstr "Укупна меморија картице није позната, па очитавање колико је било у употреби не говори ништа о томе колико је била близу пуне."
+
+msgid "There was no estimate to compare the measured speed against, so the second half of the signature could not be tested."
+msgstr "Није било процене са којом би се измерена брзина упоредила, па друга половина потписа није могла да се провери."
+
+msgid "llama-bench did not produce JSON"
+msgstr "llama-bench није произвео JSON"
+
+msgid "llama-bench JSON is not a list of results"
+msgstr "JSON из llama-bencha није списак резултата"
+
+msgid "llama-bench JSON held no readable results"
+msgstr "JSON из llama-bencha није садржао читљиве резултате"
+
+msgid "no llama-bench result rows found"
+msgstr "нису пронађени редови са резултатима llama-bencha"
+
+msgid "could not open %(path)s for the server log"
+msgstr "није могуће отворити %(path)s за дневник сервера"
+
+msgid "could not start llama-server"
+msgstr "није могуће покренути llama-server"
+
+msgid "no output"
+msgstr "нема излаза"
+
+msgid "llama-bench exited with code %(code)d: %(detail)s"
+msgstr "llama-bench је изашао са кодом %(code)d: %(detail)s"
+
+msgid "llama-bench output could not be read: %(error)s"
+msgstr "излаз llama-bencha није могао да се прочита: %(error)s"
+
+msgid "llama-server did not become healthy"
+msgstr "llama-server није постао исправан"
+
+msgid "Its whole output is in the log file `bench` named; the end says why."
+msgstr "Цео његов излаз је у датотеци дневника коју је `bench` навео; крај говори зашто."
+
+msgid "%(path)s was written by a newer LlamaFit (benchmark format %(found)d, this build reads %(known)d)"
+msgstr "%(path)s је уписао новији LlamaFit (формат мерења %(found)d, овај билд чита %(known)d)"
+
+msgid "Upgrade LlamaFit, or move the file aside to start a new one."
+msgstr "Надоградите LlamaFit или склоните датотеку у страну и почните нову."
+
+msgid "a benchmark cannot be recorded against a simulated machine"
+msgstr "мерење не може да се забележи према симулираној машини"
+
+msgid "Run `llamafit bench` on the machine itself, without --profile."
+msgstr "Покрените `llamafit bench` на самој машини, без --profile."
+
+msgid "the run did not use the settings it was given: %(problems)s"
+msgstr "покретање није користило подешавања која је добило: %(problems)s"
+
+msgid "Nothing was stored. A result filed under flags it was not taken with would be believed later by everything that reads it."
+msgstr "Ништа није сачувано. Резултату заведеном под заставицама са којима није снимљен касније би веровало све што га чита."
+
+msgid "a conservative default; nobody has measured this card's backend overhead"
+msgstr "конзервативна подразумевана вредност; режију бекенда ове картице нико није измерио"
+
+msgid "measured on this card with driver %(driver)s and llama.cpp %(build)s; one machine"
+msgstr "измерено на овој картици са драјвером %(driver)s и llama.cpp %(build)s; једна машина"
+
+msgid "A hybrid placement has to say how many layers are on the graphics card."
+msgstr "Хибридни смештај мора да каже колико је слојева на графичкој картици."
+
+msgid "Pass gpu_layers, which is what -ngl would be."
+msgstr "Проследите gpu_layers, што је вредност за -ngl."
+
+msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
+msgstr "LlamaFit није прочитао датотеку %(quant)s модела %(model)s, па не може да му одреди величину."
+
+msgid "Run `llamafit catalog refresh` to read the file's header."
+msgstr "Покрените `llamafit catalog refresh` да се прочита заглавље датотеке."
+
+msgid "the server process before any model buffer"
+msgstr "процес сервера пре било ког бафера модела"
+
+msgid "fitted to one machine's measurements; the least certain line here"
+msgstr "прилагођено мерењима једне машине; најмање поуздан ред овде"
+
+msgid "room for one logit per vocabulary entry per token of the batch"
+msgstr "простор за један логит по уносу речника и токену серије"
+
+msgid "LlamaFit cannot size a %(kv_type)s key-value cache."
+msgstr "LlamaFit не може да одреди величину KV кеша типа %(kv_type)s."
+
+msgid "Use one of: %(types)s."
+msgstr "Употребите један од: %(types)s."
+
+msgid "This model's file does not say how large its key-value cache is per token."
+msgstr "Датотека овог модела не каже колики му је KV кеш по токену."
+
+msgid "Refresh the catalog so the file's header is read again."
+msgstr "Освежите каталог да се заглавље датотеке поново прочита."
+
+msgid "the attention-layer count was assumed, not counted"
+msgstr "број слојева пажње био је претпостављен, а не пребројан"
+
+msgid "%(arch)s allocates more cache than its header describes; see the line below"
+msgstr "%(arch)s додељује више кеша него што описује његово заглавље; види ред испод"
+
+msgid "what %(arch)s allocates beyond its header, measured rather than derived"
+msgstr "оно што %(arch)s додељује изван свог заглавља, измерено, а не изведено"
+
+msgid "from the architecture's state dimensions; it does not grow with context"
+msgstr "из димензија стања архитектуре; не расте са контекстом"
+
+msgid "the projector file itself"
+msgstr "сама датотека пројектора"
+
+msgid "the projector's own compute space, measured at 248 MiB"
+msgstr "сопствени рачунски простор пројектора, измерен на 248 MiB"
+
+msgid "attention projections, feed-forward weights and norms"
+msgstr "пројекције пажње, тежине потпуно повезаног слоја и норме"
+
+msgid "always-on experts, which run for every token"
+msgstr "увек укључени експерти, који раде за сваки токен"
+
+msgid "routed experts, read across the bus once per micro-batch"
+msgstr "усмерени експерти, читају се преко магистрале једном по микросерији"
+
+msgid "this model ties its output projection to its embedding table"
+msgstr "овај модел везује своју излазну пројекцију за табелу ембединга"
+
+msgid "llama.cpp keeps the embedding table in memory even at full offload"
+msgstr "llama.cpp држи табелу ембединга у меморији и при пуном пребацивању на GPU"
+
+msgid "streamed from disk as it is needed, not held in memory"
+msgstr "стримује се са диска по потреби, не држи се у меморији"
+
+msgid "held in memory, since streaming from disk was turned off"
+msgstr "држи се у меморији јер је стримовање са диска искључено"
+
 msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
 msgstr "Hugging Face је вратио %(status)d при исписивању датотека за %(repo)s."
 
@@ -64,6 +256,9 @@ msgstr "Покрените `llamafit catalog refresh` без --model да бис
 msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
 msgstr "Пронађите, измерите, инсталирајте и проверите LLM моделе отворених тежина за llama.cpp на сопственој машини."
 
+msgid "With no command, llamafit opens the terminal dashboard; in a pipe, or with --json, it prints what `llamafit recommend` would."
+msgstr "Без команде llamafit отвара терминалску таблу; у цеви или уз --json исписује оно што би исписао `llamafit recommend`."
+
 msgid "Print machine-readable JSON instead of tables."
 msgstr "Исписује машински читљив JSON уместо табела."
 
@@ -79,11 +274,284 @@ msgstr "Говори овим језиком, на пример pt_PT. Јези�
 msgid "Print the version and exit."
 msgstr "Исписује верзију и излази."
 
+msgid "the output's encoding"
+msgstr "кодирање излаза"
+
+msgid "%(count)d character could not be written in %(encoding)s and is shown as ?."
+msgid_plural "%(count)d characters could not be written in %(encoding)s and are shown as ?."
+msgstr[0] "%(count)d знак није могао да се упише у кодирању %(encoding)s и приказан је као ?."
+msgstr[1] "%(count)d знака нису могла да се упишу у кодирању %(encoding)s и приказана су као ?."
+msgstr[2] "%(count)d знакова није могло да се упише у кодирању %(encoding)s и приказани су као ?."
+
+msgid "Set PYTHONUTF8=1 in the environment and run again: Python then writes UTF-8, which carries every language."
+msgstr "Поставите PYTHONUTF8=1 у окружењу и покрените поново: Python тада уписује UTF-8, које носи сваки језик."
+
+msgid "%(option)s is an option of llamafit itself, so it goes before the command: `llamafit %(option)s %(rest)s`."
+msgstr "%(option)s је опција самог llamafita, па иде пре команде: `llamafit %(option)s %(rest)s`."
+
 msgid "Unexpected error: %(error)s"
 msgstr "Неочекивана грешка: %(error)s"
 
 msgid "Run again with --verbose for the full traceback."
 msgstr "Покрените поново са --verbose за пун траг стека."
+
+msgid "A catalog model id."
+msgstr "Идентификатор модела из каталога."
+
+msgid "Benchmark this quantisation instead of the planned one."
+msgstr "Мери ову квантизацију уместо планиране."
+
+msgid "Size for this many tokens."
+msgstr "Димензионише за оволико токена."
+
+msgid "Set the micro-batch by hand; the budget is rebuilt around it."
+msgstr "Поставља микросерију ручно; буџет се обнавља око ње."
+
+msgid ""
+"Measure a model on this machine and show the measurement beside the estimate.\n"
+"\n"
+"Runs llama-bench and a real server at the planned flags, stores the result with the conditions it was taken under, and flags a configuration the driver was paging. With --calibrate, fits the estimator's constants to this machine from every stored result and says by name which ones the measurements do not determine."
+msgstr ""
+"Мери модел на овој машини и приказује мерење поред процене.\n"
+"\n"
+"Покреће llama-bench и прави сервер са планираним заставицама, чува резултат са условима у којима је снимљен и означава конфигурацију у којој је драјвер страничио. Уз --calibrate прилагођава константе процењивача овој машини из свих сачуваних резултата и поименице каже које од њих мерења не одређују."
+
+msgid "Measure prompt processing at every micro-batch of the ladder, not only the planned one. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all."
+msgstr "Мери обраду промпта при свакој микросерији са лествице, а не само при планираној. Одељак 10.2 има два слободна параметра, а једна микросерија је једна једначина, па се без овога промптна половина калибрације уопште не може прилагодити."
+
+msgid "Run llama-bench only. Faster, and it gives up the paging check, the buffer sizes and the tool-call test, all of which need a real server."
+msgstr "Покреће само llama-bench. Брже је, али се одриче провере страничења, величина бафера и теста позива алата, а све то тражи прави сервер."
+
+msgid "Print the result without writing it to the database."
+msgstr "Исписује резултат без уписивања у базу."
+
+msgid "Print the commands that would run, and run nothing."
+msgstr "Исписује команде које би се покренуле и ништа не покреће."
+
+msgid "Fit the estimator's constants to this machine from every result."
+msgstr "Прилагођава константе процењивача овој машини из свих резултата."
+
+msgid "List what is already stored and stop."
+msgstr "Исписује шта је већ сачувано и стаје."
+
+msgid "`llamafit bench` needs a model to measure"
+msgstr "`llamafit bench` треба модел који ће мерити"
+
+msgid "Try `llamafit bench <model>`, `--calibrate` on its own, or `--show`."
+msgstr "Пробајте `llamafit bench <model>`, само `--calibrate` или `--show`."
+
+msgid "llama.cpp was not found, so there is nothing to benchmark with"
+msgstr "llama.cpp није пронађен, па нема чиме да се мери"
+
+msgid "Run `llamafit doctor` to see where it was looked for."
+msgstr "Покрените `llamafit doctor` да видите где се тражио."
+
+msgid "%(path)s has llama-server but no llama-bench"
+msgstr "%(path)s има llama-server, али не и llama-bench"
+
+msgid "Some release archives leave it out; a full build has it beside the server."
+msgstr "Неке архиве издања га изостављају; пун билд га има поред сервера."
+
+msgid "this host is simulated, and a simulated machine cannot be measured"
+msgstr "ова машина је симулирана, а симулирана машина не може да се мери"
+
+msgid "Run `llamafit bench` on the machine itself."
+msgstr "Покрените `llamafit bench` на самој машини."
+
+msgid "the model file is not on this machine: %(path)s"
+msgstr "датотека модела није на овој машини: %(path)s"
+
+msgid "Download it first; `llamafit plan` shows the path the command line uses."
+msgstr "Прво је преузмите; `llamafit plan` приказује путању коју командна линија користи."
+
+msgid "Would run:"
+msgstr "Покренуло би се:"
+
+msgid "Nothing has been measured on this machine yet."
+msgstr "На овој машини још ништа није измерено."
+
+msgid "Stored measurements"
+msgstr "Сачувана мерења"
+
+msgid "model"
+msgstr "модел"
+
+msgid "kind"
+msgstr "врста"
+
+msgid "gen tok/s"
+msgstr "ген tok/s"
+
+msgid "prompt tok/s"
+msgstr "промпт tok/s"
+
+msgid "taken"
+msgstr "снимљено"
+
+msgid "flags"
+msgstr "заставице"
+
+msgid "Nothing was written to the database, so no estimate will be relabelled."
+msgstr "У базу ништа није уписано, па се ниједна процена неће преозначити."
+
+msgid "Estimated against measured"
+msgstr "Процењено наспрам измереног"
+
+msgid "figure"
+msgstr "бројка"
+
+msgid "context"
+msgstr "контекст"
+
+msgid "micro-batch"
+msgstr "микросерија"
+
+msgid "estimated"
+msgstr "процењено"
+
+msgid "measured"
+msgstr "измерено"
+
+msgid "ratio"
+msgstr "однос"
+
+msgid "The plan sizes this configuration for %(context)s tokens and estimates %(tps)s generated tokens per second there. Nothing above ran at that context, so that figure is reported and not compared."
+msgstr "План димензионише ову конфигурацију за %(context)s токена и ту процењује %(tps)s генерисаних токена у секунди. Ништа горе није радило при том контексту, па се та бројка само наводи, а не упоређује."
+
+msgid "%(count)d figure is outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgid_plural "%(count)d figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgstr[0] "%(count)d бројка је изван опсега од 0,8 до 1,25 у који се очекује да некалибрисана формула падне."
+msgstr[1] "%(count)d бројке су изван опсега од 0,8 до 1,25 у који се очекује да некалибрисана формула падне."
+msgstr[2] "%(count)d бројки је изван опсега од 0,8 до 1,25 у који се очекује да некалибрисана формула падне."
+
+msgid "This configuration was paging."
+msgstr "Ова конфигурација је страничила."
+
+msgid "This configuration was not paging."
+msgstr "Ова конфигурација није страничила."
+
+msgid "Paging could not be checked."
+msgstr "Страничење није могло да се провери."
+
+msgid "Peak VRAM was %(percent)s percent of the card, and generation was %(speed)s percent of the estimate."
+msgstr "Вршни VRAM био је %(percent)s посто картице, а генерисање %(speed)s посто процене."
+
+msgid "Peak VRAM was %(percent)s percent of the card. Generation was not compared with the estimate."
+msgstr "Вршни VRAM био је %(percent)s посто картице. Генерисање није упоређено са проценом."
+
+msgid "The largest context on the ladder that would not page is %(tokens)s."
+msgstr "Највећи контекст на лествици који не би страничио јесте %(tokens)s."
+
+msgid "Calibration"
+msgstr "Калибрација"
+
+msgid "constant"
+msgstr "константа"
+
+msgid "value"
+msgstr "вредност"
+
+msgid "from"
+msgstr "из"
+
+msgid "%(base)s + %(slope)s per 1K"
+msgstr "%(base)s + %(slope)s по 1K"
+
+msgid "%(count)d measured context"
+msgid_plural "%(count)d measured contexts"
+msgstr[0] "%(count)d измерен контекст"
+msgstr[1] "%(count)d измерена контекста"
+msgstr[2] "%(count)d измерених контекста"
+
+msgid "Nothing was fitted. Every line below says what its constant was missing; a calibration made from less than that would look precise and be arbitrary."
+msgstr "Ништа није прилагођено. Сваки ред испод каже шта је његовој константи недостајало; калибрација направљена од мање од тога изгледала би прецизно, а била би произвољна."
+
+msgid "%(name)s was not fitted: %(reason)s"
+msgstr "%(name)s није прилагођен: %(reason)s"
+
+msgid "%(count)d measured configuration"
+msgid_plural "%(count)d measured configurations"
+msgstr[0] "%(count)d измерена конфигурација"
+msgstr[1] "%(count)d измерене конфигурације"
+msgstr[2] "%(count)d измерених конфигурација"
+
+msgid "What the model is for. It sets the score weights, the speed target and the context a candidate is measured against."
+msgstr "Чему модел служи. Поставља тежине оцене, циљну брзину и контекст према коме се кандидат мери."
+
+msgid "Capability the model must have; a model without it is excluded "
+msgstr "Могућност коју модел мора да има; модел без ње се искључује "
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Задржава само ове идентификаторе лиценци (може да се понавља)."
+
+msgid "balanced, quality or speed: moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights."
+msgstr "balanced, quality или speed: премешта десетину тежине између квалитета и брзине. Нагиње ранг-листу; не замењује тежине."
+
+msgid "Exclude anything larger to download, for example 40G or 7.5GiB."
+msgstr "Искључује све веће за преузимање, на пример 40G или 7.5GiB."
+
+msgid "The worst verdict to list: comfortable, fits or tight."
+msgstr "Најгора оцена која се још исписује: comfortable, fits или tight."
+
+msgid "invalid --min-fit %(value)s"
+msgstr "неисправна вредност за --min-fit: %(value)s"
+
+msgid "Valid values: %(values)s"
+msgstr "Исправне вредности: %(values)s"
+
+msgid "invalid --prefer %(value)s"
+msgstr "неисправна вредност за --prefer: %(value)s"
+
+msgid "invalid --runs %(value)s"
+msgstr "неисправна вредност за --runs: %(value)s"
+
+msgid "invalid --sort %(value)s"
+msgstr "неисправна вредност за --sort: %(value)s"
+
+msgid "invalid --columns %(value)s"
+msgstr "неисправна вредност за --columns: %(value)s"
+
+msgid ""
+"Rank the catalog for what you want to do on this machine.\n"
+"\n"
+"Every candidate is planned, sized and estimated here, so the first run scans the machine. Speeds compare candidates at 8K tokens of context; --explain expands a row into the scores, the weights, the budget and the speed breakdown that produced it."
+msgstr ""
+"Рангира каталог према ономе што желите да радите на овој машини.\n"
+"\n"
+"Сваки кандидат се овде планира, димензионише и процењује, па прво покретање прегледа машину. Брзине упоређују кандидате при 8K токена контекста; --explain проширује ред у оцене, тежине, буџет и рашчламбу брзине из којих је настао."
+
+msgid "Exclude candidates that cannot hold at least this many tokens."
+msgstr "Искључује кандидате који не могу да држе бар оволико токена."
+
+msgid "Show at most this many rows."
+msgstr "Приказује највише оволико редова."
+
+msgid "Show every quantisation instead of the best one per model."
+msgstr "Приказује сваку квантизацију уместо најбоље по моделу."
+
+msgid "Expand every row shown into the scores, weights, budget and speed breakdown behind it. Combine with --limit 1 for one model."
+msgstr "Проширује сваки приказани ред у оцене, тежине, буџет и рашчламбу брзине иза њега. Спојите са --limit 1 за један модел."
+
+msgid "Plan without a vision projector, freeing its memory."
+msgstr "Планира без визуелног пројектора и ослобађа његову меморију."
+
+msgid "Nothing was ranked. Every candidate is listed below with the reason; widen the request or free some memory."
+msgstr "Ништа није рангирано. Сваки кандидат је испод наведен са разлогом; проширите захтев или ослободите меморију."
+
+msgid ""
+"Rank every model by how well it uses this machine, whatever it is for.\n"
+"\n"
+"No use case, no weights and no score: this is the memory question on its own. Models are sized for 32K tokens of context, and the context column is the largest each one holds in the mode shown."
+msgstr ""
+"Рангира сваки модел према томе колико добро користи ову машину, чему год служио.\n"
+"\n"
+"Нема случаја употребе, нема тежина и нема оцена: ово је питање меморије само за себе. Модели се димензионишу за 32K токена контекста, а колона контекста је највећи који сваки од њих држи у приказаном режиму."
+
+msgid "Only the configurations that use the machine well: at least half its memory held in weights, and no pool past four fifths."
+msgstr "Само конфигурације које добро користе машину: бар половина њене меморије у тежинама и ниједан пул преко четири петине."
+
+msgid "Nothing fits this machine at that threshold. Try --min-fit tight, or drop --perfect."
+msgstr "Ништа не стаје на ову машину уз тај праг. Пробајте са --min-fit tight или изоставите --perfect."
 
 msgid "Maintain the catalog: validate its files, refresh volatile fields."
 msgstr "Одржава каталог: проверава његове датотеке, освежава променљива поља."
@@ -94,38 +562,11 @@ msgstr "Задржава само овај случај употребе."
 msgid "Keep only models with this capability (repeatable)."
 msgstr "Задржава само моделе са овом могућношћу (може да се понавља)."
 
-msgid "Keep only these licence identifiers (repeatable)."
-msgstr "Задржава само ове идентификаторе лиценци (може да се понавља)."
-
 msgid "Validate only this file instead of the bundled catalog and custom overrides."
 msgstr "Проверава само ову датотеку уместо уграђеног каталога и корисничких измена."
 
-msgid "Did you mean: %(ids)s?"
-msgstr "Да ли сте мислили: %(ids)s?"
-
-msgid "Run `llamafit list` to see every model id."
-msgstr "Покрените `llamafit list` да видите све идентификаторе модела."
-
-msgid "no model named %(id)s in the catalog"
-msgstr "у каталогу нема модела под називом %(id)s"
-
-msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
-msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
-msgstr[0] "Пронађен је %(count)d проблем у каталогу; покрените `llamafit catalog validate` за детаље."
-msgstr[1] "Пронађена су %(count)d проблема у каталогу; покрените `llamafit catalog validate` за детаље."
-msgstr[2] "Пронађено је %(count)d проблема у каталогу; покрените `llamafit catalog validate` за детаље."
-
 msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
 msgstr "Ниједан модел се не поклапа. Пробајте шири --use-case, --capability, --license, --vendor или --search."
-
-msgid "invalid --use-case %(value)s"
-msgstr "неисправна вредност за --use-case: %(value)s"
-
-msgid "Valid use cases: %(values)s"
-msgstr "Исправни случајеви употребе: %(values)s"
-
-msgid "Valid capabilities: %(values)s"
-msgstr "Исправне могућности: %(values)s"
 
 msgid ""
 "List the model catalog, narrowed by any filters given.\n"
@@ -151,8 +592,20 @@ msgstr "Скраћеница за llamafit list --search ТЕКСТ."
 msgid "Text to match against id, name, vendor or family."
 msgstr "Текст који се тражи у идентификатору, називу, добављачу или породици."
 
-msgid "A catalog model id."
-msgstr "Идентификатор модела из каталога."
+msgid ""
+"Show one model: its facts, the quants it publishes, and what each would cost on this machine.\n"
+"\n"
+"The last table is sized against this machine, so the first run scans it. One line per quantisation; plan opens one of those rows into the memory budget, the context ladder and the command line."
+msgstr ""
+"Приказује један модел: његове податке, квантизације које објављује и колико би свака коштала на овој машини.\n"
+"\n"
+"Последња табела димензионисана је према овој машини, па је прво покретање прегледа. Један ред по квантизацији; plan отвара један од тих редова у буџет меморије, лествицу контекста и командну линију."
+
+msgid "Show only this quantisation, matched case-insensitively, in both tables."
+msgstr "Приказује само ову квантизацију, без обзира на велика и мала слова, у обе табеле."
+
+msgid "Size every quantisation for this many tokens instead of the usual 32,768."
+msgstr "Димензионише сваку квантизацију за оволико токена уместо уобичајених 32.768."
 
 msgid "Validate catalog YAML files against the schema, printing one line per problem."
 msgstr "Проверава YAML датотеке каталога према шеми, исписујући по један ред за сваки проблем."
@@ -202,8 +655,534 @@ msgstr "Исписује сирови унос из каталога за јед
 msgid "Print YAML instead of JSON."
 msgstr "Исписује YAML уместо JSON-а."
 
+msgid "Did you mean: %(ids)s?"
+msgstr "Да ли сте мислили: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Покрените `llamafit list` да видите све идентификаторе модела."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "у каталогу нема модела под називом %(id)s"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "Пронађен је %(count)d проблем у каталогу; покрените `llamafit catalog validate` за детаље."
+msgstr[1] "Пронађена су %(count)d проблема у каталогу; покрените `llamafit catalog validate` за детаље."
+msgstr[2] "Пронађено је %(count)d проблема у каталогу; покрените `llamafit catalog validate` за детаље."
+
+msgid "invalid --use-case %(value)s"
+msgstr "неисправна вредност за --use-case: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Исправни случајеви употребе: %(values)s"
+
+msgid "invalid %(option)s value: %(values)s"
+msgid_plural "invalid %(option)s values: %(values)s"
+msgstr[0] "неисправна вредност за %(option)s: %(values)s"
+msgstr[1] "неисправне вредности за %(option)s: %(values)s"
+msgstr[2] "неисправне вредности за %(option)s: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Исправне могућности: %(values)s"
+
+msgid "%(option)s is not a size: %(value)s"
+msgstr "%(option)s није величина: %(value)s"
+
+msgid "Sizes look like 8G, 7.5GiB or 512M; a bare number is bytes."
+msgstr "Величине изгледају као 8G, 7.5GiB или 512M; го број су бајтови."
+
 msgid "Explain what was detected, what failed, and what would unlock more."
 msgstr "Објашњава шта је откривено, шта није успело и шта би откључало више."
+
+msgid "Hardware profiles: describe a machine in a file and score models against it."
+msgstr "Хардверски профили: опишите машину у датотеци и оцените моделе према њој."
+
+msgid "Validate only this file instead of every bundled and user profile."
+msgstr "Проверава само ову датотеку уместо свих уграђених и корисничких профила."
+
+msgid "A profile name, or a path to a profile file."
+msgstr "Назив профила или путања до датотеке профила."
+
+msgid "%(count)d hardware profile problem found; run `llamafit hardware validate` for details."
+msgid_plural "%(count)d hardware profile problems found; run `llamafit hardware validate` for details."
+msgstr[0] "Пронађен је %(count)d проблем у хардверским профилима; покрените `llamafit hardware validate` за детаље."
+msgstr[1] "Пронађена су %(count)d проблема у хардверским профилима; покрените `llamafit hardware validate` за детаље."
+msgstr[2] "Пронађено је %(count)d проблема у хардверским профилима; покрените `llamafit hardware validate` за детаље."
+
+msgid "List the hardware profiles LlamaFit has: the bundled ones and your own."
+msgstr "Исписује хардверске профиле које LlamaFit има: уграђене и ваше сопствене."
+
+msgid "No hardware profiles. Run `llamafit hardware path` to see where yours would go."
+msgstr "Нема хардверских профила. Покрените `llamafit hardware path` да видите где би ваши ишли."
+
+msgid ""
+"Show one profile; with --as-host, the machine it stands in for.\n"
+"\n"
+"A host built from a profile is marked as simulated, in the table and in the JSON, so a what-if is never mistaken for a scan of this machine."
+msgstr ""
+"Приказује један профил; уз --as-host машину коју заступа.\n"
+"\n"
+"Машина изграђена из профила означена је као симулирана, и у табели и у JSON-у, па се претпоставка никада не помеша са прегледом ове машине."
+
+msgid "Show the host this profile substitutes, as `llamafit system` would."
+msgstr "Приказује машину коју овај профил замењује, онако како би то урадио `llamafit system`."
+
+msgid "Check hardware profile files against the schema, printing one line per problem."
+msgstr "Проверава датотеке хардверских профила према шеми и исписује по један ред за сваки проблем."
+
+msgid "Print the directory your own hardware profiles go in."
+msgstr "Исписује директоријум у који иду ваши хардверски профили."
+
+msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr "Још не постоји; направите га и ставите у њега датотеку %(suffix)s."
+
+msgid "Install what it takes to run a model: llama.cpp itself, and the weights."
+msgstr "Инсталира оно што треба за покретање модела: сам llama.cpp и тежине."
+
+msgid "Install this backend instead of the one chosen for your GPU: cuda, vulkan, hip, sycl, metal or cpu."
+msgstr "Инсталира овај бекенд уместо оног изабраног за вашу графичку картицу: cuda, vulkan, hip, sycl, metal или cpu."
+
+msgid "Install here instead of ~/.llamafit/llama.cpp."
+msgstr "Инсталира овде уместо у ~/.llamafit/llama.cpp."
+
+msgid "Install this release tag, for example b6100, not the latest."
+msgstr "Инсталира ову ознаку издања, на пример b6100, а не најновију."
+
+msgid "invalid --backend %(value)s"
+msgstr "неисправна вредност за --backend: %(value)s"
+
+msgid "Valid backends: %(values)s"
+msgstr "Исправни бекенди: %(values)s"
+
+msgid "release %(tag)s publishes no %(backend)s build for %(os)s %(arch)s."
+msgstr "издање %(tag)s не објављује билд %(backend)s за %(os)s %(arch)s."
+
+msgid "Leave --backend out and LlamaFit will choose a published one."
+msgstr "Изоставите --backend и LlamaFit ће изабрати неки од објављених."
+
+msgid "release %(tag)s publishes nothing for %(os)s %(arch)s."
+msgstr "издање %(tag)s не објављује ништа за %(os)s %(arch)s."
+
+msgid "Build llama.cpp from source; see the project's own instructions."
+msgstr "Изградите llama.cpp из изворног кода; видите упутства самог пројекта."
+
+msgid "Release"
+msgstr "Издање"
+
+msgid "%(tag)s (build %(build)s)"
+msgstr "%(tag)s (билд %(build)s)"
+
+msgid "Backend"
+msgstr "Бекенд"
+
+msgid "Archive"
+msgstr "Архива"
+
+msgid "Also"
+msgstr "Такође"
+
+msgid "Download"
+msgstr "Преузимање"
+
+msgid "%(size)s (%(done)s already on disk)"
+msgstr "%(size)s (%(done)s већ на диску)"
+
+msgid "Checksum"
+msgstr "Контролна сума"
+
+msgid "published, checked before anything is unpacked"
+msgstr "објављена, проверава се пре него што се било шта распакује"
+
+msgid "none published"
+msgstr "ниједна није објављена"
+
+msgid "Install into"
+msgstr "Инсталирати у"
+
+msgid "Directory"
+msgstr "Директоријум"
+
+msgid "Free space"
+msgstr "Слободан простор"
+
+msgid "Free space (cache)"
+msgstr "Слободан простор (кеш)"
+
+msgid "%(free)s on %(path)s, %(needed)s needed"
+msgstr "%(free)s на %(path)s, потребно %(needed)s"
+
+msgid "will be created"
+msgstr "биће направљен"
+
+msgid "exists and is empty"
+msgstr "постоји и празан је"
+
+msgid "holds %(tag)s, installed by LlamaFit; it will be replaced"
+msgstr "садржи %(tag)s који је инсталирао LlamaFit; биће замењен"
+
+msgid "installed by LlamaFit; it will be replaced"
+msgstr "инсталирао LlamaFit; биће замењено"
+
+msgid "was not installed by LlamaFit"
+msgstr "није га инсталирао LlamaFit"
+
+msgid "Downloading"
+msgstr "Преузимање"
+
+msgid "Installed llama.cpp %(tag)s into %(path)s."
+msgstr "llama.cpp %(tag)s инсталиран је у %(path)s."
+
+msgid "Replaced %(tag)s."
+msgstr "Замењен је %(tag)s."
+
+msgid "Backends found in it: %(backends)s"
+msgstr "Пронађени бекенди: %(backends)s"
+
+msgid "none"
+msgstr "ниједан"
+
+msgid "Check it with `llamafit doctor`."
+msgstr "Проверите то помоћу `llamafit doctor`."
+
+msgid "Change your PATH?"
+msgstr "Променити PATH?"
+
+msgid "PATH left alone."
+msgstr "PATH је остављен на миру."
+
+msgid "PATH changed. Open a new terminal for it to take effect."
+msgstr "PATH је промењен. Отворите нови терминал да би то ступило на снагу."
+
+msgid ""
+"Download a published llama.cpp build and install it into ~/.llamafit/llama.cpp.\n"
+"\n"
+"The plan is printed before anything is written. The archive's checksum is verified before it is unpacked, an interrupted download continues where it stopped, and a directory LlamaFit did not create is never overwritten."
+msgstr ""
+"Преузима објављени билд llama.cpp-а и инсталира га у ~/.llamafit/llama.cpp.\n"
+"\n"
+"План се исписује пре него што се било шта упише. Контролна сума архиве проверава се пре распакивања, прекинуто преузимање наставља се тамо где је стало, а директоријум који LlamaFit није направио никада се не преписује."
+
+msgid "Offer to add the bin directory to your PATH, showing the undo first."
+msgstr "Нуди додавање bin директоријума у ваш PATH, уз претходни приказ како то поништити."
+
+msgid "Install over a directory LlamaFit did not create. Ask yourself twice."
+msgstr "Инсталира преко директоријума који LlamaFit није направио. Промислите двапут."
+
+msgid "Install an archive that publishes no checksum. Nothing can be checked."
+msgstr "Инсталира архиву која не објављује контролну суму. Ништа не може да се провери."
+
+msgid "Print the plan and write nothing."
+msgstr "Исписује план и ништа не уписује."
+
+msgid "Do not ask; assume yes."
+msgstr "Не пита; претпоставља да."
+
+msgid "Install this?"
+msgstr "Инсталирати ово?"
+
+msgid "Nothing was written."
+msgstr "Ништа није уписано."
+
+msgid "Fetch this quantisation instead of the first the catalog publishes."
+msgstr "Преузима ову квантизацију уместо прве коју каталог објављује."
+
+msgid "Put the files here instead of under the configured downloads directory."
+msgstr "Ставља датотеке овде уместо у подешени директоријум за преузимања."
+
+msgid "Use at most this much bandwidth, for example 5M. Shared across every worker, so the figure is the figure whatever --workers says."
+msgstr "Користи највише оволико пропусног опсега, на пример 5M. Дели се на све раднике, па вредност важи шта год --workers каже."
+
+msgid "How many requests to keep in flight. More is not always faster, and a home connection is shared with whoever else is using it."
+msgstr "Колико захтева држати у лету. Више није увек брже, а кућну везу делите са свима који је користе."
+
+msgid "Do not ask before starting."
+msgstr "Не пита пре почетка."
+
+msgid "Show what would be fetched and stop before fetching it."
+msgstr "Приказује шта би се преузело и стаје пре преузимања."
+
+msgid "Fetch only the weights, not the vision projector or the draft model."
+msgstr "Преузима само тежине, не и визуелни пројектор ни нацртни модел."
+
+msgid "Re-read files that are already here and check them against the catalog."
+msgstr "Поново чита датотеке које су већ овде и проверава их према каталогу."
+
+msgid "Fetch files the catalog holds no checksum for. Nothing will be able to tell you whether they arrived intact."
+msgstr "Преузима датотеке за које каталог нема контролну суму. Ништа неће моћи да вам каже да ли су стигле неоштећене."
+
+msgid "Show at most this many entries."
+msgstr "Приказује највише оволико ставки."
+
+msgid "already here"
+msgstr "већ овде"
+
+msgid "to fetch"
+msgstr "за преузимање"
+
+msgid "About to download"
+msgstr "Спрема се преузимање"
+
+msgid "File"
+msgstr "Датотека"
+
+msgid "Role"
+msgstr "Улога"
+
+msgid "Size"
+msgstr "Величина"
+
+msgid "Status"
+msgstr "Стање"
+
+msgid "%(name)s %(quant)s from %(repo)s"
+msgstr "%(name)s %(quant)s из %(repo)s"
+
+msgid "%(count)d file, %(total)s in all, %(needed)s still to fetch."
+msgid_plural "%(count)d files, %(total)s in all, %(needed)s still to fetch."
+msgstr[0] "%(count)d датотека, укупно %(total)s, још %(needed)s за преузимање."
+msgstr[1] "%(count)d датотеке, укупно %(total)s, још %(needed)s за преузимање."
+msgstr[2] "%(count)d датотека, укупно %(total)s, још %(needed)s за преузимање."
+
+msgid "Into %(path)s, which has %(free)s free; %(after)s would be left."
+msgstr "У %(path)s, где је слободно %(free)s; остало би %(after)s."
+
+msgid "The catalog holds no checksum for %(files)s."
+msgid_plural "The catalog holds no checksums for %(files)s."
+msgstr[0] "Каталог нема контролну суму за %(files)s."
+msgstr[1] "Каталог нема контролне суме за %(files)s."
+msgstr[2] "Каталог нема контролне суме за %(files)s."
+
+msgid "Download a model's weights, resuming anything an earlier run left and checking every file against the catalog's checksum."
+msgstr "Преузима тежине модела, наставља оно што је раније покретање оставило и проверава сваку датотеку према контролној суми из каталога."
+
+msgid "%(model)s %(quant)s is already here; nothing to do."
+msgstr "%(model)s %(quant)s је већ овде; нема шта да се ради."
+
+msgid "Start the download?"
+msgstr "Започети преузимање?"
+
+msgid "Stopped. What arrived is kept; run `llamafit install model %(model)s` again to carry on from there."
+msgstr "Заустављено. Оно што је стигло се чува; покрените `llamafit install model %(model)s` поново да се настави одатле."
+
+msgid "%(count)d file, %(size)s, checked against the catalog."
+msgid_plural "%(count)d files, %(size)s, checked against the catalog."
+msgstr[0] "%(count)d датотека, %(size)s, проверено према каталогу."
+msgstr[1] "%(count)d датотеке, %(size)s, проверено према каталогу."
+msgstr[2] "%(count)d датотека, %(size)s, проверено према каталогу."
+
+msgid "In %(path)s. Run `llamafit plan %(model)s` for the command line that runs it."
+msgstr "У %(path)s. Покрените `llamafit plan %(model)s` за командну линију која га покреће."
+
+msgid "Show what has been downloaded, newest first."
+msgstr "Приказује шта је преузето, најновије прво."
+
+msgid "Nothing has been downloaded yet."
+msgstr "Још ништа није преузето."
+
+msgid "Downloads"
+msgstr "Преузимања"
+
+msgid "When"
+msgstr "Када"
+
+msgid "Model"
+msgstr "Модел"
+
+msgid "Quant"
+msgstr "Квант."
+
+msgid "Outcome"
+msgstr "Исход"
+
+msgid "finished"
+msgstr "завршено"
+
+msgid "stopped"
+msgstr "заустављено"
+
+msgid "Plan this quantisation instead of the one that scores best on this machine."
+msgstr "Планира ову квантизацију уместо оне која на овој машини најбоље пролази."
+
+msgid "Size for this many tokens. When it does not fit, the plan sizes down and shows what the context you asked for would have cost."
+msgstr "Димензионише за оволико токена. Када не стане, план смањује димензију и показује колико би коштао контекст који сте тражили."
+
+msgid "Set the micro-batch by hand. The whole budget is rebuilt around it, since it moves the compute buffer and with it the verdict."
+msgstr "Поставља микросерију ручно. Цео буџет се обнавља око ње јер помера рачунски бафер, а с њим и оцену."
+
+msgid "A generation speed to answer against: whether this reaches it, and what context would."
+msgstr "Брзина генерисања према којој се одговара: да ли ово до ње стиже и који би контекст стигао."
+
+msgid "%(model)s publishes no quantisations"
+msgstr "%(model)s не објављује ниједну квантизацију"
+
+msgid "Run `llamafit catalog refresh --model %(model)s`."
+msgstr "Покрените `llamafit catalog refresh --model %(model)s`."
+
+msgid "%(model)s has no %(quant)s quantisation"
+msgstr "%(model)s нема квантизацију %(quant)s"
+
+msgid "It publishes: %(names)s"
+msgstr "Објављује: %(names)s"
+
+msgid ""
+"Place one model on this machine and print the command line that runs it.\n"
+"\n"
+"Shows the memory budget component by component, the context ladder a launch script chooses from, where a token's time goes, and any run the catalog records for comparison."
+msgstr ""
+"Смешта један модел на ову машину и исписује командну линију која га покреће.\n"
+"\n"
+"Приказује буџет меморије део по део, лествицу контекста из које покретачка скрипта бира, где одлази време токена и свако покретање које каталог бележи ради поређења."
+
+msgid "Leave the vision projector out, freeing its memory for context."
+msgstr "Изоставља визуелни пројектор и ослобађа његову меморију за контекст."
+
+msgid "Write the files here instead of in LlamaFit's own presets directory."
+msgstr "Уписује датотеке овде уместо у LlamaFit-ов директоријум са предлошцима."
+
+msgid "Bind this port instead of llama.cpp's default 8080."
+msgstr "Везује се на овај порт уместо на подразумевани 8080 од llama.cpp."
+
+msgid "Size for this many tokens. It becomes the top of the ladder the script chooses from; the script never goes above it."
+msgstr "Димензионише за оволико токена. То постаје врх лествице из које скрипта бира; скрипта никада не иде изнад тога."
+
+msgid "%(model)s does not fit this machine in any configuration"
+msgstr "%(model)s не стаје на ову машину ни у једној конфигурацији"
+
+msgid "Run `llamafit plan %(model)s` to see what it would need."
+msgstr "Покрените `llamafit plan %(model)s` да видите шта би му требало."
+
+msgid ""
+"Write launch scripts for one model: a script that picks its context from free card memory at start time, a router section, and a README.\n"
+"\n"
+"A file you have edited is never overwritten without --force."
+msgstr ""
+"Уписује покретачке скрипте за један модел: скрипту која при покретању бира контекст према слободној меморији картице, одељак за рутер и README.\n"
+"\n"
+"Датотека коју сте уредили никада се не преписује без --force."
+
+msgid "Overwrite files you have edited. It says which ones it discarded."
+msgstr "Преписује датотеке које сте уредили. Каже које је одбацио."
+
+msgid "Run a model's preset, wait for the server to answer, and print its endpoints. --stop stops the server LlamaFit started."
+msgstr "Покреће предложак модела, чека да сервер одговори и исписује његове крајње тачке. --stop зауставља сервер који је LlamaFit покренуо."
+
+msgid "Stop the server LlamaFit started for this model."
+msgstr "Зауставља сервер који је LlamaFit покренуо за овај модел."
+
+msgid "Seconds to wait for /health before reporting that it has not answered."
+msgstr "Колико секунди чекати /health пре него што се јави да није одговорио."
+
+msgid "the preset could not be written"
+msgstr "предложак није могао да се упише"
+
+msgid "Wrote a preset first: %(path)s"
+msgstr "Прво је уписан предложак: %(path)s"
+
+msgid "Nothing to stop: LlamaFit has no record of starting %(model)s."
+msgstr "Нема шта да се заустави: LlamaFit нема запис о томе да је покренуо %(model)s."
+
+msgid "Stopped %(model)s, which was serving on %(url)s."
+msgstr "%(model)s је заустављен; служио је на %(url)s."
+
+msgid "Preset for %(name)s (%(quant)s) in %(dir)s"
+msgstr "Предложак за %(name)s (%(quant)s) у %(dir)s"
+
+msgid "The server will answer on %(url)s."
+msgstr "Сервер ће одговарати на %(url)s."
+
+msgid "Your edits were kept. Nothing above was written to those files; run the command again with --force to replace them."
+msgstr "Ваше измене су сачуване. Ништа од горенаведеног није уписано у те датотеке; покрените команду поново са --force да их замените."
+
+msgid "At start time the script reads how much card memory is free, keeps %(reserve)s MiB back, and takes the largest context that still fits."
+msgstr "При покретању скрипта чита колико је меморије картице слободно, задржава %(reserve)s MiB и узима највећи контекст који још стаје."
+
+msgid "This machine has nothing the script can ask for free card memory, so it will start at %(context)s tokens; the script's header says why."
+msgstr "Ова машина нема ништа што би скрипта могла да пита за слободну меморију картице, па ће кренути на %(context)s токена; заглавље скрипте каже зашто."
+
+msgid "Files"
+msgstr "Датотеке"
+
+msgctxt "column heading"
+msgid "File"
+msgstr "Датотека"
+
+msgctxt "column heading"
+msgid "What happened"
+msgstr "Шта се десило"
+
+msgid "Context tiers the script may choose"
+msgstr "Нивои контекста које скрипта сме да бира"
+
+msgctxt "column heading"
+msgid "Context"
+msgstr "Контекст"
+
+msgctxt "column heading"
+msgid "Card needs"
+msgstr "На картици"
+
+msgctxt "column heading"
+msgid "Free card memory to reach it"
+msgstr "Слободна меморија картице"
+
+msgid "%(value)s MiB"
+msgstr "%(value)s MiB"
+
+msgid "written"
+msgstr "уписано"
+
+msgid "brought up to date"
+msgstr "ажурирано"
+
+msgid "already up to date"
+msgstr "већ ажурно"
+
+msgid "kept: you edited it"
+msgstr "сачувано: уредили сте је"
+
+msgid "overwritten: your edits are gone"
+msgstr "преписано: ваших измена више нема"
+
+msgid "The preset could not be started: %(error)s"
+msgstr "Предложак није могао да се покрене: %(error)s"
+
+msgid "Started, but %(url)s has not answered yet. A large model can spend minutes reading its weights; try the health endpoint again in a moment, or run `llamafit launch %(model)s --stop`."
+msgstr "Покренуто, али %(url)s још није одговорио. Велик модел може минутима да чита своје тежине; пробајте за тренутак поново крајњу тачку health или покрените `llamafit launch %(model)s --stop`."
+
+msgid "%(model)s was already serving on %(url)s."
+msgstr "%(model)s је већ служио на %(url)s."
+
+msgid "%(model)s is serving on %(url)s."
+msgstr "%(model)s служи на %(url)s."
+
+msgid "Stop it with `llamafit launch %(model)s --stop`."
+msgstr "Зауставите га помоћу `llamafit launch %(model)s --stop`."
+
+msgid "Endpoints"
+msgstr "Крајње тачке"
+
+msgctxt "column heading"
+msgid "What"
+msgstr "Шта"
+
+msgctxt "column heading"
+msgid "Where"
+msgstr "Где"
+
+msgid "Web interface"
+msgstr "Веб интерфејс"
+
+msgid "Chat completions"
+msgstr "Chat completions"
+
+msgid "Models"
+msgstr "Модели"
+
+msgid "Health"
+msgstr "Health"
+
+msgid "Ask for the model by the alias %(alias)s."
+msgstr "Модел тражите под алијасом %(alias)s."
 
 msgctxt "finding level"
 msgid "OK"
@@ -234,6 +1213,36 @@ msgstr "претпостављен"
 msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "непознат"
+
+msgctxt "simulation override"
+msgid "VRAM"
+msgstr "VRAM"
+
+msgctxt "simulation override"
+msgid "system memory"
+msgstr "системска меморија"
+
+msgctxt "simulation override"
+msgid "CPU cores"
+msgstr "језгра CPU-а"
+
+msgid "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgid_plural "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgstr[0] "ове бројке долазе из хардверског профила %(profile)s уз замењено поље %(fields)s; нису са ове машине"
+msgstr[1] "ове бројке долазе из хардверског профила %(profile)s уз замењена поља %(fields)s; нису са ове машине"
+msgstr[2] "ове бројке долазе из хардверског профила %(profile)s уз замењена поља %(fields)s; нису са ове машине"
+
+msgid "these figures come from the hardware profile %(profile)s; they are not this machine"
+msgstr "ове бројке долазе из хардверског профила %(profile)s; нису са ове машине"
+
+msgid "%(fields)s was overridden for a what-if; these figures are not what was scanned"
+msgid_plural "%(fields)s were overridden for a what-if; these figures are not what was scanned"
+msgstr[0] "%(fields)s је замењено ради претпоставке; ове бројке нису оно што је прегледано"
+msgstr[1] "%(fields)s су замењена ради претпоставке; ове бројке нису оно што је прегледано"
+msgstr[2] "%(fields)s је замењено ради претпоставке; ове бројке нису оно што је прегледано"
+
+msgid "these figures are not this machine"
+msgstr "ове бројке нису са ове машине"
 
 msgctxt "model capability"
 msgid "coding"
@@ -278,18 +1287,18 @@ msgstr "%(compute)s TFLOPS fp16"
 
 msgid "%(count)d core"
 msgid_plural "%(count)d cores"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%(count)d језгро"
+msgstr[1] "%(count)d језгра"
+msgstr[2] "%(count)d језгара"
 
 msgid "%(count)d thread"
 msgid_plural "%(count)d threads"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%(count)d нит"
+msgstr[1] "%(count)d нити"
+msgstr[2] "%(count)d нити"
 
 msgid "%(cores)s / %(threads)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s"
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -298,10 +1307,10 @@ msgstr[1] "%(count)d језгра високих перформанси"
 msgstr[2] "%(count)d језгара високих перформанси"
 
 msgid "%(cores)s / %(threads)s, %(performance)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s, %(performance)s"
 
 msgid "%(type)s at %(speed)d MT/s"
-msgstr ""
+msgstr "%(type)s на %(speed)d MT/s"
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -319,23 +1328,23 @@ msgstr[1] "%(count)d канала"
 msgstr[2] "%(count)d канала"
 
 msgid "%(kind)s, %(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s кроз %(channels)s"
 
 msgid "%(kind)s, %(modules)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s"
 
 msgid "%(kind)s, %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(channels)s"
 
 msgid "%(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(modules)s кроз %(channels)s"
 
 msgctxt "memory type"
 msgid "type unknown"
 msgstr "тип непознат"
 
 msgid "%(specs)s (spec), driver %(driver)s"
-msgstr ""
+msgstr "%(specs)s (по спецификацији), драјвер %(driver)s"
 
 msgid "%(specs)s (spec)"
 msgstr "%(specs)s (по спецификацији)"
@@ -347,8 +1356,14 @@ msgctxt "GPU specifications"
 msgid "no specs"
 msgstr "нема података из спецификације"
 
+msgid "%(total)s VRAM, %(free)s free (Vulkan driver)"
+msgstr "%(total)s VRAM, слободно %(free)s (Vulkan драјвер)"
+
 msgid "Host"
 msgstr "Машина"
+
+msgid "SIMULATED"
+msgstr "СИМУЛИРАНО"
 
 msgid "OS"
 msgstr "ОС"
@@ -359,13 +1374,6 @@ msgstr "%(os)s %(version)s (%(arch)s)"
 msgid "CPU"
 msgstr "CPU"
 
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgctxt "CPU instruction sets"
-msgid "isa unknown"
-msgstr "isa непознат"
-
 msgid "%(gbps)s GB/s (%(source)s)"
 msgstr "%(gbps)s GB/s (%(source)s)"
 
@@ -375,6 +1383,9 @@ msgstr "%(gbps)s GB/s (%(source)s)"
 msgctxt "memory bandwidth"
 msgid "unknown"
 msgstr "непознат"
+
+msgid "%(gbps)s GB/s (%(source)s, cached)"
+msgstr "%(gbps)s GB/s (%(source)s, из кеша)"
 
 msgid "Memory"
 msgstr "Меморија"
@@ -389,9 +1400,6 @@ msgctxt "GPU"
 msgid "none detected"
 msgstr "није откривен"
 
-msgid "%(total)s VRAM, %(free)s free"
-msgstr "%(total)s VRAM, слободно %(free)s"
-
 msgctxt "GPU VRAM"
 msgid "VRAM unknown"
 msgstr "VRAM непознат"
@@ -399,8 +1407,11 @@ msgstr "VRAM непознат"
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
-msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgid "Card memory"
+msgstr "Меморија картице"
+
+msgid "%(gpus)s: nothing here could read how much of the card is free, so every budget on this machine was computed as if there were no card at all. Install the Vulkan tools, or write the size into a hardware profile."
+msgstr "%(gpus)s: ништа овде није могло да прочита колико је картице слободно, па је сваки буџет на овој машини израчунат као да картице уопште нема. Инсталирајте Vulkan алате или упишите величину у хардверски профил."
 
 msgid "Memory pool"
 msgstr "Меморијски пул"
@@ -507,21 +1518,14 @@ msgid "Params"
 msgstr "Парам."
 
 msgctxt "column heading"
-msgid "Context"
-msgstr "Контекст"
-
-msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Могућности"
 
 msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr ""
+msgstr "%(heading)s је уредничка полазна вредност, пре било какве казне за квантизацију; покрените `llamafit info <model>` за бенчмаркове са изворима иза ње."
 
 msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr ""
-
-msgid "Models"
-msgstr "Модели"
+msgstr "%(heading)s је укупан/активан број милијарди за модел са мешавином експерата, или један број када су једнаки."
 
 msgid "Vendor"
 msgstr "Добављач"
@@ -542,10 +1546,10 @@ msgid "Parameters"
 msgstr "Параметри"
 
 msgid "%(total)s total, %(active)s active"
-msgstr ""
+msgstr "укупно %(total)s, активно %(active)s"
 
 msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
-msgstr ""
+msgstr "изворно %(tokens)s токена, проширено на %(extended)s методом %(method)s"
 
 msgctxt "context extension method"
 msgid "unspecified method"
@@ -591,13 +1595,13 @@ msgstr[1] "%(count)d слоја"
 msgstr[2] "%(count)d слојева"
 
 msgid "%(arch)s, %(layers)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s, %(experts)s"
 
 msgid "%(arch)s, %(layers)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s"
 
 msgid "%(arch)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(experts)s"
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
@@ -619,9 +1623,6 @@ msgstr "Квантизације"
 msgid "Name"
 msgstr "Назив"
 
-msgid "Size"
-msgstr "Величина"
-
 msgid "BPW"
 msgstr "BPW"
 
@@ -632,20 +1633,821 @@ msgctxt "bits per weight"
 msgid "unknown"
 msgstr "непознато"
 
+msgid "On this machine"
+msgstr "На овој машини"
+
+msgctxt "profile origin"
+msgid "bundled"
+msgstr "уграђен"
+
+msgctxt "profile origin"
+msgid "yours"
+msgstr "ваш"
+
+msgid "%(ram)s RAM, no graphics card"
+msgstr "%(ram)s RAM-а, нема графичке картице"
+
+msgid "%(ram)s RAM shared with %(gpu)s"
+msgstr "%(ram)s RAM-а дели се са %(gpu)s"
+
+msgid "%(ram)s RAM, %(gpu)s with %(vram)s"
+msgstr "%(ram)s RAM-а, %(gpu)s са %(vram)s"
+
+msgid "%(cores)d core / %(threads)d thread"
+msgid_plural "%(cores)d cores / %(threads)d threads"
+msgstr[0] "%(cores)d језгро / %(threads)d нит"
+msgstr[1] "%(cores)d језгра / %(threads)d нити"
+msgstr[2] "%(cores)d језгара / %(threads)d нити"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa непознат"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "%(total)s total, %(available)s available; bandwidth %(bandwidth)s"
+msgstr "укупно %(total)s, доступно %(available)s; пропусни опсег %(bandwidth)s"
+
+msgctxt "GPU specifications"
+msgid "no bandwidth or compute figure"
+msgstr "без податка о пропусном опсегу или рачунској снази"
+
+msgid "%(specs)s (from the profile)"
+msgstr "%(specs)s (из профила)"
+
+msgid "%(specs)s (from the specification table)"
+msgstr "%(specs)s (из табеле спецификација)"
+
+msgctxt "GPU VRAM"
+msgid "VRAM from the shared pool"
+msgstr "VRAM из дељеног пула"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, слободно %(free)s"
+
+msgid "%(total)s VRAM, free unknown"
+msgstr "%(total)s VRAM, слободно непознато"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "Hardware profiles"
+msgstr "Хардверски профили"
+
+msgid "Machine"
+msgstr "Машина"
+
+msgid "a graphics card whose name contains %(text)s"
+msgstr "графичка картица чији назив садржи %(text)s"
+
+msgid "a processor whose model contains %(text)s"
+msgstr "процесор чији модел садржи %(text)s"
+
+msgid "at least %(ram)s of memory"
+msgstr "бар %(ram)s меморије"
+
+msgctxt "profile match rules"
+msgid "none, so this profile is never chosen for you"
+msgstr "никаква, па се овај профил никада не бира уместо вас"
+
+msgid "Description"
+msgstr "Опис"
+
+msgid "From"
+msgstr "Одакле"
+
+msgid "Matches"
+msgstr "Одговара"
+
+msgid "Recorded"
+msgstr "Забележено"
+
+msgid "Provenance"
+msgstr "Порекло"
+
+msgid "recorded from %(source)s; this build stores it but does not apply it yet"
+msgstr "забележено из %(source)s; овај билд то чува, али још не примењује"
+
+msgctxt "utilisation"
+msgid "n/a"
+msgstr "нема"
+
+msgctxt "run mode"
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "run mode"
+msgid "experts in RAM"
+msgstr "експерти у RAM-у"
+
+msgctxt "run mode"
+msgid "split"
+msgstr "подељено"
+
+msgctxt "run mode"
+msgid "CPU"
+msgstr "CPU"
+
+msgctxt "run mode"
+msgid "nowhere"
+msgstr "нигде"
+
+msgctxt "fit verdict"
+msgid "roomy"
+msgstr "пространо"
+
+msgctxt "fit verdict"
+msgid "fits"
+msgstr "стаје"
+
+msgctxt "fit verdict"
+msgid "tight"
+msgstr "тесно"
+
+msgctxt "fit verdict"
+msgid "pages"
+msgstr "страничи"
+
+msgctxt "fit verdict"
+msgid "no room"
+msgstr "нема места"
+
+msgid "Fits: the intended configuration runs as planned."
+msgstr "Стаје: замишљена конфигурација ради како је планирано."
+
+msgid "Tight: it runs, but a browser or a second process can push it over."
+msgstr "Тесно: ради, али прегледач или други процес могу да је претегну."
+
+msgid "Pages: this needs more of the graphics card than is free. The driver will not refuse it — it moves the overflow to system memory, the server starts, the log looks healthy, and generation runs at a fraction of its speed with nothing saying why."
+msgstr "Страничи: овоме треба више графичке картице него што је слободно. Драјвер то неће одбити — премешта вишак у системску меморију, сервер се покреће, дневник изгледа здраво, а генерисање ради делићем своје брзине, а да ништа не каже зашто."
+
+msgid "No room: more memory than this machine has, with nothing to page to."
+msgstr "Нема места: више меморије него што ова машина има, и нема где да се страничи."
+
+msgctxt "confidence"
+msgid "measured"
+msgstr "измерено"
+
+msgctxt "confidence"
+msgid "calibrated"
+msgstr "калибрисано"
+
+msgctxt "confidence"
+msgid "estimated"
+msgstr "процењено"
+
+msgctxt "confidence"
+msgid "no estimate"
+msgstr "без процене"
+
+msgid "Speeds are benchmarks taken on this machine, not predictions."
+msgstr "Брзине су бенчмаркови снимљени на овој машини, а не предвиђања."
+
+msgid "Speeds are section 10's formula corrected by benchmarks taken on this machine."
+msgstr "Брзине су формула из одељка 10 исправљена бенчмарковима снимљеним на овој машини."
+
+msgid "Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement."
+msgstr "Брзине су формула из одељка 10 на својим подразумеваним константама. На овој машини још ништа није измерено, па ниједна бројка овде није мерење."
+
+msgid "No speed could be estimated."
+msgstr "Брзина није могла да се процени."
+
+msgctxt "memory pool"
+msgid "card"
+msgstr "картица"
+
+msgctxt "memory pool"
+msgid "system"
+msgstr "систем"
+
+msgctxt "memory pool"
+msgid "disk"
+msgstr "диск"
+
+msgctxt "budget component"
+msgid "dense weights"
+msgstr "густе тежине"
+
+msgctxt "budget component"
+msgid "shared experts"
+msgstr "дељени експерти"
+
+msgctxt "budget component"
+msgid "routed experts"
+msgstr "усмерени експерти"
+
+msgctxt "budget component"
+msgid "token embedding"
+msgstr "ембединг токена"
+
+msgctxt "budget component"
+msgid "output head"
+msgstr "излазна глава"
+
+msgctxt "budget component"
+msgid "other weights"
+msgstr "остале тежине"
+
+msgctxt "budget component"
+msgid "streamed tables"
+msgstr "стримоване табеле"
+
+msgctxt "budget component"
+msgid "KV cache"
+msgstr "KV кеш"
+
+msgctxt "budget component"
+msgid "KV cache, undeclared"
+msgstr "KV кеш, непријављен"
+
+msgctxt "budget component"
+msgid "recurrent state"
+msgstr "рекурентно стање"
+
+msgctxt "budget component"
+msgid "compute buffer"
+msgstr "рачунски бафер"
+
+msgctxt "budget component"
+msgid "output buffer"
+msgstr "излазни бафер"
+
+msgctxt "budget component"
+msgid "vision projector"
+msgstr "визуелни пројектор"
+
+msgctxt "budget component"
+msgid "vision compute"
+msgstr "визуелни прорачун"
+
+msgctxt "budget component"
+msgid "backend overhead"
+msgstr "режија бекенда"
+
+msgctxt "budget component"
+msgid "process overhead"
+msgstr "режија процеса"
+
+msgctxt "budget line source"
+msgid "file"
+msgstr "датотека"
+
+msgctxt "budget line source"
+msgid "formula"
+msgstr "формула"
+
+msgctxt "column heading"
+msgid "Component"
+msgstr "Део"
+
+msgctxt "column heading"
+msgid "From"
+msgstr "Одакле"
+
+msgid "Card: %(required)s of %(available)s free, %(share)s used."
+msgstr "Картица: %(required)s од %(available)s слободно, искоришћено %(share)s."
+
+msgid "System memory: %(required)s of %(available)s free, %(share)s used."
+msgstr "Системска меморија: %(required)s од %(available)s слободно, искоришћено %(share)s."
+
+msgid "%(component)s: %(note)s"
+msgstr "%(component)s: %(note)s"
+
+msgid "Context tiers"
+msgstr "Нивои контекста"
+
+msgctxt "column heading"
+msgid "On this machine"
+msgstr "На овој машини"
+
+msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
+msgstr "Покретачка скрипта упоређује слободну меморију коју види са колоном картице и узима највишу пречку која стаје (види docs/cli.md)."
+
+msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
+msgstr "%(gen)s генерисаних токена у секунди и %(prompt)s прочитаних, при %(context)s токена контекста (%(confidence)s)."
+
+msgctxt "column heading"
+msgid "A token's time"
+msgstr "Време токена"
+
+msgctxt "token time"
+msgid "reading the card"
+msgstr "читање са картице"
+
+msgctxt "token time"
+msgid "reading system memory"
+msgstr "читање из системске меморије"
+
+msgctxt "token time"
+msgid "everything else"
+msgstr "све остало"
+
+msgctxt "column heading"
+msgid "A prompt token's time"
+msgstr "Време токена промпта"
+
+msgctxt "prompt token time"
+msgid "doing the arithmetic"
+msgstr "само рачунање"
+
+msgctxt "prompt token time"
+msgid "streaming the experts across the link"
+msgstr "стримовање експерата преко везе"
+
+msgctxt "prompt token time"
+msgid "reading the experts from system memory"
+msgstr "читање експерата из системске меморије"
+
+msgctxt "column heading"
+msgid "Seconds"
+msgstr "Секунде"
+
+msgctxt "column heading"
+msgid "Share"
+msgstr "Удео"
+
+msgid "Measured on %(date)s."
+msgstr "Измерено %(date)s."
+
+msgid "Recorded elsewhere"
+msgstr "Забележено другде"
+
+msgctxt "column heading"
+msgid "Run"
+msgstr "Мерење"
+
+msgctxt "column heading"
+msgid "Date"
+msgstr "Датум"
+
+msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
+msgstr "Ово су кураторова сопствена покретања на његовој машини, а не бенчмаркови ове, па ништа горе није означено као измерено. Упоредите их са проценом; `llamafit bench` измериће ову машину у фази 3."
+
+msgid "%(profile)s: %(flags)s"
+msgstr "%(profile)s: %(flags)s"
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
+msgstr "%(baseline)s од куратора, мање %(penalty)s за ову квантизацију, плус %(bonus)s јер је %(use_case)s посао за који је и грађен."
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
+msgstr "%(baseline)s од куратора, мање %(penalty)s за ову квантизацију; наводи %(use_case)s, али није грађен за то."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
+msgstr "%(gen)s токена у секунди наспрам %(target)s колико овај случај употребе тражи, мање %(penalty)s јер промпт чита при %(prompt)s."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
+msgstr "%(gen)s токена у секунди наспрам %(target)s колико овај случај употребе тражи."
+
+msgid "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool is %(share)s full. The score wants at least %(low)s of the memory taken and no more than %(high)s of any one pool."
+msgstr "Његове тежине држе %(weights)s од %(memory)s ове машине, а најтешњи пул пун је %(share)s. Оцењивање тражи бар %(low)s заузете меморије и највише %(high)s било ког појединачног пула."
+
+msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
+msgstr "Држи %(fit)s токена од %(requested)s према којима се овај захтев оцењује."
+
+msgid "Score %(total)s"
+msgstr "Оцена %(total)s"
+
+msgctxt "column heading"
+msgid "Part"
+msgstr "Део"
+
+msgctxt "column heading"
+msgid "Weight"
+msgstr "Тежина"
+
+msgctxt "column heading"
+msgid "Adds"
+msgstr "Додаје"
+
+msgctxt "score part"
+msgid "quality"
+msgstr "квалитет"
+
+msgctxt "score part"
+msgid "speed"
+msgstr "брзина"
+
+msgctxt "score part"
+msgid "fit"
+msgstr "место"
+
+msgctxt "score part"
+msgid "context"
+msgstr "контекст"
+
+msgid "Recommended"
+msgstr "Препоручено"
+
+msgctxt "column heading"
+msgid "#"
+msgstr "#"
+
+msgctxt "column heading"
+msgid "Model"
+msgstr "Модел"
+
+msgctxt "column heading"
+msgid "Quant"
+msgstr "Квант."
+
+msgctxt "column heading"
+msgid "Score"
+msgstr "Оцена"
+
+msgctxt "column heading"
+msgid "Tok/s"
+msgstr "Tok/s"
+
+msgctxt "column heading"
+msgid "How"
+msgstr "Како"
+
+msgctxt "column heading"
+msgid "Fit"
+msgstr "Место"
+
+msgid "%(quant)s: %(reason)s"
+msgstr "%(quant)s: %(reason)s"
+
+msgctxt "tokens per second"
+msgid "unknown"
+msgstr "непозната"
+
+msgctxt "context length"
+msgid "none"
+msgstr "нема"
+
+msgid "Sized for %(context)s tokens, with every figure from a placement computed for this machine. `llamafit plan MODEL --quant NAME` opens one of these rows into the budget line by line, the context ladder and the command line that runs it."
+msgstr "Димензионисано за %(context)s токена, са сваком бројком из смештаја израчунатог за ову машину. `llamafit plan MODEL --quant NAME` отвара један од ових редова у буџет ред по ред, лествицу контекста и командну линију која га покреће."
+
+msgid "To reach %(context)s tokens, free %(free)s more on the graphics card: that rung needs %(needed)s, which is %(share)s of what is free and over the line where the driver starts paging."
+msgstr "Да бисте стигли до %(context)s токена, ослободите још %(free)s на графичкој картици: тој пречки треба %(needed)s, што је %(share)s слободног и изнад границе на којој драјвер почиње да страничи."
+
+msgid "%(context)s tokens is past what this machine holds: that rung needs %(needed)s on the graphics card and there is nothing left to absorb what would not fit, so freeing the card is not the change that reaches it."
+msgstr "%(context)s токена је изнад онога што ова машина држи: тој пречки треба %(needed)s на графичкој картици, а није остало ништа што би упило оно што не стаје, па ослобађање картице није промена која до ње доводи."
+
+msgid "%(quant)s, the next quantisation down, could not be sized: %(reason)s"
+msgstr "%(quant)s, квантизација испод, није могла да се димензионише: %(reason)s"
+
+msgid "%(quant)s, the next quantisation down, does not fit this machine either."
+msgstr "%(quant)s, квантизација испод, такође не стаје на ову машину."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens."
+msgstr "%(quant)s, квантизација испод, планирана је и овде: %(mode)s, %(verdict)s, до %(context)s токена."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens at %(tps)s tokens per second."
+msgstr "%(quant)s, квантизација испод, планирана је и овде: %(mode)s, %(verdict)s, до %(context)s токена при %(tps)s токена у секунди."
+
+msgid "It fits entirely on the graphics card, which this one does not."
+msgstr "Она стаје у целости на графичку картицу, што ова не."
+
+msgid "It fits better: %(theirs)s rather than %(mine)s."
+msgstr "Боље стаје: %(theirs)s уместо %(mine)s."
+
+msgid "It holds %(theirs)s tokens rather than %(mine)s."
+msgstr "Држи %(theirs)s токена уместо %(mine)s."
+
+msgid "It generates %(theirs)s tokens per second rather than %(mine)s."
+msgstr "Генерише %(theirs)s токена у секунди уместо %(mine)s."
+
+msgid "It is no better here, so there is nothing to gain by dropping to it."
+msgstr "Овде није ништа боља, па се преласком на њу нема шта добити."
+
+msgid "Every context this model offers already fits here; the machine is not what limits it."
+msgstr "Сваки контекст који овај модел нуди овде већ стаје; машина није оно што га ограничава."
+
+msgid "What would change it"
+msgstr "Шта би то променило"
+
+msgctxt "column heading"
+msgid "Runs"
+msgstr "Ради"
+
+msgctxt "column heading"
+msgid "Ctx"
+msgstr "Конт."
+
+msgctxt "column heading"
+msgid "Qual"
+msgstr "Квал."
+
+msgctxt "column heading"
+msgid "Card"
+msgstr "Картица"
+
+msgctxt "column heading"
+msgid "Prompt tok/s"
+msgstr "Промпт tok/s"
+
+msgctxt "column heading"
+msgid "Size"
+msgstr "Величина"
+
+msgctxt "column heading"
+msgid "RAM"
+msgstr "RAM"
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
+msgstr "Брзине су за %(working)s токена контекста да би се сваки ред упоређивао са истим; колона контекста је највећи који сваки од њих држи. Димензионисано и оцењено за %(use_case)s при %(requested)s токена."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
+msgstr "Брзине су за %(working)s токена контекста да би се сваки ред упоређивао са истим; колона контекста је највећи који сваки од њих држи. Димензионисано за %(planned)s токена и оцењено за %(use_case)s наспрам %(requested)s."
+
+msgid "Weights: %(weights)s."
+msgstr "Тежине: %(weights)s."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free, no card."
+msgstr "Израчунато уз %(ram_free)s од %(ram_total)s слободне системске меморије, без картице."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free and %(vram_free)s of %(vram_total)s free on the %(gpu)s."
+msgstr "Израчунато уз %(ram_free)s од %(ram_total)s слободне системске меморије и %(vram_free)s од %(vram_total)s слободно на %(gpu)s."
+
+msgid "Every speed above is derived from %(bandwidth)s of memory bandwidth."
+msgstr "Свака брзина горе изведена је из %(bandwidth)s пропусног опсега меморије."
+
+msgid "That bandwidth was kept from an earlier run on this machine; `llamafit system --refresh-bandwidth` times it again."
+msgstr "Тај пропусни опсег сачуван је из ранијег покретања на овој машини; `llamafit system --refresh-bandwidth` мери га поново."
+
+msgid "generates fewer than the %(floor)s tokens per second this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "генерише мање од %(floor)s токена у секунди колико овај захтев тражи; смањите --min-tps или изаберите мањи модел или квантизацију"
+
+msgid "generates fewer than the %(floor)s tokens per second a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "генерише мање од %(floor)s токена у секунди, колико човек чита: на овој машини алат за пакетну обраду, а не нешто испред чега се седи; мањи модел или квантизација би пратили корак"
+
+msgid "%(tps)s tok/s"
+msgstr "%(tps)s tok/s"
+
+msgid "Not ranked"
+msgstr "Није рангирано"
+
+msgctxt "column heading"
+msgid "Why not"
+msgstr "Зашто не"
+
+msgid "%(rank)s. %(name)s %(quant)s"
+msgstr "%(rank)s. %(name)s %(quant)s"
+
+msgid "Fit on this machine"
+msgstr "Како стаје на ову машину"
+
+msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
+msgstr "Димензионисано за %(context)s токена. Колона контекста је највећи који сваки од њих држи у приказаном режиму."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every row was sized as if there were no card. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s је на овој машини и ништа није могло да прочита колико је од ње слободно, па је сваки ред димензионисан као да картице нема. `llamafit doctor` каже како то да се поправи."
+
+msgid "Not placed"
+msgstr "Није смештено"
+
+msgid "%(tag)s (%(count)s):"
+msgstr "%(tag)s (%(count)s):"
+
+msgid "%(model)s %(quant)s: %(reason)s"
+msgstr "%(model)s %(quant)s: %(reason)s"
+
+msgid "%(tag)s (%(count)s): %(sentence)s."
+msgstr "%(tag)s (%(count)s): %(sentence)s."
+
+msgid "%(model)s %(quant)s (%(figure)s)"
+msgstr "%(model)s %(quant)s (%(figure)s)"
+
+msgid "%(name)s %(quant)s (%(tag)s)"
+msgstr "%(name)s %(quant)s (%(tag)s)"
+
+msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
+msgstr "%(mode)s при %(context)s токена, микросерија %(ub)s, кеш %(kv)s, нити: %(threads)s."
+
+msgid "This reaches the %(target)s tokens per second asked for."
+msgstr "Ово стиже до %(target)s токена у секунди колико је тражено."
+
+msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
+msgstr "Овде не стиже до %(target)s токена у секунди, али %(context)s токена контекста би: проследите --context %(tokens)s."
+
+msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
+msgstr "Ништа што овај модел и квантизација могу на овој машини не стиже до %(target)s токена у секунди; најбржа испробана конфигурација је %(best)s. Промена која би то постигла јесте мањи модел или мања квантизација."
+
+msgid "%(name)s %(quant)s"
+msgstr "%(name)s %(quant)s"
+
+msgid "Memory budget"
+msgstr "Буџет меморије"
+
+msgid "The %(context)s tokens asked for would have cost"
+msgstr "Тражених %(context)s токена коштало би"
+
+msgid "Command line"
+msgstr "Командна линија"
+
+msgid "Model file: %(path)s."
+msgstr "Датотека модела: %(path)s."
+
+msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
+msgstr "Датотека модела: %(path)s, које још нема на овој машини; ту би је преузимање сместило. За преузимање %(size)s."
+
+msgid "%(shown)d of %(total)d candidate shown."
+msgid_plural "%(shown)d of %(total)d candidates shown."
+msgstr[0] "Приказано %(shown)d од %(total)d кандидата."
+msgstr[1] "Приказано %(shown)d од %(total)d кандидата."
+msgstr[2] "Приказано %(shown)d од %(total)d кандидата."
+
+msgid "Bind to this address instead of 127.0.0.1. Anything but loopback puts the dashboard on your network, where there is no password and no login; it prints what that exposes before it starts."
+msgstr "Везује се на ову адресу уместо на 127.0.0.1. Све осим повратне петље ставља таблу на вашу мрежу, где нема лозинке ни пријаве; пре покретања исписује шта тиме излажете."
+
+msgid "Listen on this port."
+msgstr "Слуша на овом порту."
+
+msgid ""
+"Open the dashboard in a browser: the board, the machine and the plans.\n"
+"\n"
+"It serves the same numbers `--json` prints, from the same code, on this machine only. Nothing is fetched from the internet to draw the page."
+msgstr ""
+"Отвара таблу у прегледачу: ранг-листу, машину и планове.\n"
+"\n"
+"Служи исте бројеве које исписује `--json`, из истог кода, само на овој машини. Ништа се не преузима са интернета да би се страница исцртала."
+
+msgid "Open the page in your browser."
+msgstr "Отвара страницу у вашем прегледачу."
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores, then open the Simulate panel on the page: it substitutes a machine for as long as you want it, and marks every answer it produces."
+msgstr "Изоставите --profile, --memory, --ram и --cpu-cores, па отворите таблу Симулација на страници: она замењује машину колико год желите и означава сваки одговор који тиме настане."
+
+msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
+msgstr "LlamaFit је на %(url)s. Притисните Ctrl+C да га зауставите."
+
 msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
 msgstr "Приказује шта ова машина има: CPU, меморију, GPU уређаје, дискове и llama.cpp."
 
 msgid "Skip the RAM bandwidth measurement."
 msgstr "Прескаче мерење пропусног опсега RAM меморије."
 
+msgid "Measure RAM bandwidth again instead of reading back the figure kept for this machine, and keep the new one."
+msgstr "Поново мери пропусни опсег RAM-а уместо читања вредности сачуване за ову машину и чува нову."
+
+msgid "%(url)s answered a range request with the whole file."
+msgstr "%(url)s је на захтев за опсег одговорио целом датотеком."
+
+msgid "%(url)s is rate-limiting this download (HTTP %(status)d)."
+msgstr "%(url)s ограничава брзину овог преузимања (HTTP %(status)d)."
+
+msgid "Check your network connection and run the command again to resume."
+msgstr "Проверите мрежну везу и покрените команду поново да се настави."
+
+msgid "%(file)s needs authorisation (HTTP %(status)d)."
+msgstr "%(file)s захтева овлашћење (HTTP %(status)d)."
+
+msgid "This repository is gated. Accept its terms on Hugging Face and set HF_TOKEN to a token that can read it."
+msgstr "Овај репозиторијум је затворен. Прихватите његове услове на Hugging Face-у и поставите HF_TOKEN на токен који може да га чита."
+
+msgid "%(file)s is not at %(url)s any more (HTTP 404)."
+msgstr "%(file)s више није на %(url)s (HTTP 404)."
+
+msgid "Run `llamafit catalog refresh` to pick up the repository's current files."
+msgstr "Покрените `llamafit catalog refresh` да се преузму тренутне датотеке репозиторијума."
+
+msgid "%(url)s returned HTTP %(status)d."
+msgstr "%(url)s је вратио HTTP %(status)d."
+
+msgid "Confirm the URL points at a downloadable file."
+msgstr "Потврдите да адреса указује на датотеку која може да се преузме."
+
+msgid "%(url)s did not say how big %(file)s is."
+msgstr "%(url)s није рекао колика је %(file)s."
+
+msgid "%(file)s is %(actual)s on the server but the catalog says %(expected)s; the repository has been re-uploaded since the catalog was refreshed."
+msgstr "%(file)s је на серверу %(actual)s, а каталог каже %(expected)s; репозиторијум је поново постављен откако је каталог освежен."
+
+msgid "Run `llamafit catalog refresh` and try again."
+msgstr "Покрените `llamafit catalog refresh` и покушајте поново."
+
+msgid "%(file)s: the server sent %(actual)d bytes of a %(expected)d byte range."
+msgstr "%(file)s: сервер је послао %(actual)d бајтова од опсега од %(expected)d бајтова."
+
+msgid "Run the command again; the parts that did arrive are kept."
+msgstr "Покрените команду поново; делови који су стигли се чувају."
+
+msgid "Stopped."
+msgstr "Заустављено."
+
+msgid "%(file)s: the server asked for fewer connections; using %(count)d."
+msgstr "%(file)s: сервер је затражио мање веза; користи се %(count)d."
+
+msgid "%(file)s: this server will not serve byte ranges; fetching it in one stream."
+msgstr "%(file)s: овај сервер не служи бајтне опсеге; преузима се у једном току."
+
+msgid "%(file)s does not match its checksum; fetching it again."
+msgstr "%(file)s не одговара својој контролној суми; преузима се поново."
+
+msgid "Check that the download directory is writable."
+msgstr "Проверите да ли у директоријум за преузимања може да се пише."
+
+msgid "%(needed)s is needed for this model but %(path)s has only %(free)s free, %(short)s short of what is wanted with %(headroom)s left spare."
+msgstr "За овај модел потребно је %(needed)s, а %(path)s има само %(free)s слободно, %(short)s мање од онога што треба уз %(headroom)s резерве."
+
+msgid "Free some space, or choose another directory with --dir, or a smaller quantisation with --quant."
+msgstr "Ослободите простор, изаберите други директоријум са --dir или мању квантизацију са --quant."
+
+msgid "could not measure the free space on %(path)s: %(error)s"
+msgstr "није могуће измерити слободан простор на %(path)s: %(error)s"
+
+msgid "Check that the download directory's volume is available."
+msgstr "Проверите да ли је диск са директоријумом за преузимања доступан."
+
+msgid "%(model)s has no downloadable source in the catalog."
+msgstr "%(model)s нема извор за преузимање у каталогу."
+
+msgid "Only Hugging Face sources can be installed; this entry has none."
+msgstr "Могу да се инсталирају само извори са Hugging Face-а; овај унос нема ниједан."
+
+msgid "the catalog has no file list for %(model)s %(quant)s."
+msgstr "каталог нема списак датотека за %(model)s %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the file names."
+msgstr "Покрените `llamafit catalog refresh` да се попуне називи датотека."
+
+msgid "%(model)s publishes no quantisations."
+msgstr "%(model)s не објављује ниједну квантизацију."
+
+msgid "%(model)s does not publish a %(quant)s quantisation."
+msgstr "%(model)s не објављује квантизацију %(quant)s."
+
+msgid "It publishes: %(quants)s"
+msgstr "Објављује: %(quants)s"
+
+msgid "the catalog does not record how big %(quant)s is."
+msgstr "каталог не бележи колика је %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the sizes."
+msgstr "Покрените `llamafit catalog refresh` да се попуне величине."
+
+msgid "the catalog holds no checksum for %(files)s."
+msgid_plural "the catalog holds no checksums for %(files)s."
+msgstr[0] "каталог нема контролну суму за %(files)s."
+msgstr[1] "каталог нема контролне суме за %(files)s."
+msgstr[2] "каталог нема контролне суме за %(files)s."
+
+msgid "Run `llamafit catalog refresh` to fetch them, or pass --allow-unverified to download anyway and check the files yourself."
+msgstr "Покрените `llamafit catalog refresh` да их преузме, или проследите --allow-unverified да се ипак преузме па сами проверите датотеке."
+
+msgid "%(done)s of %(total)s"
+msgstr "%(done)s од %(total)s"
+
+msgid "%(rate)s/s"
+msgstr "%(rate)s/s"
+
+msgid "Fetching %(file)s (%(size)s)"
+msgstr "Преузима се %(file)s (%(size)s)"
+
+msgid "Checking %(file)s against its checksum"
+msgstr "Проверава се %(file)s према својој контролној суми"
+
+msgid "Done: %(file)s"
+msgstr "Готово: %(file)s"
+
+msgid "could not create %(path)s: %(error)s"
+msgstr "није могуће направити %(path)s: %(error)s"
+
+msgid "Check that the download directory is writable and has room."
+msgstr "Проверите да ли у директоријум за преузимања може да се пише и да ли у њему има места."
+
+msgid "could not move %(source)s into place: %(error)s"
+msgstr "није могуће померити %(source)s на место: %(error)s"
+
+msgid "could not record progress in %(path)s: %(error)s"
+msgstr "није могуће забележити напредак у %(path)s: %(error)s"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "није могуће преузети %(url)s: %(error)s"
+
+msgid "Stopped before the checksum was finished."
+msgstr "Заустављено пре него што је контролна сума довршена."
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "није могуће прочитати %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Проверите да ли датотека постоји и да ли може да се чита."
+
+msgid "%(file)s is %(actual)d bytes, but the catalog says %(expected)d"
+msgstr "%(file)s има %(actual)d бајтова, а каталог каже %(expected)d"
+
+msgid "The transfer was cut short. Run the command again to fetch it properly."
+msgstr "Пренос је прекинут. Покрените команду поново да се датотека преузме како треба."
+
+msgid "%(file)s does not match the checksum the catalog holds."
+msgstr "%(file)s не одговара контролној суми коју каталог чува."
+
+msgid "Expected %(expected)s but the file hashes to %(actual)s. The bad copy has been deleted; run the command again to fetch it."
+msgstr "Очекивано %(expected)s, а датотека даје %(actual)s. Неисправна копија је обрисана; покрените команду поново да се преузме."
+
 msgid "Command: %(command)s"
 msgstr "Команда: %(command)s"
 
 msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
 msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "скраћено GGUF заглавље: тражен је %(wanted)d бајт на померају %(offset)d, добијено %(got)d"
+msgstr[1] "скраћено GGUF заглавље: тражена су %(wanted)d бајта на померају %(offset)d, добијено %(got)d"
+msgstr[2] "скраћено GGUF заглавље: тражено је %(wanted)d бајтова на померају %(offset)d, добијено %(got)d"
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Датотека се можда још преузима или на овој адреси није GGUF датотека."
@@ -668,11 +2470,26 @@ msgstr "неподржана GGUF верзија %(version)d на померај
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit подржава GGUF верзије %(versions)s."
 
+msgid "A memory budget built without these tensors would be too small, so none is built. If llama.cpp loads the file, LlamaFit's tensor-size table is missing the type."
+msgstr "Буџет меморије направљен без тих тензора био би премали, па се ниједан не прави. Ако llama.cpp учита датотеку, LlamaFit-овој табели величина тензора недостаје тај тип."
+
+msgid "%(type)d (%(count)d tensor, first %(name)s)"
+msgid_plural "%(type)d (%(count)d tensors, first %(name)s)"
+msgstr[0] "%(type)d (%(count)d тензор, први %(name)s)"
+msgstr[1] "%(type)d (%(count)d тензора, први %(name)s)"
+msgstr[2] "%(type)d (%(count)d тензора, први %(name)s)"
+
+msgid "cannot size this GGUF file: %(count)d tensor uses a GGML type LlamaFit does not know: %(details)s"
+msgid_plural "cannot size this GGUF file: %(count)d tensors use GGML types LlamaFit does not know: %(details)s"
+msgstr[0] "овој GGUF датотеци не може да се одреди величина: %(count)d тензор користи GGML тип који LlamaFit не познаје: %(details)s"
+msgstr[1] "овој GGUF датотеци не може да се одреди величина: %(count)d тензора користе GGML типове које LlamaFit не познаје: %(details)s"
+msgstr[2] "овој GGUF датотеци не може да се одреди величина: %(count)d тензора користи GGML типове које LlamaFit не познаје: %(details)s"
+
 msgid "%(count)d shard"
 msgid_plural "%(count)d shards"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%(count)d део"
+msgstr[1] "%(count)d дела"
+msgstr[2] "%(count)d делова"
 
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "ове GGUF датотеке нису један подељен модел: не слажу се око '%(key)s' и наводе %(values)s"
@@ -688,15 +2505,15 @@ msgstr "Проследите датотеку модела или све дел�
 
 msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
 msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%(count)d GGUF датотека од %(total)d задатих не носи кључ '%(key)s', па њено место у подељеном моделу не може да се утврди"
+msgstr[1] "%(count)d GGUF датотеке од %(total)d задатих не носе кључ '%(key)s', па њихово место у подељеном моделу не може да се утврди"
+msgstr[2] "%(count)d GGUF датотека од %(total)d задатих не носи кључ '%(key)s', па њихово место у подељеном моделу не може да се утврди"
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Проследите једну неподељену датотеку саму или све делове једног подељеног модела."
 
 msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr ""
+msgstr "непотпун скуп делова: модел наводи %(shards)s, а стигло их је %(arrived)d (%(key)s %(numbers)s)"
 
 msgid "Pass every shard of the split model."
 msgstr "Проследите све делове подељеног модела."
@@ -714,22 +2531,13 @@ msgid "Pass each shard of the split model exactly once."
 msgstr "Проследите сваки део подељеног модела тачно једном."
 
 msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
-msgstr ""
+msgstr "непотпун скуп делова: модел наводи %(tensors)s, а његових %(shards)s држи %(held)d укупно"
 
 msgid "%(count)d tensor"
 msgid_plural "%(count)d tensors"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-
-msgid "could not read %(path)s: %(error)s"
-msgstr "није могуће прочитати %(path)s: %(error)s"
-
-msgid "Check that the file exists and is readable."
-msgstr "Проверите да ли датотека постоји и да ли може да се чита."
-
-msgid "could not fetch %(url)s: %(error)s"
-msgstr "није могуће преузети %(url)s: %(error)s"
+msgstr[0] "%(count)d тензор"
+msgstr[1] "%(count)d тензора"
+msgstr[2] "%(count)d тензора"
 
 msgid "Check your network connection and that the URL is reachable."
 msgstr "Проверите мрежну везу и да ли је адреса доступна."
@@ -759,6 +2567,9 @@ msgstr "WMI није вратио ниједан видео контролер"
 msgid "lspci found no display controllers"
 msgstr "lspci није пронашао ниједан видео контролер"
 
+msgid "vulkaninfo reported no discrete device with a memory heap"
+msgstr "vulkaninfo није пријавио ниједан засебан уређај са меморијском гомилом"
+
 msgid "no populated memory modules"
 msgstr "нема попуњених меморијских модула"
 
@@ -767,9 +2578,9 @@ msgstr "нема SPMemoryDataType"
 
 msgid "%(program)s: timed out after %(seconds)s second"
 msgid_plural "%(program)s: timed out after %(seconds)s seconds"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%(program)s: истекло време после %(seconds)s секунде"
+msgstr[1] "%(program)s: истекло време после %(seconds)s секунде"
+msgstr[2] "%(program)s: истекло време после %(seconds)s секунди"
 
 msgid "empty command"
 msgstr "празна команда"
@@ -780,11 +2591,47 @@ msgstr "%(program)s: %(error)s"
 msgid "%(program)s: not found"
 msgstr "%(program)s: није пронађен"
 
-msgid "no output"
-msgstr "нема излаза"
-
 msgid "exit code %(code)d: %(detail)s"
 msgstr "излазни код %(code)d: %(detail)s"
+
+msgid "no hardware profile file at %(path)s"
+msgstr "нема датотеке хардверског профила на %(path)s"
+
+msgid "Run `llamafit hardware list` to see the profiles LlamaFit has."
+msgstr "Покрените `llamafit hardware list` да видите профиле које LlamaFit има."
+
+msgid "%(path)s is not a valid hardware profile: %(details)s"
+msgstr "%(path)s није исправан хардверски профил: %(details)s"
+
+msgid "Run `llamafit hardware validate FILE` for the whole list."
+msgstr "Покрените `llamafit hardware validate FILE` за цео списак."
+
+msgid "no hardware profile named %(name)s"
+msgstr "нема хардверског профила под називом %(name)s"
+
+msgid "Profiles LlamaFit has: %(names)s"
+msgstr "Профили које LlamaFit има: %(names)s"
+
+msgid "Run `llamafit hardware path` to see where your own profiles go."
+msgstr "Покрените `llamafit hardware path` да видите где иду ваши профили."
+
+msgid "this machine has no graphics card, so there is no VRAM to override"
+msgstr "ова машина нема графичку картицу, па нема VRAM-а који би се заменио"
+
+msgid "Describe the whole machine in a hardware profile and pass --profile."
+msgstr "Опишите целу машину у хардверском профилу и проследите --profile."
+
+msgid "this machine has one memory pool shared with the graphics card"
+msgstr "ова машина има један пул меморије дељен са графичком картицом"
+
+msgid "Use --ram to resize the pool; --memory would change only half of it."
+msgstr "Величину пула мењајте помоћу --ram; --memory би променио само његову половину."
+
+msgid "%(option)s needs a value above zero"
+msgstr "%(option)s треба вредност већу од нуле"
+
+msgid "no build number in the version output: %(text)s"
+msgstr "у испису верзије нема броја билда: %(text)s"
 
 msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
 msgstr "llama.cpp није пронађен: нема llama-server у PATH, у LLAMA_CPP_PATH нити у уобичајеним директоријумима"
@@ -792,11 +2639,260 @@ msgstr "llama.cpp није пронађен: нема llama-server у PATH, у L
 msgid "no ggml backend libraries found next to llama-server; the build may be static"
 msgstr "поред llama-server нису пронађене ggml бекенд библиотеке; билд је можда статички"
 
+msgid "%(path)s is a file, not a directory."
+msgstr "%(path)s је датотека, а не директоријум."
+
+msgid "%(path)s cannot be read: %(error)s"
+msgstr "%(path)s не може да се прочита: %(error)s"
+
+msgid "%(path)s has a marker file that cannot be read."
+msgstr "%(path)s има датотеку ознаке која не може да се прочита."
+
+msgid "%(path)s already holds %(count)d file that LlamaFit did not install."
+msgid_plural "%(path)s already holds %(count)d files that LlamaFit did not install."
+msgstr[0] "%(path)s већ садржи %(count)d датотеку коју LlamaFit није инсталирао."
+msgstr[1] "%(path)s већ садржи %(count)d датотеке које LlamaFit није инсталирао."
+msgstr[2] "%(path)s већ садржи %(count)d датотека које LlamaFit није инсталирао."
+
+msgid "%(name)s has no published checksum, so it cannot be verified."
+msgstr "%(name)s нема објављену контролну суму, па не може да се провери."
+
+msgid "Pass --allow-unverified to install it anyway, knowing the archive is unchecked."
+msgstr "Проследите --allow-unverified да се ипак инсталира, знајући да архива није проверена."
+
+msgid "could not download %(url)s: %(error)s"
+msgstr "није могуће преузети %(url)s: %(error)s"
+
+msgid "the connection was closed"
+msgstr "веза је затворена"
+
+msgid "Run the command again; it continues from where it stopped."
+msgstr "Покрените команду поново; наставља одакле је стала."
+
+msgid "the download of %(url)s stopped early: %(error)s"
+msgstr "преузимање %(url)s прекинуто је прерано: %(error)s"
+
+msgid "%(got)s of %(want)s arrived"
+msgstr "стигло је %(got)s од %(want)s"
+
+msgid "the disk holding %(path)s is full."
+msgstr "диск на ком је %(path)s је пун."
+
+msgid "Free some space and run the command again; the download resumes."
+msgstr "Ослободите простор и покрените команду поново; преузимање се наставља."
+
+msgid "Check that the directory exists and is writable."
+msgstr "Проверите да ли директоријум постоји и да ли у њега може да се пише."
+
+msgid "%(name)s did not match its published checksum and was discarded."
+msgstr "%(name)s није одговарао својој објављеној контролној суми и одбачен је."
+
+msgid "Nothing was unpacked. Run the command again: the archive arrived damaged, which a second download usually fixes."
+msgstr "Ништа није распаковано. Покрените команду поново: архива је стигла оштећена, што друго преузимање обично поправи."
+
+msgid "%(archive)s contains %(name)s, which would be written outside the install directory."
+msgstr "%(archive)s садржи %(name)s, који би се уписао изван инсталационог директоријума."
+
+msgid "Do not install this archive; report it to the llama.cpp project."
+msgstr "Не инсталирајте ову архиву; пријавите то пројекту llama.cpp."
+
+msgid "%(name)s is not an archive LlamaFit knows how to unpack."
+msgstr "%(name)s није архива коју LlamaFit зна да распакује."
+
+msgid "%(name)s could not be unpacked: %(error)s"
+msgstr "%(name)s није могло да се распакује: %(error)s"
+
+msgid "Delete it and run the command again to download it afresh."
+msgstr "Обришите је и покрените команду поново да се преузме изнова."
+
+msgid "the archive holds no %(name)s."
+msgstr "архива не садржи %(name)s."
+
+msgid "Report this; the release layout has changed."
+msgstr "Пријавите ово; распоред издања се променио."
+
+msgid "%(path)s was not installed by LlamaFit."
+msgstr "%(path)s није инсталирао LlamaFit."
+
+msgid "Pass --force to replace it, or --dir to install somewhere else. LlamaFit never overwrites an installation it did not create."
+msgstr "Проследите --force да га замените, или --dir да инсталирате другде. LlamaFit никада не преписује инсталацију коју сам није направио."
+
+msgid "%(path)s has %(free)s free; this install needs %(needed)s."
+msgstr "%(path)s има %(free)s слободно; овој инсталацији треба %(needed)s."
+
+msgid "Free some space, or pass --dir to install on another volume."
+msgstr "Ослободите простор или проследите --dir да инсталирате на други диск."
+
+msgid "the %(backend)s libraries are not in the installed directory."
+msgstr "%(backend)s библиотеке нису у инсталираном директоријуму."
+
+msgid "no ggml backend libraries were installed; the build may be a static one."
+msgstr "нису инсталиране никакве ggml бекенд библиотеке; билд је можда статички."
+
+msgid "Your PATH could not be read, so it will not be changed."
+msgstr "Ваш PATH није могао да се прочита, па се неће мењати."
+
+msgid "Add %(path)s to your user PATH (HKCU\\Environment)."
+msgstr "Додаје %(path)s у ваш кориснички PATH (HKCU\\Environment)."
+
+msgid "To undo: run `setx PATH \"%(previous)s\"`, or remove the entry in System > About > Advanced system settings > Environment Variables."
+msgstr "За поништавање: покрените `setx PATH \"%(previous)s\"` или уклоните унос у Систем > Информације > Напредна подешавања система > Променљиве окружења."
+
+msgid "%(path)s is already on your PATH."
+msgstr "%(path)s је већ у вашем PATH-у."
+
+msgid "Nothing to undo."
+msgstr "Нема шта да се поништи."
+
+msgid "Append a PATH line for %(path)s to %(file)s."
+msgstr "Додаје ред са PATH-ом за %(path)s у %(file)s."
+
+msgid "To undo: delete the two lines marked `%(mark)s` from %(file)s."
+msgstr "За поништавање: обришите два реда означена са `%(mark)s` из %(file)s."
+
+msgid "your PATH could not be changed: %(error)s"
+msgstr "ваш PATH није могао да се промени: %(error)s"
+
+msgid "To remove it later, delete %(path)s."
+msgstr "Да бисте то касније уклонили, обришите %(path)s."
+
+msgid "the most recent %(count)d llama.cpp releases hold no build."
+msgstr "последњих %(count)d издања llama.cpp-а не садржи ниједан билд."
+
+msgid "Name one with `llamafit install llama.cpp --tag ...`."
+msgstr "Именујте једно помоћу `llamafit install llama.cpp --tag ...`."
+
+msgid "could not reach GitHub at %(url)s: %(error)s"
+msgstr "није могуће доћи до GitHub-а на %(url)s: %(error)s"
+
+msgid "GitHub refused the request for %(url)s: the rate limit is exhausted."
+msgstr "GitHub је одбио захтев за %(url)s: ограничење броја захтева је исцрпљено."
+
+msgid "Wait for the limit to reset, or set GITHUB_TOKEN to a personal access token with no scopes."
+msgstr "Сачекајте да се ограничење обнови или поставите GITHUB_TOKEN на лични приступни токен без опсега."
+
+msgid "GitHub has no release at %(url)s."
+msgstr "GitHub нема издање на %(url)s."
+
+msgid "Check the tag with `llamafit install llama.cpp --tag ...`."
+msgstr "Проверите ознаку помоћу `llamafit install llama.cpp --tag ...`."
+
+msgid "GitHub returned %(status)d for %(url)s."
+msgstr "GitHub је вратио %(status)d за %(url)s."
+
+msgid "GitHub's answer for %(url)s was not JSON."
+msgstr "GitHub-ов одговор за %(url)s није био JSON."
+
+msgid "GitHub's answer did not describe a release."
+msgstr "GitHub-ов одговор није описивао издање."
+
 msgid "no llama-server answering"
 msgstr "ниједан llama-server не одговара"
 
 msgid "unexpected response: %(error)s"
 msgstr "неочекиван одговор: %(error)s"
+
+msgid "%(model)s holds %(native)s tokens, fewer than the %(minimum)s asked for."
+msgstr "%(model)s држи %(native)s токена, мање од %(minimum)s колико је тражено."
+
+msgid "No configuration of this model fits this machine."
+msgstr "Ниједна конфигурација овог модела не стаје на ову машину."
+
+msgid "Routed experts are held in system memory, and so are the always-on shared experts, which is what -ot ffn_.*_shexp=CPU does; attention and the KV cache stay on the card."
+msgstr "Усмерени експерти држе се у системској меморији, као и увек укључени дељени експерти, што је оно што ради -ot ffn_.*_shexp=CPU; пажња и KV кеш остају на картици."
+
+msgid "Routed experts are held in system memory; attention, the KV cache and the shared experts stay on the card."
+msgstr "Усмерени експерти држе се у системској меморији; пажња, KV кеш и дељени експерти остају на картици."
+
+msgid "%(layers)s layers are on the card and the rest run on the processor."
+msgstr "%(layers)s слојева је на картици, а остатак ради на процесору."
+
+msgid "Nothing runs on a graphics card: every weight is in system memory."
+msgstr "Ништа не ради на графичкој картици: све тежине су у системској меморији."
+
+msgid "%(gpus)s is here, but nothing could read how much of it is free, so this plan was made as if it were not. The real machine will be faster than these figures."
+msgstr "%(gpus)s је овде, али ништа није могло да прочита колико је од ње слободно, па је овај план направљен као да је нема. Права машина биће бржа од ових бројки."
+
+msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
+msgstr "Димензионисано за %(context)s токена уместо %(requested)s колико је тражено."
+
+msgid "The KV cache is quantised to %(type)s to reach this context."
+msgstr "KV кеш је квантизован на %(type)s да би се стигло до овог контекста."
+
+msgid "Vision is off: the projector did not fit, on the card or in system memory."
+msgstr "Вид је искључен: пројектор није стао, ни на картицу ни у системску меморију."
+
+msgid "The vision projector is in system memory (--no-mmproj-offload), which costs nothing measurable for text and makes images slower."
+msgstr "Визуелни пројектор је у системској меморији (--no-mmproj-offload), што за текст не кошта ништа мерљиво, а слике чини споријима."
+
+msgid "%(threads)s threads, not the %(available)s this processor has: the efficiency cores are left out because generation measures slower with them, and what is left is the threads the performance cores provide."
+msgstr "%(threads)s нити, а не %(available)s колико их овај процесор има: штедљива језгра су изостављена јер генерисање са њима мери спорије, а оно што остаје су нити које дају језгра високих перформанси."
+
+msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
+msgstr "Тесно: %(vram)s графичке картице је слободно, а овоме треба %(needed)s, па други програм може да претегне. Табела нивоа контекста је начин на који се покретачка скрипта извлачи."
+
+msgid "no %(capability)s capability, which %(use_case)s needs; ask for a different use case, or add it to the entry when the model really has it"
+msgstr "нема могућност %(capability)s, коју %(use_case)s тражи; затражите други случај употребе или је додајте у унос ако је модел заиста има"
+
+msgid "no %(capability)s capability; drop it from the request to see this model"
+msgstr "нема могућност %(capability)s; изоставите је из захтева да видите овај модел"
+
+msgid "%(size)s to download, over the %(limit)s this request allows"
+msgstr "%(size)s за преузимање, изнад %(limit)s колико овај захтев дозвољава"
+
+msgid "unknown quantisation %(quant)s, so its cost in quality cannot be told"
+msgstr "непозната квантизација %(quant)s, па не може да се каже колико кошта у квалитету"
+
+msgid "nowhere to put it: no placement fits this machine at any context"
+msgstr "нема где да се смести: ниједан смештај не стаје на ову машину ни при једном контексту"
+
+msgid "no run mode supports this model on this machine"
+msgstr "ниједан режим рада не подржава овај модел на овој машини"
+
+msgid "needs more memory than this machine has, even at its smallest context"
+msgstr "треба више меморије него што ова машина има, чак и при најмањем контексту"
+
+msgid "holds %(fit)s tokens at most, under the %(minimum)s asked for; lower the minimum context or free memory to see it ranked"
+msgstr "држи највише %(fit)s токена, испод %(minimum)s колико је тражено; смањите минимални контекст или ослободите меморију да буде рангиран"
+
+msgid "no speed estimate, so it cannot be ranked against models that have one"
+msgstr "нема процене брзине, па не може да се рангира уз моделе који је имају"
+
+msgid "unknown use case %(use_case)s"
+msgstr "непознат случај употребе %(use_case)s"
+
+msgid "Known use cases: %(known)s."
+msgstr "Познати случајеви употребе: %(known)s."
+
+msgid "unknown score part %(part)s in the weights for %(use_case)s"
+msgstr "непознат део оцене %(part)s у тежинама за %(use_case)s"
+
+msgid "The parts are: %(parts)s."
+msgstr "Делови су: %(parts)s."
+
+msgid "the weights for %(use_case)s leave out %(part)s"
+msgstr "тежине за %(use_case)s изостављају %(part)s"
+
+msgid "Overriding a use case means giving all four parts: %(parts)s."
+msgstr "Заменити случај употребе значи задати сва четири дела: %(parts)s."
+
+msgid "the weight for %(part)s in %(use_case)s is below zero"
+msgstr "тежина за %(part)s у %(use_case)s је испод нуле"
+
+msgid "A weight says how much a part counts; it cannot count less than none."
+msgstr "Тежина говори колико део вреди; не може да вреди мање од ничега."
+
+msgid "the weights for %(use_case)s add up to nothing"
+msgstr "тежине за %(use_case)s сабирају се у ништа"
+
+msgid "At least one part has to count for something."
+msgstr "Бар један део мора нешто да вреди."
+
+msgid "unknown preference %(prefer)s"
+msgstr "непозната склоност %(prefer)s"
+
+msgid "Preferences: %(known)s."
+msgstr "Склоности: %(known)s."
 
 msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
 msgstr "Инсталирајте или поправите NVIDIA драјвер; nvidia-smi долази уз њега и мора да буде у PATH."
@@ -831,6 +2927,9 @@ msgstr "llama-server постоји, али није пријавио верзи
 msgid "system_profiler failed; GPU information is unavailable."
 msgstr "system_profiler није успео; подаци о GPU нису доступни."
 
+msgid "Install the Vulkan tools (vulkan-tools on Linux, the vendor's Vulkan runtime on Windows) so an unsized card's memory can be read from its driver. This probe runs only when no vendor tool sized the card, so it is the last source there is."
+msgstr "Инсталирајте Vulkan алате (vulkan-tools на Linux-у, произвођачево Vulkan извршно окружење на Windows-у) да би меморија недимензионисане картице могла да се прочита из њеног драјвера. Ова провера ради само када ниједан алат произвођача није димензионисао картицу, па је последњи извор који постоји."
+
 msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
 msgstr "Ниједан алат произвођача није пријавио величину меморије GPU-а; упишите ту величину у хардверски профил да би буџети могли да се израчунају за ову машину."
 
@@ -849,6 +2948,9 @@ msgstr "llama.cpp није пронађен"
 
 msgid "no llama-server binary was found"
 msgstr "извршна датотека llama-server није пронађена"
+
+msgid "Run `llamafit install llama.cpp`, which picks the right build for this machine, checks it against its published checksum, and never touches an installation LlamaFit did not create."
+msgstr "Покрените `llamafit install llama.cpp`, који бира прави билд за ову машину, проверава га према објављеној контролној суми и никада не дира инсталацију коју LlamaFit није направио."
 
 msgid "Memory size unknown"
 msgstr "Величина меморије непозната"
@@ -874,6 +2976,15 @@ msgstr "%(gpu)s: величина VRAM-а непозната"
 
 msgid "the vendor tool that reports memory was not available"
 msgstr "алат произвођача који пријављује меморију није био доступан"
+
+msgid "%(gpus)s: planned around, not planned on"
+msgstr "%(gpus)s: планирано око ње, а не на њој"
+
+msgid "with no reading of how much of the card is free, every budget and every speed on this machine was computed as if there were no card: they are CPU-only figures, and the real machine will be faster."
+msgstr "без очитавања колико је картице слободно, сваки буџет и свака брзина на овој машини израчунати су као да картице нема: то су бројке само за CPU, а права машина биће бржа."
+
+msgid "Install the Vulkan tools so the size can be read from the driver, or record it in a hardware profile (`llamafit hardware path` says where those go) and pass --profile."
+msgstr "Инсталирајте Vulkan алате да би величина могла да се прочита из драјвера, или је упишите у хардверски профил (`llamafit hardware path` каже где ти иду) и проследите --profile."
 
 msgid "No GPU detected"
 msgstr "Није откривен ниједан GPU"
@@ -919,6 +3030,499 @@ msgstr "слободно %(size)s"
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr "Већини корисних модела треба од 5 до 120 GB; ослободите простор или промените директоријум за преузимања."
 
+msgid "licensed %(spdx)s, which this request does not allow"
+msgstr "лиценциран под %(spdx)s, што овај захтев не дозвољава"
+
+msgid "no placement of it fits this machine at any context"
+msgstr "ниједан његов смештај не стаје на ову машину ни при једном контексту"
+
+msgid "System memory bandwidth was not measured; %(gbps)s GB/s assumed for %(arch)s."
+msgstr "Пропусни опсег системске меморије није измерен; за %(arch)s се претпоставља %(gbps)s GB/s."
+
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps)s GB/s stands in."
+msgstr "Пропусни опсег %(gpu)s није познат; уместо њега стоји резервна вредност %(gbps)s GB/s за %(backend)s."
+
+msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
+msgstr "Нема податка о рачунској снази графичке картице: обрада промпта се процењује на CPU-у."
+
+msgid "%(gb)s GB of routed experts is read from system memory per token at %(eff)s of its %(raw)s GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "%(gb)s GB усмерених експерата чита се из системске меморије по токену при %(eff)s од њених %(raw)s GB/s, јер сваки токен бира другу шаку експерата и читање је расипање малих блокова, а не ток."
+
+msgid "%(gb)s GB of contiguous weights is read from system memory per token at %(eff)s of its %(raw)s GB/s."
+msgstr "%(gb)s GB непрекинутих тежина чита се из системске меморије по токену при %(eff)s од њених %(raw)s GB/s."
+
+msgid "No active parameter count was supplied; it was inferred from the weight bytes."
+msgstr "Број активних параметара није задат; изведен је из бајтова тежина."
+
+msgid "%(pct)s percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops)s TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "%(pct)s посто слојева седи у системској меморији, па се тај удео рачунања промпта наплаћује CPU-у при %(tflops)s TFLOP/s, а не картици. Обе стопе долазе из једног малог густог модела на једној машини."
+
+msgid "%(gb)s GB of the expert set is streamed across the link once per micro-batch at %(gbps)s GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "%(gb)s GB скупа експерата стримује се преко везе једном по микросерији при %(gbps)s GB/s. Та стопа прилагођена је на једином моделу чији скуп експерата не стаје у системску меморију, па део његовог читања долази са диска; скуп експерата који остаје у страничном кешу стримује око три пута брже, а за такав је овај члан управо толико спор."
+
+msgid "%(gb)s GB of the expert set is read out of system memory once per micro-batch at %(gbps)s GB/s, because there is no card to stream it to."
+msgstr "%(gb)s GB скупа експерата чита се из системске меморије једном по микросерији при %(gbps)s GB/s, јер нема картице на коју би се стримовало."
+
+msgid "No placement of this model on this machine could run it."
+msgstr "Ниједан смештај овог модела на ову машину не би могао да га покрене."
+
+msgid "Generation is a benchmark of this configuration, not a prediction."
+msgstr "Генерисање је бенчмарк ове конфигурације, а не предвиђање."
+
+msgid "Generation is the formula corrected by %(factor)s, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "Генерисање је формула исправљена за %(factor)s, из бенчмарка %(profile)s на овој машини снимљеног %(date)s."
+
+msgid "Prompt processing is a benchmark of this configuration."
+msgstr "Обрада промпта је бенчмарк ове конфигурације."
+
+msgid "Prompt processing is the formula corrected by %(factor)s from a benchmark."
+msgstr "Обрада промпта је формула исправљена за %(factor)s из бенчмарка."
+
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr "Командна линија тог бенчмарка не бележи колико је слојева отишло на картицу, па исправка претпоставља да је радио при овом смештају."
+
+msgid "This figure assumes nothing pages: a placement this tight often does, silently."
+msgstr "Ова бројка претпоставља да ништа не страничи: овако тесан смештај често страничи, тихо."
+
+msgid "Board"
+msgstr "Ранг-листа"
+
+msgid "Needs"
+msgstr "Захтеви"
+
+msgid "Plan"
+msgstr "План"
+
+msgid "Simulate"
+msgstr "Симулација"
+
+msgctxt "column heading"
+msgid "Have"
+msgstr "Имам"
+
+msgctxt "model file on this machine"
+msgid "yes"
+msgstr "да"
+
+msgctxt "model file on this machine"
+msgid "no"
+msgstr "не"
+
+msgctxt "board sort"
+msgid "score"
+msgstr "оцена"
+
+msgctxt "board sort"
+msgid "speed"
+msgstr "брзина"
+
+msgctxt "board sort"
+msgid "quality"
+msgstr "квалитет"
+
+msgctxt "board sort"
+msgid "context"
+msgstr "контекст"
+
+msgctxt "board sort"
+msgid "download size"
+msgstr "величина преузимања"
+
+msgctxt "board sort"
+msgid "prompt speed"
+msgstr "брзина промпта"
+
+msgctxt "board sort"
+msgid "card memory"
+msgstr "меморија картице"
+
+msgctxt "board sort"
+msgid "system memory"
+msgstr "системска меморија"
+
+msgctxt "board sort"
+msgid "fit"
+msgstr "место"
+
+msgctxt "board sort"
+msgid "model id"
+msgstr "id модела"
+
+msgctxt "board sort"
+msgid "quantisation"
+msgstr "квантизација"
+
+msgctxt "board filter"
+msgid "every candidate"
+msgstr "сви кандидати"
+
+msgctxt "board filter"
+msgid "the ones that run"
+msgstr "они који раде"
+
+msgid "matching %(text)s"
+msgstr "који садрже %(text)s"
+
+msgid "running as %(mode)s"
+msgstr "који раде као %(mode)s"
+
+msgid "at least %(tps)s tokens per second"
+msgstr "бар %(tps)s токена у секунди"
+
+msgid "no more than %(size)s to download"
+msgstr "највише %(size)s за преузимање"
+
+msgid "no more than %(size)s on the card"
+msgstr "највише %(size)s на картици"
+
+msgid "no more than %(size)s of system memory"
+msgstr "највише %(size)s системске меморије"
+
+msgid "holding at least %(context)s tokens"
+msgstr "који држе бар %(context)s токена"
+
+msgid "a quality of at least %(quality)s"
+msgstr "квалитет бар %(quality)s"
+
+msgctxt "board filter"
+msgid "the ones with room to spare"
+msgstr "они са резервом"
+
+msgctxt "board filter"
+msgid "the ones that fit"
+msgstr "они који стају"
+
+msgid "%(shown)d of %(total)d shown"
+msgstr "приказано %(shown)d од %(total)d"
+
+msgid "%(sort)s in reverse"
+msgstr "%(sort)s обрнуто"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s already on this machine."
+msgstr "%(counted)s, по %(sort)s, приказано: %(filter)s и то већ на овој машини."
+
+msgctxt "board filter"
+msgid "already on this machine"
+msgstr "они који су већ на овој машини"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s."
+msgstr "%(counted)s, по %(sort)s, приказано: %(filter)s."
+
+msgid "There is no terminal here to draw the dashboard in, so this is what `llamafit recommend` would print."
+msgstr "Овде нема терминала у ком би се табла исцртала, па је ово оно што би `llamafit recommend` исписао."
+
+msgid "%(name)s %(quant)s, %(vendor)s, licensed %(license)s; it can: %(capabilities)s"
+msgstr "%(name)s %(quant)s, %(vendor)s, лиценца %(license)s; уме: %(capabilities)s"
+
+msgid "Choose a row to see what put it there."
+msgstr "Изаберите ред да видите шта га је ту сместило."
+
+msgid "Nothing has been ranked yet."
+msgstr "Још ништа није рангирано."
+
+msgid "Every candidate in the catalog was ranked; none was excluded."
+msgstr "Сваки кандидат у каталогу је рангиран; ниједан није искључен."
+
+msgid "keys"
+msgstr "тастери"
+
+msgid "theme"
+msgstr "тема"
+
+msgid "quit"
+msgstr "излаз"
+
+msgid "choose"
+msgstr "изабери"
+
+msgid "why"
+msgstr "зашто"
+
+msgid "command line"
+msgstr "командна линија"
+
+msgid "search"
+msgstr "тражи"
+
+msgid "fit"
+msgstr "место"
+
+msgid "sort"
+msgstr "сортирај"
+
+msgid "sort back"
+msgstr "сортирај назад"
+
+msgid "reverse"
+msgstr "обрни"
+
+msgid "on disk"
+msgstr "на диску"
+
+msgid "all quants"
+msgstr "све квантизације"
+
+msgid "unranked rows"
+msgstr "нерангирани редови"
+
+msgid "all columns"
+msgstr "све колоне"
+
+msgid "explanation"
+msgstr "објашњење"
+
+msgid "not ranked"
+msgstr "није рангирано"
+
+msgid "apply"
+msgstr "примени"
+
+msgid "reset"
+msgstr "поништи"
+
+msgid "rescan"
+msgstr "прегледај поново"
+
+msgid "more context"
+msgstr "више контекста"
+
+msgid "less context"
+msgstr "мање контекста"
+
+msgid "vision"
+msgstr "вид"
+
+msgid "copy"
+msgstr "копирај"
+
+msgid "this machine"
+msgstr "ова машина"
+
+msgctxt "use case"
+msgid "general use"
+msgstr "општа употреба"
+
+msgctxt "use case"
+msgid "writing code"
+msgstr "писање кода"
+
+msgctxt "use case"
+msgid "reasoning"
+msgstr "закључивање"
+
+msgctxt "use case"
+msgid "chat"
+msgstr "ћаскање"
+
+msgctxt "use case"
+msgid "images and text"
+msgstr "слике и текст"
+
+msgctxt "use case"
+msgid "embeddings"
+msgstr "ембединзи"
+
+msgctxt "preference"
+msgid "balanced"
+msgstr "уравнотежено"
+
+msgctxt "preference"
+msgid "lean towards quality"
+msgstr "нагни ка квалитету"
+
+msgctxt "preference"
+msgid "lean towards speed"
+msgstr "нагни ка брзини"
+
+msgid "Move with the up and down arrows. Enter says why a row is where it is; p gives the command line that runs it."
+msgstr "Крећите се стрелицама горе и доле. Enter каже зашто је ред тамо где јесте; p даје командну линију која га покреће."
+
+msgid "Terms: %(terms)s; anything else is text to look for. Enter with the box empty clears them."
+msgstr "Појмови: %(terms)s; све остало је текст за тражење. Enter са празним пољем брише их."
+
+msgid "Part of a model name, then Enter"
+msgstr "Део назива модела, па Enter"
+
+msgid "Keys"
+msgstr "Тастери"
+
+msgctxt "column heading"
+msgid "Screen"
+msgstr "Екран"
+
+msgctxt "column heading"
+msgid "Key"
+msgstr "Тастер"
+
+msgctxt "column heading"
+msgid "What it does"
+msgstr "Шта ради"
+
+msgctxt "dashboard screen"
+msgid "Everywhere"
+msgstr "Свуда"
+
+msgctxt "dashboard screen"
+msgid "Board"
+msgstr "Ранг-листа"
+
+msgctxt "dashboard screen"
+msgid "Needs"
+msgstr "Захтеви"
+
+msgctxt "dashboard screen"
+msgid "Host"
+msgstr "Машина"
+
+msgctxt "dashboard screen"
+msgid "Plan"
+msgstr "План"
+
+msgctxt "dashboard screen"
+msgid "Simulate"
+msgstr "Симулација"
+
+msgid "Press Escape to go back."
+msgstr "Притисните Escape за повратак."
+
+msgid "Catalog files with a problem"
+msgstr "Датотеке каталога са проблемом"
+
+msgid "This machine has not been scanned yet."
+msgstr "Ова машина још није прегледана."
+
+msgid "What do you want a model for?"
+msgstr "За шта вам треба модел?"
+
+msgid "It must be able to:"
+msgstr "Мора да уме:"
+
+msgid "At least this much context, in tokens:"
+msgstr "Бар оволико контекста, у токенима:"
+
+msgid "Willing to download at most, for example 40G (blank for no limit):"
+msgstr "Спремни да преузмете највише, на пример 40G (празно за без ограничења):"
+
+msgid "Slowest generation worth having, in tokens per second (blank for the speed a person reads at; 0 when nobody is waiting on the tokens):"
+msgstr "Најспорије генерисање које још вреди, у токенима у секунди (празно за брзину којом човек чита; 0 када нико не чека на токене):"
+
+msgid "Licences you will accept (tick none to accept any):"
+msgstr "Лиценце које прихватате (не означите ниједну да прихватите све):"
+
+msgid "Lean the score:"
+msgstr "Нагни оцену:"
+
+msgid "Keep the vision projector when a model has one"
+msgstr "Задржи визуелни пројектор када га модел има"
+
+msgid "Apply"
+msgstr "Примени"
+
+msgid "Reset"
+msgstr "Поништи"
+
+msgid "The minimum context is a number of tokens, for example %(example)s."
+msgstr "Минимални контекст је број токена, на пример %(example)s."
+
+msgid "The minimum context cannot be below zero."
+msgstr "Минимални контекст не може бити испод нуле."
+
+msgid "The minimum speed is a number of tokens per second, for example 12."
+msgstr "Минимална брзина је број токена у секунди, на пример 12."
+
+msgid "The minimum speed cannot be below zero."
+msgstr "Минимална брзина не може бити испод нуле."
+
+msgid "Choose a row on the Board and press p, and its plan and command line appear here."
+msgstr "Изаберите ред на Ранг-листи и притисните p, па се овде појављују његов план и командна линија."
+
+msgid "%(model)s is no longer in the catalog this board was built from."
+msgstr "%(model)s више није у каталогу из ког је ова ранг-листа направљена."
+
+msgid "Planned with the vision projector; press v to leave it out."
+msgstr "Планирано са визуелним пројектором; притисните v да га изоставите."
+
+msgid "Planned without the vision projector; press v to put it back."
+msgstr "Планирано без визуелног пројектора; притисните v да га вратите."
+
+msgid "The ladder has no rung above %(context)s."
+msgstr "Лествица нема пречку изнад %(context)s."
+
+msgid "The ladder has no rung below %(context)s."
+msgstr "Лествица нема пречку испод %(context)s."
+
+msgid "There is no command line to copy yet."
+msgstr "Још нема командне линије за копирање."
+
+msgid "The command line is on the clipboard."
+msgstr "Командна линија је копирана у клипборд."
+
+msgid "Everything on every screen answers about the machine chosen here. While it is not this one, the band at the top says SIMULATED."
+msgstr "Све на сваком екрану одговара о машини изабраној овде. Док то није ова, трака на врху каже СИМУЛИРАНО."
+
+msgid "Answer for this machine instead:"
+msgstr "Одговарај за ову машину уместо тога:"
+
+msgid "Pretend the graphics card has this much memory (blank to leave it):"
+msgstr "Претварај се да графичка картица има оволико меморије (празно да остане):"
+
+msgid "Pretend the machine has this much system memory (blank to leave it):"
+msgstr "Претварај се да машина има оволико системске меморије (празно да остане):"
+
+msgid "Pretend the processor has this many cores (blank to leave it):"
+msgstr "Претварај се да процесор има оволико језгара (празно да остане):"
+
+msgid "Back to this machine"
+msgstr "Назад на ову машину"
+
+msgctxt "hardware profile"
+msgid "this machine"
+msgstr "ова машина"
+
+msgid "The core count is a whole number, for example 8."
+msgstr "Број језгара је цео број, на пример 8."
+
+msgctxt "dashboard header separator"
+msgid " · "
+msgstr " · "
+
+msgctxt "dashboard header"
+msgid "no GPU detected"
+msgstr "није откривен GPU"
+
+msgid "%(name)s, VRAM unknown"
+msgstr "%(name)s, VRAM непознат"
+
+msgid "%(name)s, %(free)s free of %(total)s"
+msgstr "%(name)s, слободно %(free)s од %(total)s"
+
+msgid "%(available)s free of %(total)s RAM"
+msgstr "слободно %(available)s од %(total)s RAM-а"
+
+msgid "%(model)s, %(count)d core"
+msgid_plural "%(model)s, %(count)d cores"
+msgstr[0] "%(model)s, %(count)d језгро"
+msgstr[1] "%(model)s, %(count)d језгра"
+msgstr[2] "%(model)s, %(count)d језгара"
+
+msgctxt "dashboard header"
+msgid "llama.cpp not installed"
+msgstr "llama.cpp није инсталиран"
+
+msgctxt "dashboard header"
+msgid "llama.cpp installed"
+msgstr "llama.cpp је инсталиран"
+
+msgid "llama.cpp b%(build)d"
+msgstr "llama.cpp b%(build)d"
+
+msgctxt "dashboard header"
+msgid "scanning this machine…"
+msgstr "прегледа се ова машина…"
+
+msgid "These speeds were not all arrived at the same way; the How column says which each row is."
+msgstr "Ове брзине нису све добијене на исти начин; колона Како каже која је која."
+
 msgctxt "thousands separator"
 msgid ","
 msgstr "."
@@ -938,3 +3542,305 @@ msgstr "B"
 msgctxt "size"
 msgid "unknown"
 msgstr "непозната"
+
+msgid "profile must be a name, not a path: %(value)s"
+msgstr "профил мора да буде назив, а не путања: %(value)s"
+
+msgid "Ask GET /api/v1/profiles for the names this machine has."
+msgstr "Затражите GET /api/v1/profiles за називе које ова машина има."
+
+msgid "unknown query parameter: %(names)s"
+msgstr "непознат параметар упита: %(names)s"
+
+msgid "This endpoint takes: %(names)s"
+msgstr "Ова крајња тачка прима: %(names)s"
+
+msgid "invalid prefer %(value)s"
+msgstr "неисправна вредност за prefer: %(value)s"
+
+msgid "invalid sort %(value)s"
+msgstr "неисправна вредност за sort: %(value)s"
+
+msgid "%(host)s:%(port)d is not this machine only. Anyone who can reach this computer on that port can read everything the dashboard shows -- your hardware, your disks, your file paths and the models you have downloaded. There is no password, because LlamaFit is meant for the person sitting at the keyboard. Press Ctrl+C now if you did not mean this."
+msgstr "%(host)s:%(port)d није само ова машина. Свако ко до овог рачунара може да дође на том порту може да прочита све што табла приказује — ваш хардвер, ваше дискове, ваше путање до датотека и моделе које сте преузели. Лозинке нема јер је LlamaFit намењен особи која седи за тастатуром. Притисните Ctrl+C сада ако ово нисте намеравали."
+
+msgid "the web dashboard needs FastAPI and uvicorn, which are not installed"
+msgstr "веб табла тражи FastAPI и uvicorn, који нису инсталирани"
+
+msgid "Install them with: pip install \"llamafit[web]\""
+msgstr "Инсталирајте их помоћу: pip install \"llamafit[web]\""
+
+msgid "%(host)s is not a loopback address, and the dashboard has no authentication"
+msgstr "%(host)s није адреса повратне петље, а табла нема проверу идентитета"
+
+msgid "Leave --host alone to serve this machine only, or pass it to mean it."
+msgstr "Оставите --host на миру да служи само ову машину, или га проследите с намером."
+
+msgid "Why this row"
+msgstr "Зашто овај ред"
+
+msgid "Plan this"
+msgstr "Планирај ово"
+
+msgid "Already on this machine"
+msgstr "Већ на овој машини"
+
+msgid "Score"
+msgstr "Оцена"
+
+msgid "What the model is for"
+msgstr "Чему модел служи"
+
+msgid "Capabilities it must have"
+msgstr "Могућности које мора да има"
+
+msgid "Lean the weights"
+msgstr "Нагни тежине"
+
+msgid "Smallest context worth having"
+msgstr "Најмањи контекст који вреди"
+
+msgid "Most you will download"
+msgstr "Највише што ћете преузети"
+
+msgid "Show every quantisation"
+msgstr "Прикажи сваку квантизацију"
+
+msgid "Keep the vision projector"
+msgstr "Задржи визуелни пројектор"
+
+msgid "Rows to show"
+msgstr "Редова за приказ"
+
+msgid "Scan again"
+msgstr "Прегледај поново"
+
+msgid "llama.cpp"
+msgstr "llama.cpp"
+
+msgid "Quantisation"
+msgstr "Квантизација"
+
+msgid "Context"
+msgstr "Контекст"
+
+msgid "Micro-batch"
+msgstr "Микросерија"
+
+msgid "Plan it"
+msgstr "Планирај"
+
+msgid "Copy"
+msgstr "Копирај"
+
+msgid "Copied"
+msgstr "Копирано"
+
+msgid "Flags"
+msgstr "Заставице"
+
+msgid "Speed"
+msgstr "Брзина"
+
+msgid "Choose a row on the board first."
+msgstr "Прво изаберите ред на ранг-листи."
+
+msgid "Hardware profile"
+msgstr "Хардверски профил"
+
+msgid "This machine, as scanned"
+msgstr "Ова машина, како је прегледана"
+
+msgid "Graphics memory"
+msgstr "Графичка меморија"
+
+msgid "System memory"
+msgstr "Системска меморија"
+
+msgid "Processor cores"
+msgstr "Језгра процесора"
+
+msgid "Score against that machine"
+msgstr "Оцењивање према тој машини"
+
+msgid "What runs here, how fast, and with which settings."
+msgstr "Шта овде ради, колико брзо и са којим подешавањима."
+
+msgid "Working…"
+msgstr "Ради се…"
+
+msgid "Something went wrong"
+msgstr "Нешто је пошло наопако"
+
+msgid "Hint"
+msgstr "Савет"
+
+msgid "Command"
+msgstr "Команда"
+
+msgid "Source code (AGPL-3.0-or-later)"
+msgstr "Изворни код (AGPL-3.0-or-later)"
+
+msgid "This dashboard is served from your own machine and sends nothing anywhere."
+msgstr "Ова табла се служи са ваше машине и не шаље ништа нигде."
+
+msgid "Answer for the machine this hardware profile describes instead of this one. Nothing about this machine is probed, and every answer is marked as simulated. `llamafit hardware list` names the profiles you have."
+msgstr "Одговара за машину коју овај хардверски профил описује уместо за ову. О овој машини се ништа не испитује, а сваки одговор је означен као симулиран. `llamafit hardware list` именује профиле које имате."
+
+msgid "Pretend the graphics card has this much memory, for example 24G. Everything else stays as scanned, and every answer is marked as simulated."
+msgstr "Претвара се да графичка картица има оволико меморије, на пример 24G. Све остало остаје како је прегледано, а сваки одговор је означен као симулиран."
+
+msgid "Pretend the machine has this much system memory, for example 128GiB. Every answer is marked as simulated."
+msgstr "Претвара се да машина има оволико системске меморије, на пример 128GiB. Сваки одговор је означен као симулиран."
+
+msgid "Pretend the processor has this many physical cores. Every answer is marked as simulated."
+msgstr "Претвара се да процесор има оволико физичких језгара. Сваки одговор је означен као симулиран."
+
+msgid "Plan, report and score no context longer than this. It caps the model's own length; it does not describe a machine."
+msgstr "Планира, извештава и оцењује контекст не дужи од овога. Ограничава сопствену дужину модела; не описује машину."
+
+msgid "%(ceiling)s %(max)s is below %(floor)s %(min)s"
+msgstr "%(ceiling)s %(max)s је испод %(floor)s %(min)s"
+
+msgid "Raise %(ceiling)s, or lower %(floor)s."
+msgstr "Подигните %(ceiling)s или смањите %(floor)s."
+
+msgid "`llamafit %(command)s` reports on the machine LlamaFit is running on"
+msgstr "`llamafit %(command)s` извештава о машини на којој LlamaFit ради"
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a profile describes, run `llamafit hardware show NAME --as-host`."
+msgstr "Изоставите --profile, --memory, --ram и --cpu-cores. Да видите машину коју профил описује, покрените `llamafit hardware show NAME --as-host`."
+
+msgid "Fit on the simulated machine"
+msgstr "Како стаје на симулирану машину"
+
+msgid "Roomy: there is room for a longer context or a second model."
+msgstr "Пространо: има места за дужи контекст или други модел."
+
+msgid "--min-tps %(tps)s: this board wanted at least that many tokens per second, and anything slower is excluded below rather than ranked here."
+msgstr "--min-tps %(tps)s: ова ранг-листа је хтела бар толико токена у секунди, па је све спорије искључено испод, а не рангирано овде."
+
+msgid "--min-tps 0: nobody is waiting on these tokens, so nothing was excluded for generating more slowly than a person reads."
+msgstr "--min-tps 0: нико не чека на ове токене, па ништа није искључено због тога што генерише спорије него што човек чита."
+
+msgid "Exclude candidates generating fewer tokens per second than this, in place of the speed a person reads at. Pass 0 when nobody is waiting on the tokens."
+msgstr "Искључује кандидате који генеришу мање токена у секунди од овога, уместо брзине којом човек чита. Проследите 0 када нико не чека на токене."
+
+msgid "Order the rows drawn: score, speed, quality, context, size, prompt, card, ram, fit, model or quant, largest or best first unless :asc says otherwise. The # column keeps the ranking."
+msgstr "Одређује редослед исцртаних редова: score, speed, quality, context, size, prompt, card, ram, fit, model или quant, највеће или најбоље прво осим ако :asc не каже другачије. Колона # задржава ранг."
+
+msgid "Draw only rows whose id, name or quantisation contains this text."
+msgstr "Исцртава само редове чији id, назив или квантизација садрже овај текст."
+
+msgid "Draw only rows whose file is already on this machine."
+msgstr "Исцртава само редове чија је датотека већ на овој машини."
+
+msgid "Draw only rows that run this way: gpu, moe-offload, hybrid or cpu."
+msgstr "Исцртава само редове који раде овако: gpu, moe-offload, hybrid или cpu."
+
+msgid "Draw only rows at or above this verdict: comfortable, fits or tight. The ranking is unchanged and a hidden row is still counted."
+msgstr "Исцртава само редове са овом оценом или бољом: comfortable, fits или tight. Рангирање се не мења, а сакривен ред се и даље броји."
+
+msgid "Draw exactly these columns, comma-separated, in this order, named as --json names them: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+msgstr "Исцртава тачно ове колоне, раздвојене зарезима, овим редом, именоване како их именује --json: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+
+msgid "Draw every column whatever the terminal's width; a cell that does not fit folds."
+msgstr "Исцртава сваку колону без обзира на ширину терминала; ћелија која не стаје прелама се."
+
+msgid "Leave the candidates that were not ranked off the table. The reasons are still printed under it."
+msgstr "Изоставља из табеле кандидате који нису рангирани. Разлози се и даље исписују испод ње."
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; --limit sets how many, and the rest are neither worse-behaved nor hidden, only further down."
+msgstr "Приказује се најбољих %(shown)s од %(total)s који су прошли; --limit одређује колико, а остали нису ни гори ни сакривени, само су ниже."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every speed above is a CPU-only speed. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s је на овој машини и ништа није могло да прочита колико је од ње слободно, па је свака брзина горе брзина само за CPU. `llamafit doctor` каже како то да се поправи."
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "генерише %(tps)s токена у секунди, испод %(floor)s колико човек чита: на овој машини алат за пакетну обраду, а не нешто испред чега се седи; мањи модел или квантизација би пратили корак"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "генерише %(tps)s токена у секунди, испод %(floor)s колико овај захтев тражи; смањите --min-tps или изаберите мањи модел или квантизацију"
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; raise “Rows to show” for the rest, which are neither worse-behaved nor hidden, only further down."
+msgstr "Приказује се најбољих %(shown)s од %(total)s који су прошли; подигните „Редова за приказ“ за остале, који нису ни гори ни сакривени, само су ниже."
+
+msgctxt "exclusion tag"
+msgid "no %(capability)s"
+msgstr "без %(capability)s"
+
+msgid "no %(capability)s capability; drop it from the request, or ask for a use case that does not need it"
+msgstr "нема могућност %(capability)s; изоставите је из захтева или затражите случај употребе коме није потребна"
+
+msgctxt "exclusion tag"
+msgid "no estimate"
+msgstr "без процене"
+
+msgctxt "exclusion tag"
+msgid "no room"
+msgstr "нема места"
+
+msgctxt "exclusion tag"
+msgid "no facts"
+msgstr "без података"
+
+msgctxt "exclusion tag"
+msgid "not ranked"
+msgstr "нерангирано"
+
+msgctxt "board cell with no figure"
+msgid "–"
+msgstr "–"
+
+msgid "%(term)s is not a filter; the terms are %(terms)s, and anything else is text to look for."
+msgstr "%(term)s није филтер; појмови су %(terms)s, а све остало је текст за тражење."
+
+msgid "fit>= takes one of %(values)s"
+msgstr "fit>= прима једну од %(values)s"
+
+msgid "runs= takes one of %(values)s"
+msgstr "runs= прима једну од %(values)s"
+
+msgid "%(term)s needs a number"
+msgstr "%(term)s треба број"
+
+msgid "%(term)s needs a size such as 8G, 7.5GiB or 512M"
+msgstr "%(term)s треба величину као 8G, 7.5GiB или 512M"
+
+msgctxt "exclusion tag"
+msgid "short context"
+msgstr "кратак контекст"
+
+msgid "holds fewer than the %(minimum)s tokens asked for; lower the minimum context or free memory to see it ranked"
+msgstr "држи мање од %(minimum)s тражених токена; смањите минимални контекст или ослободите меморију да буде рангиран"
+
+msgctxt "exclusion tag"
+msgid "too big"
+msgstr "превелик"
+
+msgid "larger to download than the %(limit)s this request allows"
+msgstr "већи за преузимање од %(limit)s колико овај захтев дозвољава"
+
+msgctxt "exclusion tag"
+msgid "too slow"
+msgstr "преспор"
+
+msgctxt "exclusion tag"
+msgid "unknown quant"
+msgstr "непозната квант."
+
+msgid "a quantisation whose cost in quality is not known, so it cannot be scored"
+msgstr "квантизација чија цена у квалитету није позната, па не може да се оцени"
+
+msgctxt "exclusion tag"
+msgid "unsupported"
+msgstr "неподржано"
+
+msgid "About these figures"
+msgstr "О овим бројкама"
+
+msgid "Close"
+msgstr "Затвори"
+
+msgid "%(shown)s of %(total)s in the catalog"
+msgstr "%(shown)s од %(total)s у каталогу"
