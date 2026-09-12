@@ -184,7 +184,7 @@ def test_the_packaged_portuguese_catalog_is_what_ships() -> None:
     assert messages.catalog_problems(1) == "o catálogo tem 1 problema"
     assert messages.catalog_problems(2) == "o catálogo tem 2 problemas"
     assert messages.a_message_split_over_lines().startswith("O LlamaFit não conseguiu")
-    assert messages.skip_measurement() == "Skip the RAM bandwidth measurement."
+    assert messages.skip_measurement() == "Não mede a largura de banda da RAM."
 
 
 def _a_region_that_will_never_ship() -> str:
