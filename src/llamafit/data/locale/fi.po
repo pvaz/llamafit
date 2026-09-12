@@ -31,11 +31,11 @@ msgstr "%(measurements)d erillistä kokoonpanoa %(parameters)d vapaalle parametr
 msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
 msgstr "nämä %(measurements)d kokoonpanoa eivät vaihtele toisistaan riippumatta tarpeeksi, jotta %(parameters)d parametria voitaisiin erottaa toisistaan"
 
-msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
-msgstr "sovitus antoi arvoksi %(value).3f, mitä sen oma määritelmä ei salli; mittaukset ovat keskenään ristiriidassa luvun 10.1 mallin mukaan"
+msgid "the fit put it at %(value)s, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "sovitus antoi arvoksi %(value)s, mitä sen oma määritelmä ei salli; mittaukset ovat keskenään ristiriidassa luvun 10.1 mallin mukaan"
 
-msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
-msgstr "tulokseksi tuli %(value).3f, mutta saman sovituksen toinen parametri oli mahdoton, ja pienimmän neliösumman menetelmä valitsi ne toisiaan vastaan"
+msgid "it came out at %(value)s, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "tulokseksi tuli %(value)s, mutta saman sovituksen toinen parametri oli mahdoton, ja pienimmän neliösumman menetelmä valitsi ne toisiaan vastaan"
 
 msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
 msgstr "estimaattorissa ei ole tällaista termiä: luku 10.1 poisti kerroskohtaisen lisäkuorman, joka 28-kerroksisella mallilla ylitti koko mitatun tokenin"
@@ -3278,32 +3278,32 @@ msgstr "Se julkaisee: %(names)s"
 msgid "licensed %(spdx)s, which this request does not allow"
 msgstr "lisensoitu %(spdx)s, mitä tämä pyyntö ei salli"
 
-msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
-msgstr "Järjestelmämuistin kaistanleveyttä ei mitattu; oletettu %(gbps).0f GB/s arkkitehtuurille %(arch)s."
+msgid "System memory bandwidth was not measured; %(gbps)s GB/s assumed for %(arch)s."
+msgstr "Järjestelmämuistin kaistanleveyttä ei mitattu; oletettu %(gbps)s GB/s arkkitehtuurille %(arch)s."
 
-msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
-msgstr "Näytönohjaimen %(gpu)s kaistanleveys on tuntematon; tilalle tulee %(backend)s-varalukema %(gbps).0f GB/s."
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps)s GB/s stands in."
+msgstr "Näytönohjaimen %(gpu)s kaistanleveys on tuntematon; tilalle tulee %(backend)s-varalukema %(gbps)s GB/s."
 
 msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
 msgstr "Ei näytönohjaimen laskentalukemaa: promptin käsittely arvioidaan suorittimelle."
 
-msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
-msgstr "Reititettyjä asiantuntijoita luetaan järjestelmämuistista %(gb).2f GB tokenia kohti nopeudella, joka on %(eff).2f sen %(raw).0f GB/s:stä, koska jokainen token valitsee eri kourallisen asiantuntijoita ja luku on pienten lohkojen hajontaa eikä virtaa."
+msgid "%(gb)s GB of routed experts is read from system memory per token at %(eff)s of its %(raw)s GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "Reititettyjä asiantuntijoita luetaan järjestelmämuistista %(gb)s GB tokenia kohti nopeudella, joka on %(eff)s sen %(raw)s GB/s:stä, koska jokainen token valitsee eri kourallisen asiantuntijoita ja luku on pienten lohkojen hajontaa eikä virtaa."
 
-msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
-msgstr "Yhtenäisiä painoja luetaan järjestelmämuistista %(gb).2f GB tokenia kohti nopeudella, joka on %(eff).2f sen %(raw).0f GB/s:stä."
+msgid "%(gb)s GB of contiguous weights is read from system memory per token at %(eff)s of its %(raw)s GB/s."
+msgstr "Yhtenäisiä painoja luetaan järjestelmämuistista %(gb)s GB tokenia kohti nopeudella, joka on %(eff)s sen %(raw)s GB/s:stä."
 
 msgid "No active parameter count was supplied; it was inferred from the weight bytes."
 msgstr "Aktiivisten parametrien määrää ei annettu; se pääteltiin painojen tavuista."
 
-msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
-msgstr "%(pct).0f prosenttia kerroksista on järjestelmämuistissa, joten tuo osuus promptin laskennasta veloitetaan suorittimelta nopeudella %(tflops).2f TFLOP/s eikä kortilta. Molemmat nopeudet tulevat yhdestä pienestä tiheästä mallista yhdellä koneella."
+msgid "%(pct)s percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops)s TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "%(pct)s prosenttia kerroksista on järjestelmämuistissa, joten tuo osuus promptin laskennasta veloitetaan suorittimelta nopeudella %(tflops)s TFLOP/s eikä kortilta. Molemmat nopeudet tulevat yhdestä pienestä tiheästä mallista yhdellä koneella."
 
-msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
-msgstr "Asiantuntijajoukosta virtaa %(gb).1f GB väylän yli kerran mikroerää kohti nopeudella %(gbps).1f GB/s. Tuo nopeus sovitettiin siihen yhteen malliin, jonka asiantuntijajoukko ei mahdu järjestelmämuistiin, joten osa sen luvusta tulee levyltä; asiantuntijajoukko joka pysyy sivuvälimuistissa virtaa noin kolme kertaa nopeammin, ja sellaisella tämä termi on juuri sen verran liian hidas."
+msgid "%(gb)s GB of the expert set is streamed across the link once per micro-batch at %(gbps)s GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "Asiantuntijajoukosta virtaa %(gb)s GB väylän yli kerran mikroerää kohti nopeudella %(gbps)s GB/s. Tuo nopeus sovitettiin siihen yhteen malliin, jonka asiantuntijajoukko ei mahdu järjestelmämuistiin, joten osa sen luvusta tulee levyltä; asiantuntijajoukko joka pysyy sivuvälimuistissa virtaa noin kolme kertaa nopeammin, ja sellaisella tämä termi on juuri sen verran liian hidas."
 
-msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
-msgstr "Asiantuntijajoukosta luetaan %(gb).1f GB järjestelmämuistista kerran mikroerää kohti nopeudella %(gbps).1f GB/s, koska ei ole korttia jolle sitä virtauttaa."
+msgid "%(gb)s GB of the expert set is read out of system memory once per micro-batch at %(gbps)s GB/s, because there is no card to stream it to."
+msgstr "Asiantuntijajoukosta luetaan %(gb)s GB järjestelmämuistista kerran mikroerää kohti nopeudella %(gbps)s GB/s, koska ei ole korttia jolle sitä virtauttaa."
 
 msgid "No placement of this model on this machine could run it."
 msgstr "Yksikään tämän mallin sijoittelu tälle koneelle ei olisi voinut ajaa sitä."
@@ -3311,14 +3311,14 @@ msgstr "Yksikään tämän mallin sijoittelu tälle koneelle ei olisi voinut aja
 msgid "Generation is a benchmark of this configuration, not a prediction."
 msgstr "Generointi on tämän kokoonpanon mittaus, ei ennuste."
 
-msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
-msgstr "Generointi on kaava korjattuna kertoimella %(factor).2f mittauksesta %(profile)s, joka otettiin tällä koneella %(date)s."
+msgid "Generation is the formula corrected by %(factor)s, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "Generointi on kaava korjattuna kertoimella %(factor)s mittauksesta %(profile)s, joka otettiin tällä koneella %(date)s."
 
 msgid "Prompt processing is a benchmark of this configuration."
 msgstr "Promptin käsittely on tämän kokoonpanon mittaus."
 
-msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
-msgstr "Promptin käsittely on kaava korjattuna kertoimella %(factor).2f mittauksesta."
+msgid "Prompt processing is the formula corrected by %(factor)s from a benchmark."
+msgstr "Promptin käsittely on kaava korjattuna kertoimella %(factor)s mittauksesta."
 
 msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
 msgstr "Tuon mittauksen komentorivi ei kirjaa, montako kerrosta meni kortille, joten korjaus olettaa sen ajaneen tällä sijoittelulla."

@@ -957,11 +957,11 @@ msgstr "%(measurements)d configurații distincte pentru %(parameters)d parametri
 msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
 msgstr "cele %(measurements)d configurații nu variază suficient de independent pentru a separa %(parameters)d parametri"
 
-msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
-msgstr "ajustarea l-a plasat la %(value).3f, ceea ce propria lui definiție nu permite; măsurătorile se contrazic între ele sub modelul din secțiunea 10.1"
+msgid "the fit put it at %(value)s, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "ajustarea l-a plasat la %(value)s, ceea ce propria lui definiție nu permite; măsurătorile se contrazic între ele sub modelul din secțiunea 10.1"
 
-msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
-msgstr "a ieșit la %(value).3f, dar un alt parametru al aceleiași ajustări era imposibil, iar metoda celor mai mici pătrate i-a ales unul împotriva celuilalt"
+msgid "it came out at %(value)s, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "a ieșit la %(value)s, dar un alt parametru al aceleiași ajustări era imposibil, iar metoda celor mai mici pătrate i-a ales unul împotriva celuilalt"
 
 msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
 msgstr "estimatorul nu are un astfel de termen: secțiunea 10.1 a eliminat costul suplimentar per strat, care pentru un model cu 28 de straturi depășea întregul token măsurat"
@@ -3268,32 +3268,32 @@ msgstr "Publică: %(names)s"
 msgid "licensed %(spdx)s, which this request does not allow"
 msgstr "cu licența %(spdx)s, pe care această cerere nu o permite"
 
-msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
-msgstr "Lățimea de bandă a memoriei sistemului nu a fost măsurată; se presupun %(gbps).0f GB/s pentru %(arch)s."
+msgid "System memory bandwidth was not measured; %(gbps)s GB/s assumed for %(arch)s."
+msgstr "Lățimea de bandă a memoriei sistemului nu a fost măsurată; se presupun %(gbps)s GB/s pentru %(arch)s."
 
-msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
-msgstr "Lățimea de bandă a %(gpu)s este necunoscută; se folosește în loc valoarea de rezervă %(backend)s de %(gbps).0f GB/s."
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps)s GB/s stands in."
+msgstr "Lățimea de bandă a %(gpu)s este necunoscută; se folosește în loc valoarea de rezervă %(backend)s de %(gbps)s GB/s."
 
 msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
 msgstr "Nicio cifră de calcul a plăcii grafice: procesarea promptului este estimată pe procesor."
 
-msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
-msgstr "Se citesc %(gb).2f GB de experți direcționați din memoria sistemului per token la %(eff).2f din cei %(raw).0f GB/s ai ei, pentru că fiecare token selectează un alt pumn de experți, iar citirea este o împrăștiere de blocuri mici, nu un flux."
+msgid "%(gb)s GB of routed experts is read from system memory per token at %(eff)s of its %(raw)s GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "Se citesc %(gb)s GB de experți direcționați din memoria sistemului per token la %(eff)s din cei %(raw)s GB/s ai ei, pentru că fiecare token selectează un alt pumn de experți, iar citirea este o împrăștiere de blocuri mici, nu un flux."
 
-msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
-msgstr "Se citesc %(gb).2f GB de greutăți contigue din memoria sistemului per token la %(eff).2f din cei %(raw).0f GB/s ai ei."
+msgid "%(gb)s GB of contiguous weights is read from system memory per token at %(eff)s of its %(raw)s GB/s."
+msgstr "Se citesc %(gb)s GB de greutăți contigue din memoria sistemului per token la %(eff)s din cei %(raw)s GB/s ai ei."
 
 msgid "No active parameter count was supplied; it was inferred from the weight bytes."
 msgstr "Nu s-a furnizat niciun număr de parametri activi; a fost dedus din octeții greutăților."
 
-msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
-msgstr "%(pct).0f la sută dintre straturi stau în memoria sistemului, așa că acea parte a aritmeticii promptului este pusă pe seama procesorului la %(tflops).2f TFLOP/s, nu pe seama plăcii. Ambele rate provin de la un singur model dens mic, pe un singur calculator."
+msgid "%(pct)s percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops)s TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "%(pct)s la sută dintre straturi stau în memoria sistemului, așa că acea parte a aritmeticii promptului este pusă pe seama procesorului la %(tflops)s TFLOP/s, nu pe seama plăcii. Ambele rate provin de la un singur model dens mic, pe un singur calculator."
 
-msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
-msgstr "Se transmit %(gb).1f GB din setul de experți prin legătură o dată per microlot la %(gbps).1f GB/s. Acea rată a fost ajustată pe singurul model al cărui set de experți nu încape în memoria sistemului, așa că o parte din citirea lui vine de pe disc; un set de experți care rămâne în cache-ul de pagini se transmite de aproximativ trei ori mai repede, iar pentru unul dintre acelea termenul acesta este cu atât prea lent."
+msgid "%(gb)s GB of the expert set is streamed across the link once per micro-batch at %(gbps)s GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "Se transmit %(gb)s GB din setul de experți prin legătură o dată per microlot la %(gbps)s GB/s. Acea rată a fost ajustată pe singurul model al cărui set de experți nu încape în memoria sistemului, așa că o parte din citirea lui vine de pe disc; un set de experți care rămâne în cache-ul de pagini se transmite de aproximativ trei ori mai repede, iar pentru unul dintre acelea termenul acesta este cu atât prea lent."
 
-msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
-msgstr "Se citesc %(gb).1f GB din setul de experți din memoria sistemului o dată per microlot la %(gbps).1f GB/s, pentru că nu există nicio placă spre care să fie transmis."
+msgid "%(gb)s GB of the expert set is read out of system memory once per micro-batch at %(gbps)s GB/s, because there is no card to stream it to."
+msgstr "Se citesc %(gb)s GB din setul de experți din memoria sistemului o dată per microlot la %(gbps)s GB/s, pentru că nu există nicio placă spre care să fie transmis."
 
 msgid "No placement of this model on this machine could run it."
 msgstr "Nicio amplasare a acestui model pe acest calculator nu l-ar putea rula."
@@ -3301,14 +3301,14 @@ msgstr "Nicio amplasare a acestui model pe acest calculator nu l-ar putea rula."
 msgid "Generation is a benchmark of this configuration, not a prediction."
 msgstr "Generarea este un test de referință al acestei configurații, nu o predicție."
 
-msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
-msgstr "Generarea este formula corectată cu %(factor).2f, dintr-un test de referință al %(profile)s pe acest calculator luat la %(date)s."
+msgid "Generation is the formula corrected by %(factor)s, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "Generarea este formula corectată cu %(factor)s, dintr-un test de referință al %(profile)s pe acest calculator luat la %(date)s."
 
 msgid "Prompt processing is a benchmark of this configuration."
 msgstr "Procesarea promptului este un test de referință al acestei configurații."
 
-msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
-msgstr "Procesarea promptului este formula corectată cu %(factor).2f dintr-un test de referință."
+msgid "Prompt processing is the formula corrected by %(factor)s from a benchmark."
+msgstr "Procesarea promptului este formula corectată cu %(factor)s dintr-un test de referință."
 
 msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
 msgstr "Linia de comandă a acelui test de referință nu înregistrează câte straturi au mers pe placă, așa că corecția presupune că a rulat la această amplasare."

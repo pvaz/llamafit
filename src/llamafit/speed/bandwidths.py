@@ -44,6 +44,7 @@ from llamafit.constants import (
 from llamafit.hardware.gputable import lookup_gpu
 from llamafit.i18n import _
 from llamafit.models.host import Host
+from llamafit.units import format_decimals
 
 
 @dataclass(frozen=True)
@@ -106,8 +107,8 @@ def resolve_bandwidths(host: Host) -> EffectiveBandwidths:
     ram_gbps, ram_assumed = _ram_bandwidth(host)
     if ram_assumed:
         notes.append(
-            _("System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s.")
-            % {"gbps": ram_gbps, "arch": host.arch}
+            _("System memory bandwidth was not measured; %(gbps)s GB/s assumed for %(arch)s.")
+            % {"gbps": format_decimals(ram_gbps, 0), "arch": host.arch}
         )
 
     gpu = host.primary_gpu
@@ -126,10 +127,14 @@ def resolve_bandwidths(host: Host) -> EffectiveBandwidths:
             device_assumed = True
             notes.append(
                 _(
-                    "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s"
+                    "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps)s GB/s"
                     " stands in."
                 )
-                % {"gpu": gpu.name, "backend": gpu.backend_hint, "gbps": device_gbps}
+                % {
+                    "gpu": gpu.name,
+                    "backend": gpu.backend_hint,
+                    "gbps": format_decimals(device_gbps, 0),
+                }
             )
 
     cores = host.cpu.performance_cores or host.cpu.physical_cores

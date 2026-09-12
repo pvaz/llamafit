@@ -32,11 +32,11 @@ msgstr "자유 매개변수 %(parameters)d개에 서로 다른 구성은 %(measu
 msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
 msgstr "구성 %(measurements)d개가 서로 충분히 독립적으로 변하지 않아 매개변수 %(parameters)d개를 분리할 수 없습니다"
 
-msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
-msgstr "피팅 결과가 %(value).3f로 나왔는데 이 값은 정의상 허용되지 않습니다. 10.1절의 모형에서 측정값들이 서로 어긋납니다"
+msgid "the fit put it at %(value)s, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "피팅 결과가 %(value)s로 나왔는데 이 값은 정의상 허용되지 않습니다. 10.1절의 모형에서 측정값들이 서로 어긋납니다"
 
-msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
-msgstr "값이 %(value).3f로 나왔지만 같은 피팅의 다른 매개변수가 불가능한 값이었고, 최소제곱법이 둘을 서로 상쇄하도록 골랐습니다"
+msgid "it came out at %(value)s, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "값이 %(value)s로 나왔지만 같은 피팅의 다른 매개변수가 불가능한 값이었고, 최소제곱법이 둘을 서로 상쇄하도록 골랐습니다"
 
 msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
 msgstr "추정식에 그런 항이 없습니다. 10.1절에서 레이어당 오버헤드를 없앴는데, 28레이어 모델에서는 그 값이 실측한 토큰 전체보다 컸습니다"
@@ -3229,32 +3229,32 @@ msgstr "공개된 것: %(names)s"
 msgid "licensed %(spdx)s, which this request does not allow"
 msgstr "라이선스가 %(spdx)s인데 이 요청은 그것을 허용하지 않습니다"
 
-msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
-msgstr "시스템 메모리 대역폭을 측정하지 않아 %(arch)s에 대해 %(gbps).0f GB/s로 가정했습니다."
+msgid "System memory bandwidth was not measured; %(gbps)s GB/s assumed for %(arch)s."
+msgstr "시스템 메모리 대역폭을 측정하지 않아 %(arch)s에 대해 %(gbps)s GB/s로 가정했습니다."
 
-msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
-msgstr "%(gpu)s의 대역폭을 알 수 없어 %(backend)s 기본값 %(gbps).0f GB/s를 대신 씁니다."
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps)s GB/s stands in."
+msgstr "%(gpu)s의 대역폭을 알 수 없어 %(backend)s 기본값 %(gbps)s GB/s를 대신 씁니다."
 
 msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
 msgstr "그래픽 카드의 연산 수치가 없어서 프롬프트 처리는 CPU 기준으로 추정합니다."
 
-msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
-msgstr "토큰마다 라우팅 전문가 %(gb).2f GB를 시스템 메모리에서 읽으며, 속도는 %(raw).0f GB/s의 %(eff).2f입니다. 토큰마다 서로 다른 전문가 몇 개를 고르므로 한 줄기로 읽는 것이 아니라 작은 블록을 흩어 읽기 때문입니다."
+msgid "%(gb)s GB of routed experts is read from system memory per token at %(eff)s of its %(raw)s GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "토큰마다 라우팅 전문가 %(gb)s GB를 시스템 메모리에서 읽으며, 속도는 %(raw)s GB/s의 %(eff)s입니다. 토큰마다 서로 다른 전문가 몇 개를 고르므로 한 줄기로 읽는 것이 아니라 작은 블록을 흩어 읽기 때문입니다."
 
-msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
-msgstr "토큰마다 연속된 가중치 %(gb).2f GB를 시스템 메모리에서 읽으며, 속도는 %(raw).0f GB/s의 %(eff).2f입니다."
+msgid "%(gb)s GB of contiguous weights is read from system memory per token at %(eff)s of its %(raw)s GB/s."
+msgstr "토큰마다 연속된 가중치 %(gb)s GB를 시스템 메모리에서 읽으며, 속도는 %(raw)s GB/s의 %(eff)s입니다."
 
 msgid "No active parameter count was supplied; it was inferred from the weight bytes."
 msgstr "활성 파라미터 수가 주어지지 않아 가중치의 바이트 수에서 추정했습니다."
 
-msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
-msgstr "레이어의 %(pct).0f 퍼센트가 시스템 메모리에 있어서 프롬프트 연산의 그만큼이 카드가 아니라 CPU에 %(tflops).2f TFLOP/s로 매겨집니다. 두 속도 모두 컴퓨터 한 대의 작은 밀집 모델 하나에서 나온 값입니다."
+msgid "%(pct)s percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops)s TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "레이어의 %(pct)s 퍼센트가 시스템 메모리에 있어서 프롬프트 연산의 그만큼이 카드가 아니라 CPU에 %(tflops)s TFLOP/s로 매겨집니다. 두 속도 모두 컴퓨터 한 대의 작은 밀집 모델 하나에서 나온 값입니다."
 
-msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
-msgstr "마이크로배치마다 한 번씩 전문가 집합 %(gb).1f GB를 링크로 %(gbps).1f GB/s에 스트리밍합니다. 이 속도는 전문가 집합이 시스템 메모리에 들어가지 않는 유일한 모델에서 맞춘 값이라 읽기의 일부가 디스크에서 옵니다. 페이지 캐시에 머무는 전문가 집합은 세 배쯤 빠르며, 그런 모델에서는 이 항이 그만큼 느리게 잡힙니다."
+msgid "%(gb)s GB of the expert set is streamed across the link once per micro-batch at %(gbps)s GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "마이크로배치마다 한 번씩 전문가 집합 %(gb)s GB를 링크로 %(gbps)s GB/s에 스트리밍합니다. 이 속도는 전문가 집합이 시스템 메모리에 들어가지 않는 유일한 모델에서 맞춘 값이라 읽기의 일부가 디스크에서 옵니다. 페이지 캐시에 머무는 전문가 집합은 세 배쯤 빠르며, 그런 모델에서는 이 항이 그만큼 느리게 잡힙니다."
 
-msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
-msgstr "스트리밍해 보낼 카드가 없어서, 마이크로배치마다 한 번씩 전문가 집합 %(gb).1f GB를 시스템 메모리에서 %(gbps).1f GB/s로 읽습니다."
+msgid "%(gb)s GB of the expert set is read out of system memory once per micro-batch at %(gbps)s GB/s, because there is no card to stream it to."
+msgstr "스트리밍해 보낼 카드가 없어서, 마이크로배치마다 한 번씩 전문가 집합 %(gb)s GB를 시스템 메모리에서 %(gbps)s GB/s로 읽습니다."
 
 msgid "No placement of this model on this machine could run it."
 msgstr "이 컴퓨터에서 이 모델을 돌릴 수 있는 배치가 없었습니다."
@@ -3262,14 +3262,14 @@ msgstr "이 컴퓨터에서 이 모델을 돌릴 수 있는 배치가 없었습�
 msgid "Generation is a benchmark of this configuration, not a prediction."
 msgstr "생성 속도는 이 구성을 실제로 측정한 값이며 예측이 아닙니다."
 
-msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
-msgstr "생성 속도는 %(date)s에 이 컴퓨터에서 측정한 %(profile)s 벤치마크를 근거로 식을 %(factor).2f배 보정한 값입니다."
+msgid "Generation is the formula corrected by %(factor)s, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "생성 속도는 %(date)s에 이 컴퓨터에서 측정한 %(profile)s 벤치마크를 근거로 식을 %(factor)s배 보정한 값입니다."
 
 msgid "Prompt processing is a benchmark of this configuration."
 msgstr "프롬프트 처리 속도는 이 구성을 실제로 측정한 값입니다."
 
-msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
-msgstr "프롬프트 처리 속도는 벤치마크를 근거로 식을 %(factor).2f배 보정한 값입니다."
+msgid "Prompt processing is the formula corrected by %(factor)s from a benchmark."
+msgstr "프롬프트 처리 속도는 벤치마크를 근거로 식을 %(factor)s배 보정한 값입니다."
 
 msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
 msgstr "그 벤치마크의 명령줄에는 카드에 몇 레이어를 올렸는지 적혀 있지 않아서, 보정은 이 배치로 돌았다고 가정합니다."

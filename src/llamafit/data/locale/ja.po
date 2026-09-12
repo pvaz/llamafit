@@ -28,11 +28,11 @@ msgstr "自由パラメータ %(parameters)d 個に対して、異なる構成�
 msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
 msgstr "%(measurements)d 通りの構成は、%(parameters)d 個のパラメータを分離できるほど独立には変化していません"
 
-msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
-msgstr "フィッティングの結果は %(value).3f で、この項の定義が許さない値です。セクション 10.1 のモデルのもとでは、測定値どうしが矛盾しています"
+msgid "the fit put it at %(value)s, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "フィッティングの結果は %(value)s で、この項の定義が許さない値です。セクション 10.1 のモデルのもとでは、測定値どうしが矛盾しています"
 
-msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
-msgstr "結果は %(value).3f でしたが、同じフィッティングの別のパラメータが不可能な値になっており、最小二乗法が両者を互いに打ち消すように選びました"
+msgid "it came out at %(value)s, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "結果は %(value)s でしたが、同じフィッティングの別のパラメータが不可能な値になっており、最小二乗法が両者を互いに打ち消すように選びました"
 
 msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
 msgstr "推定器にその項はありません。セクション 10.1 で層ごとのオーバーヘッドを削除しました。28 層のモデルでは、それが実測したトークン全体を超えていたためです"
@@ -3229,32 +3229,32 @@ msgstr "公開されているのは: %(names)s"
 msgid "licensed %(spdx)s, which this request does not allow"
 msgstr "ライセンスが %(spdx)s で、この要求では許可されていません"
 
-msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
-msgstr "システムメモリの帯域幅は実測していません。%(arch)s の仮定値として %(gbps).0f GB/s を使います。"
+msgid "System memory bandwidth was not measured; %(gbps)s GB/s assumed for %(arch)s."
+msgstr "システムメモリの帯域幅は実測していません。%(arch)s の仮定値として %(gbps)s GB/s を使います。"
 
-msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
-msgstr "%(gpu)s の帯域幅は不明です。%(backend)s の代替値である %(gbps).0f GB/s を使います。"
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps)s GB/s stands in."
+msgstr "%(gpu)s の帯域幅は不明です。%(backend)s の代替値である %(gbps)s GB/s を使います。"
 
 msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
 msgstr "グラフィックスカードの演算性能の値がないため、プロンプト処理は CPU で見積もっています。"
 
-msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
-msgstr "ルーティングされるエキスパート %(gb).2f GB を、トークンごとにシステムメモリから %(raw).0f GB/s の %(eff).2f 倍の速度で読み出します。トークンごとに選ばれるエキスパートが異なり、読み出しが連続した流れではなく小さなブロックの飛び飛びのアクセスになるためです。"
+msgid "%(gb)s GB of routed experts is read from system memory per token at %(eff)s of its %(raw)s GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "ルーティングされるエキスパート %(gb)s GB を、トークンごとにシステムメモリから %(raw)s GB/s の %(eff)s 倍の速度で読み出します。トークンごとに選ばれるエキスパートが異なり、読み出しが連続した流れではなく小さなブロックの飛び飛びのアクセスになるためです。"
 
-msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
-msgstr "連続した重み %(gb).2f GB を、トークンごとにシステムメモリから %(raw).0f GB/s の %(eff).2f 倍の速度で読み出します。"
+msgid "%(gb)s GB of contiguous weights is read from system memory per token at %(eff)s of its %(raw)s GB/s."
+msgstr "連続した重み %(gb)s GB を、トークンごとにシステムメモリから %(raw)s GB/s の %(eff)s 倍の速度で読み出します。"
 
 msgid "No active parameter count was supplied; it was inferred from the weight bytes."
 msgstr "アクティブなパラメータ数が与えられなかったため、重みのバイト数から推定しました。"
 
-msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
-msgstr "層のうち %(pct).0f パーセントがシステムメモリにあるため、その割合のプロンプト演算はカードではなく CPU に %(tflops).2f TFLOP/s で割り当てられます。どちらの値も、1 台のマシンで 1 つの小さな密なモデルから得たものです。"
+msgid "%(pct)s percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops)s TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "層のうち %(pct)s パーセントがシステムメモリにあるため、その割合のプロンプト演算はカードではなく CPU に %(tflops)s TFLOP/s で割り当てられます。どちらの値も、1 台のマシンで 1 つの小さな密なモデルから得たものです。"
 
-msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
-msgstr "エキスパート一式のうち %(gb).1f GB を、マイクロバッチごとに 1 回、%(gbps).1f GB/s でリンク越しに転送します。この速度は、エキスパート一式がシステムメモリに収まらない唯一のモデルに合わせたもので、その読み出しには一部ディスクからの分が含まれます。ページキャッシュに残るエキスパート一式なら約 3 倍の速さで転送されるため、その場合この項はその分だけ遅すぎることになります。"
+msgid "%(gb)s GB of the expert set is streamed across the link once per micro-batch at %(gbps)s GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "エキスパート一式のうち %(gb)s GB を、マイクロバッチごとに 1 回、%(gbps)s GB/s でリンク越しに転送します。この速度は、エキスパート一式がシステムメモリに収まらない唯一のモデルに合わせたもので、その読み出しには一部ディスクからの分が含まれます。ページキャッシュに残るエキスパート一式なら約 3 倍の速さで転送されるため、その場合この項はその分だけ遅すぎることになります。"
 
-msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
-msgstr "転送先となるカードがないため、エキスパート一式のうち %(gb).1f GB を、マイクロバッチごとに 1 回、%(gbps).1f GB/s でシステムメモリから読み出します。"
+msgid "%(gb)s GB of the expert set is read out of system memory once per micro-batch at %(gbps)s GB/s, because there is no card to stream it to."
+msgstr "転送先となるカードがないため、エキスパート一式のうち %(gb)s GB を、マイクロバッチごとに 1 回、%(gbps)s GB/s でシステムメモリから読み出します。"
 
 msgid "No placement of this model on this machine could run it."
 msgstr "このマシンでは、このモデルを動かせる配置がありません。"
@@ -3262,14 +3262,14 @@ msgstr "このマシンでは、このモデルを動かせる配置がありま
 msgid "Generation is a benchmark of this configuration, not a prediction."
 msgstr "生成速度は予測ではなく、この構成のベンチマーク結果です。"
 
-msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
-msgstr "生成速度は、%(date)s にこのマシンで取得した %(profile)s のベンチマークをもとに、計算式を %(factor).2f 倍で補正したものです。"
+msgid "Generation is the formula corrected by %(factor)s, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "生成速度は、%(date)s にこのマシンで取得した %(profile)s のベンチマークをもとに、計算式を %(factor)s 倍で補正したものです。"
 
 msgid "Prompt processing is a benchmark of this configuration."
 msgstr "プロンプト処理は、この構成のベンチマーク結果です。"
 
-msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
-msgstr "プロンプト処理は、ベンチマークをもとに計算式を %(factor).2f 倍で補正したものです。"
+msgid "Prompt processing is the formula corrected by %(factor)s from a benchmark."
+msgstr "プロンプト処理は、ベンチマークをもとに計算式を %(factor)s 倍で補正したものです。"
 
 msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
 msgstr "そのベンチマークのコマンドラインには、カードに載せた層の数が記録されていません。そのため、この補正は同じ配置で実行されたものとして扱っています。"

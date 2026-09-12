@@ -63,6 +63,7 @@ from llamafit.bench.types import (
     RunTraffic,
 )
 from llamafit.i18n import _
+from llamafit.units import format_decimals
 
 GENERATION_KINDS: tuple[BenchKind, ...] = ("llama-bench-tg", "server-1k")
 """Which measurements the generation fit may use.
@@ -404,14 +405,14 @@ def refusal_text(refusal: Refusal) -> str:
         ) % {"measurements": refusal.measurements, "parameters": refusal.parameters}
     if refusal.reason == "unphysical":
         return _(
-            "the fit put it at %(value).3f, which its own definition does not allow; the"
+            "the fit put it at %(value)s, which its own definition does not allow; the"
             " measurements disagree with each other under section 10.1's model"
-        ) % {"value": refusal.value if refusal.value is not None else 0.0}
+        ) % {"value": format_decimals(refusal.value if refusal.value is not None else 0.0, 3)}
     if refusal.reason == "discarded-with-the-fit":
         return _(
-            "it came out at %(value).3f, but another parameter of the same fit was"
+            "it came out at %(value)s, but another parameter of the same fit was"
             " impossible, and least squares chose them against each other"
-        ) % {"value": refusal.value if refusal.value is not None else 0.0}
+        ) % {"value": format_decimals(refusal.value if refusal.value is not None else 0.0, 3)}
     return _(
         "the estimator has no such term: section 10.1 removed the per-layer overhead,"
         " which for a 28-layer model exceeded the whole measured token"

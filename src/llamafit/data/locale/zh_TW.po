@@ -32,11 +32,11 @@ msgstr "%(measurements)d 種不同組態對應 %(parameters)d 個自由參數；
 msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
 msgstr "這 %(measurements)d 種組態之間的變化不夠獨立，無法分離出 %(parameters)d 個參數"
 
-msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
-msgstr "擬合把它定在 %(value).3f，而它自己的定義不允許這個值；在 10.1 節的模型下，這些量測彼此矛盾"
+msgid "the fit put it at %(value)s, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "擬合把它定在 %(value)s，而它自己的定義不允許這個值；在 10.1 節的模型下，這些量測彼此矛盾"
 
-msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
-msgstr "它算出來是 %(value).3f，但同一次擬合中的另一個參數是不可能的，最小平方法是在兩者互相牽制之下選出它們的"
+msgid "it came out at %(value)s, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "它算出來是 %(value)s，但同一次擬合中的另一個參數是不可能的，最小平方法是在兩者互相牽制之下選出它們的"
 
 msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
 msgstr "估算器裡沒有這一項：10.1 節拿掉了按層計的額外開銷，對一個 28 層的模型來說，它已經超過實測的整個 token 時間"
@@ -3229,32 +3229,32 @@ msgstr "它發布的是：%(names)s"
 msgid "licensed %(spdx)s, which this request does not allow"
 msgstr "授權是 %(spdx)s，這次請求不允許這個授權"
 
-msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
-msgstr "系統記憶體頻寬未實測；對 %(arch)s 按 %(gbps).0f GB/s 假定。"
+msgid "System memory bandwidth was not measured; %(gbps)s GB/s assumed for %(arch)s."
+msgstr "系統記憶體頻寬未實測；對 %(arch)s 按 %(gbps)s GB/s 假定。"
 
-msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
-msgstr "%(gpu)s 的頻寬未知；改用 %(backend)s 的後備值 %(gbps).0f GB/s。"
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps)s GB/s stands in."
+msgstr "%(gpu)s 的頻寬未知；改用 %(backend)s 的後備值 %(gbps)s GB/s。"
 
 msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
 msgstr "沒有顯示卡算力數據：提示處理按 CPU 估算。"
 
-msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
-msgstr "每個 token 要從系統記憶體讀取 %(gb).2f GB 的路由專家，速率是其 %(raw).0f GB/s 的 %(eff).2f 倍，因為每個 token 選中的專家都不一樣，這種讀取是分散的小區塊，而不是連續的串流。"
+msgid "%(gb)s GB of routed experts is read from system memory per token at %(eff)s of its %(raw)s GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "每個 token 要從系統記憶體讀取 %(gb)s GB 的路由專家，速率是其 %(raw)s GB/s 的 %(eff)s 倍，因為每個 token 選中的專家都不一樣，這種讀取是分散的小區塊，而不是連續的串流。"
 
-msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
-msgstr "每個 token 要從系統記憶體讀取 %(gb).2f GB 的連續權重，速率是其 %(raw).0f GB/s 的 %(eff).2f 倍。"
+msgid "%(gb)s GB of contiguous weights is read from system memory per token at %(eff)s of its %(raw)s GB/s."
+msgstr "每個 token 要從系統記憶體讀取 %(gb)s GB 的連續權重，速率是其 %(raw)s GB/s 的 %(eff)s 倍。"
 
 msgid "No active parameter count was supplied; it was inferred from the weight bytes."
 msgstr "沒有給出啟用參數量；它是從權重位元組數推斷出來的。"
 
-msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
-msgstr "有 %(pct).0f%% 的層在系統記憶體裡，所以這部分提示運算按 %(tflops).2f TFLOP/s 算在 CPU 頭上，而不是顯示卡。兩個速率都來自一台機器上的一個小稠密模型。"
+msgid "%(pct)s percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops)s TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "有 %(pct)s%% 的層在系統記憶體裡，所以這部分提示運算按 %(tflops)s TFLOP/s 算在 CPU 頭上，而不是顯示卡。兩個速率都來自一台機器上的一個小稠密模型。"
 
-msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
-msgstr "專家集合中有 %(gb).1f GB 會在每個微批次經連結以 %(gbps).1f GB/s 傳輸一次。這個速率是在唯一一個專家集合放不進系統記憶體的模型上擬合的，所以它有一部分讀取來自磁碟；如果專家集合能留在頁面快取裡，傳輸大約快三倍，對那樣的模型來說，這一項就慢了這麼多。"
+msgid "%(gb)s GB of the expert set is streamed across the link once per micro-batch at %(gbps)s GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "專家集合中有 %(gb)s GB 會在每個微批次經連結以 %(gbps)s GB/s 傳輸一次。這個速率是在唯一一個專家集合放不進系統記憶體的模型上擬合的，所以它有一部分讀取來自磁碟；如果專家集合能留在頁面快取裡，傳輸大約快三倍，對那樣的模型來說，這一項就慢了這麼多。"
 
-msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
-msgstr "專家集合中有 %(gb).1f GB 會在每個微批次以 %(gbps).1f GB/s 從系統記憶體讀出一次，因為沒有顯示卡可以傳給它。"
+msgid "%(gb)s GB of the expert set is read out of system memory once per micro-batch at %(gbps)s GB/s, because there is no card to stream it to."
+msgstr "專家集合中有 %(gb)s GB 會在每個微批次以 %(gbps)s GB/s 從系統記憶體讀出一次，因為沒有顯示卡可以傳給它。"
 
 msgid "No placement of this model on this machine could run it."
 msgstr "在這台機器上，這個模型的任何放置方案都無法執行它。"
@@ -3262,14 +3262,14 @@ msgstr "在這台機器上，這個模型的任何放置方案都無法執行它
 msgid "Generation is a benchmark of this configuration, not a prediction."
 msgstr "生成速度是這套組態的實測結果，不是預測。"
 
-msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
-msgstr "生成速度是公式乘以 %(factor).2f 的修正結果，依據的是 %(date)s 在這台機器上對 %(profile)s 的基準測試。"
+msgid "Generation is the formula corrected by %(factor)s, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "生成速度是公式乘以 %(factor)s 的修正結果，依據的是 %(date)s 在這台機器上對 %(profile)s 的基準測試。"
 
 msgid "Prompt processing is a benchmark of this configuration."
 msgstr "提示處理速度是這套組態的實測結果。"
 
-msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
-msgstr "提示處理速度是公式經基準測試乘以 %(factor).2f 修正後的結果。"
+msgid "Prompt processing is the formula corrected by %(factor)s from a benchmark."
+msgstr "提示處理速度是公式經基準測試乘以 %(factor)s 修正後的結果。"
 
 msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
 msgstr "那次基準測試的指令列沒有記錄有多少層放到了顯示卡上，所以這個修正假定它就是按目前這個放置方案執行的。"

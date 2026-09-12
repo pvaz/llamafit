@@ -921,11 +921,11 @@ msgstr "%(measurements)d konfigurasi berbeza bagi %(parameters)d parameter bebas
 msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
 msgstr "%(measurements)d konfigurasi itu tidak cukup berubah secara bebas untuk memisahkan %(parameters)d parameter"
 
-msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
-msgstr "penyuaian meletakkannya pada %(value).3f, yang tidak dibenarkan oleh takrifnya sendiri; ukuran-ukuran itu bercanggah antara satu sama lain di bawah model bahagian 10.1"
+msgid "the fit put it at %(value)s, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "penyuaian meletakkannya pada %(value)s, yang tidak dibenarkan oleh takrifnya sendiri; ukuran-ukuran itu bercanggah antara satu sama lain di bawah model bahagian 10.1"
 
-msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
-msgstr "nilainya keluar %(value).3f, tetapi satu lagi parameter penyuaian yang sama mustahil, dan kuasa dua terkecil memilih kedua-duanya saling bertentangan"
+msgid "it came out at %(value)s, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "nilainya keluar %(value)s, tetapi satu lagi parameter penyuaian yang sama mustahil, dan kuasa dua terkecil memilih kedua-duanya saling bertentangan"
 
 msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
 msgstr "penganggar tidak mempunyai sebutan sebegitu: bahagian 10.1 membuang overhead setiap lapisan, yang bagi model 28 lapisan melebihi keseluruhan token yang diukur"
@@ -3198,32 +3198,32 @@ msgstr "Ia menerbitkan: %(names)s"
 msgid "licensed %(spdx)s, which this request does not allow"
 msgstr "berlesen %(spdx)s, yang tidak dibenarkan oleh permintaan ini"
 
-msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
-msgstr "Bandwidth memori sistem tidak diukur; %(gbps).0f GB/s diandaikan bagi %(arch)s."
+msgid "System memory bandwidth was not measured; %(gbps)s GB/s assumed for %(arch)s."
+msgstr "Bandwidth memori sistem tidak diukur; %(gbps)s GB/s diandaikan bagi %(arch)s."
 
-msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
-msgstr "Bandwidth %(gpu)s tidak diketahui; nilai sandaran %(backend)s sebanyak %(gbps).0f GB/s digunakan sebagai ganti."
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps)s GB/s stands in."
+msgstr "Bandwidth %(gpu)s tidak diketahui; nilai sandaran %(backend)s sebanyak %(gbps)s GB/s digunakan sebagai ganti."
 
 msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
 msgstr "Tiada angka pengiraan kad grafik: pemprosesan prompt dianggarkan pada CPU."
 
-msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
-msgstr "%(gb).2f GB expert terhala dibaca daripada memori sistem bagi setiap token pada %(eff).2f daripada %(raw).0f GB/s miliknya, kerana setiap token memilih segelintir expert yang berbeza dan bacaannya ialah taburan blok kecil, bukan aliran."
+msgid "%(gb)s GB of routed experts is read from system memory per token at %(eff)s of its %(raw)s GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "%(gb)s GB expert terhala dibaca daripada memori sistem bagi setiap token pada %(eff)s daripada %(raw)s GB/s miliknya, kerana setiap token memilih segelintir expert yang berbeza dan bacaannya ialah taburan blok kecil, bukan aliran."
 
-msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
-msgstr "%(gb).2f GB pemberat bersebelahan dibaca daripada memori sistem bagi setiap token pada %(eff).2f daripada %(raw).0f GB/s miliknya."
+msgid "%(gb)s GB of contiguous weights is read from system memory per token at %(eff)s of its %(raw)s GB/s."
+msgstr "%(gb)s GB pemberat bersebelahan dibaca daripada memori sistem bagi setiap token pada %(eff)s daripada %(raw)s GB/s miliknya."
 
 msgid "No active parameter count was supplied; it was inferred from the weight bytes."
 msgstr "Tiada bilangan parameter aktif diberikan; angkanya disimpulkan daripada bait pemberatnya."
 
-msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
-msgstr "%(pct).0f peratus lapisannya berada dalam memori sistem, jadi bahagian pengiraan prompt sebanyak itu dibebankan kepada CPU pada %(tflops).2f TFLOP/s, bukan kepada kad. Kedua-dua kadar itu datang daripada satu model padat kecil pada satu mesin."
+msgid "%(pct)s percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops)s TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "%(pct)s peratus lapisannya berada dalam memori sistem, jadi bahagian pengiraan prompt sebanyak itu dibebankan kepada CPU pada %(tflops)s TFLOP/s, bukan kepada kad. Kedua-dua kadar itu datang daripada satu model padat kecil pada satu mesin."
 
-msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
-msgstr "%(gb).1f GB daripada set expert dialirkan melalui pautan sekali bagi setiap kelompok mikro pada %(gbps).1f GB/s. Kadar itu disuaikan pada satu-satunya model yang set expert-nya tidak muat dalam memori sistem, jadi sebahagian bacaannya datang daripada cakera; set expert yang kekal dalam page cache mengalir kira-kira tiga kali lebih pantas, dan bagi model sebegitu sebutan ini terlalu perlahan sebanyak itu."
+msgid "%(gb)s GB of the expert set is streamed across the link once per micro-batch at %(gbps)s GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "%(gb)s GB daripada set expert dialirkan melalui pautan sekali bagi setiap kelompok mikro pada %(gbps)s GB/s. Kadar itu disuaikan pada satu-satunya model yang set expert-nya tidak muat dalam memori sistem, jadi sebahagian bacaannya datang daripada cakera; set expert yang kekal dalam page cache mengalir kira-kira tiga kali lebih pantas, dan bagi model sebegitu sebutan ini terlalu perlahan sebanyak itu."
 
-msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
-msgstr "%(gb).1f GB daripada set expert dibaca daripada memori sistem sekali bagi setiap kelompok mikro pada %(gbps).1f GB/s, kerana tiada kad untuk mengalirkannya."
+msgid "%(gb)s GB of the expert set is read out of system memory once per micro-batch at %(gbps)s GB/s, because there is no card to stream it to."
+msgstr "%(gb)s GB daripada set expert dibaca daripada memori sistem sekali bagi setiap kelompok mikro pada %(gbps)s GB/s, kerana tiada kad untuk mengalirkannya."
 
 msgid "No placement of this model on this machine could run it."
 msgstr "Tiada penempatan model ini pada mesin ini yang dapat menjalankannya."
@@ -3231,14 +3231,14 @@ msgstr "Tiada penempatan model ini pada mesin ini yang dapat menjalankannya."
 msgid "Generation is a benchmark of this configuration, not a prediction."
 msgstr "Penjanaan ialah penanda aras konfigurasi ini, bukan ramalan."
 
-msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
-msgstr "Penjanaan ialah formula yang dibetulkan sebanyak %(factor).2f, daripada penanda aras %(profile)s pada mesin ini yang diambil pada %(date)s."
+msgid "Generation is the formula corrected by %(factor)s, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "Penjanaan ialah formula yang dibetulkan sebanyak %(factor)s, daripada penanda aras %(profile)s pada mesin ini yang diambil pada %(date)s."
 
 msgid "Prompt processing is a benchmark of this configuration."
 msgstr "Pemprosesan prompt ialah penanda aras konfigurasi ini."
 
-msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
-msgstr "Pemprosesan prompt ialah formula yang dibetulkan sebanyak %(factor).2f daripada sesuatu penanda aras."
+msgid "Prompt processing is the formula corrected by %(factor)s from a benchmark."
+msgstr "Pemprosesan prompt ialah formula yang dibetulkan sebanyak %(factor)s daripada sesuatu penanda aras."
 
 msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
 msgstr "Baris perintah penanda aras itu tidak merekodkan berapa lapisan yang masuk ke kad, jadi pembetulannya mengandaikan ia berjalan pada penempatan ini."

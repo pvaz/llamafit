@@ -1,13 +1,20 @@
 """A language that is only part translated has to say so, and say it once.
 
-Most of the catalogs LlamaFit ships are a quarter written, and what is missing from them
-is the prose rather than the fragments, so the screen a reader gets is labelled in their
-own language and explained in English. Nothing about that is visible from inside it: a
-reader has no way to tell a translation in progress from a translation that went wrong.
+All 37 shipped catalogs are complete today, and this is still here for the next one that
+is not: a catalog is written from the top of the template down, so a part-written one
+carries the fragments -- a column heading, a verdict, a unit -- and not the prose. The
+screen a reader gets is labelled in their own language and explained in English, and
+nothing about that is visible from inside it: a reader has no way to tell a translation
+in progress from a translation that went wrong.
 
 So what is pinned here is the sentence that tells them, the figure in it, and the two
 ways it could be got wrong -- said on a run that had nothing to report, and swallowed on
 a run that already had something else to say.
+
+The part-written catalogs the tests below need are written into a temporary directory
+rather than borrowed from the ones that ship. They used to be borrowed, which worked
+until the day every shipped catalog was finished and the two tests that did so had
+nothing left to point at. A fixture cannot be completed out from under a test.
 """
 
 from __future__ import annotations
@@ -18,12 +25,13 @@ import pytest
 from typer.testing import CliRunner
 
 from llamafit.cli.app import app
-from llamafit.i18n import translator
+from llamafit.i18n import catalogs, translator
 from llamafit.i18n.catalogs import available_languages, load_language
 from llamafit.i18n.completeness import (
     NEARLY_COMPLETE,
     SHORTFALL_HINT,
     Completeness,
+    _count,
     completeness,
     shortfall_after,
     template_message_count,
@@ -246,24 +254,51 @@ def test_every_shipped_catalog_either_is_finished_or_says_it_is_not(language: st
         assert f"{measured.percent}%" in choice.notice
 
 
-def test_the_catalogs_that_ship_are_not_all_on_one_side_of_the_line() -> None:
-    # If they were, either half of this would be untested. Today six are finished and
-    # thirty-one are about a quarter written; all this asks is that both cases exist.
+def test_a_shipped_catalog_can_reach_the_line() -> None:
+    # A threshold no real catalog can clear would silence nothing and announce everything,
+    # and every test of the quiet case above uses a catalog written for the occasion --
+    # four messages, four translations -- which cannot catch that. This one is measured
+    # against the real template by the real catalogs.
+    #
+    # The opposite half of this used to be here too: that some shipped catalog fell short,
+    # so both branches were exercised by real data. All 37 are complete now, and it is not
+    # coming back as `all(...)`. docs/translations.md welcomes a partly finished catalog
+    # that a person has read; a suite that failed on one would enforce the reverse of the
+    # rule the project actually has. The short branch is exercised above, by a catalog
+    # written for it.
     shares = [completeness(load_language(tag)).share for tag in LANGUAGES]
     assert any(share >= NEARLY_COMPLETE for share in shares)
-    assert any(share < NEARLY_COMPLETE for share in shares)
 
 
-def test_the_notice_reaches_stderr_on_a_real_command() -> None:
+def test_the_notice_reaches_stderr_on_a_real_command(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     # The route is the one the substitution notice already takes, and the point of this
     # is that it is the same route: a sentence that never leaves the library is not a
     # notice. `--version` is enough, because the language is chosen before it prints.
-    short = next(tag for tag in LANGUAGES if not completeness(load_language(tag)).nearly_complete)
+    #
+    # The command reads the packaged directory and takes no argument for one, so the
+    # packaged directory is what moves. What moves is `packaged_dir`, one level below
+    # `catalog_dir`, and not `catalog_dir` itself: two modules imported that name at
+    # import time, so patching it reaches one of them and leaves the other pointing at
+    # the real catalogs. Patching what it calls reaches both, because both are holding
+    # the same function object.
+    #
+    # The template count is cached under the directory it was read from, so the cache is
+    # dropped either side: a stale 1153 here would make a four-message catalog look
+    # finished, and a stale 4 afterwards would make every real catalog look finished to
+    # every test that ran next.
+    folder = a_locale_dir(tmp_path, PART_WRITTEN)
+    monkeypatch.setattr(catalogs, "packaged_dir", lambda *args, **kwargs: folder)
+    _count.cache_clear()
     translator.reset()
-    result = runner.invoke(app, ["--language", short, "--version"])
-    assert result.exit_code == 0
-    remarked = " ".join(result.stderr.split())
-    assert "written, so much of what it says will be in English" in remarked
-    assert SHORTFALL_HINT in remarked
-    # And not on stdout, which is where a `--json` document would have been.
-    assert "written, so much of" not in result.stdout
+    try:
+        result = runner.invoke(app, ["--language", "pt_PT", "--version"])
+        assert result.exit_code == 0
+        remarked = " ".join(result.stderr.split())
+        assert "written, so much of what it says will be in English" in remarked
+        assert SHORTFALL_HINT in remarked
+        # And not on stdout, which is where a `--json` document would have been.
+        assert "written, so much of" not in result.stdout
+    finally:
+        _count.cache_clear()

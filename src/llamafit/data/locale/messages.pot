@@ -11,27 +11,27 @@ msgstr ""
 "Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/llamafit/bench/calibrate.py:393
+#: src/llamafit/bench/calibrate.py:394
 msgid "nothing measured touches this term, so there is no equation it appears in"
 msgstr ""
 
-#: src/llamafit/bench/calibrate.py:395
+#: src/llamafit/bench/calibrate.py:396
 msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
 msgstr ""
 
-#: src/llamafit/bench/calibrate.py:401
+#: src/llamafit/bench/calibrate.py:402
 msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
 msgstr ""
 
-#: src/llamafit/bench/calibrate.py:406
-msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+#: src/llamafit/bench/calibrate.py:407
+msgid "the fit put it at %(value)s, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
 msgstr ""
 
-#: src/llamafit/bench/calibrate.py:411
-msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
+#: src/llamafit/bench/calibrate.py:412
+msgid "it came out at %(value)s, but another parameter of the same fit was impossible, and least squares chose them against each other"
 msgstr ""
 
-#: src/llamafit/bench/calibrate.py:415
+#: src/llamafit/bench/calibrate.py:416
 msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
 msgstr ""
 
@@ -4409,67 +4409,67 @@ msgstr ""
 msgid "licensed %(spdx)s, which this request does not allow"
 msgstr ""
 
-#: src/llamafit/speed/bandwidths.py:109
-msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
+#: src/llamafit/speed/bandwidths.py:110
+msgid "System memory bandwidth was not measured; %(gbps)s GB/s assumed for %(arch)s."
 msgstr ""
 
-#: src/llamafit/speed/bandwidths.py:128
-msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
+#: src/llamafit/speed/bandwidths.py:129
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps)s GB/s stands in."
 msgstr ""
 
-#: src/llamafit/speed/bandwidths.py:140
+#: src/llamafit/speed/bandwidths.py:145
 msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:223
-msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+#: src/llamafit/speed/estimate.py:224
+msgid "%(gb)s GB of routed experts is read from system memory per token at %(eff)s of its %(raw)s GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:236
-msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
+#: src/llamafit/speed/estimate.py:237
+msgid "%(gb)s GB of contiguous weights is read from system memory per token at %(eff)s of its %(raw)s GB/s."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:248
+#: src/llamafit/speed/estimate.py:249
 msgid "No active parameter count was supplied; it was inferred from the weight bytes."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:260
-msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+#: src/llamafit/speed/estimate.py:261
+msgid "%(pct)s percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops)s TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:277
-msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+#: src/llamafit/speed/estimate.py:278
+msgid "%(gb)s GB of the expert set is streamed across the link once per micro-batch at %(gbps)s GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:288
-msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+#: src/llamafit/speed/estimate.py:292
+msgid "%(gb)s GB of the expert set is read out of system memory once per micro-batch at %(gbps)s GB/s, because there is no card to stream it to."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:523
+#: src/llamafit/speed/estimate.py:530
 msgid "No placement of this model on this machine could run it."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:577
+#: src/llamafit/speed/estimate.py:584
 msgid "Generation is a benchmark of this configuration, not a prediction."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:585
-msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
+#: src/llamafit/speed/estimate.py:592
+msgid "Generation is the formula corrected by %(factor)s, from a benchmark of %(profile)s on this machine taken on %(date)s."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:600
+#: src/llamafit/speed/estimate.py:607
 msgid "Prompt processing is a benchmark of this configuration."
 msgstr ""
 
-#: src/llamafit/speed/estimate.py:608
-msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
-msgstr ""
-
-#: src/llamafit/speed/estimate.py:617
-msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+#: src/llamafit/speed/estimate.py:615
+msgid "Prompt processing is the formula corrected by %(factor)s from a benchmark."
 msgstr ""
 
 #: src/llamafit/speed/estimate.py:624
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr ""
+
+#: src/llamafit/speed/estimate.py:631
 msgid "This figure assumes nothing pages: a placement this tight often does, silently."
 msgstr ""
 
@@ -4946,7 +4946,7 @@ msgctxt "parameter count"
 msgid "B"
 msgstr ""
 
-#: src/llamafit/units.py:122
+#: src/llamafit/units.py:144
 msgctxt "size"
 msgid "unknown"
 msgstr ""

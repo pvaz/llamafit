@@ -25,11 +25,11 @@ msgstr "%(measurements)d verschiedene Konfigurationen für %(parameters)d freie 
 msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
 msgstr "die %(measurements)d Konfigurationen variieren nicht unabhängig genug, um %(parameters)d Parameter zu trennen"
 
-msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
-msgstr "die Anpassung setzte ihn auf %(value).3f, was seine eigene Definition nicht zulässt; die Messungen widersprechen einander unter dem Modell aus Abschnitt 10.1"
+msgid "the fit put it at %(value)s, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "die Anpassung setzte ihn auf %(value)s, was seine eigene Definition nicht zulässt; die Messungen widersprechen einander unter dem Modell aus Abschnitt 10.1"
 
-msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
-msgstr "er kam auf %(value).3f heraus, aber ein anderer Parameter derselben Anpassung war unmöglich, und die kleinsten Quadrate haben beide gegeneinander gewählt"
+msgid "it came out at %(value)s, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "er kam auf %(value)s heraus, aber ein anderer Parameter derselben Anpassung war unmöglich, und die kleinsten Quadrate haben beide gegeneinander gewählt"
 
 msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
 msgstr "der Schätzer hat diesen Term nicht: Abschnitt 10.1 hat den Aufwand je Schicht entfernt, der bei einem Modell mit 28 Schichten das ganze gemessene Token überstieg"
@@ -2978,32 +2978,32 @@ msgstr "unter %(spdx)s lizenziert, was diese Anfrage nicht erlaubt"
 msgid "no placement of it fits this machine at any context"
 msgstr "keine seiner Platzierungen passt bei irgendeinem Kontext auf diesen Rechner"
 
-msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
-msgstr "Die Bandbreite des Systemspeichers wurde nicht gemessen; für %(arch)s werden %(gbps).0f GB/s angenommen."
+msgid "System memory bandwidth was not measured; %(gbps)s GB/s assumed for %(arch)s."
+msgstr "Die Bandbreite des Systemspeichers wurde nicht gemessen; für %(arch)s werden %(gbps)s GB/s angenommen."
 
-msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
-msgstr "Die Bandbreite von %(gpu)s ist unbekannt; an ihre Stelle tritt der %(backend)s-Ersatzwert von %(gbps).0f GB/s."
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps)s GB/s stands in."
+msgstr "Die Bandbreite von %(gpu)s ist unbekannt; an ihre Stelle tritt der %(backend)s-Ersatzwert von %(gbps)s GB/s."
 
 msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
 msgstr "Keine Rechenangabe zur Grafikkarte: die Prompt-Verarbeitung wird auf der CPU geschätzt."
 
-msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
-msgstr "%(gb).2f GB geroutete Experten werden je Token aus dem Systemspeicher gelesen, mit %(eff).2f seiner %(raw).0f GB/s, weil jedes Token eine andere Handvoll Experten wählt und der Zugriff eine Streuung kleiner Blöcke statt eines Stroms ist."
+msgid "%(gb)s GB of routed experts is read from system memory per token at %(eff)s of its %(raw)s GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "%(gb)s GB geroutete Experten werden je Token aus dem Systemspeicher gelesen, mit %(eff)s seiner %(raw)s GB/s, weil jedes Token eine andere Handvoll Experten wählt und der Zugriff eine Streuung kleiner Blöcke statt eines Stroms ist."
 
-msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
-msgstr "%(gb).2f GB zusammenhängende Gewichte werden je Token aus dem Systemspeicher gelesen, mit %(eff).2f seiner %(raw).0f GB/s."
+msgid "%(gb)s GB of contiguous weights is read from system memory per token at %(eff)s of its %(raw)s GB/s."
+msgstr "%(gb)s GB zusammenhängende Gewichte werden je Token aus dem Systemspeicher gelesen, mit %(eff)s seiner %(raw)s GB/s."
 
 msgid "No active parameter count was supplied; it was inferred from the weight bytes."
 msgstr "Es wurde keine Zahl aktiver Parameter angegeben; sie wurde aus den Gewichtsbytes abgeleitet."
 
-msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
-msgstr "%(pct).0f Prozent der Schichten liegen im Systemspeicher, deshalb wird dieser Anteil der Prompt-Rechnerei mit %(tflops).2f TFLOP/s der CPU statt der Karte angerechnet. Beide Raten stammen von einem kleinen dichten Modell auf einem einzigen Rechner."
+msgid "%(pct)s percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops)s TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "%(pct)s Prozent der Schichten liegen im Systemspeicher, deshalb wird dieser Anteil der Prompt-Rechnerei mit %(tflops)s TFLOP/s der CPU statt der Karte angerechnet. Beide Raten stammen von einem kleinen dichten Modell auf einem einzigen Rechner."
 
-msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
-msgstr "%(gb).1f GB des Expertensatzes werden je Micro-Batch einmal über die Verbindung gestreamt, mit %(gbps).1f GB/s. Diese Rate wurde an dem einen Modell angepasst, dessen Expertensatz nicht in den Systemspeicher passt, ein Teil seines Lesens kommt also von der Platte; ein Expertensatz, der im Seitencache bleibt, streamt etwa dreimal so schnell, und für einen solchen ist dieser Term genau um so viel zu langsam."
+msgid "%(gb)s GB of the expert set is streamed across the link once per micro-batch at %(gbps)s GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "%(gb)s GB des Expertensatzes werden je Micro-Batch einmal über die Verbindung gestreamt, mit %(gbps)s GB/s. Diese Rate wurde an dem einen Modell angepasst, dessen Expertensatz nicht in den Systemspeicher passt, ein Teil seines Lesens kommt also von der Platte; ein Expertensatz, der im Seitencache bleibt, streamt etwa dreimal so schnell, und für einen solchen ist dieser Term genau um so viel zu langsam."
 
-msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
-msgstr "%(gb).1f GB des Expertensatzes werden je Micro-Batch einmal aus dem Systemspeicher gelesen, mit %(gbps).1f GB/s, weil es keine Karte gibt, zu der gestreamt werden könnte."
+msgid "%(gb)s GB of the expert set is read out of system memory once per micro-batch at %(gbps)s GB/s, because there is no card to stream it to."
+msgstr "%(gb)s GB des Expertensatzes werden je Micro-Batch einmal aus dem Systemspeicher gelesen, mit %(gbps)s GB/s, weil es keine Karte gibt, zu der gestreamt werden könnte."
 
 msgid "No placement of this model on this machine could run it."
 msgstr "Keine Platzierung dieses Modells auf diesem Rechner könnte es ausführen."
@@ -3011,14 +3011,14 @@ msgstr "Keine Platzierung dieses Modells auf diesem Rechner könnte es ausführe
 msgid "Generation is a benchmark of this configuration, not a prediction."
 msgstr "Die Generierung ist ein Benchmark dieser Konfiguration, keine Vorhersage."
 
-msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
-msgstr "Die Generierung ist die Formel, korrigiert um %(factor).2f, aus einem Benchmark von %(profile)s auf diesem Rechner vom %(date)s."
+msgid "Generation is the formula corrected by %(factor)s, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "Die Generierung ist die Formel, korrigiert um %(factor)s, aus einem Benchmark von %(profile)s auf diesem Rechner vom %(date)s."
 
 msgid "Prompt processing is a benchmark of this configuration."
 msgstr "Die Prompt-Verarbeitung ist ein Benchmark dieser Konfiguration."
 
-msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
-msgstr "Die Prompt-Verarbeitung ist die Formel, korrigiert um %(factor).2f aus einem Benchmark."
+msgid "Prompt processing is the formula corrected by %(factor)s from a benchmark."
+msgstr "Die Prompt-Verarbeitung ist die Formel, korrigiert um %(factor)s aus einem Benchmark."
 
 msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
 msgstr "Die Befehlszeile dieses Benchmarks hält nicht fest, wie viele Schichten auf die Karte gingen, deshalb nimmt die Korrektur an, dass er bei dieser Platzierung lief."

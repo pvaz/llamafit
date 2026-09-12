@@ -94,6 +94,28 @@ def format_grouped(value: int) -> str:
     return localise_number(f"{value:,}")
 
 
+def format_decimals(value: float, places: int) -> str:
+    """A number to a fixed number of decimal places, in this language's punctuation.
+
+    Args:
+        value: The number.
+        places: How many digits after the separator.
+
+    A message that writes ``%(gb).2f`` formats in the C locale, so it always writes a
+    point -- which put ``0.92 GB`` in a sentence directly underneath a table that had just
+    written ``0,0165`` for a reader whose language uses the comma. The numeric conversion
+    is the whole problem: it cannot be reached by the catalog, because the catalog carries
+    a separator and not a format. So those messages take ``%(gb)s`` instead and are handed
+    the result of this, which is what every number that reaches a reader already goes
+    through.
+
+    Grouping is deliberately not applied. These are quantities under a thousand -- gigabytes
+    per token, an efficiency, a correction factor -- and the digit-grouping limitation
+    ``docs/translations.md`` records is a separate thing that needs a pattern per language.
+    """
+    return localise_number(f"{value:.{places}f}")
+
+
 def parse_size(text: str) -> int:
     """Parse a human size such as ``8G``, ``7.5GiB`` or ``512MB`` into bytes.
 

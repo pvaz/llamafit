@@ -41,11 +41,11 @@ msgstr "%(measurements)d különböző beállítás %(parameters)d szabad param�
 msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
 msgstr "a %(measurements)d beállítás nem változik egymástól elég függetlenül ahhoz, hogy %(parameters)d paraméter szétválasztható legyen"
 
-msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
-msgstr "az illesztés szerint %(value).3f, amit a saját meghatározása nem enged meg; a mérések ellentmondanak egymásnak a 10.1. szakasz modellje szerint"
+msgid "the fit put it at %(value)s, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "az illesztés szerint %(value)s, amit a saját meghatározása nem enged meg; a mérések ellentmondanak egymásnak a 10.1. szakasz modellje szerint"
 
-msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
-msgstr "%(value).3f jött ki, de ugyanennek az illesztésnek egy másik paramétere lehetetlen volt, és a legkisebb négyzetek módszere egymás rovására választotta ki őket"
+msgid "it came out at %(value)s, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "%(value)s jött ki, de ugyanennek az illesztésnek egy másik paramétere lehetetlen volt, és a legkisebb négyzetek módszere egymás rovására választotta ki őket"
 
 msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
 msgstr "a becslőnek nincs ilyen tagja: a 10.1. szakasz eltávolította a rétegenkénti többletet, ami egy 28 rétegű modellnél meghaladta a teljes mért tokent"
@@ -3272,32 +3272,32 @@ msgstr "Ezeket teszi közzé: %(names)s"
 msgid "licensed %(spdx)s, which this request does not allow"
 msgstr "%(spdx)s licencű, amit ez a kérés nem enged meg"
 
-msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
-msgstr "A rendszermemória sávszélessége nem lett megmérve; %(gbps).0f GB/s feltételezve ehhez: %(arch)s."
+msgid "System memory bandwidth was not measured; %(gbps)s GB/s assumed for %(arch)s."
+msgstr "A rendszermemória sávszélessége nem lett megmérve; %(gbps)s GB/s feltételezve ehhez: %(arch)s."
 
-msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
-msgstr "A(z) %(gpu)s sávszélessége ismeretlen; a(z) %(backend)s %(gbps).0f GB/s tartalékértéke lép a helyébe."
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps)s GB/s stands in."
+msgstr "A(z) %(gpu)s sávszélessége ismeretlen; a(z) %(backend)s %(gbps)s GB/s tartalékértéke lép a helyébe."
 
 msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
 msgstr "Nincs videokártya-számítási érték: a promptfeldolgozás a CPU-ra van becsülve."
 
-msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
-msgstr "%(gb).2f GB irányított szakértő olvasódik be a rendszermemóriából tokenenként, annak %(raw).0f GB/s sebességének %(eff).2f részén, mert minden token más maroknyi szakértőt választ, és az olvasás nem folyam, hanem apró blokkok szórása."
+msgid "%(gb)s GB of routed experts is read from system memory per token at %(eff)s of its %(raw)s GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "%(gb)s GB irányított szakértő olvasódik be a rendszermemóriából tokenenként, annak %(raw)s GB/s sebességének %(eff)s részén, mert minden token más maroknyi szakértőt választ, és az olvasás nem folyam, hanem apró blokkok szórása."
 
-msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
-msgstr "%(gb).2f GB összefüggő súly olvasódik be a rendszermemóriából tokenenként, annak %(raw).0f GB/s sebességének %(eff).2f részén."
+msgid "%(gb)s GB of contiguous weights is read from system memory per token at %(eff)s of its %(raw)s GB/s."
+msgstr "%(gb)s GB összefüggő súly olvasódik be a rendszermemóriából tokenenként, annak %(raw)s GB/s sebességének %(eff)s részén."
 
 msgid "No active parameter count was supplied; it was inferred from the weight bytes."
 msgstr "Nem adtak meg aktív paraméterszámot; a súlyok bájtjaiból lett kikövetkeztetve."
 
-msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
-msgstr "A rétegek %(pct).0f százaléka a rendszermemóriában ül, így a prompt számításainak ez a hányada a CPU-ra terhelődik %(tflops).2f TFLOP/s sebességgel, nem a kártyára. Mindkét sebesség egyetlen kis, sűrű modellből származik, egyetlen gépen."
+msgid "%(pct)s percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops)s TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "A rétegek %(pct)s százaléka a rendszermemóriában ül, így a prompt számításainak ez a hányada a CPU-ra terhelődik %(tflops)s TFLOP/s sebességgel, nem a kártyára. Mindkét sebesség egyetlen kis, sűrű modellből származik, egyetlen gépen."
 
-msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
-msgstr "A szakértőhalmazból %(gb).1f GB folyik át a buszon mikrökötegenként egyszer, %(gbps).1f GB/s sebességgel. Ezt a sebességet arra az egyetlen modellre illesztettük, amelynek a szakértőhalmaza nem fér el a rendszermemóriában, így az olvasás egy része a lemezről jön; egy olyan szakértőhalmaz, amely a lapgyorsítótárban marad, nagyjából háromszor gyorsabban folyik, és egy ilyennél ez a tag épp ennyivel lassabb."
+msgid "%(gb)s GB of the expert set is streamed across the link once per micro-batch at %(gbps)s GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "A szakértőhalmazból %(gb)s GB folyik át a buszon mikrökötegenként egyszer, %(gbps)s GB/s sebességgel. Ezt a sebességet arra az egyetlen modellre illesztettük, amelynek a szakértőhalmaza nem fér el a rendszermemóriában, így az olvasás egy része a lemezről jön; egy olyan szakértőhalmaz, amely a lapgyorsítótárban marad, nagyjából háromszor gyorsabban folyik, és egy ilyennél ez a tag épp ennyivel lassabb."
 
-msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
-msgstr "A szakértőhalmazból %(gb).1f GB olvasódik ki a rendszermemóriából mikrökötegenként egyszer, %(gbps).1f GB/s sebességgel, mert nincs kártya, ahová átfolyathatná."
+msgid "%(gb)s GB of the expert set is read out of system memory once per micro-batch at %(gbps)s GB/s, because there is no card to stream it to."
+msgstr "A szakértőhalmazból %(gb)s GB olvasódik ki a rendszermemóriából mikrökötegenként egyszer, %(gbps)s GB/s sebességgel, mert nincs kártya, ahová átfolyathatná."
 
 msgid "No placement of this model on this machine could run it."
 msgstr "Ennek a modellnek egyetlen elhelyezése sem tudta volna futtatni ezen a gépen."
@@ -3305,14 +3305,14 @@ msgstr "Ennek a modellnek egyetlen elhelyezése sem tudta volna futtatni ezen a 
 msgid "Generation is a benchmark of this configuration, not a prediction."
 msgstr "A generálás ennek a beállításnak a mérése, nem jóslat."
 
-msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
-msgstr "A generálás a képlet %(factor).2f szorzóval javítva, egy %(profile)s mérésből, amely ezen a gépen %(date)s napon készült."
+msgid "Generation is the formula corrected by %(factor)s, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "A generálás a képlet %(factor)s szorzóval javítva, egy %(profile)s mérésből, amely ezen a gépen %(date)s napon készült."
 
 msgid "Prompt processing is a benchmark of this configuration."
 msgstr "A promptfeldolgozás ennek a beállításnak a mérése."
 
-msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
-msgstr "A promptfeldolgozás a képlet, egy mérésből származó %(factor).2f szorzóval javítva."
+msgid "Prompt processing is the formula corrected by %(factor)s from a benchmark."
+msgstr "A promptfeldolgozás a képlet, egy mérésből származó %(factor)s szorzóval javítva."
 
 msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
 msgstr "Annak a mérésnek a parancssora nem rögzíti, hány réteg került a kártyára, így a javítás azt feltételezi, hogy ezzel az elhelyezéssel futott."

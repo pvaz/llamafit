@@ -58,6 +58,7 @@ from llamafit.speed.traffic import (
     per_token_traffic,
     streamed_expert_fraction,
 )
+from llamafit.units import format_decimals
 
 _NGL = re.compile(r"(?:^|\s)-ngl\s+(\d+)")
 _N_CPU_MOE = re.compile(r"(?:^|\s)--n-cpu-moe\s+(\d+)")
@@ -221,26 +222,26 @@ def formula_estimate(
     if traffic.scattered_bytes:
         notes.append(
             _(
-                "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f"
-                " of its %(raw).0f GB/s, because each token selects a different handful of"
+                "%(gb)s GB of routed experts is read from system memory per token at %(eff)s"
+                " of its %(raw)s GB/s, because each token selects a different handful of"
                 " experts and the read is a scatter of small blocks rather than a stream."
             )
             % {
-                "gb": traffic.scattered_bytes / 1e9,
-                "eff": EFF_RAM_SCATTERED,
-                "raw": bandwidths.ram_gbps,
+                "gb": format_decimals(traffic.scattered_bytes / 1e9, 2),
+                "eff": format_decimals(EFF_RAM_SCATTERED, 2),
+                "raw": format_decimals(bandwidths.ram_gbps, 0),
             }
         )
     if traffic.sequential_bytes:
         notes.append(
             _(
-                "%(gb).2f GB of contiguous weights is read from system memory per token at"
-                " %(eff).2f of its %(raw).0f GB/s."
+                "%(gb)s GB of contiguous weights is read from system memory per token at"
+                " %(eff)s of its %(raw)s GB/s."
             )
             % {
-                "gb": traffic.sequential_bytes / 1e9,
-                "eff": EFF_RAM_SEQUENTIAL,
-                "raw": bandwidths.ram_gbps,
+                "gb": format_decimals(traffic.sequential_bytes / 1e9, 2),
+                "eff": format_decimals(EFF_RAM_SEQUENTIAL, 2),
+                "raw": format_decimals(bandwidths.ram_gbps, 0),
             }
         )
     if not active_params:
@@ -258,13 +259,13 @@ def formula_estimate(
     if on_card < 1.0:
         notes.append(
             _(
-                "%(pct).0f percent of the layers sit in system memory, so that share of the"
-                " prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than"
+                "%(pct)s percent of the layers sit in system memory, so that share of the"
+                " prompt arithmetic is charged to the CPU at %(tflops)s TFLOP/s rather than"
                 " to the card. Both rates come from one small dense model on one machine."
             )
             % {
-                "pct": 100.0 * (1.0 - on_card),
-                "tflops": bandwidths.cpu_compute_flops / 1e12,
+                "pct": format_decimals(100.0 * (1.0 - on_card), 0),
+                "tflops": format_decimals(bandwidths.cpu_compute_flops / 1e12, 2),
             }
         )
     streamed = expert_bytes_in_ram(placement, facts) * streamed_expert_fraction(facts, micro_batch)
@@ -275,21 +276,27 @@ def formula_estimate(
     if t_link:
         notes.append(
             _(
-                "%(gb).1f GB of the expert set is streamed across the link once per"
-                " micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model"
+                "%(gb)s GB of the expert set is streamed across the link once per"
+                " micro-batch at %(gbps)s GB/s. That rate was fitted on the one model"
                 " whose expert set does not fit in system memory, so part of its read comes"
                 " off the disk; an expert set that stays in the page cache streams about"
                 " three times faster, and for one of those this term is that much too slow."
             )
-            % {"gb": streamed / 1e9, "gbps": bandwidths.pcie / 1e9}
+            % {
+                "gb": format_decimals(streamed / 1e9, 1),
+                "gbps": format_decimals(bandwidths.pcie / 1e9, 1),
+            }
         )
     if t_prompt_ram:
         notes.append(
             _(
-                "%(gb).1f GB of the expert set is read out of system memory once per"
-                " micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+                "%(gb)s GB of the expert set is read out of system memory once per"
+                " micro-batch at %(gbps)s GB/s, because there is no card to stream it to."
             )
-            % {"gb": streamed / 1e9, "gbps": bandwidths.sequential / 1e9}
+            % {
+                "gb": format_decimals(streamed / 1e9, 1),
+                "gbps": format_decimals(bandwidths.sequential / 1e9, 1),
+            }
         )
 
     return Formula(
@@ -583,11 +590,11 @@ def estimate_speed(
             unpinned = unpinned or _int_flag(gen_near.flags, _NGL) is None
             notes.append(
                 _(
-                    "Generation is the formula corrected by %(factor).2f, from a benchmark of"
+                    "Generation is the formula corrected by %(factor)s, from a benchmark of"
                     " %(profile)s on this machine taken on %(date)s."
                 )
                 % {
-                    "factor": factor,
+                    "factor": format_decimals(factor, 2),
                     "profile": gen_near.profile,
                     "date": gen_near.date.isoformat() if gen_near.date else "?",
                 }
@@ -605,8 +612,8 @@ def estimate_speed(
             pp_tps, pp_label = formula.pp_tps * factor, "calibrated"
             unpinned = unpinned or _int_flag(pp_near.flags, _NGL) is None
             notes.append(
-                _("Prompt processing is the formula corrected by %(factor).2f from a benchmark.")
-                % {"factor": factor}
+                _("Prompt processing is the formula corrected by %(factor)s from a benchmark.")
+                % {"factor": format_decimals(factor, 2)}
             )
 
     confidence: Confidence = gen_label if _RANK[gen_label] >= _RANK[pp_label] else pp_label

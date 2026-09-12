@@ -25,11 +25,11 @@ msgstr "%(measurements)d різних конфігурацій на %(parameters
 msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
 msgstr "ці %(measurements)d конфігурацій змінюються недостатньо незалежно, щоб розділити %(parameters)d параметрів"
 
-msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
-msgstr "підгонка дала %(value).3f, чого не допускає його власне означення; вимірювання суперечать одне одному в моделі розділу 10.1"
+msgid "the fit put it at %(value)s, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "підгонка дала %(value)s, чого не допускає його власне означення; вимірювання суперечать одне одному в моделі розділу 10.1"
 
-msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
-msgstr "вийшло %(value).3f, але інший параметр тієї самої підгонки виявився неможливим, і метод найменших квадратів обирав їх один проти одного"
+msgid "it came out at %(value)s, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "вийшло %(value)s, але інший параметр тієї самої підгонки виявився неможливим, і метод найменших квадратів обирав їх один проти одного"
 
 msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
 msgstr "в оцінювача немає такого члена: розділ 10.1 прибрав накладні витрати на шар, які для моделі з 28 шарів перевищували весь виміряний токен"
@@ -3371,32 +3371,32 @@ msgstr "Публікуються: %(names)s"
 msgid "licensed %(spdx)s, which this request does not allow"
 msgstr "ліцензія %(spdx)s, яку цей запит не допускає"
 
-msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
-msgstr "Пропускну здатність системної пам'яті не вимірювали; для %(arch)s прийнято %(gbps).0f GB/s."
+msgid "System memory bandwidth was not measured; %(gbps)s GB/s assumed for %(arch)s."
+msgstr "Пропускну здатність системної пам'яті не вимірювали; для %(arch)s прийнято %(gbps)s GB/s."
 
-msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
-msgstr "Пропускна здатність %(gpu)s невідома; замість неї береться запасне значення %(backend)s — %(gbps).0f GB/s."
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps)s GB/s stands in."
+msgstr "Пропускна здатність %(gpu)s невідома; замість неї береться запасне значення %(backend)s — %(gbps)s GB/s."
 
 msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
 msgstr "Немає даних про обчислювальну потужність відеокарти: обробка промпта оцінюється на CPU."
 
-msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
-msgstr "%(gb).2f GB маршрутизованих експертів читається із системної пам'яті на кожен токен зі швидкістю %(eff).2f від її %(raw).0f GB/s, бо кожен токен вибирає свою жменю експертів і читання виходить розсипом дрібних блоків, а не потоком."
+msgid "%(gb)s GB of routed experts is read from system memory per token at %(eff)s of its %(raw)s GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "%(gb)s GB маршрутизованих експертів читається із системної пам'яті на кожен токен зі швидкістю %(eff)s від її %(raw)s GB/s, бо кожен токен вибирає свою жменю експертів і читання виходить розсипом дрібних блоків, а не потоком."
 
-msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
-msgstr "%(gb).2f GB неперервно розташованих ваг читається із системної пам'яті на кожен токен зі швидкістю %(eff).2f від її %(raw).0f GB/s."
+msgid "%(gb)s GB of contiguous weights is read from system memory per token at %(eff)s of its %(raw)s GB/s."
+msgstr "%(gb)s GB неперервно розташованих ваг читається із системної пам'яті на кожен токен зі швидкістю %(eff)s від її %(raw)s GB/s."
 
 msgid "No active parameter count was supplied; it was inferred from the weight bytes."
 msgstr "Кількість активних параметрів не задано; її виведено з обсягу ваг у байтах."
 
-msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
-msgstr "%(pct).0f відсотків шарів лежать у системній пам'яті, тому ця частка арифметики промпта відноситься на CPU зі швидкістю %(tflops).2f TFLOP/s, а не на карту. Обидві швидкості отримано на одній невеликій щільній моделі на одній машині."
+msgid "%(pct)s percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops)s TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "%(pct)s відсотків шарів лежать у системній пам'яті, тому ця частка арифметики промпта відноситься на CPU зі швидкістю %(tflops)s TFLOP/s, а не на карту. Обидві швидкості отримано на одній невеликій щільній моделі на одній машині."
 
-msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
-msgstr "%(gb).1f GB набору експертів передається каналом один раз на мікропакет зі швидкістю %(gbps).1f GB/s. Цю швидкість підігнано на єдиній моделі, чий набір експертів не вміщується в системну пам'ять, тому частина читання йде з диска; набір експертів, який лишається в сторінковому кеші, передається приблизно втричі швидше, і для такого цей член настільки ж занижений."
+msgid "%(gb)s GB of the expert set is streamed across the link once per micro-batch at %(gbps)s GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "%(gb)s GB набору експертів передається каналом один раз на мікропакет зі швидкістю %(gbps)s GB/s. Цю швидкість підігнано на єдиній моделі, чий набір експертів не вміщується в системну пам'ять, тому частина читання йде з диска; набір експертів, який лишається в сторінковому кеші, передається приблизно втричі швидше, і для такого цей член настільки ж занижений."
 
-msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
-msgstr "%(gb).1f GB набору експертів читається із системної пам'яті один раз на мікропакет зі швидкістю %(gbps).1f GB/s, бо передавати його нікуди — карти немає."
+msgid "%(gb)s GB of the expert set is read out of system memory once per micro-batch at %(gbps)s GB/s, because there is no card to stream it to."
+msgstr "%(gb)s GB набору експертів читається із системної пам'яті один раз на мікропакет зі швидкістю %(gbps)s GB/s, бо передавати його нікуди — карти немає."
 
 msgid "No placement of this model on this machine could run it."
 msgstr "Жодне розміщення цієї моделі на цій машині не змогло б її запустити."
@@ -3404,14 +3404,14 @@ msgstr "Жодне розміщення цієї моделі на цій маш
 msgid "Generation is a benchmark of this configuration, not a prediction."
 msgstr "Генерація — це бенчмарк цієї конфігурації, а не прогноз."
 
-msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
-msgstr "Генерація — це формула, виправлена на %(factor).2f за бенчмарком %(profile)s на цій машині, знятим %(date)s."
+msgid "Generation is the formula corrected by %(factor)s, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "Генерація — це формула, виправлена на %(factor)s за бенчмарком %(profile)s на цій машині, знятим %(date)s."
 
 msgid "Prompt processing is a benchmark of this configuration."
 msgstr "Обробка промпта — це бенчмарк цієї конфігурації."
 
-msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
-msgstr "Обробка промпта — це формула, виправлена на %(factor).2f за бенчмарком."
+msgid "Prompt processing is the formula corrected by %(factor)s from a benchmark."
+msgstr "Обробка промпта — це формула, виправлена на %(factor)s за бенчмарком."
 
 msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
 msgstr "У командному рядку того бенчмарка не записано, скільки шарів пішло на карту, тому поправка виходить із того, що він працював із цим розміщенням."
