@@ -21,6 +21,7 @@ from typer.testing import CliRunner
 
 from llamafit.cli.app import app
 from llamafit.cli.render import (
+    _capability_label,
     render_catalog_list,
     render_findings,
     render_host,
@@ -261,11 +262,24 @@ def test_a_path_and_a_size_stay_whole_in_the_host_table(arabic: None) -> None:
 
 
 def test_a_model_id_and_its_capabilities_stay_whole_in_the_list(arabic: None) -> None:
-    output = render(render_catalog_list([sample_summary()], console_width=100))
+    """The three identifiers, and the one cell whose script is not known in advance.
+
+    A capability name is a word, not an identifier, so the catalog translates it: this
+    cell is Latin until a language answers those eight entries and the reader's own
+    script afterwards. Naming ``coding, tools`` here asserted the gap in the Arabic
+    catalog rather than the isolate, and it passed for exactly as long as that gap
+    lasted. The isolate is the claim, and it holds whichever script fills the cell --
+    which is the case U+2068 exists for, and what ``_capability_label`` says it is doing.
+    """
+    summary = sample_summary()
+    output = render(render_catalog_list([summary], console_width=100))
     assert f"{FSI}qwen3-coder-next{PDI}" in output
     assert f"{FSI}27/3B{PDI}" in output
     assert f"{FSI}256K{PDI}" in output
-    assert f"{FSI}coding, tools{PDI}" in output
+    names = ", ".join(_capability_label(name) for name in summary.capabilities)
+    # The fixture is Arabic; a cell still reading English would mean it had stopped being.
+    assert names != "coding, tools"
+    assert f"{FSI}{names}{PDI}" in output
 
 
 def test_the_licence_url_and_the_repository_stay_whole_in_the_facts(arabic: None) -> None:
