@@ -452,6 +452,60 @@ def _report_replacements(console: Console) -> None:
     )
 
 
+def _misplaced_global_option(argv: Sequence[str]) -> tuple[str, str] | None:
+    """The first option of ``llamafit`` itself typed after the command, and the fix.
+
+    Args:
+        argv: The arguments as typed, without the program name.
+
+    Returns:
+        The option's name and the rest of a command line that would have worked, with its
+        value at the front if it has one, or ``None`` when nothing was misplaced.
+
+    Both the options and the commands are asked of the built command rather than listed
+    here, so this cannot fall behind the things it is about.
+
+    The walk to the command has to skip each option's *value*, or the first one is taken
+    for the command: with ``--language en`` the ``en`` looks exactly like a command name
+    to anything that only checks for a leading dash. And having found a command, this
+    insists it is a real one. That is what keeps a genuinely unknown option -- whose
+    value nothing can know to skip, so the walk stops on it -- from producing a confident
+    hint about a different option that was where it belonged all along.
+    """
+    from typer.main import get_command
+
+    root = get_command(app)
+    options: dict[str, bool] = {}
+    for parameter in root.params:
+        # A flag is complete on its own; everything else takes the argument after it.
+        takes_value = not getattr(parameter, "is_flag", False) and not getattr(
+            parameter, "count", False
+        )
+        for name in (*parameter.opts, *parameter.secondary_opts):
+            if name.startswith("-"):
+                options[name] = takes_value
+    commands = set(getattr(root, "commands", {}))
+
+    at = 0
+    while at < len(argv) and argv[at].startswith("-"):
+        written = argv[at]
+        at += 1
+        if options.get(written.split("=", 1)[0]) and "=" not in written:
+            at += 1
+    if at >= len(argv) or argv[at] not in commands:
+        return None
+
+    for position in range(at, len(argv)):
+        name = argv[position].split("=", 1)[0]
+        if name not in options:
+            continue
+        width = 2 if options[name] and "=" not in argv[position] and position + 1 < len(argv) else 1
+        moved = list(argv[position : position + width])
+        rest = moved[1:] + [a for i, a in enumerate(argv) if i < position or i >= position + width]
+        return name, " ".join(rest)
+    return None
+
+
 def _global_option_hint(console: Console, argv: Sequence[str]) -> None:
     """Print where a global option goes, when one was typed after the command.
 
@@ -465,36 +519,20 @@ def _global_option_hint(console: Console, argv: Sequence[str]) -> None:
     else: a reader who has just seen `--json` documented concludes the documentation is
     wrong. Silent when the run failed for any other reason.
     """
-    # Asked of the built command rather than listed here, so this cannot fall behind the
-    # options it is about.
-    from typer.main import get_command
-
-    root = {
-        name
-        for parameter in get_command(app).params
-        for name in parameter.opts
-        if name.startswith("--")
-    }
-    seen_command = False
-    for argument in argv:
-        if not argument.startswith("-"):
-            seen_command = True
-            continue
-        if seen_command and argument.split("=", 1)[0] in root:
-            console.print(
-                Text(
-                    _(
-                        "%(option)s is an option of llamafit itself, so it goes before the "
-                        "command: `llamafit %(option)s %(rest)s`."
-                    )
-                    % {
-                        "option": argument.split("=", 1)[0],
-                        "rest": " ".join(a for a in argv if a != argument),
-                    },
-                    style="dim",
-                )
+    misplaced = _misplaced_global_option(argv)
+    if misplaced is None:
+        return
+    option, rest = misplaced
+    console.print(
+        Text(
+            _(
+                "%(option)s is an option of llamafit itself, so it goes before the "
+                "command: `llamafit %(option)s %(rest)s`."
             )
-            return
+            % {"option": option, "rest": rest},
+            style="dim",
+        )
+    )
 
 
 def main() -> None:

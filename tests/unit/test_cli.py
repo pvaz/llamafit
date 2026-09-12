@@ -630,3 +630,52 @@ def test_a_command_that_simply_fails_gets_no_option_hint(
     with pytest.raises(SystemExit):
         main()
     assert "option of llamafit itself" not in capsys.readouterr().err
+
+
+def test_an_option_that_takes_a_value_is_moved_with_its_value() -> None:
+    """Moving `--profile` and leaving `gaming-pc` behind suggests a line that fails too.
+
+    The message names the option and prints the rest after it, so the value has to travel
+    at the front of that rest: `llamafit --profile gaming-pc recommend` and not
+    `llamafit --profile recommend gaming-pc`, which is a different and wrong command.
+    """
+    from llamafit.cli.app import _misplaced_global_option
+
+    assert _misplaced_global_option(["recommend", "--profile", "gaming-pc", "--limit", "1"]) == (
+        "--profile",
+        "gaming-pc recommend --limit 1",
+    )
+
+
+def test_the_value_of_an_option_typed_first_is_not_mistaken_for_the_command() -> None:
+    """`en` is the value of `--language`; `recommend` is the command.
+
+    Anything that only looks for a leading dash takes `en` for the command, and then
+    reports every global option after it -- including the ones that were already in the
+    right place -- as misplaced.
+    """
+    from llamafit.cli.app import _misplaced_global_option
+
+    assert _misplaced_global_option(["--language", "en", "--ram", "8GiB", "recommend"]) is None
+    assert _misplaced_global_option(["--language", "en", "recommend", "--json"]) == (
+        "--json",
+        "--language en recommend",
+    )
+
+
+def test_an_unknown_option_does_not_produce_a_hint_about_a_different_one(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The usage error here is `--gpu-vram`, and `--ram` was exactly where it belongs.
+
+    Nothing can know how many arguments an option it has never heard of consumes, so the
+    walk to the command stops on the unknown option's value. Requiring a real command name
+    there is what turns that into silence instead of a confident answer to a question
+    nobody asked.
+    """
+    from llamafit.cli.app import main
+
+    monkeypatch.setattr(sys, "argv", ["llamafit", "--gpu-vram", "0", "--ram", "8GiB", "recommend"])
+    with pytest.raises(SystemExit):
+        main()
+    assert "option of llamafit itself" not in capsys.readouterr().err

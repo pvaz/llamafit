@@ -71,10 +71,12 @@ jobs:
             runner: ubuntu-22.04-arm
             asset: llamafit-linux-aarch64
             archive: tar.gz
-          # macos-13 is the last Intel runner; macos-14 and later are Apple silicon. Both
-          # are needed, and neither can build the other's file.
+          # Apple silicon is the default on every current macOS runner, and Intel is a
+          # separately labelled one -- `macos-15-intel` rather than a version number, which
+          # is what is left after the macos-13 image was retired. Both are needed, and
+          # neither can build the other's file.
           - label: macOS x86_64
-            runner: macos-13
+            runner: macos-15-intel
             asset: llamafit-macos-x86_64
             archive: tar.gz
           - label: macOS arm64
