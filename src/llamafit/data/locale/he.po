@@ -27,6 +27,198 @@ msgstr ""
 "Language-Team: Hebrew\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 2) ? 1 : 2);\n"
 
+msgid "nothing measured touches this term, so there is no equation it appears in"
+msgstr "שום דבר שנמדד אינו נוגע באיבר הזה, ולכן אין משוואה שהוא מופיע בה"
+
+msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
+msgstr "%(measurements)d תצורות שונות מול %(parameters)d פרמטרים חופשיים; פחות נקודות מפרמטרים נותן מספרים שנראים מדויקים והם שרירותיים"
+
+msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
+msgstr "%(measurements)d התצורות אינן משתנות באופן עצמאי די הצורך כדי להפריד %(parameters)d פרמטרים"
+
+msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "ההתאמה קבעה אותו על %(value).3f, ערך שהגדרתו שלו אינה מתירה; המדידות סותרות זו את זו לפי המודל של סעיף 10.1"
+
+msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "הוא יצא %(value).3f, אך פרמטר אחר של אותה התאמה היה בלתי אפשרי, וריבועים פחותים בחרו ביניהם זה כנגד זה"
+
+msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
+msgstr "למעריך אין איבר כזה: סעיף 10.1 הסיר את התקורה לכל שכבה, שבמודל בן 28 שכבות עלתה על כל האסימון הנמדד"
+
+msgid "generation (llama-bench)"
+msgstr "יצירה (llama-bench)"
+
+msgid "prompt (llama-bench)"
+msgstr "פרומפט (llama-bench)"
+
+msgid "generation, first request"
+msgstr "יצירה, בקשה ראשונה"
+
+msgid "generation, 1K prompt"
+msgstr "יצירה, פרומפט של 1K"
+
+msgid "prompt, 1K request"
+msgstr "פרומפט, בקשה של 1K"
+
+msgid "peak VRAM"
+msgstr "שיא VRAM"
+
+msgid "no graphics card"
+msgstr "אין כרטיס מסך"
+
+msgid "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+msgstr "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+
+msgid "%(flag)s was asked for as %(wanted)s but the run reports %(actual)s"
+msgstr "%(flag)s התבקש כ-%(wanted)s אך הריצה מדווחת %(actual)s"
+
+msgid "The card was full and generation came in below three fifths of the estimate: the driver was paging to system memory, which does not fail and does not appear in the log."
+msgstr "הכרטיס היה מלא והיצירה יצאה מתחת לשלוש חמישיות מההערכה: מנהל ההתקן דפדף אל זיכרון המערכת, וזה לא נכשל ולא מופיע ביומן."
+
+msgid "Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page."
+msgstr "שיא ה-VRAM נשאר הרחק מהסך הכול של הכרטיס, ולכן לא היה למנהל ההתקן מה לדפדף."
+
+msgid "The card was full, which a good plan is meant to be, and the speed was close enough to the estimate that nothing was paging."
+msgstr "הכרטיס היה מלא, וכך אמורה להיות תוכנית טובה, והמהירות הייתה קרובה מספיק להערכה כדי לקבוע ששום דבר לא דפדף."
+
+msgid "No VRAM reading was taken during the run, so this configuration has not been cleared of paging; it has only not been checked."
+msgstr "לא נלקחה קריאת VRAM במהלך הריצה, ולכן התצורה הזאת לא נוקתה מחשד לדפדוף; היא פשוט לא נבדקה."
+
+msgid "The card's total memory is unknown, so a reading of what was in use says nothing about how close to full it was."
+msgstr "סך הזיכרון של הכרטיס אינו ידוע, ולכן קריאה של מה שהיה בשימוש אינה אומרת דבר על כמה קרוב למלא הוא היה."
+
+msgid "There was no estimate to compare the measured speed against, so the second half of the signature could not be tested."
+msgstr "לא הייתה הערכה להשוות אליה את המהירות הנמדדת, ולכן לא ניתן היה לבדוק את המחצית השנייה של החתימה."
+
+msgid "llama-bench did not produce JSON"
+msgstr "llama-bench לא הפיק JSON"
+
+msgid "llama-bench JSON is not a list of results"
+msgstr "ה-JSON של llama-bench אינו רשימת תוצאות"
+
+msgid "llama-bench JSON held no readable results"
+msgstr "ה-JSON של llama-bench לא הכיל תוצאות קריאות"
+
+msgid "no llama-bench result rows found"
+msgstr "לא נמצאו שורות תוצאה של llama-bench"
+
+msgid "could not open %(path)s for the server log"
+msgstr "לא ניתן היה לפתוח את %(path)s ליומן השרת"
+
+msgid "could not start llama-server"
+msgstr "לא ניתן היה להפעיל את llama-server"
+
+msgid "no output"
+msgstr "אין פלט"
+
+msgid "llama-bench exited with code %(code)d: %(detail)s"
+msgstr "llama-bench יצא עם קוד %(code)d: %(detail)s"
+
+msgid "llama-bench output could not be read: %(error)s"
+msgstr "לא ניתן היה לקרוא את הפלט של llama-bench: %(error)s"
+
+msgid "llama-server did not become healthy"
+msgstr "llama-server לא הגיע למצב תקין"
+
+msgid "Its whole output is in the log file `bench` named; the end says why."
+msgstr "כל הפלט שלו נמצא בקובץ היומן ש-`bench` ציין; הסוף אומר למה."
+
+msgid "%(path)s was written by a newer LlamaFit (benchmark format %(found)d, this build reads %(known)d)"
+msgstr "%(path)s נכתב על ידי LlamaFit חדש יותר (פורמט מבחן ביצועים %(found)d, הבנייה הזאת קוראת %(known)d)"
+
+msgid "Upgrade LlamaFit, or move the file aside to start a new one."
+msgstr "שדרג את LlamaFit, או הזז את הקובץ הצידה כדי להתחיל אחד חדש."
+
+msgid "a benchmark cannot be recorded against a simulated machine"
+msgstr "אי אפשר לרשום מבחן ביצועים מול מכונה מדומה"
+
+msgid "Run `llamafit bench` on the machine itself, without --profile."
+msgstr "הרץ `llamafit bench` על המכונה עצמה, בלי --profile."
+
+msgid "the run did not use the settings it was given: %(problems)s"
+msgstr "הריצה לא השתמשה בהגדרות שניתנו לה: %(problems)s"
+
+msgid "Nothing was stored. A result filed under flags it was not taken with would be believed later by everything that reads it."
+msgstr "שום דבר לא נשמר. תוצאה שנרשמה תחת דגלים שלא נלקחה איתם תיחשב אמינה מאוחר יותר בעיני כל מה שקורא אותה."
+
+msgid "a conservative default; nobody has measured this card's backend overhead"
+msgstr "ברירת מחדל שמרנית; איש לא מדד את תקורת המנגנון של הכרטיס הזה"
+
+msgid "measured on this card with driver %(driver)s and llama.cpp %(build)s; one machine"
+msgstr "נמדד על הכרטיס הזה עם מנהל התקן %(driver)s ו-llama.cpp %(build)s; מכונה אחת"
+
+msgid "A hybrid placement has to say how many layers are on the graphics card."
+msgstr "שיבוץ היברידי חייב לציין כמה שכבות נמצאות על כרטיס המסך."
+
+msgid "Pass gpu_layers, which is what -ngl would be."
+msgstr "העבר את gpu_layers, שהוא הערך של -ngl."
+
+msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
+msgstr "LlamaFit לא קרא את קובץ %(quant)s של %(model)s, ולכן אינו יכול לחשב את גודלו."
+
+msgid "Run `llamafit catalog refresh` to read the file's header."
+msgstr "הרץ `llamafit catalog refresh` כדי לקרוא את כותרת הקובץ."
+
+msgid "the server process before any model buffer"
+msgstr "תהליך השרת לפני כל מאגר של מודל"
+
+msgid "fitted to one machine's measurements; the least certain line here"
+msgstr "הותאם למדידות של מכונה אחת; השורה הפחות ודאית כאן"
+
+msgid "room for one logit per vocabulary entry per token of the batch"
+msgstr "מקום ל-logit אחד לכל ערך באוצר המילים ולכל אסימון באצווה"
+
+msgid "LlamaFit cannot size a %(kv_type)s key-value cache."
+msgstr "LlamaFit אינו יכול לחשב את גודלו של מטמון מפתח-ערך מסוג %(kv_type)s."
+
+msgid "Use one of: %(types)s."
+msgstr "השתמש באחד מאלה: %(types)s."
+
+msgid "This model's file does not say how large its key-value cache is per token."
+msgstr "קובץ המודל הזה אינו מציין מה גודל מטמון המפתח-ערך שלו לכל אסימון."
+
+msgid "Refresh the catalog so the file's header is read again."
+msgstr "רענן את הקטלוג כדי שכותרת הקובץ תיקרא שוב."
+
+msgid "the attention-layer count was assumed, not counted"
+msgstr "מספר שכבות הקשב הונח, לא נספר"
+
+msgid "%(arch)s allocates more cache than its header describes; see the line below"
+msgstr "%(arch)s מקצה יותר מטמון ממה שהכותרת שלו מתארת; ראה את השורה שלהלן"
+
+msgid "what %(arch)s allocates beyond its header, measured rather than derived"
+msgstr "מה ש-%(arch)s מקצה מעבר לכותרת שלו, נמדד ולא נגזר"
+
+msgid "from the architecture's state dimensions; it does not grow with context"
+msgstr "מתוך ממדי המצב של הארכיטקטורה; אינו גדל עם ההקשר"
+
+msgid "the projector file itself"
+msgstr "קובץ המקרן עצמו"
+
+msgid "the projector's own compute space, measured at 248 MiB"
+msgstr "שטח החישוב של המקרן עצמו, נמדד ב-248 MiB"
+
+msgid "attention projections, feed-forward weights and norms"
+msgstr "הטלות הקשב, משקולות ההזנה קדימה והנרמולים"
+
+msgid "always-on experts, which run for every token"
+msgstr "מומחים שתמיד פעילים, שרצים לכל אסימון"
+
+msgid "routed experts, read across the bus once per micro-batch"
+msgstr "מומחים מנותבים, שנקראים דרך האפיק פעם אחת לכל מיקרו-אצווה"
+
+msgid "this model ties its output projection to its embedding table"
+msgstr "המודל הזה קושר את הטלת הפלט שלו לטבלת ההטמעות"
+
+msgid "llama.cpp keeps the embedding table in memory even at full offload"
+msgstr "llama.cpp מחזיק את טבלת ההטמעות בזיכרון גם בהסטה מלאה"
+
+msgid "streamed from disk as it is needed, not held in memory"
+msgstr "מוזרם מהדיסק לפי הצורך, ואינו מוחזק בזיכרון"
+
+msgid "held in memory, since streaming from disk was turned off"
+msgstr "מוחזק בזיכרון, מפני שההזרמה מהדיסק כובתה"
+
 msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
 msgstr "Hugging Face החזיר %(status)d בעת הצגת רשימת הקבצים של %(repo)s."
 
@@ -75,6 +267,9 @@ msgstr "הרץ `llamafit catalog refresh` בלי --model כדי לבנות מח�
 msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
 msgstr "איתור, מדידה, התקנה ואימות של מודלי שפה בעלי משקולות פתוחות עבור llama.cpp במחשב שלך."
 
+msgid "With no command, llamafit opens the terminal dashboard; in a pipe, or with --json, it prints what `llamafit recommend` would."
+msgstr "בלי פקודה, llamafit פותח את לוח המחוונים בטרמינל; בתוך צינור, או עם --json, הוא מדפיס את מה ש-`llamafit recommend` היה מדפיס."
+
 msgid "Print machine-readable JSON instead of tables."
 msgstr "הדפסת JSON קריא למכונה במקום טבלאות."
 
@@ -84,17 +279,326 @@ msgstr "כתיבת פרטים אל llamafit.log בתיקיית היומנים ו
 msgid "Disable colours."
 msgstr "ביטול הצבעים."
 
+msgid "Answer for the machine this hardware profile describes instead of this one. Nothing about this machine is probed, and every answer is marked as simulated. `llamafit hardware list` names the profiles you have."
+msgstr "מענה עבור המכונה שפרופיל החומרה הזה מתאר במקום עבור זו. שום דבר במכונה הזאת אינו נבדק, וכל תשובה מסומנת כמדומה. `llamafit hardware list` מציג את שמות הפרופילים שיש לך."
+
+msgid "Pretend the graphics card has this much memory, for example 24G. Everything else stays as scanned, and every answer is marked as simulated."
+msgstr "הנחה שלכרטיס המסך יש כך וכך זיכרון, למשל 24G. כל השאר נשאר כפי שנסרק, וכל תשובה מסומנת כמדומה."
+
+msgid "Pretend the machine has this much system memory, for example 128GiB. Every answer is marked as simulated."
+msgstr "הנחה שלמכונה יש כך וכך זיכרון מערכת, למשל 128GiB. כל תשובה מסומנת כמדומה."
+
+msgid "Pretend the processor has this many physical cores. Every answer is marked as simulated."
+msgstr "הנחה שלמעבד יש כך וכך ליבות פיזיות. כל תשובה מסומנת כמדומה."
+
+msgid "Plan, report and score no context longer than this. It caps the model's own length; it does not describe a machine."
+msgstr "תכנון, דיווח וניקוד של הקשר שאינו ארוך מזה. זה מגביל את האורך של המודל עצמו; זה אינו מתאר מכונה."
+
 msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
 msgstr "דיבור בשפה הזאת, למשל pt_PT. שפה שאין ל-LlamaFit מוחלפת באנגלית, והוא מציין אילו שפות כן קיימות."
 
 msgid "Print the version and exit."
 msgstr "הדפסת הגרסה ויציאה."
 
+msgid "the output's encoding"
+msgstr "הקידוד של הפלט"
+
+msgid "%(count)d character could not be written in %(encoding)s and is shown as ?."
+msgid_plural "%(count)d characters could not be written in %(encoding)s and are shown as ?."
+msgstr[0] "לא ניתן היה לכתוב %(count)d תו ב-%(encoding)s, והוא מוצג כ-?."
+msgstr[1] "לא ניתן היה לכתוב %(count)d תווים ב-%(encoding)s, והם מוצגים כ-?."
+msgstr[2] "לא ניתן היה לכתוב %(count)d תווים ב-%(encoding)s, והם מוצגים כ-?."
+
+msgid "Set PYTHONUTF8=1 in the environment and run again: Python then writes UTF-8, which carries every language."
+msgstr "הגדר PYTHONUTF8=1 בסביבה והרץ שוב: אז Python כותבת UTF-8, שנושא כל שפה."
+
+msgid "%(option)s is an option of llamafit itself, so it goes before the command: `llamafit %(option)s %(rest)s`."
+msgstr "%(option)s היא אפשרות של llamafit עצמו, ולכן היא באה לפני הפקודה: `llamafit %(option)s %(rest)s`."
+
 msgid "Unexpected error: %(error)s"
 msgstr "שגיאה בלתי צפויה: %(error)s"
 
 msgid "Run again with --verbose for the full traceback."
 msgstr "הרץ שוב עם --verbose כדי לראות את מעקב הקריאות המלא."
+
+msgid "A catalog model id."
+msgstr "מזהה של מודל מהקטלוג."
+
+msgid "Benchmark this quantisation instead of the planned one."
+msgstr "מדידת הביצועים של הקוונטיזציה הזאת במקום זו שתוכננה."
+
+msgid "Size for this many tokens."
+msgstr "חישוב הגודל למספר האסימונים הזה."
+
+msgid "Set the micro-batch by hand; the budget is rebuilt around it."
+msgstr "קביעת המיקרו-אצווה ידנית; התקציב נבנה מחדש סביבה."
+
+msgid ""
+"Measure a model on this machine and show the measurement beside the estimate.\n"
+"\n"
+"Runs llama-bench and a real server at the planned flags, stores the result with the conditions it was taken under, and flags a configuration the driver was paging. With --calibrate, fits the estimator's constants to this machine from every stored result and says by name which ones the measurements do not determine."
+msgstr ""
+"מדידת מודל על המכונה הזאת והצגת המדידה לצד ההערכה.\n"
+"\n"
+"מריץ את llama-bench ושרת אמיתי בדגלים שתוכננו, שומר את התוצאה עם התנאים שבהם נלקחה, ומסמן תצורה שבה מנהל ההתקן דפדף. עם --calibrate, מתאים את קבועי המעריך למכונה הזאת מתוך כל תוצאה שנשמרה ואומר בשמם אילו מהם המדידות אינן קובעות."
+
+msgid "Measure prompt processing at every micro-batch of the ladder, not only the planned one. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all."
+msgstr "מדידת עיבוד הפרומפט בכל מיקרו-אצווה בסולם, לא רק זו שתוכננה. לסעיף 10.2 יש שני פרמטרים חופשיים ומיקרו-אצווה אחת היא משוואה אחת, ולכן בלי זה אי אפשר להתאים כלל את מחצית הפרומפט של הכיול."
+
+msgid "Run llama-bench only. Faster, and it gives up the paging check, the buffer sizes and the tool-call test, all of which need a real server."
+msgstr "הרצת llama-bench בלבד. מהיר יותר, אך מוותר על בדיקת הדפדוף, על גודלי המאגרים ועל בדיקת קריאת הכלים, שכולן זקוקות לשרת אמיתי."
+
+msgid "Print the result without writing it to the database."
+msgstr "הדפסת התוצאה בלי לכתוב אותה למסד הנתונים."
+
+msgid "Print the commands that would run, and run nothing."
+msgstr "הדפסת הפקודות שהיו רצות, בלי להריץ דבר."
+
+msgid "Fit the estimator's constants to this machine from every result."
+msgstr "התאמת קבועי המעריך למכונה הזאת מתוך כל תוצאה."
+
+msgid "List what is already stored and stop."
+msgstr "הצגת מה שכבר שמור ועצירה."
+
+msgid "`llamafit bench` needs a model to measure"
+msgstr "`llamafit bench` זקוק למודל כדי למדוד"
+
+msgid "Try `llamafit bench <model>`, `--calibrate` on its own, or `--show`."
+msgstr "נסה `llamafit bench <model>`, `--calibrate` לבדו, או `--show`."
+
+msgid "llama.cpp was not found, so there is nothing to benchmark with"
+msgstr "llama.cpp לא נמצא, ולכן אין עם מה למדוד ביצועים"
+
+msgid "Run `llamafit doctor` to see where it was looked for."
+msgstr "הרץ `llamafit doctor` כדי לראות איפה חיפשו אותו."
+
+msgid "%(path)s has llama-server but no llama-bench"
+msgstr "ב-%(path)s יש llama-server אבל אין llama-bench"
+
+msgid "Some release archives leave it out; a full build has it beside the server."
+msgstr "חלק מארכיוני השחרור משמיטים אותו; בבנייה מלאה הוא נמצא לצד השרת."
+
+msgid "this host is simulated, and a simulated machine cannot be measured"
+msgstr "המארח הזה מדומה, ואי אפשר למדוד מכונה מדומה"
+
+msgid "Run `llamafit bench` on the machine itself."
+msgstr "הרץ `llamafit bench` על המכונה עצמה."
+
+msgid "the model file is not on this machine: %(path)s"
+msgstr "קובץ המודל אינו על המכונה הזאת: %(path)s"
+
+msgid "Download it first; `llamafit plan` shows the path the command line uses."
+msgstr "הורד אותו קודם; `llamafit plan` מציג את הנתיב ששורת הפקודה משתמשת בו."
+
+msgid "Would run:"
+msgstr "היה מריץ:"
+
+msgid "Nothing has been measured on this machine yet."
+msgstr "עדיין לא נמדד דבר במכונה הזאת."
+
+msgid "Stored measurements"
+msgstr "מדידות שמורות"
+
+msgid "model"
+msgstr "מודל"
+
+msgid "kind"
+msgstr "סוג"
+
+msgid "gen tok/s"
+msgstr "יצירה tok/s"
+
+msgid "prompt tok/s"
+msgstr "פרומפט tok/s"
+
+msgid "taken"
+msgstr "נלקח"
+
+msgid "flags"
+msgstr "דגלים"
+
+msgid "Nothing was written to the database, so no estimate will be relabelled."
+msgstr "שום דבר לא נכתב למסד הנתונים, ולכן שום הערכה לא תסומן מחדש."
+
+msgid "Estimated against measured"
+msgstr "מוערך מול נמדד"
+
+msgid "figure"
+msgstr "נתון"
+
+msgid "context"
+msgstr "הקשר"
+
+msgid "micro-batch"
+msgstr "מיקרו-אצווה"
+
+msgid "estimated"
+msgstr "מוערך"
+
+msgid "measured"
+msgstr "נמדד"
+
+msgid "ratio"
+msgstr "יחס"
+
+msgid "The plan sizes this configuration for %(context)s tokens and estimates %(tps)s generated tokens per second there. Nothing above ran at that context, so that figure is reported and not compared."
+msgstr "התוכנית מחשבת את גודל התצורה הזאת עבור %(context)s אסימונים ומעריכה %(tps)s אסימונים שנוצרים בשנייה שם. שום דבר למעלה לא רץ בהקשר הזה, ולכן הנתון מדווח ואינו מושווה."
+
+msgid "%(count)d figure is outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgid_plural "%(count)d figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgstr[0] "%(count)d נתון נמצא מחוץ לתחום 0.8 עד 1.25 שנוסחה לא מכוילת אמורה ליפול בו."
+msgstr[1] "%(count)d נתונים נמצאים מחוץ לתחום 0.8 עד 1.25 שנוסחה לא מכוילת אמורה ליפול בו."
+msgstr[2] "%(count)d נתונים נמצאים מחוץ לתחום 0.8 עד 1.25 שנוסחה לא מכוילת אמורה ליפול בו."
+
+msgid "This configuration was paging."
+msgstr "התצורה הזאת דפדפה."
+
+msgid "This configuration was not paging."
+msgstr "התצורה הזאת לא דפדפה."
+
+msgid "Paging could not be checked."
+msgstr "לא ניתן היה לבדוק דפדוף."
+
+msgid "Peak VRAM was %(percent)s percent of the card, and generation was %(speed)s percent of the estimate."
+msgstr "שיא ה-VRAM היה %(percent)s אחוזים מהכרטיס, והיצירה הייתה %(speed)s אחוזים מההערכה."
+
+msgid "Peak VRAM was %(percent)s percent of the card. Generation was not compared with the estimate."
+msgstr "שיא ה-VRAM היה %(percent)s אחוזים מהכרטיס. היצירה לא הושוותה להערכה."
+
+msgid "The largest context on the ladder that would not page is %(tokens)s."
+msgstr "ההקשר הגדול ביותר בסולם שאינו מדפדף הוא %(tokens)s."
+
+msgid "Calibration"
+msgstr "כיול"
+
+msgid "constant"
+msgstr "קבוע"
+
+msgid "value"
+msgstr "ערך"
+
+msgid "from"
+msgstr "מתוך"
+
+msgid "%(base)s + %(slope)s per 1K"
+msgstr "%(base)s + %(slope)s לכל 1K"
+
+msgid "%(count)d measured context"
+msgid_plural "%(count)d measured contexts"
+msgstr[0] "%(count)d הקשר שנמדד"
+msgstr[1] "%(count)d הקשרים שנמדדו"
+msgstr[2] "%(count)d הקשרים שנמדדו"
+
+msgid "Nothing was fitted. Every line below says what its constant was missing; a calibration made from less than that would look precise and be arbitrary."
+msgstr "שום דבר לא הותאם. כל שורה למטה אומרת מה חסר לקבוע שלה; כיול שנעשה מפחות מזה ייראה מדויק ויהיה שרירותי."
+
+msgid "%(name)s was not fitted: %(reason)s"
+msgstr "%(name)s לא הותאם: %(reason)s"
+
+msgid "%(count)d measured configuration"
+msgid_plural "%(count)d measured configurations"
+msgstr[0] "%(count)d תצורה שנמדדה"
+msgstr[1] "%(count)d תצורות שנמדדו"
+msgstr[2] "%(count)d תצורות שנמדדו"
+
+msgid "What the model is for. It sets the score weights, the speed target and the context a candidate is measured against."
+msgstr "למה המודל מיועד. זה קובע את משקלי הניקוד, את יעד המהירות ואת ההקשר שמולו נמדד מועמד."
+
+msgid "Capability the model must have; a model without it is excluded "
+msgstr "יכולת שהמודל חייב שתהיה לו; מודל שאין לו אותה מוצא מהחשבון"
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "השארת מזהי הרישיונות האלה בלבד (אפשר לחזור על האפשרות)."
+
+msgid "balanced, quality or speed: moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights."
+msgstr "balanced, quality או speed: מעביר עשירית מהמשקל בין איכות למהירות. זה מטה את הלוח; זה אינו מחליף את המשקלים."
+
+msgid "Exclude anything larger to download, for example 40G or 7.5GiB."
+msgstr "הוצאה מהחשבון של כל מה שגדול מזה להורדה, למשל 40G או 7.5GiB."
+
+msgid "The worst verdict to list: comfortable, fits or tight."
+msgstr "הפסק הגרוע ביותר שיוצג: comfortable, fits או tight."
+
+msgid "Exclude candidates generating fewer tokens per second than this, in place of the speed a person reads at. Pass 0 when nobody is waiting on the tokens."
+msgstr "הוצאה מהחשבון של מועמדים שמייצרים פחות אסימונים בשנייה מזה, במקום מהירות הקריאה של אדם. העבר 0 כשאיש אינו מחכה לאסימונים."
+
+msgid "Order the rows drawn: score, speed, quality, context, size, prompt, card, ram, fit, model or quant, largest or best first unless :asc says otherwise. The # column keeps the ranking."
+msgstr "סידור השורות המצוירות: score, speed, quality, context, size, prompt, card, ram, fit, model או quant, הגדול או הטוב ביותר ראשון אלא אם :asc אומר אחרת. עמודת ה-# שומרת על הדירוג."
+
+msgid "Draw only rows whose id, name or quantisation contains this text."
+msgstr "ציור שורות שהמזהה, השם או הקוונטיזציה שלהן מכילים את הטקסט הזה בלבד."
+
+msgid "Draw only rows whose file is already on this machine."
+msgstr "ציור שורות שהקובץ שלהן כבר נמצא במכונה הזאת בלבד."
+
+msgid "Draw only rows that run this way: gpu, moe-offload, hybrid or cpu."
+msgstr "ציור שורות שרצות בדרך הזאת בלבד: gpu, moe-offload, hybrid או cpu."
+
+msgid "Draw only rows at or above this verdict: comfortable, fits or tight. The ranking is unchanged and a hidden row is still counted."
+msgstr "ציור שורות בפסק הזה או מעליו בלבד: comfortable, fits או tight. הדירוג אינו משתנה ושורה מוסתרת עדיין נספרת."
+
+msgid "Draw exactly these columns, comma-separated, in this order, named as --json names them: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+msgstr "ציור בדיוק העמודות האלה, מופרדות בפסיקים, בסדר הזה, בשמות שבהם --json קורא להן: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+
+msgid "Draw every column whatever the terminal's width; a cell that does not fit folds."
+msgstr "ציור כל עמודה בלי קשר לרוחב הטרמינל; תא שאינו נכנס מתקפל."
+
+msgid "Leave the candidates that were not ranked off the table. The reasons are still printed under it."
+msgstr "השארת המועמדים שלא דורגו מחוץ לטבלה. הסיבות עדיין מודפסות מתחתיה."
+
+msgid "invalid --min-fit %(value)s"
+msgstr "ערך לא חוקי עבור --min-fit: %(value)s"
+
+msgid "Valid values: %(values)s"
+msgstr "ערכים חוקיים: %(values)s"
+
+msgid "invalid --prefer %(value)s"
+msgstr "ערך לא חוקי עבור --prefer: %(value)s"
+
+msgid "invalid --runs %(value)s"
+msgstr "ערך לא חוקי עבור --runs: %(value)s"
+
+msgid "invalid --sort %(value)s"
+msgstr "ערך לא חוקי עבור --sort: %(value)s"
+
+msgid "invalid --columns %(value)s"
+msgstr "ערך לא חוקי עבור --columns: %(value)s"
+
+msgid ""
+"Rank the catalog for what you want to do on this machine.\n"
+"\n"
+"Every candidate is planned, sized and estimated here, so the first run scans the machine. Speeds compare candidates at 8K tokens of context; --explain expands a row into the scores, the weights, the budget and the speed breakdown that produced it."
+msgstr ""
+"דירוג הקטלוג לפי מה שברצונך לעשות במכונה הזאת.\n"
+"\n"
+"כל מועמד מתוכנן, נמדד ומוערך כאן, ולכן הריצה הראשונה סורקת את המכונה. המהירויות משוות מועמדים ב-8K אסימונים של הקשר; --explain פורש שורה לניקוד, למשקלים, לתקציב ולפירוט המהירות שהפיקו אותה."
+
+msgid "Exclude candidates that cannot hold at least this many tokens."
+msgstr "הוצאה מהחשבון של מועמדים שאינם יכולים להחזיק לפחות כך וכך אסימונים."
+
+msgid "Show at most this many rows."
+msgstr "הצגת מספר השורות הזה לכל היותר."
+
+msgid "Show every quantisation instead of the best one per model."
+msgstr "הצגת כל קוונטיזציה במקום הטובה ביותר לכל מודל."
+
+msgid "Expand every row shown into the scores, weights, budget and speed breakdown behind it. Combine with --limit 1 for one model."
+msgstr "פרישת כל שורה מוצגת לניקוד, למשקלים, לתקציב ולפירוט המהירות שמאחוריה. שלב עם --limit 1 עבור מודל אחד."
+
+msgid "Plan without a vision projector, freeing its memory."
+msgstr "תכנון בלי מקרן ראייה, ושחרור הזיכרון שלו."
+
+msgid ""
+"Rank every model by how well it uses this machine, whatever it is for.\n"
+"\n"
+"No use case, no weights and no score: this is the memory question on its own. Models are sized for 32K tokens of context, and the context column is the largest each one holds in the mode shown."
+msgstr ""
+"דירוג כל מודל לפי כמה טוב הוא מנצל את המכונה הזאת, יהיה ייעודו אשר יהיה.\n"
+"\n"
+"בלי מקרה שימוש, בלי משקלים ובלי ניקוד: זו שאלת הזיכרון לבדה. גודלי המודלים מחושבים ל-32K אסימונים של הקשר, ועמודת ההקשר היא הגדול ביותר שכל אחד מחזיק במצב המוצג."
+
+msgid "Only the configurations that use the machine well: at least half its memory held in weights, and no pool past four fifths."
+msgstr "רק התצורות שמנצלות את המכונה היטב: לפחות מחצית מהזיכרון שלה מוחזקת במשקולות, ואף מאגר אינו עובר ארבע חמישיות."
 
 msgid "Maintain the catalog: validate its files, refresh volatile fields."
 msgstr "תחזוקת הקטלוג: אימות הקבצים שלו ורענון שדות משתנים."
@@ -105,38 +609,17 @@ msgstr "השארת מקרה השימוש הזה בלבד."
 msgid "Keep only models with this capability (repeatable)."
 msgstr "השארת מודלים בעלי היכולת הזאת בלבד (אפשר לחזור על האפשרות)."
 
-msgid "Keep only these licence identifiers (repeatable)."
-msgstr "השארת מזהי הרישיונות האלה בלבד (אפשר לחזור על האפשרות)."
+msgid "Show only this quantisation, matched case-insensitively, in both tables."
+msgstr "הצגת הקוונטיזציה הזאת בלבד, בהתאמה בלי הבחנה בין אותיות גדולות לקטנות, בשתי הטבלאות."
+
+msgid "Size every quantisation for this many tokens instead of the usual 32,768."
+msgstr "חישוב הגודל של כל קוונטיזציה למספר האסימונים הזה במקום 32,768 הרגילים."
 
 msgid "Validate only this file instead of the bundled catalog and custom overrides."
 msgstr "אימות הקובץ הזה בלבד במקום הקטלוג המצורף וההתאמות האישיות."
 
-msgid "Did you mean: %(ids)s?"
-msgstr "האם התכוונת ל: %(ids)s?"
-
-msgid "Run `llamafit list` to see every model id."
-msgstr "הרץ `llamafit list` כדי לראות את כל מזהי המודלים."
-
-msgid "no model named %(id)s in the catalog"
-msgstr "אין בקטלוג מודל בשם %(id)s"
-
-msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
-msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
-msgstr[0] "נמצאה %(count)d בעיה בקטלוג; הרץ `llamafit catalog validate` לפרטים."
-msgstr[1] "נמצאו %(count)d בעיות בקטלוג; הרץ `llamafit catalog validate` לפרטים."
-msgstr[2] "נמצאו %(count)d בעיות בקטלוג; הרץ `llamafit catalog validate` לפרטים."
-
 msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
 msgstr "לא נמצאו מודלים מתאימים. נסה ערך רחב יותר עבור --use-case, --capability, --license, --vendor או --search."
-
-msgid "invalid --use-case %(value)s"
-msgstr "ערך לא חוקי עבור --use-case: %(value)s"
-
-msgid "Valid use cases: %(values)s"
-msgstr "מקרי שימוש חוקיים: %(values)s"
-
-msgid "Valid capabilities: %(values)s"
-msgstr "יכולות חוקיות: %(values)s"
 
 msgid ""
 "List the model catalog, narrowed by any filters given.\n"
@@ -162,8 +645,14 @@ msgstr "קיצור עבור llamafit list --search TEXT."
 msgid "Text to match against id, name, vendor or family."
 msgstr "טקסט להתאמה מול המזהה, השם, היצרן או המשפחה."
 
-msgid "A catalog model id."
-msgstr "מזהה של מודל מהקטלוג."
+msgid ""
+"Show one model: its facts, the quants it publishes, and what each would cost on this machine.\n"
+"\n"
+"The last table is sized against this machine, so the first run scans it. One line per quantisation; plan opens one of those rows into the memory budget, the context ladder and the command line."
+msgstr ""
+"הצגת מודל אחד: העובדות שלו, הקוונטיזציות שהוא מפרסם, ומה כל אחת מהן תעלה במכונה הזאת.\n"
+"\n"
+"גודל הטבלה האחרונה מחושב מול המכונה הזאת, ולכן הריצה הראשונה סורקת אותה. שורה אחת לכל קוונטיזציה; plan פותח אחת מהשורות האלה לתקציב הזיכרון, לסולם ההקשר ולשורת הפקודה."
 
 msgid "Validate catalog YAML files against the schema, printing one line per problem."
 msgstr "אימות קובצי YAML של הקטלוג מול הסכמה, והדפסת שורה לכל בעיה."
@@ -213,8 +702,390 @@ msgstr "הדפסת רשומת הקטלוג הגולמית של מודל אחד, 
 msgid "Print YAML instead of JSON."
 msgstr "הדפסת YAML במקום JSON."
 
+msgid "Did you mean: %(ids)s?"
+msgstr "האם התכוונת ל: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "הרץ `llamafit list` כדי לראות את כל מזהי המודלים."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "אין בקטלוג מודל בשם %(id)s"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "נמצאה %(count)d בעיה בקטלוג; הרץ `llamafit catalog validate` לפרטים."
+msgstr[1] "נמצאו %(count)d בעיות בקטלוג; הרץ `llamafit catalog validate` לפרטים."
+msgstr[2] "נמצאו %(count)d בעיות בקטלוג; הרץ `llamafit catalog validate` לפרטים."
+
+msgid "invalid --use-case %(value)s"
+msgstr "ערך לא חוקי עבור --use-case: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "מקרי שימוש חוקיים: %(values)s"
+
+msgid "invalid %(option)s value: %(values)s"
+msgid_plural "invalid %(option)s values: %(values)s"
+msgstr[0] "ערך לא חוקי עבור %(option)s: %(values)s"
+msgstr[1] "ערכים לא חוקיים עבור %(option)s: %(values)s"
+msgstr[2] "ערכים לא חוקיים עבור %(option)s: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "יכולות חוקיות: %(values)s"
+
+msgid "%(option)s is not a size: %(value)s"
+msgstr "%(option)s אינו גודל: %(value)s"
+
+msgid "Sizes look like 8G, 7.5GiB or 512M; a bare number is bytes."
+msgstr "גדלים נראים כך: 8G, 7.5GiB או 512M; מספר חשוף הוא בתים."
+
+msgid "%(ceiling)s %(max)s is below %(floor)s %(min)s"
+msgstr "%(ceiling)s %(max)s נמוך מ-%(floor)s %(min)s"
+
+msgid "Raise %(ceiling)s, or lower %(floor)s."
+msgstr "העלה את %(ceiling)s, או הנמך את %(floor)s."
+
+msgid "`llamafit %(command)s` reports on the machine LlamaFit is running on"
+msgstr "`llamafit %(command)s` מדווח על המכונה ש-LlamaFit רץ עליה"
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a profile describes, run `llamafit hardware show NAME --as-host`."
+msgstr "השמט את --profile, --memory, --ram ואת --cpu-cores. כדי לראות את המכונה שפרופיל מתאר, הרץ `llamafit hardware show NAME --as-host`."
+
 msgid "Explain what was detected, what failed, and what would unlock more."
 msgstr "הסבר מה זוהה, מה נכשל ומה יפתח אפשרויות נוספות."
+
+msgid "Hardware profiles: describe a machine in a file and score models against it."
+msgstr "פרופילי חומרה: תיאור מכונה בקובץ וניקוד מודלים מולה."
+
+msgid "Validate only this file instead of every bundled and user profile."
+msgstr "אימות הקובץ הזה בלבד במקום כל הפרופילים המצורפים ופרופילי המשתמש."
+
+msgid "A profile name, or a path to a profile file."
+msgstr "שם פרופיל, או נתיב לקובץ פרופיל."
+
+msgid "%(count)d hardware profile problem found; run `llamafit hardware validate` for details."
+msgid_plural "%(count)d hardware profile problems found; run `llamafit hardware validate` for details."
+msgstr[0] "נמצאה %(count)d בעיה בפרופילי החומרה; הרץ `llamafit hardware validate` לפרטים."
+msgstr[1] "נמצאו %(count)d בעיות בפרופילי החומרה; הרץ `llamafit hardware validate` לפרטים."
+msgstr[2] "נמצאו %(count)d בעיות בפרופילי החומרה; הרץ `llamafit hardware validate` לפרטים."
+
+msgid "List the hardware profiles LlamaFit has: the bundled ones and your own."
+msgstr "הצגת פרופילי החומרה שיש ל-LlamaFit: המצורפים ושלך."
+
+msgid "No hardware profiles. Run `llamafit hardware path` to see where yours would go."
+msgstr "אין פרופילי חומרה. הרץ `llamafit hardware path` כדי לראות לאן שלך היו נכנסים."
+
+msgid ""
+"Show one profile; with --as-host, the machine it stands in for.\n"
+"\n"
+"A host built from a profile is marked as simulated, in the table and in the JSON, so a what-if is never mistaken for a scan of this machine."
+msgstr ""
+"הצגת פרופיל אחד; עם --as-host, המכונה שהוא מייצג.\n"
+"\n"
+"מארח שנבנה מפרופיל מסומן כמדומה, בטבלה וב-JSON, כדי שתרחיש היפותטי לא ייחשב בטעות לסריקה של המכונה הזאת."
+
+msgid "Show the host this profile substitutes, as `llamafit system` would."
+msgstr "הצגת המארח שהפרופיל הזה מחליף, כפי ש-`llamafit system` היה מציג."
+
+msgid "Check hardware profile files against the schema, printing one line per problem."
+msgstr "בדיקת קובצי פרופיל החומרה מול הסכמה, והדפסת שורה לכל בעיה."
+
+msgid "Print the directory your own hardware profiles go in."
+msgstr "הדפסת התיקייה שאליה נכנסים פרופילי החומרה שלך."
+
+msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr "היא עדיין אינה קיימת; צור אותה והנח בה קובץ %(suffix)s."
+
+msgid "Install what it takes to run a model: llama.cpp itself, and the weights."
+msgstr "התקנת מה שנדרש כדי להריץ מודל: llama.cpp עצמו והמשקולות."
+
+msgid "Fetch this quantisation instead of the first the catalog publishes."
+msgstr "הבאת הקוונטיזציה הזאת במקום הראשונה שהקטלוג מפרסם."
+
+msgid "Put the files here instead of under the configured downloads directory."
+msgstr "הנחת הקבצים כאן במקום מתחת לתיקיית ההורדות שהוגדרה."
+
+msgid "Use at most this much bandwidth, for example 5M. Shared across every worker, so the figure is the figure whatever --workers says."
+msgstr "שימוש ברוחב פס של כך וכך לכל היותר, למשל 5M. משותף לכל העובדים, ולכן הנתון הוא הנתון יהיה אשר יהיה --workers."
+
+msgid "How many requests to keep in flight. More is not always faster, and a home connection is shared with whoever else is using it."
+msgstr "כמה בקשות להחזיק בו-זמנית. יותר אינו תמיד מהיר יותר, וחיבור ביתי משותף לכל מי שמשתמש בו."
+
+msgid "Do not ask before starting."
+msgstr "לא לשאול לפני ההתחלה."
+
+msgid "Show what would be fetched and stop before fetching it."
+msgstr "הצגת מה שהיה מובא ועצירה לפני ההבאה."
+
+msgid "Fetch only the weights, not the vision projector or the draft model."
+msgstr "הבאת המשקולות בלבד, בלי מקרן הראייה ובלי מודל הטיוטה."
+
+msgid "Re-read files that are already here and check them against the catalog."
+msgstr "קריאה מחדש של קבצים שכבר כאן ובדיקתם מול הקטלוג."
+
+msgid "Fetch files the catalog holds no checksum for. Nothing will be able to tell you whether they arrived intact."
+msgstr "הבאת קבצים שלקטלוג אין עבורם סכום ביקורת. שום דבר לא יוכל לומר לך אם הגיעו שלמים."
+
+msgid "Show at most this many entries."
+msgstr "הצגת מספר הרשומות הזה לכל היותר."
+
+msgid "Download a model's weights, resuming anything an earlier run left and checking every file against the catalog's checksum."
+msgstr "הורדת המשקולות של מודל, המשך של כל מה שריצה קודמת השאירה ובדיקת כל קובץ מול סכום הביקורת של הקטלוג."
+
+msgid "Start the download?"
+msgstr "להתחיל את ההורדה?"
+
+msgid "Show what has been downloaded, newest first."
+msgstr "הצגת מה שהורד, החדש ביותר ראשון."
+
+msgid "Nothing has been downloaded yet."
+msgstr "עדיין לא הורד דבר."
+
+msgid "Install this backend instead of the one chosen for your GPU: cuda, vulkan, hip, sycl, metal or cpu."
+msgstr "התקנת המנגנון הזה במקום זה שנבחר עבור ה-GPU שלך: cuda, vulkan, hip, sycl, metal או cpu."
+
+msgid "Install here instead of ~/.llamafit/llama.cpp."
+msgstr "התקנה כאן במקום ב-~/.llamafit/llama.cpp."
+
+msgid "Install this release tag, for example b6100, not the latest."
+msgstr "התקנת תג השחרור הזה, למשל b6100, ולא האחרון."
+
+msgid "invalid --backend %(value)s"
+msgstr "ערך לא חוקי עבור --backend: %(value)s"
+
+msgid "Valid backends: %(values)s"
+msgstr "מנגנונים חוקיים: %(values)s"
+
+msgid "release %(tag)s publishes no %(backend)s build for %(os)s %(arch)s."
+msgstr "שחרור %(tag)s אינו מפרסם בנייה של %(backend)s עבור %(os)s %(arch)s."
+
+msgid "Leave --backend out and LlamaFit will choose a published one."
+msgstr "השמט את --backend ו-LlamaFit יבחר אחת שפורסמה."
+
+msgid "release %(tag)s publishes nothing for %(os)s %(arch)s."
+msgstr "שחרור %(tag)s אינו מפרסם דבר עבור %(os)s %(arch)s."
+
+msgid "Build llama.cpp from source; see the project's own instructions."
+msgstr "בנה את llama.cpp מהמקור; ראה את ההוראות של הפרויקט עצמו."
+
+msgid "Downloading"
+msgstr "מוריד"
+
+msgid "Change your PATH?"
+msgstr "לשנות את ה-PATH שלך?"
+
+msgid "PATH left alone."
+msgstr "ה-PATH נותר ללא שינוי."
+
+msgid "PATH changed. Open a new terminal for it to take effect."
+msgstr "ה-PATH שונה. פתח טרמינל חדש כדי שהשינוי ייכנס לתוקף."
+
+msgid ""
+"Download a published llama.cpp build and install it into ~/.llamafit/llama.cpp.\n"
+"\n"
+"The plan is printed before anything is written. The archive's checksum is verified before it is unpacked, an interrupted download continues where it stopped, and a directory LlamaFit did not create is never overwritten."
+msgstr ""
+"הורדת בנייה מפורסמת של llama.cpp והתקנתה ב-~/.llamafit/llama.cpp.\n"
+"\n"
+"התוכנית מודפסת לפני שנכתב דבר. סכום הביקורת של הארכיון מאומת לפני פריקתו, הורדה שנקטעה ממשיכה מהמקום שבו עצרה, ותיקייה ש-LlamaFit לא יצר לעולם אינה נדרסת."
+
+msgid "Offer to add the bin directory to your PATH, showing the undo first."
+msgstr "הצעה להוסיף את תיקיית bin ל-PATH שלך, תוך הצגת דרך הביטול תחילה."
+
+msgid "Install over a directory LlamaFit did not create. Ask yourself twice."
+msgstr "התקנה מעל תיקייה ש-LlamaFit לא יצר. חשוב על זה פעמיים."
+
+msgid "Install an archive that publishes no checksum. Nothing can be checked."
+msgstr "התקנת ארכיון שאינו מפרסם סכום ביקורת. אי אפשר לבדוק דבר."
+
+msgid "Print the plan and write nothing."
+msgstr "הדפסת התוכנית בלי לכתוב דבר."
+
+msgid "Do not ask; assume yes."
+msgstr "לא לשאול; להניח כן."
+
+msgid "Install this?"
+msgstr "להתקין את זה?"
+
+msgid "Nothing was written."
+msgstr "שום דבר לא נכתב."
+
+msgid "Plan this quantisation instead of the one that scores best on this machine."
+msgstr "תכנון הקוונטיזציה הזאת במקום זו שמנקדת הכי טוב במכונה הזאת."
+
+msgid "Size for this many tokens. When it does not fit, the plan sizes down and shows what the context you asked for would have cost."
+msgstr "חישוב הגודל למספר האסימונים הזה. כשזה לא נכנס, התוכנית מקטינה ומראה כמה ההקשר שביקשת היה עולה."
+
+msgid "Set the micro-batch by hand. The whole budget is rebuilt around it, since it moves the compute buffer and with it the verdict."
+msgstr "קביעת המיקרו-אצווה ידנית. כל התקציב נבנה מחדש סביבה, כיוון שהיא מזיזה את מאגר החישוב ואיתו את הפסק."
+
+msgid "A generation speed to answer against: whether this reaches it, and what context would."
+msgstr "מהירות יצירה להשיב מולה: האם זה מגיע אליה, ואיזה הקשר כן."
+
+msgid "%(model)s publishes no quantisations"
+msgstr "%(model)s אינו מפרסם קוונטיזציות"
+
+msgid "Run `llamafit catalog refresh --model %(model)s`."
+msgstr "הרץ `llamafit catalog refresh --model %(model)s`."
+
+msgid ""
+"Place one model on this machine and print the command line that runs it.\n"
+"\n"
+"Shows the memory budget component by component, the context ladder a launch script chooses from, where a token's time goes, and any run the catalog records for comparison."
+msgstr ""
+"שיבוץ מודל אחד במכונה הזאת והדפסת שורת הפקודה שמריצה אותו.\n"
+"\n"
+"מציג את תקציב הזיכרון רכיב אחרי רכיב, את סולם ההקשר שסקריפט הפעלה בוחר ממנו, לאן הולך הזמן של אסימון, וכל ריצה שהקטלוג רושם לשם השוואה."
+
+msgid "Leave the vision projector out, freeing its memory for context."
+msgstr "השמטת מקרן הראייה, ושחרור הזיכרון שלו לטובת ההקשר."
+
+msgid "Write the files here instead of in LlamaFit's own presets directory."
+msgstr "כתיבת הקבצים כאן במקום בתיקיית ההגדרות המוכנות של LlamaFit."
+
+msgid "Bind this port instead of llama.cpp's default 8080."
+msgstr "האזנה בפורט הזה במקום 8080, ברירת המחדל של llama.cpp."
+
+msgid "Size for this many tokens. It becomes the top of the ladder the script chooses from; the script never goes above it."
+msgstr "חישוב הגודל למספר האסימונים הזה. זה הופך לראש הסולם שהסקריפט בוחר ממנו; הסקריפט לעולם אינו עולה מעליו."
+
+msgid "%(model)s does not fit this machine in any configuration"
+msgstr "%(model)s אינו נכנס למכונה הזאת בשום תצורה"
+
+msgid "Run `llamafit plan %(model)s` to see what it would need."
+msgstr "הרץ `llamafit plan %(model)s` כדי לראות מה הוא היה צריך."
+
+msgid ""
+"Write launch scripts for one model: a script that picks its context from free card memory at start time, a router section, and a README.\n"
+"\n"
+"A file you have edited is never overwritten without --force."
+msgstr ""
+"כתיבת סקריפטים להפעלת מודל אחד: סקריפט שבוחר את ההקשר שלו מזיכרון הכרטיס הפנוי בזמן ההפעלה, קטע ניתוב, וקובץ README.\n"
+"\n"
+"קובץ שערכת לעולם אינו נדרס בלי --force."
+
+msgid "Overwrite files you have edited. It says which ones it discarded."
+msgstr "דריסת קבצים שערכת. הוא אומר אילו מהם נזרקו."
+
+msgid "Run a model's preset, wait for the server to answer, and print its endpoints. --stop stops the server LlamaFit started."
+msgstr "הרצת ההגדרה המוכנה של מודל, המתנה לתשובת השרת, והדפסת נקודות הקצה שלו. --stop עוצר את השרת ש-LlamaFit הפעיל."
+
+msgid "Stop the server LlamaFit started for this model."
+msgstr "עצירת השרת ש-LlamaFit הפעיל עבור המודל הזה."
+
+msgid "Seconds to wait for /health before reporting that it has not answered."
+msgstr "מספר השניות להמתין ל-/health לפני שמדווחים שהוא לא ענה."
+
+msgid "the preset could not be written"
+msgstr "לא ניתן היה לכתוב את ההגדרה המוכנה"
+
+msgid "Wrote a preset first: %(path)s"
+msgstr "נכתבה קודם הגדרה מוכנה: %(path)s"
+
+msgid "Nothing to stop: LlamaFit has no record of starting %(model)s."
+msgstr "אין מה לעצור: ל-LlamaFit אין רישום על הפעלת %(model)s."
+
+msgid "Stopped %(model)s, which was serving on %(url)s."
+msgstr "%(model)s נעצר, והוא שירת בכתובת %(url)s."
+
+msgid "Preset for %(name)s (%(quant)s) in %(dir)s"
+msgstr "הגדרה מוכנה עבור %(name)s (%(quant)s) ב-%(dir)s"
+
+msgid "The server will answer on %(url)s."
+msgstr "השרת יענה בכתובת %(url)s."
+
+msgid "Your edits were kept. Nothing above was written to those files; run the command again with --force to replace them."
+msgstr "העריכות שלך נשמרו. שום דבר מהאמור לא נכתב לקבצים האלה; הרץ את הפקודה שוב עם --force כדי להחליף אותם."
+
+msgid "At start time the script reads how much card memory is free, keeps %(reserve)s MiB back, and takes the largest context that still fits."
+msgstr "בזמן ההפעלה הסקריפט קורא כמה זיכרון כרטיס פנוי, שומר בצד %(reserve)s MiB, ולוקח את ההקשר הגדול ביותר שעדיין נכנס."
+
+msgid "This machine has nothing the script can ask for free card memory, so it will start at %(context)s tokens; the script's header says why."
+msgstr "במכונה הזאת אין את מי הסקריפט יכול לשאול על זיכרון כרטיס פנוי, ולכן הוא יתחיל ב-%(context)s אסימונים; הכותרת של הסקריפט מסבירה למה."
+
+msgid "Files"
+msgstr "קבצים"
+
+msgctxt "column heading"
+msgid "File"
+msgstr "קובץ"
+
+msgctxt "column heading"
+msgid "What happened"
+msgstr "מה קרה"
+
+msgid "Context tiers the script may choose"
+msgstr "דרגות ההקשר שהסקריפט עשוי לבחור"
+
+msgctxt "column heading"
+msgid "Context"
+msgstr "הקשר"
+
+msgctxt "column heading"
+msgid "Card needs"
+msgstr "דרוש מהכרטיס"
+
+msgctxt "column heading"
+msgid "Free card memory to reach it"
+msgstr "זיכרון כרטיס פנוי לכך"
+
+msgid "%(value)s MiB"
+msgstr "%(value)s MiB"
+
+msgid "written"
+msgstr "נכתב"
+
+msgid "brought up to date"
+msgstr "עודכן"
+
+msgid "already up to date"
+msgstr "כבר מעודכן"
+
+msgid "kept: you edited it"
+msgstr "נשמר: ערכת אותו"
+
+msgid "overwritten: your edits are gone"
+msgstr "נדרס: העריכות שלך נעלמו"
+
+msgid "The preset could not be started: %(error)s"
+msgstr "לא ניתן היה להפעיל את ההגדרה המוכנה: %(error)s"
+
+msgid "Started, but %(url)s has not answered yet. A large model can spend minutes reading its weights; try the health endpoint again in a moment, or run `llamafit launch %(model)s --stop`."
+msgstr "הופעל, אך %(url)s עדיין לא ענה. מודל גדול יכול לבלות דקות בקריאת המשקולות שלו; נסה שוב את נקודת הקצה health בעוד רגע, או הרץ `llamafit launch %(model)s --stop`."
+
+msgid "%(model)s was already serving on %(url)s."
+msgstr "%(model)s כבר שירת בכתובת %(url)s."
+
+msgid "%(model)s is serving on %(url)s."
+msgstr "%(model)s משרת בכתובת %(url)s."
+
+msgid "Stop it with `llamafit launch %(model)s --stop`."
+msgstr "עצור אותו באמצעות `llamafit launch %(model)s --stop`."
+
+msgid "Endpoints"
+msgstr "נקודות קצה"
+
+msgctxt "column heading"
+msgid "What"
+msgstr "מה"
+
+msgctxt "column heading"
+msgid "Where"
+msgstr "איפה"
+
+msgid "Web interface"
+msgstr "ממשק ווב"
+
+msgid "Chat completions"
+msgstr "השלמות צ'אט"
+
+msgid "Models"
+msgstr "מודלים"
+
+msgid "Health"
+msgstr "בריאות"
+
+msgid "Ask for the model by the alias %(alias)s."
+msgstr "בקש את המודל בשם החלופי %(alias)s."
 
 msgctxt "finding level"
 msgid "OK"
@@ -246,37 +1117,83 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "לא ידוע"
 
+# Each row that says "unknown" names its own noun, and Hebrew follows that noun's
+# gender: רוחב הפס, הדגם, ההקשר and הגודל are masculine, ערכת ההוראות and הבנייה
+# feminine.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "לא ידוע"
+
+msgid "%(gbps)s GB/s (%(source)s, cached)"
+msgstr "%(gbps)s GB/s (%(source)s, מהמטמון)"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+msgctxt "simulation override"
+msgid "VRAM"
+msgstr "VRAM"
+
+msgctxt "simulation override"
+msgid "system memory"
+msgstr "זיכרון מערכת"
+
+msgctxt "simulation override"
+msgid "CPU cores"
+msgstr "ליבות CPU"
+
+msgid "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgid_plural "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgstr[0] "הנתונים האלה מגיעים מפרופיל החומרה %(profile)s עם %(fields)s שנדרסו; הם אינם המכונה הזאת"
+msgstr[1] "הנתונים האלה מגיעים מפרופיל החומרה %(profile)s עם %(fields)s שנדרסו; הם אינם המכונה הזאת"
+msgstr[2] "הנתונים האלה מגיעים מפרופיל החומרה %(profile)s עם %(fields)s שנדרסו; הם אינם המכונה הזאת"
+
+msgid "these figures come from the hardware profile %(profile)s; they are not this machine"
+msgstr "הנתונים האלה מגיעים מפרופיל החומרה %(profile)s; הם אינם המכונה הזאת"
+
+msgid "%(fields)s was overridden for a what-if; these figures are not what was scanned"
+msgid_plural "%(fields)s were overridden for a what-if; these figures are not what was scanned"
+msgstr[0] "%(fields)s נדרס לטובת תרחיש היפותטי; הנתונים האלה אינם מה שנסרק"
+msgstr[1] "%(fields)s נדרסו לטובת תרחיש היפותטי; הנתונים האלה אינם מה שנסרק"
+msgstr[2] "%(fields)s נדרסו לטובת תרחיש היפותטי; הנתונים האלה אינם מה שנסרק"
+
+msgid "these figures are not this machine"
+msgstr "הנתונים האלה אינם המכונה הזאת"
+
+msgid "SIMULATED"
+msgstr "מדומה"
+
 msgctxt "model capability"
 msgid "coding"
-msgstr ""
+msgstr "תכנות"
 
 msgctxt "model capability"
 msgid "thinking"
-msgstr ""
+msgstr "חשיבה"
 
 msgctxt "model capability"
 msgid "vision"
-msgstr ""
+msgstr "ראייה"
 
 msgctxt "model capability"
 msgid "tools"
-msgstr ""
+msgstr "כלים"
 
 msgctxt "model capability"
 msgid "multilingual"
-msgstr ""
+msgstr "רב-לשוני"
 
 msgctxt "model capability"
 msgid "long-context"
-msgstr ""
+msgstr "הקשר ארוך"
 
 msgctxt "model capability"
 msgid "embeddings"
-msgstr ""
+msgstr "הטמעות"
 
 msgctxt "model capability"
 msgid "audio"
-msgstr ""
+msgstr "שמע"
 
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s ו-%(compute)s TFLOPS fp16"
@@ -289,18 +1206,18 @@ msgstr "%(compute)s TFLOPS fp16"
 
 msgid "%(count)d core"
 msgid_plural "%(count)d cores"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%(count)d ליבה"
+msgstr[1] "%(count)d ליבות"
+msgstr[2] "%(count)d ליבות"
 
 msgid "%(count)d thread"
 msgid_plural "%(count)d threads"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%(count)d תהליכון"
+msgstr[1] "%(count)d תהליכונים"
+msgstr[2] "%(count)d תהליכונים"
 
 msgid "%(cores)s / %(threads)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s"
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -309,10 +1226,10 @@ msgstr[1] "%(count)d ליבות ביצועים"
 msgstr[2] "%(count)d ליבות ביצועים"
 
 msgid "%(cores)s / %(threads)s, %(performance)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s, %(performance)s"
 
 msgid "%(type)s at %(speed)d MT/s"
-msgstr ""
+msgstr "%(type)s ב-%(speed)d MT/s"
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -330,23 +1247,23 @@ msgstr[1] "%(count)d ערוצים"
 msgstr[2] "%(count)d ערוצים"
 
 msgid "%(kind)s, %(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s על פני %(channels)s"
 
 msgid "%(kind)s, %(modules)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s"
 
 msgid "%(kind)s, %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(channels)s"
 
 msgid "%(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(modules)s על פני %(channels)s"
 
 msgctxt "memory type"
 msgid "type unknown"
 msgstr "הסוג לא ידוע"
 
 msgid "%(specs)s (spec), driver %(driver)s"
-msgstr ""
+msgstr "%(specs)s (לפי המפרט), מנהל התקן %(driver)s"
 
 msgid "%(specs)s (spec)"
 msgstr "%(specs)s (לפי המפרט)"
@@ -357,6 +1274,19 @@ msgstr "מנהל התקן %(driver)s"
 msgctxt "GPU specifications"
 msgid "no specs"
 msgstr "אין מפרט"
+
+msgid "%(total)s VRAM, %(free)s free (Vulkan driver)"
+msgstr "%(total)s VRAM, מתוכם %(free)s פנויים (מנהל התקן Vulkan)"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, מתוכם %(free)s פנויים"
+
+msgid "%(total)s VRAM, free unknown"
+msgstr "%(total)s VRAM, הפנוי לא ידוע"
+
+msgctxt "GPU VRAM"
+msgid "VRAM unknown"
+msgstr "VRAM לא ידוע"
 
 msgid "Host"
 msgstr "מארח"
@@ -369,23 +1299,6 @@ msgstr "%(os)s %(version)s (%(arch)s)"
 
 msgid "CPU"
 msgstr "CPU"
-
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgctxt "CPU instruction sets"
-msgid "isa unknown"
-msgstr "ערכת ההוראות לא ידועה"
-
-msgid "%(gbps)s GB/s (%(source)s)"
-msgstr "%(gbps)s GB/s (%(source)s)"
-
-# Each row that says "unknown" names its own noun, and Hebrew follows that noun's
-# gender: רוחב הפס, הדגם, ההקשר and הגודל are masculine, ערכת ההוראות and הבנייה
-# feminine.
-msgctxt "memory bandwidth"
-msgid "unknown"
-msgstr "לא ידוע"
 
 msgid "Memory"
 msgstr "זיכרון"
@@ -400,18 +1313,14 @@ msgctxt "GPU"
 msgid "none detected"
 msgstr "לא זוהה אף כרטיס"
 
-msgid "%(total)s VRAM, %(free)s free"
-msgstr "%(total)s VRAM, מתוכם %(free)s פנויים"
-
-msgctxt "GPU VRAM"
-msgid "VRAM unknown"
-msgstr "VRAM לא ידוע"
-
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
-msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgid "Card memory"
+msgstr "זיכרון הכרטיס"
+
+msgid "%(gpus)s: nothing here could read how much of the card is free, so every budget on this machine was computed as if there were no card at all. Install the Vulkan tools, or write the size into a hardware profile."
+msgstr "%(gpus)s: שום דבר כאן לא הצליח לקרוא כמה מהכרטיס פנוי, ולכן כל תקציב במכונה הזאת חושב כאילו אין כרטיס בכלל. התקן את כלי Vulkan, או רשום את הגודל בפרופיל חומרה."
 
 msgid "Memory pool"
 msgstr "מאגר זיכרון"
@@ -518,21 +1427,14 @@ msgid "Params"
 msgstr "פרמטרים"
 
 msgctxt "column heading"
-msgid "Context"
-msgstr "הקשר"
-
-msgctxt "column heading"
 msgid "Capabilities"
 msgstr "יכולות"
 
 msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr ""
+msgstr "%(heading)s הוא בסיס העריכה, לפני כל קנס על קוונטיזציה; הרץ `llamafit info <model>` למבחני הביצועים המתועדים שמאחוריו."
 
 msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr ""
-
-msgid "Models"
-msgstr "מודלים"
+msgstr "%(heading)s הוא המיליארדים הכוללים/הפעילים במודל תערובת מומחים, או מספר אחד כששניהם שווים."
 
 msgid "Vendor"
 msgstr "יצרן"
@@ -553,10 +1455,10 @@ msgid "Parameters"
 msgstr "פרמטרים"
 
 msgid "%(total)s total, %(active)s active"
-msgstr ""
+msgstr "%(total)s בסך הכול, %(active)s פעילים"
 
 msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
-msgstr ""
+msgstr "%(tokens)s אסימונים במקור, %(extended)s בהרחבה באמצעות %(method)s"
 
 msgctxt "context extension method"
 msgid "unspecified method"
@@ -602,13 +1504,13 @@ msgstr[1] "%(count)d שכבות"
 msgstr[2] "%(count)d שכבות"
 
 msgid "%(arch)s, %(layers)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s, %(experts)s"
 
 msgid "%(arch)s, %(layers)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s"
 
 msgid "%(arch)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(experts)s"
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
@@ -641,20 +1543,1177 @@ msgctxt "bits per weight"
 msgid "unknown"
 msgstr "לא ידוע"
 
+msgid "On this machine"
+msgstr "במכונה הזאת"
+
+msgctxt "column heading"
+msgid "Quant"
+msgstr "קוונט"
+
+msgctxt "column heading"
+msgid "Runs"
+msgstr "מצב"
+
+msgctxt "column heading"
+msgid "Card"
+msgstr "כרטיס"
+
+msgctxt "column heading"
+msgid "RAM"
+msgstr "RAM"
+
+msgctxt "column heading"
+msgid "Tok/s"
+msgstr "Tok/s"
+
+msgctxt "column heading"
+msgid "Ctx"
+msgstr "הקשר"
+
+msgctxt "column heading"
+msgid "Fit"
+msgstr "התאמה"
+
+msgid "%(quant)s: %(reason)s"
+msgstr "%(quant)s: %(reason)s"
+
+msgctxt "tokens per second"
+msgid "unknown"
+msgstr "לא ידוע"
+
+msgctxt "context length"
+msgid "none"
+msgstr "אין"
+
+msgid "Sized for %(context)s tokens, with every figure from a placement computed for this machine. `llamafit plan MODEL --quant NAME` opens one of these rows into the budget line by line, the context ladder and the command line that runs it."
+msgstr "מחושב ל-%(context)s אסימונים, כשכל נתון בו מגיע משיבוץ שחושב למכונה הזאת. `llamafit plan MODEL --quant NAME` פותח אחת מהשורות האלה לתקציב שורה אחרי שורה, לסולם ההקשר ולשורת הפקודה שמריצה אותו."
+
+msgid "To reach %(context)s tokens, free %(free)s more on the graphics card: that rung needs %(needed)s, which is %(share)s of what is free and over the line where the driver starts paging."
+msgstr "כדי להגיע ל-%(context)s אסימונים, פנה עוד %(free)s בכרטיס המסך: השלב הזה זקוק ל-%(needed)s, שהם %(share)s ממה שפנוי ומעל הקו שבו מנהל ההתקן מתחיל לדפדף."
+
+msgid "%(context)s tokens is past what this machine holds: that rung needs %(needed)s on the graphics card and there is nothing left to absorb what would not fit, so freeing the card is not the change that reaches it."
+msgstr "%(context)s אסימונים הם מעבר למה שהמכונה הזאת מחזיקה: השלב הזה זקוק ל-%(needed)s בכרטיס המסך ולא נשאר דבר שיקלוט את מה שלא נכנס, ולכן פינוי הכרטיס אינו השינוי שיגיע לשם."
+
+msgid "%(quant)s, the next quantisation down, could not be sized: %(reason)s"
+msgstr "%(quant)s, הקוונטיזציה הבאה מטה, לא ניתן היה לחשב את גודלה: %(reason)s"
+
+msgid "%(quant)s, the next quantisation down, does not fit this machine either."
+msgstr "%(quant)s, הקוונטיזציה הבאה מטה, אינה נכנסת למכונה הזאת גם היא."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens."
+msgstr "%(quant)s, הקוונטיזציה הבאה מטה, תוכננה כאן גם היא: %(mode)s, %(verdict)s, עד %(context)s אסימונים."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens at %(tps)s tokens per second."
+msgstr "%(quant)s, הקוונטיזציה הבאה מטה, תוכננה כאן גם היא: %(mode)s, %(verdict)s, עד %(context)s אסימונים במהירות %(tps)s אסימונים בשנייה."
+
+msgid "It fits entirely on the graphics card, which this one does not."
+msgstr "היא נכנסת כולה בכרטיס המסך, מה שזו אינה עושה."
+
+msgid "It fits better: %(theirs)s rather than %(mine)s."
+msgstr "היא מתאימה טוב יותר: %(theirs)s במקום %(mine)s."
+
+msgid "It holds %(theirs)s tokens rather than %(mine)s."
+msgstr "היא מחזיקה %(theirs)s אסימונים במקום %(mine)s."
+
+msgid "It generates %(theirs)s tokens per second rather than %(mine)s."
+msgstr "היא מייצרת %(theirs)s אסימונים בשנייה במקום %(mine)s."
+
+msgid "It is no better here, so there is nothing to gain by dropping to it."
+msgstr "היא אינה טובה יותר כאן, ולכן אין מה להרוויח מירידה אליה."
+
+msgid "Every context this model offers already fits here; the machine is not what limits it."
+msgstr "כל הקשר שהמודל הזה מציע כבר נכנס כאן; המכונה אינה מה שמגביל אותו."
+
+msgid "What would change it"
+msgstr "מה ישנה את זה"
+
+msgctxt "profile origin"
+msgid "bundled"
+msgstr "מצורף"
+
+msgctxt "profile origin"
+msgid "yours"
+msgstr "שלך"
+
+msgid "%(ram)s RAM, no graphics card"
+msgstr "%(ram)s RAM, בלי כרטיס מסך"
+
+msgid "%(ram)s RAM shared with %(gpu)s"
+msgstr "%(ram)s RAM משותף עם %(gpu)s"
+
+msgid "%(ram)s RAM, %(gpu)s with %(vram)s"
+msgstr "%(ram)s RAM, %(gpu)s עם %(vram)s"
+
+msgid "%(cores)d core / %(threads)d thread"
+msgid_plural "%(cores)d cores / %(threads)d threads"
+msgstr[0] "%(cores)d ליבה / %(threads)d תהליכון"
+msgstr[1] "%(cores)d ליבות / %(threads)d תהליכונים"
+msgstr[2] "%(cores)d ליבות / %(threads)d תהליכונים"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "ערכת ההוראות לא ידועה"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "%(total)s total, %(available)s available; bandwidth %(bandwidth)s"
+msgstr "%(total)s בסך הכול, %(available)s פנויים; רוחב פס %(bandwidth)s"
+
+msgctxt "GPU specifications"
+msgid "no bandwidth or compute figure"
+msgstr "אין נתון של רוחב פס או חישוב"
+
+msgid "%(specs)s (from the profile)"
+msgstr "%(specs)s (מהפרופיל)"
+
+msgid "%(specs)s (from the specification table)"
+msgstr "%(specs)s (מטבלת המפרטים)"
+
+msgctxt "GPU VRAM"
+msgid "VRAM from the shared pool"
+msgstr "VRAM מהמאגר המשותף"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "Hardware profiles"
+msgstr "פרופילי חומרה"
+
+msgid "Machine"
+msgstr "מכונה"
+
+msgid "a graphics card whose name contains %(text)s"
+msgstr "כרטיס מסך ששמו מכיל %(text)s"
+
+msgid "a processor whose model contains %(text)s"
+msgstr "מעבד שהדגם שלו מכיל %(text)s"
+
+msgid "at least %(ram)s of memory"
+msgstr "לפחות %(ram)s של זיכרון"
+
+msgctxt "profile match rules"
+msgid "none, so this profile is never chosen for you"
+msgstr "אין, ולכן הפרופיל הזה לעולם אינו נבחר עבורך"
+
+msgid "Description"
+msgstr "תיאור"
+
+msgid "From"
+msgstr "מתוך"
+
+msgid "File"
+msgstr "קובץ"
+
+msgid "Matches"
+msgstr "התאמה"
+
+msgid "Recorded"
+msgstr "נרשם"
+
+msgid "Provenance"
+msgstr "מקור"
+
+msgid "recorded from %(source)s; this build stores it but does not apply it yet"
+msgstr "נרשם מתוך %(source)s; הבנייה הזאת שומרת אותו אך עדיין אינה מיישמת אותו"
+
+msgctxt "utilisation"
+msgid "n/a"
+msgstr "לא רלוונטי"
+
+msgctxt "run mode"
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "run mode"
+msgid "experts in RAM"
+msgstr "מומחים ב-RAM"
+
+msgctxt "run mode"
+msgid "split"
+msgstr "מפוצל"
+
+msgctxt "run mode"
+msgid "CPU"
+msgstr "CPU"
+
+msgctxt "run mode"
+msgid "nowhere"
+msgstr "בשום מקום"
+
+msgctxt "fit verdict"
+msgid "roomy"
+msgstr "מרווח"
+
+msgctxt "fit verdict"
+msgid "fits"
+msgstr "נכנס"
+
+msgctxt "fit verdict"
+msgid "tight"
+msgstr "צפוף"
+
+msgctxt "fit verdict"
+msgid "pages"
+msgstr "מדפדף"
+
+msgctxt "fit verdict"
+msgid "no room"
+msgstr "אין מקום"
+
+msgid "Roomy: there is room for a longer context or a second model."
+msgstr "מרווח: יש מקום להקשר ארוך יותר או למודל שני."
+
+msgid "Fits: the intended configuration runs as planned."
+msgstr "נכנס: התצורה המיועדת רצה כמתוכנן."
+
+msgid "Tight: it runs, but a browser or a second process can push it over."
+msgstr "צפוף: זה רץ, אבל דפדפן או תהליך שני יכולים לדחוף את זה מעבר לגבול."
+
+msgid "Pages: this needs more of the graphics card than is free. The driver will not refuse it — it moves the overflow to system memory, the server starts, the log looks healthy, and generation runs at a fraction of its speed with nothing saying why."
+msgstr "מדפדף: זה זקוק ליותר מכרטיס המסך ממה שפנוי. מנהל ההתקן לא יסרב — הוא מעביר את הגלישה לזיכרון המערכת, השרת עולה, היומן נראה תקין, והיצירה רצה בשבריר מהמהירות שלה בלי ששום דבר אומר למה."
+
+msgid "No room: more memory than this machine has, with nothing to page to."
+msgstr "אין מקום: יותר זיכרון ממה שיש למכונה הזאת, ובלי לאן לדפדף."
+
+msgctxt "confidence"
+msgid "measured"
+msgstr "נמדד"
+
+msgctxt "confidence"
+msgid "calibrated"
+msgstr "מכויל"
+
+msgctxt "confidence"
+msgid "estimated"
+msgstr "מוערך"
+
+msgctxt "confidence"
+msgid "no estimate"
+msgstr "אין הערכה"
+
+msgid "Speeds are benchmarks taken on this machine, not predictions."
+msgstr "המהירויות הן מבחני ביצועים שנלקחו במכונה הזאת, לא תחזיות."
+
+msgid "Speeds are section 10's formula corrected by benchmarks taken on this machine."
+msgstr "המהירויות הן הנוסחה של סעיף 10 מתוקנת לפי מבחני ביצועים שנלקחו במכונה הזאת."
+
+msgid "Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement."
+msgstr "המהירויות הן הנוסחה של סעיף 10 עם קבועי ברירת המחדל שלה. עדיין לא נמדדו ביצועים במכונה הזאת, ולכן שום נתון כאן אינו מדידה."
+
+msgid "No speed could be estimated."
+msgstr "לא ניתן היה להעריך מהירות."
+
+msgctxt "memory pool"
+msgid "card"
+msgstr "כרטיס"
+
+msgctxt "memory pool"
+msgid "system"
+msgstr "מערכת"
+
+msgctxt "memory pool"
+msgid "disk"
+msgstr "דיסק"
+
+msgctxt "budget component"
+msgid "dense weights"
+msgstr "משקולות צפופות"
+
+msgctxt "budget component"
+msgid "shared experts"
+msgstr "מומחים משותפים"
+
+msgctxt "budget component"
+msgid "routed experts"
+msgstr "מומחים מנותבים"
+
+msgctxt "budget component"
+msgid "token embedding"
+msgstr "הטמעת אסימונים"
+
+msgctxt "budget component"
+msgid "output head"
+msgstr "ראש הפלט"
+
+msgctxt "budget component"
+msgid "other weights"
+msgstr "משקולות אחרות"
+
+msgctxt "budget component"
+msgid "streamed tables"
+msgstr "טבלאות מוזרמות"
+
+msgctxt "budget component"
+msgid "KV cache"
+msgstr "מטמון KV"
+
+msgctxt "budget component"
+msgid "KV cache, undeclared"
+msgstr "מטמון KV, לא מוצהר"
+
+msgctxt "budget component"
+msgid "recurrent state"
+msgstr "מצב חוזר"
+
+msgctxt "budget component"
+msgid "compute buffer"
+msgstr "מאגר החישוב"
+
+msgctxt "budget component"
+msgid "output buffer"
+msgstr "מאגר הפלט"
+
+msgctxt "budget component"
+msgid "vision projector"
+msgstr "מקרן הראייה"
+
+msgctxt "budget component"
+msgid "vision compute"
+msgstr "חישוב הראייה"
+
+msgctxt "budget component"
+msgid "backend overhead"
+msgstr "תקורת המנגנון"
+
+msgctxt "budget component"
+msgid "process overhead"
+msgstr "תקורת התהליך"
+
+msgctxt "budget line source"
+msgid "file"
+msgstr "קובץ"
+
+msgctxt "budget line source"
+msgid "formula"
+msgstr "נוסחה"
+
+msgctxt "column heading"
+msgid "Component"
+msgstr "רכיב"
+
+msgctxt "column heading"
+msgid "From"
+msgstr "מתוך"
+
+msgid "Card: %(required)s of %(available)s free, %(share)s used."
+msgstr "כרטיס: %(required)s מתוך %(available)s פנויים, %(share)s בשימוש."
+
+msgid "System memory: %(required)s of %(available)s free, %(share)s used."
+msgstr "זיכרון מערכת: %(required)s מתוך %(available)s פנויים, %(share)s בשימוש."
+
+msgid "%(component)s: %(note)s"
+msgstr "%(component)s: %(note)s"
+
+msgid "Context tiers"
+msgstr "דרגות ההקשר"
+
+msgctxt "column heading"
+msgid "On this machine"
+msgstr "במכונה הזאת"
+
+msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
+msgstr "סקריפט הפעלה משווה את הזיכרון הפנוי שהוא רואה מול עמודת הכרטיס ולוקח את השלב הגדול ביותר שנכנס (ראה docs/cli.md)."
+
+msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
+msgstr "%(gen)s אסימונים בשנייה נוצרים ו-%(prompt)s נקראים, ב-%(context)s אסימונים של הקשר (%(confidence)s)."
+
+msgctxt "column heading"
+msgid "A token's time"
+msgstr "הזמן של אסימון"
+
+msgctxt "token time"
+msgid "reading the card"
+msgstr "קריאה מהכרטיס"
+
+msgctxt "token time"
+msgid "reading system memory"
+msgstr "קריאה מזיכרון המערכת"
+
+msgctxt "token time"
+msgid "everything else"
+msgstr "כל השאר"
+
+msgctxt "column heading"
+msgid "A prompt token's time"
+msgstr "הזמן של אסימון פרומפט"
+
+msgctxt "prompt token time"
+msgid "doing the arithmetic"
+msgstr "ביצוע החשבון"
+
+msgctxt "prompt token time"
+msgid "streaming the experts across the link"
+msgstr "הזרמת המומחים דרך הקישור"
+
+msgctxt "prompt token time"
+msgid "reading the experts from system memory"
+msgstr "קריאת המומחים מזיכרון המערכת"
+
+msgctxt "column heading"
+msgid "Seconds"
+msgstr "שניות"
+
+msgctxt "column heading"
+msgid "Share"
+msgstr "חלק"
+
+msgid "Measured on %(date)s."
+msgstr "נמדד ב-%(date)s."
+
+msgid "Recorded elsewhere"
+msgstr "נרשם במקום אחר"
+
+msgctxt "column heading"
+msgid "Run"
+msgstr "ריצה"
+
+msgctxt "column heading"
+msgid "Date"
+msgstr "תאריך"
+
+msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
+msgstr "אלה ריצות של האוצר עצמו במכונה שלו, לא מבחני ביצועים של זו, ולכן שום דבר למעלה אינו מסומן כנמדד. השווה אותן להערכה; `llamafit bench` ימדוד את המכונה הזאת בשלב 3."
+
+msgid "%(profile)s: %(flags)s"
+msgstr "%(profile)s: %(flags)s"
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
+msgstr "%(baseline)s מהאוצר, פחות %(penalty)s על הקוונטיזציה הזאת, ועוד %(bonus)s מפני ש-%(use_case)s היא המשימה שלשמה נבנה."
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
+msgstr "%(baseline)s מהאוצר, פחות %(penalty)s על הקוונטיזציה הזאת; הוא מציין %(use_case)s אך לא נבנה לשמה."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
+msgstr "%(gen)s אסימונים בשנייה מול %(target)s שמקרה השימוש הזה מבקש, פחות %(penalty)s מפני שהוא קורא פרומפט ב-%(prompt)s."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
+msgstr "%(gen)s אסימונים בשנייה מול %(target)s שמקרה השימוש הזה מבקש."
+
+msgid "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool is %(share)s full. The score wants at least %(low)s of the memory taken and no more than %(high)s of any one pool."
+msgstr "המשקולות שלו תופסות %(weights)s מתוך %(memory)s של המכונה הזאת והמאגר הצפוף ביותר מלא ב-%(share)s. הניקוד רוצה שלפחות %(low)s מהזיכרון ייתפס ושלא יותר מ-%(high)s מאף מאגר בודד."
+
+msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
+msgstr "מחזיק %(fit)s אסימונים מתוך %(requested)s שמולם מנוקדת הבקשה הזאת."
+
+msgid "Score %(total)s"
+msgstr "ניקוד %(total)s"
+
+msgctxt "column heading"
+msgid "Part"
+msgstr "חלק"
+
+msgctxt "column heading"
+msgid "Weight"
+msgstr "משקל"
+
+msgctxt "column heading"
+msgid "Adds"
+msgstr "מוסיף"
+
+msgctxt "score part"
+msgid "quality"
+msgstr "איכות"
+
+msgctxt "score part"
+msgid "speed"
+msgstr "מהירות"
+
+msgctxt "score part"
+msgid "fit"
+msgstr "התאמה"
+
+msgctxt "score part"
+msgid "context"
+msgstr "הקשר"
+
+msgctxt "board sort"
+msgid "score"
+msgstr "ניקוד"
+
+msgctxt "board sort"
+msgid "speed"
+msgstr "מהירות"
+
+msgctxt "board sort"
+msgid "quality"
+msgstr "איכות"
+
+msgctxt "board sort"
+msgid "context"
+msgstr "הקשר"
+
+msgctxt "board sort"
+msgid "download size"
+msgstr "גודל ההורדה"
+
+msgctxt "board sort"
+msgid "prompt speed"
+msgstr "מהירות הפרומפט"
+
+msgctxt "board sort"
+msgid "card memory"
+msgstr "זיכרון הכרטיס"
+
+msgctxt "board sort"
+msgid "system memory"
+msgstr "זיכרון המערכת"
+
+msgctxt "board sort"
+msgid "fit"
+msgstr "התאמה"
+
+msgctxt "board sort"
+msgid "model id"
+msgstr "מזהה המודל"
+
+msgctxt "board sort"
+msgid "quantisation"
+msgstr "קוונטיזציה"
+
+msgctxt "column heading"
+msgid "#"
+msgstr "#"
+
+msgctxt "column heading"
+msgid "Model"
+msgstr "מודל"
+
+msgctxt "column heading"
+msgid "Size"
+msgstr "גודל"
+
+msgctxt "column heading"
+msgid "Have"
+msgstr "יש"
+
+msgctxt "column heading"
+msgid "Score"
+msgstr "ניקוד"
+
+msgctxt "column heading"
+msgid "Qual"
+msgstr "איכות"
+
+msgctxt "column heading"
+msgid "Prompt tok/s"
+msgstr "פרומפט tok/s"
+
+msgctxt "column heading"
+msgid "How"
+msgstr "איך"
+
+msgctxt "model file on this machine"
+msgid "yes"
+msgstr "כן"
+
+msgctxt "model file on this machine"
+msgid "no"
+msgstr "לא"
+
+msgid "no placement of it fits this machine at any context"
+msgstr "אף שיבוץ שלו אינו נכנס למכונה הזאת בשום הקשר"
+
+msgctxt "exclusion tag"
+msgid "no room"
+msgstr "אין מקום"
+
+msgctxt "exclusion tag"
+msgid "no facts"
+msgstr "אין עובדות"
+
+msgctxt "exclusion tag"
+msgid "not ranked"
+msgstr "לא דורג"
+
+msgctxt "board cell with no figure"
+msgid "–"
+msgstr "–"
+
+msgid "%(term)s is not a filter; the terms are %(terms)s, and anything else is text to look for."
+msgstr "%(term)s אינו מסנן; המונחים הם %(terms)s, וכל דבר אחר הוא טקסט לחיפוש."
+
+msgid "fit>= takes one of %(values)s"
+msgstr "fit>= מקבל אחד מ-%(values)s"
+
+msgid "runs= takes one of %(values)s"
+msgstr "runs= מקבל אחד מ-%(values)s"
+
+msgid "%(term)s needs a number"
+msgstr "%(term)s זקוק למספר"
+
+msgid "%(term)s needs a size such as 8G, 7.5GiB or 512M"
+msgstr "%(term)s זקוק לגודל כמו 8G, 7.5GiB או 512M"
+
+msgctxt "board filter"
+msgid "every candidate"
+msgstr "כל המועמדים"
+
+msgctxt "board filter"
+msgid "the ones with room to spare"
+msgstr "אלה שיש להם מקום בשפע"
+
+msgctxt "board filter"
+msgid "the ones that fit"
+msgstr "אלה שנכנסים"
+
+msgctxt "board filter"
+msgid "the ones that run"
+msgstr "אלה שרצים"
+
+msgid "matching %(text)s"
+msgstr "שמתאימים ל-%(text)s"
+
+msgid "running as %(mode)s"
+msgstr "שרצים כ-%(mode)s"
+
+msgid "at least %(tps)s tokens per second"
+msgstr "לפחות %(tps)s אסימונים בשנייה"
+
+msgid "no more than %(size)s to download"
+msgstr "לא יותר מ-%(size)s להורדה"
+
+msgid "no more than %(size)s on the card"
+msgstr "לא יותר מ-%(size)s בכרטיס"
+
+msgid "no more than %(size)s of system memory"
+msgstr "לא יותר מ-%(size)s של זיכרון מערכת"
+
+msgid "holding at least %(context)s tokens"
+msgstr "שמחזיקים לפחות %(context)s אסימונים"
+
+msgid "a quality of at least %(quality)s"
+msgstr "איכות של לפחות %(quality)s"
+
+msgid "%(shown)d of %(total)d shown"
+msgstr "מוצגים %(shown)d מתוך %(total)d"
+
+msgid "%(sort)s in reverse"
+msgstr "%(sort)s בסדר הפוך"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s already on this machine."
+msgstr "%(counted)s, לפי %(sort)s, מוצגים %(filter)s שכבר נמצאים במכונה הזאת."
+
+msgctxt "board filter"
+msgid "already on this machine"
+msgstr "שכבר נמצאים במכונה הזאת"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s."
+msgstr "%(counted)s, לפי %(sort)s, מוצגים %(filter)s."
+
+msgid "Nothing was ranked. Every candidate is listed below with the reason; widen the request or free some memory."
+msgstr "שום דבר לא דורג. כל מועמד מופיע למטה עם הסיבה; הרחב את הבקשה או פנה קצת זיכרון."
+
+msgid "Recommended"
+msgstr "מומלץ"
+
+msgid "--min-tps 0: nobody is waiting on these tokens, so nothing was excluded for generating more slowly than a person reads."
+msgstr "--min-tps 0: איש אינו מחכה לאסימונים האלה, ולכן שום דבר לא הוצא מהחשבון על כך שהוא מייצר לאט יותר ממה שאדם קורא."
+
+msgid "--min-tps %(tps)s: this board wanted at least that many tokens per second, and anything slower is excluded below rather than ranked here."
+msgstr "--min-tps %(tps)s: הלוח הזה רצה לפחות כך וכך אסימונים בשנייה, וכל מה שאיטי יותר מוצא מהחשבון למטה במקום להיות מדורג כאן."
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; --limit sets how many, and the rest are neither worse-behaved nor hidden, only further down."
+msgstr "מוצגים %(shown)s הטובים ביותר מתוך %(total)s שעמדו בתנאים; --limit קובע כמה, והשאר אינם מתנהגים גרוע יותר ואינם מוסתרים, רק נמצאים למטה יותר."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every speed above is a CPU-only speed. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s נמצא במכונה הזאת ושום דבר לא הצליח לקרוא כמה ממנו פנוי, ולכן כל מהירות למעלה היא מהירות של CPU בלבד. `llamafit doctor` אומר איך לתקן את זה."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
+msgstr "המהירויות הן עבור %(working)s אסימונים של הקשר כך שכל שורה מושווית לשווה לה; עמודת ההקשר היא הגדול ביותר שכל אחת מחזיקה. הגודל והניקוד חושבו עבור %(use_case)s ב-%(requested)s אסימונים."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
+msgstr "המהירויות הן עבור %(working)s אסימונים של הקשר כך שכל שורה מושווית לשווה לה; עמודת ההקשר היא הגדול ביותר שכל אחת מחזיקה. הגודל חושב ל-%(planned)s אסימונים והניקוד עבור %(use_case)s מול %(requested)s."
+
+msgid "Weights: %(weights)s."
+msgstr "משקלים: %(weights)s."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free, no card."
+msgstr "חושב עם %(ram_free)s פנויים מתוך %(ram_total)s של זיכרון מערכת, בלי כרטיס."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free and %(vram_free)s of %(vram_total)s free on the %(gpu)s."
+msgstr "חושב עם %(ram_free)s פנויים מתוך %(ram_total)s של זיכרון מערכת ו-%(vram_free)s פנויים מתוך %(vram_total)s ב-%(gpu)s."
+
+msgid "Every speed above is derived from %(bandwidth)s of memory bandwidth."
+msgstr "כל מהירות למעלה נגזרת מ-%(bandwidth)s של רוחב פס הזיכרון."
+
+msgid "That bandwidth was kept from an earlier run on this machine; `llamafit system --refresh-bandwidth` times it again."
+msgstr "רוחב הפס הזה נשמר מריצה קודמת במכונה הזאת; `llamafit system --refresh-bandwidth` מודד אותו שוב."
+
+msgid "generates fewer than the %(floor)s tokens per second this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "מייצר פחות מ-%(floor)s אסימונים בשנייה שהבקשה הזאת מבקשת; הנמך את --min-tps או בחר מודל או קוונטיזציה קטנים יותר"
+
+msgid "generates fewer than the %(floor)s tokens per second a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "מייצר פחות מ-%(floor)s אסימונים בשנייה שאדם קורא: כלי אצווה במכונה הזאת ולא כזה שיושבים מולו; מודל או קוונטיזציה קטנים יותר היו עומדים בקצב"
+
+msgid "%(tps)s tok/s"
+msgstr "%(tps)s tok/s"
+
+msgctxt "exclusion tag"
+msgid "too slow"
+msgstr "איטי מדי"
+
+msgctxt "exclusion tag"
+msgid "too big"
+msgstr "גדול מדי"
+
+msgid "larger to download than the %(limit)s this request allows"
+msgstr "גדול להורדה יותר מ-%(limit)s שהבקשה הזאת מתירה"
+
+msgctxt "exclusion tag"
+msgid "unknown quant"
+msgstr "קוונט לא ידוע"
+
+msgid "a quantisation whose cost in quality is not known, so it cannot be scored"
+msgstr "קוונטיזציה שהמחיר שלה באיכות אינו ידוע, ולכן אי אפשר לנקד אותה"
+
+msgid "needs more memory than this machine has, even at its smallest context"
+msgstr "זקוק ליותר זיכרון ממה שיש למכונה הזאת, גם בהקשר הקטן ביותר שלו"
+
+msgctxt "exclusion tag"
+msgid "unsupported"
+msgstr "לא נתמך"
+
+msgid "no run mode supports this model on this machine"
+msgstr "אף מצב ריצה אינו תומך במודל הזה במכונה הזאת"
+
+msgctxt "exclusion tag"
+msgid "short context"
+msgstr "הקשר קצר"
+
+msgid "holds fewer than the %(minimum)s tokens asked for; lower the minimum context or free memory to see it ranked"
+msgstr "מחזיק פחות מ-%(minimum)s האסימונים שהתבקשו; הנמך את ההקשר המזערי או פנה זיכרון כדי לראות אותו מדורג"
+
+msgctxt "exclusion tag"
+msgid "no estimate"
+msgstr "אין הערכה"
+
+msgid "no speed estimate, so it cannot be ranked against models that have one"
+msgstr "אין הערכת מהירות, ולכן אי אפשר לדרג אותו מול מודלים שיש להם אחת"
+
+msgctxt "exclusion tag"
+msgid "no %(capability)s"
+msgstr "אין %(capability)s"
+
+msgid "no %(capability)s capability; drop it from the request, or ask for a use case that does not need it"
+msgstr "אין יכולת %(capability)s; השמט אותה מהבקשה, או בקש מקרה שימוש שאינו זקוק לה"
+
+msgid "Not ranked"
+msgstr "לא דורג"
+
+msgid "Not placed"
+msgstr "לא שובץ"
+
+msgid "%(tag)s (%(count)s):"
+msgstr "%(tag)s (%(count)s):"
+
+msgid "%(model)s %(quant)s: %(reason)s"
+msgstr "%(model)s %(quant)s: %(reason)s"
+
+msgid "%(tag)s (%(count)s): %(sentence)s."
+msgstr "%(tag)s (%(count)s): %(sentence)s."
+
+msgid "%(model)s %(quant)s (%(figure)s)"
+msgstr "%(model)s %(quant)s (%(figure)s)"
+
+msgid "%(name)s %(quant)s (%(tag)s)"
+msgstr "%(name)s %(quant)s (%(tag)s)"
+
+msgid "%(rank)s. %(name)s %(quant)s"
+msgstr "%(rank)s. %(name)s %(quant)s"
+
+msgid "Nothing fits this machine at that threshold. Try --min-fit tight, or drop --perfect."
+msgstr "שום דבר לא נכנס למכונה הזאת בסף הזה. נסה --min-fit tight, או השמט את --perfect."
+
+msgid "Fit on the simulated machine"
+msgstr "התאמה למכונה המדומה"
+
+msgid "Fit on this machine"
+msgstr "התאמה למכונה הזאת"
+
+msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
+msgstr "מחושב ל-%(context)s אסימונים. עמודת ההקשר היא הגדול ביותר שכל אחת מחזיקה במצב המוצג."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every row was sized as if there were no card. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s נמצא במכונה הזאת ושום דבר לא הצליח לקרוא כמה ממנו פנוי, ולכן גודל כל שורה חושב כאילו אין כרטיס. `llamafit doctor` אומר איך לתקן את זה."
+
+msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
+msgstr "%(mode)s ב-%(context)s אסימונים, מיקרו-אצווה %(ub)s, מטמון %(kv)s, %(threads)s תהליכונים."
+
+msgid "This reaches the %(target)s tokens per second asked for."
+msgstr "זה מגיע ל-%(target)s האסימונים בשנייה שהתבקשו."
+
+msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
+msgstr "הוא אינו מגיע ל-%(target)s אסימונים בשנייה כאן, אבל %(context)s אסימונים של הקשר כן: העבר --context %(tokens)s."
+
+msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
+msgstr "שום דבר שהמודל והקוונטיזציה האלה יכולים לעשות במכונה הזאת אינו מגיע ל-%(target)s אסימונים בשנייה; התצורה המהירה ביותר שנוסתה היא %(best)s. מודל קטן יותר או קוונטיזציה קטנה יותר הם השינוי שיגיע לשם."
+
+msgid "%(name)s %(quant)s"
+msgstr "%(name)s %(quant)s"
+
+msgid "Memory budget"
+msgstr "תקציב הזיכרון"
+
+msgid "The %(context)s tokens asked for would have cost"
+msgstr "%(context)s האסימונים שהתבקשו היו עולים"
+
+msgid "Command line"
+msgstr "שורת הפקודה"
+
+msgid "Model file: %(path)s."
+msgstr "קובץ המודל: %(path)s."
+
+msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
+msgstr "קובץ המודל: %(path)s, שעדיין אינו במכונה הזאת; לשם הורדה הייתה מניחה אותו. %(size)s להבאה."
+
+msgid "%(shown)d of %(total)d candidate shown."
+msgid_plural "%(shown)d of %(total)d candidates shown."
+msgstr[0] "מוצג %(shown)d מתוך %(total)d מועמד."
+msgstr[1] "מוצגים %(shown)d מתוך %(total)d מועמדים."
+msgstr[2] "מוצגים %(shown)d מתוך %(total)d מועמדים."
+
+msgid "Release"
+msgstr "שחרור"
+
+msgid "%(tag)s (build %(build)s)"
+msgstr "%(tag)s (בנייה %(build)s)"
+
+msgid "Backend"
+msgstr "מנגנון"
+
+msgid "Archive"
+msgstr "ארכיון"
+
+msgid "Also"
+msgstr "גם"
+
+msgid "Download"
+msgstr "הורדה"
+
+msgid "%(size)s (%(done)s already on disk)"
+msgstr "%(size)s (%(done)s כבר בדיסק)"
+
+msgid "Checksum"
+msgstr "סכום ביקורת"
+
+msgid "published, checked before anything is unpacked"
+msgstr "פורסם, נבדק לפני שדבר נפרק"
+
+msgid "none published"
+msgstr "לא פורסם דבר"
+
+msgid "Install into"
+msgstr "התקנה אל"
+
+msgid "Directory"
+msgstr "תיקייה"
+
+msgid "Free space"
+msgstr "מקום פנוי"
+
+msgid "Free space (cache)"
+msgstr "מקום פנוי (מטמון)"
+
+msgid "%(free)s on %(path)s, %(needed)s needed"
+msgstr "%(free)s ב-%(path)s, נדרשים %(needed)s"
+
+msgid "will be created"
+msgstr "ייווצר"
+
+msgid "exists and is empty"
+msgstr "קיים וריק"
+
+msgid "holds %(tag)s, installed by LlamaFit; it will be replaced"
+msgstr "מכיל את %(tag)s, שהותקן על ידי LlamaFit; הוא יוחלף"
+
+msgid "installed by LlamaFit; it will be replaced"
+msgstr "הותקן על ידי LlamaFit; הוא יוחלף"
+
+msgid "was not installed by LlamaFit"
+msgstr "לא הותקן על ידי LlamaFit"
+
+msgid "Installed llama.cpp %(tag)s into %(path)s."
+msgstr "llama.cpp %(tag)s הותקן ב-%(path)s."
+
+msgid "Replaced %(tag)s."
+msgstr "%(tag)s הוחלף."
+
+msgid "Backends found in it: %(backends)s"
+msgstr "מנגנונים שנמצאו בו: %(backends)s"
+
+msgid "none"
+msgstr "אין"
+
+msgid "Check it with `llamafit doctor`."
+msgstr "בדוק אותו באמצעות `llamafit doctor`."
+
+msgid "already here"
+msgstr "כבר כאן"
+
+msgid "to fetch"
+msgstr "להבאה"
+
+msgid "About to download"
+msgstr "עומד להוריד"
+
+msgid "Role"
+msgstr "תפקיד"
+
+msgid "Status"
+msgstr "מצב"
+
+msgid "%(name)s %(quant)s from %(repo)s"
+msgstr "%(name)s %(quant)s מתוך %(repo)s"
+
+msgid "%(count)d file, %(total)s in all, %(needed)s still to fetch."
+msgid_plural "%(count)d files, %(total)s in all, %(needed)s still to fetch."
+msgstr[0] "%(count)d קובץ, %(total)s בסך הכול, %(needed)s עוד להבאה."
+msgstr[1] "%(count)d קבצים, %(total)s בסך הכול, %(needed)s עוד להבאה."
+msgstr[2] "%(count)d קבצים, %(total)s בסך הכול, %(needed)s עוד להבאה."
+
+msgid "Into %(path)s, which has %(free)s free; %(after)s would be left."
+msgstr "אל %(path)s, שבו %(free)s פנויים; יישארו %(after)s."
+
+msgid "The catalog holds no checksum for %(files)s."
+msgid_plural "The catalog holds no checksums for %(files)s."
+msgstr[0] "לקטלוג אין סכום ביקורת עבור %(files)s."
+msgstr[1] "לקטלוג אין סכומי ביקורת עבור %(files)s."
+msgstr[2] "לקטלוג אין סכומי ביקורת עבור %(files)s."
+
+msgid "%(model)s %(quant)s is already here; nothing to do."
+msgstr "%(model)s %(quant)s כבר כאן; אין מה לעשות."
+
+msgid "Stopped. What arrived is kept; run `llamafit install model %(model)s` again to carry on from there."
+msgstr "נעצר. מה שהגיע נשמר; הרץ שוב `llamafit install model %(model)s` כדי להמשיך משם."
+
+msgid "%(count)d file, %(size)s, checked against the catalog."
+msgid_plural "%(count)d files, %(size)s, checked against the catalog."
+msgstr[0] "%(count)d קובץ, %(size)s, נבדק מול הקטלוג."
+msgstr[1] "%(count)d קבצים, %(size)s, נבדקו מול הקטלוג."
+msgstr[2] "%(count)d קבצים, %(size)s, נבדקו מול הקטלוג."
+
+msgid "In %(path)s. Run `llamafit plan %(model)s` for the command line that runs it."
+msgstr "ב-%(path)s. הרץ `llamafit plan %(model)s` לשורת הפקודה שמריצה אותו."
+
+msgid "Downloads"
+msgstr "הורדות"
+
+msgid "When"
+msgstr "מתי"
+
+msgid "Model"
+msgstr "מודל"
+
+msgid "Quant"
+msgstr "קוונט"
+
+msgid "Outcome"
+msgstr "תוצאה"
+
+msgid "finished"
+msgstr "הסתיים"
+
+msgid "stopped"
+msgstr "נעצר"
+
+msgid "Bind to this address instead of 127.0.0.1. Anything but loopback puts the dashboard on your network, where there is no password and no login; it prints what that exposes before it starts."
+msgstr "האזנה בכתובת הזאת במקום 127.0.0.1. כל כתובת שאינה לולאה מקומית מציבה את לוח המחוונים ברשת שלך, שם אין סיסמה ואין התחברות; הוא מדפיס מה זה חושף לפני שהוא מתחיל."
+
+msgid "Listen on this port."
+msgstr "האזנה בפורט הזה."
+
+msgid ""
+"Open the dashboard in a browser: the board, the machine and the plans.\n"
+"\n"
+"It serves the same numbers `--json` prints, from the same code, on this machine only. Nothing is fetched from the internet to draw the page."
+msgstr ""
+"פתיחת לוח המחוונים בדפדפן: הלוח, המכונה והתוכניות.\n"
+"\n"
+"הוא מגיש את אותם המספרים שהאפשרות --json מדפיסה, מאותו הקוד, במכונה הזאת בלבד. שום דבר אינו נמשך מהאינטרנט כדי לצייר את הדף."
+
+msgid "Open the page in your browser."
+msgstr "פתיחת הדף בדפדפן שלך."
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores, then open the Simulate panel on the page: it substitutes a machine for as long as you want it, and marks every answer it produces."
+msgstr "השמט את --profile, --memory, --ram ואת --cpu-cores, ואז פתח את לוח הסימולציה בדף: הוא מחליף מכונה לכל זמן שתרצה, ומסמן כל תשובה שהוא מפיק."
+
+msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
+msgstr "LlamaFit נמצא בכתובת %(url)s. הקש Ctrl+C כדי לעצור אותו."
+
 msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
 msgstr "הצגת מה שיש במכונה הזאת: CPU, זיכרון, כרטיסי GPU, דיסקים ו-llama.cpp."
 
 msgid "Skip the RAM bandwidth measurement."
 msgstr "דילוג על מדידת רוחב הפס של ה-RAM."
 
+msgid "Measure RAM bandwidth again instead of reading back the figure kept for this machine, and keep the new one."
+msgstr "מדידת רוחב הפס של ה-RAM מחדש במקום קריאת הנתון השמור למכונה הזאת, ושמירת החדש."
+
+msgid "%(url)s answered a range request with the whole file."
+msgstr "%(url)s ענה לבקשת טווח בקובץ כולו."
+
+msgid "%(url)s is rate-limiting this download (HTTP %(status)d)."
+msgstr "%(url)s מגביל את קצב ההורדה הזאת (HTTP %(status)d)."
+
+msgid "Check your network connection and run the command again to resume."
+msgstr "בדוק את חיבור הרשת והרץ את הפקודה שוב כדי להמשיך."
+
+msgid "%(file)s needs authorisation (HTTP %(status)d)."
+msgstr "%(file)s זקוק להרשאה (HTTP %(status)d)."
+
+msgid "This repository is gated. Accept its terms on Hugging Face and set HF_TOKEN to a token that can read it."
+msgstr "המאגר הזה מוגבל. אשר את התנאים שלו ב-Hugging Face והגדר את HF_TOKEN לאסימון שיכול לקרוא אותו."
+
+msgid "%(file)s is not at %(url)s any more (HTTP 404)."
+msgstr "%(file)s כבר אינו ב-%(url)s (HTTP 404)."
+
+msgid "Run `llamafit catalog refresh` to pick up the repository's current files."
+msgstr "הרץ `llamafit catalog refresh` כדי לקלוט את הקבצים הנוכחיים של המאגר."
+
+msgid "%(url)s returned HTTP %(status)d."
+msgstr "%(url)s החזיר HTTP %(status)d."
+
+msgid "Confirm the URL points at a downloadable file."
+msgstr "ודא שכתובת ה-URL מצביעה על קובץ שניתן להורדה."
+
+msgid "%(url)s did not say how big %(file)s is."
+msgstr "%(url)s לא ציין מה גודלו של %(file)s."
+
+msgid "%(file)s is %(actual)s on the server but the catalog says %(expected)s; the repository has been re-uploaded since the catalog was refreshed."
+msgstr "%(file)s הוא %(actual)s בשרת אך הקטלוג אומר %(expected)s; המאגר הועלה מחדש מאז שהקטלוג רוענן."
+
+msgid "Run `llamafit catalog refresh` and try again."
+msgstr "הרץ `llamafit catalog refresh` ונסה שוב."
+
+msgid "%(file)s: the server sent %(actual)d bytes of a %(expected)d byte range."
+msgstr "%(file)s: השרת שלח %(actual)d בתים מתוך טווח של %(expected)d בתים."
+
+msgid "Run the command again; the parts that did arrive are kept."
+msgstr "הרץ את הפקודה שוב; החלקים שכן הגיעו נשמרים."
+
+msgid "Stopped."
+msgstr "נעצר."
+
+msgid "%(file)s: the server asked for fewer connections; using %(count)d."
+msgstr "%(file)s: השרת ביקש פחות חיבורים; בשימוש %(count)d."
+
+msgid "%(file)s: this server will not serve byte ranges; fetching it in one stream."
+msgstr "%(file)s: השרת הזה אינו מגיש טווחי בתים; מובא בזרם אחד."
+
+msgid "%(file)s does not match its checksum; fetching it again."
+msgstr "%(file)s אינו תואם את סכום הביקורת שלו; מובא שוב."
+
+msgid "Check that the download directory is writable."
+msgstr "ודא שניתן לכתוב לתיקיית ההורדות."
+
+msgid "%(needed)s is needed for this model but %(path)s has only %(free)s free, %(short)s short of what is wanted with %(headroom)s left spare."
+msgstr "נדרשים %(needed)s למודל הזה אך ב-%(path)s פנויים רק %(free)s, חסרים %(short)s ממה שנדרש כשנשמרים %(headroom)s כרזרבה."
+
+msgid "Free some space, or choose another directory with --dir, or a smaller quantisation with --quant."
+msgstr "פנה מקום, או בחר תיקייה אחרת עם --dir, או קוונטיזציה קטנה יותר עם --quant."
+
+msgid "could not measure the free space on %(path)s: %(error)s"
+msgstr "לא ניתן היה למדוד את המקום הפנוי ב-%(path)s: %(error)s"
+
+msgid "Check that the download directory's volume is available."
+msgstr "ודא שהכונן של תיקיית ההורדות זמין."
+
+msgid "%(model)s has no downloadable source in the catalog."
+msgstr "ל-%(model)s אין מקור להורדה בקטלוג."
+
+msgid "Only Hugging Face sources can be installed; this entry has none."
+msgstr "אפשר להתקין רק מקורות של Hugging Face; לרשומה הזאת אין כאלה."
+
+msgid "the catalog has no file list for %(model)s %(quant)s."
+msgstr "לקטלוג אין רשימת קבצים עבור %(model)s %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the file names."
+msgstr "הרץ `llamafit catalog refresh` כדי למלא את שמות הקבצים."
+
+msgid "%(model)s publishes no quantisations."
+msgstr "%(model)s אינו מפרסם קוונטיזציות."
+
+msgid "%(model)s does not publish a %(quant)s quantisation."
+msgstr "%(model)s אינו מפרסם קוונטיזציה %(quant)s."
+
+msgid "It publishes: %(quants)s"
+msgstr "הוא מפרסם: %(quants)s"
+
+msgid "the catalog does not record how big %(quant)s is."
+msgstr "הקטלוג אינו רושם מה גודלה של %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the sizes."
+msgstr "הרץ `llamafit catalog refresh` כדי למלא את הגדלים."
+
+msgid "the catalog holds no checksum for %(files)s."
+msgid_plural "the catalog holds no checksums for %(files)s."
+msgstr[0] "לקטלוג אין סכום ביקורת עבור %(files)s."
+msgstr[1] "לקטלוג אין סכומי ביקורת עבור %(files)s."
+msgstr[2] "לקטלוג אין סכומי ביקורת עבור %(files)s."
+
+msgid "Run `llamafit catalog refresh` to fetch them, or pass --allow-unverified to download anyway and check the files yourself."
+msgstr "הרץ `llamafit catalog refresh` כדי להביא אותם, או העבר --allow-unverified כדי להוריד בכל זאת ולבדוק את הקבצים בעצמך."
+
+msgid "%(done)s of %(total)s"
+msgstr "%(done)s מתוך %(total)s"
+
+msgid "%(rate)s/s"
+msgstr "%(rate)s/s"
+
+msgid "Fetching %(file)s (%(size)s)"
+msgstr "מביא את %(file)s (%(size)s)"
+
+msgid "Checking %(file)s against its checksum"
+msgstr "בודק את %(file)s מול סכום הביקורת שלו"
+
+msgid "Done: %(file)s"
+msgstr "הושלם: %(file)s"
+
+msgid "could not create %(path)s: %(error)s"
+msgstr "לא ניתן היה ליצור את %(path)s: %(error)s"
+
+msgid "Check that the download directory is writable and has room."
+msgstr "ודא שניתן לכתוב לתיקיית ההורדות ושיש בה מקום."
+
+msgid "could not move %(source)s into place: %(error)s"
+msgstr "לא ניתן היה להעביר את %(source)s למקומו: %(error)s"
+
+msgid "could not record progress in %(path)s: %(error)s"
+msgstr "לא ניתן היה לרשום את ההתקדמות ב-%(path)s: %(error)s"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "לא ניתן היה להביא את %(url)s: %(error)s"
+
+msgid "Stopped before the checksum was finished."
+msgstr "נעצר לפני שסכום הביקורת הסתיים."
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "לא ניתן היה לקרוא את %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "ודא שהקובץ קיים וניתן לקריאה."
+
+msgid "%(file)s is %(actual)d bytes, but the catalog says %(expected)d"
+msgstr "%(file)s הוא %(actual)d בתים, אך הקטלוג אומר %(expected)d"
+
+msgid "The transfer was cut short. Run the command again to fetch it properly."
+msgstr "ההעברה נקטעה. הרץ את הפקודה שוב כדי להביא אותו כראוי."
+
+msgid "%(file)s does not match the checksum the catalog holds."
+msgstr "%(file)s אינו תואם את סכום הביקורת שהקטלוג מחזיק."
+
+msgid "Expected %(expected)s but the file hashes to %(actual)s. The bad copy has been deleted; run the command again to fetch it."
+msgstr "ציפינו ל-%(expected)s אך הקובץ מגבב ל-%(actual)s. העותק הפגום נמחק; הרץ את הפקודה שוב כדי להביא אותו."
+
 msgid "Command: %(command)s"
 msgstr "פקודה: %(command)s"
 
 msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
 msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "כותרת GGUF קטומה: נדרש %(wanted)d בית בהיסט %(offset)d, התקבלו %(got)d"
+msgstr[1] "כותרת GGUF קטומה: נדרשו %(wanted)d בתים בהיסט %(offset)d, התקבלו %(got)d"
+msgstr[2] "כותרת GGUF קטומה: נדרשו %(wanted)d בתים בהיסט %(offset)d, התקבלו %(got)d"
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "ייתכן שהקובץ עדיין יורד, או שכתובת ה-URL אינה של קובץ GGUF."
@@ -677,11 +2736,26 @@ msgstr "גרסת GGUF לא נתמכת %(version)d בהיסט 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit תומך בגרסאות GGUF %(versions)s."
 
+msgid "A memory budget built without these tensors would be too small, so none is built. If llama.cpp loads the file, LlamaFit's tensor-size table is missing the type."
+msgstr "תקציב זיכרון שייבנה בלי הטנזורים האלה יהיה קטן מדי, ולכן לא נבנה אף אחד. אם llama.cpp טוען את הקובץ, אז לטבלת גודלי הטנזורים של LlamaFit חסר הסוג."
+
+msgid "%(type)d (%(count)d tensor, first %(name)s)"
+msgid_plural "%(type)d (%(count)d tensors, first %(name)s)"
+msgstr[0] "%(type)d (%(count)d טנזור, הראשון %(name)s)"
+msgstr[1] "%(type)d (%(count)d טנזורים, הראשון %(name)s)"
+msgstr[2] "%(type)d (%(count)d טנזורים, הראשון %(name)s)"
+
+msgid "cannot size this GGUF file: %(count)d tensor uses a GGML type LlamaFit does not know: %(details)s"
+msgid_plural "cannot size this GGUF file: %(count)d tensors use GGML types LlamaFit does not know: %(details)s"
+msgstr[0] "אי אפשר לחשב את גודלו של קובץ ה-GGUF הזה: %(count)d טנזור משתמש בסוג GGML ש-LlamaFit אינו מכיר: %(details)s"
+msgstr[1] "אי אפשר לחשב את גודלו של קובץ ה-GGUF הזה: %(count)d טנזורים משתמשים בסוגי GGML ש-LlamaFit אינו מכיר: %(details)s"
+msgstr[2] "אי אפשר לחשב את גודלו של קובץ ה-GGUF הזה: %(count)d טנזורים משתמשים בסוגי GGML ש-LlamaFit אינו מכיר: %(details)s"
+
 msgid "%(count)d shard"
 msgid_plural "%(count)d shards"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%(count)d מקטע"
+msgstr[1] "%(count)d מקטעים"
+msgstr[2] "%(count)d מקטעים"
 
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "קובצי ה-GGUF האלה אינם מודל מפוצל אחד: הם חלוקים על '%(key)s' ומצהירים %(values)s"
@@ -697,15 +2771,15 @@ msgstr "העבר את קובץ המודל, או את כל המקטעים של מ
 
 msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
 msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%(count)d מקובצי ה-GGUF מתוך %(total)d שניתנו אינו נושא מפתח '%(key)s', ולכן אי אפשר לקבוע את מקומו במודל מפוצל"
+msgstr[1] "%(count)d מקובצי ה-GGUF מתוך %(total)d שניתנו אינם נושאים מפתח '%(key)s', ולכן אי אפשר לקבוע את מקומם במודל מפוצל"
+msgstr[2] "%(count)d מקובצי ה-GGUF מתוך %(total)d שניתנו אינם נושאים מפתח '%(key)s', ולכן אי אפשר לקבוע את מקומם במודל מפוצל"
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "העבר קובץ אחד לא מפוצל בפני עצמו, או את כל המקטעים של מודל מפוצל אחד."
 
 msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr ""
+msgstr "מערך המקטעים חסר: המודל מצהיר %(shards)s והגיעו %(arrived)d (%(key)s %(numbers)s)"
 
 msgid "Pass every shard of the split model."
 msgstr "העבר את כל המקטעים של המודל המפוצל."
@@ -723,22 +2797,13 @@ msgid "Pass each shard of the split model exactly once."
 msgstr "העבר כל מקטע של המודל המפוצל בדיוק פעם אחת."
 
 msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
-msgstr ""
+msgstr "מערך המקטעים חסר: המודל מצהיר %(tensors)s ו-%(shards)s שלו מחזיקים ביניהם %(held)d"
 
 msgid "%(count)d tensor"
 msgid_plural "%(count)d tensors"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-
-msgid "could not read %(path)s: %(error)s"
-msgstr "לא ניתן היה לקרוא את %(path)s: %(error)s"
-
-msgid "Check that the file exists and is readable."
-msgstr "ודא שהקובץ קיים וניתן לקריאה."
-
-msgid "could not fetch %(url)s: %(error)s"
-msgstr "לא ניתן היה להביא את %(url)s: %(error)s"
+msgstr[0] "%(count)d טנזור"
+msgstr[1] "%(count)d טנזורים"
+msgstr[2] "%(count)d טנזורים"
 
 msgid "Check your network connection and that the URL is reachable."
 msgstr "בדוק את חיבור הרשת ושכתובת ה-URL נגישה."
@@ -768,6 +2833,9 @@ msgstr "WMI לא החזיר בקרי וידאו"
 msgid "lspci found no display controllers"
 msgstr "lspci לא מצא בקרי תצוגה"
 
+msgid "vulkaninfo reported no discrete device with a memory heap"
+msgstr "vulkaninfo לא דיווח על אף התקן נפרד עם ערמת זיכרון"
+
 msgid "no populated memory modules"
 msgstr "אין מודולי זיכרון מאוכלסים"
 
@@ -776,9 +2844,9 @@ msgstr "אין SPMemoryDataType"
 
 msgid "%(program)s: timed out after %(seconds)s second"
 msgid_plural "%(program)s: timed out after %(seconds)s seconds"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%(program)s: תם הזמן אחרי %(seconds)s שנייה"
+msgstr[1] "%(program)s: תם הזמן אחרי %(seconds)s שניות"
+msgstr[2] "%(program)s: תם הזמן אחרי %(seconds)s שניות"
 
 msgid "empty command"
 msgstr "פקודה ריקה"
@@ -789,11 +2857,47 @@ msgstr "%(program)s: %(error)s"
 msgid "%(program)s: not found"
 msgstr "%(program)s: לא נמצא"
 
-msgid "no output"
-msgstr "אין פלט"
-
 msgid "exit code %(code)d: %(detail)s"
 msgstr "קוד יציאה %(code)d: %(detail)s"
+
+msgid "no hardware profile file at %(path)s"
+msgstr "אין קובץ פרופיל חומרה ב-%(path)s"
+
+msgid "Run `llamafit hardware list` to see the profiles LlamaFit has."
+msgstr "הרץ `llamafit hardware list` כדי לראות את הפרופילים שיש ל-LlamaFit."
+
+msgid "%(path)s is not a valid hardware profile: %(details)s"
+msgstr "%(path)s אינו פרופיל חומרה תקף: %(details)s"
+
+msgid "Run `llamafit hardware validate FILE` for the whole list."
+msgstr "הרץ `llamafit hardware validate FILE` לרשימה המלאה."
+
+msgid "no hardware profile named %(name)s"
+msgstr "אין פרופיל חומרה בשם %(name)s"
+
+msgid "Profiles LlamaFit has: %(names)s"
+msgstr "הפרופילים שיש ל-LlamaFit: %(names)s"
+
+msgid "Run `llamafit hardware path` to see where your own profiles go."
+msgstr "הרץ `llamafit hardware path` כדי לראות לאן נכנסים הפרופילים שלך."
+
+msgid "this machine has no graphics card, so there is no VRAM to override"
+msgstr "למכונה הזאת אין כרטיס מסך, ולכן אין VRAM לדרוס"
+
+msgid "Describe the whole machine in a hardware profile and pass --profile."
+msgstr "תאר את המכונה כולה בפרופיל חומרה והעבר --profile."
+
+msgid "this machine has one memory pool shared with the graphics card"
+msgstr "למכונה הזאת יש מאגר זיכרון אחד המשותף עם כרטיס המסך"
+
+msgid "Use --ram to resize the pool; --memory would change only half of it."
+msgstr "השתמש באפשרות --ram כדי לשנות את גודל המאגר; --memory היה משנה רק חצי ממנו."
+
+msgid "%(option)s needs a value above zero"
+msgstr "%(option)s זקוק לערך גדול מאפס"
+
+msgid "no build number in the version output: %(text)s"
+msgstr "אין מספר בנייה בפלט הגרסה: %(text)s"
 
 msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
 msgstr "llama.cpp לא נמצא: אין llama-server ב-PATH, ב-LLAMA_CPP_PATH או בתיקיות הרגילות"
@@ -801,11 +2905,257 @@ msgstr "llama.cpp לא נמצא: אין llama-server ב-PATH, ב-LLAMA_CPP_PATH 
 msgid "no ggml backend libraries found next to llama-server; the build may be static"
 msgstr "לא נמצאו ספריות מנגנון ggml לצד llama-server; ייתכן שהבנייה סטטית"
 
+msgid "%(path)s is a file, not a directory."
+msgstr "%(path)s הוא קובץ, לא תיקייה."
+
+msgid "%(path)s cannot be read: %(error)s"
+msgstr "לא ניתן לקרוא את %(path)s: %(error)s"
+
+msgid "%(path)s has a marker file that cannot be read."
+msgstr "ב-%(path)s יש קובץ סימון שלא ניתן לקרוא."
+
+msgid "%(path)s already holds %(count)d file that LlamaFit did not install."
+msgid_plural "%(path)s already holds %(count)d files that LlamaFit did not install."
+msgstr[0] "ב-%(path)s כבר נמצא %(count)d קובץ ש-LlamaFit לא התקין."
+msgstr[1] "ב-%(path)s כבר נמצאים %(count)d קבצים ש-LlamaFit לא התקין."
+msgstr[2] "ב-%(path)s כבר נמצאים %(count)d קבצים ש-LlamaFit לא התקין."
+
+msgid "%(name)s has no published checksum, so it cannot be verified."
+msgstr "ל-%(name)s אין סכום ביקורת מפורסם, ולכן אי אפשר לאמת אותו."
+
+msgid "Pass --allow-unverified to install it anyway, knowing the archive is unchecked."
+msgstr "העבר --allow-unverified כדי להתקין אותו בכל זאת, בידיעה שהארכיון אינו נבדק."
+
+msgid "could not download %(url)s: %(error)s"
+msgstr "לא ניתן היה להוריד את %(url)s: %(error)s"
+
+msgid "the connection was closed"
+msgstr "החיבור נסגר"
+
+msgid "Run the command again; it continues from where it stopped."
+msgstr "הרץ את הפקודה שוב; היא ממשיכה מהמקום שבו עצרה."
+
+msgid "the download of %(url)s stopped early: %(error)s"
+msgstr "ההורדה של %(url)s נעצרה מוקדם: %(error)s"
+
+msgid "%(got)s of %(want)s arrived"
+msgstr "הגיעו %(got)s מתוך %(want)s"
+
+msgid "the disk holding %(path)s is full."
+msgstr "הדיסק שמכיל את %(path)s מלא."
+
+msgid "Free some space and run the command again; the download resumes."
+msgstr "פנה מקום והרץ את הפקודה שוב; ההורדה ממשיכה."
+
+msgid "Check that the directory exists and is writable."
+msgstr "ודא שהתיקייה קיימת וניתן לכתוב אליה."
+
+msgid "%(name)s did not match its published checksum and was discarded."
+msgstr "%(name)s לא תאם את סכום הביקורת המפורסם שלו ונזרק."
+
+msgid "Nothing was unpacked. Run the command again: the archive arrived damaged, which a second download usually fixes."
+msgstr "שום דבר לא נפרק. הרץ את הפקודה שוב: הארכיון הגיע פגום, ובדרך כלל הורדה שנייה מתקנת את זה."
+
+msgid "%(archive)s contains %(name)s, which would be written outside the install directory."
+msgstr "%(archive)s מכיל את %(name)s, שהיה נכתב מחוץ לתיקיית ההתקנה."
+
+msgid "Do not install this archive; report it to the llama.cpp project."
+msgstr "אל תתקין את הארכיון הזה; דווח עליו לפרויקט llama.cpp."
+
+msgid "%(name)s is not an archive LlamaFit knows how to unpack."
+msgstr "%(name)s אינו ארכיון ש-LlamaFit יודע לפרוק."
+
+msgid "%(name)s could not be unpacked: %(error)s"
+msgstr "לא ניתן היה לפרוק את %(name)s: %(error)s"
+
+msgid "Delete it and run the command again to download it afresh."
+msgstr "מחק אותו והרץ את הפקודה שוב כדי להוריד אותו מחדש."
+
+msgid "the archive holds no %(name)s."
+msgstr "הארכיון אינו מכיל %(name)s."
+
+msgid "Report this; the release layout has changed."
+msgstr "דווח על כך; מבנה השחרור השתנה."
+
+msgid "%(path)s was not installed by LlamaFit."
+msgstr "%(path)s לא הותקן על ידי LlamaFit."
+
+msgid "Pass --force to replace it, or --dir to install somewhere else. LlamaFit never overwrites an installation it did not create."
+msgstr "העבר --force כדי להחליף אותו, או --dir כדי להתקין במקום אחר. LlamaFit לעולם אינו דורס התקנה שהוא לא יצר."
+
+msgid "%(path)s has %(free)s free; this install needs %(needed)s."
+msgstr "ב-%(path)s פנויים %(free)s; ההתקנה הזאת זקוקה ל-%(needed)s."
+
+msgid "Free some space, or pass --dir to install on another volume."
+msgstr "פנה מקום, או העבר --dir כדי להתקין בכונן אחר."
+
+msgid "the %(backend)s libraries are not in the installed directory."
+msgstr "ספריות %(backend)s אינן בתיקייה שהותקנה."
+
+msgid "no ggml backend libraries were installed; the build may be a static one."
+msgstr "לא הותקנו ספריות מנגנון ggml; ייתכן שהבנייה סטטית."
+
+msgid "Your PATH could not be read, so it will not be changed."
+msgstr "לא ניתן היה לקרוא את ה-PATH שלך, ולכן הוא לא ישונה."
+
+msgid "Add %(path)s to your user PATH (HKCU\\Environment)."
+msgstr "הוסף את %(path)s ל-PATH של המשתמש שלך (HKCU\\Environment)."
+
+msgid "To undo: run `setx PATH \"%(previous)s\"`, or remove the entry in System > About > Advanced system settings > Environment Variables."
+msgstr "כדי לבטל: הרץ `setx PATH \"%(previous)s\"`, או הסר את הרשומה ב-System > About > Advanced system settings > Environment Variables."
+
+msgid "%(path)s is already on your PATH."
+msgstr "%(path)s כבר נמצא ב-PATH שלך."
+
+msgid "Nothing to undo."
+msgstr "אין מה לבטל."
+
+msgid "Append a PATH line for %(path)s to %(file)s."
+msgstr "הוספת שורת PATH עבור %(path)s אל %(file)s."
+
+msgid "To undo: delete the two lines marked `%(mark)s` from %(file)s."
+msgstr "כדי לבטל: מחק את שתי השורות המסומנות `%(mark)s` מתוך %(file)s."
+
+msgid "your PATH could not be changed: %(error)s"
+msgstr "לא ניתן היה לשנות את ה-PATH שלך: %(error)s"
+
+msgid "To remove it later, delete %(path)s."
+msgstr "כדי להסיר אותו בהמשך, מחק את %(path)s."
+
+msgid "the most recent %(count)d llama.cpp releases hold no build."
+msgstr "%(count)d השחרורים האחרונים של llama.cpp אינם מכילים בנייה."
+
+msgid "Name one with `llamafit install llama.cpp --tag ...`."
+msgstr "ציין אחד באמצעות `llamafit install llama.cpp --tag ...`."
+
+msgid "could not reach GitHub at %(url)s: %(error)s"
+msgstr "לא ניתן היה להגיע ל-GitHub בכתובת %(url)s: %(error)s"
+
+msgid "GitHub refused the request for %(url)s: the rate limit is exhausted."
+msgstr "GitHub סירב לבקשה עבור %(url)s: מכסת הקצב מוצתה."
+
+msgid "Wait for the limit to reset, or set GITHUB_TOKEN to a personal access token with no scopes."
+msgstr "המתן לאיפוס המכסה, או הגדר את GITHUB_TOKEN לאסימון גישה אישי בלי הרשאות."
+
+msgid "GitHub has no release at %(url)s."
+msgstr "ל-GitHub אין שחרור בכתובת %(url)s."
+
+msgid "Check the tag with `llamafit install llama.cpp --tag ...`."
+msgstr "בדוק את התג באמצעות `llamafit install llama.cpp --tag ...`."
+
+msgid "GitHub returned %(status)d for %(url)s."
+msgstr "GitHub החזיר %(status)d עבור %(url)s."
+
+msgid "GitHub's answer for %(url)s was not JSON."
+msgstr "התשובה של GitHub עבור %(url)s לא הייתה JSON."
+
+msgid "GitHub's answer did not describe a release."
+msgstr "התשובה של GitHub לא תיארה שחרור."
+
 msgid "no llama-server answering"
 msgstr "אין llama-server שמשיב"
 
 msgid "unexpected response: %(error)s"
 msgstr "תשובה בלתי צפויה: %(error)s"
+
+msgid "%(model)s holds %(native)s tokens, fewer than the %(minimum)s asked for."
+msgstr "%(model)s מחזיק %(native)s אסימונים, פחות מ-%(minimum)s שהתבקשו."
+
+msgid "No configuration of this model fits this machine."
+msgstr "אף תצורה של המודל הזה אינה נכנסת למכונה הזאת."
+
+msgid "Routed experts are held in system memory, and so are the always-on shared experts, which is what -ot ffn_.*_shexp=CPU does; attention and the KV cache stay on the card."
+msgstr "המומחים המנותבים מוחזקים בזיכרון המערכת, וכך גם המומחים המשותפים שתמיד פעילים, וזה מה שהאפשרות -ot ffn_.*_shexp=CPU עושה; הקשב ומטמון ה-KV נשארים בכרטיס."
+
+msgid "Routed experts are held in system memory; attention, the KV cache and the shared experts stay on the card."
+msgstr "המומחים המנותבים מוחזקים בזיכרון המערכת; הקשב, מטמון ה-KV והמומחים המשותפים נשארים בכרטיס."
+
+msgid "%(layers)s layers are on the card and the rest run on the processor."
+msgstr "%(layers)s שכבות נמצאות בכרטיס והשאר רצות על המעבד."
+
+msgid "Nothing runs on a graphics card: every weight is in system memory."
+msgstr "שום דבר לא רץ על כרטיס מסך: כל משקולת נמצאת בזיכרון המערכת."
+
+msgid "%(gpus)s is here, but nothing could read how much of it is free, so this plan was made as if it were not. The real machine will be faster than these figures."
+msgstr "%(gpus)s נמצא כאן, אבל שום דבר לא הצליח לקרוא כמה ממנו פנוי, ולכן התוכנית הזאת נעשתה כאילו אינו כאן. המכונה האמיתית תהיה מהירה יותר מהנתונים האלה."
+
+msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
+msgstr "הגודל חושב ל-%(context)s אסימונים במקום %(requested)s שהתבקשו."
+
+msgid "The KV cache is quantised to %(type)s to reach this context."
+msgstr "מטמון ה-KV קוונטז ל-%(type)s כדי להגיע להקשר הזה."
+
+msgid "Vision is off: the projector did not fit, on the card or in system memory."
+msgstr "הראייה כבויה: המקרן לא נכנס, לא בכרטיס ולא בזיכרון המערכת."
+
+msgid "The vision projector is in system memory (--no-mmproj-offload), which costs nothing measurable for text and makes images slower."
+msgstr "מקרן הראייה נמצא בזיכרון המערכת (--no-mmproj-offload), מה שאינו עולה דבר שניתן למדוד עבור טקסט ומאט את התמונות."
+
+msgid "%(threads)s threads, not the %(available)s this processor has: the efficiency cores are left out because generation measures slower with them, and what is left is the threads the performance cores provide."
+msgstr "%(threads)s תהליכונים, ולא %(available)s שיש למעבד הזה: ליבות היעילות מושמטות מפני שהיצירה נמדדת איטית יותר איתן, ומה שנשאר הוא התהליכונים שליבות הביצועים מספקות."
+
+msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
+msgstr "צפוף: %(vram)s מכרטיס המסך פנויים וזה זקוק ל-%(needed)s, ולכן תוכנית אחרת יכולה לדחוף את זה מעבר לגבול. טבלת דרגות ההקשר היא הדרך שבה סקריפט הפעלה מתאושש."
+
+msgid "no %(capability)s capability, which %(use_case)s needs; ask for a different use case, or add it to the entry when the model really has it"
+msgstr "אין יכולת %(capability)s, שהיא מה ש-%(use_case)s זקוק לו; בקש מקרה שימוש אחר, או הוסף אותה לרשומה כשלמודל באמת יש אותה"
+
+msgid "no %(capability)s capability; drop it from the request to see this model"
+msgstr "אין יכולת %(capability)s; השמט אותה מהבקשה כדי לראות את המודל הזה"
+
+msgid "%(size)s to download, over the %(limit)s this request allows"
+msgstr "%(size)s להורדה, מעל %(limit)s שהבקשה הזאת מתירה"
+
+msgid "unknown quantisation %(quant)s, so its cost in quality cannot be told"
+msgstr "קוונטיזציה לא ידועה %(quant)s, ולכן אי אפשר לדעת את המחיר שלה באיכות"
+
+msgid "nowhere to put it: no placement fits this machine at any context"
+msgstr "אין לאן לשים אותו: אף שיבוץ אינו נכנס למכונה הזאת בשום הקשר"
+
+msgid "holds %(fit)s tokens at most, under the %(minimum)s asked for; lower the minimum context or free memory to see it ranked"
+msgstr "מחזיק %(fit)s אסימונים לכל היותר, מתחת ל-%(minimum)s שהתבקשו; הנמך את ההקשר המזערי או פנה זיכרון כדי לראות אותו מדורג"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "מייצר %(tps)s אסימונים בשנייה, מתחת ל-%(floor)s שהבקשה הזאת מבקשת; הנמך את --min-tps או בחר מודל או קוונטיזציה קטנים יותר"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "מייצר %(tps)s אסימונים בשנייה, מתחת ל-%(floor)s שאדם קורא: כלי אצווה במכונה הזאת ולא כזה שיושבים מולו; מודל או קוונטיזציה קטנים יותר היו עומדים בקצב"
+
+msgid "unknown use case %(use_case)s"
+msgstr "מקרה שימוש לא ידוע: %(use_case)s"
+
+msgid "Known use cases: %(known)s."
+msgstr "מקרי שימוש ידועים: %(known)s."
+
+msgid "unknown score part %(part)s in the weights for %(use_case)s"
+msgstr "חלק ניקוד לא ידוע %(part)s במשקלים עבור %(use_case)s"
+
+msgid "The parts are: %(parts)s."
+msgstr "החלקים הם: %(parts)s."
+
+msgid "the weights for %(use_case)s leave out %(part)s"
+msgstr "המשקלים עבור %(use_case)s משמיטים את %(part)s"
+
+msgid "Overriding a use case means giving all four parts: %(parts)s."
+msgstr "דריסת מקרה שימוש פירושה לתת את כל ארבעת החלקים: %(parts)s."
+
+msgid "the weight for %(part)s in %(use_case)s is below zero"
+msgstr "המשקל של %(part)s ב-%(use_case)s נמוך מאפס"
+
+msgid "A weight says how much a part counts; it cannot count less than none."
+msgstr "משקל אומר כמה חלק נחשב; הוא אינו יכול להיחשב פחות מכלום."
+
+msgid "the weights for %(use_case)s add up to nothing"
+msgstr "המשקלים עבור %(use_case)s מסתכמים באפס"
+
+msgid "At least one part has to count for something."
+msgstr "לפחות חלק אחד חייב להיחשב למשהו."
+
+msgid "unknown preference %(prefer)s"
+msgstr "העדפה לא ידועה: %(prefer)s"
+
+msgid "Preferences: %(known)s."
+msgstr "העדפות: %(known)s."
 
 msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
 msgstr "התקן או תקן את מנהל ההתקן של NVIDIA; nvidia-smi מגיע איתו וחייב להיות ב-PATH."
@@ -840,6 +3190,9 @@ msgstr "llama-server קיים אך לא דיווח על גרסה; ייתכן ש�
 msgid "system_profiler failed; GPU information is unavailable."
 msgstr "system_profiler נכשל; אין מידע על ה-GPU."
 
+msgid "Install the Vulkan tools (vulkan-tools on Linux, the vendor's Vulkan runtime on Windows) so an unsized card's memory can be read from its driver. This probe runs only when no vendor tool sized the card, so it is the last source there is."
+msgstr "התקן את כלי Vulkan (vulkan-tools בלינוקס, סביבת הריצה של Vulkan מהיצרן בווינדוס) כדי שאפשר יהיה לקרוא ממנהל ההתקן את הזיכרון של כרטיס שגודלו לא נקבע. הבדיקה הזאת רצה רק כשאף כלי של היצרן לא קבע את גודל הכרטיס, ולכן היא המקור האחרון שיש."
+
 msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
 msgstr "אף כלי של היצרן לא דיווח על גודל הזיכרון של ה-GPU; רשום את הגודל בפרופיל חומרה כדי שאפשר יהיה לחשב תקציבים למכונה הזאת."
 
@@ -858,6 +3211,9 @@ msgstr "llama.cpp לא נמצא"
 
 msgid "no llama-server binary was found"
 msgstr "לא נמצא קובץ בינארי llama-server"
+
+msgid "Run `llamafit install llama.cpp`, which picks the right build for this machine, checks it against its published checksum, and never touches an installation LlamaFit did not create."
+msgstr "הרץ `llamafit install llama.cpp`, שבוחר את הבנייה הנכונה למכונה הזאת, בודק אותה מול סכום הביקורת המפורסם שלה, ולעולם אינו נוגע בהתקנה ש-LlamaFit לא יצר."
 
 msgid "Memory size unknown"
 msgstr "גודל הזיכרון לא ידוע"
@@ -883,6 +3239,15 @@ msgstr "%(gpu)s: גודל ה-VRAM לא ידוע"
 
 msgid "the vendor tool that reports memory was not available"
 msgstr "הכלי של היצרן שמדווח על הזיכרון לא היה זמין"
+
+msgid "%(gpus)s: planned around, not planned on"
+msgstr "%(gpus)s: תוכנן מסביבו, לא עליו"
+
+msgid "with no reading of how much of the card is free, every budget and every speed on this machine was computed as if there were no card: they are CPU-only figures, and the real machine will be faster."
+msgstr "בלי קריאה של כמה מהכרטיס פנוי, כל תקציב וכל מהירות במכונה הזאת חושבו כאילו אין כרטיס: אלה נתונים של CPU בלבד, והמכונה האמיתית תהיה מהירה יותר."
+
+msgid "Install the Vulkan tools so the size can be read from the driver, or record it in a hardware profile (`llamafit hardware path` says where those go) and pass --profile."
+msgstr "התקן את כלי Vulkan כדי שאפשר יהיה לקרוא את הגודל ממנהל ההתקן, או רשום אותו בפרופיל חומרה (`llamafit hardware path` אומר לאן אלה נכנסים) והעבר --profile."
 
 msgid "No GPU detected"
 msgstr "לא זוהה GPU"
@@ -928,10 +3293,406 @@ msgstr "%(size)s פנויים"
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr "רוב המודלים השימושיים דורשים 5 עד 120 GB; פנה מקום או שנה את תיקיית ההורדות."
 
+msgid "%(model)s has no %(quant)s quantisation"
+msgstr "ל-%(model)s אין קוונטיזציה %(quant)s"
+
+msgid "It publishes: %(names)s"
+msgstr "הוא מפרסם: %(names)s"
+
+msgid "licensed %(spdx)s, which this request does not allow"
+msgstr "מורשה תחת %(spdx)s, שהבקשה הזאת אינה מתירה"
+
+msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
+msgstr "רוחב הפס של זיכרון המערכת לא נמדד; הונחו %(gbps).0f GB/s עבור %(arch)s."
+
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
+msgstr "רוחב הפס של %(gpu)s אינו ידוע; ערך הגיבוי של %(backend)s, %(gbps).0f GB/s, משמש במקומו."
+
+msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
+msgstr "אין נתון חישוב לכרטיס המסך: עיבוד הפרומפט מוערך על ה-CPU."
+
+msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "%(gb).2f GB של מומחים מנותבים נקראים מזיכרון המערכת לכל אסימון בקצב של %(eff).2f מתוך %(raw).0f GB/s שלו, מפני שכל אסימון בוחר קומץ אחר של מומחים והקריאה היא פיזור של בלוקים קטנים ולא זרם."
+
+msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
+msgstr "%(gb).2f GB של משקולות רציפות נקראים מזיכרון המערכת לכל אסימון בקצב של %(eff).2f מתוך %(raw).0f GB/s שלו."
+
+msgid "No active parameter count was supplied; it was inferred from the weight bytes."
+msgstr "לא סופק מספר הפרמטרים הפעילים; הוא נגזר מבתי המשקולות."
+
+msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "%(pct).0f אחוזים מהשכבות יושבים בזיכרון המערכת, ולכן החלק הזה מחשבון הפרומפט נזקף ל-CPU בקצב %(tflops).2f TFLOP/s ולא לכרטיס. שני הקצבים מגיעים ממודל צפוף קטן אחד במכונה אחת."
+
+msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "%(gb).1f GB ממערך המומחים מוזרמים דרך הקישור פעם אחת לכל מיקרו-אצווה בקצב %(gbps).1f GB/s. הקצב הזה הותאם על המודל היחיד שמערך המומחים שלו אינו נכנס לזיכרון המערכת, ולכן חלק מהקריאה שלו מגיע מהדיסק; מערך מומחים שנשאר במטמון הדפים מוזרם מהר פי שלושה בערך, ועבור אחד כזה האיבר הזה איטי מדי בדיוק בשיעור הזה."
+
+msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+msgstr "%(gb).1f GB ממערך המומחים נקראים מזיכרון המערכת פעם אחת לכל מיקרו-אצווה בקצב %(gbps).1f GB/s, מפני שאין כרטיס להזרים אליו."
+
+msgid "No placement of this model on this machine could run it."
+msgstr "אף שיבוץ של המודל הזה במכונה הזאת לא יכול היה להריץ אותו."
+
+msgid "Generation is a benchmark of this configuration, not a prediction."
+msgstr "היצירה היא מבחן ביצועים של התצורה הזאת, לא תחזית."
+
+msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "היצירה היא הנוסחה מתוקנת ב-%(factor).2f, מתוך מבחן ביצועים של %(profile)s במכונה הזאת שנלקח ב-%(date)s."
+
+msgid "Prompt processing is a benchmark of this configuration."
+msgstr "עיבוד הפרומפט הוא מבחן ביצועים של התצורה הזאת."
+
+msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
+msgstr "עיבוד הפרומפט הוא הנוסחה מתוקנת ב-%(factor).2f מתוך מבחן ביצועים."
+
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr "שורת הפקודה של מבחן הביצועים הזה אינה רושמת כמה שכבות הלכו לכרטיס, ולכן התיקון מניח שהוא רץ בשיבוץ הזה."
+
+msgid "This figure assumes nothing pages: a placement this tight often does, silently."
+msgstr "הנתון הזה מניח ששום דבר לא מדפדף: שיבוץ צפוף כל כך לעיתים קרובות כן, בשקט."
+
+msgid "Board"
+msgstr "הלוח"
+
+msgid "Needs"
+msgstr "צרכים"
+
+msgid "Plan"
+msgstr "תוכנית"
+
+msgid "Simulate"
+msgstr "סימולציה"
+
+msgid "There is no terminal here to draw the dashboard in, so this is what `llamafit recommend` would print."
+msgstr "אין כאן טרמינל לצייר בו את לוח המחוונים, ולכן זה מה ש-`llamafit recommend` היה מדפיס."
+
+msgid "%(name)s %(quant)s, %(vendor)s, licensed %(license)s; it can: %(capabilities)s"
+msgstr "%(name)s %(quant)s, %(vendor)s, מורשה תחת %(license)s; הוא יכול: %(capabilities)s"
+
+msgid "Choose a row to see what put it there."
+msgstr "בחר שורה כדי לראות מה הביא אותה לשם."
+
+msgid "Nothing has been ranked yet."
+msgstr "עדיין לא דורג דבר."
+
+msgid "Every candidate in the catalog was ranked; none was excluded."
+msgstr "כל מועמד בקטלוג דורג; אף אחד לא הוצא מהחשבון."
+
+msgid "keys"
+msgstr "מקשים"
+
+msgid "theme"
+msgstr "ערכת נושא"
+
+msgid "quit"
+msgstr "יציאה"
+
+msgid "choose"
+msgstr "בחירה"
+
+msgid "why"
+msgstr "למה"
+
+msgid "command line"
+msgstr "שורת פקודה"
+
+msgid "search"
+msgstr "חיפוש"
+
+msgid "fit"
+msgstr "התאמה"
+
+msgid "sort"
+msgstr "מיון"
+
+msgid "sort back"
+msgstr "מיון אחורה"
+
+msgid "reverse"
+msgstr "היפוך"
+
+msgid "on disk"
+msgstr "בדיסק"
+
+msgid "all quants"
+msgstr "כל הקוונטיזציות"
+
+msgid "unranked rows"
+msgstr "שורות שלא דורגו"
+
+msgid "all columns"
+msgstr "כל העמודות"
+
+msgid "explanation"
+msgstr "הסבר"
+
+msgid "not ranked"
+msgstr "לא דורג"
+
+msgid "apply"
+msgstr "החלה"
+
+msgid "reset"
+msgstr "איפוס"
+
+msgid "rescan"
+msgstr "סריקה מחדש"
+
+msgid "more context"
+msgstr "יותר הקשר"
+
+msgid "less context"
+msgstr "פחות הקשר"
+
+msgid "vision"
+msgstr "ראייה"
+
+msgid "copy"
+msgstr "העתקה"
+
+msgid "this machine"
+msgstr "המכונה הזאת"
+
+msgctxt "use case"
+msgid "general use"
+msgstr "שימוש כללי"
+
+msgctxt "use case"
+msgid "writing code"
+msgstr "כתיבת קוד"
+
+msgctxt "use case"
+msgid "reasoning"
+msgstr "הסקה"
+
+msgctxt "use case"
+msgid "chat"
+msgstr "צ'אט"
+
+msgctxt "use case"
+msgid "images and text"
+msgstr "תמונות וטקסט"
+
+msgctxt "use case"
+msgid "embeddings"
+msgstr "הטמעות"
+
+msgctxt "preference"
+msgid "balanced"
+msgstr "מאוזן"
+
+msgctxt "preference"
+msgid "lean towards quality"
+msgstr "נטייה לאיכות"
+
+msgctxt "preference"
+msgid "lean towards speed"
+msgstr "נטייה למהירות"
+
+msgid "Move with the up and down arrows. Enter says why a row is where it is; p gives the command line that runs it."
+msgstr "נוע עם חצי המקלדת מעלה ומטה. Enter אומר למה שורה נמצאת היכן שהיא; p נותן את שורת הפקודה שמריצה אותה."
+
+msgid "Terms: %(terms)s; anything else is text to look for. Enter with the box empty clears them."
+msgstr "מונחים: %(terms)s; כל דבר אחר הוא טקסט לחיפוש. Enter כשהתיבה ריקה מנקה אותם."
+
+msgid "Part of a model name, then Enter"
+msgstr "חלק משם של מודל, ואז Enter"
+
+msgid "Keys"
+msgstr "מקשים"
+
+msgctxt "column heading"
+msgid "Screen"
+msgstr "מסך"
+
+msgctxt "column heading"
+msgid "Key"
+msgstr "מקש"
+
+msgctxt "column heading"
+msgid "What it does"
+msgstr "מה הוא עושה"
+
+msgctxt "dashboard screen"
+msgid "Everywhere"
+msgstr "בכל מקום"
+
+msgctxt "dashboard screen"
+msgid "Board"
+msgstr "הלוח"
+
+msgctxt "dashboard screen"
+msgid "Needs"
+msgstr "צרכים"
+
+msgctxt "dashboard screen"
+msgid "Host"
+msgstr "מארח"
+
+msgctxt "dashboard screen"
+msgid "Plan"
+msgstr "תוכנית"
+
+msgctxt "dashboard screen"
+msgid "Simulate"
+msgstr "סימולציה"
+
+msgid "Press Escape to go back."
+msgstr "הקש Escape כדי לחזור."
+
+msgid "Catalog files with a problem"
+msgstr "קובצי קטלוג עם בעיה"
+
+msgid "This machine has not been scanned yet."
+msgstr "המכונה הזאת עדיין לא נסרקה."
+
+msgid "What do you want a model for?"
+msgstr "בשביל מה אתה רוצה מודל?"
+
+msgid "It must be able to:"
+msgstr "הוא חייב להיות מסוגל ל:"
+
+msgid "At least this much context, in tokens:"
+msgstr "לפחות כך וכך הקשר, באסימונים:"
+
+msgid "Willing to download at most, for example 40G (blank for no limit):"
+msgstr "מוכן להוריד לכל היותר, למשל 40G (ריק לבלי הגבלה):"
+
+msgid "Slowest generation worth having, in tokens per second (blank for the speed a person reads at; 0 when nobody is waiting on the tokens):"
+msgstr "היצירה האיטית ביותר ששווה להחזיק, באסימונים בשנייה (ריק למהירות שאדם קורא בה; 0 כשאיש אינו מחכה לאסימונים):"
+
+msgid "Licences you will accept (tick none to accept any):"
+msgstr "רישיונות שתקבל (אל תסמן אף אחד כדי לקבל הכול):"
+
+msgid "Lean the score:"
+msgstr "הטיית הניקוד:"
+
+msgid "Keep the vision projector when a model has one"
+msgstr "שמירת מקרן הראייה כשלמודל יש כזה"
+
+msgid "Apply"
+msgstr "החלה"
+
+msgid "Reset"
+msgstr "איפוס"
+
+msgid "The minimum context is a number of tokens, for example %(example)s."
+msgstr "ההקשר המזערי הוא מספר אסימונים, למשל %(example)s."
+
+msgid "The minimum context cannot be below zero."
+msgstr "ההקשר המזערי אינו יכול להיות נמוך מאפס."
+
+msgid "The minimum speed is a number of tokens per second, for example 12."
+msgstr "המהירות המזערית היא מספר אסימונים בשנייה, למשל 12."
+
+msgid "The minimum speed cannot be below zero."
+msgstr "המהירות המזערית אינה יכולה להיות נמוכה מאפס."
+
+msgid "Choose a row on the Board and press p, and its plan and command line appear here."
+msgstr "בחר שורה בלוח והקש p, והתוכנית ושורת הפקודה שלה יופיעו כאן."
+
+msgid "%(model)s is no longer in the catalog this board was built from."
+msgstr "%(model)s כבר אינו בקטלוג שממנו נבנה הלוח הזה."
+
+msgid "Planned with the vision projector; press v to leave it out."
+msgstr "תוכנן עם מקרן הראייה; הקש v כדי להשמיט אותו."
+
+msgid "Planned without the vision projector; press v to put it back."
+msgstr "תוכנן בלי מקרן הראייה; הקש v כדי להחזיר אותו."
+
+msgid "The ladder has no rung above %(context)s."
+msgstr "לסולם אין שלב מעל %(context)s."
+
+msgid "The ladder has no rung below %(context)s."
+msgstr "לסולם אין שלב מתחת ל-%(context)s."
+
+msgid "There is no command line to copy yet."
+msgstr "אין עדיין שורת פקודה להעתיק."
+
+msgid "The command line is on the clipboard."
+msgstr "שורת הפקודה נמצאת בלוח הגזירים."
+
+msgid "Everything on every screen answers about the machine chosen here. While it is not this one, the band at the top says SIMULATED."
+msgstr "כל מה שבכל מסך עונה על המכונה שנבחרה כאן. כל עוד היא אינה זו, הפס שבחלק העליון אומר מדומה."
+
+msgid "Answer for this machine instead:"
+msgstr "מענה עבור המכונה הזאת במקום:"
+
+msgid "Pretend the graphics card has this much memory (blank to leave it):"
+msgstr "הנחה שלכרטיס המסך יש כך וכך זיכרון (ריק כדי להשאיר):"
+
+msgid "Pretend the machine has this much system memory (blank to leave it):"
+msgstr "הנחה שלמכונה יש כך וכך זיכרון מערכת (ריק כדי להשאיר):"
+
+msgid "Pretend the processor has this many cores (blank to leave it):"
+msgstr "הנחה שלמעבד יש כך וכך ליבות (ריק כדי להשאיר):"
+
+msgid "Back to this machine"
+msgstr "חזרה למכונה הזאת"
+
+msgctxt "hardware profile"
+msgid "this machine"
+msgstr "המכונה הזאת"
+
+msgid "The core count is a whole number, for example 8."
+msgstr "מספר הליבות הוא מספר שלם, למשל 8."
+
+msgctxt "dashboard header separator"
+msgid " · "
+msgstr " · "
+
+msgctxt "dashboard header"
+msgid "no GPU detected"
+msgstr "לא זוהה GPU"
+
+msgid "%(name)s, VRAM unknown"
+msgstr "%(name)s, VRAM לא ידוע"
+
+msgid "%(name)s, %(free)s free of %(total)s"
+msgstr "%(name)s, %(free)s פנויים מתוך %(total)s"
+
+msgid "%(available)s free of %(total)s RAM"
+msgstr "%(available)s פנויים מתוך %(total)s RAM"
+
+msgid "%(model)s, %(count)d core"
+msgid_plural "%(model)s, %(count)d cores"
+msgstr[0] "%(model)s, %(count)d ליבה"
+msgstr[1] "%(model)s, %(count)d ליבות"
+msgstr[2] "%(model)s, %(count)d ליבות"
+
+msgctxt "dashboard header"
+msgid "llama.cpp not installed"
+msgstr "llama.cpp לא מותקן"
+
+msgctxt "dashboard header"
+msgid "llama.cpp installed"
+msgstr "llama.cpp מותקן"
+
+msgid "llama.cpp b%(build)d"
+msgstr "llama.cpp b%(build)d"
+
+msgctxt "dashboard header"
+msgid "scanning this machine…"
+msgstr "סורק את המכונה הזאת…"
+
+msgid "These speeds were not all arrived at the same way; the How column says which each row is."
+msgstr "המהירויות האלה לא הושגו כולן באותה דרך; עמודת “איך” אומרת מהי כל שורה."
+
+#. Translators: this is punctuation, not prose. It is what your language puts between
+#. a number's groups of three digits: English writes 32,768, German 32.768 and French
+#. 32 768. Write the character your readers expect. A space is a character like any
+#. other here and is read as one, so a language that groups with a space says so by
+#. writing that space, and a no-break space if that is what it wants. Only a
+#. translation with nothing in it at all means untranslated, and that falls back to
+#. the English comma rather than to no separator.
 msgctxt "thousands separator"
 msgid ","
 msgstr ","
 
+#. Translators: this is punctuation, not prose. It is what your language puts before
+#. the fractional part of a number: English writes 127.8 and Portuguese 127,8. Write
+#. the character your readers expect; a space counts as a character here, the same as
+#. in the group separator above. Only a translation with nothing in it at all means
+#. untranslated, and that falls back to the English point.
 msgctxt "decimal separator"
 msgid "."
 msgstr "."
@@ -947,3 +3708,160 @@ msgstr "B"
 msgctxt "size"
 msgid "unknown"
 msgstr "לא ידוע"
+
+msgid "profile must be a name, not a path: %(value)s"
+msgstr "הפרופיל חייב להיות שם, לא נתיב: %(value)s"
+
+msgid "Ask GET /api/v1/profiles for the names this machine has."
+msgstr "בקש GET /api/v1/profiles כדי לקבל את השמות שיש במכונה הזאת."
+
+msgid "unknown query parameter: %(names)s"
+msgstr "פרמטר שאילתה לא ידוע: %(names)s"
+
+msgid "This endpoint takes: %(names)s"
+msgstr "נקודת הקצה הזאת מקבלת: %(names)s"
+
+msgid "invalid prefer %(value)s"
+msgstr "ערך לא חוקי עבור prefer: %(value)s"
+
+msgid "invalid sort %(value)s"
+msgstr "ערך לא חוקי עבור sort: %(value)s"
+
+msgid "%(host)s:%(port)d is not this machine only. Anyone who can reach this computer on that port can read everything the dashboard shows -- your hardware, your disks, your file paths and the models you have downloaded. There is no password, because LlamaFit is meant for the person sitting at the keyboard. Press Ctrl+C now if you did not mean this."
+msgstr "%(host)s:%(port)d אינו המכונה הזאת בלבד. כל מי שיכול להגיע למחשב הזה בפורט הזה יכול לקרוא את כל מה שלוח המחוונים מציג -- החומרה שלך, הדיסקים שלך, נתיבי הקבצים שלך והמודלים שהורדת. אין סיסמה, מפני ש-LlamaFit מיועד לאדם שיושב מול המקלדת. הקש Ctrl+C עכשיו אם לא לזה התכוונת."
+
+msgid "the web dashboard needs FastAPI and uvicorn, which are not installed"
+msgstr "לוח המחוונים באינטרנט זקוק ל-FastAPI ול-uvicorn, שאינם מותקנים"
+
+msgid "Install them with: pip install \"llamafit[web]\""
+msgstr "התקן אותם באמצעות: pip install \"llamafit[web]\""
+
+msgid "%(host)s is not a loopback address, and the dashboard has no authentication"
+msgstr "%(host)s אינה כתובת לולאה מקומית, ולוח המחוונים אינו מאמת זהות"
+
+msgid "Leave --host alone to serve this machine only, or pass it to mean it."
+msgstr "השאר את --host כמות שהוא כדי לשרת את המכונה הזאת בלבד, או העבר אותו אם לזה כוונתך."
+
+msgctxt "column heading"
+msgid "Why not"
+msgstr "למה לא"
+
+msgid "Why this row"
+msgstr "למה השורה הזאת"
+
+msgid "Plan this"
+msgstr "תכנן את זה"
+
+msgid "Already on this machine"
+msgstr "כבר במכונה הזאת"
+
+msgid "Score"
+msgstr "ניקוד"
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; raise “Rows to show” for the rest, which are neither worse-behaved nor hidden, only further down."
+msgstr "מוצגים %(shown)s הטובים ביותר מתוך %(total)s שעמדו בתנאים; הגדל את “מספר שורות להצגה” לשאר, שאינם מתנהגים גרוע יותר ואינם מוסתרים, רק נמצאים למטה יותר."
+
+msgid "What the model is for"
+msgstr "למה המודל מיועד"
+
+msgid "Capabilities it must have"
+msgstr "יכולות שהוא חייב שיהיו לו"
+
+msgid "Lean the weights"
+msgstr "הטיית המשקלים"
+
+msgid "Smallest context worth having"
+msgstr "ההקשר הקטן ביותר ששווה להחזיק"
+
+msgid "Most you will download"
+msgstr "המרב שתוריד"
+
+msgid "Show every quantisation"
+msgstr "הצגת כל קוונטיזציה"
+
+msgid "Keep the vision projector"
+msgstr "שמירת מקרן הראייה"
+
+msgid "Rows to show"
+msgstr "מספר שורות להצגה"
+
+msgid "Scan again"
+msgstr "סרוק שוב"
+
+msgid "llama.cpp"
+msgstr "llama.cpp"
+
+msgid "Quantisation"
+msgstr "קוונטיזציה"
+
+msgid "Context"
+msgstr "הקשר"
+
+msgid "Micro-batch"
+msgstr "מיקרו-אצווה"
+
+msgid "Plan it"
+msgstr "תכנן אותו"
+
+msgid "Copy"
+msgstr "העתקה"
+
+msgid "Copied"
+msgstr "הועתק"
+
+msgid "Flags"
+msgstr "דגלים"
+
+msgid "Speed"
+msgstr "מהירות"
+
+msgid "Choose a row on the board first."
+msgstr "בחר קודם שורה בלוח."
+
+msgid "Hardware profile"
+msgstr "פרופיל חומרה"
+
+msgid "This machine, as scanned"
+msgstr "המכונה הזאת, כפי שנסרקה"
+
+msgid "Graphics memory"
+msgstr "זיכרון גרפי"
+
+msgid "System memory"
+msgstr "זיכרון מערכת"
+
+msgid "Processor cores"
+msgstr "ליבות המעבד"
+
+msgid "Score against that machine"
+msgstr "ניקוד מול המכונה ההיא"
+
+msgid "What runs here, how fast, and with which settings."
+msgstr "מה רץ כאן, כמה מהר, ובאילו הגדרות."
+
+msgid "Working…"
+msgstr "עובד…"
+
+msgid "Something went wrong"
+msgstr "משהו השתבש"
+
+msgid "Hint"
+msgstr "רמז"
+
+msgid "Command"
+msgstr "פקודה"
+
+msgid "About these figures"
+msgstr "על הנתונים האלה"
+
+msgid "Close"
+msgstr "סגירה"
+
+msgid "%(shown)s of %(total)s in the catalog"
+msgstr "%(shown)s מתוך %(total)s בקטלוג"
+
+msgid "Source code (AGPL-3.0-or-later)"
+msgstr "קוד המקור (AGPL-3.0-or-later)"
+
+msgid "This dashboard is served from your own machine and sends nothing anywhere."
+msgstr "לוח המחוונים הזה מוגש מהמכונה שלך ואינו שולח דבר לשום מקום."
