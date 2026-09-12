@@ -23,6 +23,198 @@ msgstr ""
 "Language-Team: Chinese (Traditional)\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+msgid "nothing measured touches this term, so there is no equation it appears in"
+msgstr "沒有任何量測涉及這一項，因此它不會出現在任何方程式裡"
+
+msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
+msgstr "%(measurements)d 種不同組態對應 %(parameters)d 個自由參數；資料點比參數還少，算出來的數字看似精確，其實是任意的"
+
+msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
+msgstr "這 %(measurements)d 種組態之間的變化不夠獨立，無法分離出 %(parameters)d 個參數"
+
+msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "擬合把它定在 %(value).3f，而它自己的定義不允許這個值；在 10.1 節的模型下，這些量測彼此矛盾"
+
+msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "它算出來是 %(value).3f，但同一次擬合中的另一個參數是不可能的，最小平方法是在兩者互相牽制之下選出它們的"
+
+msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
+msgstr "估算器裡沒有這一項：10.1 節拿掉了按層計的額外開銷，對一個 28 層的模型來說，它已經超過實測的整個 token 時間"
+
+msgid "generation (llama-bench)"
+msgstr "生成（llama-bench）"
+
+msgid "prompt (llama-bench)"
+msgstr "提示（llama-bench）"
+
+msgid "generation, first request"
+msgstr "生成，第一次請求"
+
+msgid "generation, 1K prompt"
+msgstr "生成，1K 提示"
+
+msgid "prompt, 1K request"
+msgstr "提示，1K 請求"
+
+msgid "peak VRAM"
+msgstr "VRAM 峰值"
+
+msgid "no graphics card"
+msgstr "沒有顯示卡"
+
+msgid "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+msgstr "%(os)s %(version)s，%(cpu)s，%(ram)s，%(gpu)s%(driver)s"
+
+msgid "%(flag)s was asked for as %(wanted)s but the run reports %(actual)s"
+msgstr "%(flag)s 要求的是 %(wanted)s，但這次執行回報的是 %(actual)s"
+
+msgid "The card was full and generation came in below three fifths of the estimate: the driver was paging to system memory, which does not fail and does not appear in the log."
+msgstr "顯示卡已經占滿，而生成速度不到估算值的五分之三：驅動程式正在把資料換出到系統記憶體，這不會失敗，也不會出現在記錄檔裡。"
+
+msgid "Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page."
+msgstr "VRAM 峰值離顯示卡的總量還有距離，所以驅動程式沒有東西需要換出。"
+
+msgid "The card was full, which a good plan is meant to be, and the speed was close enough to the estimate that nothing was paging."
+msgstr "顯示卡占滿了——好的方案本來就該如此——而速度與估算值夠接近，表示沒有發生換出。"
+
+msgid "No VRAM reading was taken during the run, so this configuration has not been cleared of paging; it has only not been checked."
+msgstr "這次執行沒有讀取過 VRAM，所以還不能說這套組態沒有換出；只是沒有檢查過而已。"
+
+msgid "The card's total memory is unknown, so a reading of what was in use says nothing about how close to full it was."
+msgstr "顯示卡的記憶體總量未知，所以就算讀到了使用量，也說不出它離占滿還有多遠。"
+
+msgid "There was no estimate to compare the measured speed against, so the second half of the signature could not be tested."
+msgstr "沒有可以和實測速度比對的估算值，所以這個特徵的後半部分無法檢驗。"
+
+msgid "llama-bench did not produce JSON"
+msgstr "llama-bench 沒有產生 JSON"
+
+msgid "llama-bench JSON is not a list of results"
+msgstr "llama-bench 的 JSON 不是一組結果清單"
+
+msgid "llama-bench JSON held no readable results"
+msgstr "llama-bench 的 JSON 裡沒有可讀取的結果"
+
+msgid "no llama-bench result rows found"
+msgstr "找不到 llama-bench 的結果列"
+
+msgid "could not open %(path)s for the server log"
+msgstr "無法開啟 %(path)s 來寫伺服器記錄檔"
+
+msgid "could not start llama-server"
+msgstr "無法啟動 llama-server"
+
+msgid "no output"
+msgstr "沒有輸出"
+
+msgid "llama-bench exited with code %(code)d: %(detail)s"
+msgstr "llama-bench 以結束代碼 %(code)d 結束：%(detail)s"
+
+msgid "llama-bench output could not be read: %(error)s"
+msgstr "無法讀取 llama-bench 的輸出：%(error)s"
+
+msgid "llama-server did not become healthy"
+msgstr "llama-server 沒有進入健康狀態"
+
+msgid "Its whole output is in the log file `bench` named; the end says why."
+msgstr "它的全部輸出都在 `bench` 指出的記錄檔裡；檔案末尾說明了原因。"
+
+msgid "%(path)s was written by a newer LlamaFit (benchmark format %(found)d, this build reads %(known)d)"
+msgstr "%(path)s 是由更新版本的 LlamaFit 寫入的（基準測試格式 %(found)d，這個建置讀取 %(known)d）"
+
+msgid "Upgrade LlamaFit, or move the file aside to start a new one."
+msgstr "請升級 LlamaFit，或者把這個檔案移開，另起一個新的。"
+
+msgid "a benchmark cannot be recorded against a simulated machine"
+msgstr "基準測試結果不能記在一台模擬的機器上"
+
+msgid "Run `llamafit bench` on the machine itself, without --profile."
+msgstr "請直接在那台機器上執行 `llamafit bench`，不要加 --profile。"
+
+msgid "the run did not use the settings it was given: %(problems)s"
+msgstr "這次執行沒有採用給定的設定：%(problems)s"
+
+msgid "Nothing was stored. A result filed under flags it was not taken with would be believed later by everything that reads it."
+msgstr "什麼都沒有儲存。一筆結果如果記在並非它實際使用的旗標之下，之後每個讀到它的地方都會信以為真。"
+
+msgid "a conservative default; nobody has measured this card's backend overhead"
+msgstr "一個保守的預設值；沒有人量測過這張顯示卡的後端開銷"
+
+msgid "measured on this card with driver %(driver)s and llama.cpp %(build)s; one machine"
+msgstr "在這張顯示卡上實測，驅動程式為 %(driver)s，llama.cpp 為 %(build)s；只有一台機器"
+
+msgid "A hybrid placement has to say how many layers are on the graphics card."
+msgstr "混合放置必須說明有多少層在顯示卡上。"
+
+msgid "Pass gpu_layers, which is what -ngl would be."
+msgstr "請傳入 gpu_layers，也就是 -ngl 的值。"
+
+msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
+msgstr "LlamaFit 還沒有讀取 %(model)s 的 %(quant)s 檔案，因此無法估算它的大小。"
+
+msgid "Run `llamafit catalog refresh` to read the file's header."
+msgstr "執行 `llamafit catalog refresh` 讀取該檔案的標頭。"
+
+msgid "the server process before any model buffer"
+msgstr "伺服器行程本身，不含任何模型緩衝區"
+
+msgid "fitted to one machine's measurements; the least certain line here"
+msgstr "由一台機器的量測擬合而來；是這裡最不確定的一列"
+
+msgid "room for one logit per vocabulary entry per token of the batch"
+msgstr "為批次中每個 token 的每個詞表項目各留一個 logit 的空間"
+
+msgid "LlamaFit cannot size a %(kv_type)s key-value cache."
+msgstr "LlamaFit 無法估算 %(kv_type)s 類型的鍵值快取大小。"
+
+msgid "Use one of: %(types)s."
+msgstr "請使用其中之一：%(types)s。"
+
+msgid "This model's file does not say how large its key-value cache is per token."
+msgstr "這個模型的檔案沒有說明它每個 token 的鍵值快取有多大。"
+
+msgid "Refresh the catalog so the file's header is read again."
+msgstr "請更新模型目錄，讓它重新讀取該檔案的標頭。"
+
+msgid "the attention-layer count was assumed, not counted"
+msgstr "注意力層的數量是假定的，不是數出來的"
+
+msgid "%(arch)s allocates more cache than its header describes; see the line below"
+msgstr "%(arch)s 配置的快取比它的標頭所描述的更多；見下面一列"
+
+msgid "what %(arch)s allocates beyond its header, measured rather than derived"
+msgstr "%(arch)s 在標頭所述之外額外配置的部分，是實測得到而非推導得到的"
+
+msgid "from the architecture's state dimensions; it does not grow with context"
+msgstr "來自該架構的狀態維度；它不會隨上下文增長"
+
+msgid "the projector file itself"
+msgstr "投影器檔案本身"
+
+msgid "the projector's own compute space, measured at 248 MiB"
+msgstr "投影器自己的計算空間，實測為 248 MiB"
+
+msgid "attention projections, feed-forward weights and norms"
+msgstr "注意力投影、前饋權重和正規化參數"
+
+msgid "always-on experts, which run for every token"
+msgstr "常駐專家，每個 token 都會用到"
+
+msgid "routed experts, read across the bus once per micro-batch"
+msgstr "路由專家，每個微批次經匯流排讀取一次"
+
+msgid "this model ties its output projection to its embedding table"
+msgstr "這個模型把輸出投影與嵌入表綁在一起"
+
+msgid "llama.cpp keeps the embedding table in memory even at full offload"
+msgstr "即使全部卸載到顯示卡，llama.cpp 也會把嵌入表留在記憶體裡"
+
+msgid "streamed from disk as it is needed, not held in memory"
+msgstr "按需從磁碟串流讀取，不常駐記憶體"
+
+msgid "held in memory, since streaming from disk was turned off"
+msgstr "常駐記憶體，因為從磁碟串流讀取已被關閉"
+
 msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
 msgstr "列出 %(repo)s 的檔案時，Hugging Face 傳回了 %(status)d。"
 
@@ -67,6 +259,9 @@ msgstr "執行不加 --model 的 `llamafit catalog refresh`，以重新建立整
 msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
 msgstr "在自己的機器上為 llama.cpp 尋找、估算大小、安裝並驗證開放權重 LLM。"
 
+msgid "With no command, llamafit opens the terminal dashboard; in a pipe, or with --json, it prints what `llamafit recommend` would."
+msgstr "不加指令時，llamafit 會開啟終端機儀表板；在管線中或加上 --json 時，它會輸出 `llamafit recommend` 會輸出的內容。"
+
 msgid "Print machine-readable JSON instead of tables."
 msgstr "輸出機器可讀的 JSON，而不是表格。"
 
@@ -76,17 +271,318 @@ msgstr "把詳細資訊寫入記錄檔目錄下的 llamafit.log，並顯示回�
 msgid "Disable colours."
 msgstr "停用彩色輸出。"
 
+msgid "Answer for the machine this hardware profile describes instead of this one. Nothing about this machine is probed, and every answer is marked as simulated. `llamafit hardware list` names the profiles you have."
+msgstr "改為回答這份硬體設定檔所描述的機器，而不是目前這台。本機的任何資訊都不會被偵測，所有回答都會標記為模擬。`llamafit hardware list` 會列出你已有的設定檔。"
+
+msgid "Pretend the graphics card has this much memory, for example 24G. Everything else stays as scanned, and every answer is marked as simulated."
+msgstr "假設顯示卡有這麼多記憶體，例如 24G。其餘一切維持掃描到的樣子，所有回答都會標記為模擬。"
+
+msgid "Pretend the machine has this much system memory, for example 128GiB. Every answer is marked as simulated."
+msgstr "假設這台機器有這麼多系統記憶體，例如 128GiB。所有回答都會標記為模擬。"
+
+msgid "Pretend the processor has this many physical cores. Every answer is marked as simulated."
+msgstr "假設處理器有這麼多個實體核心。所有回答都會標記為模擬。"
+
+msgid "Plan, report and score no context longer than this. It caps the model's own length; it does not describe a machine."
+msgstr "規劃、報告和評分時都不超過這個上下文長度。它只給模型本身的長度設上限，並不描述某台機器。"
+
 msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
 msgstr "使用這個語言，例如 pt_PT。LlamaFit 沒有的語言會退回英文，並會說明它有哪些語言。"
 
 msgid "Print the version and exit."
 msgstr "輸出版本後結束。"
 
+msgid "the output's encoding"
+msgstr "輸出的編碼"
+
+msgid "%(count)d character could not be written in %(encoding)s and is shown as ?."
+msgid_plural "%(count)d characters could not be written in %(encoding)s and are shown as ?."
+msgstr[0] "有 %(count)d 個字元無法用 %(encoding)s 寫出，顯示為 ?。"
+
+msgid "Set PYTHONUTF8=1 in the environment and run again: Python then writes UTF-8, which carries every language."
+msgstr "請在環境中設定 PYTHONUTF8=1 後重新執行：這樣 Python 會寫出 UTF-8，它能承載所有語言。"
+
+msgid "%(option)s is an option of llamafit itself, so it goes before the command: `llamafit %(option)s %(rest)s`."
+msgstr "%(option)s 是 llamafit 本身的選項，所以要放在指令前面：`llamafit %(option)s %(rest)s`。"
+
 msgid "Unexpected error: %(error)s"
 msgstr "未預期的錯誤：%(error)s"
 
 msgid "Run again with --verbose for the full traceback."
 msgstr "加上 --verbose 重新執行，就能看到完整的回溯訊息。"
+
+msgid "A catalog model id."
+msgstr "模型目錄中的模型 id。"
+
+msgid "Benchmark this quantisation instead of the planned one."
+msgstr "對這個量化版本做基準測試，而不是方案中選定的那個。"
+
+msgid "Size for this many tokens."
+msgstr "按這麼多 token 估算大小。"
+
+msgid "Set the micro-batch by hand; the budget is rebuilt around it."
+msgstr "手動設定微批次大小；記憶體預算會圍繞它重新計算。"
+
+msgid ""
+"Measure a model on this machine and show the measurement beside the estimate.\n"
+"\n"
+"Runs llama-bench and a real server at the planned flags, stores the result with the conditions it was taken under, and flags a configuration the driver was paging. With --calibrate, fits the estimator's constants to this machine from every stored result and says by name which ones the measurements do not determine."
+msgstr ""
+"在這台機器上實測一個模型，並把實測值與估算值並排顯示。\n"
+"\n"
+"它會依方案中的旗標執行 llama-bench 和一個真正的伺服器，把結果連同取得時的條件一起儲存，並標出驅動程式發生換出的組態。加上 --calibrate 時，它會用全部已儲存的結果把估算器的常數擬合到這台機器，並逐一說出哪些常數是量測無法確定的。"
+
+msgid "Measure prompt processing at every micro-batch of the ladder, not only the planned one. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all."
+msgstr "在階梯上的每一個微批次大小下都量測提示處理，而不只是方案選定的那個。10.2 節有兩個自由參數，而一個微批次只給出一個方程式，所以不加這個，校準中提示的那一半根本無法擬合。"
+
+msgid "Run llama-bench only. Faster, and it gives up the paging check, the buffer sizes and the tool-call test, all of which need a real server."
+msgstr "只執行 llama-bench。比較快，但會放棄換出檢查、緩衝區大小和工具呼叫測試，這些都需要一個真正的伺服器。"
+
+msgid "Print the result without writing it to the database."
+msgstr "輸出結果，但不寫入資料庫。"
+
+msgid "Print the commands that would run, and run nothing."
+msgstr "輸出將要執行的指令，但什麼都不執行。"
+
+msgid "Fit the estimator's constants to this machine from every result."
+msgstr "用全部結果把估算器的常數擬合到這台機器。"
+
+msgid "List what is already stored and stop."
+msgstr "列出已儲存的內容，然後結束。"
+
+msgid "`llamafit bench` needs a model to measure"
+msgstr "`llamafit bench` 需要一個要量測的模型"
+
+msgid "Try `llamafit bench <model>`, `--calibrate` on its own, or `--show`."
+msgstr "可以試試 `llamafit bench <model>`、單獨的 `--calibrate`，或者 `--show`。"
+
+msgid "llama.cpp was not found, so there is nothing to benchmark with"
+msgstr "找不到 llama.cpp，因此沒有可以用來做基準測試的東西"
+
+msgid "Run `llamafit doctor` to see where it was looked for."
+msgstr "執行 `llamafit doctor` 查看曾在哪些位置尋找過。"
+
+msgid "%(path)s has llama-server but no llama-bench"
+msgstr "%(path)s 裡有 llama-server，但沒有 llama-bench"
+
+msgid "Some release archives leave it out; a full build has it beside the server."
+msgstr "有些發行壓縮檔不含它；完整的建置會把它和伺服器放在一起。"
+
+msgid "this host is simulated, and a simulated machine cannot be measured"
+msgstr "這台主機是模擬的，模擬的機器無法實測"
+
+msgid "Run `llamafit bench` on the machine itself."
+msgstr "請在那台機器上直接執行 `llamafit bench`。"
+
+msgid "the model file is not on this machine: %(path)s"
+msgstr "本機上沒有這個模型檔案：%(path)s"
+
+msgid "Download it first; `llamafit plan` shows the path the command line uses."
+msgstr "請先下載；`llamafit plan` 會顯示指令列使用的路徑。"
+
+msgid "Would run:"
+msgstr "將要執行："
+
+msgid "Nothing has been measured on this machine yet."
+msgstr "這台機器上還沒有做過任何量測。"
+
+msgid "Stored measurements"
+msgstr "已儲存的量測結果"
+
+msgid "model"
+msgstr "模型"
+
+msgid "kind"
+msgstr "類型"
+
+msgid "gen tok/s"
+msgstr "生成 tok/s"
+
+msgid "prompt tok/s"
+msgstr "提示 tok/s"
+
+msgid "taken"
+msgstr "時間"
+
+msgid "flags"
+msgstr "旗標"
+
+msgid "Nothing was written to the database, so no estimate will be relabelled."
+msgstr "什麼都沒有寫入資料庫，因此不會有任何估算值被重新標示。"
+
+msgid "Estimated against measured"
+msgstr "估算值與實測值對照"
+
+msgid "figure"
+msgstr "數值"
+
+msgid "context"
+msgstr "上下文"
+
+msgid "micro-batch"
+msgstr "微批次"
+
+msgid "estimated"
+msgstr "估算"
+
+msgid "measured"
+msgstr "實測"
+
+msgid "ratio"
+msgstr "比值"
+
+msgid "The plan sizes this configuration for %(context)s tokens and estimates %(tps)s generated tokens per second there. Nothing above ran at that context, so that figure is reported and not compared."
+msgstr "方案按 %(context)s 個 token 為這套組態估算大小，並估計在該長度下每秒生成 %(tps)s 個 token。上面沒有任何一次執行用的是這個上下文長度，所以這個數值只作報告，不作比對。"
+
+msgid "%(count)d figure is outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgid_plural "%(count)d figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgstr[0] "有 %(count)d 個數值落在 0.8 到 1.25 這個區間之外，而未校準的公式本應落在其中。"
+
+msgid "This configuration was paging."
+msgstr "這套組態發生了換出。"
+
+msgid "This configuration was not paging."
+msgstr "這套組態沒有發生換出。"
+
+msgid "Paging could not be checked."
+msgstr "無法檢查是否發生了換出。"
+
+msgid "Peak VRAM was %(percent)s percent of the card, and generation was %(speed)s percent of the estimate."
+msgstr "VRAM 峰值是顯示卡的 %(percent)s%%，生成速度是估算值的 %(speed)s%%。"
+
+msgid "Peak VRAM was %(percent)s percent of the card. Generation was not compared with the estimate."
+msgstr "VRAM 峰值是顯示卡的 %(percent)s%%。生成速度沒有和估算值比對過。"
+
+msgid "The largest context on the ladder that would not page is %(tokens)s."
+msgstr "階梯上不會發生換出的最大上下文是 %(tokens)s。"
+
+msgid "Calibration"
+msgstr "校準"
+
+msgid "constant"
+msgstr "常數"
+
+msgid "value"
+msgstr "取值"
+
+msgid "from"
+msgstr "依據"
+
+msgid "%(base)s + %(slope)s per 1K"
+msgstr "%(base)s + 每 1K 加 %(slope)s"
+
+msgid "%(count)d measured context"
+msgid_plural "%(count)d measured contexts"
+msgstr[0] "%(count)d 個實測上下文"
+
+msgid "Nothing was fitted. Every line below says what its constant was missing; a calibration made from less than that would look precise and be arbitrary."
+msgstr "沒有擬合出任何東西。下面每一列都說明了對應的常數缺少什麼；用少於這些的資料做出的校準，看似精確，其實是任意的。"
+
+msgid "%(name)s was not fitted: %(reason)s"
+msgstr "%(name)s 沒有擬合出來：%(reason)s"
+
+msgid "%(count)d measured configuration"
+msgid_plural "%(count)d measured configurations"
+msgstr[0] "%(count)d 種實測組態"
+
+msgid "What the model is for. It sets the score weights, the speed target and the context a candidate is measured against."
+msgstr "這個模型要用來做什麼。它決定評分權重、速度目標，以及衡量候選模型所用的上下文長度。"
+
+msgid "Capability the model must have; a model without it is excluded "
+msgstr "模型必須具備的能力；不具備的模型會被排除 "
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "只保留這些授權識別碼（可重複指定）。"
+
+msgid "balanced, quality or speed: moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights."
+msgstr "balanced、quality 或 speed：在品質與速度之間挪動十分之一的權重。它讓排行榜有所偏向，但不會取代權重。"
+
+msgid "Exclude anything larger to download, for example 40G or 7.5GiB."
+msgstr "排除下載大小超過這個值的模型，例如 40G 或 7.5GiB。"
+
+msgid "The worst verdict to list: comfortable, fits or tight."
+msgstr "列出的最差判定：comfortable、fits 或 tight。"
+
+msgid "Exclude candidates generating fewer tokens per second than this, in place of the speed a person reads at. Pass 0 when nobody is waiting on the tokens."
+msgstr "排除每秒生成 token 少於這個數的候選，取代預設的「人閱讀的速度」。如果沒有人在等這些 token，可以傳 0。"
+
+msgid "Order the rows drawn: score, speed, quality, context, size, prompt, card, ram, fit, model or quant, largest or best first unless :asc says otherwise. The # column keeps the ranking."
+msgstr "所繪列的排序方式：score、speed、quality、context、size、prompt、card、ram、fit、model 或 quant，預設從大到小或從好到差，除非用 :asc 指定。# 欄始終保持原排名。"
+
+msgid "Draw only rows whose id, name or quantisation contains this text."
+msgstr "只繪製 id、名稱或量化版本包含這段文字的列。"
+
+msgid "Draw only rows whose file is already on this machine."
+msgstr "只繪製檔案已經在本機上的列。"
+
+msgid "Draw only rows that run this way: gpu, moe-offload, hybrid or cpu."
+msgstr "只繪製以這種方式執行的列：gpu、moe-offload、hybrid 或 cpu。"
+
+msgid "Draw only rows at or above this verdict: comfortable, fits or tight. The ranking is unchanged and a hidden row is still counted."
+msgstr "只繪製判定不低於此的列：comfortable、fits 或 tight。排名不變，被隱藏的列仍然計入。"
+
+msgid "Draw exactly these columns, comma-separated, in this order, named as --json names them: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+msgstr "精確繪製這些欄，用逗號分隔，按此順序，名稱與 --json 中的一致：rank、model、quant、size、have、score、quality、gen、prompt、confidence、mode、vram、ram、verdict、context。"
+
+msgid "Draw every column whatever the terminal's width; a cell that does not fit folds."
+msgstr "不論終端機多寬都繪製所有欄；放不下的儲存格會折行。"
+
+msgid "Leave the candidates that were not ranked off the table. The reasons are still printed under it."
+msgstr "把未排名的候選從表格中拿掉。原因仍會列在表格下方。"
+
+msgid "invalid --min-fit %(value)s"
+msgstr "--min-fit 的值無效：%(value)s"
+
+msgid "Valid values: %(values)s"
+msgstr "有效的值：%(values)s"
+
+msgid "invalid --prefer %(value)s"
+msgstr "--prefer 的值無效：%(value)s"
+
+msgid "invalid --runs %(value)s"
+msgstr "--runs 的值無效：%(value)s"
+
+msgid "invalid --sort %(value)s"
+msgstr "--sort 的值無效：%(value)s"
+
+msgid "invalid --columns %(value)s"
+msgstr "--columns 的值無效：%(value)s"
+
+msgid ""
+"Rank the catalog for what you want to do on this machine.\n"
+"\n"
+"Every candidate is planned, sized and estimated here, so the first run scans the machine. Speeds compare candidates at 8K tokens of context; --explain expands a row into the scores, the weights, the budget and the speed breakdown that produced it."
+msgstr ""
+"依你想在這台機器上做的事替模型目錄排名。\n"
+"\n"
+"每個候選都會在這裡做方案、估算大小和速度，所以第一次執行會掃描這台機器。速度都在 8K token 的上下文下比較；--explain 會把一列展開成產生它的評分、權重、記憶體預算和速度明細。"
+
+msgid "Exclude candidates that cannot hold at least this many tokens."
+msgstr "排除裝不下這麼多 token 的候選。"
+
+msgid "Show at most this many rows."
+msgstr "最多顯示這麼多列。"
+
+msgid "Show every quantisation instead of the best one per model."
+msgstr "顯示全部量化版本，而不是每個模型只顯示最好的一個。"
+
+msgid "Expand every row shown into the scores, weights, budget and speed breakdown behind it. Combine with --limit 1 for one model."
+msgstr "把顯示的每一列展開成其背後的評分、權重、記憶體預算和速度明細。搭配 --limit 1 可以只看一個模型。"
+
+msgid "Plan without a vision projector, freeing its memory."
+msgstr "做方案時不帶視覺投影器，把它占用的記憶體釋出。"
+
+msgid ""
+"Rank every model by how well it uses this machine, whatever it is for.\n"
+"\n"
+"No use case, no weights and no score: this is the memory question on its own. Models are sized for 32K tokens of context, and the context column is the largest each one holds in the mode shown."
+msgstr ""
+"不論用途，只按每個模型對這台機器的利用程度排名。\n"
+"\n"
+"沒有使用情境、沒有權重、沒有評分：這裡只談記憶體這一個問題。模型按 32K token 的上下文估算大小，上下文欄給出的是每個模型在所示執行方式下能容納的最大長度。"
+
+msgid "Only the configurations that use the machine well: at least half its memory held in weights, and no pool past four fifths."
+msgstr "只保留能把機器用好的組態：至少一半記憶體用於權重，且任何一個記憶體集區都不超過五分之四。"
 
 msgid "Maintain the catalog: validate its files, refresh volatile fields."
 msgstr "維護模型目錄：驗證它的檔案，更新易變的欄位。"
@@ -97,36 +593,17 @@ msgstr "只保留這個使用情境。"
 msgid "Keep only models with this capability (repeatable)."
 msgstr "只保留具備這項能力的模型（可重複指定）。"
 
-msgid "Keep only these licence identifiers (repeatable)."
-msgstr "只保留這些授權識別碼（可重複指定）。"
+msgid "Show only this quantisation, matched case-insensitively, in both tables."
+msgstr "兩個表格中都只顯示這個量化版本，比對時不區分大小寫。"
+
+msgid "Size every quantisation for this many tokens instead of the usual 32,768."
+msgstr "按這麼多 token 估算每個量化版本的大小，而不是平常的 32,768。"
 
 msgid "Validate only this file instead of the bundled catalog and custom overrides."
 msgstr "只驗證這個檔案，而不是內建的模型目錄和自訂覆寫。"
 
-msgid "Did you mean: %(ids)s?"
-msgstr "你是想找：%(ids)s？"
-
-msgid "Run `llamafit list` to see every model id."
-msgstr "執行 `llamafit list` 查看所有模型 id。"
-
-msgid "no model named %(id)s in the catalog"
-msgstr "模型目錄中沒有名為 %(id)s 的模型"
-
-msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
-msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
-msgstr[0] "發現 %(count)d 個模型目錄問題；執行 `llamafit catalog validate` 查看詳細資訊。"
-
 msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
 msgstr "沒有符合的模型。請把 --use-case、--capability、--license、--vendor 或 --search 放寬一些。"
-
-msgid "invalid --use-case %(value)s"
-msgstr "--use-case 的值無效：%(value)s"
-
-msgid "Valid use cases: %(values)s"
-msgstr "有效的使用情境：%(values)s"
-
-msgid "Valid capabilities: %(values)s"
-msgstr "有效的能力：%(values)s"
 
 msgid ""
 "List the model catalog, narrowed by any filters given.\n"
@@ -152,8 +629,14 @@ msgstr "llamafit list --search TEXT 的簡寫。"
 msgid "Text to match against id, name, vendor or family."
 msgstr "用來比對 id、名稱、廠商或系列的文字。"
 
-msgid "A catalog model id."
-msgstr "模型目錄中的模型 id。"
+msgid ""
+"Show one model: its facts, the quants it publishes, and what each would cost on this machine.\n"
+"\n"
+"The last table is sized against this machine, so the first run scans it. One line per quantisation; plan opens one of those rows into the memory budget, the context ladder and the command line."
+msgstr ""
+"顯示一個模型：它的資訊、它發布的量化版本，以及每個版本在這台機器上的開銷。\n"
+"\n"
+"最後一個表格是針對這台機器估算的，所以第一次執行會掃描它。每個量化版本一列；plan 會把其中一列展開成記憶體預算、上下文階梯和指令列。"
 
 msgid "Validate catalog YAML files against the schema, printing one line per problem."
 msgstr "依 schema 驗證模型目錄的 YAML 檔案，每個問題輸出一行。"
@@ -199,8 +682,384 @@ msgstr "輸出某個模型的原始目錄項目，預設為 JSON，加上 --yaml
 msgid "Print YAML instead of JSON."
 msgstr "輸出 YAML，而不是 JSON。"
 
+msgid "Did you mean: %(ids)s?"
+msgstr "你是想找：%(ids)s？"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "執行 `llamafit list` 查看所有模型 id。"
+
+msgid "no model named %(id)s in the catalog"
+msgstr "模型目錄中沒有名為 %(id)s 的模型"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "發現 %(count)d 個模型目錄問題；執行 `llamafit catalog validate` 查看詳細資訊。"
+
+msgid "invalid --use-case %(value)s"
+msgstr "--use-case 的值無效：%(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "有效的使用情境：%(values)s"
+
+msgid "invalid %(option)s value: %(values)s"
+msgid_plural "invalid %(option)s values: %(values)s"
+msgstr[0] "%(option)s 的值無效：%(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "有效的能力：%(values)s"
+
+msgid "%(option)s is not a size: %(value)s"
+msgstr "%(option)s 不是一個大小值：%(value)s"
+
+msgid "Sizes look like 8G, 7.5GiB or 512M; a bare number is bytes."
+msgstr "大小的寫法是 8G、7.5GiB 或 512M；只寫數字表示位元組。"
+
+msgid "%(ceiling)s %(max)s is below %(floor)s %(min)s"
+msgstr "%(ceiling)s %(max)s 低於 %(floor)s %(min)s"
+
+msgid "Raise %(ceiling)s, or lower %(floor)s."
+msgstr "請調高 %(ceiling)s，或者調低 %(floor)s。"
+
+msgid "`llamafit %(command)s` reports on the machine LlamaFit is running on"
+msgstr "`llamafit %(command)s` 回報的是 LlamaFit 正在執行的這台機器"
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a profile describes, run `llamafit hardware show NAME --as-host`."
+msgstr "請拿掉 --profile、--memory、--ram 和 --cpu-cores。要查看某份設定檔所描述的機器，請執行 `llamafit hardware show NAME --as-host`。"
+
 msgid "Explain what was detected, what failed, and what would unlock more."
 msgstr "說明偵測到了什麼、什麼失敗了，以及做什麼可以取得更多資訊。"
+
+msgid "Hardware profiles: describe a machine in a file and score models against it."
+msgstr "硬體設定檔：用一個檔案描述一台機器，並據此為模型評分。"
+
+msgid "Validate only this file instead of every bundled and user profile."
+msgstr "只驗證這個檔案，而不是全部內建設定檔和使用者設定檔。"
+
+msgid "A profile name, or a path to a profile file."
+msgstr "一個設定檔名稱，或者設定檔的路徑。"
+
+msgid "%(count)d hardware profile problem found; run `llamafit hardware validate` for details."
+msgid_plural "%(count)d hardware profile problems found; run `llamafit hardware validate` for details."
+msgstr[0] "發現 %(count)d 個硬體設定檔問題；執行 `llamafit hardware validate` 查看詳細資訊。"
+
+msgid "List the hardware profiles LlamaFit has: the bundled ones and your own."
+msgstr "列出 LlamaFit 擁有的硬體設定檔：內建的和你自己的。"
+
+msgid "No hardware profiles. Run `llamafit hardware path` to see where yours would go."
+msgstr "沒有硬體設定檔。執行 `llamafit hardware path` 查看你自己的設定檔該放在哪裡。"
+
+msgid ""
+"Show one profile; with --as-host, the machine it stands in for.\n"
+"\n"
+"A host built from a profile is marked as simulated, in the table and in the JSON, so a what-if is never mistaken for a scan of this machine."
+msgstr ""
+"顯示一份設定檔；加上 --as-host 則顯示它所代表的那台機器。\n"
+"\n"
+"由設定檔建立出的主機會在表格和 JSON 中都標記為模擬，這樣假設推演永遠不會被誤當成對本機的掃描。"
+
+msgid "Show the host this profile substitutes, as `llamafit system` would."
+msgstr "像 `llamafit system` 那樣顯示這份設定檔所代替的主機。"
+
+msgid "Check hardware profile files against the schema, printing one line per problem."
+msgstr "依 schema 檢查硬體設定檔，每個問題輸出一行。"
+
+msgid "Print the directory your own hardware profiles go in."
+msgstr "輸出存放你自己硬體設定檔的目錄。"
+
+msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr "它還不存在；請建立它，並在裡面放一個 %(suffix)s 檔案。"
+
+msgid "Install what it takes to run a model: llama.cpp itself, and the weights."
+msgstr "安裝執行一個模型所需的東西：llama.cpp 本身，以及權重。"
+
+msgid "Fetch this quantisation instead of the first the catalog publishes."
+msgstr "取得這個量化版本，而不是模型目錄中列出的第一個。"
+
+msgid "Put the files here instead of under the configured downloads directory."
+msgstr "把檔案放到這裡，而不是設定好的下載目錄下。"
+
+msgid "Use at most this much bandwidth, for example 5M. Shared across every worker, so the figure is the figure whatever --workers says."
+msgstr "最多使用這麼多頻寬，例如 5M。所有工作執行緒共用，所以不論 --workers 是多少，這個數就是這個數。"
+
+msgid "How many requests to keep in flight. More is not always faster, and a home connection is shared with whoever else is using it."
+msgstr "同時保持多少個請求在傳輸中。更多並不總是更快，而且家裡的網路是和其他人共用的。"
+
+msgid "Do not ask before starting."
+msgstr "開始前不要詢問。"
+
+msgid "Show what would be fetched and stop before fetching it."
+msgstr "顯示將要取得的內容，並在取得之前停下。"
+
+msgid "Fetch only the weights, not the vision projector or the draft model."
+msgstr "只取得權重，不要視覺投影器和草稿模型。"
+
+msgid "Re-read files that are already here and check them against the catalog."
+msgstr "重新讀取已經在本機的檔案，並對照模型目錄檢查它們。"
+
+msgid "Fetch files the catalog holds no checksum for. Nothing will be able to tell you whether they arrived intact."
+msgstr "取得模型目錄中沒有檢查碼的檔案。沒有任何東西能告訴你它們是否完整送達。"
+
+msgid "Show at most this many entries."
+msgstr "最多顯示這麼多筆記錄。"
+
+msgid "Download a model's weights, resuming anything an earlier run left and checking every file against the catalog's checksum."
+msgstr "下載一個模型的權重，續傳上一次執行留下的部分，並用模型目錄中的檢查碼檢查每個檔案。"
+
+msgid "Start the download?"
+msgstr "要開始下載嗎？"
+
+msgid "Show what has been downloaded, newest first."
+msgstr "顯示已下載的內容，最新的在前。"
+
+msgid "Nothing has been downloaded yet."
+msgstr "還沒有下載任何東西。"
+
+msgid "Install this backend instead of the one chosen for your GPU: cuda, vulkan, hip, sycl, metal or cpu."
+msgstr "安裝這個後端，而不是為你的 GPU 選定的那個：cuda、vulkan、hip、sycl、metal 或 cpu。"
+
+msgid "Install here instead of ~/.llamafit/llama.cpp."
+msgstr "安裝到這裡，而不是 ~/.llamafit/llama.cpp。"
+
+msgid "Install this release tag, for example b6100, not the latest."
+msgstr "安裝這個發行標籤，例如 b6100，而不是最新版。"
+
+msgid "invalid --backend %(value)s"
+msgstr "--backend 的值無效：%(value)s"
+
+msgid "Valid backends: %(values)s"
+msgstr "有效的後端：%(values)s"
+
+msgid "release %(tag)s publishes no %(backend)s build for %(os)s %(arch)s."
+msgstr "發行版 %(tag)s 沒有為 %(os)s %(arch)s 提供 %(backend)s 建置。"
+
+msgid "Leave --backend out and LlamaFit will choose a published one."
+msgstr "不加 --backend，LlamaFit 會選一個已發行的。"
+
+msgid "release %(tag)s publishes nothing for %(os)s %(arch)s."
+msgstr "發行版 %(tag)s 沒有為 %(os)s %(arch)s 提供任何內容。"
+
+msgid "Build llama.cpp from source; see the project's own instructions."
+msgstr "請從原始碼建置 llama.cpp；參見該專案自己的說明。"
+
+msgid "Downloading"
+msgstr "正在下載"
+
+msgid "Change your PATH?"
+msgstr "要修改你的 PATH 嗎？"
+
+msgid "PATH left alone."
+msgstr "PATH 未更動。"
+
+msgid "PATH changed. Open a new terminal for it to take effect."
+msgstr "PATH 已修改。請開啟新的終端機讓它生效。"
+
+msgid ""
+"Download a published llama.cpp build and install it into ~/.llamafit/llama.cpp.\n"
+"\n"
+"The plan is printed before anything is written. The archive's checksum is verified before it is unpacked, an interrupted download continues where it stopped, and a directory LlamaFit did not create is never overwritten."
+msgstr ""
+"下載一個已發行的 llama.cpp 建置，並把它安裝到 ~/.llamafit/llama.cpp。\n"
+"\n"
+"在寫入任何東西之前都會先輸出方案。壓縮檔在解開之前會先核對檢查碼，中斷的下載會從停下的地方繼續，而不是由 LlamaFit 建立的目錄永遠不會被覆寫。"
+
+msgid "Offer to add the bin directory to your PATH, showing the undo first."
+msgstr "詢問是否把 bin 目錄加入你的 PATH，並先給出還原的方法。"
+
+msgid "Install over a directory LlamaFit did not create. Ask yourself twice."
+msgstr "覆寫安裝到一個不是 LlamaFit 建立的目錄上。請三思。"
+
+msgid "Install an archive that publishes no checksum. Nothing can be checked."
+msgstr "安裝一個沒有公布檢查碼的壓縮檔。什麼都無法檢查。"
+
+msgid "Print the plan and write nothing."
+msgstr "輸出方案，不寫入任何東西。"
+
+msgid "Do not ask; assume yes."
+msgstr "不要詢問；一律視為同意。"
+
+msgid "Install this?"
+msgstr "要安裝它嗎？"
+
+msgid "Nothing was written."
+msgstr "什麼都沒有寫入。"
+
+msgid "Plan this quantisation instead of the one that scores best on this machine."
+msgstr "為這個量化版本做方案，而不是在這台機器上評分最高的那個。"
+
+msgid "Size for this many tokens. When it does not fit, the plan sizes down and shows what the context you asked for would have cost."
+msgstr "按這麼多 token 估算大小。放不下時，方案會往下調，並顯示你要求的上下文原本需要多少。"
+
+msgid "Set the micro-batch by hand. The whole budget is rebuilt around it, since it moves the compute buffer and with it the verdict."
+msgstr "手動設定微批次大小。整個記憶體預算都會圍繞它重算，因為它會改變計算緩衝區，進而改變判定。"
+
+msgid "A generation speed to answer against: whether this reaches it, and what context would."
+msgstr "一個用來對照的生成速度：看這套組態能不能達到，以及什麼上下文長度能達到。"
+
+msgid "%(model)s publishes no quantisations"
+msgstr "%(model)s 沒有發布任何量化版本"
+
+msgid "Run `llamafit catalog refresh --model %(model)s`."
+msgstr "執行 `llamafit catalog refresh --model %(model)s`。"
+
+msgid ""
+"Place one model on this machine and print the command line that runs it.\n"
+"\n"
+"Shows the memory budget component by component, the context ladder a launch script chooses from, where a token's time goes, and any run the catalog records for comparison."
+msgstr ""
+"把一個模型放到這台機器上，並輸出執行它的指令列。\n"
+"\n"
+"它會逐項顯示記憶體預算、啟動指令碼可選的上下文階梯、一個 token 的時間花在哪裡，以及模型目錄中記錄的可供對照的執行結果。"
+
+msgid "Leave the vision projector out, freeing its memory for context."
+msgstr "不帶視覺投影器，把它占用的記憶體讓給上下文。"
+
+msgid "Write the files here instead of in LlamaFit's own presets directory."
+msgstr "把檔案寫到這裡，而不是 LlamaFit 自己的預設集目錄。"
+
+msgid "Bind this port instead of llama.cpp's default 8080."
+msgstr "繫結這個連接埠，而不是 llama.cpp 預設的 8080。"
+
+msgid "Size for this many tokens. It becomes the top of the ladder the script chooses from; the script never goes above it."
+msgstr "按這麼多 token 估算大小。它會成為指令碼可選階梯的上限；指令碼永遠不會超過它。"
+
+msgid "%(model)s does not fit this machine in any configuration"
+msgstr "%(model)s 在任何組態下都放不進這台機器"
+
+msgid "Run `llamafit plan %(model)s` to see what it would need."
+msgstr "執行 `llamafit plan %(model)s` 查看它需要多少。"
+
+msgid ""
+"Write launch scripts for one model: a script that picks its context from free card memory at start time, a router section, and a README.\n"
+"\n"
+"A file you have edited is never overwritten without --force."
+msgstr ""
+"為一個模型寫出啟動指令碼：一個在啟動時依顯示卡可用記憶體選擇上下文的指令碼、一段路由設定，以及一個 README。\n"
+"\n"
+"你編輯過的檔案，不加 --force 永遠不會被覆寫。"
+
+msgid "Overwrite files you have edited. It says which ones it discarded."
+msgstr "覆寫你編輯過的檔案。它會說明捨棄了哪些。"
+
+msgid "Run a model's preset, wait for the server to answer, and print its endpoints. --stop stops the server LlamaFit started."
+msgstr "執行一個模型的預設集，等待伺服器回應，並輸出它的端點。--stop 會停止由 LlamaFit 啟動的伺服器。"
+
+msgid "Stop the server LlamaFit started for this model."
+msgstr "停止 LlamaFit 為這個模型啟動的伺服器。"
+
+msgid "Seconds to wait for /health before reporting that it has not answered."
+msgstr "在回報 /health 沒有回應之前，要等待幾秒。"
+
+msgid "the preset could not be written"
+msgstr "無法寫入預設集"
+
+msgid "Wrote a preset first: %(path)s"
+msgstr "已先寫出預設集：%(path)s"
+
+msgid "Nothing to stop: LlamaFit has no record of starting %(model)s."
+msgstr "沒有可停止的東西：LlamaFit 沒有啟動過 %(model)s 的記錄。"
+
+msgid "Stopped %(model)s, which was serving on %(url)s."
+msgstr "已停止 %(model)s，它原本在 %(url)s 上提供服務。"
+
+msgid "Preset for %(name)s (%(quant)s) in %(dir)s"
+msgstr "%(name)s（%(quant)s）的預設集，位於 %(dir)s"
+
+msgid "The server will answer on %(url)s."
+msgstr "伺服器將在 %(url)s 上回應。"
+
+msgid "Your edits were kept. Nothing above was written to those files; run the command again with --force to replace them."
+msgstr "你的修改已保留。上面的內容沒有寫入這些檔案；加上 --force 重新執行指令可以取代它們。"
+
+msgid "At start time the script reads how much card memory is free, keeps %(reserve)s MiB back, and takes the largest context that still fits."
+msgstr "啟動時，指令碼會讀取顯示卡還有多少可用記憶體，保留 %(reserve)s MiB，然後取仍然放得下的最大上下文。"
+
+msgid "This machine has nothing the script can ask for free card memory, so it will start at %(context)s tokens; the script's header says why."
+msgstr "這台機器上沒有任何東西可供指令碼查詢顯示卡的可用記憶體，所以它會從 %(context)s 個 token 開始；指令碼的標頭說明了原因。"
+
+msgid "Files"
+msgstr "檔案"
+
+msgctxt "column heading"
+msgid "File"
+msgstr "檔案"
+
+msgctxt "column heading"
+msgid "What happened"
+msgstr "結果"
+
+msgid "Context tiers the script may choose"
+msgstr "指令碼可以選擇的上下文階梯"
+
+msgctxt "column heading"
+msgid "Context"
+msgstr "上下文"
+
+msgctxt "column heading"
+msgid "Card needs"
+msgstr "顯示卡需要"
+
+msgctxt "column heading"
+msgid "Free card memory to reach it"
+msgstr "需要的可用 VRAM"
+
+msgid "%(value)s MiB"
+msgstr "%(value)s MiB"
+
+msgid "written"
+msgstr "已寫入"
+
+msgid "brought up to date"
+msgstr "已更新"
+
+msgid "already up to date"
+msgstr "已是最新"
+
+msgid "kept: you edited it"
+msgstr "已保留：你編輯過它"
+
+msgid "overwritten: your edits are gone"
+msgstr "已覆寫：你的修改不見了"
+
+msgid "The preset could not be started: %(error)s"
+msgstr "無法啟動這個預設集：%(error)s"
+
+msgid "Started, but %(url)s has not answered yet. A large model can spend minutes reading its weights; try the health endpoint again in a moment, or run `llamafit launch %(model)s --stop`."
+msgstr "已啟動，但 %(url)s 還沒有回應。大模型讀取權重可能要花上幾分鐘；請稍後再試一次健康檢查端點，或者執行 `llamafit launch %(model)s --stop`。"
+
+msgid "%(model)s was already serving on %(url)s."
+msgstr "%(model)s 已經在 %(url)s 上提供服務了。"
+
+msgid "%(model)s is serving on %(url)s."
+msgstr "%(model)s 正在 %(url)s 上提供服務。"
+
+msgid "Stop it with `llamafit launch %(model)s --stop`."
+msgstr "用 `llamafit launch %(model)s --stop` 停止它。"
+
+msgid "Endpoints"
+msgstr "端點"
+
+msgctxt "column heading"
+msgid "What"
+msgstr "項目"
+
+msgctxt "column heading"
+msgid "Where"
+msgstr "位置"
+
+msgid "Web interface"
+msgstr "網頁介面"
+
+msgid "Chat completions"
+msgstr "聊天補全"
+
+msgid "Models"
+msgstr "模型"
+
+msgid "Health"
+msgstr "健康檢查"
+
+msgid "Ask for the model by the alias %(alias)s."
+msgstr "請用別名 %(alias)s 來指定這個模型。"
 
 msgctxt "finding level"
 msgid "OK"
@@ -229,6 +1088,48 @@ msgstr "假定"
 msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "未知"
+
+# Chinese inflects for neither gender nor number, so every row that says
+# "unknown" or "none detected" reads the same. Each context is still filled in:
+# leaving one empty would drop that row back to English on its own.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "未知"
+
+msgid "%(gbps)s GB/s (%(source)s, cached)"
+msgstr "%(gbps)s GB/s（%(source)s，已快取）"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s（%(source)s）"
+
+msgctxt "simulation override"
+msgid "VRAM"
+msgstr "VRAM"
+
+msgctxt "simulation override"
+msgid "system memory"
+msgstr "系統記憶體"
+
+msgctxt "simulation override"
+msgid "CPU cores"
+msgstr "CPU 核心數"
+
+msgid "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgid_plural "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgstr[0] "這些數字來自硬體設定檔 %(profile)s，其中 %(fields)s 被覆寫；它們不是這台機器的"
+
+msgid "these figures come from the hardware profile %(profile)s; they are not this machine"
+msgstr "這些數字來自硬體設定檔 %(profile)s；它們不是這台機器的"
+
+msgid "%(fields)s was overridden for a what-if; these figures are not what was scanned"
+msgid_plural "%(fields)s were overridden for a what-if; these figures are not what was scanned"
+msgstr[0] "為了做假設推演，%(fields)s 被覆寫了；這些數字不是掃描得到的"
+
+msgid "these figures are not this machine"
+msgstr "這些數字不是這台機器的"
+
+msgid "SIMULATED"
+msgstr "模擬"
 
 msgctxt "model capability"
 msgid "coding"
@@ -273,24 +1174,24 @@ msgstr "%(compute)s TFLOPS fp16"
 
 msgid "%(count)d core"
 msgid_plural "%(count)d cores"
-msgstr[0] ""
+msgstr[0] "%(count)d 個核心"
 
 msgid "%(count)d thread"
 msgid_plural "%(count)d threads"
-msgstr[0] ""
+msgstr[0] "%(count)d 個執行緒"
 
 msgid "%(cores)s / %(threads)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s"
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d 個效能核心"
 
 msgid "%(cores)s / %(threads)s, %(performance)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s，%(performance)s"
 
 msgid "%(type)s at %(speed)d MT/s"
-msgstr ""
+msgstr "%(type)s，%(speed)d MT/s"
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -304,23 +1205,23 @@ msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d 個通道"
 
 msgid "%(kind)s, %(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(kind)s，%(modules)s，共 %(channels)s"
 
 msgid "%(kind)s, %(modules)s"
-msgstr ""
+msgstr "%(kind)s，%(modules)s"
 
 msgid "%(kind)s, %(channels)s"
-msgstr ""
+msgstr "%(kind)s，%(channels)s"
 
 msgid "%(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(modules)s，共 %(channels)s"
 
 msgctxt "memory type"
 msgid "type unknown"
 msgstr "類型未知"
 
 msgid "%(specs)s (spec), driver %(driver)s"
-msgstr ""
+msgstr "%(specs)s（規格表），驅動程式 %(driver)s"
 
 msgid "%(specs)s (spec)"
 msgstr "%(specs)s（規格表）"
@@ -331,6 +1232,19 @@ msgstr "驅動程式 %(driver)s"
 msgctxt "GPU specifications"
 msgid "no specs"
 msgstr "沒有規格資料"
+
+msgid "%(total)s VRAM, %(free)s free (Vulkan driver)"
+msgstr "VRAM %(total)s，可用 %(free)s（Vulkan 驅動程式）"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "VRAM %(total)s，可用 %(free)s"
+
+msgid "%(total)s VRAM, free unknown"
+msgstr "VRAM %(total)s，可用量未知"
+
+msgctxt "GPU VRAM"
+msgid "VRAM unknown"
+msgstr "VRAM 未知"
 
 msgid "Host"
 msgstr "主機"
@@ -343,23 +1257,6 @@ msgstr "%(os)s %(version)s（%(arch)s）"
 
 msgid "CPU"
 msgstr "CPU"
-
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s；%(cores)s；%(isa)s"
-
-msgctxt "CPU instruction sets"
-msgid "isa unknown"
-msgstr "指令集未知"
-
-msgid "%(gbps)s GB/s (%(source)s)"
-msgstr "%(gbps)s GB/s（%(source)s）"
-
-# Chinese inflects for neither gender nor number, so every row that says
-# "unknown" or "none detected" reads the same. Each context is still filled in:
-# leaving one empty would drop that row back to English on its own.
-msgctxt "memory bandwidth"
-msgid "unknown"
-msgstr "未知"
 
 msgid "Memory"
 msgstr "記憶體"
@@ -374,18 +1271,14 @@ msgctxt "GPU"
 msgid "none detected"
 msgstr "未偵測到"
 
-msgid "%(total)s VRAM, %(free)s free"
-msgstr "VRAM %(total)s，可用 %(free)s"
-
-msgctxt "GPU VRAM"
-msgid "VRAM unknown"
-msgstr "VRAM 未知"
-
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
-msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-msgstr "%(name)s（%(backend)s）；%(vram)s；%(specs)s"
+msgid "Card memory"
+msgstr "顯示卡記憶體"
+
+msgid "%(gpus)s: nothing here could read how much of the card is free, so every budget on this machine was computed as if there were no card at all. Install the Vulkan tools, or write the size into a hardware profile."
+msgstr "%(gpus)s：這裡沒有任何東西能讀出顯示卡還剩多少可用，所以這台機器上的每一份記憶體預算都是按完全沒有顯示卡來計算的。請安裝 Vulkan 工具，或者把容量寫進一份硬體設定檔裡。"
 
 msgid "Memory pool"
 msgstr "記憶體集區"
@@ -495,21 +1388,14 @@ msgid "Params"
 msgstr "參數"
 
 msgctxt "column heading"
-msgid "Context"
-msgstr "上下文"
-
-msgctxt "column heading"
 msgid "Capabilities"
 msgstr "能力"
 
 msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr ""
+msgstr "%(heading)s 是編者給出的基準值，未計入任何量化損失；執行 `llamafit info <model>` 可以看到它背後有出處的基準測試。"
 
 msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr ""
-
-msgid "Models"
-msgstr "模型"
+msgstr "對於混合專家模型，%(heading)s 是總參數量/啟用參數量（以十億計）；兩者相同時只寫一個數。"
 
 msgid "Vendor"
 msgstr "廠商"
@@ -530,10 +1416,10 @@ msgid "Parameters"
 msgstr "參數量"
 
 msgid "%(total)s total, %(active)s active"
-msgstr ""
+msgstr "共 %(total)s，啟用 %(active)s"
 
 msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
-msgstr ""
+msgstr "原生 %(tokens)s tokens，透過 %(method)s 擴展到 %(extended)s"
 
 msgctxt "context extension method"
 msgid "unspecified method"
@@ -577,13 +1463,13 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d 層"
 
 msgid "%(arch)s, %(layers)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s，%(layers)s，%(experts)s"
 
 msgid "%(arch)s, %(layers)s"
-msgstr ""
+msgstr "%(arch)s，%(layers)s"
 
 msgid "%(arch)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s，%(experts)s"
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
@@ -612,18 +1498,1163 @@ msgctxt "bits per weight"
 msgid "unknown"
 msgstr "未知"
 
+msgid "On this machine"
+msgstr "在這台機器上"
+
+msgctxt "column heading"
+msgid "Quant"
+msgstr "量化"
+
+msgctxt "column heading"
+msgid "Runs"
+msgstr "方式"
+
+msgctxt "column heading"
+msgid "Card"
+msgstr "顯卡"
+
+msgctxt "column heading"
+msgid "RAM"
+msgstr "RAM"
+
+msgctxt "column heading"
+msgid "Tok/s"
+msgstr "Tok/s"
+
+msgctxt "column heading"
+msgid "Ctx"
+msgstr "上下文"
+
+msgctxt "column heading"
+msgid "Fit"
+msgstr "適配"
+
+msgid "%(quant)s: %(reason)s"
+msgstr "%(quant)s：%(reason)s"
+
+msgctxt "tokens per second"
+msgid "unknown"
+msgstr "未知"
+
+msgctxt "context length"
+msgid "none"
+msgstr "無"
+
+msgid "Sized for %(context)s tokens, with every figure from a placement computed for this machine. `llamafit plan MODEL --quant NAME` opens one of these rows into the budget line by line, the context ladder and the command line that runs it."
+msgstr "按 %(context)s 個 token 估算大小，每個數字都來自為這台機器計算的放置方案。`llamafit plan MODEL --quant NAME` 會把其中一列展開成逐項的記憶體預算、上下文階梯，以及執行它的指令列。"
+
+msgid "To reach %(context)s tokens, free %(free)s more on the graphics card: that rung needs %(needed)s, which is %(share)s of what is free and over the line where the driver starts paging."
+msgstr "要達到 %(context)s 個 token，需要在顯示卡上再騰出 %(free)s：那個階層需要 %(needed)s，占可用記憶體的 %(share)s，已經越過驅動程式開始換出的界線。"
+
+msgid "%(context)s tokens is past what this machine holds: that rung needs %(needed)s on the graphics card and there is nothing left to absorb what would not fit, so freeing the card is not the change that reaches it."
+msgstr "%(context)s 個 token 超出了這台機器能容納的範圍：那個階層在顯示卡上需要 %(needed)s，而已經沒有餘地去吸收放不下的部分，所以騰空顯示卡並不是能達到它的辦法。"
+
+msgid "%(quant)s, the next quantisation down, could not be sized: %(reason)s"
+msgstr "下一個更低的量化版本 %(quant)s 無法估算大小：%(reason)s"
+
+msgid "%(quant)s, the next quantisation down, does not fit this machine either."
+msgstr "下一個更低的量化版本 %(quant)s 同樣放不進這台機器。"
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens."
+msgstr "下一個更低的量化版本 %(quant)s 也在這裡做了方案：%(mode)s，%(verdict)s，最多 %(context)s 個 token。"
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens at %(tps)s tokens per second."
+msgstr "下一個更低的量化版本 %(quant)s 也在這裡做了方案：%(mode)s，%(verdict)s，最多 %(context)s 個 token，每秒 %(tps)s 個 token。"
+
+msgid "It fits entirely on the graphics card, which this one does not."
+msgstr "它可以完全放進顯示卡，而目前這個不行。"
+
+msgid "It fits better: %(theirs)s rather than %(mine)s."
+msgstr "它放得更寬鬆：是 %(theirs)s，而不是 %(mine)s。"
+
+msgid "It holds %(theirs)s tokens rather than %(mine)s."
+msgstr "它能容納 %(theirs)s 個 token，而不是 %(mine)s。"
+
+msgid "It generates %(theirs)s tokens per second rather than %(mine)s."
+msgstr "它每秒生成 %(theirs)s 個 token，而不是 %(mine)s。"
+
+msgid "It is no better here, so there is nothing to gain by dropping to it."
+msgstr "在這裡它並沒有更好，所以降到它沒有什麼好處。"
+
+msgid "Every context this model offers already fits here; the machine is not what limits it."
+msgstr "這個模型提供的每一種上下文長度在這裡都放得下；限制它的不是這台機器。"
+
+msgid "What would change it"
+msgstr "什麼能改變它"
+
+msgctxt "profile origin"
+msgid "bundled"
+msgstr "內建"
+
+msgctxt "profile origin"
+msgid "yours"
+msgstr "你的"
+
+msgid "%(ram)s RAM, no graphics card"
+msgstr "%(ram)s 記憶體，沒有顯示卡"
+
+msgid "%(ram)s RAM shared with %(gpu)s"
+msgstr "%(ram)s 記憶體，與 %(gpu)s 共用"
+
+msgid "%(ram)s RAM, %(gpu)s with %(vram)s"
+msgstr "%(ram)s 記憶體，%(gpu)s 搭配 %(vram)s VRAM"
+
+msgid "%(cores)d core / %(threads)d thread"
+msgid_plural "%(cores)d cores / %(threads)d threads"
+msgstr[0] "%(cores)d 個核心 / %(threads)d 個執行緒"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "指令集未知"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s；%(cores)s；%(isa)s"
+
+msgid "%(total)s total, %(available)s available; bandwidth %(bandwidth)s"
+msgstr "共 %(total)s，可用 %(available)s；頻寬 %(bandwidth)s"
+
+msgctxt "GPU specifications"
+msgid "no bandwidth or compute figure"
+msgstr "沒有頻寬或算力數據"
+
+msgid "%(specs)s (from the profile)"
+msgstr "%(specs)s（來自設定檔）"
+
+msgid "%(specs)s (from the specification table)"
+msgstr "%(specs)s（來自規格表）"
+
+msgctxt "GPU VRAM"
+msgid "VRAM from the shared pool"
+msgstr "VRAM 來自共用集區"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s（%(backend)s）；%(vram)s；%(specs)s"
+
+msgid "Hardware profiles"
+msgstr "硬體設定檔"
+
+msgid "Machine"
+msgstr "機器"
+
+msgid "a graphics card whose name contains %(text)s"
+msgstr "名稱包含 %(text)s 的顯示卡"
+
+msgid "a processor whose model contains %(text)s"
+msgstr "型號包含 %(text)s 的處理器"
+
+msgid "at least %(ram)s of memory"
+msgstr "至少 %(ram)s 記憶體"
+
+msgctxt "profile match rules"
+msgid "none, so this profile is never chosen for you"
+msgstr "無，因此這份設定檔永遠不會被自動選用"
+
+msgid "Description"
+msgstr "說明"
+
+msgid "From"
+msgstr "來源"
+
+msgid "File"
+msgstr "檔案"
+
+msgid "Matches"
+msgstr "比對規則"
+
+msgid "Recorded"
+msgstr "記錄時間"
+
+msgid "Provenance"
+msgstr "出處"
+
+msgid "recorded from %(source)s; this build stores it but does not apply it yet"
+msgstr "記錄自 %(source)s；這個建置會保存它，但還不會使用它"
+
+msgctxt "utilisation"
+msgid "n/a"
+msgstr "不適用"
+
+msgctxt "run mode"
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "run mode"
+msgid "experts in RAM"
+msgstr "專家在記憶體"
+
+msgctxt "run mode"
+msgid "split"
+msgstr "拆分"
+
+msgctxt "run mode"
+msgid "CPU"
+msgstr "CPU"
+
+msgctxt "run mode"
+msgid "nowhere"
+msgstr "無處可放"
+
+msgctxt "fit verdict"
+msgid "roomy"
+msgstr "寬裕"
+
+msgctxt "fit verdict"
+msgid "fits"
+msgstr "放得下"
+
+msgctxt "fit verdict"
+msgid "tight"
+msgstr "吃緊"
+
+msgctxt "fit verdict"
+msgid "pages"
+msgstr "溢出"
+
+msgctxt "fit verdict"
+msgid "no room"
+msgstr "放不下"
+
+msgid "Roomy: there is room for a longer context or a second model."
+msgstr "寬裕：還有餘裕放更長的上下文，或者放第二個模型。"
+
+msgid "Fits: the intended configuration runs as planned."
+msgstr "放得下：預定的組態可以照方案執行。"
+
+msgid "Tight: it runs, but a browser or a second process can push it over."
+msgstr "吃緊：能執行，但一個瀏覽器或第二個行程就可能把它擠爆。"
+
+msgid "Pages: this needs more of the graphics card than is free. The driver will not refuse it — it moves the overflow to system memory, the server starts, the log looks healthy, and generation runs at a fraction of its speed with nothing saying why."
+msgstr "溢出：這需要的顯示卡記憶體超過可用量。驅動程式不會拒絕它——它把放不下的部分挪到系統記憶體，伺服器照樣啟動，記錄檔看起來正常，而生成速度只有應有的一小部分，沒有任何地方說明原因。"
+
+msgid "No room: more memory than this machine has, with nothing to page to."
+msgstr "放不下：所需記憶體超過這台機器所有，而且沒有可以換出的去處。"
+
+msgctxt "confidence"
+msgid "measured"
+msgstr "實測"
+
+msgctxt "confidence"
+msgid "calibrated"
+msgstr "已校準"
+
+msgctxt "confidence"
+msgid "estimated"
+msgstr "估算"
+
+msgctxt "confidence"
+msgid "no estimate"
+msgstr "無估算"
+
+msgid "Speeds are benchmarks taken on this machine, not predictions."
+msgstr "這些速度是在這台機器上實測的基準測試結果，不是預測。"
+
+msgid "Speeds are section 10's formula corrected by benchmarks taken on this machine."
+msgstr "這些速度是第 10 節的公式，經這台機器上的基準測試修正後的結果。"
+
+msgid "Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement."
+msgstr "這些速度用的是第 10 節公式的預設常數。這台機器上還沒有做過任何基準測試，所以這裡沒有一個數字是實測值。"
+
+msgid "No speed could be estimated."
+msgstr "無法估算速度。"
+
+msgctxt "memory pool"
+msgid "card"
+msgstr "顯卡"
+
+msgctxt "memory pool"
+msgid "system"
+msgstr "系統"
+
+msgctxt "memory pool"
+msgid "disk"
+msgstr "磁碟"
+
+msgctxt "budget component"
+msgid "dense weights"
+msgstr "稠密權重"
+
+msgctxt "budget component"
+msgid "shared experts"
+msgstr "共用專家"
+
+msgctxt "budget component"
+msgid "routed experts"
+msgstr "路由專家"
+
+msgctxt "budget component"
+msgid "token embedding"
+msgstr "token 嵌入表"
+
+msgctxt "budget component"
+msgid "output head"
+msgstr "輸出頭"
+
+msgctxt "budget component"
+msgid "other weights"
+msgstr "其他權重"
+
+msgctxt "budget component"
+msgid "streamed tables"
+msgstr "串流讀取的表"
+
+msgctxt "budget component"
+msgid "KV cache"
+msgstr "KV 快取"
+
+msgctxt "budget component"
+msgid "KV cache, undeclared"
+msgstr "KV 快取（未宣告）"
+
+msgctxt "budget component"
+msgid "recurrent state"
+msgstr "循環狀態"
+
+msgctxt "budget component"
+msgid "compute buffer"
+msgstr "計算緩衝區"
+
+msgctxt "budget component"
+msgid "output buffer"
+msgstr "輸出緩衝區"
+
+msgctxt "budget component"
+msgid "vision projector"
+msgstr "視覺投影器"
+
+msgctxt "budget component"
+msgid "vision compute"
+msgstr "視覺計算"
+
+msgctxt "budget component"
+msgid "backend overhead"
+msgstr "後端開銷"
+
+msgctxt "budget component"
+msgid "process overhead"
+msgstr "行程開銷"
+
+msgctxt "budget line source"
+msgid "file"
+msgstr "檔案"
+
+msgctxt "budget line source"
+msgid "formula"
+msgstr "公式"
+
+msgctxt "column heading"
+msgid "Component"
+msgstr "元件"
+
+msgctxt "column heading"
+msgid "From"
+msgstr "來源"
+
+msgid "Card: %(required)s of %(available)s free, %(share)s used."
+msgstr "顯示卡：可用 %(available)s 中需要 %(required)s，占用 %(share)s。"
+
+msgid "System memory: %(required)s of %(available)s free, %(share)s used."
+msgstr "系統記憶體：可用 %(available)s 中需要 %(required)s，占用 %(share)s。"
+
+msgid "%(component)s: %(note)s"
+msgstr "%(component)s：%(note)s"
+
+msgid "Context tiers"
+msgstr "上下文階梯"
+
+msgctxt "column heading"
+msgid "On this machine"
+msgstr "本機狀況"
+
+msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
+msgstr "啟動指令碼會把它看到的可用記憶體與「顯示卡需要」欄對比，取仍然放得下的最大階層（見 docs/cli.md）。"
+
+msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
+msgstr "在 %(context)s 個 token 的上下文下，每秒生成 %(gen)s 個 token，讀入 %(prompt)s 個（%(confidence)s）。"
+
+msgctxt "column heading"
+msgid "A token's time"
+msgstr "token 的時間"
+
+msgctxt "token time"
+msgid "reading the card"
+msgstr "讀取顯示卡"
+
+msgctxt "token time"
+msgid "reading system memory"
+msgstr "讀取系統記憶體"
+
+msgctxt "token time"
+msgid "everything else"
+msgstr "其餘全部"
+
+msgctxt "column heading"
+msgid "A prompt token's time"
+msgstr "提示 token 的時間"
+
+msgctxt "prompt token time"
+msgid "doing the arithmetic"
+msgstr "做運算"
+
+msgctxt "prompt token time"
+msgid "streaming the experts across the link"
+msgstr "透過連結串流傳輸專家"
+
+msgctxt "prompt token time"
+msgid "reading the experts from system memory"
+msgstr "從系統記憶體讀取專家"
+
+msgctxt "column heading"
+msgid "Seconds"
+msgstr "秒"
+
+msgctxt "column heading"
+msgid "Share"
+msgstr "占比"
+
+msgid "Measured on %(date)s."
+msgstr "實測於 %(date)s。"
+
+msgid "Recorded elsewhere"
+msgstr "別處記錄的結果"
+
+msgctxt "column heading"
+msgid "Run"
+msgstr "執行"
+
+msgctxt "column heading"
+msgid "Date"
+msgstr "日期"
+
+msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
+msgstr "這些是編者在自己機器上的執行結果，不是對這台機器的基準測試，所以上面沒有任何一項標為實測。可以拿它們和估算值對照；`llamafit bench` 會在第 3 階段實測這台機器。"
+
+msgid "%(profile)s: %(flags)s"
+msgstr "%(profile)s：%(flags)s"
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
+msgstr "編者給出 %(baseline)s，扣掉這個量化版本的 %(penalty)s，再加上 %(bonus)s，因為 %(use_case)s 正是它的設計用途。"
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
+msgstr "編者給出 %(baseline)s，扣掉這個量化版本的 %(penalty)s；它列出了 %(use_case)s，但並非為此而造。"
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
+msgstr "每秒生成 %(gen)s 個 token，對照這個使用情境要求的 %(target)s，再扣掉 %(penalty)s，因為它讀取提示的速度是 %(prompt)s。"
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
+msgstr "每秒生成 %(gen)s 個 token，對照這個使用情境要求的 %(target)s。"
+
+msgid "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool is %(share)s full. The score wants at least %(low)s of the memory taken and no more than %(high)s of any one pool."
+msgstr "它的權重占用了這台機器 %(memory)s 中的 %(weights)s，最吃緊的那個集區已用 %(share)s。評分希望記憶體至少被用掉 %(low)s，且任何一個集區都不超過 %(high)s。"
+
+msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
+msgstr "能容納 %(fit)s 個 token，而這次請求的評分基準是 %(requested)s 個。"
+
+msgid "Score %(total)s"
+msgstr "評分 %(total)s"
+
+msgctxt "column heading"
+msgid "Part"
+msgstr "部分"
+
+msgctxt "column heading"
+msgid "Weight"
+msgstr "權重"
+
+msgctxt "column heading"
+msgid "Adds"
+msgstr "貢獻"
+
+msgctxt "score part"
+msgid "quality"
+msgstr "品質"
+
+msgctxt "score part"
+msgid "speed"
+msgstr "速度"
+
+msgctxt "score part"
+msgid "fit"
+msgstr "適配"
+
+msgctxt "score part"
+msgid "context"
+msgstr "上下文"
+
+msgctxt "board sort"
+msgid "score"
+msgstr "評分"
+
+msgctxt "board sort"
+msgid "speed"
+msgstr "速度"
+
+msgctxt "board sort"
+msgid "quality"
+msgstr "品質"
+
+msgctxt "board sort"
+msgid "context"
+msgstr "上下文"
+
+msgctxt "board sort"
+msgid "download size"
+msgstr "下載大小"
+
+msgctxt "board sort"
+msgid "prompt speed"
+msgstr "提示速度"
+
+msgctxt "board sort"
+msgid "card memory"
+msgstr "顯示卡記憶體"
+
+msgctxt "board sort"
+msgid "system memory"
+msgstr "系統記憶體"
+
+msgctxt "board sort"
+msgid "fit"
+msgstr "適配"
+
+msgctxt "board sort"
+msgid "model id"
+msgstr "模型 id"
+
+msgctxt "board sort"
+msgid "quantisation"
+msgstr "量化版本"
+
+msgctxt "column heading"
+msgid "#"
+msgstr "#"
+
+msgctxt "column heading"
+msgid "Model"
+msgstr "模型"
+
+msgctxt "column heading"
+msgid "Size"
+msgstr "大小"
+
+msgctxt "column heading"
+msgid "Have"
+msgstr "已有"
+
+msgctxt "column heading"
+msgid "Score"
+msgstr "評分"
+
+msgctxt "column heading"
+msgid "Qual"
+msgstr "品質"
+
+msgctxt "column heading"
+msgid "Prompt tok/s"
+msgstr "提示 tok/s"
+
+msgctxt "column heading"
+msgid "How"
+msgstr "依據"
+
+msgctxt "model file on this machine"
+msgid "yes"
+msgstr "是"
+
+msgctxt "model file on this machine"
+msgid "no"
+msgstr "否"
+
+msgid "no placement of it fits this machine at any context"
+msgstr "它的任何放置方案在任何上下文長度下都放不進這台機器"
+
+msgctxt "exclusion tag"
+msgid "no room"
+msgstr "放不下"
+
+msgctxt "exclusion tag"
+msgid "no facts"
+msgstr "沒有資訊"
+
+msgctxt "exclusion tag"
+msgid "not ranked"
+msgstr "未排名"
+
+msgctxt "board cell with no figure"
+msgid "–"
+msgstr "–"
+
+msgid "%(term)s is not a filter; the terms are %(terms)s, and anything else is text to look for."
+msgstr "%(term)s 不是篩選條件；可用的條件是 %(terms)s，其他內容都當作要尋找的文字。"
+
+msgid "fit>= takes one of %(values)s"
+msgstr "fit>= 只接受 %(values)s 之一"
+
+msgid "runs= takes one of %(values)s"
+msgstr "runs= 只接受 %(values)s 之一"
+
+msgid "%(term)s needs a number"
+msgstr "%(term)s 需要一個數字"
+
+msgid "%(term)s needs a size such as 8G, 7.5GiB or 512M"
+msgstr "%(term)s 需要一個大小，例如 8G、7.5GiB 或 512M"
+
+msgctxt "board filter"
+msgid "every candidate"
+msgstr "全部候選"
+
+msgctxt "board filter"
+msgid "the ones with room to spare"
+msgstr "有餘裕"
+
+msgctxt "board filter"
+msgid "the ones that fit"
+msgstr "放得下"
+
+msgctxt "board filter"
+msgid "the ones that run"
+msgstr "能執行"
+
+msgid "matching %(text)s"
+msgstr "符合 %(text)s"
+
+msgid "running as %(mode)s"
+msgstr "以 %(mode)s 方式執行"
+
+msgid "at least %(tps)s tokens per second"
+msgstr "每秒至少 %(tps)s 個 token"
+
+msgid "no more than %(size)s to download"
+msgstr "下載不超過 %(size)s"
+
+msgid "no more than %(size)s on the card"
+msgstr "顯示卡上不超過 %(size)s"
+
+msgid "no more than %(size)s of system memory"
+msgstr "系統記憶體不超過 %(size)s"
+
+msgid "holding at least %(context)s tokens"
+msgstr "至少容納 %(context)s 個 token"
+
+msgid "a quality of at least %(quality)s"
+msgstr "品質不低於 %(quality)s"
+
+msgid "%(shown)d of %(total)d shown"
+msgstr "共 %(total)d 項，顯示 %(shown)d 項"
+
+msgid "%(sort)s in reverse"
+msgstr "%(sort)s（倒序）"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s already on this machine."
+msgstr "%(counted)s，排序方式：%(sort)s，篩選條件：%(filter)s，且本機已有。"
+
+msgctxt "board filter"
+msgid "already on this machine"
+msgstr "本機已有"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s."
+msgstr "%(counted)s，排序方式：%(sort)s，篩選條件：%(filter)s。"
+
+msgid "Nothing was ranked. Every candidate is listed below with the reason; widen the request or free some memory."
+msgstr "沒有任何候選被排名。下面列出了每個候選及其原因；請放寬要求，或者釋出一些記憶體。"
+
+msgid "Recommended"
+msgstr "推薦"
+
+msgid "--min-tps 0: nobody is waiting on these tokens, so nothing was excluded for generating more slowly than a person reads."
+msgstr "--min-tps 0：沒有人在等這些 token，所以沒有任何候選因為生成速度慢於人的閱讀速度而被排除。"
+
+msgid "--min-tps %(tps)s: this board wanted at least that many tokens per second, and anything slower is excluded below rather than ranked here."
+msgstr "--min-tps %(tps)s：這個排行榜要求每秒至少這麼多 token，比這慢的都在下面被排除，而不會在這裡參與排名。"
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; --limit sets how many, and the rest are neither worse-behaved nor hidden, only further down."
+msgstr "在 %(total)s 個合格候選中顯示最好的 %(shown)s 個；數量由 --limit 決定，其餘的既沒有更差也沒有被隱藏，只是排在後面。"
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every speed above is a CPU-only speed. `llamafit doctor` says how to fix that."
+msgstr "這台機器上有 %(gpus)s，但沒有任何東西能讀出它還剩多少可用，所以上面每個速度都是純 CPU 的速度。`llamafit doctor` 會說明如何解決。"
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
+msgstr "所有速度都按 %(working)s 個 token 的上下文計算，這樣每一列才可比；上下文欄給出的是每個候選能容納的最大長度。按 %(use_case)s、%(requested)s 個 token 估算大小並評分。"
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
+msgstr "所有速度都按 %(working)s 個 token 的上下文計算，這樣每一列才可比；上下文欄給出的是每個候選能容納的最大長度。按 %(planned)s 個 token 估算大小，並按 %(use_case)s 對照 %(requested)s 評分。"
+
+msgid "Weights: %(weights)s."
+msgstr "權重：%(weights)s。"
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free, no card."
+msgstr "計算時按 %(ram_total)s 系統記憶體中有 %(ram_free)s 可用、且沒有顯示卡。"
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free and %(vram_free)s of %(vram_total)s free on the %(gpu)s."
+msgstr "計算時按 %(ram_total)s 系統記憶體中有 %(ram_free)s 可用，%(gpu)s 的 %(vram_total)s 中有 %(vram_free)s 可用。"
+
+msgid "Every speed above is derived from %(bandwidth)s of memory bandwidth."
+msgstr "上面每個速度都是由 %(bandwidth)s 的記憶體頻寬推算出來的。"
+
+msgid "That bandwidth was kept from an earlier run on this machine; `llamafit system --refresh-bandwidth` times it again."
+msgstr "這個頻寬是這台機器上更早一次執行留下的；`llamafit system --refresh-bandwidth` 會重新量一次。"
+
+msgid "generates fewer than the %(floor)s tokens per second this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "每秒生成的 token 少於這次請求要求的 %(floor)s 個；請調低 --min-tps，或者選一個更小的模型或量化版本"
+
+msgid "generates fewer than the %(floor)s tokens per second a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "每秒生成的 token 少於人閱讀速度所要求的 %(floor)s 個：在這台機器上它只能當批次工具，而不是坐在前面用的；更小的模型或量化版本能跟得上"
+
+msgid "%(tps)s tok/s"
+msgstr "%(tps)s tok/s"
+
+msgctxt "exclusion tag"
+msgid "too slow"
+msgstr "太慢"
+
+msgctxt "exclusion tag"
+msgid "too big"
+msgstr "太大"
+
+msgid "larger to download than the %(limit)s this request allows"
+msgstr "下載大小超過這次請求允許的 %(limit)s"
+
+msgctxt "exclusion tag"
+msgid "unknown quant"
+msgstr "量化未知"
+
+msgid "a quantisation whose cost in quality is not known, so it cannot be scored"
+msgstr "這個量化版本在品質上的損失未知，因此無法評分"
+
+msgid "needs more memory than this machine has, even at its smallest context"
+msgstr "即使用最小的上下文，所需記憶體也超過這台機器所有"
+
+msgctxt "exclusion tag"
+msgid "unsupported"
+msgstr "不支援"
+
+msgid "no run mode supports this model on this machine"
+msgstr "在這台機器上沒有任何執行方式支援這個模型"
+
+msgctxt "exclusion tag"
+msgid "short context"
+msgstr "上下文太短"
+
+msgid "holds fewer than the %(minimum)s tokens asked for; lower the minimum context or free memory to see it ranked"
+msgstr "能容納的 token 少於要求的 %(minimum)s；請調低最小上下文，或者釋出記憶體，它才會進入排名"
+
+msgctxt "exclusion tag"
+msgid "no estimate"
+msgstr "無估算"
+
+msgid "no speed estimate, so it cannot be ranked against models that have one"
+msgstr "沒有速度估算，因此無法和有估算的模型一起排名"
+
+msgctxt "exclusion tag"
+msgid "no %(capability)s"
+msgstr "無 %(capability)s"
+
+msgid "no %(capability)s capability; drop it from the request, or ask for a use case that does not need it"
+msgstr "沒有 %(capability)s 能力；請把它從請求中拿掉，或者選一個不需要它的使用情境"
+
+msgid "Not ranked"
+msgstr "未排名"
+
+msgid "Not placed"
+msgstr "未放置"
+
+msgid "%(tag)s (%(count)s):"
+msgstr "%(tag)s（%(count)s）："
+
+msgid "%(model)s %(quant)s: %(reason)s"
+msgstr "%(model)s %(quant)s：%(reason)s"
+
+msgid "%(tag)s (%(count)s): %(sentence)s."
+msgstr "%(tag)s（%(count)s）：%(sentence)s。"
+
+msgid "%(model)s %(quant)s (%(figure)s)"
+msgstr "%(model)s %(quant)s（%(figure)s）"
+
+msgid "%(name)s %(quant)s (%(tag)s)"
+msgstr "%(name)s %(quant)s（%(tag)s）"
+
+msgid "%(rank)s. %(name)s %(quant)s"
+msgstr "%(rank)s. %(name)s %(quant)s"
+
+msgid "Nothing fits this machine at that threshold. Try --min-fit tight, or drop --perfect."
+msgstr "在這個門檻下沒有東西放得進這台機器。可以試試 --min-fit tight，或者拿掉 --perfect。"
+
+msgid "Fit on the simulated machine"
+msgstr "在模擬機器上的適配情況"
+
+msgid "Fit on this machine"
+msgstr "在這台機器上的適配情況"
+
+msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
+msgstr "按 %(context)s 個 token 估算大小。上下文欄給出的是每個模型在所示執行方式下能容納的最大長度。"
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every row was sized as if there were no card. `llamafit doctor` says how to fix that."
+msgstr "這台機器上有 %(gpus)s，但沒有任何東西能讀出它還剩多少可用，所以每一列都是按沒有顯示卡來估算的。`llamafit doctor` 會說明如何解決。"
+
+msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
+msgstr "%(mode)s，%(context)s 個 token，微批次 %(ub)s，%(kv)s 快取，%(threads)s 個執行緒。"
+
+msgid "This reaches the %(target)s tokens per second asked for."
+msgstr "這達到了要求的每秒 %(target)s 個 token。"
+
+msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
+msgstr "在這裡它達不到每秒 %(target)s 個 token，但 %(context)s 個 token 的上下文可以：請傳入 --context %(tokens)s。"
+
+msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
+msgstr "這個模型和量化版本在這台機器上不論怎麼設定都達不到每秒 %(target)s 個 token；試過的最快組態是 %(best)s。要達到它，得換更小的模型或更小的量化版本。"
+
+msgid "%(name)s %(quant)s"
+msgstr "%(name)s %(quant)s"
+
+msgid "Memory budget"
+msgstr "記憶體預算"
+
+msgid "The %(context)s tokens asked for would have cost"
+msgstr "要求的 %(context)s 個 token 原本需要"
+
+msgid "Command line"
+msgstr "指令列"
+
+msgid "Model file: %(path)s."
+msgstr "模型檔案：%(path)s。"
+
+msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
+msgstr "模型檔案：%(path)s，它還不在本機上；下載時會放到那裡。需要取得 %(size)s。"
+
+msgid "%(shown)d of %(total)d candidate shown."
+msgid_plural "%(shown)d of %(total)d candidates shown."
+msgstr[0] "共 %(total)d 個候選，顯示 %(shown)d 個。"
+
+msgid "Release"
+msgstr "發行版本"
+
+msgid "%(tag)s (build %(build)s)"
+msgstr "%(tag)s（建置 %(build)s）"
+
+msgid "Backend"
+msgstr "後端"
+
+msgid "Archive"
+msgstr "壓縮檔"
+
+msgid "Also"
+msgstr "另外"
+
+msgid "Download"
+msgstr "下載"
+
+msgid "%(size)s (%(done)s already on disk)"
+msgstr "%(size)s（已在磁碟上 %(done)s）"
+
+msgid "Checksum"
+msgstr "檢查碼"
+
+msgid "published, checked before anything is unpacked"
+msgstr "已公布，解開任何內容之前都會核對"
+
+msgid "none published"
+msgstr "未公布"
+
+msgid "Install into"
+msgstr "安裝到"
+
+msgid "Directory"
+msgstr "目錄"
+
+msgid "Free space"
+msgstr "可用空間"
+
+msgid "Free space (cache)"
+msgstr "可用空間（快取）"
+
+msgid "%(free)s on %(path)s, %(needed)s needed"
+msgstr "%(path)s 上有 %(free)s，需要 %(needed)s"
+
+msgid "will be created"
+msgstr "將會建立"
+
+msgid "exists and is empty"
+msgstr "已存在且是空的"
+
+msgid "holds %(tag)s, installed by LlamaFit; it will be replaced"
+msgstr "裡面是 LlamaFit 安裝的 %(tag)s；它會被取代"
+
+msgid "installed by LlamaFit; it will be replaced"
+msgstr "由 LlamaFit 安裝；它會被取代"
+
+msgid "was not installed by LlamaFit"
+msgstr "不是由 LlamaFit 安裝的"
+
+msgid "Installed llama.cpp %(tag)s into %(path)s."
+msgstr "已把 llama.cpp %(tag)s 安裝到 %(path)s。"
+
+msgid "Replaced %(tag)s."
+msgstr "已取代 %(tag)s。"
+
+msgid "Backends found in it: %(backends)s"
+msgstr "在其中找到的後端：%(backends)s"
+
+msgid "none"
+msgstr "無"
+
+msgid "Check it with `llamafit doctor`."
+msgstr "用 `llamafit doctor` 檢查它。"
+
+msgid "already here"
+msgstr "已在本機"
+
+msgid "to fetch"
+msgstr "待取得"
+
+msgid "About to download"
+msgstr "即將下載"
+
+msgid "Role"
+msgstr "用途"
+
+msgid "Status"
+msgstr "狀態"
+
+msgid "%(name)s %(quant)s from %(repo)s"
+msgstr "%(name)s %(quant)s，來自 %(repo)s"
+
+msgid "%(count)d file, %(total)s in all, %(needed)s still to fetch."
+msgid_plural "%(count)d files, %(total)s in all, %(needed)s still to fetch."
+msgstr[0] "共 %(count)d 個檔案，合計 %(total)s，還需要取得 %(needed)s。"
+
+msgid "Into %(path)s, which has %(free)s free; %(after)s would be left."
+msgstr "放到 %(path)s，那裡有 %(free)s 可用；之後會剩下 %(after)s。"
+
+msgid "The catalog holds no checksum for %(files)s."
+msgid_plural "The catalog holds no checksums for %(files)s."
+msgstr[0] "模型目錄中沒有 %(files)s 的檢查碼。"
+
+msgid "%(model)s %(quant)s is already here; nothing to do."
+msgstr "%(model)s %(quant)s 已經在本機了；不需要做什麼。"
+
+msgid "Stopped. What arrived is kept; run `llamafit install model %(model)s` again to carry on from there."
+msgstr "已停止。已經送達的部分會保留；再次執行 `llamafit install model %(model)s` 可以從那裡繼續。"
+
+msgid "%(count)d file, %(size)s, checked against the catalog."
+msgid_plural "%(count)d files, %(size)s, checked against the catalog."
+msgstr[0] "共 %(count)d 個檔案，%(size)s，已對照模型目錄檢查。"
+
+msgid "In %(path)s. Run `llamafit plan %(model)s` for the command line that runs it."
+msgstr "位於 %(path)s。執行 `llamafit plan %(model)s` 可以得到執行它的指令列。"
+
+msgid "Downloads"
+msgstr "下載記錄"
+
+msgid "When"
+msgstr "時間"
+
+msgid "Model"
+msgstr "模型"
+
+msgid "Quant"
+msgstr "量化"
+
+msgid "Outcome"
+msgstr "結果"
+
+msgid "finished"
+msgstr "已完成"
+
+msgid "stopped"
+msgstr "已停止"
+
+msgid "Bind to this address instead of 127.0.0.1. Anything but loopback puts the dashboard on your network, where there is no password and no login; it prints what that exposes before it starts."
+msgstr "繫結到這個位址，而不是 127.0.0.1。只要不是回送位址，儀表板就會出現在你的網路上，那裡既沒有密碼也沒有登入；它會在啟動前說明這樣會暴露什麼。"
+
+msgid "Listen on this port."
+msgstr "在這個連接埠上接聽。"
+
+msgid ""
+"Open the dashboard in a browser: the board, the machine and the plans.\n"
+"\n"
+"It serves the same numbers `--json` prints, from the same code, on this machine only. Nothing is fetched from the internet to draw the page."
+msgstr ""
+"在瀏覽器中開啟儀表板：排行榜、機器和方案。\n"
+"\n"
+"它提供的數字與 `--json` 輸出的完全一樣，出自同一份程式碼，而且只在本機提供。繪製頁面時不會從網際網路取得任何東西。"
+
+msgid "Open the page in your browser."
+msgstr "在你的瀏覽器中開啟這個頁面。"
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores, then open the Simulate panel on the page: it substitutes a machine for as long as you want it, and marks every answer it produces."
+msgstr "請拿掉 --profile、--memory、--ram 和 --cpu-cores，然後開啟頁面上的「模擬」面板：它可以依你的需要一直代換一台機器，並標記它給出的每個回答。"
+
+msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
+msgstr "LlamaFit 位於 %(url)s。按 Ctrl+C 可以停止它。"
+
 msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
 msgstr "顯示這台機器有什麼：CPU、記憶體、GPU、磁碟和 llama.cpp。"
 
 msgid "Skip the RAM bandwidth measurement."
 msgstr "略過記憶體頻寬的實測。"
 
+msgid "Measure RAM bandwidth again instead of reading back the figure kept for this machine, and keep the new one."
+msgstr "重新實測記憶體頻寬，而不是讀回為這台機器保存的數值，並保存新的數值。"
+
+msgid "%(url)s answered a range request with the whole file."
+msgstr "%(url)s 對範圍請求傳回了整個檔案。"
+
+msgid "%(url)s is rate-limiting this download (HTTP %(status)d)."
+msgstr "%(url)s 正在對這次下載限速（HTTP %(status)d）。"
+
+msgid "Check your network connection and run the command again to resume."
+msgstr "請檢查網路連線，然後重新執行指令以繼續。"
+
+msgid "%(file)s needs authorisation (HTTP %(status)d)."
+msgstr "%(file)s 需要授權（HTTP %(status)d）。"
+
+msgid "This repository is gated. Accept its terms on Hugging Face and set HF_TOKEN to a token that can read it."
+msgstr "這個儲存庫有存取限制。請在 Hugging Face 上接受它的條款，並把 HF_TOKEN 設為一個能讀取它的權杖。"
+
+msgid "%(file)s is not at %(url)s any more (HTTP 404)."
+msgstr "%(file)s 已經不在 %(url)s 上了（HTTP 404）。"
+
+msgid "Run `llamafit catalog refresh` to pick up the repository's current files."
+msgstr "執行 `llamafit catalog refresh` 以取得該儲存庫目前的檔案。"
+
+msgid "%(url)s returned HTTP %(status)d."
+msgstr "%(url)s 傳回了 HTTP %(status)d。"
+
+msgid "Confirm the URL points at a downloadable file."
+msgstr "請確認這個 URL 指向一個可下載的檔案。"
+
+msgid "%(url)s did not say how big %(file)s is."
+msgstr "%(url)s 沒有說明 %(file)s 有多大。"
+
+msgid "%(file)s is %(actual)s on the server but the catalog says %(expected)s; the repository has been re-uploaded since the catalog was refreshed."
+msgstr "伺服器上的 %(file)s 是 %(actual)s，而模型目錄寫的是 %(expected)s；自模型目錄更新以來，這個儲存庫重新上傳過。"
+
+msgid "Run `llamafit catalog refresh` and try again."
+msgstr "請執行 `llamafit catalog refresh` 後再試一次。"
+
+msgid "%(file)s: the server sent %(actual)d bytes of a %(expected)d byte range."
+msgstr "%(file)s：請求的範圍是 %(expected)d 位元組，伺服器只送來了 %(actual)d 位元組。"
+
+msgid "Run the command again; the parts that did arrive are kept."
+msgstr "請重新執行指令；已經送達的部分會保留。"
+
+msgid "Stopped."
+msgstr "已停止。"
+
+msgid "%(file)s: the server asked for fewer connections; using %(count)d."
+msgstr "%(file)s：伺服器要求減少連線數；現在使用 %(count)d 個。"
+
+msgid "%(file)s: this server will not serve byte ranges; fetching it in one stream."
+msgstr "%(file)s：這個伺服器不支援位元組範圍傳輸；改為單一串流取得。"
+
+msgid "%(file)s does not match its checksum; fetching it again."
+msgstr "%(file)s 與它的檢查碼不符；正在重新取得。"
+
+msgid "Check that the download directory is writable."
+msgstr "請確認下載目錄可寫入。"
+
+msgid "%(needed)s is needed for this model but %(path)s has only %(free)s free, %(short)s short of what is wanted with %(headroom)s left spare."
+msgstr "這個模型需要 %(needed)s，但 %(path)s 只有 %(free)s 可用，在保留 %(headroom)s 餘裕的前提下還差 %(short)s。"
+
+msgid "Free some space, or choose another directory with --dir, or a smaller quantisation with --quant."
+msgstr "請釋出一些空間，或者用 --dir 換一個目錄，或者用 --quant 選一個更小的量化版本。"
+
+msgid "could not measure the free space on %(path)s: %(error)s"
+msgstr "無法量測 %(path)s 上的可用空間：%(error)s"
+
+msgid "Check that the download directory's volume is available."
+msgstr "請確認下載目錄所在的磁碟區可用。"
+
+msgid "%(model)s has no downloadable source in the catalog."
+msgstr "模型目錄中沒有 %(model)s 的可下載來源。"
+
+msgid "Only Hugging Face sources can be installed; this entry has none."
+msgstr "只有 Hugging Face 來源可以安裝；這個項目沒有。"
+
+msgid "the catalog has no file list for %(model)s %(quant)s."
+msgstr "模型目錄中沒有 %(model)s %(quant)s 的檔案清單。"
+
+msgid "Run `llamafit catalog refresh` to fill in the file names."
+msgstr "執行 `llamafit catalog refresh` 補齊檔案名稱。"
+
+msgid "%(model)s publishes no quantisations."
+msgstr "%(model)s 沒有發布任何量化版本。"
+
+msgid "%(model)s does not publish a %(quant)s quantisation."
+msgstr "%(model)s 沒有發布 %(quant)s 量化版本。"
+
+msgid "It publishes: %(quants)s"
+msgstr "它發布的是：%(quants)s"
+
+msgid "the catalog does not record how big %(quant)s is."
+msgstr "模型目錄中沒有記錄 %(quant)s 有多大。"
+
+msgid "Run `llamafit catalog refresh` to fill in the sizes."
+msgstr "執行 `llamafit catalog refresh` 補齊大小。"
+
+msgid "the catalog holds no checksum for %(files)s."
+msgid_plural "the catalog holds no checksums for %(files)s."
+msgstr[0] "模型目錄中沒有 %(files)s 的檢查碼。"
+
+msgid "Run `llamafit catalog refresh` to fetch them, or pass --allow-unverified to download anyway and check the files yourself."
+msgstr "執行 `llamafit catalog refresh` 取得它們，或者傳入 --allow-unverified 強行下載，然後自己檢查這些檔案。"
+
+msgid "%(done)s of %(total)s"
+msgstr "%(total)s 中的 %(done)s"
+
+msgid "%(rate)s/s"
+msgstr "%(rate)s/s"
+
+msgid "Fetching %(file)s (%(size)s)"
+msgstr "正在取得 %(file)s（%(size)s）"
+
+msgid "Checking %(file)s against its checksum"
+msgstr "正在核對 %(file)s 的檢查碼"
+
+msgid "Done: %(file)s"
+msgstr "完成：%(file)s"
+
+msgid "could not create %(path)s: %(error)s"
+msgstr "無法建立 %(path)s：%(error)s"
+
+msgid "Check that the download directory is writable and has room."
+msgstr "請確認下載目錄可寫入且有足夠空間。"
+
+msgid "could not move %(source)s into place: %(error)s"
+msgstr "無法把 %(source)s 移到定位：%(error)s"
+
+msgid "could not record progress in %(path)s: %(error)s"
+msgstr "無法把進度記錄到 %(path)s：%(error)s"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "無法取得 %(url)s：%(error)s"
+
+msgid "Stopped before the checksum was finished."
+msgstr "在檢查碼算完之前就停止了。"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "無法讀取 %(path)s：%(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "請確認該檔案存在且可讀取。"
+
+msgid "%(file)s is %(actual)d bytes, but the catalog says %(expected)d"
+msgstr "%(file)s 是 %(actual)d 位元組，但模型目錄寫的是 %(expected)d"
+
+msgid "The transfer was cut short. Run the command again to fetch it properly."
+msgstr "傳輸被中斷了。請重新執行指令，完整取得它。"
+
+msgid "%(file)s does not match the checksum the catalog holds."
+msgstr "%(file)s 與模型目錄中的檢查碼不符。"
+
+msgid "Expected %(expected)s but the file hashes to %(actual)s. The bad copy has been deleted; run the command again to fetch it."
+msgstr "預期是 %(expected)s，而這個檔案算出來是 %(actual)s。壞掉的副本已被刪除；請重新執行指令取得它。"
+
 msgid "Command: %(command)s"
 msgstr "指令：%(command)s"
 
 msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
 msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr[0] ""
+msgstr[0] "GGUF 標頭被截斷：在位移 %(offset)d 處需要 %(wanted)d 位元組，實際得到 %(got)d"
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "這個檔案可能還在下載中，或者這個 URL 並不是 GGUF 檔案。"
@@ -646,9 +2677,20 @@ msgstr "不支援的 GGUF 版本 %(version)d（位移 4）"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit 支援的 GGUF 版本是 %(versions)s。"
 
+msgid "A memory budget built without these tensors would be too small, so none is built. If llama.cpp loads the file, LlamaFit's tensor-size table is missing the type."
+msgstr "不算上這些張量所得出的記憶體預算會偏小，所以乾脆不給出預算。如果 llama.cpp 能載入這個檔案，那就是 LlamaFit 的張量大小表裡少了這個類型。"
+
+msgid "%(type)d (%(count)d tensor, first %(name)s)"
+msgid_plural "%(type)d (%(count)d tensors, first %(name)s)"
+msgstr[0] "%(type)d（%(count)d 個張量，第一個是 %(name)s）"
+
+msgid "cannot size this GGUF file: %(count)d tensor uses a GGML type LlamaFit does not know: %(details)s"
+msgid_plural "cannot size this GGUF file: %(count)d tensors use GGML types LlamaFit does not know: %(details)s"
+msgstr[0] "無法估算這個 GGUF 檔案的大小：有 %(count)d 個張量使用了 LlamaFit 不認識的 GGML 類型：%(details)s"
+
 msgid "%(count)d shard"
 msgid_plural "%(count)d shards"
-msgstr[0] ""
+msgstr[0] "%(count)d 個分片"
 
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "這些 GGUF 檔案不是同一個分片模型：它們對 '%(key)s' 的說法不一致，分別宣告為 %(values)s"
@@ -664,13 +2706,13 @@ msgstr "請傳入模型的檔案，或者分片模型的全部分片。"
 
 msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
 msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr[0] ""
+msgstr[0] "給出的 %(total)d 個 GGUF 檔案中，有 %(count)d 個沒有 '%(key)s' 鍵，因此無法確定它們在分片模型中的位置"
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "請單獨傳入一個未分片的檔案，或者同一個分片模型的全部分片。"
 
 msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr ""
+msgstr "分片不完整：模型宣告有 %(shards)s，實際到了 %(arrived)d 個（%(key)s %(numbers)s）"
 
 msgid "Pass every shard of the split model."
 msgstr "請傳入分片模型的全部分片。"
@@ -688,20 +2730,11 @@ msgid "Pass each shard of the split model exactly once."
 msgstr "分片模型的每個分片請只傳入一次。"
 
 msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
-msgstr ""
+msgstr "分片不完整：模型宣告有 %(tensors)s，而它的 %(shards)s 加起來只有 %(held)d 個"
 
 msgid "%(count)d tensor"
 msgid_plural "%(count)d tensors"
-msgstr[0] ""
-
-msgid "could not read %(path)s: %(error)s"
-msgstr "無法讀取 %(path)s：%(error)s"
-
-msgid "Check that the file exists and is readable."
-msgstr "請確認該檔案存在且可讀取。"
-
-msgid "could not fetch %(url)s: %(error)s"
-msgstr "無法取得 %(url)s：%(error)s"
+msgstr[0] "%(count)d 個張量"
 
 msgid "Check your network connection and that the URL is reachable."
 msgstr "請檢查網路連線，以及這個 URL 是否連得上。"
@@ -731,6 +2764,9 @@ msgstr "WMI 沒有傳回任何顯示控制器"
 msgid "lspci found no display controllers"
 msgstr "lspci 沒有找到任何顯示控制器"
 
+msgid "vulkaninfo reported no discrete device with a memory heap"
+msgstr "vulkaninfo 沒有回報任何帶記憶體堆積的獨立裝置"
+
 msgid "no populated memory modules"
 msgstr "沒有已插上的記憶體模組"
 
@@ -739,7 +2775,7 @@ msgstr "沒有 SPMemoryDataType"
 
 msgid "%(program)s: timed out after %(seconds)s second"
 msgid_plural "%(program)s: timed out after %(seconds)s seconds"
-msgstr[0] ""
+msgstr[0] "%(program)s：%(seconds)s 秒後逾時"
 
 msgid "empty command"
 msgstr "指令是空的"
@@ -750,11 +2786,47 @@ msgstr "%(program)s：%(error)s"
 msgid "%(program)s: not found"
 msgstr "%(program)s：找不到"
 
-msgid "no output"
-msgstr "沒有輸出"
-
 msgid "exit code %(code)d: %(detail)s"
 msgstr "結束代碼 %(code)d：%(detail)s"
+
+msgid "no hardware profile file at %(path)s"
+msgstr "%(path)s 處沒有硬體設定檔"
+
+msgid "Run `llamafit hardware list` to see the profiles LlamaFit has."
+msgstr "執行 `llamafit hardware list` 查看 LlamaFit 擁有的設定檔。"
+
+msgid "%(path)s is not a valid hardware profile: %(details)s"
+msgstr "%(path)s 不是有效的硬體設定檔：%(details)s"
+
+msgid "Run `llamafit hardware validate FILE` for the whole list."
+msgstr "執行 `llamafit hardware validate FILE` 查看完整清單。"
+
+msgid "no hardware profile named %(name)s"
+msgstr "沒有名為 %(name)s 的硬體設定檔"
+
+msgid "Profiles LlamaFit has: %(names)s"
+msgstr "LlamaFit 擁有的設定檔：%(names)s"
+
+msgid "Run `llamafit hardware path` to see where your own profiles go."
+msgstr "執行 `llamafit hardware path` 查看你自己的設定檔該放在哪裡。"
+
+msgid "this machine has no graphics card, so there is no VRAM to override"
+msgstr "這台機器沒有顯示卡，因此沒有可覆寫的 VRAM"
+
+msgid "Describe the whole machine in a hardware profile and pass --profile."
+msgstr "請在一份硬體設定檔中描述整台機器，並傳入 --profile。"
+
+msgid "this machine has one memory pool shared with the graphics card"
+msgstr "這台機器只有一個與顯示卡共用的記憶體集區"
+
+msgid "Use --ram to resize the pool; --memory would change only half of it."
+msgstr "請用 --ram 調整這個集區的大小；--memory 只會改動它的一半。"
+
+msgid "%(option)s needs a value above zero"
+msgstr "%(option)s 需要一個大於零的值"
+
+msgid "no build number in the version output: %(text)s"
+msgstr "版本輸出中沒有建置編號：%(text)s"
 
 msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
 msgstr "找不到 llama.cpp：PATH、LLAMA_CPP_PATH 和常見目錄中都沒有 llama-server"
@@ -762,11 +2834,255 @@ msgstr "找不到 llama.cpp：PATH、LLAMA_CPP_PATH 和常見目錄中都沒有 
 msgid "no ggml backend libraries found next to llama-server; the build may be static"
 msgstr "在 llama-server 旁邊找不到 ggml 後端程式庫；這個建置可能是靜態連結的"
 
+msgid "%(path)s is a file, not a directory."
+msgstr "%(path)s 是檔案，不是目錄。"
+
+msgid "%(path)s cannot be read: %(error)s"
+msgstr "%(path)s 無法讀取：%(error)s"
+
+msgid "%(path)s has a marker file that cannot be read."
+msgstr "%(path)s 裡有一個無法讀取的標記檔案。"
+
+msgid "%(path)s already holds %(count)d file that LlamaFit did not install."
+msgid_plural "%(path)s already holds %(count)d files that LlamaFit did not install."
+msgstr[0] "%(path)s 中已經有 %(count)d 個不是 LlamaFit 安裝的檔案。"
+
+msgid "%(name)s has no published checksum, so it cannot be verified."
+msgstr "%(name)s 沒有公布檢查碼，因此無法驗證。"
+
+msgid "Pass --allow-unverified to install it anyway, knowing the archive is unchecked."
+msgstr "如果你清楚這個壓縮檔未經核對，可以傳入 --allow-unverified 仍然安裝它。"
+
+msgid "could not download %(url)s: %(error)s"
+msgstr "無法下載 %(url)s：%(error)s"
+
+msgid "the connection was closed"
+msgstr "連線被關閉"
+
+msgid "Run the command again; it continues from where it stopped."
+msgstr "請重新執行指令；它會從停下的地方繼續。"
+
+msgid "the download of %(url)s stopped early: %(error)s"
+msgstr "%(url)s 的下載提前中斷：%(error)s"
+
+msgid "%(got)s of %(want)s arrived"
+msgstr "%(want)s 中已送達 %(got)s"
+
+msgid "the disk holding %(path)s is full."
+msgstr "存放 %(path)s 的磁碟已滿。"
+
+msgid "Free some space and run the command again; the download resumes."
+msgstr "請釋出一些空間後重新執行指令；下載會繼續。"
+
+msgid "Check that the directory exists and is writable."
+msgstr "請確認該目錄存在且可寫入。"
+
+msgid "%(name)s did not match its published checksum and was discarded."
+msgstr "%(name)s 與它公布的檢查碼不符，已被捨棄。"
+
+msgid "Nothing was unpacked. Run the command again: the archive arrived damaged, which a second download usually fixes."
+msgstr "什麼都沒有解開。請重新執行指令：壓縮檔送達時已損壞，重新下載一次通常就能解決。"
+
+msgid "%(archive)s contains %(name)s, which would be written outside the install directory."
+msgstr "%(archive)s 中含有 %(name)s，它會被寫到安裝目錄之外。"
+
+msgid "Do not install this archive; report it to the llama.cpp project."
+msgstr "不要安裝這個壓縮檔；請把它回報給 llama.cpp 專案。"
+
+msgid "%(name)s is not an archive LlamaFit knows how to unpack."
+msgstr "%(name)s 不是 LlamaFit 知道如何解開的壓縮檔。"
+
+msgid "%(name)s could not be unpacked: %(error)s"
+msgstr "無法解開 %(name)s：%(error)s"
+
+msgid "Delete it and run the command again to download it afresh."
+msgstr "請刪除它，然後重新執行指令重新下載。"
+
+msgid "the archive holds no %(name)s."
+msgstr "這個壓縮檔裡沒有 %(name)s。"
+
+msgid "Report this; the release layout has changed."
+msgstr "請回報這個問題；發行版的結構變了。"
+
+msgid "%(path)s was not installed by LlamaFit."
+msgstr "%(path)s 不是由 LlamaFit 安裝的。"
+
+msgid "Pass --force to replace it, or --dir to install somewhere else. LlamaFit never overwrites an installation it did not create."
+msgstr "傳入 --force 可以取代它，或者用 --dir 安裝到別處。LlamaFit 絕不會覆寫不是它自己建立的安裝。"
+
+msgid "%(path)s has %(free)s free; this install needs %(needed)s."
+msgstr "%(path)s 有 %(free)s 可用；這次安裝需要 %(needed)s。"
+
+msgid "Free some space, or pass --dir to install on another volume."
+msgstr "請釋出一些空間，或者傳入 --dir 安裝到另一個磁碟區上。"
+
+msgid "the %(backend)s libraries are not in the installed directory."
+msgstr "安裝目錄中沒有 %(backend)s 的程式庫。"
+
+msgid "no ggml backend libraries were installed; the build may be a static one."
+msgstr "沒有安裝任何 ggml 後端程式庫；這個建置可能是靜態連結的。"
+
+msgid "Your PATH could not be read, so it will not be changed."
+msgstr "無法讀取你的 PATH，因此不會修改它。"
+
+msgid "Add %(path)s to your user PATH (HKCU\\Environment)."
+msgstr "把 %(path)s 加入你的使用者 PATH（HKCU\\Environment）。"
+
+msgid "To undo: run `setx PATH \"%(previous)s\"`, or remove the entry in System > About > Advanced system settings > Environment Variables."
+msgstr "還原方法：執行 `setx PATH \"%(previous)s\"`，或者在「系統 > 關於 > 進階系統設定 > 環境變數」中刪除該項。"
+
+msgid "%(path)s is already on your PATH."
+msgstr "%(path)s 已經在你的 PATH 中了。"
+
+msgid "Nothing to undo."
+msgstr "沒有可還原的東西。"
+
+msgid "Append a PATH line for %(path)s to %(file)s."
+msgstr "把 %(path)s 的 PATH 設定附加到 %(file)s。"
+
+msgid "To undo: delete the two lines marked `%(mark)s` from %(file)s."
+msgstr "還原方法：從 %(file)s 中刪除標有 `%(mark)s` 的那兩行。"
+
+msgid "your PATH could not be changed: %(error)s"
+msgstr "無法修改你的 PATH：%(error)s"
+
+msgid "To remove it later, delete %(path)s."
+msgstr "以後要移除它，請刪掉 %(path)s。"
+
+msgid "the most recent %(count)d llama.cpp releases hold no build."
+msgstr "最近 %(count)d 個 llama.cpp 發行版本中都沒有可用的建置。"
+
+msgid "Name one with `llamafit install llama.cpp --tag ...`."
+msgstr "請用 `llamafit install llama.cpp --tag ...` 指定一個。"
+
+msgid "could not reach GitHub at %(url)s: %(error)s"
+msgstr "無法連到 %(url)s 上的 GitHub：%(error)s"
+
+msgid "GitHub refused the request for %(url)s: the rate limit is exhausted."
+msgstr "GitHub 拒絕了對 %(url)s 的請求：速率限制已用盡。"
+
+msgid "Wait for the limit to reset, or set GITHUB_TOKEN to a personal access token with no scopes."
+msgstr "請等待限制重設，或者把 GITHUB_TOKEN 設為一個不帶任何權限範圍的個人存取權杖。"
+
+msgid "GitHub has no release at %(url)s."
+msgstr "GitHub 上的 %(url)s 沒有對應的發行版。"
+
+msgid "Check the tag with `llamafit install llama.cpp --tag ...`."
+msgstr "請用 `llamafit install llama.cpp --tag ...` 核對標籤。"
+
+msgid "GitHub returned %(status)d for %(url)s."
+msgstr "GitHub 對 %(url)s 傳回了 %(status)d。"
+
+msgid "GitHub's answer for %(url)s was not JSON."
+msgstr "GitHub 對 %(url)s 的回覆不是 JSON。"
+
+msgid "GitHub's answer did not describe a release."
+msgstr "GitHub 的回覆沒有描述任何發行版。"
+
 msgid "no llama-server answering"
 msgstr "沒有 llama-server 回應"
 
 msgid "unexpected response: %(error)s"
 msgstr "未預期的回應：%(error)s"
+
+msgid "%(model)s holds %(native)s tokens, fewer than the %(minimum)s asked for."
+msgstr "%(model)s 只能容納 %(native)s 個 token，少於要求的 %(minimum)s。"
+
+msgid "No configuration of this model fits this machine."
+msgstr "這個模型的任何組態都放不進這台機器。"
+
+msgid "Routed experts are held in system memory, and so are the always-on shared experts, which is what -ot ffn_.*_shexp=CPU does; attention and the KV cache stay on the card."
+msgstr "路由專家放在系統記憶體裡，常駐的共用專家也是，這正是 -ot ffn_.*_shexp=CPU 的作用；注意力和 KV 快取留在顯示卡上。"
+
+msgid "Routed experts are held in system memory; attention, the KV cache and the shared experts stay on the card."
+msgstr "路由專家放在系統記憶體裡；注意力、KV 快取和共用專家留在顯示卡上。"
+
+msgid "%(layers)s layers are on the card and the rest run on the processor."
+msgstr "有 %(layers)s 層在顯示卡上，其餘的在處理器上執行。"
+
+msgid "Nothing runs on a graphics card: every weight is in system memory."
+msgstr "沒有任何東西在顯示卡上執行：所有權重都在系統記憶體裡。"
+
+msgid "%(gpus)s is here, but nothing could read how much of it is free, so this plan was made as if it were not. The real machine will be faster than these figures."
+msgstr "這裡有 %(gpus)s，但沒有任何東西能讀出它還剩多少可用，所以這個方案是當它不存在來做的。真實機器會比這些數字更快。"
+
+msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
+msgstr "按 %(context)s 個 token 估算大小，而不是要求的 %(requested)s。"
+
+msgid "The KV cache is quantised to %(type)s to reach this context."
+msgstr "為了達到這個上下文長度，KV 快取被量化為 %(type)s。"
+
+msgid "Vision is off: the projector did not fit, on the card or in system memory."
+msgstr "視覺已關閉：投影器不論放在顯示卡還是系統記憶體裡都放不下。"
+
+msgid "The vision projector is in system memory (--no-mmproj-offload), which costs nothing measurable for text and makes images slower."
+msgstr "視覺投影器放在系統記憶體裡（--no-mmproj-offload），這對文字沒有可量測的代價，但會讓影像變慢。"
+
+msgid "%(threads)s threads, not the %(available)s this processor has: the efficiency cores are left out because generation measures slower with them, and what is left is the threads the performance cores provide."
+msgstr "用 %(threads)s 個執行緒，而不是這個處理器擁有的 %(available)s 個：節能核心被排除在外，因為帶上它們實測生成更慢，剩下的就是效能核心提供的執行緒。"
+
+msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
+msgstr "吃緊：顯示卡有 %(vram)s 可用，而這需要 %(needed)s，所以另一個程式就可能把它擠爆。上下文階梯表就是啟動指令碼的因應辦法。"
+
+msgid "no %(capability)s capability, which %(use_case)s needs; ask for a different use case, or add it to the entry when the model really has it"
+msgstr "沒有 %(capability)s 能力，而 %(use_case)s 需要它；請換一個使用情境，或者在模型確實具備時把它加進項目裡"
+
+msgid "no %(capability)s capability; drop it from the request to see this model"
+msgstr "沒有 %(capability)s 能力；把它從請求中拿掉才能看到這個模型"
+
+msgid "%(size)s to download, over the %(limit)s this request allows"
+msgstr "需要下載 %(size)s，超過這次請求允許的 %(limit)s"
+
+msgid "unknown quantisation %(quant)s, so its cost in quality cannot be told"
+msgstr "未知的量化版本 %(quant)s，因此無法判斷它在品質上的損失"
+
+msgid "nowhere to put it: no placement fits this machine at any context"
+msgstr "無處安放：在任何上下文長度下都沒有放置方案能放進這台機器"
+
+msgid "holds %(fit)s tokens at most, under the %(minimum)s asked for; lower the minimum context or free memory to see it ranked"
+msgstr "最多只能容納 %(fit)s 個 token，低於要求的 %(minimum)s；請調低最小上下文，或者釋出記憶體，它才會進入排名"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "每秒生成 %(tps)s 個 token，低於這次請求要求的 %(floor)s 個；請調低 --min-tps，或者選一個更小的模型或量化版本"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "每秒生成 %(tps)s 個 token，低於人閱讀速度所要求的 %(floor)s 個：在這台機器上它只能當批次工具，而不是坐在前面用的；更小的模型或量化版本能跟得上"
+
+msgid "unknown use case %(use_case)s"
+msgstr "未知的使用情境 %(use_case)s"
+
+msgid "Known use cases: %(known)s."
+msgstr "已知的使用情境：%(known)s。"
+
+msgid "unknown score part %(part)s in the weights for %(use_case)s"
+msgstr "%(use_case)s 的權重中有未知的評分項 %(part)s"
+
+msgid "The parts are: %(parts)s."
+msgstr "評分項有：%(parts)s。"
+
+msgid "the weights for %(use_case)s leave out %(part)s"
+msgstr "%(use_case)s 的權重裡漏掉了 %(part)s"
+
+msgid "Overriding a use case means giving all four parts: %(parts)s."
+msgstr "覆寫一個使用情境就必須給出全部四個評分項：%(parts)s。"
+
+msgid "the weight for %(part)s in %(use_case)s is below zero"
+msgstr "%(use_case)s 中 %(part)s 的權重小於零"
+
+msgid "A weight says how much a part counts; it cannot count less than none."
+msgstr "權重表示一個評分項占多少分量；它不可能比零還少。"
+
+msgid "the weights for %(use_case)s add up to nothing"
+msgstr "%(use_case)s 的權重加起來等於零"
+
+msgid "At least one part has to count for something."
+msgstr "至少要有一個評分項是算數的。"
+
+msgid "unknown preference %(prefer)s"
+msgstr "未知的偏好 %(prefer)s"
+
+msgid "Preferences: %(known)s."
+msgstr "可用的偏好：%(known)s。"
 
 msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
 msgstr "請安裝或修復 NVIDIA 驅動程式；nvidia-smi 隨驅動程式一起提供，而且必須在 PATH 中。"
@@ -801,6 +3117,9 @@ msgstr "llama-server 存在，但沒有回報版本；這個執行檔可能已�
 msgid "system_profiler failed; GPU information is unavailable."
 msgstr "system_profiler 失敗；沒有 GPU 的資訊。"
 
+msgid "Install the Vulkan tools (vulkan-tools on Linux, the vendor's Vulkan runtime on Windows) so an unsized card's memory can be read from its driver. This probe runs only when no vendor tool sized the card, so it is the last source there is."
+msgstr "請安裝 Vulkan 工具（Linux 上是 vulkan-tools，Windows 上是廠商的 Vulkan 執行階段），這樣才能從驅動程式讀出未知容量顯示卡的記憶體。只有在沒有廠商工具給出顯示卡容量時才會執行這個偵測項目，所以它是最後一個來源。"
+
 msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
 msgstr "沒有任何廠商工具回報這張 GPU 的記憶體容量；請把容量記在硬體設定檔中，這樣才能為這台機器計算預算。"
 
@@ -819,6 +3138,9 @@ msgstr "找不到 llama.cpp"
 
 msgid "no llama-server binary was found"
 msgstr "找不到 llama-server 執行檔"
+
+msgid "Run `llamafit install llama.cpp`, which picks the right build for this machine, checks it against its published checksum, and never touches an installation LlamaFit did not create."
+msgstr "執行 `llamafit install llama.cpp`，它會為這台機器挑選合適的建置，用公布的檢查碼核對它，而且絕不會動不是 LlamaFit 自己建立的安裝。"
 
 msgid "Memory size unknown"
 msgstr "記憶體容量未知"
@@ -844,6 +3166,15 @@ msgstr "%(gpu)s：VRAM 容量未知"
 
 msgid "the vendor tool that reports memory was not available"
 msgstr "回報記憶體的廠商工具無法使用"
+
+msgid "%(gpus)s: planned around, not planned on"
+msgstr "%(gpus)s：方案繞開了它，而不是建立在它之上"
+
+msgid "with no reading of how much of the card is free, every budget and every speed on this machine was computed as if there were no card: they are CPU-only figures, and the real machine will be faster."
+msgstr "由於讀不到顯示卡還剩多少可用，這台機器上的每一份記憶體預算和每一個速度都是按沒有顯示卡來計算的：它們是純 CPU 的數字，真實機器會更快。"
+
+msgid "Install the Vulkan tools so the size can be read from the driver, or record it in a hardware profile (`llamafit hardware path` says where those go) and pass --profile."
+msgstr "請安裝 Vulkan 工具，這樣就能從驅動程式讀出容量；或者把容量記錄到一份硬體設定檔裡（`llamafit hardware path` 會說明它們放在哪裡），然後傳入 --profile。"
 
 msgid "No GPU detected"
 msgstr "未偵測到 GPU"
@@ -889,6 +3220,388 @@ msgstr "可用 %(size)s"
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr "大多數有用的模型需要 5 到 120 GB；請釋出空間，或者改用別的下載目錄。"
 
+msgid "%(model)s has no %(quant)s quantisation"
+msgstr "%(model)s 沒有 %(quant)s 量化版本"
+
+msgid "It publishes: %(names)s"
+msgstr "它發布的是：%(names)s"
+
+msgid "licensed %(spdx)s, which this request does not allow"
+msgstr "授權是 %(spdx)s，這次請求不允許這個授權"
+
+msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
+msgstr "系統記憶體頻寬未實測；對 %(arch)s 按 %(gbps).0f GB/s 假定。"
+
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
+msgstr "%(gpu)s 的頻寬未知；改用 %(backend)s 的後備值 %(gbps).0f GB/s。"
+
+msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
+msgstr "沒有顯示卡算力數據：提示處理按 CPU 估算。"
+
+msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "每個 token 要從系統記憶體讀取 %(gb).2f GB 的路由專家，速率是其 %(raw).0f GB/s 的 %(eff).2f 倍，因為每個 token 選中的專家都不一樣，這種讀取是分散的小區塊，而不是連續的串流。"
+
+msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
+msgstr "每個 token 要從系統記憶體讀取 %(gb).2f GB 的連續權重，速率是其 %(raw).0f GB/s 的 %(eff).2f 倍。"
+
+msgid "No active parameter count was supplied; it was inferred from the weight bytes."
+msgstr "沒有給出啟用參數量；它是從權重位元組數推斷出來的。"
+
+msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "有 %(pct).0f%% 的層在系統記憶體裡，所以這部分提示運算按 %(tflops).2f TFLOP/s 算在 CPU 頭上，而不是顯示卡。兩個速率都來自一台機器上的一個小稠密模型。"
+
+msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "專家集合中有 %(gb).1f GB 會在每個微批次經連結以 %(gbps).1f GB/s 傳輸一次。這個速率是在唯一一個專家集合放不進系統記憶體的模型上擬合的，所以它有一部分讀取來自磁碟；如果專家集合能留在頁面快取裡，傳輸大約快三倍，對那樣的模型來說，這一項就慢了這麼多。"
+
+msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+msgstr "專家集合中有 %(gb).1f GB 會在每個微批次以 %(gbps).1f GB/s 從系統記憶體讀出一次，因為沒有顯示卡可以傳給它。"
+
+msgid "No placement of this model on this machine could run it."
+msgstr "在這台機器上，這個模型的任何放置方案都無法執行它。"
+
+msgid "Generation is a benchmark of this configuration, not a prediction."
+msgstr "生成速度是這套組態的實測結果，不是預測。"
+
+msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "生成速度是公式乘以 %(factor).2f 的修正結果，依據的是 %(date)s 在這台機器上對 %(profile)s 的基準測試。"
+
+msgid "Prompt processing is a benchmark of this configuration."
+msgstr "提示處理速度是這套組態的實測結果。"
+
+msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
+msgstr "提示處理速度是公式經基準測試乘以 %(factor).2f 修正後的結果。"
+
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr "那次基準測試的指令列沒有記錄有多少層放到了顯示卡上，所以這個修正假定它就是按目前這個放置方案執行的。"
+
+msgid "This figure assumes nothing pages: a placement this tight often does, silently."
+msgstr "這個數字假定不會發生換出：這麼吃緊的放置方案常常會悄悄換出。"
+
+msgid "Board"
+msgstr "排行榜"
+
+msgid "Needs"
+msgstr "需求"
+
+msgid "Plan"
+msgstr "方案"
+
+msgid "Simulate"
+msgstr "模擬"
+
+msgid "There is no terminal here to draw the dashboard in, so this is what `llamafit recommend` would print."
+msgstr "這裡沒有可以繪製儀表板的終端機，所以下面是 `llamafit recommend` 會輸出的內容。"
+
+msgid "%(name)s %(quant)s, %(vendor)s, licensed %(license)s; it can: %(capabilities)s"
+msgstr "%(name)s %(quant)s，%(vendor)s，授權 %(license)s；它能：%(capabilities)s"
+
+msgid "Choose a row to see what put it there."
+msgstr "選擇一列，看看是什麼把它排在那裡。"
+
+msgid "Nothing has been ranked yet."
+msgstr "還沒有任何東西被排名。"
+
+msgid "Every candidate in the catalog was ranked; none was excluded."
+msgstr "模型目錄中的每個候選都已排名；沒有任何一個被排除。"
+
+msgid "keys"
+msgstr "按鍵"
+
+msgid "theme"
+msgstr "主題"
+
+msgid "quit"
+msgstr "結束"
+
+msgid "choose"
+msgstr "選擇"
+
+msgid "why"
+msgstr "原因"
+
+msgid "command line"
+msgstr "指令列"
+
+msgid "search"
+msgstr "搜尋"
+
+msgid "fit"
+msgstr "適配"
+
+msgid "sort"
+msgstr "排序"
+
+msgid "sort back"
+msgstr "上一排序"
+
+msgid "reverse"
+msgstr "反序"
+
+msgid "on disk"
+msgstr "已下載"
+
+msgid "all quants"
+msgstr "全部量化"
+
+msgid "unranked rows"
+msgstr "未排名列"
+
+msgid "all columns"
+msgstr "全部欄"
+
+msgid "explanation"
+msgstr "說明"
+
+msgid "not ranked"
+msgstr "未排名"
+
+msgid "apply"
+msgstr "套用"
+
+msgid "reset"
+msgstr "重設"
+
+msgid "rescan"
+msgstr "重新掃描"
+
+msgid "more context"
+msgstr "加大上下文"
+
+msgid "less context"
+msgstr "縮小上下文"
+
+msgid "vision"
+msgstr "視覺"
+
+msgid "copy"
+msgstr "複製"
+
+msgid "this machine"
+msgstr "本機"
+
+msgctxt "use case"
+msgid "general use"
+msgstr "一般用途"
+
+msgctxt "use case"
+msgid "writing code"
+msgstr "寫程式"
+
+msgctxt "use case"
+msgid "reasoning"
+msgstr "推理"
+
+msgctxt "use case"
+msgid "chat"
+msgstr "聊天"
+
+msgctxt "use case"
+msgid "images and text"
+msgstr "圖文"
+
+msgctxt "use case"
+msgid "embeddings"
+msgstr "嵌入"
+
+msgctxt "preference"
+msgid "balanced"
+msgstr "均衡"
+
+msgctxt "preference"
+msgid "lean towards quality"
+msgstr "偏向品質"
+
+msgctxt "preference"
+msgid "lean towards speed"
+msgstr "偏向速度"
+
+msgid "Move with the up and down arrows. Enter says why a row is where it is; p gives the command line that runs it."
+msgstr "用上下方向鍵移動。Enter 說明某一列為什麼排在那裡；p 給出執行它的指令列。"
+
+msgid "Terms: %(terms)s; anything else is text to look for. Enter with the box empty clears them."
+msgstr "可用條件：%(terms)s；其他內容都當作要尋找的文字。輸入框是空的時候按 Enter 會清除它們。"
+
+msgid "Part of a model name, then Enter"
+msgstr "輸入模型名稱的一部分，然後按 Enter"
+
+msgid "Keys"
+msgstr "按鍵"
+
+msgctxt "column heading"
+msgid "Screen"
+msgstr "畫面"
+
+msgctxt "column heading"
+msgid "Key"
+msgstr "按鍵"
+
+msgctxt "column heading"
+msgid "What it does"
+msgstr "作用"
+
+msgctxt "dashboard screen"
+msgid "Everywhere"
+msgstr "全域"
+
+msgctxt "dashboard screen"
+msgid "Board"
+msgstr "排行榜"
+
+msgctxt "dashboard screen"
+msgid "Needs"
+msgstr "需求"
+
+msgctxt "dashboard screen"
+msgid "Host"
+msgstr "主機"
+
+msgctxt "dashboard screen"
+msgid "Plan"
+msgstr "方案"
+
+msgctxt "dashboard screen"
+msgid "Simulate"
+msgstr "模擬"
+
+msgid "Press Escape to go back."
+msgstr "按 Escape 返回。"
+
+msgid "Catalog files with a problem"
+msgstr "有問題的模型目錄檔案"
+
+msgid "This machine has not been scanned yet."
+msgstr "這台機器還沒有被掃描過。"
+
+msgid "What do you want a model for?"
+msgstr "你想用模型來做什麼？"
+
+msgid "It must be able to:"
+msgstr "它必須能夠："
+
+msgid "At least this much context, in tokens:"
+msgstr "至少這麼長的上下文（以 token 計）："
+
+msgid "Willing to download at most, for example 40G (blank for no limit):"
+msgstr "最多願意下載多少，例如 40G（留空表示不限）："
+
+msgid "Slowest generation worth having, in tokens per second (blank for the speed a person reads at; 0 when nobody is waiting on the tokens):"
+msgstr "可以接受的最慢生成速度，以每秒 token 計（留空表示按人閱讀的速度；沒有人在等這些 token 時填 0）："
+
+msgid "Licences you will accept (tick none to accept any):"
+msgstr "你接受的授權（一個都不勾表示接受任何授權）："
+
+msgid "Lean the score:"
+msgstr "評分偏向："
+
+msgid "Keep the vision projector when a model has one"
+msgstr "模型帶視覺投影器時保留它"
+
+msgid "Apply"
+msgstr "套用"
+
+msgid "Reset"
+msgstr "重設"
+
+msgid "The minimum context is a number of tokens, for example %(example)s."
+msgstr "最小上下文是一個 token 數，例如 %(example)s。"
+
+msgid "The minimum context cannot be below zero."
+msgstr "最小上下文不能小於零。"
+
+msgid "The minimum speed is a number of tokens per second, for example 12."
+msgstr "最小速度是每秒的 token 數，例如 12。"
+
+msgid "The minimum speed cannot be below zero."
+msgstr "最小速度不能小於零。"
+
+msgid "Choose a row on the Board and press p, and its plan and command line appear here."
+msgstr "在排行榜上選中一列並按 p，它的方案和指令列就會出現在這裡。"
+
+msgid "%(model)s is no longer in the catalog this board was built from."
+msgstr "%(model)s 已經不在產生這個排行榜所用的模型目錄裡了。"
+
+msgid "Planned with the vision projector; press v to leave it out."
+msgstr "方案包含視覺投影器；按 v 可以拿掉它。"
+
+msgid "Planned without the vision projector; press v to put it back."
+msgstr "方案不含視覺投影器；按 v 可以把它加回來。"
+
+msgid "The ladder has no rung above %(context)s."
+msgstr "階梯上沒有高於 %(context)s 的階層。"
+
+msgid "The ladder has no rung below %(context)s."
+msgstr "階梯上沒有低於 %(context)s 的階層。"
+
+msgid "There is no command line to copy yet."
+msgstr "還沒有可以複製的指令列。"
+
+msgid "The command line is on the clipboard."
+msgstr "指令列已複製到剪貼簿。"
+
+msgid "Everything on every screen answers about the machine chosen here. While it is not this one, the band at the top says SIMULATED."
+msgstr "所有畫面上的一切，回答的都是這裡選定的那台機器。只要它不是本機，頂部的橫條就會顯示「模擬」。"
+
+msgid "Answer for this machine instead:"
+msgstr "改為回答這台機器："
+
+msgid "Pretend the graphics card has this much memory (blank to leave it):"
+msgstr "假設顯示卡有這麼多記憶體（留空表示不改）："
+
+msgid "Pretend the machine has this much system memory (blank to leave it):"
+msgstr "假設這台機器有這麼多系統記憶體（留空表示不改）："
+
+msgid "Pretend the processor has this many cores (blank to leave it):"
+msgstr "假設處理器有這麼多個核心（留空表示不改）："
+
+msgid "Back to this machine"
+msgstr "回到本機"
+
+msgctxt "hardware profile"
+msgid "this machine"
+msgstr "本機"
+
+msgid "The core count is a whole number, for example 8."
+msgstr "核心數是一個整數，例如 8。"
+
+msgctxt "dashboard header separator"
+msgid " · "
+msgstr " · "
+
+msgctxt "dashboard header"
+msgid "no GPU detected"
+msgstr "未偵測到 GPU"
+
+msgid "%(name)s, VRAM unknown"
+msgstr "%(name)s，VRAM 未知"
+
+msgid "%(name)s, %(free)s free of %(total)s"
+msgstr "%(name)s，%(total)s 中可用 %(free)s"
+
+msgid "%(available)s free of %(total)s RAM"
+msgstr "%(total)s 記憶體中可用 %(available)s"
+
+msgid "%(model)s, %(count)d core"
+msgid_plural "%(model)s, %(count)d cores"
+msgstr[0] "%(model)s，%(count)d 個核心"
+
+msgctxt "dashboard header"
+msgid "llama.cpp not installed"
+msgstr "未安裝 llama.cpp"
+
+msgctxt "dashboard header"
+msgid "llama.cpp installed"
+msgstr "已安裝 llama.cpp"
+
+msgid "llama.cpp b%(build)d"
+msgstr "llama.cpp b%(build)d"
+
+msgctxt "dashboard header"
+msgid "scanning this machine…"
+msgstr "正在掃描本機…"
+
+msgid "These speeds were not all arrived at the same way; the How column says which each row is."
+msgstr "這些速度並非都以同樣的方式得出；「依據」欄說明每一列各是哪一種。"
+
 msgctxt "thousands separator"
 msgid ","
 msgstr ","
@@ -908,3 +3621,160 @@ msgstr "B"
 msgctxt "size"
 msgid "unknown"
 msgstr "未知"
+
+msgid "profile must be a name, not a path: %(value)s"
+msgstr "profile 必須是名稱，不能是路徑：%(value)s"
+
+msgid "Ask GET /api/v1/profiles for the names this machine has."
+msgstr "請用 GET /api/v1/profiles 查詢這台機器上有哪些名稱。"
+
+msgid "unknown query parameter: %(names)s"
+msgstr "未知的查詢參數：%(names)s"
+
+msgid "This endpoint takes: %(names)s"
+msgstr "這個端點接受：%(names)s"
+
+msgid "invalid prefer %(value)s"
+msgstr "prefer 的值無效：%(value)s"
+
+msgid "invalid sort %(value)s"
+msgstr "sort 的值無效：%(value)s"
+
+msgid "%(host)s:%(port)d is not this machine only. Anyone who can reach this computer on that port can read everything the dashboard shows -- your hardware, your disks, your file paths and the models you have downloaded. There is no password, because LlamaFit is meant for the person sitting at the keyboard. Press Ctrl+C now if you did not mean this."
+msgstr "%(host)s:%(port)d 不只限本機。任何能透過那個連接埠連到這台電腦的人，都可以讀到儀表板顯示的一切——你的硬體、你的磁碟、你的檔案路徑，以及你下載過的模型。這裡沒有密碼，因為 LlamaFit 是給坐在鍵盤前的那個人用的。如果這不是你的本意，請現在按 Ctrl+C。"
+
+msgid "the web dashboard needs FastAPI and uvicorn, which are not installed"
+msgstr "網頁儀表板需要 FastAPI 和 uvicorn，而它們尚未安裝"
+
+msgid "Install them with: pip install \"llamafit[web]\""
+msgstr "請用以下指令安裝：pip install \"llamafit[web]\""
+
+msgid "%(host)s is not a loopback address, and the dashboard has no authentication"
+msgstr "%(host)s 不是回送位址，而儀表板沒有任何身分驗證"
+
+msgid "Leave --host alone to serve this machine only, or pass it to mean it."
+msgstr "不要動 --host，就只對本機提供服務；要用它，就想清楚再用。"
+
+msgctxt "column heading"
+msgid "Why not"
+msgstr "原因"
+
+msgid "Why this row"
+msgstr "為什麼是這一列"
+
+msgid "Plan this"
+msgstr "規劃它"
+
+msgid "Already on this machine"
+msgstr "已在本機上"
+
+msgid "Score"
+msgstr "評分"
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; raise “Rows to show” for the rest, which are neither worse-behaved nor hidden, only further down."
+msgstr "在 %(total)s 個合格候選中顯示最好的 %(shown)s 個；把「顯示列數」調大可以看到其餘的，它們既沒有更差也沒有被隱藏，只是排在後面。"
+
+msgid "What the model is for"
+msgstr "模型的用途"
+
+msgid "Capabilities it must have"
+msgstr "必須具備的能力"
+
+msgid "Lean the weights"
+msgstr "權重偏向"
+
+msgid "Smallest context worth having"
+msgstr "最小可接受的上下文"
+
+msgid "Most you will download"
+msgstr "最多下載多少"
+
+msgid "Show every quantisation"
+msgstr "顯示全部量化版本"
+
+msgid "Keep the vision projector"
+msgstr "保留視覺投影器"
+
+msgid "Rows to show"
+msgstr "顯示列數"
+
+msgid "Scan again"
+msgstr "重新掃描"
+
+msgid "llama.cpp"
+msgstr "llama.cpp"
+
+msgid "Quantisation"
+msgstr "量化版本"
+
+msgid "Context"
+msgstr "上下文"
+
+msgid "Micro-batch"
+msgstr "微批次"
+
+msgid "Plan it"
+msgstr "產生方案"
+
+msgid "Copy"
+msgstr "複製"
+
+msgid "Copied"
+msgstr "已複製"
+
+msgid "Flags"
+msgstr "旗標"
+
+msgid "Speed"
+msgstr "速度"
+
+msgid "Choose a row on the board first."
+msgstr "請先在排行榜上選擇一列。"
+
+msgid "Hardware profile"
+msgstr "硬體設定檔"
+
+msgid "This machine, as scanned"
+msgstr "本機（掃描所得）"
+
+msgid "Graphics memory"
+msgstr "顯示卡記憶體"
+
+msgid "System memory"
+msgstr "系統記憶體"
+
+msgid "Processor cores"
+msgstr "處理器核心數"
+
+msgid "Score against that machine"
+msgstr "依那台機器評分"
+
+msgid "What runs here, how fast, and with which settings."
+msgstr "這裡能執行什麼、有多快、用什麼設定。"
+
+msgid "Working…"
+msgstr "處理中…"
+
+msgid "Something went wrong"
+msgstr "出錯了"
+
+msgid "Hint"
+msgstr "提示"
+
+msgid "Command"
+msgstr "指令"
+
+msgid "About these figures"
+msgstr "關於這些數字"
+
+msgid "Close"
+msgstr "關閉"
+
+msgid "%(shown)s of %(total)s in the catalog"
+msgstr "模型目錄中共 %(total)s 項，顯示 %(shown)s 項"
+
+msgid "Source code (AGPL-3.0-or-later)"
+msgstr "原始碼（AGPL-3.0-or-later）"
+
+msgid "This dashboard is served from your own machine and sends nothing anywhere."
+msgstr "這個儀表板由你自己的機器提供，不會向任何地方傳送任何東西。"
