@@ -47,6 +47,12 @@ the changelog says so when they do.
   executable with `--multiprocessing-fork`, which Click meets as an option it has never
   heard of and answers with a usage error printed across whatever the real run was
   drawing. It affects the standalone binary only, on the first command most people try.
+- `llamafit install llama.cpp` no longer fails against a release whose archives have not
+  finished uploading. llama.cpp tags several builds a day and the files arrive after the
+  tag, so for a few minutes the newest release carries nothing; the installer took it and
+  said "release b10931 publishes nothing for windows x86_64", which is true of that tag
+  and reads as a statement about the platform. A tag with no files is not a build anybody
+  can install, so the newest one that publishes files is chosen, and the plan names it.
 - The hint that says where a global option goes no longer blames the wrong option.
   `llamafit --gpu-vram 0 --ram 8GiB plan …` is a usage error about `--gpu-vram`, and the
   hint declared `--ram` misplaced and offered a command line that was not one: it took

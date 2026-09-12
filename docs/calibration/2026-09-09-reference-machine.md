@@ -185,7 +185,7 @@ nothing hides it, the prompt figure came out roughly fourfold low.
 **The same term also had no CPU side, and inventing one made it worse.**
 `CPU_FP16_TFLOPS_PER_CORE` read 0.05, a fifth of an AVX2 core's fp32 peak arrived at by
 argument rather than by measurement, and it was then multiplied by the card's efficiency on
-the way out, so the rate the formula actually spent was a fiftieth of that core's peak and
+the way out, so the rate the formula spent was a fiftieth of that core's peak and
 about twentyfold below the 3.51 TFLOP/s this machine was measured doing. Nothing caught it
 because the term only ever fired on a host with no graphics card at all. With an honest
 tensor figure in the table, the whole-term-to-the-card reading put Gemma 3 27B -- nine of

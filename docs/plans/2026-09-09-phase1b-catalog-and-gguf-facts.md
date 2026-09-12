@@ -1,4 +1,4 @@
-# LlamaFit Phase 1B — Model Catalog and GGUF Facts Implementation Plan
+# LlamaFit Phase 1B: model catalog and GGUF facts implementation plan
 
 > Implementation plan: one task per section, each with its files, interfaces, tests, steps and commit. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -68,14 +68,14 @@
   - `ExtraRole = Literal["mmproj", "mtp", "draft", "lora"]`
   - `License(spdx: str, url: str)`
   - `Params(total_b: float, active_b: float, ngram_table_b: float | None = None)` with a validator that `active_b <= total_b`
-  - `Architecture(class_: ArchClass, gguf_arch: str, notes: str | None = None)` — the field is named `class_` in Python and aliased to `class` in YAML with `Field(alias="class")`, and the model sets `populate_by_name=True`
+  - `Architecture(class_: ArchClass, gguf_arch: str, notes: str | None = None)`: the field is named `class_` in Python and aliased to `class` in YAML with `Field(alias="class")`, and the model sets `populate_by_name=True`
   - `Context(native: int, extended: int | None = None, extended_method: str | None = None)`
   - `Benchmark(name: str, score: float, source: str)`
   - `Quality(baseline: int, benchmarks: list[Benchmark] = [])` with `0 <= baseline <= 100`
   - `Sampling(temp: float | None = None, top_p: float | None = None, top_k: int | None = None, min_p: float | None = None, presence_penalty: float | None = None, repeat_penalty: float | None = None)`
   - `ChatTemplate(reasoning_format: str | None = None, thinking_toggle: str | None = None)`
   - `LlamaCppNeeds(min_build: int | None = None, kv_types_allowed: list[str] = [], requires: dict[str, str] = {}, quirks: list[str] = [])`
-  - `Quant(name: str, files: list[str] = [], bytes_: int | None = None, bpw: float | None = None, sha256: list[str] = [], gguf_facts: GgufFacts | None = None)` — `bytes_` is aliased to `bytes` in YAML for the same reason as `class_`
+  - `Quant(name: str, files: list[str] = [], bytes_: int | None = None, bpw: float | None = None, sha256: list[str] = [], gguf_facts: GgufFacts | None = None)`: `bytes_` is aliased to `bytes` in YAML for the same reason as `class_`
   - `Extra(role: ExtraRole, file: str, bytes_: int | None = None, sha256: str | None = None)`
   - `Source(repo: str | None = None, kind: Literal["gguf", "local"] = "gguf", trust: Trust = "community", path: str | None = None, quants: list[Quant] = [], extras: list[Extra] = [])` with a validator that a `gguf` source has a `repo` and a `local` source has a `path`
   - `Measured(profile: str, quant: str, gen_tps: float | None = None, pp_tps: float | None = None, context: int | None = None, flags: str | None = None, llama_cpp_build: int | None = None, peak_vram_gb: float | None = None, date: date | None = None, source: str | None = None)`
@@ -616,7 +616,7 @@ git commit -m "feat: GGUF header reader over an injectable byte source"
 - Consumes: `read_header`, `LocalSource`, `tensor_bytes`.
 - Produces: no new interface; this task's product is confidence that the block-size table is right.
 
-A wrong row in `GGML_TYPES` would mis-size every model using that type, and no unit test built from synthetic bytes can catch it. A real file can: the tensor data starts at the header end rounded up to the alignment, and the sum of every tensor's size plus that offset must equal the file size. That single identity checks the whole table against the types the file actually uses.
+A wrong row in `GGML_TYPES` would mis-size every model using that type, and no unit test built from synthetic bytes can catch it. A real file can: the tensor data starts at the header end rounded up to the alignment, and the sum of every tensor's size plus that offset must equal the file size. That single identity checks the whole table against the types the file uses.
 
 This machine has real GGUF files under `D:\llama.cpp\models`, including a small one, `Qwen3-0.6B\Qwen3-0.6B-Q8_0.gguf` at about 805 MB. The test is marked `hardware` so CI skips it, and it skips itself when the file is absent.
 
@@ -914,7 +914,7 @@ git commit -m "feat: derive architecture facts from a GGUF header"
   - `cache_key_for_path(path: Path) -> str` and `cache_key_for_url(url: str, etag: str | None) -> str`, both returning a hex digest.
   - `HeaderCache(directory: Path)` with `get(key: str) -> GgufHeader | None` and `put(key: str, header: GgufHeader) -> None`, storing one JSON file per key and treating any read error or schema mismatch as a miss.
   - `read_header_cached(source: ByteSource, key: str, cache: HeaderCache | None) -> GgufHeader`.
-  - `read_facts(target: Path | str, *, lazy_tensor_names: Sequence[str] = (), cache: HeaderCache | None = None, client: httpx.Client | None = None) -> GgufFacts` — the one function the rest of the codebase calls. A `Path` or a string without a scheme reads locally; a string starting with `http://` or `https://` reads over ranges.
+  - `read_facts(target: Path | str, *, lazy_tensor_names: Sequence[str] = (), cache: HeaderCache | None = None, client: httpx.Client | None = None) -> GgufFacts`: the one function the rest of the codebase calls. A `Path` or a string without a scheme reads locally; a string starting with `http://` or `https://` reads over ranges.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -1003,10 +1003,10 @@ git commit -m "feat: cache parsed GGUF headers and expose read_facts"
 - Consumes: `CatalogModel`, `Catalog`, `CatalogError`, `get_paths`.
 - Produces:
   - `Problem(file: str, model_id: str | None, location: str, message: str)`
-  - `load_models_from_file(path: Path) -> tuple[list[CatalogModel], list[Problem]]` — a YAML file holds a list of entries; a syntax error or a failed validation becomes a `Problem` and never an exception.
+  - `load_models_from_file(path: Path) -> tuple[list[CatalogModel], list[Problem]]`: a YAML file holds a list of entries; a syntax error or a failed validation becomes a `Problem` and never an exception.
   - `bundled_catalog_dir() -> Path` returning the packaged `data/catalog` directory through `importlib.resources`.
   - `custom_models_path(env: Mapping[str, str] | None = None) -> Path` honouring `LLAMAFIT_CUSTOM_MODELS` then the data directory.
-  - `load_catalog(*, bundled_dir: Path | None = None, custom_path: Path | None = None, strict: bool = False) -> tuple[Catalog, list[Problem]]` — bundled files first in sorted order, then the custom file; a custom entry whose id already exists replaces it, a new id is appended; a duplicate id inside the bundled set is a `Problem`. With `strict=True` any problem raises a `CatalogError` listing every one of them.
+  - `load_catalog(*, bundled_dir: Path | None = None, custom_path: Path | None = None, strict: bool = False) -> tuple[Catalog, list[Problem]]`: bundled files first in sorted order, then the custom file; a custom entry whose id already exists replaces it, a new id is appended; a duplicate id inside the bundled set is a `Problem`. With `strict=True` any problem raises a `CatalogError` listing every one of them.
   - `validate_files(paths: Sequence[Path]) -> list[Problem]`.
 
 - [ ] **Step 1: Write the failing test**
@@ -1248,7 +1248,7 @@ git commit -m "feat: seed catalog with five models from primary sources"
   - `class HfClient(Protocol)` with `list_files(repo: str) -> list[RepoFile]` and `file_url(repo: str, path: str) -> str`
   - `HttpHfClient(client: httpx.Client | None = None, token: str | None = None)` querying `https://huggingface.co/api/models/{repo}?blobs=true`, reading `siblings[].rfilename`, `siblings[].size` and `siblings[].lfs.sha256`, turning a non-200 or an `httpx.HTTPError` into a `NetworkError` naming the repository, and building the URL as `https://huggingface.co/{repo}/resolve/main/{path}`
   - `FakeHfClient(files: Mapping[str, list[RepoFile]])` for tests
-  - `match_quant_files(files: Sequence[RepoFile], quant_name: str) -> list[RepoFile]` — the files belonging to one quant, sorted by name, matching a single file `*<quant>*.gguf` or a shard set `*<quant>-00001-of-000NN.gguf`, and ignoring files in a subdirectory whose name is a different quant
+  - `match_quant_files(files: Sequence[RepoFile], quant_name: str) -> list[RepoFile]`: the files belonging to one quant, sorted by name, matching a single file `*<quant>*.gguf` or a shard set `*<quant>-00001-of-000NN.gguf`, and ignoring files in a subdirectory whose name is a different quant
 
 - [ ] **Step 1: Write the failing test**
 
@@ -1339,7 +1339,7 @@ git commit -m "feat: Hugging Face metadata client"
 - Produces:
   - `RefreshResult(model_id: str, file: str, changed: bool, fields: list[str], error: str | None = None)`
   - `refresh_file(path: Path, *, hf: HfClient, read_facts_fn: Callable[..., GgufFacts], dry_run: bool = False, only: str | None = None) -> list[RefreshResult]`
-  - `dump_models(models: Sequence[CatalogModel]) -> str` — the deterministic YAML writer: `yaml.safe_dump` with `sort_keys=False`, a two-space indent, `allow_unicode=True`, `width=100`, dumping `model_dump(by_alias=True, exclude_none=True, mode="json")` so a diff shows only what changed
+  - `dump_models(models: Sequence[CatalogModel]) -> str`: the deterministic YAML writer: `yaml.safe_dump` with `sort_keys=False`, a two-space indent, `allow_unicode=True`, `width=100`, dumping `model_dump(by_alias=True, exclude_none=True, mode="json")` so a diff shows only what changed
   - The rule that a repository whose listing fails leaves its model untouched and yields a `RefreshResult` with `error` set, so one dead repository cannot blank a file
 
 What refresh fills, per quant: `files` (the file names in shard order), `bytes_` (their total), `sha256` (one per file, in the same order), `bpw` (`bytes_ * 8 / (params.total_b * 1e9)`, rounded to two decimals) and `gguf_facts` (from the first file's header, read over ranges). For each `extras` entry it fills `bytes_` and `sha256` by exact file name. Nothing curated is ever touched.
@@ -1443,9 +1443,9 @@ git commit -m "feat: refresh catalog sizes, checksums and GGUF facts"
 **Interfaces:**
 - Produces:
   - `ModelFilters(use_case: UseCase | None = None, capabilities: list[Capability] = [], licenses: list[str] = [], vendor: str | None = None, search: str | None = None)`
-  - `filter_models(catalog: Catalog, filters: ModelFilters) -> list[CatalogModel]` — every filter is an and, `capabilities` requires all of them, `search` matches case-insensitively against the id, name, vendor and family, and the result is sorted by `quality.baseline` descending then by id
+  - `filter_models(catalog: Catalog, filters: ModelFilters) -> list[CatalogModel]`: every filter is an and, `capabilities` requires all of them, `search` matches case-insensitively against the id, name, vendor and family, and the result is sorted by `quality.baseline` descending then by id
   - `ModelSummary(id, name, vendor, params_total_b, params_active_b, capabilities, context_native, license_spdx, quant_names: list[str], largest_quant_bytes: int | None, is_local: bool)`
-  - `summarise(model: CatalogModel, local_files: Sequence[LocalModel] = ()) -> ModelSummary` — `is_local` is true when any of the model's quant file names matches a file llama.cpp already has on disk
+  - `summarise(model: CatalogModel, local_files: Sequence[LocalModel] = ()) -> ModelSummary`: `is_local` is true when any of the model's quant file names matches a file llama.cpp already has on disk
   - `ModelDetail(model: CatalogModel, quants: list[QuantDetail], local_paths: list[str])` and `QuantDetail(name, bytes_, bpw, facts, files, downloaded: bool)`
   - `describe(model: CatalogModel, local_files: Sequence[LocalModel] = ()) -> ModelDetail`
 
@@ -1541,7 +1541,7 @@ It loads the bundled catalog and writes `MODELS.md`: a short header saying the f
 - `docs/catalog.md`: correct the entry schema to the fields as implemented, including `architecture.class`, the `Quant` field names, and the note that `gguf_facts` is filled by `refresh`. Document the `LLAMAFIT_CUSTOM_MODELS` path and the `catalog validate` workflow.
 - `docs/custom-models.md`: check every claim against the loader, especially the override-by-id rule and the local-source form.
 - `docs/development.md`: move `pyyaml` from the planned table to the runtime table.
-- `docs/specs/...`: correct section 7.2 to describe how the full-attention layer count is actually determined, and note in section 5.1 that `LLAMA_CPP_PATH` is checked before `PATH`, which the code has done since phase 1A and the specification still describes the other way round.
+- `docs/specs/...`: correct section 7.2 to describe how the full-attention layer count is determined, and note in section 5.1 that `LLAMA_CPP_PATH` is checked before `PATH`, which the code has done since phase 1A and the specification still describes the other way round.
 - `README.md`: move the 1B row of the roadmap table to done and add `llamafit list` and `llamafit info` to the quick start.
 - `CHANGELOG.md`: one entry under *Unreleased* per user-visible addition.
 

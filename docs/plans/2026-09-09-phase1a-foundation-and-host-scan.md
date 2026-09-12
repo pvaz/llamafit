@@ -1,4 +1,4 @@
-# LlamaFit Phase 1A — Foundation and Host Scan Implementation Plan
+# LlamaFit Phase 1A: foundation and host scan implementation plan
 
 > Implementation plan: one task per section, each with its files, interfaces, tests, steps and commit. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -303,7 +303,7 @@ git commit -m "chore: project scaffold, packaging, CI and project documents"
 
 ---
 
-### Task 2: Foundation modules — errors, units, paths, logging
+### Task 2: Foundation modules (errors, units, paths, logging)
 
 **Files:**
 - Create: `src/llamafit/errors.py`, `src/llamafit/units.py`, `src/llamafit/paths.py`, `src/llamafit/logging.py`
@@ -634,7 +634,7 @@ git commit -m "feat: error hierarchy, size units, platform paths and file loggin
 
 ---
 
-### Task 3: Data models — Host and LlamaCpp
+### Task 3: Data models (Host and LlamaCpp)
 
 **Files:**
 - Create: `src/llamafit/models/__init__.py`, `src/llamafit/models/host.py`, `src/llamafit/models/llamacpp.py`, `src/llamafit/models/report.py`
@@ -942,9 +942,9 @@ git commit -m "feat: host, llama.cpp and report data models"
 - Produces:
   - `CommandResult(argv: list[str], returncode: int | None, stdout: str, stderr: str, duration_ms: int, error: str | None = None)` with property `ok -> bool` (`error is None and returncode == 0`).
   - `class Runner(Protocol): def run(self, argv: Sequence[str], *, timeout: float = 10.0) -> CommandResult`
-  - `SubprocessRunner()` — real subprocesses, never raises: a missing program or a timeout becomes `error`.
-  - `FakeRunner(responses: Mapping[str, str | CommandResult])` — keyed by the program name (`argv[0]`) or by the full command joined with spaces; unknown commands return `error="not found"`. Records `calls: list[list[str]]`.
-  - `probe(name: str, runner: Runner, argv: Sequence[str], parse: Callable[[str], T], *, timeout: float = 10.0) -> tuple[T | None, Probe]` — runs, parses stdout, converts any exception into `Probe(ok=False, error=...)`.
+  - `SubprocessRunner()`: real subprocesses, never raises: a missing program or a timeout becomes `error`.
+  - `FakeRunner(responses: Mapping[str, str | CommandResult])`: keyed by the program name (`argv[0]`) or by the full command joined with spaces; unknown commands return `error="not found"`. Records `calls: list[list[str]]`.
+  - `probe(name: str, runner: Runner, argv: Sequence[str], parse: Callable[[str], T], *, timeout: float = 10.0) -> tuple[T | None, Probe]`: runs, parses stdout, converts any exception into `Probe(ok=False, error=...)`.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -1160,7 +1160,7 @@ git commit -m "feat: replaceable command runner and probe helper"
   - `detect_cpu(runner: Runner, os_name: OsName, *, cpuinfo_provider: Callable[[], Mapping[str, Any]] | None = None) -> tuple[Cpu, list[Probe]]`
   - `isa_from_flags(flags: Iterable[str]) -> list[str]`
   - `performance_cores_for(model: str, physical_cores: int) -> int | None`
-  - `detect_memory(runner: Runner, os_name: OsName, *, vm_provider: Callable[[], tuple[int, int]] | None = None) -> tuple[Memory, list[Probe]]` — `vm_provider` returns `(total_bytes, available_bytes)`.
+  - `detect_memory(runner: Runner, os_name: OsName, *, vm_provider: Callable[[], tuple[int, int]] | None = None) -> tuple[Memory, list[Probe]]`: `vm_provider` returns `(total_bytes, available_bytes)`.
   - `theoretical_bandwidth_gbps(speed_mts: int, channels: int) -> float` = `speed_mts × 8 × channels / 1000`.
 
 - [ ] **Step 1: Write the failing tests**
@@ -1769,9 +1769,9 @@ git commit -m "feat: GPU detection for NVIDIA, AMD, Apple and generic listings"
 **Interfaces:**
 - Produces:
   - `GpuSpec(pattern: str, bandwidth_gbps: float, compute_tflops_fp16: float, pcie_gbps: float | None = None, unified: bool = False)`; `lookup_gpu(name: str) -> GpuSpec | None` (case-insensitive substring match on `pattern`, longest pattern wins); `enrich_gpu(gpu: Gpu) -> Gpu` (fills `bandwidth_gbps` and `compute_tflops_fp16` when unknown).
-  - `measure_ram_bandwidth_gbps(*, duration_s: float = 0.05, buffer_mb: int = 256) -> float | None` — multi-pass copy of a buffer larger than the cache; uses NumPy when importable, else a `bytearray` slice copy with a ×1.6 correction documented in the docstring; returns `None` when it cannot allocate.
-  - `resolve_memory_bandwidth(memory: Memory, *, measure: bool = True) -> Memory` — sets `bandwidth_gbps` and `bandwidth_source` with precedence measured (when plausible: 5 to 1000 GB/s) → estimated (already set) → assumed (`ASSUMED_RAM_BANDWIDTH_GBPS = 40.0`).
-  - `detect_disks(paths: Iterable[Path]) -> list[Disk]` — one `Disk` per distinct mount, unreadable paths skipped.
+  - `measure_ram_bandwidth_gbps(*, duration_s: float = 0.05, buffer_mb: int = 256) -> float | None`: multi-pass copy of a buffer larger than the cache; uses NumPy when importable, else a `bytearray` slice copy with a ×1.6 correction documented in the docstring; returns `None` when it cannot allocate.
+  - `resolve_memory_bandwidth(memory: Memory, *, measure: bool = True) -> Memory`: sets `bandwidth_gbps` and `bandwidth_source` with precedence measured (when plausible: 5 to 1000 GB/s) → estimated (already set) → assumed (`ASSUMED_RAM_BANDWIDTH_GBPS = 40.0`).
+  - `detect_disks(paths: Iterable[Path]) -> list[Disk]`: one `Disk` per distinct mount, unreadable paths skipped.
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -2289,7 +2289,7 @@ git commit -m "feat: scan() composes CPU, memory, GPU, bandwidth and disk probes
 
 ---
 
-### Task 9: llama.cpp detection — binaries, build, backends, local models
+### Task 9: llama.cpp detection (binaries, build, backends, local models)
 
 **Files:**
 - Create: `src/llamafit/llamacpp/__init__.py` (docstring only for now), `src/llamafit/llamacpp/detect.py`
@@ -2299,12 +2299,12 @@ git commit -m "feat: scan() composes CPU, memory, GPU, bandwidth and disk probes
 - Consumes: `Runner`, `probe()`; `LocalModel`, `Probe`, `OsName`.
 - Produces:
   - `BINARIES = ("llama-server", "llama-cli", "llama-bench", "llama-gguf")`
-  - `find_llamacpp_dir(*, env: Mapping[str, str], path_dirs: Iterable[Path], well_known: Iterable[Path]) -> Path | None` — first directory containing `llama-server` (with `.exe` on Windows, decided by `os_name` passed separately); precedence `LLAMA_CPP_PATH` → PATH → well-known.
+  - `find_llamacpp_dir(*, env: Mapping[str, str], path_dirs: Iterable[Path], well_known: Iterable[Path]) -> Path | None`: first directory containing `llama-server` (with `.exe` on Windows, decided by `os_name` passed separately); precedence `LLAMA_CPP_PATH` → PATH → well-known.
   - `well_known_dirs(os_name: OsName, home: Path) -> list[Path]`
-  - `parse_version(out: str) -> tuple[int | None, str | None]` — build number and commit from `llama-server --version` output such as `version: 10867 (f3f1a8f27)` or `build: 10867 (f3f1a8f2)`.
-  - `detect_backends(bin_dir: Path) -> list[str]` — from `ggml-*` shared libraries: `cuda`, `hip`, `metal`, `vulkan`, `sycl`, `rpc`, `cpu`; on macOS `metal` when `ggml-metal` or `libggml-metal` exists, and `cpu` when any `ggml-cpu*` exists.
-  - `find_local_models(dirs: Iterable[Path]) -> list[LocalModel]` — every `*.gguf` under the given directories (recursive, depth 3), split files reported once by their first shard, `bytes` summed across shards.
-  - `detect_install(runner: Runner, os_name: OsName, *, env: Mapping[str, str] | None = None, home: Path | None = None, path_dirs: Iterable[Path] | None = None) -> tuple[LlamaCpp, list[Probe]]` — fills `installed`, `path`, `build`, `commit`, `backends`, `local_models`, `problems` (not the running servers; Task 10 adds those).
+  - `parse_version(out: str) -> tuple[int | None, str | None]`: build number and commit from `llama-server --version` output such as `version: 10867 (f3f1a8f27)` or `build: 10867 (f3f1a8f2)`.
+  - `detect_backends(bin_dir: Path) -> list[str]`: from `ggml-*` shared libraries: `cuda`, `hip`, `metal`, `vulkan`, `sycl`, `rpc`, `cpu`; on macOS `metal` when `ggml-metal` or `libggml-metal` exists, and `cpu` when any `ggml-cpu*` exists.
+  - `find_local_models(dirs: Iterable[Path]) -> list[LocalModel]`: every `*.gguf` under the given directories (recursive, depth 3), split files reported once by their first shard, `bytes` summed across shards.
+  - `detect_install(runner: Runner, os_name: OsName, *, env: Mapping[str, str] | None = None, home: Path | None = None, path_dirs: Iterable[Path] | None = None) -> tuple[LlamaCpp, list[Probe]]`: fills `installed`, `path`, `build`, `commit`, `backends`, `local_models`, `problems` (not the running servers; Task 10 adds those).
 
 - [ ] **Step 1: Write the failing test**
 
@@ -2574,11 +2574,11 @@ git commit -m "feat: llama.cpp installation detection (binaries, build, backends
 **Interfaces:**
 - Consumes: `detect_install()` (Task 9); `RunningServer`, `LlamaCpp`, `Probe`.
 - Produces:
-  - `class HttpClient(Protocol): def get_json(self, url: str, *, timeout: float = 1.5) -> Any | None` — returns parsed JSON or `None` on any failure.
-  - `HttpxClient()` — real implementation over `httpx`; `FakeHttp(responses: Mapping[str, Any])` — keyed by full URL.
-  - `discover_servers(http: HttpClient, ports: Iterable[int]) -> list[RunningServer]` — for each port: `GET /health` must return `{"status": "ok"}`; then `/v1/models` gives the model id, `/props` gives `default_generation_settings.n_ctx` and `build_info`.
-  - `candidate_ports(env: Mapping[str, str]) -> list[int]` — `LLAMA_SERVER_PORT` first if set, then 8080, 8081, 8098.
-  - `detect_llamacpp(runner: Runner | None = None, *, os_name: OsName | None = None, env=None, http: HttpClient | None = None) -> LlamaCpp` — composes install detection with server discovery; both sets of probes are stored in `LlamaCpp.probes`.
+  - `class HttpClient(Protocol): def get_json(self, url: str, *, timeout: float = 1.5) -> Any | None`: returns parsed JSON or `None` on any failure.
+  - `HttpxClient()`: real implementation over `httpx`; `FakeHttp(responses: Mapping[str, Any])`: keyed by full URL.
+  - `discover_servers(http: HttpClient, ports: Iterable[int]) -> list[RunningServer]`: for each port: `GET /health` must return `{"status": "ok"}`; then `/v1/models` gives the model id, `/props` gives `default_generation_settings.n_ctx` and `build_info`.
+  - `candidate_ports(env: Mapping[str, str]) -> list[int]`: `LLAMA_SERVER_PORT` first if set, then 8080, 8081, 8098.
+  - `detect_llamacpp(runner: Runner | None = None, *, os_name: OsName | None = None, env=None, http: HttpClient | None = None) -> LlamaCpp`: composes install detection with server discovery; both sets of probes are stored in `LlamaCpp.probes`.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -2787,7 +2787,7 @@ git commit -m "feat: running llama-server discovery and detect_llamacpp()"
 
 ---
 
-### Task 11: Services — `scan_system()` and `diagnose()`
+### Task 11: Services (`scan_system()` and `diagnose()`)
 
 **Files:**
 - Create: `src/llamafit/services/__init__.py`, `src/llamafit/services/scan.py`, `src/llamafit/services/doctor.py`
@@ -2800,7 +2800,7 @@ git commit -m "feat: running llama-server discovery and detect_llamacpp()"
   - `Finding(level: Literal["ok", "warn", "error"], title: str, detail: str, hint: str | None = None)`
   - `Diagnosis(report: SystemReport, findings: list[Finding])` with property `worst_level`.
   - `diagnose(report: SystemReport) -> Diagnosis`
-  - `PROBE_HINTS: dict[str, str]` — what to do when a named probe fails.
+  - `PROBE_HINTS: dict[str, str]`: what to do when a named probe fails.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -3043,7 +3043,7 @@ git commit -m "feat: scan_system and diagnose services"
 
 ---
 
-### Task 12: CLI — `llamafit system` and `llamafit doctor`
+### Task 12: CLI (`llamafit system` and `llamafit doctor`)
 
 **Files:**
 - Modify: `src/llamafit/cli/app.py`
@@ -3410,7 +3410,7 @@ git commit -m "feat: llamafit system and doctor commands with Rich tables and --
 `tests/unit/test_docs.py`:
 
 ```python
-"""Documentation must name every command and flag the CLI actually has."""
+"""Documentation must name every command and flag the CLI has."""
 
 from pathlib import Path
 

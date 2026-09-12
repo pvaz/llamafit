@@ -264,6 +264,14 @@ class HttpReleaseClient:
         endpoint downloads nothing and cannot say why. So the releases are listed and the
         highest ``bNNNN`` tag among them is taken, which is the build everyone means.
 
+        A release carrying no assets is passed over. llama.cpp tags several builds a day
+        and the archives are uploaded after the tag, so for a few minutes the newest
+        release is a tag with nothing on it. Taking it produced "release b10931 publishes
+        nothing for windows x86_64", which is true of that tag and reads as a statement
+        about the platform; the release an hour older had all twenty-seven archives. A tag
+        with no files is not a build anybody can install, and finding the build is what
+        this method is for.
+
         Raises:
             NetworkError: The request failed, was refused, or the listing held no build.
         """
@@ -275,6 +283,7 @@ class HttpReleaseClient:
             if isinstance(entry, dict)
             and isinstance(entry.get("tag_name"), str)
             and parse_build(entry["tag_name"]) is not None
+            and entry.get("assets")
         ]
         if not builds:
             raise NetworkError(

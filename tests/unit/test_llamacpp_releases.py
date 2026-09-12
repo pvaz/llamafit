@@ -408,6 +408,22 @@ def test_the_highest_build_wins_however_the_listing_happens_to_be_ordered() -> N
         assert HttpReleaseClient(client=http).latest().tag == "b10892"
 
 
+def test_a_build_tagged_before_its_archives_finished_uploading_is_passed_over() -> None:
+    """The newest tag is skipped when it carries nothing, and the newest build wins.
+
+    Seen live: llama.cpp published b10931 with zero assets while b10930, an hour older,
+    had twenty-seven. Taking the newer one made the installer say "release b10931
+    publishes nothing for windows x86_64", which is true of that tag and reads as a
+    statement about the platform.
+    """
+    empty = dict(fixture.api_release("b10999"), assets=[])
+    listing = [empty, *fixture.api_releases_list()]
+    with _client(_api_handler(fixture.api_release(), listing=listing)) as http:
+        release = HttpReleaseClient(client=http).latest()
+    assert release.tag == "b10892"
+    assert release.assets
+
+
 def test_a_listing_with_no_build_in_it_says_so_and_names_the_flag() -> None:
     listing = [fixture.api_releases_list()[0]]
     handler = _api_handler(fixture.api_release(), listing=listing)
