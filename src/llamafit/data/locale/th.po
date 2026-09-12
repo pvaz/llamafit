@@ -22,6 +22,198 @@ msgstr ""
 "Language-Team: Thai\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+msgid "nothing measured touches this term, so there is no equation it appears in"
+msgstr "ไม่มีสิ่งที่วัดได้แตะพจน์นี้เลย จึงไม่มีสมการใดที่พจน์นี้ปรากฏอยู่"
+
+msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
+msgstr "มีค่าการตั้งค่าที่ต่างกัน %(measurements)d แบบ สำหรับพารามิเตอร์อิสระ %(parameters)d ตัว เมื่อจุดวัดน้อยกว่าจำนวนพารามิเตอร์ ตัวเลขที่ได้จะดูแม่นยำแต่แท้จริงเป็นค่าที่ตั้งขึ้นตามใจ"
+
+msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
+msgstr "การตั้งค่าทั้ง %(measurements)d แบบไม่ได้แปรผันอิสระต่อกันมากพอที่จะแยกพารามิเตอร์ %(parameters)d ตัวออกจากกัน"
+
+msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "การฟิตให้ค่า %(value).3f ซึ่งนิยามของมันเองไม่อนุญาต ค่าที่วัดได้ขัดแย้งกันเองภายใต้แบบจำลองของหัวข้อ 10.1"
+
+msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "ได้ค่าออกมาเป็น %(value).3f แต่พารามิเตอร์อีกตัวของการฟิตเดียวกันเป็นค่าที่เป็นไปไม่ได้ และวิธีกำลังสองน้อยสุดเลือกให้ทั้งสองหักล้างกัน"
+
+msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
+msgstr "ตัวประมาณไม่มีพจน์แบบนั้น หัวข้อ 10.1 ตัดค่าโสหุ้ยต่อเลเยอร์ออกไปแล้ว เพราะสำหรับโมเดล 28 เลเยอร์ ค่านั้นมากกว่าเวลาต่อโทเค็นที่วัดได้ทั้งหมด"
+
+msgid "generation (llama-bench)"
+msgstr "การสร้าง (llama-bench)"
+
+msgid "prompt (llama-bench)"
+msgstr "พรอมต์ (llama-bench)"
+
+msgid "generation, first request"
+msgstr "การสร้าง, คำขอแรก"
+
+msgid "generation, 1K prompt"
+msgstr "การสร้าง, พรอมต์ 1K"
+
+msgid "prompt, 1K request"
+msgstr "พรอมต์, คำขอ 1K"
+
+msgid "peak VRAM"
+msgstr "VRAM สูงสุด"
+
+msgid "no graphics card"
+msgstr "ไม่มีการ์ดจอ"
+
+msgid "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+msgstr "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+
+msgid "%(flag)s was asked for as %(wanted)s but the run reports %(actual)s"
+msgstr "ขอ %(flag)s ไว้เป็น %(wanted)s แต่การรันรายงานว่าเป็น %(actual)s"
+
+msgid "The card was full and generation came in below three fifths of the estimate: the driver was paging to system memory, which does not fail and does not appear in the log."
+msgstr "การ์ดเต็มและความเร็วในการสร้างต่ำกว่าสามในห้าของค่าประมาณ ไดรเวอร์กำลังย้ายส่วนเกินไปไว้ในหน่วยความจำระบบ ซึ่งไม่ทำให้ล้มเหลวและไม่ปรากฏในบันทึก"
+
+msgid "Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page."
+msgstr "VRAM สูงสุดยังห่างจากความจุรวมของการ์ด จึงไม่มีอะไรให้ไดรเวอร์ต้องย้ายออก"
+
+msgid "The card was full, which a good plan is meant to be, and the speed was close enough to the estimate that nothing was paging."
+msgstr "การ์ดเต็ม ซึ่งแผนที่ดีก็ควรเป็นเช่นนั้น และความเร็วใกล้เคียงค่าประมาณมากพอที่จะบอกได้ว่าไม่มีการย้ายหน่วยความจำ"
+
+msgid "No VRAM reading was taken during the run, so this configuration has not been cleared of paging; it has only not been checked."
+msgstr "ไม่ได้อ่านค่า VRAM ระหว่างการรัน จึงยังไม่ได้ยืนยันว่าการตั้งค่านี้ไม่ย้ายหน่วยความจำ เพียงแต่ยังไม่ได้ตรวจเท่านั้น"
+
+msgid "The card's total memory is unknown, so a reading of what was in use says nothing about how close to full it was."
+msgstr "ไม่ทราบหน่วยความจำรวมของการ์ด การอ่านว่าใช้ไปเท่าไรจึงไม่บอกอะไรเลยว่าเต็มแค่ไหน"
+
+msgid "There was no estimate to compare the measured speed against, so the second half of the signature could not be tested."
+msgstr "ไม่มีค่าประมาณให้เทียบกับความเร็วที่วัดได้ จึงตรวจครึ่งหลังของลายเซ็นนี้ไม่ได้"
+
+msgid "llama-bench did not produce JSON"
+msgstr "llama-bench ไม่ได้ให้ผลเป็น JSON"
+
+msgid "llama-bench JSON is not a list of results"
+msgstr "JSON ของ llama-bench ไม่ใช่รายการผลลัพธ์"
+
+msgid "llama-bench JSON held no readable results"
+msgstr "JSON ของ llama-bench ไม่มีผลลัพธ์ที่อ่านได้"
+
+msgid "no llama-bench result rows found"
+msgstr "ไม่พบแถวผลลัพธ์ของ llama-bench"
+
+msgid "could not open %(path)s for the server log"
+msgstr "เปิด %(path)s เพื่อเขียนบันทึกของเซิร์ฟเวอร์ไม่ได้"
+
+msgid "could not start llama-server"
+msgstr "เริ่ม llama-server ไม่ได้"
+
+msgid "no output"
+msgstr "ไม่มีผลลัพธ์"
+
+msgid "llama-bench exited with code %(code)d: %(detail)s"
+msgstr "llama-bench ออกด้วยรหัส %(code)d: %(detail)s"
+
+msgid "llama-bench output could not be read: %(error)s"
+msgstr "อ่านผลลัพธ์ของ llama-bench ไม่ได้: %(error)s"
+
+msgid "llama-server did not become healthy"
+msgstr "llama-server ไม่เข้าสู่สถานะพร้อมทำงาน"
+
+msgid "Its whole output is in the log file `bench` named; the end says why."
+msgstr "ผลลัพธ์ทั้งหมดอยู่ในไฟล์บันทึกที่ `bench` บอกชื่อไว้ ส่วนท้ายบอกว่าเพราะอะไร"
+
+msgid "%(path)s was written by a newer LlamaFit (benchmark format %(found)d, this build reads %(known)d)"
+msgstr "%(path)s ถูกเขียนโดย LlamaFit รุ่นใหม่กว่า (รูปแบบผลวัด %(found)d บิลด์นี้อ่านได้ %(known)d)"
+
+msgid "Upgrade LlamaFit, or move the file aside to start a new one."
+msgstr "อัปเกรด LlamaFit หรือย้ายไฟล์นี้ไปไว้ที่อื่นเพื่อเริ่มไฟล์ใหม่"
+
+msgid "a benchmark cannot be recorded against a simulated machine"
+msgstr "บันทึกผลวัดให้กับเครื่องจำลองไม่ได้"
+
+msgid "Run `llamafit bench` on the machine itself, without --profile."
+msgstr "รัน `llamafit bench` บนเครื่องนั้นเองโดยไม่ใส่ --profile"
+
+msgid "the run did not use the settings it was given: %(problems)s"
+msgstr "การรันไม่ได้ใช้ค่าที่กำหนดไว้: %(problems)s"
+
+msgid "Nothing was stored. A result filed under flags it was not taken with would be believed later by everything that reads it."
+msgstr "ไม่ได้เก็บอะไรไว้เลย ผลที่บันทึกไว้ใต้แฟล็กที่ไม่ได้ใช้จริงจะถูกทุกสิ่งที่อ่านมันต่อไปเชื่อว่าเป็นจริง"
+
+msgid "a conservative default; nobody has measured this card's backend overhead"
+msgstr "ค่าเริ่มต้นแบบระมัดระวัง ยังไม่มีใครวัดค่าโสหุ้ยของแบ็กเอนด์บนการ์ดรุ่นนี้"
+
+msgid "measured on this card with driver %(driver)s and llama.cpp %(build)s; one machine"
+msgstr "วัดบนการ์ดรุ่นนี้ด้วยไดรเวอร์ %(driver)s และ llama.cpp %(build)s จากเครื่องเดียว"
+
+msgid "A hybrid placement has to say how many layers are on the graphics card."
+msgstr "การจัดวางแบบผสมต้องระบุว่ามีกี่เลเยอร์อยู่บนการ์ดจอ"
+
+msgid "Pass gpu_layers, which is what -ngl would be."
+msgstr "ส่งค่า gpu_layers ซึ่งก็คือค่าของ -ngl นั่นเอง"
+
+msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
+msgstr "LlamaFit ยังไม่เคยอ่านไฟล์ %(quant)s ของ %(model)s จึงประเมินขนาดไม่ได้"
+
+msgid "Run `llamafit catalog refresh` to read the file's header."
+msgstr "รัน `llamafit catalog refresh` เพื่ออ่านส่วนหัวของไฟล์"
+
+msgid "the server process before any model buffer"
+msgstr "โพรเซสของเซิร์ฟเวอร์ก่อนบัฟเฟอร์ใด ๆ ของโมเดล"
+
+msgid "fitted to one machine's measurements; the least certain line here"
+msgstr "ฟิตจากผลวัดของเครื่องเดียว เป็นบรรทัดที่แน่นอนน้อยที่สุดตรงนี้"
+
+msgid "room for one logit per vocabulary entry per token of the batch"
+msgstr "พื้นที่สำหรับหนึ่งโลจิตต่อหนึ่งรายการในคลังคำ ต่อหนึ่งโทเค็นของแบตช์"
+
+msgid "LlamaFit cannot size a %(kv_type)s key-value cache."
+msgstr "LlamaFit ประเมินขนาดแคชคีย์-ค่าแบบ %(kv_type)s ไม่ได้"
+
+msgid "Use one of: %(types)s."
+msgstr "ใช้อย่างใดอย่างหนึ่งใน: %(types)s"
+
+msgid "This model's file does not say how large its key-value cache is per token."
+msgstr "ไฟล์ของโมเดลนี้ไม่ได้บอกว่าแคชคีย์-ค่าใหญ่เท่าไรต่อหนึ่งโทเค็น"
+
+msgid "Refresh the catalog so the file's header is read again."
+msgstr "รีเฟรชแคตตาล็อกเพื่อให้อ่านส่วนหัวของไฟล์ใหม่อีกครั้ง"
+
+msgid "the attention-layer count was assumed, not counted"
+msgstr "จำนวนเลเยอร์ความสนใจเป็นค่าที่สมมติขึ้น ไม่ได้นับจริง"
+
+msgid "%(arch)s allocates more cache than its header describes; see the line below"
+msgstr "%(arch)s จองแคชมากกว่าที่ส่วนหัวของมันระบุไว้ ดูบรรทัดถัดไป"
+
+msgid "what %(arch)s allocates beyond its header, measured rather than derived"
+msgstr "ส่วนที่ %(arch)s จองเกินจากที่ส่วนหัวระบุ เป็นค่าที่วัดได้ ไม่ใช่ค่าที่คำนวณออกมา"
+
+msgid "from the architecture's state dimensions; it does not grow with context"
+msgstr "มาจากมิติของสถานะในสถาปัตยกรรมนี้ ไม่โตขึ้นตามคอนเท็กซ์"
+
+msgid "the projector file itself"
+msgstr "ตัวไฟล์โปรเจกเตอร์เอง"
+
+msgid "the projector's own compute space, measured at 248 MiB"
+msgstr "พื้นที่คำนวณของโปรเจกเตอร์เอง วัดได้ 248 MiB"
+
+msgid "attention projections, feed-forward weights and norms"
+msgstr "การฉายในชั้นความสนใจ น้ำหนักฟีดฟอร์เวิร์ด และนอร์ม"
+
+msgid "always-on experts, which run for every token"
+msgstr "ผู้เชี่ยวชาญที่เปิดอยู่ตลอด ซึ่งทำงานกับทุกโทเค็น"
+
+msgid "routed experts, read across the bus once per micro-batch"
+msgstr "ผู้เชี่ยวชาญที่ถูกกำหนดเส้นทาง อ่านผ่านบัสหนึ่งครั้งต่อหนึ่งไมโครแบตช์"
+
+msgid "this model ties its output projection to its embedding table"
+msgstr "โมเดลนี้ใช้การฉายผลลัพธ์ร่วมกับตารางเอ็มเบดดิง"
+
+msgid "llama.cpp keeps the embedding table in memory even at full offload"
+msgstr "llama.cpp เก็บตารางเอ็มเบดดิงไว้ในหน่วยความจำแม้จะออฟโหลดทั้งหมดแล้ว"
+
+msgid "streamed from disk as it is needed, not held in memory"
+msgstr "อ่านจากดิสก์เมื่อต้องใช้ ไม่เก็บไว้ในหน่วยความจำ"
+
+msgid "held in memory, since streaming from disk was turned off"
+msgstr "เก็บไว้ในหน่วยความจำ เพราะปิดการอ่านจากดิสก์ไว้"
+
 msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
 msgstr "Hugging Face ส่ง %(status)d กลับมาขณะแสดงรายการไฟล์ของ %(repo)s"
 
@@ -66,6 +258,9 @@ msgstr "รัน `llamafit catalog refresh` โดยไม่ใส่ --model
 msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
 msgstr "ค้นหา ประเมินขนาด ติดตั้ง และตรวจสอบ LLM แบบเปิดน้ำหนักสำหรับ llama.cpp บนเครื่องของคุณเอง"
 
+msgid "With no command, llamafit opens the terminal dashboard; in a pipe, or with --json, it prints what `llamafit recommend` would."
+msgstr "ถ้าไม่ใส่คำสั่งใด llamafit จะเปิดแดชบอร์ดบนเทอร์มินัล เมื่ออยู่ในไปป์ หรือเมื่อใส่ --json จะแสดงสิ่งที่ `llamafit recommend` จะแสดง"
+
 msgid "Print machine-readable JSON instead of tables."
 msgstr "แสดงผลเป็น JSON ที่เครื่องอ่านได้แทนตาราง"
 
@@ -75,17 +270,318 @@ msgstr "เขียนรายละเอียดลงใน llamafit.log �
 msgid "Disable colours."
 msgstr "ปิดการแสดงสี"
 
+msgid "Answer for the machine this hardware profile describes instead of this one. Nothing about this machine is probed, and every answer is marked as simulated. `llamafit hardware list` names the profiles you have."
+msgstr "ตอบโดยอิงเครื่องที่โปรไฟล์ฮาร์ดแวร์นี้อธิบายไว้ แทนเครื่องนี้ จะไม่มีการตรวจอะไรบนเครื่องนี้เลย และทุกคำตอบจะถูกกำกับว่าเป็นการจำลอง `llamafit hardware list` บอกว่าคุณมีโปรไฟล์ใดบ้าง"
+
+msgid "Pretend the graphics card has this much memory, for example 24G. Everything else stays as scanned, and every answer is marked as simulated."
+msgstr "สมมติว่าการ์ดจอมีหน่วยความจำเท่านี้ เช่น 24G อย่างอื่นคงไว้ตามที่ตรวจได้ และทุกคำตอบจะถูกกำกับว่าเป็นการจำลอง"
+
+msgid "Pretend the machine has this much system memory, for example 128GiB. Every answer is marked as simulated."
+msgstr "สมมติว่าเครื่องมีหน่วยความจำระบบเท่านี้ เช่น 128GiB ทุกคำตอบจะถูกกำกับว่าเป็นการจำลอง"
+
+msgid "Pretend the processor has this many physical cores. Every answer is marked as simulated."
+msgstr "สมมติว่าโปรเซสเซอร์มีคอร์จริงเท่านี้ ทุกคำตอบจะถูกกำกับว่าเป็นการจำลอง"
+
+msgid "Plan, report and score no context longer than this. It caps the model's own length; it does not describe a machine."
+msgstr "ไม่วางแผน ไม่รายงาน และไม่ให้คะแนนคอนเท็กซ์ที่ยาวกว่านี้ ค่านี้จำกัดความยาวของตัวโมเดลเอง ไม่ได้อธิบายเครื่อง"
+
 msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
 msgstr "ใช้ภาษานี้ เช่น pt_PT ภาษาที่ LlamaFit ไม่มีจะกลับไปใช้ภาษาอังกฤษ และจะบอกว่ามีภาษาใดบ้าง"
 
 msgid "Print the version and exit."
 msgstr "แสดงเวอร์ชันแล้วออก"
 
+msgid "the output's encoding"
+msgstr "การเข้ารหัสของผลลัพธ์"
+
+msgid "%(count)d character could not be written in %(encoding)s and is shown as ?."
+msgid_plural "%(count)d characters could not be written in %(encoding)s and are shown as ?."
+msgstr[0] "มี %(count)d อักขระที่เขียนใน %(encoding)s ไม่ได้ และแสดงเป็น ?"
+
+msgid "Set PYTHONUTF8=1 in the environment and run again: Python then writes UTF-8, which carries every language."
+msgstr "ตั้ง PYTHONUTF8=1 ในสภาพแวดล้อมแล้วรันใหม่ จากนั้น Python จะเขียนเป็น UTF-8 ซึ่งรองรับได้ทุกภาษา"
+
+msgid "%(option)s is an option of llamafit itself, so it goes before the command: `llamafit %(option)s %(rest)s`."
+msgstr "%(option)s เป็นตัวเลือกของ llamafit เอง จึงต้องอยู่ก่อนคำสั่ง: `llamafit %(option)s %(rest)s`"
+
 msgid "Unexpected error: %(error)s"
 msgstr "ข้อผิดพลาดที่ไม่คาดคิด: %(error)s"
 
 msgid "Run again with --verbose for the full traceback."
 msgstr "รันใหม่พร้อม --verbose เพื่อดู traceback ทั้งหมด"
+
+msgid "A catalog model id."
+msgstr "id ของโมเดลในแคตตาล็อก"
+
+msgid "Benchmark this quantisation instead of the planned one."
+msgstr "วัดไฟล์ควอนไทซ์นี้ แทนไฟล์ที่แผนกำหนดไว้"
+
+msgid "Size for this many tokens."
+msgstr "คิดขนาดสำหรับโทเค็นจำนวนเท่านี้"
+
+msgid "Set the micro-batch by hand; the budget is rebuilt around it."
+msgstr "กำหนดไมโครแบตช์เอง แล้วการจัดสรรจะถูกคิดใหม่รอบค่านี้"
+
+msgid ""
+"Measure a model on this machine and show the measurement beside the estimate.\n"
+"\n"
+"Runs llama-bench and a real server at the planned flags, stores the result with the conditions it was taken under, and flags a configuration the driver was paging. With --calibrate, fits the estimator's constants to this machine from every stored result and says by name which ones the measurements do not determine."
+msgstr ""
+"วัดโมเดลบนเครื่องนี้แล้วแสดงผลวัดคู่กับค่าประมาณ\n"
+"\n"
+"รัน llama-bench และเซิร์ฟเวอร์จริงด้วยแฟล็กตามแผน เก็บผลพร้อมเงื่อนไขที่วัด และกำกับการตั้งค่าที่ไดรเวอร์ย้ายหน่วยความจำ เมื่อใส่ --calibrate จะฟิตค่าคงที่ของตัวประมาณให้เข้ากับเครื่องนี้จากผลที่เก็บไว้ทั้งหมด และระบุชื่อค่าคงที่ที่ผลวัดยังกำหนดไม่ได้"
+
+msgid "Measure prompt processing at every micro-batch of the ladder, not only the planned one. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all."
+msgstr "วัดการประมวลผลพรอมต์ที่ทุกไมโครแบตช์บนบันได ไม่ใช่เฉพาะค่าที่วางแผนไว้ หัวข้อ 10.2 มีพารามิเตอร์อิสระสองตัว ส่วนไมโครแบตช์หนึ่งค่าให้สมการเดียว ถ้าไม่ใส่ตัวเลือกนี้ก็ฟิตครึ่งพรอมต์ของการสอบเทียบไม่ได้เลย"
+
+msgid "Run llama-bench only. Faster, and it gives up the paging check, the buffer sizes and the tool-call test, all of which need a real server."
+msgstr "รันเฉพาะ llama-bench เร็วกว่า แต่ต้องยอมเสียการตรวจการย้ายหน่วยความจำ ขนาดบัฟเฟอร์ และการทดสอบเรียกเครื่องมือ ซึ่งทั้งหมดต้องใช้เซิร์ฟเวอร์จริง"
+
+msgid "Print the result without writing it to the database."
+msgstr "แสดงผลโดยไม่เขียนลงฐานข้อมูล"
+
+msgid "Print the commands that would run, and run nothing."
+msgstr "แสดงคำสั่งที่จะรัน แล้วไม่รันอะไรเลย"
+
+msgid "Fit the estimator's constants to this machine from every result."
+msgstr "ฟิตค่าคงที่ของตัวประมาณให้เข้ากับเครื่องนี้จากผลทุกรายการ"
+
+msgid "List what is already stored and stop."
+msgstr "แสดงรายการที่เก็บไว้แล้วหยุด"
+
+msgid "`llamafit bench` needs a model to measure"
+msgstr "`llamafit bench` ต้องมีโมเดลที่จะวัด"
+
+msgid "Try `llamafit bench <model>`, `--calibrate` on its own, or `--show`."
+msgstr "ลอง `llamafit bench <model>` หรือ `--calibrate` เดี่ยว ๆ หรือ `--show`"
+
+msgid "llama.cpp was not found, so there is nothing to benchmark with"
+msgstr "ไม่พบ llama.cpp จึงไม่มีอะไรให้ใช้วัด"
+
+msgid "Run `llamafit doctor` to see where it was looked for."
+msgstr "รัน `llamafit doctor` เพื่อดูว่าค้นหาที่ไหนไปบ้าง"
+
+msgid "%(path)s has llama-server but no llama-bench"
+msgstr "%(path)s มี llama-server แต่ไม่มี llama-bench"
+
+msgid "Some release archives leave it out; a full build has it beside the server."
+msgstr "ไฟล์เผยแพร่บางชุดไม่ได้ใส่มาด้วย บิลด์ที่ครบจะมีมันอยู่ข้างเซิร์ฟเวอร์"
+
+msgid "this host is simulated, and a simulated machine cannot be measured"
+msgstr "โฮสต์นี้เป็นการจำลอง และเครื่องจำลองย่อมวัดไม่ได้"
+
+msgid "Run `llamafit bench` on the machine itself."
+msgstr "รัน `llamafit bench` บนเครื่องนั้นเอง"
+
+msgid "the model file is not on this machine: %(path)s"
+msgstr "ไฟล์โมเดลไม่ได้อยู่บนเครื่องนี้: %(path)s"
+
+msgid "Download it first; `llamafit plan` shows the path the command line uses."
+msgstr "ดาวน์โหลดก่อน แล้ว `llamafit plan` จะบอกเส้นทางที่บรรทัดคำสั่งใช้"
+
+msgid "Would run:"
+msgstr "จะรัน:"
+
+msgid "Nothing has been measured on this machine yet."
+msgstr "ยังไม่ได้วัดอะไรบนเครื่องนี้เลย"
+
+msgid "Stored measurements"
+msgstr "ผลวัดที่เก็บไว้"
+
+msgid "model"
+msgstr "โมเดล"
+
+msgid "kind"
+msgstr "ชนิด"
+
+msgid "gen tok/s"
+msgstr "สร้าง tok/s"
+
+msgid "prompt tok/s"
+msgstr "พรอมต์ tok/s"
+
+msgid "taken"
+msgstr "วัดเมื่อ"
+
+msgid "flags"
+msgstr "แฟล็ก"
+
+msgid "Nothing was written to the database, so no estimate will be relabelled."
+msgstr "ไม่ได้เขียนอะไรลงฐานข้อมูล จึงไม่มีค่าประมาณใดถูกเปลี่ยนป้ายกำกับ"
+
+msgid "Estimated against measured"
+msgstr "ค่าประมาณเทียบกับค่าที่วัดได้"
+
+msgid "figure"
+msgstr "รายการ"
+
+msgid "context"
+msgstr "คอนเท็กซ์"
+
+msgid "micro-batch"
+msgstr "ไมโครแบตช์"
+
+msgid "estimated"
+msgstr "ประมาณ"
+
+msgid "measured"
+msgstr "วัดได้"
+
+msgid "ratio"
+msgstr "อัตราส่วน"
+
+msgid "The plan sizes this configuration for %(context)s tokens and estimates %(tps)s generated tokens per second there. Nothing above ran at that context, so that figure is reported and not compared."
+msgstr "แผนนี้คิดขนาดการตั้งค่านี้สำหรับ %(context)s โทเค็น และประมาณว่าจะสร้างได้ %(tps)s โทเค็นต่อวินาทีที่จุดนั้น ไม่มีรายการข้างบนที่รันด้วยคอนเท็กซ์นั้น ตัวเลขนี้จึงเป็นเพียงการรายงาน ไม่ใช่การเปรียบเทียบ"
+
+msgid "%(count)d figure is outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgid_plural "%(count)d figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgstr[0] "มี %(count)d รายการอยู่นอกช่วง 0.8 ถึง 1.25 ที่สูตรซึ่งยังไม่สอบเทียบควรจะตกอยู่"
+
+msgid "This configuration was paging."
+msgstr "การตั้งค่านี้กำลังย้ายหน่วยความจำ"
+
+msgid "This configuration was not paging."
+msgstr "การตั้งค่านี้ไม่ได้ย้ายหน่วยความจำ"
+
+msgid "Paging could not be checked."
+msgstr "ตรวจเรื่องการย้ายหน่วยความจำไม่ได้"
+
+msgid "Peak VRAM was %(percent)s percent of the card, and generation was %(speed)s percent of the estimate."
+msgstr "VRAM สูงสุดคิดเป็น %(percent)s เปอร์เซ็นต์ของการ์ด และความเร็วในการสร้างคิดเป็น %(speed)s เปอร์เซ็นต์ของค่าประมาณ"
+
+msgid "Peak VRAM was %(percent)s percent of the card. Generation was not compared with the estimate."
+msgstr "VRAM สูงสุดคิดเป็น %(percent)s เปอร์เซ็นต์ของการ์ด ส่วนความเร็วในการสร้างไม่ได้นำไปเทียบกับค่าประมาณ"
+
+msgid "The largest context on the ladder that would not page is %(tokens)s."
+msgstr "คอนเท็กซ์ที่ใหญ่ที่สุดบนบันไดซึ่งไม่ย้ายหน่วยความจำคือ %(tokens)s"
+
+msgid "Calibration"
+msgstr "การสอบเทียบ"
+
+msgid "constant"
+msgstr "ค่าคงที่"
+
+msgid "value"
+msgstr "ค่า"
+
+msgid "from"
+msgstr "จาก"
+
+msgid "%(base)s + %(slope)s per 1K"
+msgstr "%(base)s + %(slope)s ต่อ 1K"
+
+msgid "%(count)d measured context"
+msgid_plural "%(count)d measured contexts"
+msgstr[0] "คอนเท็กซ์ที่วัดแล้ว %(count)d ค่า"
+
+msgid "Nothing was fitted. Every line below says what its constant was missing; a calibration made from less than that would look precise and be arbitrary."
+msgstr "ฟิตอะไรไม่ได้เลย ทุกบรรทัดข้างล่างบอกว่าค่าคงที่ของมันขาดอะไรไป การสอบเทียบที่ทำจากข้อมูลน้อยกว่านั้นจะดูแม่นยำแต่แท้จริงเป็นค่าที่ตั้งขึ้นตามใจ"
+
+msgid "%(name)s was not fitted: %(reason)s"
+msgstr "ฟิต %(name)s ไม่ได้: %(reason)s"
+
+msgid "%(count)d measured configuration"
+msgid_plural "%(count)d measured configurations"
+msgstr[0] "การตั้งค่าที่วัดแล้ว %(count)d แบบ"
+
+msgid "What the model is for. It sets the score weights, the speed target and the context a candidate is measured against."
+msgstr "โมเดลนี้เอาไว้ทำอะไร ค่านี้กำหนดน้ำหนักคะแนน ความเร็วเป้าหมาย และคอนเท็กซ์ที่ใช้วัดผู้สมัครแต่ละราย"
+
+msgid "Capability the model must have; a model without it is excluded "
+msgstr "ความสามารถที่โมเดลต้องมี โมเดลที่ไม่มีจะถูกคัดออก"
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "เก็บเฉพาะรหัสสัญญาอนุญาตเหล่านี้ (ระบุซ้ำได้)"
+
+msgid "balanced, quality or speed: moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights."
+msgstr "balanced, quality หรือ speed: ย้ายน้ำหนักหนึ่งในสิบระหว่างคุณภาพกับความเร็ว มันทำให้กระดานเอียง ไม่ได้แทนที่น้ำหนักทั้งชุด"
+
+msgid "Exclude anything larger to download, for example 40G or 7.5GiB."
+msgstr "คัดสิ่งที่ต้องดาวน์โหลดใหญ่กว่านี้ออก เช่น 40G หรือ 7.5GiB"
+
+msgid "The worst verdict to list: comfortable, fits or tight."
+msgstr "ผลตัดสินต่ำสุดที่ยังแสดง: comfortable, fits หรือ tight"
+
+msgid "Exclude candidates generating fewer tokens per second than this, in place of the speed a person reads at. Pass 0 when nobody is waiting on the tokens."
+msgstr "คัดผู้สมัครที่สร้างโทเค็นต่อวินาทีน้อยกว่านี้ออก แทนการใช้ความเร็วที่คนอ่านทัน ใส่ 0 เมื่อไม่มีใครรอโทเค็นเหล่านั้นอยู่"
+
+msgid "Order the rows drawn: score, speed, quality, context, size, prompt, card, ram, fit, model or quant, largest or best first unless :asc says otherwise. The # column keeps the ranking."
+msgstr "ลำดับการวาดแถว: score, speed, quality, context, size, prompt, card, ram, fit, model หรือ quant โดยค่ามากหรือดีที่สุดมาก่อน เว้นแต่จะต่อท้ายด้วย :asc คอลัมน์ # ยังคงลำดับเดิมไว้"
+
+msgid "Draw only rows whose id, name or quantisation contains this text."
+msgstr "วาดเฉพาะแถวที่ id ชื่อ หรือชื่อควอนไทซ์มีข้อความนี้อยู่"
+
+msgid "Draw only rows whose file is already on this machine."
+msgstr "วาดเฉพาะแถวที่ไฟล์มีอยู่บนเครื่องนี้แล้ว"
+
+msgid "Draw only rows that run this way: gpu, moe-offload, hybrid or cpu."
+msgstr "วาดเฉพาะแถวที่รันแบบนี้: gpu, moe-offload, hybrid หรือ cpu"
+
+msgid "Draw only rows at or above this verdict: comfortable, fits or tight. The ranking is unchanged and a hidden row is still counted."
+msgstr "วาดเฉพาะแถวที่ได้ผลตัดสินตั้งแต่ระดับนี้ขึ้นไป: comfortable, fits หรือ tight ลำดับไม่เปลี่ยน และแถวที่ซ่อนไว้ก็ยังถูกนับ"
+
+msgid "Draw exactly these columns, comma-separated, in this order, named as --json names them: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+msgstr "วาดเฉพาะคอลัมน์เหล่านี้ คั่นด้วยจุลภาค ตามลำดับนี้ โดยใช้ชื่อเดียวกับที่ --json ใช้: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context"
+
+msgid "Draw every column whatever the terminal's width; a cell that does not fit folds."
+msgstr "วาดทุกคอลัมน์ไม่ว่าเทอร์มินัลจะกว้างเท่าใด ช่องที่ไม่พอดีจะขึ้นบรรทัดใหม่"
+
+msgid "Leave the candidates that were not ranked off the table. The reasons are still printed under it."
+msgstr "ไม่ใส่ผู้สมัครที่ไม่ได้จัดอันดับลงในตาราง เหตุผลยังคงแสดงไว้ใต้ตาราง"
+
+msgid "invalid --min-fit %(value)s"
+msgstr "--min-fit ไม่ถูกต้อง: %(value)s"
+
+msgid "Valid values: %(values)s"
+msgstr "ค่าที่ใช้ได้: %(values)s"
+
+msgid "invalid --prefer %(value)s"
+msgstr "--prefer ไม่ถูกต้อง: %(value)s"
+
+msgid "invalid --runs %(value)s"
+msgstr "--runs ไม่ถูกต้อง: %(value)s"
+
+msgid "invalid --sort %(value)s"
+msgstr "--sort ไม่ถูกต้อง: %(value)s"
+
+msgid "invalid --columns %(value)s"
+msgstr "--columns ไม่ถูกต้อง: %(value)s"
+
+msgid ""
+"Rank the catalog for what you want to do on this machine.\n"
+"\n"
+"Every candidate is planned, sized and estimated here, so the first run scans the machine. Speeds compare candidates at 8K tokens of context; --explain expands a row into the scores, the weights, the budget and the speed breakdown that produced it."
+msgstr ""
+"จัดอันดับแคตตาล็อกตามสิ่งที่คุณอยากทำบนเครื่องนี้\n"
+"\n"
+"ผู้สมัครทุกรายถูกวางแผน คิดขนาด และประมาณความเร็วตรงนี้ การรันครั้งแรกจึงต้องตรวจเครื่องก่อน ความเร็วเทียบผู้สมัครกันที่คอนเท็กซ์ 8K โทเค็น ส่วน --explain จะกางแถวหนึ่งออกเป็นคะแนน น้ำหนัก การจัดสรร และการแยกส่วนความเร็วที่ทำให้ได้แถวนั้น"
+
+msgid "Exclude candidates that cannot hold at least this many tokens."
+msgstr "คัดผู้สมัครที่เก็บโทเค็นได้ไม่ถึงจำนวนนี้ออก"
+
+msgid "Show at most this many rows."
+msgstr "แสดงมากที่สุดเท่านี้แถว"
+
+msgid "Show every quantisation instead of the best one per model."
+msgstr "แสดงไฟล์ควอนไทซ์ทุกแบบ แทนที่จะแสดงแบบที่ดีที่สุดของแต่ละโมเดล"
+
+msgid "Expand every row shown into the scores, weights, budget and speed breakdown behind it. Combine with --limit 1 for one model."
+msgstr "กางทุกแถวที่แสดงออกเป็นคะแนน น้ำหนัก การจัดสรร และการแยกส่วนความเร็วที่อยู่เบื้องหลัง ใช้ร่วมกับ --limit 1 เพื่อดูโมเดลเดียว"
+
+msgid "Plan without a vision projector, freeing its memory."
+msgstr "วางแผนโดยไม่ใช้โปรเจกเตอร์ภาพ เพื่อคืนหน่วยความจำส่วนนั้น"
+
+msgid ""
+"Rank every model by how well it uses this machine, whatever it is for.\n"
+"\n"
+"No use case, no weights and no score: this is the memory question on its own. Models are sized for 32K tokens of context, and the context column is the largest each one holds in the mode shown."
+msgstr ""
+"จัดอันดับทุกโมเดลตามว่าใช้เครื่องนี้ได้คุ้มเพียงใด โดยไม่สนว่าเอาไว้ทำอะไร\n"
+"\n"
+"ไม่มีกรณีใช้งาน ไม่มีน้ำหนัก และไม่มีคะแนน นี่คือคำถามเรื่องหน่วยความจำล้วน ๆ โมเดลถูกคิดขนาดสำหรับคอนเท็กซ์ 32K โทเค็น และคอลัมน์คอนเท็กซ์คือค่าสูงสุดที่แต่ละโมเดลเก็บได้ในโหมดที่แสดงอยู่"
+
+msgid "Only the configurations that use the machine well: at least half its memory held in weights, and no pool past four fifths."
+msgstr "เฉพาะการตั้งค่าที่ใช้เครื่องได้คุ้ม: น้ำหนักกินหน่วยความจำอย่างน้อยครึ่งหนึ่ง และไม่มีพูลใดเกินสี่ในห้า"
 
 msgid "Maintain the catalog: validate its files, refresh volatile fields."
 msgstr "ดูแลแคตตาล็อก: ตรวจสอบไฟล์ และรีเฟรชฟิลด์ที่เปลี่ยนบ่อย"
@@ -96,36 +592,17 @@ msgstr "เก็บเฉพาะกรณีใช้งานนี้"
 msgid "Keep only models with this capability (repeatable)."
 msgstr "เก็บเฉพาะโมเดลที่มีความสามารถนี้ (ระบุซ้ำได้)"
 
-msgid "Keep only these licence identifiers (repeatable)."
-msgstr "เก็บเฉพาะรหัสสัญญาอนุญาตเหล่านี้ (ระบุซ้ำได้)"
+msgid "Show only this quantisation, matched case-insensitively, in both tables."
+msgstr "แสดงเฉพาะไฟล์ควอนไทซ์นี้ในทั้งสองตาราง โดยจับคู่แบบไม่สนตัวพิมพ์ใหญ่เล็ก"
+
+msgid "Size every quantisation for this many tokens instead of the usual 32,768."
+msgstr "คิดขนาดของไฟล์ควอนไทซ์ทุกแบบสำหรับโทเค็นจำนวนนี้ แทนค่าปกติ 32,768"
 
 msgid "Validate only this file instead of the bundled catalog and custom overrides."
 msgstr "ตรวจสอบเฉพาะไฟล์นี้ แทนแคตตาล็อกที่มากับโปรแกรมและไฟล์แทนที่ของผู้ใช้"
 
-msgid "Did you mean: %(ids)s?"
-msgstr "คุณหมายถึง: %(ids)s ใช่ไหม"
-
-msgid "Run `llamafit list` to see every model id."
-msgstr "รัน `llamafit list` เพื่อดู id ของโมเดลทั้งหมด"
-
-msgid "no model named %(id)s in the catalog"
-msgstr "ไม่มีโมเดลชื่อ %(id)s ในแคตตาล็อก"
-
-msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
-msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
-msgstr[0] "พบปัญหาในแคตตาล็อก %(count)d รายการ; รัน `llamafit catalog validate` เพื่อดูรายละเอียด"
-
 msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
 msgstr "ไม่มีโมเดลที่ตรงกัน ลองขยาย --use-case, --capability, --license, --vendor หรือ --search ให้กว้างขึ้น"
-
-msgid "invalid --use-case %(value)s"
-msgstr "--use-case ไม่ถูกต้อง: %(value)s"
-
-msgid "Valid use cases: %(values)s"
-msgstr "กรณีใช้งานที่ใช้ได้: %(values)s"
-
-msgid "Valid capabilities: %(values)s"
-msgstr "ความสามารถที่ใช้ได้: %(values)s"
 
 msgid ""
 "List the model catalog, narrowed by any filters given.\n"
@@ -151,8 +628,14 @@ msgstr "รูปย่อของ llamafit list --search TEXT"
 msgid "Text to match against id, name, vendor or family."
 msgstr "ข้อความที่จะใช้จับคู่กับ id ชื่อ ผู้พัฒนา หรือตระกูล"
 
-msgid "A catalog model id."
-msgstr "id ของโมเดลในแคตตาล็อก"
+msgid ""
+"Show one model: its facts, the quants it publishes, and what each would cost on this machine.\n"
+"\n"
+"The last table is sized against this machine, so the first run scans it. One line per quantisation; plan opens one of those rows into the memory budget, the context ladder and the command line."
+msgstr ""
+"แสดงโมเดลหนึ่งตัว: ข้อมูลของมัน ไฟล์ควอนไทซ์ที่มันเผยแพร่ และแต่ละแบบจะกินทรัพยากรเท่าใดบนเครื่องนี้\n"
+"\n"
+"ตารางสุดท้ายคิดจากเครื่องนี้ การรันครั้งแรกจึงต้องตรวจเครื่องก่อน หนึ่งบรรทัดต่อหนึ่งไฟล์ควอนไทซ์ ส่วน plan จะกางบรรทัดหนึ่งออกเป็นการจัดสรรหน่วยความจำ บันไดคอนเท็กซ์ และบรรทัดคำสั่ง"
 
 msgid "Validate catalog YAML files against the schema, printing one line per problem."
 msgstr "ตรวจสอบไฟล์ YAML ของแคตตาล็อกกับสคีมา โดยแสดงปัญหาบรรทัดละหนึ่งรายการ"
@@ -198,8 +681,384 @@ msgstr "แสดงรายการดิบในแคตตาล็อก
 msgid "Print YAML instead of JSON."
 msgstr "แสดงผลเป็น YAML แทน JSON"
 
+msgid "Did you mean: %(ids)s?"
+msgstr "คุณหมายถึง: %(ids)s ใช่ไหม"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "รัน `llamafit list` เพื่อดู id ของโมเดลทั้งหมด"
+
+msgid "no model named %(id)s in the catalog"
+msgstr "ไม่มีโมเดลชื่อ %(id)s ในแคตตาล็อก"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "พบปัญหาในแคตตาล็อก %(count)d รายการ; รัน `llamafit catalog validate` เพื่อดูรายละเอียด"
+
+msgid "invalid --use-case %(value)s"
+msgstr "--use-case ไม่ถูกต้อง: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "กรณีใช้งานที่ใช้ได้: %(values)s"
+
+msgid "invalid %(option)s value: %(values)s"
+msgid_plural "invalid %(option)s values: %(values)s"
+msgstr[0] "%(option)s มีค่าที่ไม่ถูกต้อง: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "ความสามารถที่ใช้ได้: %(values)s"
+
+msgid "%(option)s is not a size: %(value)s"
+msgstr "%(option)s ไม่ใช่ขนาด: %(value)s"
+
+msgid "Sizes look like 8G, 7.5GiB or 512M; a bare number is bytes."
+msgstr "ขนาดเขียนแบบ 8G, 7.5GiB หรือ 512M ส่วนตัวเลขเปล่าหมายถึงไบต์"
+
+msgid "%(ceiling)s %(max)s is below %(floor)s %(min)s"
+msgstr "%(ceiling)s %(max)s ต่ำกว่า %(floor)s %(min)s"
+
+msgid "Raise %(ceiling)s, or lower %(floor)s."
+msgstr "เพิ่ม %(ceiling)s หรือลด %(floor)s"
+
+msgid "`llamafit %(command)s` reports on the machine LlamaFit is running on"
+msgstr "`llamafit %(command)s` รายงานเกี่ยวกับเครื่องที่ LlamaFit กำลังทำงานอยู่"
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a profile describes, run `llamafit hardware show NAME --as-host`."
+msgstr "เอา --profile, --memory, --ram และ --cpu-cores ออก ถ้าอยากดูเครื่องที่โปรไฟล์หนึ่งอธิบายไว้ ให้รัน `llamafit hardware show NAME --as-host`"
+
 msgid "Explain what was detected, what failed, and what would unlock more."
 msgstr "อธิบายว่าตรวจพบอะไร อะไรล้มเหลว และทำอะไรจึงจะใช้ได้มากขึ้น"
+
+msgid "Hardware profiles: describe a machine in a file and score models against it."
+msgstr "โปรไฟล์ฮาร์ดแวร์: อธิบายเครื่องหนึ่งไว้ในไฟล์ แล้วให้คะแนนโมเดลเทียบกับเครื่องนั้น"
+
+msgid "Validate only this file instead of every bundled and user profile."
+msgstr "ตรวจเฉพาะไฟล์นี้ แทนโปรไฟล์ที่มากับโปรแกรมและโปรไฟล์ของคุณทั้งหมด"
+
+msgid "A profile name, or a path to a profile file."
+msgstr "ชื่อโปรไฟล์ หรือเส้นทางไปยังไฟล์โปรไฟล์"
+
+msgid "%(count)d hardware profile problem found; run `llamafit hardware validate` for details."
+msgid_plural "%(count)d hardware profile problems found; run `llamafit hardware validate` for details."
+msgstr[0] "พบปัญหาในโปรไฟล์ฮาร์ดแวร์ %(count)d รายการ รัน `llamafit hardware validate` เพื่อดูรายละเอียด"
+
+msgid "List the hardware profiles LlamaFit has: the bundled ones and your own."
+msgstr "แสดงโปรไฟล์ฮาร์ดแวร์ที่ LlamaFit มี: ทั้งที่มากับโปรแกรมและของคุณเอง"
+
+msgid "No hardware profiles. Run `llamafit hardware path` to see where yours would go."
+msgstr "ไม่มีโปรไฟล์ฮาร์ดแวร์เลย รัน `llamafit hardware path` เพื่อดูว่าโปรไฟล์ของคุณควรอยู่ที่ไหน"
+
+msgid ""
+"Show one profile; with --as-host, the machine it stands in for.\n"
+"\n"
+"A host built from a profile is marked as simulated, in the table and in the JSON, so a what-if is never mistaken for a scan of this machine."
+msgstr ""
+"แสดงโปรไฟล์หนึ่ง เมื่อใส่ --as-host จะแสดงเครื่องที่โปรไฟล์นั้นใช้แทน\n"
+"\n"
+"โฮสต์ที่สร้างจากโปรไฟล์จะถูกกำกับว่าเป็นการจำลองทั้งในตารางและใน JSON การลองสมมติจึงไม่มีทางถูกเข้าใจผิดว่าเป็นผลตรวจเครื่องนี้"
+
+msgid "Show the host this profile substitutes, as `llamafit system` would."
+msgstr "แสดงโฮสต์ที่โปรไฟล์นี้ใช้แทน ในรูปแบบเดียวกับที่ `llamafit system` แสดง"
+
+msgid "Check hardware profile files against the schema, printing one line per problem."
+msgstr "ตรวจไฟล์โปรไฟล์ฮาร์ดแวร์กับสคีมา โดยแสดงปัญหาบรรทัดละหนึ่งรายการ"
+
+msgid "Print the directory your own hardware profiles go in."
+msgstr "แสดงไดเรกทอรีที่เก็บโปรไฟล์ฮาร์ดแวร์ของคุณเอง"
+
+msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr "ยังไม่มีไดเรกทอรีนี้ ให้สร้างขึ้นมาแล้วใส่ไฟล์ %(suffix)s ลงไป"
+
+msgid "Install what it takes to run a model: llama.cpp itself, and the weights."
+msgstr "ติดตั้งสิ่งที่จำเป็นต่อการรันโมเดล: ตัว llama.cpp เอง และไฟล์น้ำหนัก"
+
+msgid "Fetch this quantisation instead of the first the catalog publishes."
+msgstr "ดาวน์โหลดไฟล์ควอนไทซ์แบบนี้ แทนแบบแรกที่แคตตาล็อกเผยแพร่"
+
+msgid "Put the files here instead of under the configured downloads directory."
+msgstr "วางไฟล์ไว้ที่นี่ แทนไดเรกทอรีดาวน์โหลดที่ตั้งค่าไว้"
+
+msgid "Use at most this much bandwidth, for example 5M. Shared across every worker, so the figure is the figure whatever --workers says."
+msgstr "ใช้แบนด์วิดท์มากที่สุดเท่านี้ เช่น 5M ค่านี้แบ่งกันใช้ทุกตัวทำงาน ตัวเลขจึงเท่าเดิมไม่ว่า --workers จะเป็นเท่าใด"
+
+msgid "How many requests to keep in flight. More is not always faster, and a home connection is shared with whoever else is using it."
+msgstr "จำนวนคำขอที่ค้างไว้พร้อมกัน มากกว่าไม่ได้แปลว่าเร็วกว่าเสมอไป และสายที่บ้านยังต้องแบ่งกับคนอื่นที่ใช้อยู่ด้วย"
+
+msgid "Do not ask before starting."
+msgstr "ไม่ต้องถามก่อนเริ่ม"
+
+msgid "Show what would be fetched and stop before fetching it."
+msgstr "แสดงว่าจะดาวน์โหลดอะไรบ้าง แล้วหยุดก่อนดาวน์โหลดจริง"
+
+msgid "Fetch only the weights, not the vision projector or the draft model."
+msgstr "ดาวน์โหลดเฉพาะไฟล์น้ำหนัก ไม่เอาโปรเจกเตอร์ภาพหรือโมเดลร่าง"
+
+msgid "Re-read files that are already here and check them against the catalog."
+msgstr "อ่านไฟล์ที่มีอยู่แล้วซ้ำอีกครั้ง และตรวจกับแคตตาล็อก"
+
+msgid "Fetch files the catalog holds no checksum for. Nothing will be able to tell you whether they arrived intact."
+msgstr "ดาวน์โหลดไฟล์ที่แคตตาล็อกไม่มีเช็กซัมด้วย จะไม่มีอะไรบอกคุณได้ว่าไฟล์มาถึงครบถ้วนหรือไม่"
+
+msgid "Show at most this many entries."
+msgstr "แสดงมากที่สุดเท่านี้รายการ"
+
+msgid "Download a model's weights, resuming anything an earlier run left and checking every file against the catalog's checksum."
+msgstr "ดาวน์โหลดไฟล์น้ำหนักของโมเดล โดยทำต่อจากสิ่งที่การรันก่อนหน้าค้างไว้ และตรวจทุกไฟล์กับเช็กซัมในแคตตาล็อก"
+
+msgid "Start the download?"
+msgstr "เริ่มดาวน์โหลดเลยไหม"
+
+msgid "Show what has been downloaded, newest first."
+msgstr "แสดงสิ่งที่ดาวน์โหลดไว้แล้ว เรียงจากใหม่สุด"
+
+msgid "Nothing has been downloaded yet."
+msgstr "ยังไม่ได้ดาวน์โหลดอะไรเลย"
+
+msgid "Install this backend instead of the one chosen for your GPU: cuda, vulkan, hip, sycl, metal or cpu."
+msgstr "ติดตั้งแบ็กเอนด์นี้ แทนแบ็กเอนด์ที่เลือกให้ตาม GPU ของคุณ: cuda, vulkan, hip, sycl, metal หรือ cpu"
+
+msgid "Install here instead of ~/.llamafit/llama.cpp."
+msgstr "ติดตั้งที่นี่ แทน ~/.llamafit/llama.cpp"
+
+msgid "Install this release tag, for example b6100, not the latest."
+msgstr "ติดตั้งรุ่นที่มีแท็กนี้ เช่น b6100 ไม่ใช่รุ่นล่าสุด"
+
+msgid "invalid --backend %(value)s"
+msgstr "--backend ไม่ถูกต้อง: %(value)s"
+
+msgid "Valid backends: %(values)s"
+msgstr "แบ็กเอนด์ที่ใช้ได้: %(values)s"
+
+msgid "release %(tag)s publishes no %(backend)s build for %(os)s %(arch)s."
+msgstr "รุ่น %(tag)s ไม่ได้เผยแพร่บิลด์ %(backend)s สำหรับ %(os)s %(arch)s"
+
+msgid "Leave --backend out and LlamaFit will choose a published one."
+msgstr "ถ้าไม่ใส่ --backend LlamaFit จะเลือกบิลด์ที่เผยแพร่ไว้ให้เอง"
+
+msgid "release %(tag)s publishes nothing for %(os)s %(arch)s."
+msgstr "รุ่น %(tag)s ไม่ได้เผยแพร่อะไรเลยสำหรับ %(os)s %(arch)s"
+
+msgid "Build llama.cpp from source; see the project's own instructions."
+msgstr "ให้บิลด์ llama.cpp เองจากซอร์ส ดูวิธีได้จากคำแนะนำของโครงการนั้น"
+
+msgid "Downloading"
+msgstr "กำลังดาวน์โหลด"
+
+msgid "Change your PATH?"
+msgstr "เปลี่ยน PATH ของคุณไหม"
+
+msgid "PATH left alone."
+msgstr "ไม่ได้แตะ PATH"
+
+msgid "PATH changed. Open a new terminal for it to take effect."
+msgstr "เปลี่ยน PATH แล้ว เปิดเทอร์มินัลใหม่เพื่อให้มีผล"
+
+msgid ""
+"Download a published llama.cpp build and install it into ~/.llamafit/llama.cpp.\n"
+"\n"
+"The plan is printed before anything is written. The archive's checksum is verified before it is unpacked, an interrupted download continues where it stopped, and a directory LlamaFit did not create is never overwritten."
+msgstr ""
+"ดาวน์โหลดบิลด์ llama.cpp ที่เผยแพร่ไว้ แล้วติดตั้งลงใน ~/.llamafit/llama.cpp\n"
+"\n"
+"แผนจะถูกแสดงก่อนเขียนอะไรลงไป เช็กซัมของไฟล์เก็บถาวรจะถูกตรวจก่อนแตกไฟล์ การดาวน์โหลดที่ถูกขัดจังหวะจะทำต่อจากจุดที่หยุด และไดเรกทอรีที่ LlamaFit ไม่ได้สร้างจะไม่ถูกเขียนทับเด็ดขาด"
+
+msgid "Offer to add the bin directory to your PATH, showing the undo first."
+msgstr "เสนอให้เพิ่มไดเรกทอรี bin ลงใน PATH โดยแสดงวิธีย้อนกลับให้ดูก่อน"
+
+msgid "Install over a directory LlamaFit did not create. Ask yourself twice."
+msgstr "ติดตั้งทับไดเรกทอรีที่ LlamaFit ไม่ได้สร้าง คิดให้ดีสองรอบ"
+
+msgid "Install an archive that publishes no checksum. Nothing can be checked."
+msgstr "ติดตั้งไฟล์เก็บถาวรที่ไม่มีเช็กซัมเผยแพร่ไว้ จะตรวจอะไรไม่ได้เลย"
+
+msgid "Print the plan and write nothing."
+msgstr "แสดงแผนแล้วไม่เขียนอะไรเลย"
+
+msgid "Do not ask; assume yes."
+msgstr "ไม่ต้องถาม ถือว่าตอบใช่"
+
+msgid "Install this?"
+msgstr "ติดตั้งตามนี้ไหม"
+
+msgid "Nothing was written."
+msgstr "ไม่ได้เขียนอะไรเลย"
+
+msgid "Plan this quantisation instead of the one that scores best on this machine."
+msgstr "วางแผนด้วยไฟล์ควอนไทซ์นี้ แทนแบบที่ได้คะแนนดีที่สุดบนเครื่องนี้"
+
+msgid "Size for this many tokens. When it does not fit, the plan sizes down and shows what the context you asked for would have cost."
+msgstr "คิดขนาดสำหรับโทเค็นจำนวนนี้ ถ้าไม่พอดี แผนจะลดขนาดลงและแสดงให้เห็นว่าคอนเท็กซ์ที่คุณขอจะกินทรัพยากรเท่าใด"
+
+msgid "Set the micro-batch by hand. The whole budget is rebuilt around it, since it moves the compute buffer and with it the verdict."
+msgstr "กำหนดไมโครแบตช์เอง การจัดสรรทั้งชุดจะถูกคิดใหม่รอบค่านี้ เพราะมันเปลี่ยนบัฟเฟอร์คำนวณและเปลี่ยนผลตัดสินไปด้วย"
+
+msgid "A generation speed to answer against: whether this reaches it, and what context would."
+msgstr "ความเร็วในการสร้างที่ใช้เป็นเกณฑ์: การตั้งค่านี้ถึงไหม และคอนเท็กซ์เท่าใดจึงจะถึง"
+
+msgid "%(model)s publishes no quantisations"
+msgstr "%(model)s ไม่ได้เผยแพร่ไฟล์ควอนไทซ์เลย"
+
+msgid "Run `llamafit catalog refresh --model %(model)s`."
+msgstr "รัน `llamafit catalog refresh --model %(model)s`"
+
+msgid ""
+"Place one model on this machine and print the command line that runs it.\n"
+"\n"
+"Shows the memory budget component by component, the context ladder a launch script chooses from, where a token's time goes, and any run the catalog records for comparison."
+msgstr ""
+"จัดวางโมเดลหนึ่งตัวลงบนเครื่องนี้ แล้วแสดงบรรทัดคำสั่งที่ใช้รัน\n"
+"\n"
+"แสดงการจัดสรรหน่วยความจำทีละส่วน บันไดคอนเท็กซ์ที่สคริปต์เริ่มงานเลือกใช้ เวลาของหนึ่งโทเค็นหมดไปกับอะไร และผลรันที่แคตตาล็อกบันทึกไว้สำหรับนำมาเทียบ"
+
+msgid "Leave the vision projector out, freeing its memory for context."
+msgstr "ไม่เอาโปรเจกเตอร์ภาพ เพื่อคืนหน่วยความจำส่วนนั้นให้คอนเท็กซ์"
+
+msgid "Write the files here instead of in LlamaFit's own presets directory."
+msgstr "เขียนไฟล์ไว้ที่นี่ แทนไดเรกทอรีพรีเซ็ตของ LlamaFit เอง"
+
+msgid "Bind this port instead of llama.cpp's default 8080."
+msgstr "ผูกกับพอร์ตนี้ แทนพอร์ต 8080 ที่เป็นค่าเริ่มต้นของ llama.cpp"
+
+msgid "Size for this many tokens. It becomes the top of the ladder the script chooses from; the script never goes above it."
+msgstr "คิดขนาดสำหรับโทเค็นจำนวนนี้ ค่านี้จะกลายเป็นยอดบนของบันไดที่สคริปต์เลือกใช้ และสคริปต์จะไม่ขึ้นเกินไปกว่านั้น"
+
+msgid "%(model)s does not fit this machine in any configuration"
+msgstr "%(model)s ไม่พอดีกับเครื่องนี้ไม่ว่าจะตั้งค่าแบบใด"
+
+msgid "Run `llamafit plan %(model)s` to see what it would need."
+msgstr "รัน `llamafit plan %(model)s` เพื่อดูว่ามันต้องการอะไรบ้าง"
+
+msgid ""
+"Write launch scripts for one model: a script that picks its context from free card memory at start time, a router section, and a README.\n"
+"\n"
+"A file you have edited is never overwritten without --force."
+msgstr ""
+"เขียนสคริปต์เริ่มงานสำหรับโมเดลหนึ่งตัว: สคริปต์ที่เลือกคอนเท็กซ์เองจากหน่วยความจำการ์ดที่ว่างตอนเริ่ม ส่วนของเราเตอร์ และไฟล์ README\n"
+"\n"
+"ไฟล์ที่คุณแก้เองจะไม่ถูกเขียนทับหากไม่ใส่ --force"
+
+msgid "Overwrite files you have edited. It says which ones it discarded."
+msgstr "เขียนทับไฟล์ที่คุณแก้เองด้วย โดยจะบอกว่าทิ้งไฟล์ใดไปบ้าง"
+
+msgid "Run a model's preset, wait for the server to answer, and print its endpoints. --stop stops the server LlamaFit started."
+msgstr "รันพรีเซ็ตของโมเดล รอจนเซิร์ฟเวอร์ตอบ แล้วแสดงเอ็นด์พอยต์ของมัน ส่วน --stop จะหยุดเซิร์ฟเวอร์ที่ LlamaFit เริ่มไว้"
+
+msgid "Stop the server LlamaFit started for this model."
+msgstr "หยุดเซิร์ฟเวอร์ที่ LlamaFit เริ่มไว้ให้โมเดลนี้"
+
+msgid "Seconds to wait for /health before reporting that it has not answered."
+msgstr "จำนวนวินาทีที่รอ /health ก่อนจะรายงานว่ามันยังไม่ตอบ"
+
+msgid "the preset could not be written"
+msgstr "เขียนพรีเซ็ตไม่ได้"
+
+msgid "Wrote a preset first: %(path)s"
+msgstr "เขียนพรีเซ็ตไว้ก่อนแล้ว: %(path)s"
+
+msgid "Nothing to stop: LlamaFit has no record of starting %(model)s."
+msgstr "ไม่มีอะไรให้หยุด LlamaFit ไม่มีบันทึกว่าเคยเริ่ม %(model)s"
+
+msgid "Stopped %(model)s, which was serving on %(url)s."
+msgstr "หยุด %(model)s ที่ให้บริการอยู่ที่ %(url)s แล้ว"
+
+msgid "Preset for %(name)s (%(quant)s) in %(dir)s"
+msgstr "พรีเซ็ตของ %(name)s (%(quant)s) ใน %(dir)s"
+
+msgid "The server will answer on %(url)s."
+msgstr "เซิร์ฟเวอร์จะตอบที่ %(url)s"
+
+msgid "Your edits were kept. Nothing above was written to those files; run the command again with --force to replace them."
+msgstr "สิ่งที่คุณแก้ไว้ถูกเก็บไว้ ไม่มีอะไรข้างบนถูกเขียนลงไฟล์เหล่านั้น ถ้าต้องการแทนที่ ให้รันคำสั่งใหม่พร้อม --force"
+
+msgid "At start time the script reads how much card memory is free, keeps %(reserve)s MiB back, and takes the largest context that still fits."
+msgstr "ตอนเริ่มงาน สคริปต์จะอ่านว่าหน่วยความจำการ์ดว่างอยู่เท่าไร กันไว้ %(reserve)s MiB แล้วเลือกคอนเท็กซ์ที่ใหญ่ที่สุดที่ยังพอดี"
+
+msgid "This machine has nothing the script can ask for free card memory, so it will start at %(context)s tokens; the script's header says why."
+msgstr "เครื่องนี้ไม่มีอะไรให้สคริปต์ถามหน่วยความจำการ์ดที่ว่างได้ มันจึงจะเริ่มที่ %(context)s โทเค็น ส่วนหัวของสคริปต์บอกไว้ว่าเพราะอะไร"
+
+msgid "Files"
+msgstr "ไฟล์"
+
+msgctxt "column heading"
+msgid "File"
+msgstr "ไฟล์"
+
+msgctxt "column heading"
+msgid "What happened"
+msgstr "ผลที่เกิด"
+
+msgid "Context tiers the script may choose"
+msgstr "ระดับคอนเท็กซ์ที่สคริปต์เลือกได้"
+
+msgctxt "column heading"
+msgid "Context"
+msgstr "คอนเท็กซ์"
+
+msgctxt "column heading"
+msgid "Card needs"
+msgstr "การ์ดต้องใช้"
+
+msgctxt "column heading"
+msgid "Free card memory to reach it"
+msgstr "หน่วยความจำการ์ดที่ต้องว่าง"
+
+msgid "%(value)s MiB"
+msgstr "%(value)s MiB"
+
+msgid "written"
+msgstr "เขียนแล้ว"
+
+msgid "brought up to date"
+msgstr "อัปเดตแล้ว"
+
+msgid "already up to date"
+msgstr "ใหม่อยู่แล้ว"
+
+msgid "kept: you edited it"
+msgstr "เก็บไว้: คุณแก้เอง"
+
+msgid "overwritten: your edits are gone"
+msgstr "เขียนทับ: สิ่งที่คุณแก้หายไป"
+
+msgid "The preset could not be started: %(error)s"
+msgstr "เริ่มพรีเซ็ตไม่ได้: %(error)s"
+
+msgid "Started, but %(url)s has not answered yet. A large model can spend minutes reading its weights; try the health endpoint again in a moment, or run `llamafit launch %(model)s --stop`."
+msgstr "เริ่มแล้ว แต่ %(url)s ยังไม่ตอบ โมเดลใหญ่อาจใช้เวลาหลายนาทีในการอ่านไฟล์น้ำหนัก ลองเรียกเอ็นด์พอยต์ health อีกครั้งในอีกสักครู่ หรือรัน `llamafit launch %(model)s --stop`"
+
+msgid "%(model)s was already serving on %(url)s."
+msgstr "%(model)s ให้บริการอยู่ที่ %(url)s อยู่แล้ว"
+
+msgid "%(model)s is serving on %(url)s."
+msgstr "%(model)s กำลังให้บริการอยู่ที่ %(url)s"
+
+msgid "Stop it with `llamafit launch %(model)s --stop`."
+msgstr "หยุดมันด้วย `llamafit launch %(model)s --stop`"
+
+msgid "Endpoints"
+msgstr "เอ็นด์พอยต์"
+
+msgctxt "column heading"
+msgid "What"
+msgstr "ใช้ทำอะไร"
+
+msgctxt "column heading"
+msgid "Where"
+msgstr "ที่ไหน"
+
+msgid "Web interface"
+msgstr "หน้าเว็บ"
+
+msgid "Chat completions"
+msgstr "Chat completions"
+
+msgid "Models"
+msgstr "โมเดล"
+
+msgid "Health"
+msgstr "สถานะ"
+
+msgid "Ask for the model by the alias %(alias)s."
+msgstr "เรียกโมเดลด้วยชื่อแทน %(alias)s"
 
 msgctxt "finding level"
 msgid "OK"
@@ -229,37 +1088,79 @@ msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "ไม่ทราบ"
 
+# Thai marks neither gender nor number on these words, so every row that says
+# "unknown" or "none detected" reads the same. Each context is still filled in:
+# leaving one empty would drop that row back to English on its own.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "ไม่ทราบ"
+
+msgid "%(gbps)s GB/s (%(source)s, cached)"
+msgstr "%(gbps)s GB/s (%(source)s, ค่าที่เก็บไว้)"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+msgctxt "simulation override"
+msgid "VRAM"
+msgstr "VRAM"
+
+msgctxt "simulation override"
+msgid "system memory"
+msgstr "หน่วยความจำระบบ"
+
+msgctxt "simulation override"
+msgid "CPU cores"
+msgstr "คอร์ CPU"
+
+msgid "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgid_plural "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgstr[0] "ตัวเลขเหล่านี้มาจากโปรไฟล์ฮาร์ดแวร์ %(profile)s โดยแทนค่า %(fields)s ไว้ ไม่ใช่ของเครื่องนี้"
+
+msgid "these figures come from the hardware profile %(profile)s; they are not this machine"
+msgstr "ตัวเลขเหล่านี้มาจากโปรไฟล์ฮาร์ดแวร์ %(profile)s ไม่ใช่ของเครื่องนี้"
+
+msgid "%(fields)s was overridden for a what-if; these figures are not what was scanned"
+msgid_plural "%(fields)s were overridden for a what-if; these figures are not what was scanned"
+msgstr[0] "%(fields)s ถูกแทนค่าไว้เพื่อลองสมมติ ตัวเลขเหล่านี้จึงไม่ใช่สิ่งที่ตรวจได้จริง"
+
+msgid "these figures are not this machine"
+msgstr "ตัวเลขเหล่านี้ไม่ใช่ของเครื่องนี้"
+
+msgid "SIMULATED"
+msgstr "จำลอง"
+
 msgctxt "model capability"
 msgid "coding"
-msgstr ""
+msgstr "เขียนโค้ด"
 
 msgctxt "model capability"
 msgid "thinking"
-msgstr ""
+msgstr "การคิด"
 
 msgctxt "model capability"
 msgid "vision"
-msgstr ""
+msgstr "ภาพ"
 
 msgctxt "model capability"
 msgid "tools"
-msgstr ""
+msgstr "เครื่องมือ"
 
 msgctxt "model capability"
 msgid "multilingual"
-msgstr ""
+msgstr "หลายภาษา"
 
 msgctxt "model capability"
 msgid "long-context"
-msgstr ""
+msgstr "คอนเท็กซ์ยาว"
 
 msgctxt "model capability"
 msgid "embeddings"
-msgstr ""
+msgstr "เอ็มเบดดิง"
 
 msgctxt "model capability"
 msgid "audio"
-msgstr ""
+msgstr "เสียง"
 
 msgid "%(bandwidth)s GB/s and %(compute)s TFLOPS fp16"
 msgstr "%(bandwidth)s GB/s และ %(compute)s TFLOPS fp16"
@@ -272,24 +1173,24 @@ msgstr "%(compute)s TFLOPS fp16"
 
 msgid "%(count)d core"
 msgid_plural "%(count)d cores"
-msgstr[0] ""
+msgstr[0] "%(count)d คอร์"
 
 msgid "%(count)d thread"
 msgid_plural "%(count)d threads"
-msgstr[0] ""
+msgstr[0] "%(count)d เธรด"
 
 msgid "%(cores)s / %(threads)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s"
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "คอร์ประสิทธิภาพ %(count)d คอร์"
 
 msgid "%(cores)s / %(threads)s, %(performance)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s, %(performance)s"
 
 msgid "%(type)s at %(speed)d MT/s"
-msgstr ""
+msgstr "%(type)s ที่ %(speed)d MT/s"
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -303,23 +1204,23 @@ msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d ช่อง"
 
 msgid "%(kind)s, %(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s บน %(channels)s"
 
 msgid "%(kind)s, %(modules)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s"
 
 msgid "%(kind)s, %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(channels)s"
 
 msgid "%(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(modules)s บน %(channels)s"
 
 msgctxt "memory type"
 msgid "type unknown"
 msgstr "ไม่ทราบชนิด"
 
 msgid "%(specs)s (spec), driver %(driver)s"
-msgstr ""
+msgstr "%(specs)s (ตามสเปก), ไดรเวอร์ %(driver)s"
 
 msgid "%(specs)s (spec)"
 msgstr "%(specs)s (ตามสเปก)"
@@ -330,6 +1231,19 @@ msgstr "ไดรเวอร์ %(driver)s"
 msgctxt "GPU specifications"
 msgid "no specs"
 msgstr "ไม่มีสเปก"
+
+msgid "%(total)s VRAM, %(free)s free (Vulkan driver)"
+msgstr "VRAM %(total)s, ว่าง %(free)s (ไดรเวอร์ Vulkan)"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "VRAM %(total)s, ว่าง %(free)s"
+
+msgid "%(total)s VRAM, free unknown"
+msgstr "VRAM %(total)s, ไม่ทราบว่าว่างเท่าไร"
+
+msgctxt "GPU VRAM"
+msgid "VRAM unknown"
+msgstr "ไม่ทราบ VRAM"
 
 msgid "Host"
 msgstr "โฮสต์"
@@ -342,23 +1256,6 @@ msgstr "%(os)s %(version)s (%(arch)s)"
 
 msgid "CPU"
 msgstr "CPU"
-
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgctxt "CPU instruction sets"
-msgid "isa unknown"
-msgstr "ไม่ทราบชุดคำสั่ง"
-
-msgid "%(gbps)s GB/s (%(source)s)"
-msgstr "%(gbps)s GB/s (%(source)s)"
-
-# Thai marks neither gender nor number on these words, so every row that says
-# "unknown" or "none detected" reads the same. Each context is still filled in:
-# leaving one empty would drop that row back to English on its own.
-msgctxt "memory bandwidth"
-msgid "unknown"
-msgstr "ไม่ทราบ"
 
 msgid "Memory"
 msgstr "หน่วยความจำ"
@@ -373,18 +1270,14 @@ msgctxt "GPU"
 msgid "none detected"
 msgstr "ไม่พบ"
 
-msgid "%(total)s VRAM, %(free)s free"
-msgstr "VRAM %(total)s, ว่าง %(free)s"
-
-msgctxt "GPU VRAM"
-msgid "VRAM unknown"
-msgstr "ไม่ทราบ VRAM"
-
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
-msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgid "Card memory"
+msgstr "หน่วยความจำการ์ด"
+
+msgid "%(gpus)s: nothing here could read how much of the card is free, so every budget on this machine was computed as if there were no card at all. Install the Vulkan tools, or write the size into a hardware profile."
+msgstr "%(gpus)s: ที่นี่ไม่มีอะไรอ่านได้ว่าการ์ดว่างอยู่เท่าไร การจัดสรรทุกอย่างบนเครื่องนี้จึงคำนวณเสมือนว่าไม่มีการ์ดเลย ให้ติดตั้งเครื่องมือ Vulkan หรือเขียนขนาดไว้ในโปรไฟล์ฮาร์ดแวร์"
 
 msgid "Memory pool"
 msgstr "พูลหน่วยความจำ"
@@ -491,21 +1384,14 @@ msgid "Params"
 msgstr "พารามิเตอร์"
 
 msgctxt "column heading"
-msgid "Context"
-msgstr "คอนเท็กซ์"
-
-msgctxt "column heading"
 msgid "Capabilities"
 msgstr "ความสามารถ"
 
 msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr ""
+msgstr "%(heading)s คือค่าพื้นฐานที่บรรณาธิการกำหนด ก่อนหักส่วนที่เสียไปจากการควอนไทซ์ รัน `llamafit info <model>` เพื่อดูผลทดสอบที่มีแหล่งอ้างอิงอยู่เบื้องหลัง"
 
 msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr ""
-
-msgid "Models"
-msgstr "โมเดล"
+msgstr "%(heading)s คือจำนวนพารามิเตอร์ทั้งหมด/ที่ทำงานจริง หน่วยพันล้าน สำหรับโมเดลแบบผสมผู้เชี่ยวชาญ หรือเป็นตัวเลขเดียวเมื่อทั้งสองค่าเท่ากัน"
 
 msgid "Vendor"
 msgstr "ผู้พัฒนา"
@@ -526,10 +1412,10 @@ msgid "Parameters"
 msgstr "พารามิเตอร์"
 
 msgid "%(total)s total, %(active)s active"
-msgstr ""
+msgstr "ทั้งหมด %(total)s, ทำงานจริง %(active)s"
 
 msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
-msgstr ""
+msgstr "%(tokens)s โทเค็นตามต้นฉบับ, ขยายเป็น %(extended)s ด้วย %(method)s"
 
 msgctxt "context extension method"
 msgid "unspecified method"
@@ -573,13 +1459,13 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d เลเยอร์"
 
 msgid "%(arch)s, %(layers)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s, %(experts)s"
 
 msgid "%(arch)s, %(layers)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s"
 
 msgid "%(arch)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(experts)s"
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
@@ -608,18 +1494,1163 @@ msgctxt "bits per weight"
 msgid "unknown"
 msgstr "ไม่ทราบ"
 
+msgid "On this machine"
+msgstr "บนเครื่องนี้"
+
+msgctxt "column heading"
+msgid "Quant"
+msgstr "ควอนไทซ์"
+
+msgctxt "column heading"
+msgid "Runs"
+msgstr "รันแบบ"
+
+msgctxt "column heading"
+msgid "Card"
+msgstr "การ์ด"
+
+msgctxt "column heading"
+msgid "RAM"
+msgstr "RAM"
+
+msgctxt "column heading"
+msgid "Tok/s"
+msgstr "Tok/s"
+
+msgctxt "column heading"
+msgid "Ctx"
+msgstr "คอนเท็กซ์"
+
+msgctxt "column heading"
+msgid "Fit"
+msgstr "พอดี"
+
+msgid "%(quant)s: %(reason)s"
+msgstr "%(quant)s: %(reason)s"
+
+msgctxt "tokens per second"
+msgid "unknown"
+msgstr "ไม่ทราบ"
+
+msgctxt "context length"
+msgid "none"
+msgstr "ไม่มี"
+
+msgid "Sized for %(context)s tokens, with every figure from a placement computed for this machine. `llamafit plan MODEL --quant NAME` opens one of these rows into the budget line by line, the context ladder and the command line that runs it."
+msgstr "คิดขนาดไว้สำหรับ %(context)s โทเค็น โดยทุกตัวเลขมาจากการจัดวางที่คำนวณสำหรับเครื่องนี้ `llamafit plan MODEL --quant NAME` จะกางแถวใดแถวหนึ่งเหล่านี้ออกเป็นการจัดสรรทีละบรรทัด บันไดคอนเท็กซ์ และบรรทัดคำสั่งที่ใช้รัน"
+
+msgid "To reach %(context)s tokens, free %(free)s more on the graphics card: that rung needs %(needed)s, which is %(share)s of what is free and over the line where the driver starts paging."
+msgstr "ถ้าต้องการให้ถึง %(context)s โทเค็น ต้องคืนพื้นที่บนการ์ดจออีก %(free)s ระดับนั้นต้องใช้ %(needed)s ซึ่งคิดเป็น %(share)s ของที่ว่างอยู่ และเลยเส้นที่ไดรเวอร์จะเริ่มย้ายหน่วยความจำ"
+
+msgid "%(context)s tokens is past what this machine holds: that rung needs %(needed)s on the graphics card and there is nothing left to absorb what would not fit, so freeing the card is not the change that reaches it."
+msgstr "%(context)s โทเค็นเกินกว่าที่เครื่องนี้จะเก็บได้ ระดับนั้นต้องใช้ %(needed)s บนการ์ดจอ และไม่เหลืออะไรมารับส่วนที่ล้น การคืนพื้นที่บนการ์ดจึงไม่ใช่สิ่งที่จะทำให้ถึงได้"
+
+msgid "%(quant)s, the next quantisation down, could not be sized: %(reason)s"
+msgstr "%(quant)s ซึ่งเป็นควอนไทซ์ระดับถัดลงมา ประเมินขนาดไม่ได้: %(reason)s"
+
+msgid "%(quant)s, the next quantisation down, does not fit this machine either."
+msgstr "%(quant)s ซึ่งเป็นควอนไทซ์ระดับถัดลงมา ก็ไม่พอดีกับเครื่องนี้เช่นกัน"
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens."
+msgstr "%(quant)s ซึ่งเป็นควอนไทซ์ระดับถัดลงมา ถูกวางแผนไว้ที่นี่ด้วย: %(mode)s, %(verdict)s, ได้ถึง %(context)s โทเค็น"
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens at %(tps)s tokens per second."
+msgstr "%(quant)s ซึ่งเป็นควอนไทซ์ระดับถัดลงมา ถูกวางแผนไว้ที่นี่ด้วย: %(mode)s, %(verdict)s, ได้ถึง %(context)s โทเค็น ที่ %(tps)s โทเค็นต่อวินาที"
+
+msgid "It fits entirely on the graphics card, which this one does not."
+msgstr "แบบนั้นลงบนการ์ดจอได้หมด ส่วนแบบนี้ไม่ได้"
+
+msgid "It fits better: %(theirs)s rather than %(mine)s."
+msgstr "แบบนั้นพอดีกว่า: %(theirs)s แทนที่จะเป็น %(mine)s"
+
+msgid "It holds %(theirs)s tokens rather than %(mine)s."
+msgstr "แบบนั้นเก็บได้ %(theirs)s โทเค็น แทนที่จะเป็น %(mine)s"
+
+msgid "It generates %(theirs)s tokens per second rather than %(mine)s."
+msgstr "แบบนั้นสร้างได้ %(theirs)s โทเค็นต่อวินาที แทนที่จะเป็น %(mine)s"
+
+msgid "It is no better here, so there is nothing to gain by dropping to it."
+msgstr "ที่นี่แบบนั้นไม่ได้ดีกว่าเลย การลดลงไปใช้จึงไม่ได้อะไรเพิ่ม"
+
+msgid "Every context this model offers already fits here; the machine is not what limits it."
+msgstr "ทุกคอนเท็กซ์ที่โมเดลนี้มีให้ล้วนพอดีอยู่แล้วที่นี่ สิ่งที่จำกัดมันไม่ใช่เครื่อง"
+
+msgid "What would change it"
+msgstr "อะไรจะทำให้ต่างออกไป"
+
+msgctxt "profile origin"
+msgid "bundled"
+msgstr "มากับโปรแกรม"
+
+msgctxt "profile origin"
+msgid "yours"
+msgstr "ของคุณ"
+
+msgid "%(ram)s RAM, no graphics card"
+msgstr "RAM %(ram)s, ไม่มีการ์ดจอ"
+
+msgid "%(ram)s RAM shared with %(gpu)s"
+msgstr "RAM %(ram)s ใช้ร่วมกับ %(gpu)s"
+
+msgid "%(ram)s RAM, %(gpu)s with %(vram)s"
+msgstr "RAM %(ram)s, %(gpu)s มี %(vram)s"
+
+msgid "%(cores)d core / %(threads)d thread"
+msgid_plural "%(cores)d cores / %(threads)d threads"
+msgstr[0] "%(cores)d คอร์ / %(threads)d เธรด"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "ไม่ทราบชุดคำสั่ง"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "%(total)s total, %(available)s available; bandwidth %(bandwidth)s"
+msgstr "ทั้งหมด %(total)s, ว่าง %(available)s; แบนด์วิดท์ %(bandwidth)s"
+
+msgctxt "GPU specifications"
+msgid "no bandwidth or compute figure"
+msgstr "ไม่มีตัวเลขแบนด์วิดท์หรือกำลังคำนวณ"
+
+msgid "%(specs)s (from the profile)"
+msgstr "%(specs)s (จากโปรไฟล์)"
+
+msgid "%(specs)s (from the specification table)"
+msgstr "%(specs)s (จากตารางสเปก)"
+
+msgctxt "GPU VRAM"
+msgid "VRAM from the shared pool"
+msgstr "VRAM จากพูลที่ใช้ร่วมกัน"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "Hardware profiles"
+msgstr "โปรไฟล์ฮาร์ดแวร์"
+
+msgid "Machine"
+msgstr "เครื่อง"
+
+msgid "a graphics card whose name contains %(text)s"
+msgstr "การ์ดจอที่ชื่อมีคำว่า %(text)s"
+
+msgid "a processor whose model contains %(text)s"
+msgstr "โปรเซสเซอร์ที่รุ่นมีคำว่า %(text)s"
+
+msgid "at least %(ram)s of memory"
+msgstr "หน่วยความจำอย่างน้อย %(ram)s"
+
+msgctxt "profile match rules"
+msgid "none, so this profile is never chosen for you"
+msgstr "ไม่มี ดังนั้นโปรไฟล์นี้จะไม่ถูกเลือกให้คุณโดยอัตโนมัติ"
+
+msgid "Description"
+msgstr "คำอธิบาย"
+
+msgid "From"
+msgstr "จาก"
+
+msgid "File"
+msgstr "ไฟล์"
+
+msgid "Matches"
+msgstr "เข้าเงื่อนไขเมื่อ"
+
+msgid "Recorded"
+msgstr "บันทึกเมื่อ"
+
+msgid "Provenance"
+msgstr "ที่มา"
+
+msgid "recorded from %(source)s; this build stores it but does not apply it yet"
+msgstr "บันทึกจาก %(source)s บิลด์นี้เก็บค่าไว้แต่ยังไม่นำไปใช้"
+
+msgctxt "utilisation"
+msgid "n/a"
+msgstr "ไม่มีข้อมูล"
+
+msgctxt "run mode"
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "run mode"
+msgid "experts in RAM"
+msgstr "ผู้เชี่ยวชาญใน RAM"
+
+msgctxt "run mode"
+msgid "split"
+msgstr "แบ่งกัน"
+
+msgctxt "run mode"
+msgid "CPU"
+msgstr "CPU"
+
+msgctxt "run mode"
+msgid "nowhere"
+msgstr "ไม่มีที่ลง"
+
+msgctxt "fit verdict"
+msgid "roomy"
+msgstr "เหลือเฟือ"
+
+msgctxt "fit verdict"
+msgid "fits"
+msgstr "พอดี"
+
+msgctxt "fit verdict"
+msgid "tight"
+msgstr "เฉียดฉิว"
+
+msgctxt "fit verdict"
+msgid "pages"
+msgstr "ล้น"
+
+msgctxt "fit verdict"
+msgid "no room"
+msgstr "ไม่พอ"
+
+msgid "Roomy: there is room for a longer context or a second model."
+msgstr "เหลือเฟือ: ยังมีที่ว่างสำหรับคอนเท็กซ์ที่ยาวกว่านี้ หรือสำหรับโมเดลตัวที่สอง"
+
+msgid "Fits: the intended configuration runs as planned."
+msgstr "พอดี: การตั้งค่าที่ตั้งใจไว้ทำงานได้ตามแผน"
+
+msgid "Tight: it runs, but a browser or a second process can push it over."
+msgstr "เฉียดฉิว: มันรันได้ แต่เบราว์เซอร์หรือโพรเซสอีกตัวหนึ่งก็อาจทำให้ล้นได้"
+
+msgid "Pages: this needs more of the graphics card than is free. The driver will not refuse it — it moves the overflow to system memory, the server starts, the log looks healthy, and generation runs at a fraction of its speed with nothing saying why."
+msgstr "ล้น: สิ่งนี้ต้องการหน่วยความจำการ์ดจอมากกว่าที่ว่างอยู่ ไดรเวอร์จะไม่ปฏิเสธ แต่จะย้ายส่วนที่ล้นไปไว้ในหน่วยความจำระบบ เซิร์ฟเวอร์เริ่มทำงานได้ บันทึกดูปกติดี และการสร้างจะช้าลงเหลือเพียงเศษเสี้ยวของความเร็วเดิมโดยไม่มีอะไรบอกว่าเพราะอะไร"
+
+msgid "No room: more memory than this machine has, with nothing to page to."
+msgstr "ไม่พอ: ต้องการหน่วยความจำมากกว่าที่เครื่องนี้มี และไม่มีที่ให้ย้ายไปด้วย"
+
+msgctxt "confidence"
+msgid "measured"
+msgstr "วัดได้"
+
+msgctxt "confidence"
+msgid "calibrated"
+msgstr "สอบเทียบแล้ว"
+
+msgctxt "confidence"
+msgid "estimated"
+msgstr "ประมาณ"
+
+msgctxt "confidence"
+msgid "no estimate"
+msgstr "ไม่มีค่าประมาณ"
+
+msgid "Speeds are benchmarks taken on this machine, not predictions."
+msgstr "ความเร็วเป็นผลวัดที่ทำบนเครื่องนี้ ไม่ใช่การทำนาย"
+
+msgid "Speeds are section 10's formula corrected by benchmarks taken on this machine."
+msgstr "ความเร็วเป็นสูตรของหัวข้อ 10 ที่ปรับด้วยผลวัดซึ่งทำบนเครื่องนี้"
+
+msgid "Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement."
+msgstr "ความเร็วเป็นสูตรของหัวข้อ 10 ที่ใช้ค่าคงที่เริ่มต้น ยังไม่มีการวัดใดบนเครื่องนี้ ตัวเลขตรงนี้จึงไม่มีตัวไหนเป็นผลวัดจริง"
+
+msgid "No speed could be estimated."
+msgstr "ประมาณความเร็วไม่ได้เลย"
+
+msgctxt "memory pool"
+msgid "card"
+msgstr "การ์ด"
+
+msgctxt "memory pool"
+msgid "system"
+msgstr "ระบบ"
+
+msgctxt "memory pool"
+msgid "disk"
+msgstr "ดิสก์"
+
+msgctxt "budget component"
+msgid "dense weights"
+msgstr "น้ำหนักหนาแน่น"
+
+msgctxt "budget component"
+msgid "shared experts"
+msgstr "ผู้เชี่ยวชาญร่วม"
+
+msgctxt "budget component"
+msgid "routed experts"
+msgstr "ผู้เชี่ยวชาญตามเส้นทาง"
+
+msgctxt "budget component"
+msgid "token embedding"
+msgstr "เอ็มเบดดิงโทเค็น"
+
+msgctxt "budget component"
+msgid "output head"
+msgstr "ชั้นผลลัพธ์"
+
+msgctxt "budget component"
+msgid "other weights"
+msgstr "น้ำหนักอื่น ๆ"
+
+msgctxt "budget component"
+msgid "streamed tables"
+msgstr "ตารางที่อ่านจากดิสก์"
+
+msgctxt "budget component"
+msgid "KV cache"
+msgstr "แคช KV"
+
+msgctxt "budget component"
+msgid "KV cache, undeclared"
+msgstr "แคช KV ส่วนที่ไม่ได้ประกาศ"
+
+msgctxt "budget component"
+msgid "recurrent state"
+msgstr "สถานะเวียนซ้ำ"
+
+msgctxt "budget component"
+msgid "compute buffer"
+msgstr "บัฟเฟอร์คำนวณ"
+
+msgctxt "budget component"
+msgid "output buffer"
+msgstr "บัฟเฟอร์ผลลัพธ์"
+
+msgctxt "budget component"
+msgid "vision projector"
+msgstr "โปรเจกเตอร์ภาพ"
+
+msgctxt "budget component"
+msgid "vision compute"
+msgstr "การคำนวณภาพ"
+
+msgctxt "budget component"
+msgid "backend overhead"
+msgstr "โสหุ้ยของแบ็กเอนด์"
+
+msgctxt "budget component"
+msgid "process overhead"
+msgstr "โสหุ้ยของโพรเซส"
+
+msgctxt "budget line source"
+msgid "file"
+msgstr "ไฟล์"
+
+msgctxt "budget line source"
+msgid "formula"
+msgstr "สูตร"
+
+msgctxt "column heading"
+msgid "Component"
+msgstr "ส่วนประกอบ"
+
+msgctxt "column heading"
+msgid "From"
+msgstr "จาก"
+
+msgid "Card: %(required)s of %(available)s free, %(share)s used."
+msgstr "การ์ด: ใช้ %(required)s จากที่ว่าง %(available)s คิดเป็น %(share)s"
+
+msgid "System memory: %(required)s of %(available)s free, %(share)s used."
+msgstr "หน่วยความจำระบบ: ใช้ %(required)s จากที่ว่าง %(available)s คิดเป็น %(share)s"
+
+msgid "%(component)s: %(note)s"
+msgstr "%(component)s: %(note)s"
+
+msgid "Context tiers"
+msgstr "ระดับคอนเท็กซ์"
+
+msgctxt "column heading"
+msgid "On this machine"
+msgstr "บนเครื่องนี้"
+
+msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
+msgstr "สคริปต์เริ่มงานจะเทียบหน่วยความจำว่างที่มันเห็นกับคอลัมน์การ์ด แล้วเลือกระดับที่ใหญ่ที่สุดที่ยังพอดี (ดู docs/cli.md)"
+
+msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
+msgstr "สร้างได้ %(gen)s โทเค็นต่อวินาที และอ่านได้ %(prompt)s ที่คอนเท็กซ์ %(context)s โทเค็น (%(confidence)s)"
+
+msgctxt "column heading"
+msgid "A token's time"
+msgstr "เวลาของหนึ่งโทเค็น"
+
+msgctxt "token time"
+msgid "reading the card"
+msgstr "อ่านจากการ์ด"
+
+msgctxt "token time"
+msgid "reading system memory"
+msgstr "อ่านจากหน่วยความจำระบบ"
+
+msgctxt "token time"
+msgid "everything else"
+msgstr "ทุกอย่างที่เหลือ"
+
+msgctxt "column heading"
+msgid "A prompt token's time"
+msgstr "เวลาของหนึ่งโทเค็นพรอมต์"
+
+msgctxt "prompt token time"
+msgid "doing the arithmetic"
+msgstr "การคำนวณ"
+
+msgctxt "prompt token time"
+msgid "streaming the experts across the link"
+msgstr "ส่งผู้เชี่ยวชาญผ่านลิงก์"
+
+msgctxt "prompt token time"
+msgid "reading the experts from system memory"
+msgstr "อ่านผู้เชี่ยวชาญจากหน่วยความจำระบบ"
+
+msgctxt "column heading"
+msgid "Seconds"
+msgstr "วินาที"
+
+msgctxt "column heading"
+msgid "Share"
+msgstr "สัดส่วน"
+
+msgid "Measured on %(date)s."
+msgstr "วัดเมื่อ %(date)s"
+
+msgid "Recorded elsewhere"
+msgstr "บันทึกจากที่อื่น"
+
+msgctxt "column heading"
+msgid "Run"
+msgstr "การรัน"
+
+msgctxt "column heading"
+msgid "Date"
+msgstr "วันที่"
+
+msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
+msgstr "เหล่านี้คือผลรันของผู้ดูแลแคตตาล็อกบนเครื่องของเขาเอง ไม่ใช่ผลวัดของเครื่องนี้ จึงไม่มีอะไรข้างบนถูกกำกับว่าวัดได้ ลองเทียบกับค่าประมาณดู ส่วน `llamafit bench` จะวัดเครื่องนี้ในเฟส 3"
+
+msgid "%(profile)s: %(flags)s"
+msgstr "%(profile)s: %(flags)s"
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
+msgstr "%(baseline)s จากผู้ดูแล หัก %(penalty)s สำหรับควอนไทซ์แบบนี้ บวก %(bonus)s เพราะ %(use_case)s คือสิ่งที่มันถูกสร้างมาเพื่อทำ"
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
+msgstr "%(baseline)s จากผู้ดูแล หัก %(penalty)s สำหรับควอนไทซ์แบบนี้ มันระบุ %(use_case)s ไว้ แต่ไม่ได้ถูกสร้างมาเพื่อสิ่งนั้น"
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
+msgstr "%(gen)s โทเค็นต่อวินาที เทียบกับ %(target)s ที่กรณีใช้งานนี้ต้องการ หัก %(penalty)s เพราะมันอ่านพรอมต์ได้ %(prompt)s"
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
+msgstr "%(gen)s โทเค็นต่อวินาที เทียบกับ %(target)s ที่กรณีใช้งานนี้ต้องการ"
+
+msgid "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool is %(share)s full. The score wants at least %(low)s of the memory taken and no more than %(high)s of any one pool."
+msgstr "น้ำหนักของมันกิน %(weights)s จากหน่วยความจำ %(memory)s ของเครื่องนี้ และพูลที่แน่นที่สุดเต็มไป %(share)s คะแนนต้องการให้ใช้หน่วยความจำอย่างน้อย %(low)s และไม่ให้พูลใดเกิน %(high)s"
+
+msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
+msgstr "เก็บได้ %(fit)s โทเค็น จาก %(requested)s ที่คำขอนี้ใช้เป็นเกณฑ์ให้คะแนน"
+
+msgid "Score %(total)s"
+msgstr "คะแนน %(total)s"
+
+msgctxt "column heading"
+msgid "Part"
+msgstr "ส่วน"
+
+msgctxt "column heading"
+msgid "Weight"
+msgstr "น้ำหนัก"
+
+msgctxt "column heading"
+msgid "Adds"
+msgstr "เพิ่ม"
+
+msgctxt "score part"
+msgid "quality"
+msgstr "คุณภาพ"
+
+msgctxt "score part"
+msgid "speed"
+msgstr "ความเร็ว"
+
+msgctxt "score part"
+msgid "fit"
+msgstr "ความพอดี"
+
+msgctxt "score part"
+msgid "context"
+msgstr "คอนเท็กซ์"
+
+msgctxt "board sort"
+msgid "score"
+msgstr "คะแนน"
+
+msgctxt "board sort"
+msgid "speed"
+msgstr "ความเร็ว"
+
+msgctxt "board sort"
+msgid "quality"
+msgstr "คุณภาพ"
+
+msgctxt "board sort"
+msgid "context"
+msgstr "คอนเท็กซ์"
+
+msgctxt "board sort"
+msgid "download size"
+msgstr "ขนาดที่ต้องดาวน์โหลด"
+
+msgctxt "board sort"
+msgid "prompt speed"
+msgstr "ความเร็วพรอมต์"
+
+msgctxt "board sort"
+msgid "card memory"
+msgstr "หน่วยความจำการ์ด"
+
+msgctxt "board sort"
+msgid "system memory"
+msgstr "หน่วยความจำระบบ"
+
+msgctxt "board sort"
+msgid "fit"
+msgstr "ความพอดี"
+
+msgctxt "board sort"
+msgid "model id"
+msgstr "id โมเดล"
+
+msgctxt "board sort"
+msgid "quantisation"
+msgstr "ควอนไทซ์"
+
+msgctxt "column heading"
+msgid "#"
+msgstr "#"
+
+msgctxt "column heading"
+msgid "Model"
+msgstr "โมเดล"
+
+msgctxt "column heading"
+msgid "Size"
+msgstr "ขนาด"
+
+msgctxt "column heading"
+msgid "Have"
+msgstr "มี"
+
+msgctxt "column heading"
+msgid "Score"
+msgstr "คะแนน"
+
+msgctxt "column heading"
+msgid "Qual"
+msgstr "คุณภาพ"
+
+msgctxt "column heading"
+msgid "Prompt tok/s"
+msgstr "พรอมต์ tok/s"
+
+msgctxt "column heading"
+msgid "How"
+msgstr "แบบ"
+
+msgctxt "model file on this machine"
+msgid "yes"
+msgstr "มี"
+
+msgctxt "model file on this machine"
+msgid "no"
+msgstr "ไม่มี"
+
+msgid "no placement of it fits this machine at any context"
+msgstr "ไม่มีการจัดวางแบบใดของมันที่พอดีกับเครื่องนี้ที่คอนเท็กซ์ใด ๆ"
+
+msgctxt "exclusion tag"
+msgid "no room"
+msgstr "ไม่มีที่ว่าง"
+
+msgctxt "exclusion tag"
+msgid "no facts"
+msgstr "ไม่มีข้อมูล"
+
+msgctxt "exclusion tag"
+msgid "not ranked"
+msgstr "ไม่ได้จัดอันดับ"
+
+msgctxt "board cell with no figure"
+msgid "–"
+msgstr "–"
+
+msgid "%(term)s is not a filter; the terms are %(terms)s, and anything else is text to look for."
+msgstr "%(term)s ไม่ใช่ตัวกรอง คำที่ใช้ได้คือ %(terms)s ส่วนอย่างอื่นถือเป็นข้อความที่ต้องการค้นหา"
+
+msgid "fit>= takes one of %(values)s"
+msgstr "fit>= รับค่าอย่างใดอย่างหนึ่งใน %(values)s"
+
+msgid "runs= takes one of %(values)s"
+msgstr "runs= รับค่าอย่างใดอย่างหนึ่งใน %(values)s"
+
+msgid "%(term)s needs a number"
+msgstr "%(term)s ต้องการตัวเลข"
+
+msgid "%(term)s needs a size such as 8G, 7.5GiB or 512M"
+msgstr "%(term)s ต้องการขนาด เช่น 8G, 7.5GiB หรือ 512M"
+
+msgctxt "board filter"
+msgid "every candidate"
+msgstr "ผู้สมัครทุกราย"
+
+msgctxt "board filter"
+msgid "the ones with room to spare"
+msgstr "รายการที่ยังเหลือที่ว่าง"
+
+msgctxt "board filter"
+msgid "the ones that fit"
+msgstr "รายการที่พอดี"
+
+msgctxt "board filter"
+msgid "the ones that run"
+msgstr "รายการที่รันได้"
+
+msgid "matching %(text)s"
+msgstr "ที่ตรงกับ %(text)s"
+
+msgid "running as %(mode)s"
+msgstr "ที่รันแบบ %(mode)s"
+
+msgid "at least %(tps)s tokens per second"
+msgstr "อย่างน้อย %(tps)s โทเค็นต่อวินาที"
+
+msgid "no more than %(size)s to download"
+msgstr "ดาวน์โหลดไม่เกิน %(size)s"
+
+msgid "no more than %(size)s on the card"
+msgstr "บนการ์ดไม่เกิน %(size)s"
+
+msgid "no more than %(size)s of system memory"
+msgstr "ใช้หน่วยความจำระบบไม่เกิน %(size)s"
+
+msgid "holding at least %(context)s tokens"
+msgstr "เก็บได้อย่างน้อย %(context)s โทเค็น"
+
+msgid "a quality of at least %(quality)s"
+msgstr "คุณภาพอย่างน้อย %(quality)s"
+
+msgid "%(shown)d of %(total)d shown"
+msgstr "แสดง %(shown)d จาก %(total)d"
+
+msgid "%(sort)s in reverse"
+msgstr "%(sort)s แบบย้อนลำดับ"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s already on this machine."
+msgstr "%(counted)s เรียงตาม %(sort)s แสดง %(filter)s ที่มีอยู่บนเครื่องนี้แล้ว"
+
+msgctxt "board filter"
+msgid "already on this machine"
+msgstr "ที่มีอยู่บนเครื่องนี้แล้ว"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s."
+msgstr "%(counted)s เรียงตาม %(sort)s แสดง %(filter)s"
+
+msgid "Nothing was ranked. Every candidate is listed below with the reason; widen the request or free some memory."
+msgstr "ไม่มีอะไรได้รับการจัดอันดับ ผู้สมัครทุกรายอยู่ข้างล่างพร้อมเหตุผล ลองขยายคำขอให้กว้างขึ้นหรือคืนหน่วยความจำบ้าง"
+
+msgid "Recommended"
+msgstr "แนะนำ"
+
+msgid "--min-tps 0: nobody is waiting on these tokens, so nothing was excluded for generating more slowly than a person reads."
+msgstr "--min-tps 0: ไม่มีใครรอโทเค็นเหล่านี้อยู่ จึงไม่มีอะไรถูกคัดออกเพราะสร้างช้ากว่าที่คนอ่านทัน"
+
+msgid "--min-tps %(tps)s: this board wanted at least that many tokens per second, and anything slower is excluded below rather than ranked here."
+msgstr "--min-tps %(tps)s: กระดานนี้ต้องการอย่างน้อยเท่านั้นโทเค็นต่อวินาที อะไรที่ช้ากว่านั้นจึงถูกคัดไปไว้ข้างล่างแทนที่จะจัดอันดับตรงนี้"
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; --limit sets how many, and the rest are neither worse-behaved nor hidden, only further down."
+msgstr "กำลังแสดง %(shown)s รายการที่ดีที่สุดจาก %(total)s รายการที่ผ่านเกณฑ์ จำนวนกำหนดด้วย --limit ส่วนที่เหลือไม่ได้แย่กว่าและไม่ได้ถูกซ่อน เพียงแต่อยู่ถัดลงไป"
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every speed above is a CPU-only speed. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s อยู่บนเครื่องนี้ แต่ไม่มีอะไรอ่านได้ว่ามันว่างเท่าไร ความเร็วทุกค่าข้างบนจึงเป็นความเร็วแบบใช้ CPU อย่างเดียว `llamafit doctor` บอกวิธีแก้"
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
+msgstr "ความเร็วคิดที่คอนเท็กซ์ %(working)s โทเค็น เพื่อให้ทุกแถวเทียบกันบนฐานเดียวกัน ส่วนคอลัมน์คอนเท็กซ์คือค่าสูงสุดที่แต่ละแถวเก็บได้ คิดขนาดและให้คะแนนสำหรับ %(use_case)s ที่ %(requested)s โทเค็น"
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
+msgstr "ความเร็วคิดที่คอนเท็กซ์ %(working)s โทเค็น เพื่อให้ทุกแถวเทียบกันบนฐานเดียวกัน ส่วนคอลัมน์คอนเท็กซ์คือค่าสูงสุดที่แต่ละแถวเก็บได้ คิดขนาดสำหรับ %(planned)s โทเค็น และให้คะแนนสำหรับ %(use_case)s เทียบกับ %(requested)s"
+
+msgid "Weights: %(weights)s."
+msgstr "น้ำหนัก: %(weights)s"
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free, no card."
+msgstr "คำนวณโดยมีหน่วยความจำระบบว่าง %(ram_free)s จาก %(ram_total)s และไม่มีการ์ด"
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free and %(vram_free)s of %(vram_total)s free on the %(gpu)s."
+msgstr "คำนวณโดยมีหน่วยความจำระบบว่าง %(ram_free)s จาก %(ram_total)s และบน %(gpu)s ว่าง %(vram_free)s จาก %(vram_total)s"
+
+msgid "Every speed above is derived from %(bandwidth)s of memory bandwidth."
+msgstr "ความเร็วทุกค่าข้างบนคำนวณจากแบนด์วิดท์หน่วยความจำ %(bandwidth)s"
+
+msgid "That bandwidth was kept from an earlier run on this machine; `llamafit system --refresh-bandwidth` times it again."
+msgstr "แบนด์วิดท์นั้นเก็บไว้จากการรันครั้งก่อนบนเครื่องนี้ `llamafit system --refresh-bandwidth` จะวัดใหม่อีกครั้ง"
+
+msgid "generates fewer than the %(floor)s tokens per second this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "สร้างได้น้อยกว่า %(floor)s โทเค็นต่อวินาทีที่คำขอนี้ต้องการ ลด --min-tps ลง หรือเลือกโมเดลหรือควอนไทซ์ที่เล็กกว่า"
+
+msgid "generates fewer than the %(floor)s tokens per second a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "สร้างได้น้อยกว่า %(floor)s โทเค็นต่อวินาทีซึ่งเป็นความเร็วที่คนอ่านทัน บนเครื่องนี้มันจึงเป็นเครื่องมือแบบสั่งงานเป็นชุด ไม่ใช่ตัวที่จะนั่งใช้ตรงหน้า โมเดลหรือควอนไทซ์ที่เล็กกว่าจะตามทัน"
+
+msgid "%(tps)s tok/s"
+msgstr "%(tps)s tok/s"
+
+msgctxt "exclusion tag"
+msgid "too slow"
+msgstr "ช้าเกินไป"
+
+msgctxt "exclusion tag"
+msgid "too big"
+msgstr "ใหญ่เกินไป"
+
+msgid "larger to download than the %(limit)s this request allows"
+msgstr "ต้องดาวน์โหลดมากกว่า %(limit)s ที่คำขอนี้อนุญาต"
+
+msgctxt "exclusion tag"
+msgid "unknown quant"
+msgstr "ควอนไทซ์ไม่รู้จัก"
+
+msgid "a quantisation whose cost in quality is not known, so it cannot be scored"
+msgstr "เป็นควอนไทซ์ที่ไม่ทราบว่าเสียคุณภาพไปเท่าใด จึงให้คะแนนไม่ได้"
+
+msgid "needs more memory than this machine has, even at its smallest context"
+msgstr "ต้องการหน่วยความจำมากกว่าที่เครื่องนี้มี แม้แต่ที่คอนเท็กซ์เล็กที่สุดของมัน"
+
+msgctxt "exclusion tag"
+msgid "unsupported"
+msgstr "ไม่รองรับ"
+
+msgid "no run mode supports this model on this machine"
+msgstr "ไม่มีโหมดการรันใดรองรับโมเดลนี้บนเครื่องนี้"
+
+msgctxt "exclusion tag"
+msgid "short context"
+msgstr "คอนเท็กซ์สั้นไป"
+
+msgid "holds fewer than the %(minimum)s tokens asked for; lower the minimum context or free memory to see it ranked"
+msgstr "เก็บได้น้อยกว่า %(minimum)s โทเค็นที่ขอไว้ ลดคอนเท็กซ์ขั้นต่ำลงหรือคืนหน่วยความจำเพื่อให้เห็นมันในอันดับ"
+
+msgctxt "exclusion tag"
+msgid "no estimate"
+msgstr "ไม่มีค่าประมาณ"
+
+msgid "no speed estimate, so it cannot be ranked against models that have one"
+msgstr "ไม่มีค่าประมาณความเร็ว จึงเทียบอันดับกับโมเดลที่มีค่าประมาณไม่ได้"
+
+msgctxt "exclusion tag"
+msgid "no %(capability)s"
+msgstr "ไม่มี %(capability)s"
+
+msgid "no %(capability)s capability; drop it from the request, or ask for a use case that does not need it"
+msgstr "ไม่มีความสามารถ %(capability)s เอามันออกจากคำขอ หรือเลือกกรณีใช้งานที่ไม่ต้องใช้มัน"
+
+msgid "Not ranked"
+msgstr "ไม่ได้จัดอันดับ"
+
+msgid "Not placed"
+msgstr "จัดวางไม่ได้"
+
+msgid "%(tag)s (%(count)s):"
+msgstr "%(tag)s (%(count)s):"
+
+msgid "%(model)s %(quant)s: %(reason)s"
+msgstr "%(model)s %(quant)s: %(reason)s"
+
+msgid "%(tag)s (%(count)s): %(sentence)s."
+msgstr "%(tag)s (%(count)s): %(sentence)s"
+
+msgid "%(model)s %(quant)s (%(figure)s)"
+msgstr "%(model)s %(quant)s (%(figure)s)"
+
+msgid "%(name)s %(quant)s (%(tag)s)"
+msgstr "%(name)s %(quant)s (%(tag)s)"
+
+msgid "%(rank)s. %(name)s %(quant)s"
+msgstr "%(rank)s. %(name)s %(quant)s"
+
+msgid "Nothing fits this machine at that threshold. Try --min-fit tight, or drop --perfect."
+msgstr "ไม่มีอะไรพอดีกับเครื่องนี้ที่เกณฑ์นั้น ลอง --min-fit tight หรือเอา --perfect ออก"
+
+msgid "Fit on the simulated machine"
+msgstr "ความพอดีบนเครื่องจำลอง"
+
+msgid "Fit on this machine"
+msgstr "ความพอดีบนเครื่องนี้"
+
+msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
+msgstr "คิดขนาดไว้สำหรับ %(context)s โทเค็น คอลัมน์คอนเท็กซ์คือค่าสูงสุดที่แต่ละโมเดลเก็บได้ในโหมดที่แสดงอยู่"
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every row was sized as if there were no card. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s อยู่บนเครื่องนี้ แต่ไม่มีอะไรอ่านได้ว่ามันว่างเท่าไร ทุกแถวจึงคิดขนาดเสมือนว่าไม่มีการ์ด `llamafit doctor` บอกวิธีแก้"
+
+msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
+msgstr "%(mode)s ที่ %(context)s โทเค็น, ไมโครแบตช์ %(ub)s, แคช %(kv)s, %(threads)s เธรด"
+
+msgid "This reaches the %(target)s tokens per second asked for."
+msgstr "การตั้งค่านี้ถึง %(target)s โทเค็นต่อวินาทีตามที่ขอไว้"
+
+msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
+msgstr "ที่นี่มันไม่ถึง %(target)s โทเค็นต่อวินาที แต่คอนเท็กซ์ %(context)s โทเค็นจะถึง ให้ใส่ --context %(tokens)s"
+
+msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
+msgstr "ไม่ว่าจะตั้งค่าอย่างไร โมเดลและควอนไทซ์นี้บนเครื่องนี้ก็ไม่ถึง %(target)s โทเค็นต่อวินาที การตั้งค่าที่เร็วที่สุดที่ลองแล้วคือ %(best)s โมเดลที่เล็กกว่าหรือควอนไทซ์ที่เล็กกว่าคือสิ่งที่จะทำให้ถึง"
+
+msgid "%(name)s %(quant)s"
+msgstr "%(name)s %(quant)s"
+
+msgid "Memory budget"
+msgstr "การจัดสรรหน่วยความจำ"
+
+msgid "The %(context)s tokens asked for would have cost"
+msgstr "%(context)s โทเค็นที่ขอไว้จะกินทรัพยากรเท่านี้"
+
+msgid "Command line"
+msgstr "บรรทัดคำสั่ง"
+
+msgid "Model file: %(path)s."
+msgstr "ไฟล์โมเดล: %(path)s"
+
+msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
+msgstr "ไฟล์โมเดล: %(path)s ซึ่งยังไม่มีบนเครื่องนี้ นั่นคือที่ที่การดาวน์โหลดจะวางมันไว้ ต้องดาวน์โหลด %(size)s"
+
+msgid "%(shown)d of %(total)d candidate shown."
+msgid_plural "%(shown)d of %(total)d candidates shown."
+msgstr[0] "แสดงผู้สมัคร %(shown)d จาก %(total)d ราย"
+
+msgid "Release"
+msgstr "รุ่นที่เผยแพร่"
+
+msgid "%(tag)s (build %(build)s)"
+msgstr "%(tag)s (บิลด์ %(build)s)"
+
+msgid "Backend"
+msgstr "แบ็กเอนด์"
+
+msgid "Archive"
+msgstr "ไฟล์เก็บถาวร"
+
+msgid "Also"
+msgstr "รวมถึง"
+
+msgid "Download"
+msgstr "ดาวน์โหลด"
+
+msgid "%(size)s (%(done)s already on disk)"
+msgstr "%(size)s (%(done)s อยู่บนดิสก์แล้ว)"
+
+msgid "Checksum"
+msgstr "เช็กซัม"
+
+msgid "published, checked before anything is unpacked"
+msgstr "เผยแพร่ไว้ ตรวจก่อนแตกไฟล์ใด ๆ"
+
+msgid "none published"
+msgstr "ไม่มีเผยแพร่ไว้"
+
+msgid "Install into"
+msgstr "ติดตั้งลงใน"
+
+msgid "Directory"
+msgstr "ไดเรกทอรี"
+
+msgid "Free space"
+msgstr "พื้นที่ว่าง"
+
+msgid "Free space (cache)"
+msgstr "พื้นที่ว่าง (แคช)"
+
+msgid "%(free)s on %(path)s, %(needed)s needed"
+msgstr "ว่าง %(free)s บน %(path)s ต้องใช้ %(needed)s"
+
+msgid "will be created"
+msgstr "จะถูกสร้างขึ้น"
+
+msgid "exists and is empty"
+msgstr "มีอยู่และว่างเปล่า"
+
+msgid "holds %(tag)s, installed by LlamaFit; it will be replaced"
+msgstr "มี %(tag)s ที่ LlamaFit ติดตั้งไว้ และจะถูกแทนที่"
+
+msgid "installed by LlamaFit; it will be replaced"
+msgstr "LlamaFit ติดตั้งไว้ และจะถูกแทนที่"
+
+msgid "was not installed by LlamaFit"
+msgstr "ไม่ได้ถูกติดตั้งโดย LlamaFit"
+
+msgid "Installed llama.cpp %(tag)s into %(path)s."
+msgstr "ติดตั้ง llama.cpp %(tag)s ลงใน %(path)s แล้ว"
+
+msgid "Replaced %(tag)s."
+msgstr "แทนที่ %(tag)s แล้ว"
+
+msgid "Backends found in it: %(backends)s"
+msgstr "แบ็กเอนด์ที่พบในนั้น: %(backends)s"
+
+msgid "none"
+msgstr "ไม่มี"
+
+msgid "Check it with `llamafit doctor`."
+msgstr "ตรวจดูด้วย `llamafit doctor`"
+
+msgid "already here"
+msgstr "มีอยู่แล้ว"
+
+msgid "to fetch"
+msgstr "ต้องดาวน์โหลด"
+
+msgid "About to download"
+msgstr "กำลังจะดาวน์โหลด"
+
+msgid "Role"
+msgstr "บทบาท"
+
+msgid "Status"
+msgstr "สถานะ"
+
+msgid "%(name)s %(quant)s from %(repo)s"
+msgstr "%(name)s %(quant)s จาก %(repo)s"
+
+msgid "%(count)d file, %(total)s in all, %(needed)s still to fetch."
+msgid_plural "%(count)d files, %(total)s in all, %(needed)s still to fetch."
+msgstr[0] "%(count)d ไฟล์ รวม %(total)s เหลือที่ต้องดาวน์โหลดอีก %(needed)s"
+
+msgid "Into %(path)s, which has %(free)s free; %(after)s would be left."
+msgstr "ลงใน %(path)s ซึ่งว่างอยู่ %(free)s หลังจากนั้นจะเหลือ %(after)s"
+
+msgid "The catalog holds no checksum for %(files)s."
+msgid_plural "The catalog holds no checksums for %(files)s."
+msgstr[0] "แคตตาล็อกไม่มีเช็กซัมสำหรับ %(files)s"
+
+msgid "%(model)s %(quant)s is already here; nothing to do."
+msgstr "%(model)s %(quant)s มีอยู่แล้ว ไม่มีอะไรต้องทำ"
+
+msgid "Stopped. What arrived is kept; run `llamafit install model %(model)s` again to carry on from there."
+msgstr "หยุดแล้ว สิ่งที่ดาวน์โหลดมาได้ยังเก็บไว้ รัน `llamafit install model %(model)s` อีกครั้งเพื่อทำต่อจากจุดนั้น"
+
+msgid "%(count)d file, %(size)s, checked against the catalog."
+msgid_plural "%(count)d files, %(size)s, checked against the catalog."
+msgstr[0] "%(count)d ไฟล์ %(size)s ตรวจกับแคตตาล็อกแล้ว"
+
+msgid "In %(path)s. Run `llamafit plan %(model)s` for the command line that runs it."
+msgstr "อยู่ใน %(path)s รัน `llamafit plan %(model)s` เพื่อดูบรรทัดคำสั่งที่ใช้รัน"
+
+msgid "Downloads"
+msgstr "การดาวน์โหลด"
+
+msgid "When"
+msgstr "เมื่อไร"
+
+msgid "Model"
+msgstr "โมเดล"
+
+msgid "Quant"
+msgstr "ควอนไทซ์"
+
+msgid "Outcome"
+msgstr "ผลลัพธ์"
+
+msgid "finished"
+msgstr "เสร็จแล้ว"
+
+msgid "stopped"
+msgstr "หยุดไป"
+
+msgid "Bind to this address instead of 127.0.0.1. Anything but loopback puts the dashboard on your network, where there is no password and no login; it prints what that exposes before it starts."
+msgstr "ผูกกับที่อยู่นี้ แทน 127.0.0.1 ที่อยู่ใดที่ไม่ใช่ลูปแบ็กจะทำให้แดชบอร์ดออกไปอยู่บนเครือข่ายของคุณ ซึ่งไม่มีรหัสผ่านและไม่มีการล็อกอิน โปรแกรมจะแสดงว่าอะไรถูกเปิดเผยบ้างก่อนเริ่มทำงาน"
+
+msgid "Listen on this port."
+msgstr "ฟังที่พอร์ตนี้"
+
+msgid ""
+"Open the dashboard in a browser: the board, the machine and the plans.\n"
+"\n"
+"It serves the same numbers `--json` prints, from the same code, on this machine only. Nothing is fetched from the internet to draw the page."
+msgstr ""
+"เปิดแดชบอร์ดในเบราว์เซอร์: กระดาน เครื่อง และแผนต่าง ๆ\n"
+"\n"
+"มันให้ตัวเลขชุดเดียวกับที่ --json แสดง จากโค้ดชุดเดียวกัน และอยู่บนเครื่องนี้เท่านั้น ไม่มีการดึงอะไรจากอินเทอร์เน็ตมาวาดหน้านี้"
+
+msgid "Open the page in your browser."
+msgstr "เปิดหน้านี้ในเบราว์เซอร์ของคุณ"
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores, then open the Simulate panel on the page: it substitutes a machine for as long as you want it, and marks every answer it produces."
+msgstr "เอา --profile, --memory, --ram และ --cpu-cores ออก แล้วเปิดแผงจำลองบนหน้าเว็บ มันจะแทนที่เครื่องไว้นานเท่าที่คุณต้องการ และกำกับทุกคำตอบที่มันสร้างขึ้น"
+
+msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
+msgstr "LlamaFit อยู่ที่ %(url)s กด Ctrl+C เพื่อหยุด"
+
 msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
 msgstr "แสดงว่าเครื่องนี้มีอะไรบ้าง: CPU, หน่วยความจำ, GPU, ดิสก์ และ llama.cpp"
 
 msgid "Skip the RAM bandwidth measurement."
 msgstr "ข้ามการวัดแบนด์วิดท์ของ RAM"
 
+msgid "Measure RAM bandwidth again instead of reading back the figure kept for this machine, and keep the new one."
+msgstr "วัดแบนด์วิดท์ของ RAM ใหม่ แทนการอ่านค่าที่เก็บไว้ของเครื่องนี้ แล้วเก็บค่าใหม่ไว้"
+
+msgid "%(url)s answered a range request with the whole file."
+msgstr "%(url)s ตอบคำขอแบบช่วงด้วยไฟล์ทั้งไฟล์"
+
+msgid "%(url)s is rate-limiting this download (HTTP %(status)d)."
+msgstr "%(url)s กำลังจำกัดอัตราการดาวน์โหลดนี้ (HTTP %(status)d)"
+
+msgid "Check your network connection and run the command again to resume."
+msgstr "ตรวจการเชื่อมต่อเครือข่ายแล้วรันคำสั่งอีกครั้งเพื่อทำต่อ"
+
+msgid "%(file)s needs authorisation (HTTP %(status)d)."
+msgstr "%(file)s ต้องได้รับอนุญาตก่อน (HTTP %(status)d)"
+
+msgid "This repository is gated. Accept its terms on Hugging Face and set HF_TOKEN to a token that can read it."
+msgstr "ที่เก็บนี้ถูกจำกัดการเข้าถึง ให้ยอมรับเงื่อนไขของมันบน Hugging Face และตั้ง HF_TOKEN เป็นโทเค็นที่อ่านมันได้"
+
+msgid "%(file)s is not at %(url)s any more (HTTP 404)."
+msgstr "%(file)s ไม่อยู่ที่ %(url)s แล้ว (HTTP 404)"
+
+msgid "Run `llamafit catalog refresh` to pick up the repository's current files."
+msgstr "รัน `llamafit catalog refresh` เพื่อดึงรายการไฟล์ปัจจุบันของที่เก็บ"
+
+msgid "%(url)s returned HTTP %(status)d."
+msgstr "%(url)s ส่ง HTTP %(status)d กลับมา"
+
+msgid "Confirm the URL points at a downloadable file."
+msgstr "ยืนยันว่า URL ชี้ไปยังไฟล์ที่ดาวน์โหลดได้"
+
+msgid "%(url)s did not say how big %(file)s is."
+msgstr "%(url)s ไม่ได้บอกว่า %(file)s ใหญ่เท่าไร"
+
+msgid "%(file)s is %(actual)s on the server but the catalog says %(expected)s; the repository has been re-uploaded since the catalog was refreshed."
+msgstr "%(file)s บนเซิร์ฟเวอร์มีขนาด %(actual)s แต่แคตตาล็อกระบุ %(expected)s ที่เก็บถูกอัปโหลดใหม่หลังจากรีเฟรชแคตตาล็อกครั้งล่าสุด"
+
+msgid "Run `llamafit catalog refresh` and try again."
+msgstr "รัน `llamafit catalog refresh` แล้วลองใหม่"
+
+msgid "%(file)s: the server sent %(actual)d bytes of a %(expected)d byte range."
+msgstr "%(file)s: เซิร์ฟเวอร์ส่งมา %(actual)d ไบต์ จากช่วงขนาด %(expected)d ไบต์"
+
+msgid "Run the command again; the parts that did arrive are kept."
+msgstr "รันคำสั่งอีกครั้ง ส่วนที่มาถึงแล้วยังเก็บไว้"
+
+msgid "Stopped."
+msgstr "หยุดแล้ว"
+
+msgid "%(file)s: the server asked for fewer connections; using %(count)d."
+msgstr "%(file)s: เซิร์ฟเวอร์ขอให้ใช้การเชื่อมต่อน้อยลง กำลังใช้ %(count)d"
+
+msgid "%(file)s: this server will not serve byte ranges; fetching it in one stream."
+msgstr "%(file)s: เซิร์ฟเวอร์นี้ไม่ให้บริการแบบช่วงไบต์ จะดาวน์โหลดรวดเดียว"
+
+msgid "%(file)s does not match its checksum; fetching it again."
+msgstr "%(file)s ไม่ตรงกับเช็กซัมของมัน กำลังดาวน์โหลดใหม่"
+
+msgid "Check that the download directory is writable."
+msgstr "ตรวจว่าไดเรกทอรีดาวน์โหลดเขียนได้"
+
+msgid "%(needed)s is needed for this model but %(path)s has only %(free)s free, %(short)s short of what is wanted with %(headroom)s left spare."
+msgstr "โมเดลนี้ต้องใช้ %(needed)s แต่ %(path)s ว่างอยู่เพียง %(free)s ขาดไป %(short)s จากที่ต้องการเมื่อเผื่อไว้ %(headroom)s"
+
+msgid "Free some space, or choose another directory with --dir, or a smaller quantisation with --quant."
+msgstr "เพิ่มพื้นที่ว่าง หรือเลือกไดเรกทอรีอื่นด้วย --dir หรือเลือกควอนไทซ์ที่เล็กกว่าด้วย --quant"
+
+msgid "could not measure the free space on %(path)s: %(error)s"
+msgstr "วัดพื้นที่ว่างบน %(path)s ไม่ได้: %(error)s"
+
+msgid "Check that the download directory's volume is available."
+msgstr "ตรวจว่าไดรฟ์ที่เก็บไดเรกทอรีดาวน์โหลดใช้งานได้"
+
+msgid "%(model)s has no downloadable source in the catalog."
+msgstr "%(model)s ไม่มีแหล่งดาวน์โหลดในแคตตาล็อก"
+
+msgid "Only Hugging Face sources can be installed; this entry has none."
+msgstr "ติดตั้งได้เฉพาะแหล่งที่เป็น Hugging Face เท่านั้น และรายการนี้ไม่มีเลย"
+
+msgid "the catalog has no file list for %(model)s %(quant)s."
+msgstr "แคตตาล็อกไม่มีรายชื่อไฟล์ของ %(model)s %(quant)s"
+
+msgid "Run `llamafit catalog refresh` to fill in the file names."
+msgstr "รัน `llamafit catalog refresh` เพื่อเติมชื่อไฟล์"
+
+msgid "%(model)s publishes no quantisations."
+msgstr "%(model)s ไม่ได้เผยแพร่ไฟล์ควอนไทซ์เลย"
+
+msgid "%(model)s does not publish a %(quant)s quantisation."
+msgstr "%(model)s ไม่ได้เผยแพร่ควอนไทซ์แบบ %(quant)s"
+
+msgid "It publishes: %(quants)s"
+msgstr "แบบที่เผยแพร่คือ: %(quants)s"
+
+msgid "the catalog does not record how big %(quant)s is."
+msgstr "แคตตาล็อกไม่ได้บันทึกว่า %(quant)s ใหญ่เท่าไร"
+
+msgid "Run `llamafit catalog refresh` to fill in the sizes."
+msgstr "รัน `llamafit catalog refresh` เพื่อเติมขนาด"
+
+msgid "the catalog holds no checksum for %(files)s."
+msgid_plural "the catalog holds no checksums for %(files)s."
+msgstr[0] "แคตตาล็อกไม่มีเช็กซัมสำหรับ %(files)s"
+
+msgid "Run `llamafit catalog refresh` to fetch them, or pass --allow-unverified to download anyway and check the files yourself."
+msgstr "รัน `llamafit catalog refresh` เพื่อดึงมา หรือใส่ --allow-unverified เพื่อดาวน์โหลดไปก่อนแล้วตรวจไฟล์เอง"
+
+msgid "%(done)s of %(total)s"
+msgstr "%(done)s จาก %(total)s"
+
+msgid "%(rate)s/s"
+msgstr "%(rate)s/s"
+
+msgid "Fetching %(file)s (%(size)s)"
+msgstr "กำลังดาวน์โหลด %(file)s (%(size)s)"
+
+msgid "Checking %(file)s against its checksum"
+msgstr "กำลังตรวจ %(file)s กับเช็กซัมของมัน"
+
+msgid "Done: %(file)s"
+msgstr "เสร็จ: %(file)s"
+
+msgid "could not create %(path)s: %(error)s"
+msgstr "สร้าง %(path)s ไม่ได้: %(error)s"
+
+msgid "Check that the download directory is writable and has room."
+msgstr "ตรวจว่าไดเรกทอรีดาวน์โหลดเขียนได้และมีที่ว่างพอ"
+
+msgid "could not move %(source)s into place: %(error)s"
+msgstr "ย้าย %(source)s ไปยังที่ของมันไม่ได้: %(error)s"
+
+msgid "could not record progress in %(path)s: %(error)s"
+msgstr "บันทึกความคืบหน้าลงใน %(path)s ไม่ได้: %(error)s"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "ดึง %(url)s ไม่ได้: %(error)s"
+
+msgid "Stopped before the checksum was finished."
+msgstr "หยุดก่อนที่จะตรวจเช็กซัมเสร็จ"
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "อ่าน %(path)s ไม่ได้: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "ตรวจสอบว่าไฟล์มีอยู่จริงและอ่านได้"
+
+msgid "%(file)s is %(actual)d bytes, but the catalog says %(expected)d"
+msgstr "%(file)s มีขนาด %(actual)d ไบต์ แต่แคตตาล็อกระบุ %(expected)d"
+
+msgid "The transfer was cut short. Run the command again to fetch it properly."
+msgstr "การถ่ายโอนถูกตัดกลางคัน รันคำสั่งอีกครั้งเพื่อดาวน์โหลดให้ครบ"
+
+msgid "%(file)s does not match the checksum the catalog holds."
+msgstr "%(file)s ไม่ตรงกับเช็กซัมที่แคตตาล็อกเก็บไว้"
+
+msgid "Expected %(expected)s but the file hashes to %(actual)s. The bad copy has been deleted; run the command again to fetch it."
+msgstr "ควรได้ %(expected)s แต่ไฟล์แฮชออกมาเป็น %(actual)s สำเนาที่เสียถูกลบไปแล้ว รันคำสั่งอีกครั้งเพื่อดาวน์โหลดใหม่"
+
 msgid "Command: %(command)s"
 msgstr "คำสั่ง: %(command)s"
 
 msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
 msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr[0] ""
+msgstr[0] "ส่วนหัว GGUF ถูกตัดสั้น: ต้องการ %(wanted)d ไบต์ที่ออฟเซ็ต %(offset)d แต่ได้ %(got)d"
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "ไฟล์อาจยังดาวน์โหลดไม่เสร็จ หรือ URL อาจไม่ใช่ไฟล์ GGUF"
@@ -642,9 +2673,20 @@ msgstr "ไม่รองรับ GGUF เวอร์ชัน %(version)d �
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit รองรับ GGUF เวอร์ชัน %(versions)s"
 
+msgid "A memory budget built without these tensors would be too small, so none is built. If llama.cpp loads the file, LlamaFit's tensor-size table is missing the type."
+msgstr "การจัดสรรหน่วยความจำที่สร้างโดยขาดเทนเซอร์เหล่านี้จะเล็กเกินจริง จึงไม่สร้างเลย ถ้า llama.cpp โหลดไฟล์นี้ได้ แสดงว่าตารางขนาดเทนเซอร์ของ LlamaFit ขาดชนิดนั้นไป"
+
+msgid "%(type)d (%(count)d tensor, first %(name)s)"
+msgid_plural "%(type)d (%(count)d tensors, first %(name)s)"
+msgstr[0] "%(type)d (%(count)d เทนเซอร์ ตัวแรกคือ %(name)s)"
+
+msgid "cannot size this GGUF file: %(count)d tensor uses a GGML type LlamaFit does not know: %(details)s"
+msgid_plural "cannot size this GGUF file: %(count)d tensors use GGML types LlamaFit does not know: %(details)s"
+msgstr[0] "ประเมินขนาดไฟล์ GGUF นี้ไม่ได้: เทนเซอร์ %(count)d ตัวใช้ชนิด GGML ที่ LlamaFit ไม่รู้จัก: %(details)s"
+
 msgid "%(count)d shard"
 msgid_plural "%(count)d shards"
-msgstr[0] ""
+msgstr[0] "%(count)d ชาร์ด"
 
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "ไฟล์ GGUF เหล่านี้ไม่ได้เป็นโมเดลที่แบ่งชาร์ดชุดเดียวกัน: ค่า '%(key)s' ไม่ตรงกัน โดยประกาศเป็น %(values)s"
@@ -660,13 +2702,13 @@ msgstr "ส่งไฟล์ของโมเดล หรือชาร์�
 
 msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
 msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr[0] ""
+msgstr[0] "ไฟล์ GGUF %(count)d ไฟล์ จาก %(total)d ไฟล์ที่ให้มา ไม่มีคีย์ '%(key)s' จึงระบุตำแหน่งของมันในโมเดลที่แบ่งชาร์ดไม่ได้"
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "ส่งไฟล์เดี่ยวที่ไม่ได้แบ่งชาร์ดเพียงไฟล์เดียว หรือชาร์ดทุกชิ้นของโมเดลที่แบ่งชาร์ดชุดเดียว"
 
 msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr ""
+msgstr "ชาร์ดไม่ครบ: โมเดลประกาศไว้ %(shards)s แต่มาถึง %(arrived)d ชิ้น (%(key)s %(numbers)s)"
 
 msgid "Pass every shard of the split model."
 msgstr "ส่งชาร์ดทุกชิ้นของโมเดลที่แบ่งชาร์ด"
@@ -684,20 +2726,11 @@ msgid "Pass each shard of the split model exactly once."
 msgstr "ส่งชาร์ดแต่ละชิ้นของโมเดลที่แบ่งชาร์ดเพียงครั้งเดียว"
 
 msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
-msgstr ""
+msgstr "ชาร์ดไม่ครบ: โมเดลประกาศไว้ %(tensors)s แต่ %(shards)s ของมันรวมกันเก็บไว้ %(held)d"
 
 msgid "%(count)d tensor"
 msgid_plural "%(count)d tensors"
-msgstr[0] ""
-
-msgid "could not read %(path)s: %(error)s"
-msgstr "อ่าน %(path)s ไม่ได้: %(error)s"
-
-msgid "Check that the file exists and is readable."
-msgstr "ตรวจสอบว่าไฟล์มีอยู่จริงและอ่านได้"
-
-msgid "could not fetch %(url)s: %(error)s"
-msgstr "ดึง %(url)s ไม่ได้: %(error)s"
+msgstr[0] "%(count)d เทนเซอร์"
 
 msgid "Check your network connection and that the URL is reachable."
 msgstr "ตรวจสอบการเชื่อมต่อเครือข่ายและว่า URL นี้เข้าถึงได้"
@@ -727,6 +2760,9 @@ msgstr "WMI ไม่ได้ส่งตัวควบคุมวิดี�
 msgid "lspci found no display controllers"
 msgstr "lspci ไม่พบตัวควบคุมการแสดงผล"
 
+msgid "vulkaninfo reported no discrete device with a memory heap"
+msgstr "vulkaninfo ไม่ได้รายงานอุปกรณ์แยกที่มีฮีปหน่วยความจำเลย"
+
 msgid "no populated memory modules"
 msgstr "ไม่มีโมดูลหน่วยความจำที่ติดตั้งอยู่"
 
@@ -735,7 +2771,7 @@ msgstr "ไม่มี SPMemoryDataType"
 
 msgid "%(program)s: timed out after %(seconds)s second"
 msgid_plural "%(program)s: timed out after %(seconds)s seconds"
-msgstr[0] ""
+msgstr[0] "%(program)s: หมดเวลาหลังจาก %(seconds)s วินาที"
 
 msgid "empty command"
 msgstr "คำสั่งว่างเปล่า"
@@ -746,11 +2782,47 @@ msgstr "%(program)s: %(error)s"
 msgid "%(program)s: not found"
 msgstr "%(program)s: ไม่พบ"
 
-msgid "no output"
-msgstr "ไม่มีผลลัพธ์"
-
 msgid "exit code %(code)d: %(detail)s"
 msgstr "รหัสออก %(code)d: %(detail)s"
+
+msgid "no hardware profile file at %(path)s"
+msgstr "ไม่มีไฟล์โปรไฟล์ฮาร์ดแวร์ที่ %(path)s"
+
+msgid "Run `llamafit hardware list` to see the profiles LlamaFit has."
+msgstr "รัน `llamafit hardware list` เพื่อดูโปรไฟล์ที่ LlamaFit มี"
+
+msgid "%(path)s is not a valid hardware profile: %(details)s"
+msgstr "%(path)s ไม่ใช่โปรไฟล์ฮาร์ดแวร์ที่ถูกต้อง: %(details)s"
+
+msgid "Run `llamafit hardware validate FILE` for the whole list."
+msgstr "รัน `llamafit hardware validate FILE` เพื่อดูรายการทั้งหมด"
+
+msgid "no hardware profile named %(name)s"
+msgstr "ไม่มีโปรไฟล์ฮาร์ดแวร์ชื่อ %(name)s"
+
+msgid "Profiles LlamaFit has: %(names)s"
+msgstr "โปรไฟล์ที่ LlamaFit มี: %(names)s"
+
+msgid "Run `llamafit hardware path` to see where your own profiles go."
+msgstr "รัน `llamafit hardware path` เพื่อดูว่าโปรไฟล์ของคุณเองอยู่ที่ไหน"
+
+msgid "this machine has no graphics card, so there is no VRAM to override"
+msgstr "เครื่องนี้ไม่มีการ์ดจอ จึงไม่มี VRAM ให้แทนค่า"
+
+msgid "Describe the whole machine in a hardware profile and pass --profile."
+msgstr "อธิบายทั้งเครื่องไว้ในโปรไฟล์ฮาร์ดแวร์แล้วใส่ --profile"
+
+msgid "this machine has one memory pool shared with the graphics card"
+msgstr "เครื่องนี้มีพูลหน่วยความจำเดียวที่ใช้ร่วมกับการ์ดจอ"
+
+msgid "Use --ram to resize the pool; --memory would change only half of it."
+msgstr "ใช้ --ram เพื่อเปลี่ยนขนาดพูล ส่วน --memory จะเปลี่ยนเพียงครึ่งเดียวของมัน"
+
+msgid "%(option)s needs a value above zero"
+msgstr "%(option)s ต้องการค่าที่มากกว่าศูนย์"
+
+msgid "no build number in the version output: %(text)s"
+msgstr "ไม่มีหมายเลขบิลด์ในผลลัพธ์ของเวอร์ชัน: %(text)s"
 
 msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
 msgstr "ไม่พบ llama.cpp: ไม่มี llama-server ใน PATH, ใน LLAMA_CPP_PATH หรือในไดเรกทอรีที่ใช้กันทั่วไป"
@@ -758,11 +2830,255 @@ msgstr "ไม่พบ llama.cpp: ไม่มี llama-server ใน PATH, ใ
 msgid "no ggml backend libraries found next to llama-server; the build may be static"
 msgstr "ไม่พบไลบรารีแบ็กเอนด์ ggml ข้าง llama-server; บิลด์นี้อาจเป็นแบบสแตติก"
 
+msgid "%(path)s is a file, not a directory."
+msgstr "%(path)s เป็นไฟล์ ไม่ใช่ไดเรกทอรี"
+
+msgid "%(path)s cannot be read: %(error)s"
+msgstr "อ่าน %(path)s ไม่ได้: %(error)s"
+
+msgid "%(path)s has a marker file that cannot be read."
+msgstr "%(path)s มีไฟล์เครื่องหมายที่อ่านไม่ได้"
+
+msgid "%(path)s already holds %(count)d file that LlamaFit did not install."
+msgid_plural "%(path)s already holds %(count)d files that LlamaFit did not install."
+msgstr[0] "%(path)s มีไฟล์ที่ LlamaFit ไม่ได้ติดตั้งอยู่แล้ว %(count)d ไฟล์"
+
+msgid "%(name)s has no published checksum, so it cannot be verified."
+msgstr "%(name)s ไม่มีเช็กซัมเผยแพร่ไว้ จึงตรวจสอบไม่ได้"
+
+msgid "Pass --allow-unverified to install it anyway, knowing the archive is unchecked."
+msgstr "ใส่ --allow-unverified เพื่อติดตั้งทั้งที่รู้ว่าไฟล์เก็บถาวรยังไม่ได้ตรวจ"
+
+msgid "could not download %(url)s: %(error)s"
+msgstr "ดาวน์โหลด %(url)s ไม่ได้: %(error)s"
+
+msgid "the connection was closed"
+msgstr "การเชื่อมต่อถูกปิดไป"
+
+msgid "Run the command again; it continues from where it stopped."
+msgstr "รันคำสั่งอีกครั้ง มันจะทำต่อจากจุดที่หยุด"
+
+msgid "the download of %(url)s stopped early: %(error)s"
+msgstr "การดาวน์โหลด %(url)s หยุดก่อนกำหนด: %(error)s"
+
+msgid "%(got)s of %(want)s arrived"
+msgstr "มาถึงแล้ว %(got)s จาก %(want)s"
+
+msgid "the disk holding %(path)s is full."
+msgstr "ดิสก์ที่เก็บ %(path)s เต็มแล้ว"
+
+msgid "Free some space and run the command again; the download resumes."
+msgstr "เพิ่มพื้นที่ว่างแล้วรันคำสั่งอีกครั้ง การดาวน์โหลดจะทำต่อ"
+
+msgid "Check that the directory exists and is writable."
+msgstr "ตรวจว่าไดเรกทอรีมีอยู่จริงและเขียนได้"
+
+msgid "%(name)s did not match its published checksum and was discarded."
+msgstr "%(name)s ไม่ตรงกับเช็กซัมที่เผยแพร่ไว้ จึงถูกทิ้งไป"
+
+msgid "Nothing was unpacked. Run the command again: the archive arrived damaged, which a second download usually fixes."
+msgstr "ไม่มีอะไรถูกแตกไฟล์ รันคำสั่งอีกครั้ง ไฟล์เก็บถาวรมาถึงในสภาพเสียหาย ซึ่งการดาวน์โหลดใหม่มักแก้ได้"
+
+msgid "%(archive)s contains %(name)s, which would be written outside the install directory."
+msgstr "%(archive)s มี %(name)s อยู่ ซึ่งจะถูกเขียนออกไปนอกไดเรกทอรีติดตั้ง"
+
+msgid "Do not install this archive; report it to the llama.cpp project."
+msgstr "อย่าติดตั้งไฟล์เก็บถาวรนี้ ให้แจ้งไปยังโครงการ llama.cpp"
+
+msgid "%(name)s is not an archive LlamaFit knows how to unpack."
+msgstr "%(name)s ไม่ใช่ไฟล์เก็บถาวรชนิดที่ LlamaFit รู้วิธีแตก"
+
+msgid "%(name)s could not be unpacked: %(error)s"
+msgstr "แตกไฟล์ %(name)s ไม่ได้: %(error)s"
+
+msgid "Delete it and run the command again to download it afresh."
+msgstr "ลบมันทิ้งแล้วรันคำสั่งอีกครั้งเพื่อดาวน์โหลดใหม่"
+
+msgid "the archive holds no %(name)s."
+msgstr "ไฟล์เก็บถาวรไม่มี %(name)s อยู่เลย"
+
+msgid "Report this; the release layout has changed."
+msgstr "โปรดแจ้งเรื่องนี้ โครงสร้างของไฟล์เผยแพร่เปลี่ยนไปแล้ว"
+
+msgid "%(path)s was not installed by LlamaFit."
+msgstr "%(path)s ไม่ได้ถูกติดตั้งโดย LlamaFit"
+
+msgid "Pass --force to replace it, or --dir to install somewhere else. LlamaFit never overwrites an installation it did not create."
+msgstr "ใส่ --force เพื่อแทนที่ หรือ --dir เพื่อติดตั้งที่อื่น LlamaFit จะไม่เขียนทับการติดตั้งที่ตัวเองไม่ได้สร้างเด็ดขาด"
+
+msgid "%(path)s has %(free)s free; this install needs %(needed)s."
+msgstr "%(path)s ว่างอยู่ %(free)s ส่วนการติดตั้งนี้ต้องใช้ %(needed)s"
+
+msgid "Free some space, or pass --dir to install on another volume."
+msgstr "เพิ่มพื้นที่ว่าง หรือใส่ --dir เพื่อติดตั้งลงไดรฟ์อื่น"
+
+msgid "the %(backend)s libraries are not in the installed directory."
+msgstr "ไลบรารีของ %(backend)s ไม่ได้อยู่ในไดเรกทอรีที่ติดตั้ง"
+
+msgid "no ggml backend libraries were installed; the build may be a static one."
+msgstr "ไม่มีไลบรารีแบ็กเอนด์ ggml ถูกติดตั้งเลย บิลด์นี้อาจเป็นแบบสแตติก"
+
+msgid "Your PATH could not be read, so it will not be changed."
+msgstr "อ่าน PATH ของคุณไม่ได้ จึงจะไม่เปลี่ยนมัน"
+
+msgid "Add %(path)s to your user PATH (HKCU\\Environment)."
+msgstr "เพิ่ม %(path)s ลงใน PATH ของผู้ใช้ (HKCU\\Environment)"
+
+msgid "To undo: run `setx PATH \"%(previous)s\"`, or remove the entry in System > About > Advanced system settings > Environment Variables."
+msgstr "วิธีย้อนกลับ: รัน `setx PATH \"%(previous)s\"` หรือลบรายการนั้นออกใน System > About > Advanced system settings > Environment Variables"
+
+msgid "%(path)s is already on your PATH."
+msgstr "%(path)s อยู่บน PATH ของคุณอยู่แล้ว"
+
+msgid "Nothing to undo."
+msgstr "ไม่มีอะไรให้ย้อนกลับ"
+
+msgid "Append a PATH line for %(path)s to %(file)s."
+msgstr "เพิ่มบรรทัด PATH สำหรับ %(path)s ลงใน %(file)s"
+
+msgid "To undo: delete the two lines marked `%(mark)s` from %(file)s."
+msgstr "วิธีย้อนกลับ: ลบสองบรรทัดที่ทำเครื่องหมาย `%(mark)s` ออกจาก %(file)s"
+
+msgid "your PATH could not be changed: %(error)s"
+msgstr "เปลี่ยน PATH ของคุณไม่ได้: %(error)s"
+
+msgid "To remove it later, delete %(path)s."
+msgstr "ถ้าต้องการเอาออกภายหลัง ให้ลบ %(path)s"
+
+msgid "the most recent %(count)d llama.cpp releases hold no build."
+msgstr "รุ่นล่าสุด %(count)d รุ่นของ llama.cpp ไม่มีบิลด์เลย"
+
+msgid "Name one with `llamafit install llama.cpp --tag ...`."
+msgstr "ระบุชื่อรุ่นด้วย `llamafit install llama.cpp --tag ...`"
+
+msgid "could not reach GitHub at %(url)s: %(error)s"
+msgstr "เข้าถึง GitHub ที่ %(url)s ไม่ได้: %(error)s"
+
+msgid "GitHub refused the request for %(url)s: the rate limit is exhausted."
+msgstr "GitHub ปฏิเสธคำขอสำหรับ %(url)s: ใช้โควตาการเรียกหมดแล้ว"
+
+msgid "Wait for the limit to reset, or set GITHUB_TOKEN to a personal access token with no scopes."
+msgstr "รอจนโควตารีเซ็ต หรือตั้ง GITHUB_TOKEN เป็น personal access token ที่ไม่มีสิทธิ์ใด ๆ"
+
+msgid "GitHub has no release at %(url)s."
+msgstr "GitHub ไม่มีรุ่นเผยแพร่ที่ %(url)s"
+
+msgid "Check the tag with `llamafit install llama.cpp --tag ...`."
+msgstr "ตรวจแท็กด้วย `llamafit install llama.cpp --tag ...`"
+
+msgid "GitHub returned %(status)d for %(url)s."
+msgstr "GitHub ส่ง %(status)d กลับมาสำหรับ %(url)s"
+
+msgid "GitHub's answer for %(url)s was not JSON."
+msgstr "คำตอบของ GitHub สำหรับ %(url)s ไม่ใช่ JSON"
+
+msgid "GitHub's answer did not describe a release."
+msgstr "คำตอบของ GitHub ไม่ได้อธิบายรุ่นเผยแพร่ใด"
+
 msgid "no llama-server answering"
 msgstr "ไม่มี llama-server ตอบกลับ"
 
 msgid "unexpected response: %(error)s"
 msgstr "การตอบกลับที่ไม่คาดคิด: %(error)s"
+
+msgid "%(model)s holds %(native)s tokens, fewer than the %(minimum)s asked for."
+msgstr "%(model)s เก็บได้ %(native)s โทเค็น น้อยกว่า %(minimum)s ที่ขอไว้"
+
+msgid "No configuration of this model fits this machine."
+msgstr "ไม่มีการตั้งค่าใดของโมเดลนี้ที่พอดีกับเครื่องนี้"
+
+msgid "Routed experts are held in system memory, and so are the always-on shared experts, which is what -ot ffn_.*_shexp=CPU does; attention and the KV cache stay on the card."
+msgstr "ผู้เชี่ยวชาญตามเส้นทางถูกเก็บไว้ในหน่วยความจำระบบ และผู้เชี่ยวชาญร่วมที่เปิดตลอดก็เช่นกัน ซึ่งเป็นสิ่งที่ -ot ffn_.*_shexp=CPU ทำ ส่วนชั้นความสนใจและแคช KV ยังอยู่บนการ์ด"
+
+msgid "Routed experts are held in system memory; attention, the KV cache and the shared experts stay on the card."
+msgstr "ผู้เชี่ยวชาญตามเส้นทางถูกเก็บไว้ในหน่วยความจำระบบ ส่วนชั้นความสนใจ แคช KV และผู้เชี่ยวชาญร่วมยังอยู่บนการ์ด"
+
+msgid "%(layers)s layers are on the card and the rest run on the processor."
+msgstr "%(layers)s เลเยอร์อยู่บนการ์ด ส่วนที่เหลือรันบนโปรเซสเซอร์"
+
+msgid "Nothing runs on a graphics card: every weight is in system memory."
+msgstr "ไม่มีอะไรรันบนการ์ดจอเลย น้ำหนักทุกก้อนอยู่ในหน่วยความจำระบบ"
+
+msgid "%(gpus)s is here, but nothing could read how much of it is free, so this plan was made as if it were not. The real machine will be faster than these figures."
+msgstr "%(gpus)s อยู่ที่นี่ แต่ไม่มีอะไรอ่านได้ว่ามันว่างเท่าไร แผนนี้จึงทำขึ้นเสมือนว่าไม่มีมัน เครื่องจริงจะเร็วกว่าตัวเลขเหล่านี้"
+
+msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
+msgstr "คิดขนาดไว้สำหรับ %(context)s โทเค็น แทน %(requested)s ที่ขอไว้"
+
+msgid "The KV cache is quantised to %(type)s to reach this context."
+msgstr "แคช KV ถูกควอนไทซ์เป็น %(type)s เพื่อให้ถึงคอนเท็กซ์นี้"
+
+msgid "Vision is off: the projector did not fit, on the card or in system memory."
+msgstr "ปิดการมองเห็นภาพไว้: โปรเจกเตอร์ไม่พอดี ทั้งบนการ์ดและในหน่วยความจำระบบ"
+
+msgid "The vision projector is in system memory (--no-mmproj-offload), which costs nothing measurable for text and makes images slower."
+msgstr "โปรเจกเตอร์ภาพอยู่ในหน่วยความจำระบบ (--no-mmproj-offload) ซึ่งแทบไม่มีต้นทุนสำหรับข้อความ แต่ทำให้การประมวลผลภาพช้าลง"
+
+msgid "%(threads)s threads, not the %(available)s this processor has: the efficiency cores are left out because generation measures slower with them, and what is left is the threads the performance cores provide."
+msgstr "%(threads)s เธรด ไม่ใช่ %(available)s เธรดที่โปรเซสเซอร์นี้มี คอร์ประหยัดพลังงานถูกตัดออกเพราะเมื่อใช้มันแล้ววัดความเร็วในการสร้างได้ช้าลง สิ่งที่เหลือคือเธรดที่คอร์ประสิทธิภาพให้มา"
+
+msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
+msgstr "เฉียดฉิว: การ์ดจอว่างอยู่ %(vram)s แต่สิ่งนี้ต้องใช้ %(needed)s โปรแกรมอื่นจึงอาจทำให้ล้นได้ ตารางระดับคอนเท็กซ์คือวิธีที่สคริปต์เริ่มงานถอยกลับมา"
+
+msgid "no %(capability)s capability, which %(use_case)s needs; ask for a different use case, or add it to the entry when the model really has it"
+msgstr "ไม่มีความสามารถ %(capability)s ซึ่ง %(use_case)s ต้องใช้ ให้เลือกกรณีใช้งานอื่น หรือเพิ่มความสามารถนั้นลงในรายการเมื่อโมเดลมีมันจริง"
+
+msgid "no %(capability)s capability; drop it from the request to see this model"
+msgstr "ไม่มีความสามารถ %(capability)s เอามันออกจากคำขอเพื่อให้เห็นโมเดลนี้"
+
+msgid "%(size)s to download, over the %(limit)s this request allows"
+msgstr "ต้องดาวน์โหลด %(size)s ซึ่งเกิน %(limit)s ที่คำขอนี้อนุญาต"
+
+msgid "unknown quantisation %(quant)s, so its cost in quality cannot be told"
+msgstr "ควอนไทซ์ %(quant)s ไม่รู้จัก จึงบอกไม่ได้ว่าเสียคุณภาพไปเท่าใด"
+
+msgid "nowhere to put it: no placement fits this machine at any context"
+msgstr "ไม่มีที่ให้วาง ไม่มีการจัดวางแบบใดพอดีกับเครื่องนี้ที่คอนเท็กซ์ใด ๆ"
+
+msgid "holds %(fit)s tokens at most, under the %(minimum)s asked for; lower the minimum context or free memory to see it ranked"
+msgstr "เก็บได้มากที่สุด %(fit)s โทเค็น ต่ำกว่า %(minimum)s ที่ขอไว้ ลดคอนเท็กซ์ขั้นต่ำลงหรือคืนหน่วยความจำเพื่อให้เห็นมันในอันดับ"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "สร้างได้ %(tps)s โทเค็นต่อวินาที ต่ำกว่า %(floor)s ที่คำขอนี้ต้องการ ลด --min-tps ลง หรือเลือกโมเดลหรือควอนไทซ์ที่เล็กกว่า"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "สร้างได้ %(tps)s โทเค็นต่อวินาที ต่ำกว่า %(floor)s ซึ่งเป็นความเร็วที่คนอ่านทัน บนเครื่องนี้มันจึงเป็นเครื่องมือแบบสั่งงานเป็นชุด ไม่ใช่ตัวที่จะนั่งใช้ตรงหน้า โมเดลหรือควอนไทซ์ที่เล็กกว่าจะตามทัน"
+
+msgid "unknown use case %(use_case)s"
+msgstr "ไม่รู้จักกรณีใช้งาน %(use_case)s"
+
+msgid "Known use cases: %(known)s."
+msgstr "กรณีใช้งานที่รู้จัก: %(known)s"
+
+msgid "unknown score part %(part)s in the weights for %(use_case)s"
+msgstr "มีส่วนคะแนนที่ไม่รู้จัก %(part)s อยู่ในน้ำหนักของ %(use_case)s"
+
+msgid "The parts are: %(parts)s."
+msgstr "ส่วนคะแนนมีดังนี้: %(parts)s"
+
+msgid "the weights for %(use_case)s leave out %(part)s"
+msgstr "น้ำหนักของ %(use_case)s ขาด %(part)s ไป"
+
+msgid "Overriding a use case means giving all four parts: %(parts)s."
+msgstr "การแทนค่ากรณีใช้งานต้องให้ครบทั้งสี่ส่วน: %(parts)s"
+
+msgid "the weight for %(part)s in %(use_case)s is below zero"
+msgstr "น้ำหนักของ %(part)s ใน %(use_case)s ต่ำกว่าศูนย์"
+
+msgid "A weight says how much a part counts; it cannot count less than none."
+msgstr "น้ำหนักบอกว่าส่วนนั้นมีความสำคัญเพียงใด จึงสำคัญน้อยกว่าไม่สำคัญเลยไม่ได้"
+
+msgid "the weights for %(use_case)s add up to nothing"
+msgstr "น้ำหนักของ %(use_case)s รวมกันแล้วได้ศูนย์"
+
+msgid "At least one part has to count for something."
+msgstr "ต้องมีอย่างน้อยหนึ่งส่วนที่มีความสำคัญ"
+
+msgid "unknown preference %(prefer)s"
+msgstr "ไม่รู้จักค่าความชอบ %(prefer)s"
+
+msgid "Preferences: %(known)s."
+msgstr "ค่าความชอบที่ใช้ได้: %(known)s"
 
 msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
 msgstr "ติดตั้งหรือซ่อมไดรเวอร์ NVIDIA; nvidia-smi มากับไดรเวอร์และต้องอยู่ใน PATH"
@@ -797,6 +3113,9 @@ msgstr "llama-server มีอยู่แต่ไม่ได้แจ้ง�
 msgid "system_profiler failed; GPU information is unavailable."
 msgstr "system_profiler ล้มเหลว; ไม่มีข้อมูลของ GPU"
 
+msgid "Install the Vulkan tools (vulkan-tools on Linux, the vendor's Vulkan runtime on Windows) so an unsized card's memory can be read from its driver. This probe runs only when no vendor tool sized the card, so it is the last source there is."
+msgstr "ติดตั้งเครื่องมือ Vulkan (vulkan-tools บน Linux หรือ Vulkan runtime ของผู้ผลิตบน Windows) เพื่อให้อ่านขนาดหน่วยความจำของการ์ดที่ยังไม่ทราบขนาดได้จากไดรเวอร์ การตรวจนี้ทำงานเฉพาะเมื่อไม่มีเครื่องมือของผู้ผลิตรายใดวัดขนาดการ์ดได้ มันจึงเป็นแหล่งสุดท้ายที่เหลืออยู่"
+
 msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
 msgstr "ไม่มีเครื่องมือของผู้ผลิตรายใดแจ้งขนาดหน่วยความจำของ GPU; บันทึกขนาดไว้ในโปรไฟล์ฮาร์ดแวร์เพื่อให้คำนวณการจัดสรรสำหรับเครื่องนี้ได้"
 
@@ -815,6 +3134,9 @@ msgstr "ไม่พบ llama.cpp"
 
 msgid "no llama-server binary was found"
 msgstr "ไม่พบไฟล์โปรแกรม llama-server"
+
+msgid "Run `llamafit install llama.cpp`, which picks the right build for this machine, checks it against its published checksum, and never touches an installation LlamaFit did not create."
+msgstr "รัน `llamafit install llama.cpp` ซึ่งจะเลือกบิลด์ที่ถูกต้องสำหรับเครื่องนี้ ตรวจกับเช็กซัมที่เผยแพร่ไว้ และไม่แตะการติดตั้งที่ LlamaFit ไม่ได้สร้างเด็ดขาด"
 
 msgid "Memory size unknown"
 msgstr "ไม่ทราบขนาดหน่วยความจำ"
@@ -840,6 +3162,15 @@ msgstr "%(gpu)s: ไม่ทราบขนาด VRAM"
 
 msgid "the vendor tool that reports memory was not available"
 msgstr "ไม่มีเครื่องมือของผู้ผลิตที่แจ้งหน่วยความจำ"
+
+msgid "%(gpus)s: planned around, not planned on"
+msgstr "%(gpus)s: วางแผนโดยเลี่ยงมัน ไม่ใช่วางแผนโดยใช้มัน"
+
+msgid "with no reading of how much of the card is free, every budget and every speed on this machine was computed as if there were no card: they are CPU-only figures, and the real machine will be faster."
+msgstr "เมื่ออ่านไม่ได้เลยว่าการ์ดว่างอยู่เท่าไร การจัดสรรทุกอย่างและความเร็วทุกค่าบนเครื่องนี้จึงคำนวณเสมือนว่าไม่มีการ์ด เป็นตัวเลขแบบใช้ CPU อย่างเดียว และเครื่องจริงจะเร็วกว่านี้"
+
+msgid "Install the Vulkan tools so the size can be read from the driver, or record it in a hardware profile (`llamafit hardware path` says where those go) and pass --profile."
+msgstr "ติดตั้งเครื่องมือ Vulkan เพื่อให้อ่านขนาดได้จากไดรเวอร์ หรือบันทึกขนาดไว้ในโปรไฟล์ฮาร์ดแวร์ (`llamafit hardware path` บอกว่าโปรไฟล์อยู่ที่ไหน) แล้วใส่ --profile"
 
 msgid "No GPU detected"
 msgstr "ไม่พบ GPU"
@@ -885,6 +3216,388 @@ msgstr "ว่าง %(size)s"
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr "โมเดลที่ใช้งานได้จริงส่วนใหญ่ต้องการ 5 ถึง 120 GB; ให้เพิ่มพื้นที่ว่างหรือเปลี่ยนไดเรกทอรีดาวน์โหลด"
 
+msgid "%(model)s has no %(quant)s quantisation"
+msgstr "%(model)s ไม่มีควอนไทซ์แบบ %(quant)s"
+
+msgid "It publishes: %(names)s"
+msgstr "แบบที่เผยแพร่คือ: %(names)s"
+
+msgid "licensed %(spdx)s, which this request does not allow"
+msgstr "มีสัญญาอนุญาต %(spdx)s ซึ่งคำขอนี้ไม่อนุญาต"
+
+msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
+msgstr "ยังไม่ได้วัดแบนด์วิดท์ของหน่วยความจำระบบ จึงสมมติเป็น %(gbps).0f GB/s สำหรับ %(arch)s"
+
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
+msgstr "ไม่ทราบแบนด์วิดท์ของ %(gpu)s จึงใช้ค่าสำรองของ %(backend)s ที่ %(gbps).0f GB/s แทน"
+
+msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
+msgstr "ไม่มีตัวเลขกำลังคำนวณของการ์ดจอ การประมวลผลพรอมต์จึงประมาณจาก CPU"
+
+msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "ผู้เชี่ยวชาญตามเส้นทาง %(gb).2f GB ถูกอ่านจากหน่วยความจำระบบต่อหนึ่งโทเค็น ที่ %(eff).2f ของ %(raw).0f GB/s ของมัน เพราะแต่ละโทเค็นเลือกผู้เชี่ยวชาญคนละกลุ่มกัน การอ่านจึงเป็นการกระจายอ่านบล็อกเล็ก ๆ ไม่ใช่การอ่านต่อเนื่อง"
+
+msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
+msgstr "น้ำหนักที่อยู่ต่อเนื่องกัน %(gb).2f GB ถูกอ่านจากหน่วยความจำระบบต่อหนึ่งโทเค็น ที่ %(eff).2f ของ %(raw).0f GB/s ของมัน"
+
+msgid "No active parameter count was supplied; it was inferred from the weight bytes."
+msgstr "ไม่ได้ให้จำนวนพารามิเตอร์ที่ทำงานจริงมา จึงอนุมานจากจำนวนไบต์ของน้ำหนัก"
+
+msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "เลเยอร์ %(pct).0f เปอร์เซ็นต์อยู่ในหน่วยความจำระบบ สัดส่วนนั้นของการคำนวณพรอมต์จึงถูกคิดให้ CPU ที่ %(tflops).2f TFLOP/s แทนที่จะคิดให้การ์ด อัตราทั้งสองมาจากโมเดลหนาแน่นขนาดเล็กหนึ่งตัวบนเครื่องเดียว"
+
+msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "ชุดผู้เชี่ยวชาญ %(gb).1f GB ถูกส่งผ่านลิงก์หนึ่งครั้งต่อหนึ่งไมโครแบตช์ ที่ %(gbps).1f GB/s อัตรานั้นฟิตมาจากโมเดลตัวเดียวที่ชุดผู้เชี่ยวชาญไม่พอดีกับหน่วยความจำระบบ การอ่านบางส่วนจึงมาจากดิสก์ ชุดผู้เชี่ยวชาญที่อยู่ในแคชหน้าจะส่งได้เร็วกว่าราวสามเท่า และสำหรับโมเดลแบบนั้น พจน์นี้ก็ช้ากว่าความจริงอยู่ราวเท่านั้น"
+
+msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+msgstr "ชุดผู้เชี่ยวชาญ %(gb).1f GB ถูกอ่านออกจากหน่วยความจำระบบหนึ่งครั้งต่อหนึ่งไมโครแบตช์ ที่ %(gbps).1f GB/s เพราะไม่มีการ์ดให้ส่งไปหา"
+
+msgid "No placement of this model on this machine could run it."
+msgstr "ไม่มีการจัดวางโมเดลนี้บนเครื่องนี้แบบใดที่รันได้"
+
+msgid "Generation is a benchmark of this configuration, not a prediction."
+msgstr "ความเร็วในการสร้างเป็นผลวัดของการตั้งค่านี้เอง ไม่ใช่การทำนาย"
+
+msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "ความเร็วในการสร้างเป็นสูตรที่ปรับด้วยตัวคูณ %(factor).2f จากผลวัด %(profile)s บนเครื่องนี้เมื่อ %(date)s"
+
+msgid "Prompt processing is a benchmark of this configuration."
+msgstr "การประมวลผลพรอมต์เป็นผลวัดของการตั้งค่านี้เอง"
+
+msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
+msgstr "การประมวลผลพรอมต์เป็นสูตรที่ปรับด้วยตัวคูณ %(factor).2f จากผลวัด"
+
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr "บรรทัดคำสั่งของผลวัดนั้นไม่ได้บันทึกว่ามีกี่เลเยอร์ขึ้นไปอยู่บนการ์ด การปรับค่าจึงถือว่ามันรันด้วยการจัดวางแบบนี้"
+
+msgid "This figure assumes nothing pages: a placement this tight often does, silently."
+msgstr "ตัวเลขนี้ถือว่าไม่มีการย้ายหน่วยความจำ การจัดวางที่เฉียดฉิวขนาดนี้มักจะย้าย และย้ายอย่างเงียบ ๆ"
+
+msgid "Board"
+msgstr "กระดาน"
+
+msgid "Needs"
+msgstr "สิ่งที่ต้องการ"
+
+msgid "Plan"
+msgstr "แผน"
+
+msgid "Simulate"
+msgstr "จำลอง"
+
+msgid "There is no terminal here to draw the dashboard in, so this is what `llamafit recommend` would print."
+msgstr "ที่นี่ไม่มีเทอร์มินัลให้วาดแดชบอร์ด นี่จึงเป็นสิ่งที่ `llamafit recommend` จะแสดง"
+
+msgid "%(name)s %(quant)s, %(vendor)s, licensed %(license)s; it can: %(capabilities)s"
+msgstr "%(name)s %(quant)s, %(vendor)s, สัญญาอนุญาต %(license)s ทำได้: %(capabilities)s"
+
+msgid "Choose a row to see what put it there."
+msgstr "เลือกแถวหนึ่งเพื่อดูว่าอะไรทำให้มันมาอยู่ตรงนั้น"
+
+msgid "Nothing has been ranked yet."
+msgstr "ยังไม่มีการจัดอันดับอะไรเลย"
+
+msgid "Every candidate in the catalog was ranked; none was excluded."
+msgstr "ผู้สมัครทุกรายในแคตตาล็อกได้รับการจัดอันดับ ไม่มีรายใดถูกคัดออก"
+
+msgid "keys"
+msgstr "ปุ่ม"
+
+msgid "theme"
+msgstr "ธีม"
+
+msgid "quit"
+msgstr "ออก"
+
+msgid "choose"
+msgstr "เลือก"
+
+msgid "why"
+msgstr "เพราะอะไร"
+
+msgid "command line"
+msgstr "บรรทัดคำสั่ง"
+
+msgid "search"
+msgstr "ค้นหา"
+
+msgid "fit"
+msgstr "ความพอดี"
+
+msgid "sort"
+msgstr "เรียง"
+
+msgid "sort back"
+msgstr "เรียงย้อนกลับ"
+
+msgid "reverse"
+msgstr "สลับลำดับ"
+
+msgid "on disk"
+msgstr "ที่มีบนดิสก์"
+
+msgid "all quants"
+msgstr "ควอนไทซ์ทุกแบบ"
+
+msgid "unranked rows"
+msgstr "แถวที่ไม่ได้จัดอันดับ"
+
+msgid "all columns"
+msgstr "ทุกคอลัมน์"
+
+msgid "explanation"
+msgstr "คำอธิบาย"
+
+msgid "not ranked"
+msgstr "ไม่ได้จัดอันดับ"
+
+msgid "apply"
+msgstr "ใช้ค่านี้"
+
+msgid "reset"
+msgstr "ล้างค่า"
+
+msgid "rescan"
+msgstr "ตรวจเครื่องใหม่"
+
+msgid "more context"
+msgstr "เพิ่มคอนเท็กซ์"
+
+msgid "less context"
+msgstr "ลดคอนเท็กซ์"
+
+msgid "vision"
+msgstr "ภาพ"
+
+msgid "copy"
+msgstr "คัดลอก"
+
+msgid "this machine"
+msgstr "เครื่องนี้"
+
+msgctxt "use case"
+msgid "general use"
+msgstr "ใช้งานทั่วไป"
+
+msgctxt "use case"
+msgid "writing code"
+msgstr "เขียนโค้ด"
+
+msgctxt "use case"
+msgid "reasoning"
+msgstr "การให้เหตุผล"
+
+msgctxt "use case"
+msgid "chat"
+msgstr "แชท"
+
+msgctxt "use case"
+msgid "images and text"
+msgstr "ภาพและข้อความ"
+
+msgctxt "use case"
+msgid "embeddings"
+msgstr "เอ็มเบดดิง"
+
+msgctxt "preference"
+msgid "balanced"
+msgstr "สมดุล"
+
+msgctxt "preference"
+msgid "lean towards quality"
+msgstr "เอนไปทางคุณภาพ"
+
+msgctxt "preference"
+msgid "lean towards speed"
+msgstr "เอนไปทางความเร็ว"
+
+msgid "Move with the up and down arrows. Enter says why a row is where it is; p gives the command line that runs it."
+msgstr "เลื่อนด้วยปุ่มลูกศรขึ้นลง Enter บอกว่าทำไมแถวนั้นถึงอยู่ตรงนั้น ส่วน p ให้บรรทัดคำสั่งที่ใช้รันมัน"
+
+msgid "Terms: %(terms)s; anything else is text to look for. Enter with the box empty clears them."
+msgstr "คำที่ใช้ได้: %(terms)s ส่วนอย่างอื่นถือเป็นข้อความที่ต้องการค้นหา กด Enter ขณะที่ช่องว่างเปล่าเพื่อล้างทั้งหมด"
+
+msgid "Part of a model name, then Enter"
+msgstr "พิมพ์บางส่วนของชื่อโมเดล แล้วกด Enter"
+
+msgid "Keys"
+msgstr "ปุ่ม"
+
+msgctxt "column heading"
+msgid "Screen"
+msgstr "หน้าจอ"
+
+msgctxt "column heading"
+msgid "Key"
+msgstr "ปุ่ม"
+
+msgctxt "column heading"
+msgid "What it does"
+msgstr "ทำอะไร"
+
+msgctxt "dashboard screen"
+msgid "Everywhere"
+msgstr "ทุกหน้าจอ"
+
+msgctxt "dashboard screen"
+msgid "Board"
+msgstr "กระดาน"
+
+msgctxt "dashboard screen"
+msgid "Needs"
+msgstr "สิ่งที่ต้องการ"
+
+msgctxt "dashboard screen"
+msgid "Host"
+msgstr "เครื่อง"
+
+msgctxt "dashboard screen"
+msgid "Plan"
+msgstr "แผน"
+
+msgctxt "dashboard screen"
+msgid "Simulate"
+msgstr "จำลอง"
+
+msgid "Press Escape to go back."
+msgstr "กด Escape เพื่อย้อนกลับ"
+
+msgid "Catalog files with a problem"
+msgstr "ไฟล์แคตตาล็อกที่มีปัญหา"
+
+msgid "This machine has not been scanned yet."
+msgstr "ยังไม่ได้ตรวจเครื่องนี้"
+
+msgid "What do you want a model for?"
+msgstr "คุณต้องการโมเดลไปทำอะไร"
+
+msgid "It must be able to:"
+msgstr "มันต้องทำสิ่งเหล่านี้ได้:"
+
+msgid "At least this much context, in tokens:"
+msgstr "คอนเท็กซ์อย่างน้อยเท่านี้ หน่วยเป็นโทเค็น:"
+
+msgid "Willing to download at most, for example 40G (blank for no limit):"
+msgstr "ยอมดาวน์โหลดมากที่สุดเท่านี้ เช่น 40G (เว้นว่างคือไม่จำกัด):"
+
+msgid "Slowest generation worth having, in tokens per second (blank for the speed a person reads at; 0 when nobody is waiting on the tokens):"
+msgstr "ความเร็วในการสร้างต่ำสุดที่ยังคุ้มค่า หน่วยเป็นโทเค็นต่อวินาที (เว้นว่างคือความเร็วที่คนอ่านทัน ใส่ 0 เมื่อไม่มีใครรอโทเค็นอยู่):"
+
+msgid "Licences you will accept (tick none to accept any):"
+msgstr "สัญญาอนุญาตที่คุณรับได้ (ไม่เลือกเลยคือรับได้ทุกแบบ):"
+
+msgid "Lean the score:"
+msgstr "เอนคะแนนไปทาง:"
+
+msgid "Keep the vision projector when a model has one"
+msgstr "เก็บโปรเจกเตอร์ภาพไว้เมื่อโมเดลมี"
+
+msgid "Apply"
+msgstr "ใช้ค่านี้"
+
+msgid "Reset"
+msgstr "ล้างค่า"
+
+msgid "The minimum context is a number of tokens, for example %(example)s."
+msgstr "คอนเท็กซ์ขั้นต่ำเป็นจำนวนโทเค็น เช่น %(example)s"
+
+msgid "The minimum context cannot be below zero."
+msgstr "คอนเท็กซ์ขั้นต่ำต่ำกว่าศูนย์ไม่ได้"
+
+msgid "The minimum speed is a number of tokens per second, for example 12."
+msgstr "ความเร็วขั้นต่ำเป็นจำนวนโทเค็นต่อวินาที เช่น 12"
+
+msgid "The minimum speed cannot be below zero."
+msgstr "ความเร็วขั้นต่ำต่ำกว่าศูนย์ไม่ได้"
+
+msgid "Choose a row on the Board and press p, and its plan and command line appear here."
+msgstr "เลือกแถวหนึ่งบนกระดานแล้วกด p จากนั้นแผนและบรรทัดคำสั่งของมันจะปรากฏตรงนี้"
+
+msgid "%(model)s is no longer in the catalog this board was built from."
+msgstr "%(model)s ไม่อยู่ในแคตตาล็อกที่ใช้สร้างกระดานนี้แล้ว"
+
+msgid "Planned with the vision projector; press v to leave it out."
+msgstr "วางแผนโดยมีโปรเจกเตอร์ภาพ กด v เพื่อเอาออก"
+
+msgid "Planned without the vision projector; press v to put it back."
+msgstr "วางแผนโดยไม่มีโปรเจกเตอร์ภาพ กด v เพื่อใส่กลับ"
+
+msgid "The ladder has no rung above %(context)s."
+msgstr "บันไดไม่มีขั้นที่สูงกว่า %(context)s"
+
+msgid "The ladder has no rung below %(context)s."
+msgstr "บันไดไม่มีขั้นที่ต่ำกว่า %(context)s"
+
+msgid "There is no command line to copy yet."
+msgstr "ยังไม่มีบรรทัดคำสั่งให้คัดลอก"
+
+msgid "The command line is on the clipboard."
+msgstr "คัดลอกบรรทัดคำสั่งไปยังคลิปบอร์ดแล้ว"
+
+msgid "Everything on every screen answers about the machine chosen here. While it is not this one, the band at the top says SIMULATED."
+msgstr "ทุกอย่างบนทุกหน้าจอตอบโดยอิงเครื่องที่เลือกไว้ตรงนี้ ตราบใดที่ยังไม่ใช่เครื่องนี้ แถบด้านบนจะขึ้นว่า SIMULATED"
+
+msgid "Answer for this machine instead:"
+msgstr "ตอบโดยอิงเครื่องนี้แทน:"
+
+msgid "Pretend the graphics card has this much memory (blank to leave it):"
+msgstr "สมมติว่าการ์ดจอมีหน่วยความจำเท่านี้ (เว้นว่างคือคงเดิม):"
+
+msgid "Pretend the machine has this much system memory (blank to leave it):"
+msgstr "สมมติว่าเครื่องมีหน่วยความจำระบบเท่านี้ (เว้นว่างคือคงเดิม):"
+
+msgid "Pretend the processor has this many cores (blank to leave it):"
+msgstr "สมมติว่าโปรเซสเซอร์มีคอร์เท่านี้ (เว้นว่างคือคงเดิม):"
+
+msgid "Back to this machine"
+msgstr "กลับไปที่เครื่องนี้"
+
+msgctxt "hardware profile"
+msgid "this machine"
+msgstr "เครื่องนี้"
+
+msgid "The core count is a whole number, for example 8."
+msgstr "จำนวนคอร์เป็นจำนวนเต็ม เช่น 8"
+
+msgctxt "dashboard header separator"
+msgid " · "
+msgstr " · "
+
+msgctxt "dashboard header"
+msgid "no GPU detected"
+msgstr "ไม่พบ GPU"
+
+msgid "%(name)s, VRAM unknown"
+msgstr "%(name)s, ไม่ทราบ VRAM"
+
+msgid "%(name)s, %(free)s free of %(total)s"
+msgstr "%(name)s, ว่าง %(free)s จาก %(total)s"
+
+msgid "%(available)s free of %(total)s RAM"
+msgstr "ว่าง %(available)s จาก RAM %(total)s"
+
+msgid "%(model)s, %(count)d core"
+msgid_plural "%(model)s, %(count)d cores"
+msgstr[0] "%(model)s, %(count)d คอร์"
+
+msgctxt "dashboard header"
+msgid "llama.cpp not installed"
+msgstr "ยังไม่ได้ติดตั้ง llama.cpp"
+
+msgctxt "dashboard header"
+msgid "llama.cpp installed"
+msgstr "ติดตั้ง llama.cpp แล้ว"
+
+msgid "llama.cpp b%(build)d"
+msgstr "llama.cpp b%(build)d"
+
+msgctxt "dashboard header"
+msgid "scanning this machine…"
+msgstr "กำลังตรวจเครื่องนี้…"
+
+msgid "These speeds were not all arrived at the same way; the How column says which each row is."
+msgstr "ความเร็วเหล่านี้ไม่ได้มาด้วยวิธีเดียวกันทั้งหมด คอลัมน์ “แบบ” บอกว่าแต่ละแถวมาจากวิธีใด"
+
 msgctxt "thousands separator"
 msgid ","
 msgstr ","
@@ -904,3 +3617,160 @@ msgstr "B"
 msgctxt "size"
 msgid "unknown"
 msgstr "ไม่ทราบ"
+
+msgid "profile must be a name, not a path: %(value)s"
+msgstr "profile ต้องเป็นชื่อ ไม่ใช่เส้นทาง: %(value)s"
+
+msgid "Ask GET /api/v1/profiles for the names this machine has."
+msgstr "เรียก GET /api/v1/profiles เพื่อดูชื่อที่เครื่องนี้มี"
+
+msgid "unknown query parameter: %(names)s"
+msgstr "พารามิเตอร์ของคิวรีที่ไม่รู้จัก: %(names)s"
+
+msgid "This endpoint takes: %(names)s"
+msgstr "เอ็นด์พอยต์นี้รับ: %(names)s"
+
+msgid "invalid prefer %(value)s"
+msgstr "prefer ไม่ถูกต้อง: %(value)s"
+
+msgid "invalid sort %(value)s"
+msgstr "sort ไม่ถูกต้อง: %(value)s"
+
+msgid "%(host)s:%(port)d is not this machine only. Anyone who can reach this computer on that port can read everything the dashboard shows -- your hardware, your disks, your file paths and the models you have downloaded. There is no password, because LlamaFit is meant for the person sitting at the keyboard. Press Ctrl+C now if you did not mean this."
+msgstr "%(host)s:%(port)d ไม่ได้จำกัดอยู่แค่เครื่องนี้ ใครก็ตามที่เข้าถึงคอมพิวเตอร์เครื่องนี้ทางพอร์ตนั้นได้จะอ่านทุกอย่างที่แดชบอร์ดแสดงได้ ทั้งฮาร์ดแวร์ ดิสก์ เส้นทางไฟล์ และโมเดลที่คุณดาวน์โหลดไว้ ไม่มีรหัสผ่าน เพราะ LlamaFit ทำมาสำหรับคนที่นั่งอยู่หน้าแป้นพิมพ์ ถ้าคุณไม่ได้ตั้งใจแบบนี้ ให้กด Ctrl+C เดี๋ยวนี้"
+
+msgid "the web dashboard needs FastAPI and uvicorn, which are not installed"
+msgstr "แดชบอร์ดเว็บต้องใช้ FastAPI และ uvicorn ซึ่งยังไม่ได้ติดตั้ง"
+
+msgid "Install them with: pip install \"llamafit[web]\""
+msgstr "ติดตั้งด้วย: pip install \"llamafit[web]\""
+
+msgid "%(host)s is not a loopback address, and the dashboard has no authentication"
+msgstr "%(host)s ไม่ใช่ที่อยู่ลูปแบ็ก และแดชบอร์ดไม่มีการยืนยันตัวตน"
+
+msgid "Leave --host alone to serve this machine only, or pass it to mean it."
+msgstr "ปล่อย --host ไว้ตามเดิมเพื่อให้บริการเฉพาะเครื่องนี้ หรือใส่มันเมื่อคุณตั้งใจเช่นนั้นจริง ๆ"
+
+msgctxt "column heading"
+msgid "Why not"
+msgstr "ทำไมไม่ผ่าน"
+
+msgid "Why this row"
+msgstr "ทำไมถึงเป็นแถวนี้"
+
+msgid "Plan this"
+msgstr "วางแผนตัวนี้"
+
+msgid "Already on this machine"
+msgstr "มีอยู่บนเครื่องนี้แล้ว"
+
+msgid "Score"
+msgstr "คะแนน"
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; raise “Rows to show” for the rest, which are neither worse-behaved nor hidden, only further down."
+msgstr "กำลังแสดง %(shown)s รายการที่ดีที่สุดจาก %(total)s รายการที่ผ่านเกณฑ์ เพิ่มค่า “จำนวนแถวที่แสดง” เพื่อดูส่วนที่เหลือ ซึ่งไม่ได้แย่กว่าและไม่ได้ถูกซ่อน เพียงแต่อยู่ถัดลงไป"
+
+msgid "What the model is for"
+msgstr "โมเดลนี้เอาไว้ทำอะไร"
+
+msgid "Capabilities it must have"
+msgstr "ความสามารถที่ต้องมี"
+
+msgid "Lean the weights"
+msgstr "เอนน้ำหนักไปทาง"
+
+msgid "Smallest context worth having"
+msgstr "คอนเท็กซ์เล็กที่สุดที่ยังคุ้มค่า"
+
+msgid "Most you will download"
+msgstr "ยอมดาวน์โหลดมากที่สุด"
+
+msgid "Show every quantisation"
+msgstr "แสดงควอนไทซ์ทุกแบบ"
+
+msgid "Keep the vision projector"
+msgstr "เก็บโปรเจกเตอร์ภาพไว้"
+
+msgid "Rows to show"
+msgstr "จำนวนแถวที่แสดง"
+
+msgid "Scan again"
+msgstr "ตรวจเครื่องใหม่"
+
+msgid "llama.cpp"
+msgstr "llama.cpp"
+
+msgid "Quantisation"
+msgstr "การควอนไทซ์"
+
+msgid "Context"
+msgstr "คอนเท็กซ์"
+
+msgid "Micro-batch"
+msgstr "ไมโครแบตช์"
+
+msgid "Plan it"
+msgstr "วางแผนเลย"
+
+msgid "Copy"
+msgstr "คัดลอก"
+
+msgid "Copied"
+msgstr "คัดลอกแล้ว"
+
+msgid "Flags"
+msgstr "แฟล็ก"
+
+msgid "Speed"
+msgstr "ความเร็ว"
+
+msgid "Choose a row on the board first."
+msgstr "เลือกแถวบนกระดานก่อน"
+
+msgid "Hardware profile"
+msgstr "โปรไฟล์ฮาร์ดแวร์"
+
+msgid "This machine, as scanned"
+msgstr "เครื่องนี้ ตามที่ตรวจได้"
+
+msgid "Graphics memory"
+msgstr "หน่วยความจำกราฟิก"
+
+msgid "System memory"
+msgstr "หน่วยความจำระบบ"
+
+msgid "Processor cores"
+msgstr "คอร์ของโปรเซสเซอร์"
+
+msgid "Score against that machine"
+msgstr "ให้คะแนนเทียบกับเครื่องนั้น"
+
+msgid "What runs here, how fast, and with which settings."
+msgstr "ที่นี่รันอะไรได้ เร็วแค่ไหน และด้วยการตั้งค่าแบบใด"
+
+msgid "Working…"
+msgstr "กำลังทำงาน…"
+
+msgid "Something went wrong"
+msgstr "มีบางอย่างผิดพลาด"
+
+msgid "Hint"
+msgstr "คำแนะนำ"
+
+msgid "Command"
+msgstr "คำสั่ง"
+
+msgid "About these figures"
+msgstr "เกี่ยวกับตัวเลขเหล่านี้"
+
+msgid "Close"
+msgstr "ปิด"
+
+msgid "%(shown)s of %(total)s in the catalog"
+msgstr "%(shown)s จาก %(total)s ในแคตตาล็อก"
+
+msgid "Source code (AGPL-3.0-or-later)"
+msgstr "ซอร์สโค้ด (AGPL-3.0-or-later)"
+
+msgid "This dashboard is served from your own machine and sends nothing anywhere."
+msgstr "แดชบอร์ดนี้ให้บริการจากเครื่องของคุณเอง และไม่ส่งอะไรออกไปที่ไหนเลย"

@@ -19,6 +19,198 @@ msgstr ""
 "Language-Team: Vietnamese\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+msgid "nothing measured touches this term, so there is no equation it appears in"
+msgstr "không có phép đo nào chạm tới số hạng này, nên không có phương trình nào chứa nó"
+
+msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
+msgstr "%(measurements)d cấu hình khác nhau cho %(parameters)d tham số tự do; ít điểm đo hơn số tham số thì ra những con số trông chính xác mà thực ra tùy tiện"
+
+msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
+msgstr "%(measurements)d cấu hình đó không biến thiên đủ độc lập để tách được %(parameters)d tham số"
+
+msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "phép khớp cho ra %(value).3f, giá trị mà chính định nghĩa của nó không cho phép; các phép đo mâu thuẫn với nhau theo mô hình ở mục 10.1"
+
+msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "kết quả là %(value).3f, nhưng một tham số khác trong cùng phép khớp lại bất khả, và bình phương tối thiểu đã chọn chúng bù trừ cho nhau"
+
+msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
+msgstr "bộ ước lượng không có số hạng đó: mục 10.1 đã bỏ phần phụ trội theo mỗi lớp, vì với một mô hình 28 lớp thì phần đó lớn hơn cả token đo được"
+
+msgid "generation (llama-bench)"
+msgstr "sinh (llama-bench)"
+
+msgid "prompt (llama-bench)"
+msgstr "prompt (llama-bench)"
+
+msgid "generation, first request"
+msgstr "sinh, yêu cầu đầu tiên"
+
+msgid "generation, 1K prompt"
+msgstr "sinh, prompt 1K"
+
+msgid "prompt, 1K request"
+msgstr "prompt, yêu cầu 1K"
+
+msgid "peak VRAM"
+msgstr "VRAM đỉnh"
+
+msgid "no graphics card"
+msgstr "không có card đồ họa"
+
+msgid "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+msgstr "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+
+msgid "%(flag)s was asked for as %(wanted)s but the run reports %(actual)s"
+msgstr "%(flag)s được yêu cầu là %(wanted)s nhưng lần chạy báo %(actual)s"
+
+msgid "The card was full and generation came in below three fifths of the estimate: the driver was paging to system memory, which does not fail and does not appear in the log."
+msgstr "Card đã đầy và tốc độ sinh thấp hơn ba phần năm ước tính: trình điều khiển đã đẩy phần thừa sang bộ nhớ hệ thống, việc này không báo lỗi và không xuất hiện trong nhật ký."
+
+msgid "Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page."
+msgstr "VRAM đỉnh vẫn cách xa tổng dung lượng của card, nên trình điều khiển không có gì để đẩy đi."
+
+msgid "The card was full, which a good plan is meant to be, and the speed was close enough to the estimate that nothing was paging."
+msgstr "Card đã đầy, đúng như một kế hoạch tốt phải thế, và tốc độ đủ sát ước tính để thấy rằng không có gì bị đẩy đi."
+
+msgid "No VRAM reading was taken during the run, so this configuration has not been cleared of paging; it has only not been checked."
+msgstr "Không có số đo VRAM nào trong lần chạy này, nên cấu hình này chưa được xác nhận là không đẩy bộ nhớ; chỉ là chưa kiểm tra thôi."
+
+msgid "The card's total memory is unknown, so a reading of what was in use says nothing about how close to full it was."
+msgstr "Không rõ tổng bộ nhớ của card, nên biết đang dùng bao nhiêu cũng không cho biết nó gần đầy đến đâu."
+
+msgid "There was no estimate to compare the measured speed against, so the second half of the signature could not be tested."
+msgstr "Không có ước tính nào để so với tốc độ đo được, nên nửa sau của dấu hiệu này không kiểm tra được."
+
+msgid "llama-bench did not produce JSON"
+msgstr "llama-bench không tạo ra JSON"
+
+msgid "llama-bench JSON is not a list of results"
+msgstr "JSON của llama-bench không phải là một danh sách kết quả"
+
+msgid "llama-bench JSON held no readable results"
+msgstr "JSON của llama-bench không chứa kết quả nào đọc được"
+
+msgid "no llama-bench result rows found"
+msgstr "không tìm thấy dòng kết quả nào của llama-bench"
+
+msgid "could not open %(path)s for the server log"
+msgstr "không mở được %(path)s để ghi nhật ký máy chủ"
+
+msgid "could not start llama-server"
+msgstr "không khởi động được llama-server"
+
+msgid "no output"
+msgstr "không có kết xuất"
+
+msgid "llama-bench exited with code %(code)d: %(detail)s"
+msgstr "llama-bench thoát với mã %(code)d: %(detail)s"
+
+msgid "llama-bench output could not be read: %(error)s"
+msgstr "không đọc được kết xuất của llama-bench: %(error)s"
+
+msgid "llama-server did not become healthy"
+msgstr "llama-server không đạt trạng thái lành mạnh"
+
+msgid "Its whole output is in the log file `bench` named; the end says why."
+msgstr "Toàn bộ kết xuất nằm trong tệp nhật ký mà `bench` đã nêu tên; phần cuối cho biết vì sao."
+
+msgid "%(path)s was written by a newer LlamaFit (benchmark format %(found)d, this build reads %(known)d)"
+msgstr "%(path)s do một bản LlamaFit mới hơn ghi ra (định dạng phép đo %(found)d, bản dựng này đọc %(known)d)"
+
+msgid "Upgrade LlamaFit, or move the file aside to start a new one."
+msgstr "Hãy nâng cấp LlamaFit, hoặc chuyển tệp đi chỗ khác để bắt đầu một tệp mới."
+
+msgid "a benchmark cannot be recorded against a simulated machine"
+msgstr "không thể ghi một phép đo cho một máy mô phỏng"
+
+msgid "Run `llamafit bench` on the machine itself, without --profile."
+msgstr "Hãy chạy `llamafit bench` ngay trên máy đó, không kèm --profile."
+
+msgid "the run did not use the settings it was given: %(problems)s"
+msgstr "lần chạy không dùng đúng các thiết lập đã cho: %(problems)s"
+
+msgid "Nothing was stored. A result filed under flags it was not taken with would be believed later by everything that reads it."
+msgstr "Không lưu gì cả. Một kết quả lưu dưới những cờ mà nó không hề chạy với sẽ được mọi thứ đọc nó về sau tin là thật."
+
+msgid "a conservative default; nobody has measured this card's backend overhead"
+msgstr "một giá trị mặc định dè dặt; chưa ai đo phần phụ trội của backend trên card này"
+
+msgid "measured on this card with driver %(driver)s and llama.cpp %(build)s; one machine"
+msgstr "đo trên chính card này với trình điều khiển %(driver)s và llama.cpp %(build)s; một máy"
+
+msgid "A hybrid placement has to say how many layers are on the graphics card."
+msgstr "Một cách bố trí lai phải nói rõ có bao nhiêu lớp nằm trên card đồ họa."
+
+msgid "Pass gpu_layers, which is what -ngl would be."
+msgstr "Hãy truyền gpu_layers, tức là giá trị của -ngl."
+
+msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
+msgstr "LlamaFit chưa đọc tệp %(quant)s của %(model)s nên không ước lượng được kích thước."
+
+msgid "Run `llamafit catalog refresh` to read the file's header."
+msgstr "Hãy chạy `llamafit catalog refresh` để đọc phần đầu của tệp."
+
+msgid "the server process before any model buffer"
+msgstr "tiến trình máy chủ trước mọi bộ đệm của mô hình"
+
+msgid "fitted to one machine's measurements; the least certain line here"
+msgstr "khớp theo phép đo trên một máy; dòng kém chắc chắn nhất ở đây"
+
+msgid "room for one logit per vocabulary entry per token of the batch"
+msgstr "chỗ cho một logit trên mỗi mục từ vựng, cho mỗi token của lô"
+
+msgid "LlamaFit cannot size a %(kv_type)s key-value cache."
+msgstr "LlamaFit không ước lượng được kích thước bộ đệm khóa-giá trị kiểu %(kv_type)s."
+
+msgid "Use one of: %(types)s."
+msgstr "Hãy dùng một trong: %(types)s."
+
+msgid "This model's file does not say how large its key-value cache is per token."
+msgstr "Tệp của mô hình này không nói bộ đệm khóa-giá trị lớn bao nhiêu cho mỗi token."
+
+msgid "Refresh the catalog so the file's header is read again."
+msgstr "Hãy làm mới danh mục để phần đầu của tệp được đọc lại."
+
+msgid "the attention-layer count was assumed, not counted"
+msgstr "số lớp chú ý là giả định chứ không phải đếm được"
+
+msgid "%(arch)s allocates more cache than its header describes; see the line below"
+msgstr "%(arch)s cấp phát nhiều bộ đệm hơn phần đầu của nó mô tả; xem dòng dưới"
+
+msgid "what %(arch)s allocates beyond its header, measured rather than derived"
+msgstr "phần %(arch)s cấp phát vượt quá phần đầu của nó, đo được chứ không suy ra"
+
+msgid "from the architecture's state dimensions; it does not grow with context"
+msgstr "từ các chiều trạng thái của kiến trúc; nó không lớn lên theo ngữ cảnh"
+
+msgid "the projector file itself"
+msgstr "bản thân tệp projector"
+
+msgid "the projector's own compute space, measured at 248 MiB"
+msgstr "không gian tính toán của riêng projector, đo được là 248 MiB"
+
+msgid "attention projections, feed-forward weights and norms"
+msgstr "các phép chiếu chú ý, trọng số feed-forward và norm"
+
+msgid "always-on experts, which run for every token"
+msgstr "các chuyên gia luôn bật, chạy cho mọi token"
+
+msgid "routed experts, read across the bus once per micro-batch"
+msgstr "các chuyên gia được định tuyến, đọc qua bus mỗi lô nhỏ một lần"
+
+msgid "this model ties its output projection to its embedding table"
+msgstr "mô hình này dùng chung phép chiếu đầu ra với bảng embedding"
+
+msgid "llama.cpp keeps the embedding table in memory even at full offload"
+msgstr "llama.cpp giữ bảng embedding trong bộ nhớ ngay cả khi đẩy hết lên card"
+
+msgid "streamed from disk as it is needed, not held in memory"
+msgstr "đọc thẳng từ đĩa khi cần, không giữ trong bộ nhớ"
+
+msgid "held in memory, since streaming from disk was turned off"
+msgstr "giữ trong bộ nhớ, vì việc đọc thẳng từ đĩa đã bị tắt"
+
 msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
 msgstr "Hugging Face trả về %(status)d khi liệt kê tệp của %(repo)s."
 
@@ -63,6 +255,9 @@ msgstr "Chạy `llamafit catalog refresh` không kèm --model để dựng lại
 msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
 msgstr "Tìm, ước lượng kích thước, cài đặt và kiểm chứng các LLM trọng số mở cho llama.cpp ngay trên máy của bạn."
 
+msgid "With no command, llamafit opens the terminal dashboard; in a pipe, or with --json, it prints what `llamafit recommend` would."
+msgstr "Không kèm lệnh nào thì llamafit mở bảng điều khiển trên terminal; khi nằm trong một ống dẫn, hoặc khi có --json, nó in ra những gì `llamafit recommend` sẽ in."
+
 msgid "Print machine-readable JSON instead of tables."
 msgstr "In ra JSON cho máy đọc thay vì bảng."
 
@@ -72,17 +267,318 @@ msgstr "Ghi chi tiết vào llamafit.log trong thư mục nhật ký và hiển 
 msgid "Disable colours."
 msgstr "Tắt màu."
 
+msgid "Answer for the machine this hardware profile describes instead of this one. Nothing about this machine is probed, and every answer is marked as simulated. `llamafit hardware list` names the profiles you have."
+msgstr "Trả lời cho cỗ máy mà hồ sơ phần cứng này mô tả, thay vì cho máy này. Không dò gì trên máy này, và mọi câu trả lời đều được đánh dấu là mô phỏng. `llamafit hardware list` cho biết bạn có những hồ sơ nào."
+
+msgid "Pretend the graphics card has this much memory, for example 24G. Everything else stays as scanned, and every answer is marked as simulated."
+msgstr "Giả vờ card đồ họa có chừng này bộ nhớ, ví dụ 24G. Mọi thứ khác vẫn như đã dò, và mọi câu trả lời đều được đánh dấu là mô phỏng."
+
+msgid "Pretend the machine has this much system memory, for example 128GiB. Every answer is marked as simulated."
+msgstr "Giả vờ máy có chừng này bộ nhớ hệ thống, ví dụ 128GiB. Mọi câu trả lời đều được đánh dấu là mô phỏng."
+
+msgid "Pretend the processor has this many physical cores. Every answer is marked as simulated."
+msgstr "Giả vờ bộ xử lý có chừng này nhân vật lý. Mọi câu trả lời đều được đánh dấu là mô phỏng."
+
+msgid "Plan, report and score no context longer than this. It caps the model's own length; it does not describe a machine."
+msgstr "Không lập kế hoạch, không báo cáo và không chấm điểm cho ngữ cảnh dài hơn mức này. Nó chặn trên độ dài của chính mô hình; nó không mô tả một cỗ máy."
+
 msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
 msgstr "Dùng ngôn ngữ này, ví dụ pt_PT. Ngôn ngữ mà LlamaFit không có sẽ quay về tiếng Anh, và nó cho biết những ngôn ngữ nào đang có."
 
 msgid "Print the version and exit."
 msgstr "In phiên bản rồi thoát."
 
+msgid "the output's encoding"
+msgstr "bảng mã của kết xuất"
+
+msgid "%(count)d character could not be written in %(encoding)s and is shown as ?."
+msgid_plural "%(count)d characters could not be written in %(encoding)s and are shown as ?."
+msgstr[0] "%(count)d ký tự không ghi được trong %(encoding)s và được hiển thị thành ?."
+
+msgid "Set PYTHONUTF8=1 in the environment and run again: Python then writes UTF-8, which carries every language."
+msgstr "Hãy đặt PYTHONUTF8=1 trong môi trường rồi chạy lại: khi đó Python ghi UTF-8, thứ chứa được mọi ngôn ngữ."
+
+msgid "%(option)s is an option of llamafit itself, so it goes before the command: `llamafit %(option)s %(rest)s`."
+msgstr "%(option)s là tùy chọn của chính llamafit, nên nó đứng trước lệnh: `llamafit %(option)s %(rest)s`."
+
 msgid "Unexpected error: %(error)s"
 msgstr "Lỗi ngoài dự kiến: %(error)s"
 
 msgid "Run again with --verbose for the full traceback."
 msgstr "Chạy lại với --verbose để xem traceback đầy đủ."
+
+msgid "A catalog model id."
+msgstr "Một id mô hình trong danh mục."
+
+msgid "Benchmark this quantisation instead of the planned one."
+msgstr "Đo bản lượng tử hóa này thay vì bản đã định trong kế hoạch."
+
+msgid "Size for this many tokens."
+msgstr "Tính kích thước cho chừng này token."
+
+msgid "Set the micro-batch by hand; the budget is rebuilt around it."
+msgstr "Đặt lô nhỏ bằng tay; mức phân bổ được dựng lại quanh nó."
+
+msgid ""
+"Measure a model on this machine and show the measurement beside the estimate.\n"
+"\n"
+"Runs llama-bench and a real server at the planned flags, stores the result with the conditions it was taken under, and flags a configuration the driver was paging. With --calibrate, fits the estimator's constants to this machine from every stored result and says by name which ones the measurements do not determine."
+msgstr ""
+"Đo một mô hình trên máy này và hiện số đo bên cạnh ước tính.\n"
+"\n"
+"Chạy llama-bench và một máy chủ thật với các cờ đã định, lưu kết quả kèm điều kiện đo, và đánh dấu cấu hình nào bị trình điều khiển đẩy bộ nhớ. Kèm --calibrate, nó khớp các hằng số của bộ ước lượng vào máy này từ mọi kết quả đã lưu và nêu đích danh những hằng số mà các phép đo không xác định được."
+
+msgid "Measure prompt processing at every micro-batch of the ladder, not only the planned one. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all."
+msgstr "Đo việc xử lý prompt ở mọi lô nhỏ trên thang, không chỉ ở lô đã định. Mục 10.2 có hai tham số tự do mà một lô nhỏ chỉ là một phương trình, nên thiếu tùy chọn này thì nửa prompt của một lần hiệu chuẩn không khớp được chút nào."
+
+msgid "Run llama-bench only. Faster, and it gives up the paging check, the buffer sizes and the tool-call test, all of which need a real server."
+msgstr "Chỉ chạy llama-bench. Nhanh hơn, đổi lại bỏ mất phép kiểm tra đẩy bộ nhớ, các kích thước bộ đệm và phép thử gọi công cụ, tất cả đều cần một máy chủ thật."
+
+msgid "Print the result without writing it to the database."
+msgstr "In kết quả mà không ghi vào cơ sở dữ liệu."
+
+msgid "Print the commands that would run, and run nothing."
+msgstr "In các lệnh sẽ chạy, và không chạy gì cả."
+
+msgid "Fit the estimator's constants to this machine from every result."
+msgstr "Khớp các hằng số của bộ ước lượng vào máy này từ mọi kết quả."
+
+msgid "List what is already stored and stop."
+msgstr "Liệt kê những gì đã lưu rồi dừng."
+
+msgid "`llamafit bench` needs a model to measure"
+msgstr "`llamafit bench` cần một mô hình để đo"
+
+msgid "Try `llamafit bench <model>`, `--calibrate` on its own, or `--show`."
+msgstr "Hãy thử `llamafit bench <model>`, `--calibrate` một mình, hoặc `--show`."
+
+msgid "llama.cpp was not found, so there is nothing to benchmark with"
+msgstr "không tìm thấy llama.cpp, nên không có gì để đo cùng"
+
+msgid "Run `llamafit doctor` to see where it was looked for."
+msgstr "Hãy chạy `llamafit doctor` để xem nó đã tìm ở đâu."
+
+msgid "%(path)s has llama-server but no llama-bench"
+msgstr "%(path)s có llama-server nhưng không có llama-bench"
+
+msgid "Some release archives leave it out; a full build has it beside the server."
+msgstr "Một số gói phát hành bỏ nó ra; một bản dựng đầy đủ có nó nằm cạnh máy chủ."
+
+msgid "this host is simulated, and a simulated machine cannot be measured"
+msgstr "máy này là mô phỏng, mà một cỗ máy mô phỏng thì không đo được"
+
+msgid "Run `llamafit bench` on the machine itself."
+msgstr "Hãy chạy `llamafit bench` ngay trên máy đó."
+
+msgid "the model file is not on this machine: %(path)s"
+msgstr "tệp mô hình không có trên máy này: %(path)s"
+
+msgid "Download it first; `llamafit plan` shows the path the command line uses."
+msgstr "Hãy tải về trước; `llamafit plan` cho biết đường dẫn mà dòng lệnh dùng."
+
+msgid "Would run:"
+msgstr "Sẽ chạy:"
+
+msgid "Nothing has been measured on this machine yet."
+msgstr "Chưa đo gì trên máy này cả."
+
+msgid "Stored measurements"
+msgstr "Các phép đo đã lưu"
+
+msgid "model"
+msgstr "mô hình"
+
+msgid "kind"
+msgstr "loại"
+
+msgid "gen tok/s"
+msgstr "sinh tok/s"
+
+msgid "prompt tok/s"
+msgstr "prompt tok/s"
+
+msgid "taken"
+msgstr "đo lúc"
+
+msgid "flags"
+msgstr "cờ"
+
+msgid "Nothing was written to the database, so no estimate will be relabelled."
+msgstr "Không ghi gì vào cơ sở dữ liệu, nên không ước tính nào bị dán nhãn lại."
+
+msgid "Estimated against measured"
+msgstr "Ước tính so với đo được"
+
+msgid "figure"
+msgstr "chỉ số"
+
+msgid "context"
+msgstr "ngữ cảnh"
+
+msgid "micro-batch"
+msgstr "lô nhỏ"
+
+msgid "estimated"
+msgstr "ước tính"
+
+msgid "measured"
+msgstr "đo được"
+
+msgid "ratio"
+msgstr "tỉ lệ"
+
+msgid "The plan sizes this configuration for %(context)s tokens and estimates %(tps)s generated tokens per second there. Nothing above ran at that context, so that figure is reported and not compared."
+msgstr "Kế hoạch tính cấu hình này cho %(context)s token và ước tính sinh %(tps)s token mỗi giây ở đó. Không có lần chạy nào ở trên dùng ngữ cảnh ấy, nên con số này được báo lại chứ không đem ra so."
+
+msgid "%(count)d figure is outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgid_plural "%(count)d figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgstr[0] "%(count)d chỉ số nằm ngoài dải 0,8 đến 1,25 mà một công thức chưa hiệu chuẩn được kỳ vọng rơi vào."
+
+msgid "This configuration was paging."
+msgstr "Cấu hình này đang đẩy bộ nhớ."
+
+msgid "This configuration was not paging."
+msgstr "Cấu hình này không đẩy bộ nhớ."
+
+msgid "Paging could not be checked."
+msgstr "Không kiểm tra được việc đẩy bộ nhớ."
+
+msgid "Peak VRAM was %(percent)s percent of the card, and generation was %(speed)s percent of the estimate."
+msgstr "VRAM đỉnh bằng %(percent)s phần trăm dung lượng card, và tốc độ sinh bằng %(speed)s phần trăm ước tính."
+
+msgid "Peak VRAM was %(percent)s percent of the card. Generation was not compared with the estimate."
+msgstr "VRAM đỉnh bằng %(percent)s phần trăm dung lượng card. Tốc độ sinh không được đem so với ước tính."
+
+msgid "The largest context on the ladder that would not page is %(tokens)s."
+msgstr "Ngữ cảnh lớn nhất trên thang mà không bị đẩy bộ nhớ là %(tokens)s."
+
+msgid "Calibration"
+msgstr "Hiệu chuẩn"
+
+msgid "constant"
+msgstr "hằng số"
+
+msgid "value"
+msgstr "giá trị"
+
+msgid "from"
+msgstr "từ"
+
+msgid "%(base)s + %(slope)s per 1K"
+msgstr "%(base)s + %(slope)s mỗi 1K"
+
+msgid "%(count)d measured context"
+msgid_plural "%(count)d measured contexts"
+msgstr[0] "%(count)d ngữ cảnh đã đo"
+
+msgid "Nothing was fitted. Every line below says what its constant was missing; a calibration made from less than that would look precise and be arbitrary."
+msgstr "Không khớp được gì. Mỗi dòng dưới đây nói hằng số của nó thiếu cái gì; một lần hiệu chuẩn làm từ ít hơn thế sẽ trông chính xác mà thực ra tùy tiện."
+
+msgid "%(name)s was not fitted: %(reason)s"
+msgstr "%(name)s không khớp được: %(reason)s"
+
+msgid "%(count)d measured configuration"
+msgid_plural "%(count)d measured configurations"
+msgstr[0] "%(count)d cấu hình đã đo"
+
+msgid "What the model is for. It sets the score weights, the speed target and the context a candidate is measured against."
+msgstr "Mô hình dùng để làm gì. Nó quyết định trọng số điểm, mức tốc độ mong muốn và ngữ cảnh dùng để đo ứng viên."
+
+msgid "Capability the model must have; a model without it is excluded "
+msgstr "Khả năng mà mô hình bắt buộc phải có; mô hình không có thì bị loại"
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Chỉ giữ các mã giấy phép này (dùng được nhiều lần)."
+
+msgid "balanced, quality or speed: moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights."
+msgstr "balanced, quality hoặc speed: chuyển một phần mười trọng số giữa chất lượng và tốc độ. Nó làm nghiêng bảng xếp hạng, chứ không thay thế các trọng số."
+
+msgid "Exclude anything larger to download, for example 40G or 7.5GiB."
+msgstr "Loại những gì phải tải về lớn hơn mức này, ví dụ 40G hoặc 7.5GiB."
+
+msgid "The worst verdict to list: comfortable, fits or tight."
+msgstr "Kết luận thấp nhất còn được liệt kê: comfortable, fits hoặc tight."
+
+msgid "Exclude candidates generating fewer tokens per second than this, in place of the speed a person reads at. Pass 0 when nobody is waiting on the tokens."
+msgstr "Loại các ứng viên sinh ít token mỗi giây hơn mức này, thay cho tốc độ đọc của một người. Hãy truyền 0 khi không ai phải chờ các token đó."
+
+msgid "Order the rows drawn: score, speed, quality, context, size, prompt, card, ram, fit, model or quant, largest or best first unless :asc says otherwise. The # column keeps the ranking."
+msgstr "Thứ tự vẽ các dòng: score, speed, quality, context, size, prompt, card, ram, fit, model hoặc quant; lớn nhất hoặc tốt nhất đứng trước, trừ khi thêm :asc. Cột # vẫn giữ nguyên thứ hạng."
+
+msgid "Draw only rows whose id, name or quantisation contains this text."
+msgstr "Chỉ vẽ những dòng có id, tên hoặc bản lượng tử hóa chứa chuỗi này."
+
+msgid "Draw only rows whose file is already on this machine."
+msgstr "Chỉ vẽ những dòng mà tệp đã có sẵn trên máy này."
+
+msgid "Draw only rows that run this way: gpu, moe-offload, hybrid or cpu."
+msgstr "Chỉ vẽ những dòng chạy theo cách này: gpu, moe-offload, hybrid hoặc cpu."
+
+msgid "Draw only rows at or above this verdict: comfortable, fits or tight. The ranking is unchanged and a hidden row is still counted."
+msgstr "Chỉ vẽ những dòng đạt kết luận này trở lên: comfortable, fits hoặc tight. Thứ hạng không đổi và dòng bị ẩn vẫn được đếm."
+
+msgid "Draw exactly these columns, comma-separated, in this order, named as --json names them: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+msgstr "Chỉ vẽ đúng những cột này, phân cách bằng dấu phẩy, theo thứ tự này, với tên như --json đặt: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+
+msgid "Draw every column whatever the terminal's width; a cell that does not fit folds."
+msgstr "Vẽ mọi cột bất kể bề ngang của terminal; ô nào không vừa thì xuống dòng."
+
+msgid "Leave the candidates that were not ranked off the table. The reasons are still printed under it."
+msgstr "Bỏ các ứng viên không được xếp hạng ra khỏi bảng. Lý do vẫn được in bên dưới."
+
+msgid "invalid --min-fit %(value)s"
+msgstr "--min-fit không hợp lệ: %(value)s"
+
+msgid "Valid values: %(values)s"
+msgstr "Các giá trị hợp lệ: %(values)s"
+
+msgid "invalid --prefer %(value)s"
+msgstr "--prefer không hợp lệ: %(value)s"
+
+msgid "invalid --runs %(value)s"
+msgstr "--runs không hợp lệ: %(value)s"
+
+msgid "invalid --sort %(value)s"
+msgstr "--sort không hợp lệ: %(value)s"
+
+msgid "invalid --columns %(value)s"
+msgstr "--columns không hợp lệ: %(value)s"
+
+msgid ""
+"Rank the catalog for what you want to do on this machine.\n"
+"\n"
+"Every candidate is planned, sized and estimated here, so the first run scans the machine. Speeds compare candidates at 8K tokens of context; --explain expands a row into the scores, the weights, the budget and the speed breakdown that produced it."
+msgstr ""
+"Xếp hạng danh mục theo việc bạn muốn làm trên máy này.\n"
+"\n"
+"Mọi ứng viên đều được lập kế hoạch, ước lượng kích thước và ước tính tốc độ ngay tại đây, nên lần chạy đầu sẽ dò máy. Tốc độ so sánh các ứng viên ở ngữ cảnh 8K token; --explain mở một dòng ra thành các điểm, trọng số, mức phân bổ và phân tích tốc độ đã tạo ra nó."
+
+msgid "Exclude candidates that cannot hold at least this many tokens."
+msgstr "Loại các ứng viên không giữ nổi ít nhất chừng này token."
+
+msgid "Show at most this many rows."
+msgstr "Hiển thị nhiều nhất chừng này dòng."
+
+msgid "Show every quantisation instead of the best one per model."
+msgstr "Hiện mọi bản lượng tử hóa thay vì bản tốt nhất của mỗi mô hình."
+
+msgid "Expand every row shown into the scores, weights, budget and speed breakdown behind it. Combine with --limit 1 for one model."
+msgstr "Mở mọi dòng đang hiện thành các điểm, trọng số, mức phân bổ và phân tích tốc độ đằng sau nó. Kết hợp với --limit 1 để xem một mô hình."
+
+msgid "Plan without a vision projector, freeing its memory."
+msgstr "Lập kế hoạch mà không có projector thị giác, giải phóng phần bộ nhớ của nó."
+
+msgid ""
+"Rank every model by how well it uses this machine, whatever it is for.\n"
+"\n"
+"No use case, no weights and no score: this is the memory question on its own. Models are sized for 32K tokens of context, and the context column is the largest each one holds in the mode shown."
+msgstr ""
+"Xếp hạng mọi mô hình theo mức độ tận dụng máy này, bất kể dùng để làm gì.\n"
+"\n"
+"Không có trường hợp sử dụng, không trọng số và không điểm: đây chỉ là câu hỏi về bộ nhớ. Các mô hình được tính kích thước cho ngữ cảnh 32K token, và cột ngữ cảnh là mức lớn nhất mà mỗi mô hình giữ được ở chế độ đang hiện."
+
+msgid "Only the configurations that use the machine well: at least half its memory held in weights, and no pool past four fifths."
+msgstr "Chỉ những cấu hình tận dụng tốt cỗ máy: ít nhất một nửa bộ nhớ nằm trong trọng số, và không vùng nhớ nào vượt bốn phần năm."
 
 msgid "Maintain the catalog: validate its files, refresh volatile fields."
 msgstr "Bảo trì danh mục: kiểm tra các tệp, làm mới những trường hay thay đổi."
@@ -93,36 +589,17 @@ msgstr "Chỉ giữ trường hợp sử dụng này."
 msgid "Keep only models with this capability (repeatable)."
 msgstr "Chỉ giữ các mô hình có khả năng này (dùng được nhiều lần)."
 
-msgid "Keep only these licence identifiers (repeatable)."
-msgstr "Chỉ giữ các mã giấy phép này (dùng được nhiều lần)."
+msgid "Show only this quantisation, matched case-insensitively, in both tables."
+msgstr "Chỉ hiện bản lượng tử hóa này, khớp không phân biệt hoa thường, ở cả hai bảng."
+
+msgid "Size every quantisation for this many tokens instead of the usual 32,768."
+msgstr "Tính kích thước mọi bản lượng tử hóa cho chừng này token thay vì mức 32.768 thường dùng."
 
 msgid "Validate only this file instead of the bundled catalog and custom overrides."
 msgstr "Chỉ kiểm tra tệp này thay vì danh mục đi kèm và các tệp ghi đè riêng."
 
-msgid "Did you mean: %(ids)s?"
-msgstr "Có phải bạn muốn tìm: %(ids)s?"
-
-msgid "Run `llamafit list` to see every model id."
-msgstr "Chạy `llamafit list` để xem mọi id mô hình."
-
-msgid "no model named %(id)s in the catalog"
-msgstr "không có mô hình nào tên %(id)s trong danh mục"
-
-msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
-msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
-msgstr[0] "Tìm thấy %(count)d vấn đề trong danh mục; chạy `llamafit catalog validate` để xem chi tiết."
-
 msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
 msgstr "Không có mô hình nào khớp. Hãy nới rộng --use-case, --capability, --license, --vendor hoặc --search."
-
-msgid "invalid --use-case %(value)s"
-msgstr "--use-case không hợp lệ: %(value)s"
-
-msgid "Valid use cases: %(values)s"
-msgstr "Các trường hợp sử dụng hợp lệ: %(values)s"
-
-msgid "Valid capabilities: %(values)s"
-msgstr "Các khả năng hợp lệ: %(values)s"
 
 msgid ""
 "List the model catalog, narrowed by any filters given.\n"
@@ -148,8 +625,14 @@ msgstr "Cách viết tắt của llamafit list --search TEXT."
 msgid "Text to match against id, name, vendor or family."
 msgstr "Chuỗi cần khớp với id, tên, nhà cung cấp hoặc dòng."
 
-msgid "A catalog model id."
-msgstr "Một id mô hình trong danh mục."
+msgid ""
+"Show one model: its facts, the quants it publishes, and what each would cost on this machine.\n"
+"\n"
+"The last table is sized against this machine, so the first run scans it. One line per quantisation; plan opens one of those rows into the memory budget, the context ladder and the command line."
+msgstr ""
+"Hiện một mô hình: các dữ kiện của nó, các bản lượng tử hóa nó công bố, và mỗi bản sẽ tốn bao nhiêu trên máy này.\n"
+"\n"
+"Bảng cuối được tính theo máy này, nên lần chạy đầu sẽ dò máy. Mỗi bản lượng tử hóa một dòng; plan mở một trong các dòng đó thành mức phân bổ bộ nhớ, thang ngữ cảnh và dòng lệnh."
 
 msgid "Validate catalog YAML files against the schema, printing one line per problem."
 msgstr "Kiểm tra các tệp YAML của danh mục theo lược đồ, in mỗi vấn đề một dòng."
@@ -195,8 +678,384 @@ msgstr "In mục danh mục thô của một mô hình, mặc định là JSON, 
 msgid "Print YAML instead of JSON."
 msgstr "In YAML thay vì JSON."
 
+msgid "Did you mean: %(ids)s?"
+msgstr "Có phải bạn muốn tìm: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Chạy `llamafit list` để xem mọi id mô hình."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "không có mô hình nào tên %(id)s trong danh mục"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "Tìm thấy %(count)d vấn đề trong danh mục; chạy `llamafit catalog validate` để xem chi tiết."
+
+msgid "invalid --use-case %(value)s"
+msgstr "--use-case không hợp lệ: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Các trường hợp sử dụng hợp lệ: %(values)s"
+
+msgid "invalid %(option)s value: %(values)s"
+msgid_plural "invalid %(option)s values: %(values)s"
+msgstr[0] "%(option)s có giá trị không hợp lệ: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Các khả năng hợp lệ: %(values)s"
+
+msgid "%(option)s is not a size: %(value)s"
+msgstr "%(option)s không phải là một kích thước: %(value)s"
+
+msgid "Sizes look like 8G, 7.5GiB or 512M; a bare number is bytes."
+msgstr "Kích thước trông như 8G, 7.5GiB hoặc 512M; một con số trần là byte."
+
+msgid "%(ceiling)s %(max)s is below %(floor)s %(min)s"
+msgstr "%(ceiling)s %(max)s thấp hơn %(floor)s %(min)s"
+
+msgid "Raise %(ceiling)s, or lower %(floor)s."
+msgstr "Hãy nâng %(ceiling)s, hoặc hạ %(floor)s."
+
+msgid "`llamafit %(command)s` reports on the machine LlamaFit is running on"
+msgstr "`llamafit %(command)s` báo cáo về chính cỗ máy đang chạy LlamaFit"
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a profile describes, run `llamafit hardware show NAME --as-host`."
+msgstr "Hãy bỏ --profile, --memory, --ram và --cpu-cores. Để xem cỗ máy mà một hồ sơ mô tả, hãy chạy `llamafit hardware show NAME --as-host`."
+
 msgid "Explain what was detected, what failed, and what would unlock more."
 msgstr "Giải thích những gì phát hiện được, những gì thất bại, và làm gì thì mở ra thêm."
+
+msgid "Hardware profiles: describe a machine in a file and score models against it."
+msgstr "Hồ sơ phần cứng: mô tả một cỗ máy trong một tệp rồi chấm điểm các mô hình theo nó."
+
+msgid "Validate only this file instead of every bundled and user profile."
+msgstr "Chỉ kiểm tra tệp này thay vì mọi hồ sơ đi kèm và hồ sơ của bạn."
+
+msgid "A profile name, or a path to a profile file."
+msgstr "Tên một hồ sơ, hoặc đường dẫn tới tệp hồ sơ."
+
+msgid "%(count)d hardware profile problem found; run `llamafit hardware validate` for details."
+msgid_plural "%(count)d hardware profile problems found; run `llamafit hardware validate` for details."
+msgstr[0] "Tìm thấy %(count)d vấn đề trong hồ sơ phần cứng; chạy `llamafit hardware validate` để xem chi tiết."
+
+msgid "List the hardware profiles LlamaFit has: the bundled ones and your own."
+msgstr "Liệt kê các hồ sơ phần cứng LlamaFit có: các hồ sơ đi kèm và của riêng bạn."
+
+msgid "No hardware profiles. Run `llamafit hardware path` to see where yours would go."
+msgstr "Không có hồ sơ phần cứng nào. Hãy chạy `llamafit hardware path` để xem hồ sơ của bạn sẽ nằm ở đâu."
+
+msgid ""
+"Show one profile; with --as-host, the machine it stands in for.\n"
+"\n"
+"A host built from a profile is marked as simulated, in the table and in the JSON, so a what-if is never mistaken for a scan of this machine."
+msgstr ""
+"Hiện một hồ sơ; kèm --as-host thì hiện cỗ máy mà nó đứng thay.\n"
+"\n"
+"Một máy dựng từ hồ sơ luôn được đánh dấu là mô phỏng, cả trong bảng lẫn trong JSON, nên một giả định sẽ không bao giờ bị nhầm là kết quả dò máy này."
+
+msgid "Show the host this profile substitutes, as `llamafit system` would."
+msgstr "Hiện cỗ máy mà hồ sơ này thay thế, như `llamafit system` vẫn hiện."
+
+msgid "Check hardware profile files against the schema, printing one line per problem."
+msgstr "Kiểm tra các tệp hồ sơ phần cứng theo lược đồ, in mỗi vấn đề một dòng."
+
+msgid "Print the directory your own hardware profiles go in."
+msgstr "In thư mục chứa các hồ sơ phần cứng của riêng bạn."
+
+msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr "Thư mục đó chưa tồn tại; hãy tạo nó và đặt vào một tệp %(suffix)s."
+
+msgid "Install what it takes to run a model: llama.cpp itself, and the weights."
+msgstr "Cài những gì cần để chạy một mô hình: chính llama.cpp, và bộ trọng số."
+
+msgid "Fetch this quantisation instead of the first the catalog publishes."
+msgstr "Tải bản lượng tử hóa này thay vì bản đầu tiên mà danh mục công bố."
+
+msgid "Put the files here instead of under the configured downloads directory."
+msgstr "Đặt các tệp vào đây thay vì vào thư mục tải về đã cấu hình."
+
+msgid "Use at most this much bandwidth, for example 5M. Shared across every worker, so the figure is the figure whatever --workers says."
+msgstr "Dùng nhiều nhất chừng này băng thông, ví dụ 5M. Con số này chia chung cho mọi luồng làm việc, nên nó không đổi dù --workers là bao nhiêu."
+
+msgid "How many requests to keep in flight. More is not always faster, and a home connection is shared with whoever else is using it."
+msgstr "Số yêu cầu giữ cùng lúc. Nhiều hơn không phải lúc nào cũng nhanh hơn, và đường truyền ở nhà còn chia cho những người khác trong nhà."
+
+msgid "Do not ask before starting."
+msgstr "Không hỏi trước khi bắt đầu."
+
+msgid "Show what would be fetched and stop before fetching it."
+msgstr "Hiện những gì sẽ tải rồi dừng lại trước khi tải."
+
+msgid "Fetch only the weights, not the vision projector or the draft model."
+msgstr "Chỉ tải bộ trọng số, không tải projector thị giác hay mô hình nháp."
+
+msgid "Re-read files that are already here and check them against the catalog."
+msgstr "Đọc lại các tệp đã có ở đây và đối chiếu với danh mục."
+
+msgid "Fetch files the catalog holds no checksum for. Nothing will be able to tell you whether they arrived intact."
+msgstr "Tải cả những tệp mà danh mục không có tổng kiểm tra. Sẽ không có gì cho bạn biết chúng đến nơi còn nguyên vẹn hay không."
+
+msgid "Show at most this many entries."
+msgstr "Hiển thị nhiều nhất chừng này mục."
+
+msgid "Download a model's weights, resuming anything an earlier run left and checking every file against the catalog's checksum."
+msgstr "Tải bộ trọng số của một mô hình, tiếp tục những gì lần chạy trước còn dở và đối chiếu mọi tệp với tổng kiểm tra trong danh mục."
+
+msgid "Start the download?"
+msgstr "Bắt đầu tải về?"
+
+msgid "Show what has been downloaded, newest first."
+msgstr "Hiện những gì đã tải, mới nhất trước."
+
+msgid "Nothing has been downloaded yet."
+msgstr "Chưa tải về gì cả."
+
+msgid "Install this backend instead of the one chosen for your GPU: cuda, vulkan, hip, sycl, metal or cpu."
+msgstr "Cài backend này thay vì backend được chọn cho GPU của bạn: cuda, vulkan, hip, sycl, metal hoặc cpu."
+
+msgid "Install here instead of ~/.llamafit/llama.cpp."
+msgstr "Cài vào đây thay vì ~/.llamafit/llama.cpp."
+
+msgid "Install this release tag, for example b6100, not the latest."
+msgstr "Cài bản phát hành mang thẻ này, ví dụ b6100, chứ không phải bản mới nhất."
+
+msgid "invalid --backend %(value)s"
+msgstr "--backend không hợp lệ: %(value)s"
+
+msgid "Valid backends: %(values)s"
+msgstr "Các backend hợp lệ: %(values)s"
+
+msgid "release %(tag)s publishes no %(backend)s build for %(os)s %(arch)s."
+msgstr "bản phát hành %(tag)s không công bố bản dựng %(backend)s nào cho %(os)s %(arch)s."
+
+msgid "Leave --backend out and LlamaFit will choose a published one."
+msgstr "Hãy bỏ --backend ra và LlamaFit sẽ chọn một bản dựng đã công bố."
+
+msgid "release %(tag)s publishes nothing for %(os)s %(arch)s."
+msgstr "bản phát hành %(tag)s không công bố gì cho %(os)s %(arch)s."
+
+msgid "Build llama.cpp from source; see the project's own instructions."
+msgstr "Hãy tự dựng llama.cpp từ mã nguồn; xem hướng dẫn của chính dự án đó."
+
+msgid "Downloading"
+msgstr "Đang tải về"
+
+msgid "Change your PATH?"
+msgstr "Đổi PATH của bạn?"
+
+msgid "PATH left alone."
+msgstr "PATH được giữ nguyên."
+
+msgid "PATH changed. Open a new terminal for it to take effect."
+msgstr "Đã đổi PATH. Hãy mở một terminal mới để nó có hiệu lực."
+
+msgid ""
+"Download a published llama.cpp build and install it into ~/.llamafit/llama.cpp.\n"
+"\n"
+"The plan is printed before anything is written. The archive's checksum is verified before it is unpacked, an interrupted download continues where it stopped, and a directory LlamaFit did not create is never overwritten."
+msgstr ""
+"Tải một bản dựng llama.cpp đã công bố và cài vào ~/.llamafit/llama.cpp.\n"
+"\n"
+"Kế hoạch được in ra trước khi ghi bất cứ thứ gì. Tổng kiểm tra của tệp nén được xác minh trước khi giải nén, một lần tải bị gián đoạn sẽ tiếp tục từ chỗ dừng, và một thư mục không do LlamaFit tạo thì không bao giờ bị ghi đè."
+
+msgid "Offer to add the bin directory to your PATH, showing the undo first."
+msgstr "Hỏi xem có thêm thư mục bin vào PATH không, và cho xem cách hoàn tác trước."
+
+msgid "Install over a directory LlamaFit did not create. Ask yourself twice."
+msgstr "Cài đè lên một thư mục không do LlamaFit tạo. Hãy nghĩ lại hai lần."
+
+msgid "Install an archive that publishes no checksum. Nothing can be checked."
+msgstr "Cài một tệp nén không công bố tổng kiểm tra. Không kiểm được gì cả."
+
+msgid "Print the plan and write nothing."
+msgstr "In kế hoạch và không ghi gì."
+
+msgid "Do not ask; assume yes."
+msgstr "Không hỏi; coi như đồng ý."
+
+msgid "Install this?"
+msgstr "Cài cái này?"
+
+msgid "Nothing was written."
+msgstr "Không ghi gì cả."
+
+msgid "Plan this quantisation instead of the one that scores best on this machine."
+msgstr "Lập kế hoạch với bản lượng tử hóa này thay vì bản đạt điểm cao nhất trên máy này."
+
+msgid "Size for this many tokens. When it does not fit, the plan sizes down and shows what the context you asked for would have cost."
+msgstr "Tính kích thước cho chừng này token. Khi không vừa, kế hoạch sẽ hạ xuống và cho thấy ngữ cảnh bạn hỏi lẽ ra tốn bao nhiêu."
+
+msgid "Set the micro-batch by hand. The whole budget is rebuilt around it, since it moves the compute buffer and with it the verdict."
+msgstr "Đặt lô nhỏ bằng tay. Toàn bộ mức phân bổ được dựng lại quanh nó, vì nó làm đổi bộ đệm tính toán và kéo theo cả kết luận."
+
+msgid "A generation speed to answer against: whether this reaches it, and what context would."
+msgstr "Một tốc độ sinh để đối chiếu: cấu hình này có đạt tới đó không, và ngữ cảnh nào thì đạt."
+
+msgid "%(model)s publishes no quantisations"
+msgstr "%(model)s không công bố bản lượng tử hóa nào"
+
+msgid "Run `llamafit catalog refresh --model %(model)s`."
+msgstr "Hãy chạy `llamafit catalog refresh --model %(model)s`."
+
+msgid ""
+"Place one model on this machine and print the command line that runs it.\n"
+"\n"
+"Shows the memory budget component by component, the context ladder a launch script chooses from, where a token's time goes, and any run the catalog records for comparison."
+msgstr ""
+"Đặt một mô hình lên máy này và in ra dòng lệnh chạy nó.\n"
+"\n"
+"Nó cho thấy mức phân bổ bộ nhớ theo từng phần, thang ngữ cảnh mà một kịch bản khởi chạy chọn trong đó, thời gian của một token đi đâu, và mọi lần chạy mà danh mục có ghi để đem so."
+
+msgid "Leave the vision projector out, freeing its memory for context."
+msgstr "Bỏ projector thị giác ra, dành phần bộ nhớ của nó cho ngữ cảnh."
+
+msgid "Write the files here instead of in LlamaFit's own presets directory."
+msgstr "Ghi các tệp vào đây thay vì vào thư mục preset của chính LlamaFit."
+
+msgid "Bind this port instead of llama.cpp's default 8080."
+msgstr "Mở cổng này thay vì cổng 8080 mặc định của llama.cpp."
+
+msgid "Size for this many tokens. It becomes the top of the ladder the script chooses from; the script never goes above it."
+msgstr "Tính kích thước cho chừng này token. Nó thành bậc cao nhất của thang mà kịch bản chọn trong đó; kịch bản không bao giờ vượt lên trên."
+
+msgid "%(model)s does not fit this machine in any configuration"
+msgstr "%(model)s không vừa máy này ở bất kỳ cấu hình nào"
+
+msgid "Run `llamafit plan %(model)s` to see what it would need."
+msgstr "Hãy chạy `llamafit plan %(model)s` để xem nó cần những gì."
+
+msgid ""
+"Write launch scripts for one model: a script that picks its context from free card memory at start time, a router section, and a README.\n"
+"\n"
+"A file you have edited is never overwritten without --force."
+msgstr ""
+"Ghi các kịch bản khởi chạy cho một mô hình: một kịch bản tự chọn ngữ cảnh theo bộ nhớ card còn trống lúc khởi động, một phần định tuyến, và một README.\n"
+"\n"
+"Tệp bạn đã sửa thì không bao giờ bị ghi đè nếu không có --force."
+
+msgid "Overwrite files you have edited. It says which ones it discarded."
+msgstr "Ghi đè cả những tệp bạn đã sửa. Nó cho biết đã bỏ đi những tệp nào."
+
+msgid "Run a model's preset, wait for the server to answer, and print its endpoints. --stop stops the server LlamaFit started."
+msgstr "Chạy preset của một mô hình, chờ máy chủ trả lời, rồi in các điểm cuối của nó. --stop dừng máy chủ mà LlamaFit đã khởi động."
+
+msgid "Stop the server LlamaFit started for this model."
+msgstr "Dừng máy chủ mà LlamaFit đã khởi động cho mô hình này."
+
+msgid "Seconds to wait for /health before reporting that it has not answered."
+msgstr "Số giây chờ /health trước khi báo rằng nó chưa trả lời."
+
+msgid "the preset could not be written"
+msgstr "không ghi được preset"
+
+msgid "Wrote a preset first: %(path)s"
+msgstr "Đã ghi một preset trước: %(path)s"
+
+msgid "Nothing to stop: LlamaFit has no record of starting %(model)s."
+msgstr "Không có gì để dừng: LlamaFit không ghi nhận đã khởi động %(model)s."
+
+msgid "Stopped %(model)s, which was serving on %(url)s."
+msgstr "Đã dừng %(model)s, vốn đang phục vụ tại %(url)s."
+
+msgid "Preset for %(name)s (%(quant)s) in %(dir)s"
+msgstr "Preset cho %(name)s (%(quant)s) trong %(dir)s"
+
+msgid "The server will answer on %(url)s."
+msgstr "Máy chủ sẽ trả lời tại %(url)s."
+
+msgid "Your edits were kept. Nothing above was written to those files; run the command again with --force to replace them."
+msgstr "Các sửa đổi của bạn được giữ nguyên. Không có gì ở trên được ghi vào những tệp đó; hãy chạy lại lệnh kèm --force để thay chúng."
+
+msgid "At start time the script reads how much card memory is free, keeps %(reserve)s MiB back, and takes the largest context that still fits."
+msgstr "Lúc khởi động, kịch bản đọc xem bộ nhớ card còn trống bao nhiêu, chừa lại %(reserve)s MiB, rồi lấy ngữ cảnh lớn nhất vẫn còn vừa."
+
+msgid "This machine has nothing the script can ask for free card memory, so it will start at %(context)s tokens; the script's header says why."
+msgstr "Máy này không có gì để kịch bản hỏi về bộ nhớ card còn trống, nên nó sẽ khởi động ở %(context)s token; phần đầu của kịch bản nói rõ vì sao."
+
+msgid "Files"
+msgstr "Tệp"
+
+msgctxt "column heading"
+msgid "File"
+msgstr "Tệp"
+
+msgctxt "column heading"
+msgid "What happened"
+msgstr "Kết quả"
+
+msgid "Context tiers the script may choose"
+msgstr "Các bậc ngữ cảnh kịch bản có thể chọn"
+
+msgctxt "column heading"
+msgid "Context"
+msgstr "Ngữ cảnh"
+
+msgctxt "column heading"
+msgid "Card needs"
+msgstr "Card cần"
+
+msgctxt "column heading"
+msgid "Free card memory to reach it"
+msgstr "Bộ nhớ card trống để đạt tới"
+
+msgid "%(value)s MiB"
+msgstr "%(value)s MiB"
+
+msgid "written"
+msgstr "đã ghi"
+
+msgid "brought up to date"
+msgstr "đã cập nhật"
+
+msgid "already up to date"
+msgstr "đã là mới nhất"
+
+msgid "kept: you edited it"
+msgstr "giữ lại: bạn đã sửa"
+
+msgid "overwritten: your edits are gone"
+msgstr "đã ghi đè: sửa đổi của bạn mất rồi"
+
+msgid "The preset could not be started: %(error)s"
+msgstr "Không khởi động được preset: %(error)s"
+
+msgid "Started, but %(url)s has not answered yet. A large model can spend minutes reading its weights; try the health endpoint again in a moment, or run `llamafit launch %(model)s --stop`."
+msgstr "Đã khởi động, nhưng %(url)s chưa trả lời. Một mô hình lớn có thể mất vài phút để đọc trọng số; hãy thử lại điểm cuối health sau một lát, hoặc chạy `llamafit launch %(model)s --stop`."
+
+msgid "%(model)s was already serving on %(url)s."
+msgstr "%(model)s vốn đã phục vụ tại %(url)s."
+
+msgid "%(model)s is serving on %(url)s."
+msgstr "%(model)s đang phục vụ tại %(url)s."
+
+msgid "Stop it with `llamafit launch %(model)s --stop`."
+msgstr "Dừng nó bằng `llamafit launch %(model)s --stop`."
+
+msgid "Endpoints"
+msgstr "Điểm cuối"
+
+msgctxt "column heading"
+msgid "What"
+msgstr "Việc gì"
+
+msgctxt "column heading"
+msgid "Where"
+msgstr "Ở đâu"
+
+msgid "Web interface"
+msgstr "Giao diện web"
+
+msgid "Chat completions"
+msgstr "Chat completions"
+
+msgid "Models"
+msgstr "Mô hình"
+
+msgid "Health"
+msgstr "Sức khỏe"
+
+msgid "Ask for the model by the alias %(alias)s."
+msgstr "Hãy gọi mô hình bằng bí danh %(alias)s."
 
 msgctxt "finding level"
 msgid "OK"
@@ -225,6 +1084,48 @@ msgstr "giả định"
 msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "không rõ"
+
+# Vietnamese marks neither gender nor number on these words, so every row that
+# says "unknown" or "none detected" reads the same. Each context is still filled
+# in: leaving one empty would drop that row back to English on its own.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "không rõ"
+
+msgid "%(gbps)s GB/s (%(source)s, cached)"
+msgstr "%(gbps)s GB/s (%(source)s, đã lưu)"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+msgctxt "simulation override"
+msgid "VRAM"
+msgstr "VRAM"
+
+msgctxt "simulation override"
+msgid "system memory"
+msgstr "bộ nhớ hệ thống"
+
+msgctxt "simulation override"
+msgid "CPU cores"
+msgstr "số nhân CPU"
+
+msgid "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgid_plural "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgstr[0] "các con số này lấy từ hồ sơ phần cứng %(profile)s, có thay %(fields)s; chúng không phải của máy này"
+
+msgid "these figures come from the hardware profile %(profile)s; they are not this machine"
+msgstr "các con số này lấy từ hồ sơ phần cứng %(profile)s; chúng không phải của máy này"
+
+msgid "%(fields)s was overridden for a what-if; these figures are not what was scanned"
+msgid_plural "%(fields)s were overridden for a what-if; these figures are not what was scanned"
+msgstr[0] "%(fields)s đã bị thay để thử một giả định; các con số này không phải những gì đã dò được"
+
+msgid "these figures are not this machine"
+msgstr "các con số này không phải của máy này"
+
+msgid "SIMULATED"
+msgstr "MÔ PHỎNG"
 
 msgctxt "model capability"
 msgid "coding"
@@ -269,24 +1170,24 @@ msgstr "%(compute)s TFLOPS fp16"
 
 msgid "%(count)d core"
 msgid_plural "%(count)d cores"
-msgstr[0] ""
+msgstr[0] "%(count)d nhân"
 
 msgid "%(count)d thread"
 msgid_plural "%(count)d threads"
-msgstr[0] ""
+msgstr[0] "%(count)d luồng"
 
 msgid "%(cores)s / %(threads)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s"
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d nhân hiệu năng"
 
 msgid "%(cores)s / %(threads)s, %(performance)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s, %(performance)s"
 
 msgid "%(type)s at %(speed)d MT/s"
-msgstr ""
+msgstr "%(type)s ở %(speed)d MT/s"
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -300,23 +1201,23 @@ msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d kênh"
 
 msgid "%(kind)s, %(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s trên %(channels)s"
 
 msgid "%(kind)s, %(modules)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s"
 
 msgid "%(kind)s, %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(channels)s"
 
 msgid "%(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(modules)s trên %(channels)s"
 
 msgctxt "memory type"
 msgid "type unknown"
 msgstr "không rõ loại"
 
 msgid "%(specs)s (spec), driver %(driver)s"
-msgstr ""
+msgstr "%(specs)s (theo thông số), trình điều khiển %(driver)s"
 
 msgid "%(specs)s (spec)"
 msgstr "%(specs)s (theo thông số)"
@@ -327,6 +1228,19 @@ msgstr "trình điều khiển %(driver)s"
 msgctxt "GPU specifications"
 msgid "no specs"
 msgstr "không có thông số"
+
+msgid "%(total)s VRAM, %(free)s free (Vulkan driver)"
+msgstr "%(total)s VRAM, còn trống %(free)s (trình điều khiển Vulkan)"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, còn trống %(free)s"
+
+msgid "%(total)s VRAM, free unknown"
+msgstr "%(total)s VRAM, không rõ còn trống bao nhiêu"
+
+msgctxt "GPU VRAM"
+msgid "VRAM unknown"
+msgstr "không rõ VRAM"
 
 msgid "Host"
 msgstr "Máy"
@@ -339,23 +1253,6 @@ msgstr "%(os)s %(version)s (%(arch)s)"
 
 msgid "CPU"
 msgstr "CPU"
-
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgctxt "CPU instruction sets"
-msgid "isa unknown"
-msgstr "không rõ tập lệnh"
-
-msgid "%(gbps)s GB/s (%(source)s)"
-msgstr "%(gbps)s GB/s (%(source)s)"
-
-# Vietnamese marks neither gender nor number on these words, so every row that
-# says "unknown" or "none detected" reads the same. Each context is still filled
-# in: leaving one empty would drop that row back to English on its own.
-msgctxt "memory bandwidth"
-msgid "unknown"
-msgstr "không rõ"
 
 msgid "Memory"
 msgstr "Bộ nhớ"
@@ -370,18 +1267,14 @@ msgctxt "GPU"
 msgid "none detected"
 msgstr "không phát hiện"
 
-msgid "%(total)s VRAM, %(free)s free"
-msgstr "%(total)s VRAM, còn trống %(free)s"
-
-msgctxt "GPU VRAM"
-msgid "VRAM unknown"
-msgstr "không rõ VRAM"
-
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
-msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgid "Card memory"
+msgstr "Bộ nhớ card"
+
+msgid "%(gpus)s: nothing here could read how much of the card is free, so every budget on this machine was computed as if there were no card at all. Install the Vulkan tools, or write the size into a hardware profile."
+msgstr "%(gpus)s: ở đây không có gì đọc được card còn trống bao nhiêu, nên mọi mức phân bổ trên máy này đều được tính như thể không hề có card. Hãy cài bộ công cụ Vulkan, hoặc ghi dung lượng đó vào một hồ sơ phần cứng."
 
 msgid "Memory pool"
 msgstr "Vùng nhớ"
@@ -488,21 +1381,14 @@ msgid "Params"
 msgstr "Tham số"
 
 msgctxt "column heading"
-msgid "Context"
-msgstr "Ngữ cảnh"
-
-msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Khả năng"
 
 msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr ""
+msgstr "%(heading)s là mức nền do người biên soạn đặt, trước mọi khoản trừ vì lượng tử hóa; hãy chạy `llamafit info <model>` để xem các phép đo chuẩn có nguồn đứng sau nó."
 
 msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr ""
-
-msgid "Models"
-msgstr "Mô hình"
+msgstr "%(heading)s là số tham số tổng/hoạt động, tính theo tỉ, của một mô hình hỗn hợp chuyên gia, hoặc một con số duy nhất khi hai số bằng nhau."
 
 msgid "Vendor"
 msgstr "Nhà cung cấp"
@@ -523,10 +1409,10 @@ msgid "Parameters"
 msgstr "Tham số"
 
 msgid "%(total)s total, %(active)s active"
-msgstr ""
+msgstr "tổng %(total)s, hoạt động %(active)s"
 
 msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
-msgstr ""
+msgstr "%(tokens)s token gốc, mở rộng tới %(extended)s bằng %(method)s"
 
 msgctxt "context extension method"
 msgid "unspecified method"
@@ -570,13 +1456,13 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d lớp"
 
 msgid "%(arch)s, %(layers)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s, %(experts)s"
 
 msgid "%(arch)s, %(layers)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s"
 
 msgid "%(arch)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(experts)s"
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
@@ -605,18 +1491,1163 @@ msgctxt "bits per weight"
 msgid "unknown"
 msgstr "không rõ"
 
+msgid "On this machine"
+msgstr "Trên máy này"
+
+msgctxt "column heading"
+msgid "Quant"
+msgstr "Lượng tử"
+
+msgctxt "column heading"
+msgid "Runs"
+msgstr "Chạy"
+
+msgctxt "column heading"
+msgid "Card"
+msgstr "Card"
+
+msgctxt "column heading"
+msgid "RAM"
+msgstr "RAM"
+
+msgctxt "column heading"
+msgid "Tok/s"
+msgstr "Tok/s"
+
+msgctxt "column heading"
+msgid "Ctx"
+msgstr "Ngữ cảnh"
+
+msgctxt "column heading"
+msgid "Fit"
+msgstr "Độ vừa"
+
+msgid "%(quant)s: %(reason)s"
+msgstr "%(quant)s: %(reason)s"
+
+msgctxt "tokens per second"
+msgid "unknown"
+msgstr "không rõ"
+
+msgctxt "context length"
+msgid "none"
+msgstr "không có"
+
+msgid "Sized for %(context)s tokens, with every figure from a placement computed for this machine. `llamafit plan MODEL --quant NAME` opens one of these rows into the budget line by line, the context ladder and the command line that runs it."
+msgstr "Tính cho %(context)s token, với mọi con số lấy từ một cách bố trí tính riêng cho máy này. `llamafit plan MODEL --quant NAME` mở một trong các dòng này thành mức phân bổ từng dòng một, thang ngữ cảnh và dòng lệnh chạy nó."
+
+msgid "To reach %(context)s tokens, free %(free)s more on the graphics card: that rung needs %(needed)s, which is %(share)s of what is free and over the line where the driver starts paging."
+msgstr "Để đạt %(context)s token, hãy giải phóng thêm %(free)s trên card đồ họa: bậc đó cần %(needed)s, tức %(share)s chỗ đang trống và vượt qua ngưỡng mà trình điều khiển bắt đầu đẩy bộ nhớ."
+
+msgid "%(context)s tokens is past what this machine holds: that rung needs %(needed)s on the graphics card and there is nothing left to absorb what would not fit, so freeing the card is not the change that reaches it."
+msgstr "%(context)s token vượt quá những gì máy này giữ nổi: bậc đó cần %(needed)s trên card đồ họa mà không còn gì để hứng phần thừa, nên giải phóng card không phải là thay đổi giúp đạt tới đó."
+
+msgid "%(quant)s, the next quantisation down, could not be sized: %(reason)s"
+msgstr "%(quant)s, bản lượng tử hóa thấp hơn một bậc, không ước lượng được kích thước: %(reason)s"
+
+msgid "%(quant)s, the next quantisation down, does not fit this machine either."
+msgstr "%(quant)s, bản lượng tử hóa thấp hơn một bậc, cũng không vừa máy này."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens."
+msgstr "%(quant)s, bản lượng tử hóa thấp hơn một bậc, cũng đã được lập kế hoạch ở đây: %(mode)s, %(verdict)s, tới %(context)s token."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens at %(tps)s tokens per second."
+msgstr "%(quant)s, bản lượng tử hóa thấp hơn một bậc, cũng đã được lập kế hoạch ở đây: %(mode)s, %(verdict)s, tới %(context)s token ở %(tps)s token mỗi giây."
+
+msgid "It fits entirely on the graphics card, which this one does not."
+msgstr "Bản đó vừa trọn trên card đồ họa, còn bản này thì không."
+
+msgid "It fits better: %(theirs)s rather than %(mine)s."
+msgstr "Bản đó vừa hơn: %(theirs)s chứ không phải %(mine)s."
+
+msgid "It holds %(theirs)s tokens rather than %(mine)s."
+msgstr "Bản đó giữ %(theirs)s token chứ không phải %(mine)s."
+
+msgid "It generates %(theirs)s tokens per second rather than %(mine)s."
+msgstr "Bản đó sinh %(theirs)s token mỗi giây chứ không phải %(mine)s."
+
+msgid "It is no better here, so there is nothing to gain by dropping to it."
+msgstr "Ở đây bản đó không hơn gì, nên hạ xuống nó cũng chẳng được lợi gì."
+
+msgid "Every context this model offers already fits here; the machine is not what limits it."
+msgstr "Mọi ngữ cảnh mô hình này cung cấp đều đã vừa ở đây; cái giới hạn nó không phải là cỗ máy."
+
+msgid "What would change it"
+msgstr "Điều gì sẽ làm nó khác đi"
+
+msgctxt "profile origin"
+msgid "bundled"
+msgstr "đi kèm"
+
+msgctxt "profile origin"
+msgid "yours"
+msgstr "của bạn"
+
+msgid "%(ram)s RAM, no graphics card"
+msgstr "%(ram)s RAM, không có card đồ họa"
+
+msgid "%(ram)s RAM shared with %(gpu)s"
+msgstr "%(ram)s RAM dùng chung với %(gpu)s"
+
+msgid "%(ram)s RAM, %(gpu)s with %(vram)s"
+msgstr "%(ram)s RAM, %(gpu)s với %(vram)s"
+
+msgid "%(cores)d core / %(threads)d thread"
+msgid_plural "%(cores)d cores / %(threads)d threads"
+msgstr[0] "%(cores)d nhân / %(threads)d luồng"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "không rõ tập lệnh"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "%(total)s total, %(available)s available; bandwidth %(bandwidth)s"
+msgstr "tổng %(total)s, còn trống %(available)s; băng thông %(bandwidth)s"
+
+msgctxt "GPU specifications"
+msgid "no bandwidth or compute figure"
+msgstr "không có số băng thông hay số tính toán"
+
+msgid "%(specs)s (from the profile)"
+msgstr "%(specs)s (từ hồ sơ)"
+
+msgid "%(specs)s (from the specification table)"
+msgstr "%(specs)s (từ bảng thông số)"
+
+msgctxt "GPU VRAM"
+msgid "VRAM from the shared pool"
+msgstr "VRAM lấy từ vùng nhớ dùng chung"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "Hardware profiles"
+msgstr "Hồ sơ phần cứng"
+
+msgid "Machine"
+msgstr "Máy"
+
+msgid "a graphics card whose name contains %(text)s"
+msgstr "một card đồ họa có tên chứa %(text)s"
+
+msgid "a processor whose model contains %(text)s"
+msgstr "một bộ xử lý có kiểu chứa %(text)s"
+
+msgid "at least %(ram)s of memory"
+msgstr "ít nhất %(ram)s bộ nhớ"
+
+msgctxt "profile match rules"
+msgid "none, so this profile is never chosen for you"
+msgstr "không có, nên hồ sơ này không bao giờ được tự chọn cho bạn"
+
+msgid "Description"
+msgstr "Mô tả"
+
+msgid "From"
+msgstr "Từ"
+
+msgid "File"
+msgstr "Tệp"
+
+msgid "Matches"
+msgstr "Khớp khi"
+
+msgid "Recorded"
+msgstr "Ghi lúc"
+
+msgid "Provenance"
+msgstr "Xuất xứ"
+
+msgid "recorded from %(source)s; this build stores it but does not apply it yet"
+msgstr "ghi lại từ %(source)s; bản dựng này lưu nó nhưng chưa áp dụng"
+
+msgctxt "utilisation"
+msgid "n/a"
+msgstr "không có"
+
+msgctxt "run mode"
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "run mode"
+msgid "experts in RAM"
+msgstr "chuyên gia trong RAM"
+
+msgctxt "run mode"
+msgid "split"
+msgstr "chia đôi"
+
+msgctxt "run mode"
+msgid "CPU"
+msgstr "CPU"
+
+msgctxt "run mode"
+msgid "nowhere"
+msgstr "không đâu"
+
+msgctxt "fit verdict"
+msgid "roomy"
+msgstr "rộng rãi"
+
+msgctxt "fit verdict"
+msgid "fits"
+msgstr "vừa"
+
+msgctxt "fit verdict"
+msgid "tight"
+msgstr "sát"
+
+msgctxt "fit verdict"
+msgid "pages"
+msgstr "tràn"
+
+msgctxt "fit verdict"
+msgid "no room"
+msgstr "không đủ"
+
+msgid "Roomy: there is room for a longer context or a second model."
+msgstr "Rộng rãi: còn chỗ cho ngữ cảnh dài hơn hoặc cho một mô hình thứ hai."
+
+msgid "Fits: the intended configuration runs as planned."
+msgstr "Vừa: cấu hình đã định chạy đúng như kế hoạch."
+
+msgid "Tight: it runs, but a browser or a second process can push it over."
+msgstr "Sát: nó chạy được, nhưng một trình duyệt hay một tiến trình thứ hai có thể đẩy nó quá mức."
+
+msgid "Pages: this needs more of the graphics card than is free. The driver will not refuse it — it moves the overflow to system memory, the server starts, the log looks healthy, and generation runs at a fraction of its speed with nothing saying why."
+msgstr "Tràn: cái này cần nhiều bộ nhớ card đồ họa hơn chỗ đang trống. Trình điều khiển sẽ không từ chối — nó đẩy phần thừa sang bộ nhớ hệ thống, máy chủ vẫn khởi động, nhật ký trông vẫn lành mạnh, và tốc độ sinh chỉ còn một phần nhỏ mà không có gì nói vì sao."
+
+msgid "No room: more memory than this machine has, with nothing to page to."
+msgstr "Không đủ: cần nhiều bộ nhớ hơn máy này có, mà cũng không có chỗ nào để đẩy sang."
+
+msgctxt "confidence"
+msgid "measured"
+msgstr "đo được"
+
+msgctxt "confidence"
+msgid "calibrated"
+msgstr "hiệu chuẩn"
+
+msgctxt "confidence"
+msgid "estimated"
+msgstr "ước tính"
+
+msgctxt "confidence"
+msgid "no estimate"
+msgstr "không ước tính"
+
+msgid "Speeds are benchmarks taken on this machine, not predictions."
+msgstr "Tốc độ là các phép đo lấy trên chính máy này, không phải dự đoán."
+
+msgid "Speeds are section 10's formula corrected by benchmarks taken on this machine."
+msgstr "Tốc độ là công thức ở mục 10 đã được hiệu chỉnh bằng các phép đo lấy trên chính máy này."
+
+msgid "Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement."
+msgstr "Tốc độ là công thức ở mục 10 với các hằng số mặc định. Chưa có gì được đo trên máy này, nên không con số nào ở đây là một phép đo."
+
+msgid "No speed could be estimated."
+msgstr "Không ước tính được tốc độ nào."
+
+msgctxt "memory pool"
+msgid "card"
+msgstr "card"
+
+msgctxt "memory pool"
+msgid "system"
+msgstr "hệ thống"
+
+msgctxt "memory pool"
+msgid "disk"
+msgstr "đĩa"
+
+msgctxt "budget component"
+msgid "dense weights"
+msgstr "trọng số dày đặc"
+
+msgctxt "budget component"
+msgid "shared experts"
+msgstr "chuyên gia dùng chung"
+
+msgctxt "budget component"
+msgid "routed experts"
+msgstr "chuyên gia được định tuyến"
+
+msgctxt "budget component"
+msgid "token embedding"
+msgstr "embedding token"
+
+msgctxt "budget component"
+msgid "output head"
+msgstr "lớp đầu ra"
+
+msgctxt "budget component"
+msgid "other weights"
+msgstr "trọng số khác"
+
+msgctxt "budget component"
+msgid "streamed tables"
+msgstr "bảng đọc thẳng từ đĩa"
+
+msgctxt "budget component"
+msgid "KV cache"
+msgstr "bộ đệm KV"
+
+msgctxt "budget component"
+msgid "KV cache, undeclared"
+msgstr "bộ đệm KV, không khai báo"
+
+msgctxt "budget component"
+msgid "recurrent state"
+msgstr "trạng thái hồi quy"
+
+msgctxt "budget component"
+msgid "compute buffer"
+msgstr "bộ đệm tính toán"
+
+msgctxt "budget component"
+msgid "output buffer"
+msgstr "bộ đệm đầu ra"
+
+msgctxt "budget component"
+msgid "vision projector"
+msgstr "projector thị giác"
+
+msgctxt "budget component"
+msgid "vision compute"
+msgstr "tính toán thị giác"
+
+msgctxt "budget component"
+msgid "backend overhead"
+msgstr "phụ trội của backend"
+
+msgctxt "budget component"
+msgid "process overhead"
+msgstr "phụ trội của tiến trình"
+
+msgctxt "budget line source"
+msgid "file"
+msgstr "tệp"
+
+msgctxt "budget line source"
+msgid "formula"
+msgstr "công thức"
+
+msgctxt "column heading"
+msgid "Component"
+msgstr "Thành phần"
+
+msgctxt "column heading"
+msgid "From"
+msgstr "Từ"
+
+msgid "Card: %(required)s of %(available)s free, %(share)s used."
+msgstr "Card: %(required)s trên %(available)s đang trống, dùng hết %(share)s."
+
+msgid "System memory: %(required)s of %(available)s free, %(share)s used."
+msgstr "Bộ nhớ hệ thống: %(required)s trên %(available)s đang trống, dùng hết %(share)s."
+
+msgid "%(component)s: %(note)s"
+msgstr "%(component)s: %(note)s"
+
+msgid "Context tiers"
+msgstr "Các bậc ngữ cảnh"
+
+msgctxt "column heading"
+msgid "On this machine"
+msgstr "Trên máy này"
+
+msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
+msgstr "Một kịch bản khởi chạy so bộ nhớ trống nó thấy với cột card rồi lấy bậc lớn nhất còn vừa (xem docs/cli.md)."
+
+msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
+msgstr "%(gen)s token mỗi giây được sinh ra và %(prompt)s được đọc vào, ở ngữ cảnh %(context)s token (%(confidence)s)."
+
+msgctxt "column heading"
+msgid "A token's time"
+msgstr "Thời gian của một token"
+
+msgctxt "token time"
+msgid "reading the card"
+msgstr "đọc từ card"
+
+msgctxt "token time"
+msgid "reading system memory"
+msgstr "đọc từ bộ nhớ hệ thống"
+
+msgctxt "token time"
+msgid "everything else"
+msgstr "mọi thứ còn lại"
+
+msgctxt "column heading"
+msgid "A prompt token's time"
+msgstr "Thời gian của một token prompt"
+
+msgctxt "prompt token time"
+msgid "doing the arithmetic"
+msgstr "làm phép tính"
+
+msgctxt "prompt token time"
+msgid "streaming the experts across the link"
+msgstr "truyền các chuyên gia qua đường liên kết"
+
+msgctxt "prompt token time"
+msgid "reading the experts from system memory"
+msgstr "đọc các chuyên gia từ bộ nhớ hệ thống"
+
+msgctxt "column heading"
+msgid "Seconds"
+msgstr "Giây"
+
+msgctxt "column heading"
+msgid "Share"
+msgstr "Phần"
+
+msgid "Measured on %(date)s."
+msgstr "Đo ngày %(date)s."
+
+msgid "Recorded elsewhere"
+msgstr "Ghi nhận ở nơi khác"
+
+msgctxt "column heading"
+msgid "Run"
+msgstr "Lần chạy"
+
+msgctxt "column heading"
+msgid "Date"
+msgstr "Ngày"
+
+msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
+msgstr "Đây là các lần chạy của chính người biên soạn trên máy của họ, không phải phép đo máy này, nên không có gì ở trên được dán nhãn là đo được. Hãy so chúng với ước tính; `llamafit bench` sẽ đo máy này ở giai đoạn 3."
+
+msgid "%(profile)s: %(flags)s"
+msgstr "%(profile)s: %(flags)s"
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
+msgstr "%(baseline)s từ người biên soạn, trừ %(penalty)s cho bản lượng tử hóa này, cộng %(bonus)s vì %(use_case)s đúng là việc mà nó được dựng ra để làm."
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
+msgstr "%(baseline)s từ người biên soạn, trừ %(penalty)s cho bản lượng tử hóa này; nó có nêu %(use_case)s nhưng không được dựng ra cho việc đó."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
+msgstr "%(gen)s token mỗi giây so với mức %(target)s mà trường hợp sử dụng này đòi hỏi, trừ %(penalty)s vì nó đọc prompt ở %(prompt)s."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
+msgstr "%(gen)s token mỗi giây so với mức %(target)s mà trường hợp sử dụng này đòi hỏi."
+
+msgid "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool is %(share)s full. The score wants at least %(low)s of the memory taken and no more than %(high)s of any one pool."
+msgstr "Trọng số của nó chiếm %(weights)s trong %(memory)s bộ nhớ của máy này và vùng nhớ chật nhất đã đầy %(share)s. Điểm số muốn ít nhất %(low)s bộ nhớ được dùng và không vùng nhớ nào quá %(high)s."
+
+msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
+msgstr "Giữ %(fit)s token trong số %(requested)s mà yêu cầu này được chấm điểm theo."
+
+msgid "Score %(total)s"
+msgstr "Điểm %(total)s"
+
+msgctxt "column heading"
+msgid "Part"
+msgstr "Phần"
+
+msgctxt "column heading"
+msgid "Weight"
+msgstr "Trọng số"
+
+msgctxt "column heading"
+msgid "Adds"
+msgstr "Cộng"
+
+msgctxt "score part"
+msgid "quality"
+msgstr "chất lượng"
+
+msgctxt "score part"
+msgid "speed"
+msgstr "tốc độ"
+
+msgctxt "score part"
+msgid "fit"
+msgstr "độ vừa"
+
+msgctxt "score part"
+msgid "context"
+msgstr "ngữ cảnh"
+
+msgctxt "board sort"
+msgid "score"
+msgstr "điểm"
+
+msgctxt "board sort"
+msgid "speed"
+msgstr "tốc độ"
+
+msgctxt "board sort"
+msgid "quality"
+msgstr "chất lượng"
+
+msgctxt "board sort"
+msgid "context"
+msgstr "ngữ cảnh"
+
+msgctxt "board sort"
+msgid "download size"
+msgstr "dung lượng tải về"
+
+msgctxt "board sort"
+msgid "prompt speed"
+msgstr "tốc độ prompt"
+
+msgctxt "board sort"
+msgid "card memory"
+msgstr "bộ nhớ card"
+
+msgctxt "board sort"
+msgid "system memory"
+msgstr "bộ nhớ hệ thống"
+
+msgctxt "board sort"
+msgid "fit"
+msgstr "độ vừa"
+
+msgctxt "board sort"
+msgid "model id"
+msgstr "id mô hình"
+
+msgctxt "board sort"
+msgid "quantisation"
+msgstr "bản lượng tử hóa"
+
+msgctxt "column heading"
+msgid "#"
+msgstr "#"
+
+msgctxt "column heading"
+msgid "Model"
+msgstr "Mô hình"
+
+msgctxt "column heading"
+msgid "Size"
+msgstr "Cỡ"
+
+msgctxt "column heading"
+msgid "Have"
+msgstr "Có"
+
+msgctxt "column heading"
+msgid "Score"
+msgstr "Điểm"
+
+msgctxt "column heading"
+msgid "Qual"
+msgstr "Chất"
+
+msgctxt "column heading"
+msgid "Prompt tok/s"
+msgstr "Prompt tok/s"
+
+msgctxt "column heading"
+msgid "How"
+msgstr "Cách"
+
+msgctxt "model file on this machine"
+msgid "yes"
+msgstr "có"
+
+msgctxt "model file on this machine"
+msgid "no"
+msgstr "không"
+
+msgid "no placement of it fits this machine at any context"
+msgstr "không có cách bố trí nào của nó vừa máy này ở bất kỳ ngữ cảnh nào"
+
+msgctxt "exclusion tag"
+msgid "no room"
+msgstr "không đủ chỗ"
+
+msgctxt "exclusion tag"
+msgid "no facts"
+msgstr "thiếu dữ kiện"
+
+msgctxt "exclusion tag"
+msgid "not ranked"
+msgstr "chưa xếp hạng"
+
+msgctxt "board cell with no figure"
+msgid "–"
+msgstr "–"
+
+msgid "%(term)s is not a filter; the terms are %(terms)s, and anything else is text to look for."
+msgstr "%(term)s không phải là một bộ lọc; các từ khóa là %(terms)s, mọi thứ khác là chuỗi cần tìm."
+
+msgid "fit>= takes one of %(values)s"
+msgstr "fit>= nhận một trong %(values)s"
+
+msgid "runs= takes one of %(values)s"
+msgstr "runs= nhận một trong %(values)s"
+
+msgid "%(term)s needs a number"
+msgstr "%(term)s cần một con số"
+
+msgid "%(term)s needs a size such as 8G, 7.5GiB or 512M"
+msgstr "%(term)s cần một kích thước như 8G, 7.5GiB hoặc 512M"
+
+msgctxt "board filter"
+msgid "every candidate"
+msgstr "mọi ứng viên"
+
+msgctxt "board filter"
+msgid "the ones with room to spare"
+msgstr "những bản còn dư chỗ"
+
+msgctxt "board filter"
+msgid "the ones that fit"
+msgstr "những bản vừa"
+
+msgctxt "board filter"
+msgid "the ones that run"
+msgstr "những bản chạy được"
+
+msgid "matching %(text)s"
+msgstr "khớp %(text)s"
+
+msgid "running as %(mode)s"
+msgstr "chạy theo kiểu %(mode)s"
+
+msgid "at least %(tps)s tokens per second"
+msgstr "ít nhất %(tps)s token mỗi giây"
+
+msgid "no more than %(size)s to download"
+msgstr "tải về không quá %(size)s"
+
+msgid "no more than %(size)s on the card"
+msgstr "không quá %(size)s trên card"
+
+msgid "no more than %(size)s of system memory"
+msgstr "không quá %(size)s bộ nhớ hệ thống"
+
+msgid "holding at least %(context)s tokens"
+msgstr "giữ được ít nhất %(context)s token"
+
+msgid "a quality of at least %(quality)s"
+msgstr "chất lượng ít nhất %(quality)s"
+
+msgid "%(shown)d of %(total)d shown"
+msgstr "hiện %(shown)d trên %(total)d"
+
+msgid "%(sort)s in reverse"
+msgstr "%(sort)s theo chiều ngược"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s already on this machine."
+msgstr "%(counted)s, theo %(sort)s, hiện %(filter)s đã có sẵn trên máy này."
+
+msgctxt "board filter"
+msgid "already on this machine"
+msgstr "đã có sẵn trên máy này"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s."
+msgstr "%(counted)s, theo %(sort)s, hiện %(filter)s."
+
+msgid "Nothing was ranked. Every candidate is listed below with the reason; widen the request or free some memory."
+msgstr "Không có gì được xếp hạng. Mọi ứng viên đều được liệt kê bên dưới kèm lý do; hãy nới rộng yêu cầu hoặc giải phóng bớt bộ nhớ."
+
+msgid "Recommended"
+msgstr "Khuyến nghị"
+
+msgid "--min-tps 0: nobody is waiting on these tokens, so nothing was excluded for generating more slowly than a person reads."
+msgstr "--min-tps 0: không ai phải chờ các token này, nên không có gì bị loại vì sinh chậm hơn tốc độ đọc của một người."
+
+msgid "--min-tps %(tps)s: this board wanted at least that many tokens per second, and anything slower is excluded below rather than ranked here."
+msgstr "--min-tps %(tps)s: bảng này đòi ít nhất bấy nhiêu token mỗi giây, nên thứ gì chậm hơn đều bị loại ở bên dưới chứ không được xếp hạng ở đây."
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; --limit sets how many, and the rest are neither worse-behaved nor hidden, only further down."
+msgstr "Đang hiện %(shown)s bản tốt nhất trong %(total)s bản đạt yêu cầu; --limit quyết định bao nhiêu, và phần còn lại không tệ hơn cũng không bị giấu, chỉ là nằm thấp hơn."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every speed above is a CPU-only speed. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s có trên máy này mà không gì đọc được nó còn trống bao nhiêu, nên mọi tốc độ ở trên đều là tốc độ chỉ dùng CPU. `llamafit doctor` cho biết cách sửa."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
+msgstr "Tốc độ tính ở ngữ cảnh %(working)s token để mọi dòng so sánh ngang nhau; cột ngữ cảnh là mức lớn nhất mỗi dòng giữ được. Kích thước và điểm tính cho %(use_case)s ở %(requested)s token."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
+msgstr "Tốc độ tính ở ngữ cảnh %(working)s token để mọi dòng so sánh ngang nhau; cột ngữ cảnh là mức lớn nhất mỗi dòng giữ được. Kích thước tính cho %(planned)s token và điểm tính cho %(use_case)s so với %(requested)s."
+
+msgid "Weights: %(weights)s."
+msgstr "Trọng số: %(weights)s."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free, no card."
+msgstr "Tính với %(ram_free)s trên %(ram_total)s bộ nhớ hệ thống còn trống, không có card."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free and %(vram_free)s of %(vram_total)s free on the %(gpu)s."
+msgstr "Tính với %(ram_free)s trên %(ram_total)s bộ nhớ hệ thống còn trống và %(vram_free)s trên %(vram_total)s còn trống trên %(gpu)s."
+
+msgid "Every speed above is derived from %(bandwidth)s of memory bandwidth."
+msgstr "Mọi tốc độ ở trên đều suy ra từ băng thông bộ nhớ %(bandwidth)s."
+
+msgid "That bandwidth was kept from an earlier run on this machine; `llamafit system --refresh-bandwidth` times it again."
+msgstr "Băng thông đó được giữ lại từ một lần chạy trước trên máy này; `llamafit system --refresh-bandwidth` sẽ đo lại."
+
+msgid "generates fewer than the %(floor)s tokens per second this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "sinh ít hơn %(floor)s token mỗi giây mà yêu cầu này đòi hỏi; hãy hạ --min-tps hoặc chọn mô hình hay bản lượng tử hóa nhỏ hơn"
+
+msgid "generates fewer than the %(floor)s tokens per second a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "sinh ít hơn %(floor)s token mỗi giây, tức tốc độ đọc của một người: trên máy này nó là công cụ chạy nền chứ không phải thứ để ngồi trước mà dùng; một mô hình hay bản lượng tử hóa nhỏ hơn sẽ theo kịp"
+
+msgid "%(tps)s tok/s"
+msgstr "%(tps)s tok/s"
+
+msgctxt "exclusion tag"
+msgid "too slow"
+msgstr "quá chậm"
+
+msgctxt "exclusion tag"
+msgid "too big"
+msgstr "quá lớn"
+
+msgid "larger to download than the %(limit)s this request allows"
+msgstr "phải tải về lớn hơn mức %(limit)s mà yêu cầu này cho phép"
+
+msgctxt "exclusion tag"
+msgid "unknown quant"
+msgstr "lượng tử lạ"
+
+msgid "a quantisation whose cost in quality is not known, so it cannot be scored"
+msgstr "một bản lượng tử hóa chưa rõ mất bao nhiêu chất lượng, nên không chấm điểm được"
+
+msgid "needs more memory than this machine has, even at its smallest context"
+msgstr "cần nhiều bộ nhớ hơn máy này có, ngay cả ở ngữ cảnh nhỏ nhất của nó"
+
+msgctxt "exclusion tag"
+msgid "unsupported"
+msgstr "không hỗ trợ"
+
+msgid "no run mode supports this model on this machine"
+msgstr "không chế độ chạy nào hỗ trợ mô hình này trên máy này"
+
+msgctxt "exclusion tag"
+msgid "short context"
+msgstr "ngữ cảnh ngắn"
+
+msgid "holds fewer than the %(minimum)s tokens asked for; lower the minimum context or free memory to see it ranked"
+msgstr "giữ được ít hơn %(minimum)s token đã hỏi; hãy hạ ngữ cảnh tối thiểu hoặc giải phóng bộ nhớ để thấy nó được xếp hạng"
+
+msgctxt "exclusion tag"
+msgid "no estimate"
+msgstr "không ước tính"
+
+msgid "no speed estimate, so it cannot be ranked against models that have one"
+msgstr "không có ước tính tốc độ, nên không thể xếp hạng cùng những mô hình có ước tính"
+
+msgctxt "exclusion tag"
+msgid "no %(capability)s"
+msgstr "không có %(capability)s"
+
+msgid "no %(capability)s capability; drop it from the request, or ask for a use case that does not need it"
+msgstr "không có khả năng %(capability)s; hãy bỏ nó khỏi yêu cầu, hoặc hỏi một trường hợp sử dụng không cần tới nó"
+
+msgid "Not ranked"
+msgstr "Không xếp hạng"
+
+msgid "Not placed"
+msgstr "Không bố trí được"
+
+msgid "%(tag)s (%(count)s):"
+msgstr "%(tag)s (%(count)s):"
+
+msgid "%(model)s %(quant)s: %(reason)s"
+msgstr "%(model)s %(quant)s: %(reason)s"
+
+msgid "%(tag)s (%(count)s): %(sentence)s."
+msgstr "%(tag)s (%(count)s): %(sentence)s."
+
+msgid "%(model)s %(quant)s (%(figure)s)"
+msgstr "%(model)s %(quant)s (%(figure)s)"
+
+msgid "%(name)s %(quant)s (%(tag)s)"
+msgstr "%(name)s %(quant)s (%(tag)s)"
+
+msgid "%(rank)s. %(name)s %(quant)s"
+msgstr "%(rank)s. %(name)s %(quant)s"
+
+msgid "Nothing fits this machine at that threshold. Try --min-fit tight, or drop --perfect."
+msgstr "Không có gì vừa máy này ở ngưỡng đó. Hãy thử --min-fit tight, hoặc bỏ --perfect."
+
+msgid "Fit on the simulated machine"
+msgstr "Độ vừa trên máy mô phỏng"
+
+msgid "Fit on this machine"
+msgstr "Độ vừa trên máy này"
+
+msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
+msgstr "Tính cho %(context)s token. Cột ngữ cảnh là mức lớn nhất mỗi mô hình giữ được ở chế độ đang hiện."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every row was sized as if there were no card. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s có trên máy này mà không gì đọc được nó còn trống bao nhiêu, nên mọi dòng đều được tính như thể không có card. `llamafit doctor` cho biết cách sửa."
+
+msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
+msgstr "%(mode)s ở %(context)s token, lô nhỏ %(ub)s, bộ đệm %(kv)s, %(threads)s luồng."
+
+msgid "This reaches the %(target)s tokens per second asked for."
+msgstr "Cấu hình này đạt %(target)s token mỗi giây như đã hỏi."
+
+msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
+msgstr "Ở đây nó không đạt %(target)s token mỗi giây, nhưng ngữ cảnh %(context)s token thì đạt: hãy truyền --context %(tokens)s."
+
+msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
+msgstr "Không cấu hình nào của mô hình và bản lượng tử hóa này trên máy này đạt %(target)s token mỗi giây; cấu hình nhanh nhất đã thử là %(best)s. Một mô hình nhỏ hơn hoặc một bản lượng tử hóa nhỏ hơn mới là thay đổi giúp đạt tới đó."
+
+msgid "%(name)s %(quant)s"
+msgstr "%(name)s %(quant)s"
+
+msgid "Memory budget"
+msgstr "Phân bổ bộ nhớ"
+
+msgid "The %(context)s tokens asked for would have cost"
+msgstr "%(context)s token đã hỏi lẽ ra tốn"
+
+msgid "Command line"
+msgstr "Dòng lệnh"
+
+msgid "Model file: %(path)s."
+msgstr "Tệp mô hình: %(path)s."
+
+msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
+msgstr "Tệp mô hình: %(path)s, hiện chưa có trên máy này; đó là chỗ một lần tải về sẽ đặt nó. Cần tải %(size)s."
+
+msgid "%(shown)d of %(total)d candidate shown."
+msgid_plural "%(shown)d of %(total)d candidates shown."
+msgstr[0] "Hiện %(shown)d trên %(total)d ứng viên."
+
+msgid "Release"
+msgstr "Bản phát hành"
+
+msgid "%(tag)s (build %(build)s)"
+msgstr "%(tag)s (bản dựng %(build)s)"
+
+msgid "Backend"
+msgstr "Backend"
+
+msgid "Archive"
+msgstr "Tệp nén"
+
+msgid "Also"
+msgstr "Kèm theo"
+
+msgid "Download"
+msgstr "Tải về"
+
+msgid "%(size)s (%(done)s already on disk)"
+msgstr "%(size)s (%(done)s đã có trên đĩa)"
+
+msgid "Checksum"
+msgstr "Tổng kiểm tra"
+
+msgid "published, checked before anything is unpacked"
+msgstr "đã công bố, kiểm trước khi giải nén bất cứ thứ gì"
+
+msgid "none published"
+msgstr "không công bố"
+
+msgid "Install into"
+msgstr "Cài vào"
+
+msgid "Directory"
+msgstr "Thư mục"
+
+msgid "Free space"
+msgstr "Chỗ trống"
+
+msgid "Free space (cache)"
+msgstr "Chỗ trống (bộ nhớ đệm)"
+
+msgid "%(free)s on %(path)s, %(needed)s needed"
+msgstr "%(free)s trên %(path)s, cần %(needed)s"
+
+msgid "will be created"
+msgstr "sẽ được tạo"
+
+msgid "exists and is empty"
+msgstr "đã có và đang rỗng"
+
+msgid "holds %(tag)s, installed by LlamaFit; it will be replaced"
+msgstr "đang chứa %(tag)s do LlamaFit cài; nó sẽ được thay"
+
+msgid "installed by LlamaFit; it will be replaced"
+msgstr "do LlamaFit cài; nó sẽ được thay"
+
+msgid "was not installed by LlamaFit"
+msgstr "không do LlamaFit cài"
+
+msgid "Installed llama.cpp %(tag)s into %(path)s."
+msgstr "Đã cài llama.cpp %(tag)s vào %(path)s."
+
+msgid "Replaced %(tag)s."
+msgstr "Đã thay %(tag)s."
+
+msgid "Backends found in it: %(backends)s"
+msgstr "Các backend tìm thấy trong đó: %(backends)s"
+
+msgid "none"
+msgstr "không có"
+
+msgid "Check it with `llamafit doctor`."
+msgstr "Hãy kiểm tra bằng `llamafit doctor`."
+
+msgid "already here"
+msgstr "đã có ở đây"
+
+msgid "to fetch"
+msgstr "cần tải"
+
+msgid "About to download"
+msgstr "Sắp tải về"
+
+msgid "Role"
+msgstr "Vai trò"
+
+msgid "Status"
+msgstr "Trạng thái"
+
+msgid "%(name)s %(quant)s from %(repo)s"
+msgstr "%(name)s %(quant)s từ %(repo)s"
+
+msgid "%(count)d file, %(total)s in all, %(needed)s still to fetch."
+msgid_plural "%(count)d files, %(total)s in all, %(needed)s still to fetch."
+msgstr[0] "%(count)d tệp, tổng %(total)s, còn %(needed)s phải tải."
+
+msgid "Into %(path)s, which has %(free)s free; %(after)s would be left."
+msgstr "Vào %(path)s, nơi còn trống %(free)s; sau đó sẽ còn lại %(after)s."
+
+msgid "The catalog holds no checksum for %(files)s."
+msgid_plural "The catalog holds no checksums for %(files)s."
+msgstr[0] "Danh mục không có tổng kiểm tra cho %(files)s."
+
+msgid "%(model)s %(quant)s is already here; nothing to do."
+msgstr "%(model)s %(quant)s đã có ở đây rồi; không có gì để làm."
+
+msgid "Stopped. What arrived is kept; run `llamafit install model %(model)s` again to carry on from there."
+msgstr "Đã dừng. Những gì đã tải về vẫn được giữ; hãy chạy lại `llamafit install model %(model)s` để tiếp tục từ đó."
+
+msgid "%(count)d file, %(size)s, checked against the catalog."
+msgid_plural "%(count)d files, %(size)s, checked against the catalog."
+msgstr[0] "%(count)d tệp, %(size)s, đã đối chiếu với danh mục."
+
+msgid "In %(path)s. Run `llamafit plan %(model)s` for the command line that runs it."
+msgstr "Ở trong %(path)s. Hãy chạy `llamafit plan %(model)s` để lấy dòng lệnh chạy nó."
+
+msgid "Downloads"
+msgstr "Các lần tải về"
+
+msgid "When"
+msgstr "Lúc nào"
+
+msgid "Model"
+msgstr "Mô hình"
+
+msgid "Quant"
+msgstr "Lượng tử"
+
+msgid "Outcome"
+msgstr "Kết cục"
+
+msgid "finished"
+msgstr "xong"
+
+msgid "stopped"
+msgstr "đã dừng"
+
+msgid "Bind to this address instead of 127.0.0.1. Anything but loopback puts the dashboard on your network, where there is no password and no login; it prints what that exposes before it starts."
+msgstr "Gắn vào địa chỉ này thay vì 127.0.0.1. Bất cứ địa chỉ nào ngoài loopback đều đưa bảng điều khiển ra mạng của bạn, nơi không có mật khẩu và không có đăng nhập; nó in ra những gì bị phơi bày trước khi khởi động."
+
+msgid "Listen on this port."
+msgstr "Lắng nghe trên cổng này."
+
+msgid ""
+"Open the dashboard in a browser: the board, the machine and the plans.\n"
+"\n"
+"It serves the same numbers `--json` prints, from the same code, on this machine only. Nothing is fetched from the internet to draw the page."
+msgstr ""
+"Mở bảng điều khiển trong trình duyệt: bảng xếp hạng, cỗ máy và các kế hoạch.\n"
+"\n"
+"Nó phục vụ đúng những con số mà --json in ra, từ cùng một mã nguồn, chỉ trên máy này. Không có gì được lấy từ internet để vẽ trang này."
+
+msgid "Open the page in your browser."
+msgstr "Mở trang trong trình duyệt của bạn."
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores, then open the Simulate panel on the page: it substitutes a machine for as long as you want it, and marks every answer it produces."
+msgstr "Hãy bỏ --profile, --memory, --ram và --cpu-cores, rồi mở bảng Mô phỏng trên trang: nó thay thế một cỗ máy trong bao lâu tùy bạn, và đánh dấu mọi câu trả lời mà nó tạo ra."
+
+msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
+msgstr "LlamaFit đang ở %(url)s. Nhấn Ctrl+C để dừng."
+
 msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
 msgstr "Hiện những gì máy này có: CPU, bộ nhớ, GPU, đĩa và llama.cpp."
 
 msgid "Skip the RAM bandwidth measurement."
 msgstr "Bỏ qua bước đo băng thông RAM."
 
+msgid "Measure RAM bandwidth again instead of reading back the figure kept for this machine, and keep the new one."
+msgstr "Đo lại băng thông RAM thay vì đọc lại con số đã lưu cho máy này, và giữ con số mới."
+
+msgid "%(url)s answered a range request with the whole file."
+msgstr "%(url)s đáp lại một yêu cầu theo dải bằng cả tệp."
+
+msgid "%(url)s is rate-limiting this download (HTTP %(status)d)."
+msgstr "%(url)s đang giới hạn tốc độ của lần tải này (HTTP %(status)d)."
+
+msgid "Check your network connection and run the command again to resume."
+msgstr "Hãy kiểm tra kết nối mạng rồi chạy lại lệnh để tiếp tục."
+
+msgid "%(file)s needs authorisation (HTTP %(status)d)."
+msgstr "%(file)s cần quyền truy cập (HTTP %(status)d)."
+
+msgid "This repository is gated. Accept its terms on Hugging Face and set HF_TOKEN to a token that can read it."
+msgstr "Kho này bị hạn chế. Hãy chấp nhận điều khoản của nó trên Hugging Face và đặt HF_TOKEN thành một token đọc được nó."
+
+msgid "%(file)s is not at %(url)s any more (HTTP 404)."
+msgstr "%(file)s không còn ở %(url)s nữa (HTTP 404)."
+
+msgid "Run `llamafit catalog refresh` to pick up the repository's current files."
+msgstr "Hãy chạy `llamafit catalog refresh` để lấy danh sách tệp hiện thời của kho."
+
+msgid "%(url)s returned HTTP %(status)d."
+msgstr "%(url)s trả về HTTP %(status)d."
+
+msgid "Confirm the URL points at a downloadable file."
+msgstr "Hãy xác nhận URL trỏ tới một tệp tải về được."
+
+msgid "%(url)s did not say how big %(file)s is."
+msgstr "%(url)s không cho biết %(file)s lớn bao nhiêu."
+
+msgid "%(file)s is %(actual)s on the server but the catalog says %(expected)s; the repository has been re-uploaded since the catalog was refreshed."
+msgstr "%(file)s trên máy chủ là %(actual)s nhưng danh mục ghi %(expected)s; kho đã được tải lên lại kể từ lần làm mới danh mục."
+
+msgid "Run `llamafit catalog refresh` and try again."
+msgstr "Hãy chạy `llamafit catalog refresh` rồi thử lại."
+
+msgid "%(file)s: the server sent %(actual)d bytes of a %(expected)d byte range."
+msgstr "%(file)s: máy chủ gửi %(actual)d byte của một dải %(expected)d byte."
+
+msgid "Run the command again; the parts that did arrive are kept."
+msgstr "Hãy chạy lại lệnh; những phần đã đến nơi vẫn được giữ."
+
+msgid "Stopped."
+msgstr "Đã dừng."
+
+msgid "%(file)s: the server asked for fewer connections; using %(count)d."
+msgstr "%(file)s: máy chủ đòi ít kết nối hơn; đang dùng %(count)d."
+
+msgid "%(file)s: this server will not serve byte ranges; fetching it in one stream."
+msgstr "%(file)s: máy chủ này không phục vụ theo dải byte; đang tải nó trong một luồng."
+
+msgid "%(file)s does not match its checksum; fetching it again."
+msgstr "%(file)s không khớp tổng kiểm tra của nó; đang tải lại."
+
+msgid "Check that the download directory is writable."
+msgstr "Hãy kiểm tra xem thư mục tải về có ghi được không."
+
+msgid "%(needed)s is needed for this model but %(path)s has only %(free)s free, %(short)s short of what is wanted with %(headroom)s left spare."
+msgstr "Mô hình này cần %(needed)s nhưng %(path)s chỉ còn trống %(free)s, thiếu %(short)s so với mức mong muốn có chừa %(headroom)s dự phòng."
+
+msgid "Free some space, or choose another directory with --dir, or a smaller quantisation with --quant."
+msgstr "Hãy giải phóng dung lượng, hoặc chọn thư mục khác bằng --dir, hoặc một bản lượng tử hóa nhỏ hơn bằng --quant."
+
+msgid "could not measure the free space on %(path)s: %(error)s"
+msgstr "không đo được chỗ trống trên %(path)s: %(error)s"
+
+msgid "Check that the download directory's volume is available."
+msgstr "Hãy kiểm tra xem ổ chứa thư mục tải về có sẵn sàng không."
+
+msgid "%(model)s has no downloadable source in the catalog."
+msgstr "%(model)s không có nguồn tải về nào trong danh mục."
+
+msgid "Only Hugging Face sources can be installed; this entry has none."
+msgstr "Chỉ các nguồn Hugging Face mới cài được; mục này không có nguồn nào."
+
+msgid "the catalog has no file list for %(model)s %(quant)s."
+msgstr "danh mục không có danh sách tệp cho %(model)s %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the file names."
+msgstr "Hãy chạy `llamafit catalog refresh` để điền tên tệp."
+
+msgid "%(model)s publishes no quantisations."
+msgstr "%(model)s không công bố bản lượng tử hóa nào."
+
+msgid "%(model)s does not publish a %(quant)s quantisation."
+msgstr "%(model)s không công bố bản lượng tử hóa %(quant)s."
+
+msgid "It publishes: %(quants)s"
+msgstr "Nó công bố: %(quants)s"
+
+msgid "the catalog does not record how big %(quant)s is."
+msgstr "danh mục không ghi %(quant)s lớn bao nhiêu."
+
+msgid "Run `llamafit catalog refresh` to fill in the sizes."
+msgstr "Hãy chạy `llamafit catalog refresh` để điền kích thước."
+
+msgid "the catalog holds no checksum for %(files)s."
+msgid_plural "the catalog holds no checksums for %(files)s."
+msgstr[0] "danh mục không có tổng kiểm tra cho %(files)s."
+
+msgid "Run `llamafit catalog refresh` to fetch them, or pass --allow-unverified to download anyway and check the files yourself."
+msgstr "Hãy chạy `llamafit catalog refresh` để lấy chúng, hoặc truyền --allow-unverified để cứ tải về rồi tự kiểm tra các tệp."
+
+msgid "%(done)s of %(total)s"
+msgstr "%(done)s trên %(total)s"
+
+msgid "%(rate)s/s"
+msgstr "%(rate)s/s"
+
+msgid "Fetching %(file)s (%(size)s)"
+msgstr "Đang tải %(file)s (%(size)s)"
+
+msgid "Checking %(file)s against its checksum"
+msgstr "Đang đối chiếu %(file)s với tổng kiểm tra của nó"
+
+msgid "Done: %(file)s"
+msgstr "Xong: %(file)s"
+
+msgid "could not create %(path)s: %(error)s"
+msgstr "không tạo được %(path)s: %(error)s"
+
+msgid "Check that the download directory is writable and has room."
+msgstr "Hãy kiểm tra xem thư mục tải về có ghi được và còn chỗ không."
+
+msgid "could not move %(source)s into place: %(error)s"
+msgstr "không chuyển được %(source)s vào đúng chỗ: %(error)s"
+
+msgid "could not record progress in %(path)s: %(error)s"
+msgstr "không ghi được tiến độ vào %(path)s: %(error)s"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "không tải được %(url)s: %(error)s"
+
+msgid "Stopped before the checksum was finished."
+msgstr "Đã dừng trước khi kiểm xong tổng kiểm tra."
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "không đọc được %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Hãy kiểm tra xem tệp có tồn tại và đọc được không."
+
+msgid "%(file)s is %(actual)d bytes, but the catalog says %(expected)d"
+msgstr "%(file)s có %(actual)d byte, nhưng danh mục ghi %(expected)d"
+
+msgid "The transfer was cut short. Run the command again to fetch it properly."
+msgstr "Lần truyền bị cắt ngang. Hãy chạy lại lệnh để tải cho đúng."
+
+msgid "%(file)s does not match the checksum the catalog holds."
+msgstr "%(file)s không khớp tổng kiểm tra mà danh mục giữ."
+
+msgid "Expected %(expected)s but the file hashes to %(actual)s. The bad copy has been deleted; run the command again to fetch it."
+msgstr "Lẽ ra phải là %(expected)s nhưng tệp băm ra %(actual)s. Bản hỏng đã bị xóa; hãy chạy lại lệnh để tải nó."
+
 msgid "Command: %(command)s"
 msgstr "Lệnh: %(command)s"
 
 msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
 msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr[0] ""
+msgstr[0] "phần đầu GGUF bị cắt cụt: cần %(wanted)d byte ở vị trí %(offset)d, nhận được %(got)d"
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Tệp có thể vẫn đang tải về, hoặc URL không trỏ tới một tệp GGUF."
@@ -639,9 +2670,20 @@ msgstr "phiên bản GGUF %(version)d không được hỗ trợ, tại vị tr�
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit hỗ trợ các phiên bản GGUF %(versions)s."
 
+msgid "A memory budget built without these tensors would be too small, so none is built. If llama.cpp loads the file, LlamaFit's tensor-size table is missing the type."
+msgstr "Một mức phân bổ bộ nhớ dựng mà thiếu các tensor này sẽ quá nhỏ, nên không dựng gì cả. Nếu llama.cpp nạp được tệp thì bảng kích thước tensor của LlamaFit đang thiếu kiểu đó."
+
+msgid "%(type)d (%(count)d tensor, first %(name)s)"
+msgid_plural "%(type)d (%(count)d tensors, first %(name)s)"
+msgstr[0] "%(type)d (%(count)d tensor, đầu tiên là %(name)s)"
+
+msgid "cannot size this GGUF file: %(count)d tensor uses a GGML type LlamaFit does not know: %(details)s"
+msgid_plural "cannot size this GGUF file: %(count)d tensors use GGML types LlamaFit does not know: %(details)s"
+msgstr[0] "không ước lượng được kích thước tệp GGUF này: %(count)d tensor dùng kiểu GGML mà LlamaFit không biết: %(details)s"
+
 msgid "%(count)d shard"
 msgid_plural "%(count)d shards"
-msgstr[0] ""
+msgstr[0] "%(count)d mảnh"
 
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "các tệp GGUF này không thuộc cùng một mô hình chia mảnh: chúng khai báo '%(key)s' khác nhau, là %(values)s"
@@ -657,13 +2699,13 @@ msgstr "Hãy đưa vào tệp của mô hình, hoặc mọi mảnh của một m
 
 msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
 msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr[0] ""
+msgstr[0] "%(count)d tệp GGUF trong số %(total)d tệp đã đưa vào không mang khóa '%(key)s', nên không xác định được chỗ của nó trong một mô hình chia mảnh"
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Hãy đưa vào một tệp không chia mảnh riêng lẻ, hoặc mọi mảnh của một mô hình chia mảnh."
 
 msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr ""
+msgstr "bộ mảnh chưa đủ: mô hình khai báo %(shards)s mà chỉ có %(arrived)d mảnh tới nơi (%(key)s %(numbers)s)"
 
 msgid "Pass every shard of the split model."
 msgstr "Hãy đưa vào mọi mảnh của mô hình chia mảnh."
@@ -681,20 +2723,11 @@ msgid "Pass each shard of the split model exactly once."
 msgstr "Hãy đưa mỗi mảnh của mô hình chia mảnh đúng một lần."
 
 msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
-msgstr ""
+msgstr "bộ mảnh chưa đủ: mô hình khai báo %(tensors)s mà %(shards)s của nó gộp lại chỉ giữ %(held)d"
 
 msgid "%(count)d tensor"
 msgid_plural "%(count)d tensors"
-msgstr[0] ""
-
-msgid "could not read %(path)s: %(error)s"
-msgstr "không đọc được %(path)s: %(error)s"
-
-msgid "Check that the file exists and is readable."
-msgstr "Hãy kiểm tra xem tệp có tồn tại và đọc được không."
-
-msgid "could not fetch %(url)s: %(error)s"
-msgstr "không tải được %(url)s: %(error)s"
+msgstr[0] "%(count)d tensor"
 
 msgid "Check your network connection and that the URL is reachable."
 msgstr "Hãy kiểm tra kết nối mạng và xem URL có truy cập được không."
@@ -724,6 +2757,9 @@ msgstr "WMI không trả về bộ điều khiển video nào"
 msgid "lspci found no display controllers"
 msgstr "lspci không tìm thấy bộ điều khiển hiển thị nào"
 
+msgid "vulkaninfo reported no discrete device with a memory heap"
+msgstr "vulkaninfo không báo thiết bị rời nào có vùng nhớ heap"
+
 msgid "no populated memory modules"
 msgstr "không có thanh nhớ nào được gắn"
 
@@ -732,7 +2768,7 @@ msgstr "không có SPMemoryDataType"
 
 msgid "%(program)s: timed out after %(seconds)s second"
 msgid_plural "%(program)s: timed out after %(seconds)s seconds"
-msgstr[0] ""
+msgstr[0] "%(program)s: hết thời gian sau %(seconds)s giây"
 
 msgid "empty command"
 msgstr "lệnh rỗng"
@@ -743,11 +2779,47 @@ msgstr "%(program)s: %(error)s"
 msgid "%(program)s: not found"
 msgstr "%(program)s: không tìm thấy"
 
-msgid "no output"
-msgstr "không có kết xuất"
-
 msgid "exit code %(code)d: %(detail)s"
 msgstr "mã thoát %(code)d: %(detail)s"
+
+msgid "no hardware profile file at %(path)s"
+msgstr "không có tệp hồ sơ phần cứng ở %(path)s"
+
+msgid "Run `llamafit hardware list` to see the profiles LlamaFit has."
+msgstr "Hãy chạy `llamafit hardware list` để xem LlamaFit có những hồ sơ nào."
+
+msgid "%(path)s is not a valid hardware profile: %(details)s"
+msgstr "%(path)s không phải là một hồ sơ phần cứng hợp lệ: %(details)s"
+
+msgid "Run `llamafit hardware validate FILE` for the whole list."
+msgstr "Hãy chạy `llamafit hardware validate FILE` để xem trọn danh sách."
+
+msgid "no hardware profile named %(name)s"
+msgstr "không có hồ sơ phần cứng nào tên %(name)s"
+
+msgid "Profiles LlamaFit has: %(names)s"
+msgstr "Các hồ sơ LlamaFit có: %(names)s"
+
+msgid "Run `llamafit hardware path` to see where your own profiles go."
+msgstr "Hãy chạy `llamafit hardware path` để xem hồ sơ của riêng bạn nằm ở đâu."
+
+msgid "this machine has no graphics card, so there is no VRAM to override"
+msgstr "máy này không có card đồ họa, nên không có VRAM nào để thay"
+
+msgid "Describe the whole machine in a hardware profile and pass --profile."
+msgstr "Hãy mô tả trọn cỗ máy trong một hồ sơ phần cứng rồi truyền --profile."
+
+msgid "this machine has one memory pool shared with the graphics card"
+msgstr "máy này có một vùng nhớ duy nhất dùng chung với card đồ họa"
+
+msgid "Use --ram to resize the pool; --memory would change only half of it."
+msgstr "Hãy dùng --ram để đổi kích thước vùng nhớ; --memory chỉ đổi một nửa của nó."
+
+msgid "%(option)s needs a value above zero"
+msgstr "%(option)s cần một giá trị lớn hơn không"
+
+msgid "no build number in the version output: %(text)s"
+msgstr "không có số bản dựng trong kết xuất phiên bản: %(text)s"
 
 msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
 msgstr "không tìm thấy llama.cpp: không có llama-server trên PATH, trong LLAMA_CPP_PATH hay trong các thư mục thông thường"
@@ -755,11 +2827,255 @@ msgstr "không tìm thấy llama.cpp: không có llama-server trên PATH, trong 
 msgid "no ggml backend libraries found next to llama-server; the build may be static"
 msgstr "không tìm thấy thư viện backend ggml bên cạnh llama-server; bản dựng có thể là bản tĩnh"
 
+msgid "%(path)s is a file, not a directory."
+msgstr "%(path)s là một tệp, không phải một thư mục."
+
+msgid "%(path)s cannot be read: %(error)s"
+msgstr "không đọc được %(path)s: %(error)s"
+
+msgid "%(path)s has a marker file that cannot be read."
+msgstr "%(path)s có một tệp đánh dấu mà không đọc được."
+
+msgid "%(path)s already holds %(count)d file that LlamaFit did not install."
+msgid_plural "%(path)s already holds %(count)d files that LlamaFit did not install."
+msgstr[0] "%(path)s đã chứa %(count)d tệp không do LlamaFit cài."
+
+msgid "%(name)s has no published checksum, so it cannot be verified."
+msgstr "%(name)s không có tổng kiểm tra công bố, nên không kiểm chứng được."
+
+msgid "Pass --allow-unverified to install it anyway, knowing the archive is unchecked."
+msgstr "Hãy truyền --allow-unverified để vẫn cài nó, biết rằng tệp nén chưa được kiểm."
+
+msgid "could not download %(url)s: %(error)s"
+msgstr "không tải được %(url)s: %(error)s"
+
+msgid "the connection was closed"
+msgstr "kết nối đã bị đóng"
+
+msgid "Run the command again; it continues from where it stopped."
+msgstr "Hãy chạy lại lệnh; nó tiếp tục từ chỗ đã dừng."
+
+msgid "the download of %(url)s stopped early: %(error)s"
+msgstr "lần tải %(url)s dừng sớm: %(error)s"
+
+msgid "%(got)s of %(want)s arrived"
+msgstr "%(got)s trên %(want)s đã tới nơi"
+
+msgid "the disk holding %(path)s is full."
+msgstr "đĩa chứa %(path)s đã đầy."
+
+msgid "Free some space and run the command again; the download resumes."
+msgstr "Hãy giải phóng dung lượng rồi chạy lại lệnh; lần tải sẽ tiếp tục."
+
+msgid "Check that the directory exists and is writable."
+msgstr "Hãy kiểm tra xem thư mục có tồn tại và ghi được không."
+
+msgid "%(name)s did not match its published checksum and was discarded."
+msgstr "%(name)s không khớp tổng kiểm tra đã công bố và đã bị bỏ đi."
+
+msgid "Nothing was unpacked. Run the command again: the archive arrived damaged, which a second download usually fixes."
+msgstr "Không có gì được giải nén. Hãy chạy lại lệnh: tệp nén tới nơi đã hỏng, mà tải lại lần nữa thường là xong."
+
+msgid "%(archive)s contains %(name)s, which would be written outside the install directory."
+msgstr "%(archive)s chứa %(name)s, thứ sẽ được ghi ra ngoài thư mục cài đặt."
+
+msgid "Do not install this archive; report it to the llama.cpp project."
+msgstr "Đừng cài tệp nén này; hãy báo cho dự án llama.cpp."
+
+msgid "%(name)s is not an archive LlamaFit knows how to unpack."
+msgstr "%(name)s không phải là loại tệp nén mà LlamaFit biết cách giải."
+
+msgid "%(name)s could not be unpacked: %(error)s"
+msgstr "không giải nén được %(name)s: %(error)s"
+
+msgid "Delete it and run the command again to download it afresh."
+msgstr "Hãy xóa nó rồi chạy lại lệnh để tải mới."
+
+msgid "the archive holds no %(name)s."
+msgstr "tệp nén không chứa %(name)s."
+
+msgid "Report this; the release layout has changed."
+msgstr "Hãy báo việc này; bố cục bản phát hành đã thay đổi."
+
+msgid "%(path)s was not installed by LlamaFit."
+msgstr "%(path)s không do LlamaFit cài."
+
+msgid "Pass --force to replace it, or --dir to install somewhere else. LlamaFit never overwrites an installation it did not create."
+msgstr "Hãy truyền --force để thay nó, hoặc --dir để cài chỗ khác. LlamaFit không bao giờ ghi đè lên một bản cài mà nó không tạo ra."
+
+msgid "%(path)s has %(free)s free; this install needs %(needed)s."
+msgstr "%(path)s còn trống %(free)s; lần cài này cần %(needed)s."
+
+msgid "Free some space, or pass --dir to install on another volume."
+msgstr "Hãy giải phóng dung lượng, hoặc truyền --dir để cài lên ổ khác."
+
+msgid "the %(backend)s libraries are not in the installed directory."
+msgstr "các thư viện %(backend)s không có trong thư mục đã cài."
+
+msgid "no ggml backend libraries were installed; the build may be a static one."
+msgstr "không có thư viện backend ggml nào được cài; có thể đây là một bản dựng tĩnh."
+
+msgid "Your PATH could not be read, so it will not be changed."
+msgstr "Không đọc được PATH của bạn, nên nó sẽ không bị đổi."
+
+msgid "Add %(path)s to your user PATH (HKCU\\Environment)."
+msgstr "Thêm %(path)s vào PATH người dùng của bạn (HKCU\\Environment)."
+
+msgid "To undo: run `setx PATH \"%(previous)s\"`, or remove the entry in System > About > Advanced system settings > Environment Variables."
+msgstr "Để hoàn tác: chạy `setx PATH \"%(previous)s\"`, hoặc xóa mục đó trong System > About > Advanced system settings > Environment Variables."
+
+msgid "%(path)s is already on your PATH."
+msgstr "%(path)s đã có trên PATH của bạn."
+
+msgid "Nothing to undo."
+msgstr "Không có gì để hoàn tác."
+
+msgid "Append a PATH line for %(path)s to %(file)s."
+msgstr "Thêm một dòng PATH cho %(path)s vào %(file)s."
+
+msgid "To undo: delete the two lines marked `%(mark)s` from %(file)s."
+msgstr "Để hoàn tác: xóa hai dòng có dấu `%(mark)s` khỏi %(file)s."
+
+msgid "your PATH could not be changed: %(error)s"
+msgstr "không đổi được PATH của bạn: %(error)s"
+
+msgid "To remove it later, delete %(path)s."
+msgstr "Để gỡ sau này, hãy xóa %(path)s."
+
+msgid "the most recent %(count)d llama.cpp releases hold no build."
+msgstr "%(count)d bản phát hành llama.cpp gần nhất không có bản dựng nào."
+
+msgid "Name one with `llamafit install llama.cpp --tag ...`."
+msgstr "Hãy nêu tên một bản bằng `llamafit install llama.cpp --tag ...`."
+
+msgid "could not reach GitHub at %(url)s: %(error)s"
+msgstr "không tới được GitHub ở %(url)s: %(error)s"
+
+msgid "GitHub refused the request for %(url)s: the rate limit is exhausted."
+msgstr "GitHub từ chối yêu cầu cho %(url)s: đã hết hạn mức truy cập."
+
+msgid "Wait for the limit to reset, or set GITHUB_TOKEN to a personal access token with no scopes."
+msgstr "Hãy đợi hạn mức đặt lại, hoặc đặt GITHUB_TOKEN thành một personal access token không có phạm vi nào."
+
+msgid "GitHub has no release at %(url)s."
+msgstr "GitHub không có bản phát hành nào ở %(url)s."
+
+msgid "Check the tag with `llamafit install llama.cpp --tag ...`."
+msgstr "Hãy kiểm tra thẻ bằng `llamafit install llama.cpp --tag ...`."
+
+msgid "GitHub returned %(status)d for %(url)s."
+msgstr "GitHub trả về %(status)d cho %(url)s."
+
+msgid "GitHub's answer for %(url)s was not JSON."
+msgstr "Câu trả lời của GitHub cho %(url)s không phải JSON."
+
+msgid "GitHub's answer did not describe a release."
+msgstr "Câu trả lời của GitHub không mô tả một bản phát hành."
+
 msgid "no llama-server answering"
 msgstr "không có llama-server nào trả lời"
 
 msgid "unexpected response: %(error)s"
 msgstr "phản hồi ngoài dự kiến: %(error)s"
+
+msgid "%(model)s holds %(native)s tokens, fewer than the %(minimum)s asked for."
+msgstr "%(model)s giữ %(native)s token, ít hơn mức %(minimum)s đã hỏi."
+
+msgid "No configuration of this model fits this machine."
+msgstr "Không cấu hình nào của mô hình này vừa máy này."
+
+msgid "Routed experts are held in system memory, and so are the always-on shared experts, which is what -ot ffn_.*_shexp=CPU does; attention and the KV cache stay on the card."
+msgstr "Các chuyên gia được định tuyến nằm trong bộ nhớ hệ thống, và các chuyên gia dùng chung luôn bật cũng vậy, đó là việc mà -ot ffn_.*_shexp=CPU làm; phần chú ý và bộ đệm KV vẫn ở trên card."
+
+msgid "Routed experts are held in system memory; attention, the KV cache and the shared experts stay on the card."
+msgstr "Các chuyên gia được định tuyến nằm trong bộ nhớ hệ thống; phần chú ý, bộ đệm KV và các chuyên gia dùng chung vẫn ở trên card."
+
+msgid "%(layers)s layers are on the card and the rest run on the processor."
+msgstr "%(layers)s lớp nằm trên card và phần còn lại chạy trên bộ xử lý."
+
+msgid "Nothing runs on a graphics card: every weight is in system memory."
+msgstr "Không có gì chạy trên card đồ họa: mọi trọng số đều nằm trong bộ nhớ hệ thống."
+
+msgid "%(gpus)s is here, but nothing could read how much of it is free, so this plan was made as if it were not. The real machine will be faster than these figures."
+msgstr "%(gpus)s có ở đây, nhưng không gì đọc được nó còn trống bao nhiêu, nên kế hoạch này được lập như thể không có nó. Cỗ máy thật sẽ nhanh hơn các con số này."
+
+msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
+msgstr "Tính cho %(context)s token thay vì %(requested)s như đã hỏi."
+
+msgid "The KV cache is quantised to %(type)s to reach this context."
+msgstr "Bộ đệm KV được lượng tử hóa thành %(type)s để đạt tới ngữ cảnh này."
+
+msgid "Vision is off: the projector did not fit, on the card or in system memory."
+msgstr "Thị giác đã tắt: projector không vừa, cả trên card lẫn trong bộ nhớ hệ thống."
+
+msgid "The vision projector is in system memory (--no-mmproj-offload), which costs nothing measurable for text and makes images slower."
+msgstr "Projector thị giác nằm trong bộ nhớ hệ thống (--no-mmproj-offload), việc này không tốn gì đáng kể với văn bản và làm ảnh chậm hơn."
+
+msgid "%(threads)s threads, not the %(available)s this processor has: the efficiency cores are left out because generation measures slower with them, and what is left is the threads the performance cores provide."
+msgstr "%(threads)s luồng, không phải %(available)s luồng mà bộ xử lý này có: các nhân tiết kiệm điện bị bỏ ra vì có chúng thì tốc độ sinh đo được còn chậm hơn, và phần còn lại là số luồng mà các nhân hiệu năng cung cấp."
+
+msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
+msgstr "Sát: card đồ họa còn trống %(vram)s mà cái này cần %(needed)s, nên một chương trình khác có thể đẩy nó quá mức. Bảng các bậc ngữ cảnh là cách một kịch bản khởi chạy lùi lại."
+
+msgid "no %(capability)s capability, which %(use_case)s needs; ask for a different use case, or add it to the entry when the model really has it"
+msgstr "không có khả năng %(capability)s, thứ mà %(use_case)s cần; hãy hỏi một trường hợp sử dụng khác, hoặc thêm khả năng đó vào mục khi mô hình thật sự có"
+
+msgid "no %(capability)s capability; drop it from the request to see this model"
+msgstr "không có khả năng %(capability)s; hãy bỏ nó khỏi yêu cầu để thấy mô hình này"
+
+msgid "%(size)s to download, over the %(limit)s this request allows"
+msgstr "phải tải về %(size)s, vượt mức %(limit)s mà yêu cầu này cho phép"
+
+msgid "unknown quantisation %(quant)s, so its cost in quality cannot be told"
+msgstr "bản lượng tử hóa %(quant)s không rõ, nên không biết nó mất bao nhiêu chất lượng"
+
+msgid "nowhere to put it: no placement fits this machine at any context"
+msgstr "không có chỗ đặt: không cách bố trí nào vừa máy này ở bất kỳ ngữ cảnh nào"
+
+msgid "holds %(fit)s tokens at most, under the %(minimum)s asked for; lower the minimum context or free memory to see it ranked"
+msgstr "giữ được nhiều nhất %(fit)s token, dưới mức %(minimum)s đã hỏi; hãy hạ ngữ cảnh tối thiểu hoặc giải phóng bộ nhớ để thấy nó được xếp hạng"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "sinh %(tps)s token mỗi giây, dưới mức %(floor)s mà yêu cầu này đòi hỏi; hãy hạ --min-tps hoặc chọn mô hình hay bản lượng tử hóa nhỏ hơn"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "sinh %(tps)s token mỗi giây, dưới tốc độ đọc %(floor)s của một người: trên máy này nó là công cụ chạy nền chứ không phải thứ để ngồi trước mà dùng; một mô hình hay bản lượng tử hóa nhỏ hơn sẽ theo kịp"
+
+msgid "unknown use case %(use_case)s"
+msgstr "trường hợp sử dụng không rõ: %(use_case)s"
+
+msgid "Known use cases: %(known)s."
+msgstr "Các trường hợp sử dụng đã biết: %(known)s."
+
+msgid "unknown score part %(part)s in the weights for %(use_case)s"
+msgstr "phần điểm không rõ %(part)s trong các trọng số của %(use_case)s"
+
+msgid "The parts are: %(parts)s."
+msgstr "Các phần là: %(parts)s."
+
+msgid "the weights for %(use_case)s leave out %(part)s"
+msgstr "các trọng số của %(use_case)s bỏ sót %(part)s"
+
+msgid "Overriding a use case means giving all four parts: %(parts)s."
+msgstr "Ghi đè một trường hợp sử dụng nghĩa là phải cho đủ bốn phần: %(parts)s."
+
+msgid "the weight for %(part)s in %(use_case)s is below zero"
+msgstr "trọng số của %(part)s trong %(use_case)s nhỏ hơn không"
+
+msgid "A weight says how much a part counts; it cannot count less than none."
+msgstr "Một trọng số nói một phần đáng kể đến đâu; nó không thể đáng kể ít hơn không."
+
+msgid "the weights for %(use_case)s add up to nothing"
+msgstr "các trọng số của %(use_case)s cộng lại bằng không"
+
+msgid "At least one part has to count for something."
+msgstr "Ít nhất một phần phải đáng kể một chút."
+
+msgid "unknown preference %(prefer)s"
+msgstr "thiên hướng không rõ: %(prefer)s"
+
+msgid "Preferences: %(known)s."
+msgstr "Các thiên hướng: %(known)s."
 
 msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
 msgstr "Hãy cài hoặc sửa trình điều khiển NVIDIA; nvidia-smi đi kèm với nó và phải nằm trên PATH."
@@ -794,6 +3110,9 @@ msgstr "llama-server có tồn tại nhưng không báo phiên bản; tệp th�
 msgid "system_profiler failed; GPU information is unavailable."
 msgstr "system_profiler thất bại; không có thông tin về GPU."
 
+msgid "Install the Vulkan tools (vulkan-tools on Linux, the vendor's Vulkan runtime on Windows) so an unsized card's memory can be read from its driver. This probe runs only when no vendor tool sized the card, so it is the last source there is."
+msgstr "Hãy cài bộ công cụ Vulkan (vulkan-tools trên Linux, bản Vulkan runtime của nhà cung cấp trên Windows) để dung lượng của một card chưa rõ kích thước đọc được từ trình điều khiển của nó. Phép dò này chỉ chạy khi không công cụ nào của nhà cung cấp đo được card, nên nó là nguồn cuối cùng."
+
 msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
 msgstr "Không công cụ nào của nhà cung cấp báo dung lượng bộ nhớ của GPU; hãy ghi dung lượng đó vào một hồ sơ phần cứng để tính được mức phân bổ cho máy này."
 
@@ -812,6 +3131,9 @@ msgstr "không tìm thấy llama.cpp"
 
 msgid "no llama-server binary was found"
 msgstr "không tìm thấy tệp thực thi llama-server"
+
+msgid "Run `llamafit install llama.cpp`, which picks the right build for this machine, checks it against its published checksum, and never touches an installation LlamaFit did not create."
+msgstr "Hãy chạy `llamafit install llama.cpp`: nó chọn bản dựng đúng cho máy này, đối chiếu với tổng kiểm tra đã công bố, và không bao giờ đụng vào một bản cài mà LlamaFit không tạo ra."
 
 msgid "Memory size unknown"
 msgstr "Không rõ dung lượng bộ nhớ"
@@ -837,6 +3159,15 @@ msgstr "%(gpu)s: không rõ dung lượng VRAM"
 
 msgid "the vendor tool that reports memory was not available"
 msgstr "không có công cụ của nhà cung cấp để báo bộ nhớ"
+
+msgid "%(gpus)s: planned around, not planned on"
+msgstr "%(gpus)s: được lập kế hoạch né đi, chứ không phải lập kế hoạch trên nó"
+
+msgid "with no reading of how much of the card is free, every budget and every speed on this machine was computed as if there were no card: they are CPU-only figures, and the real machine will be faster."
+msgstr "vì không đọc được card còn trống bao nhiêu, mọi mức phân bổ và mọi tốc độ trên máy này đều được tính như thể không có card: chúng là những con số chỉ dùng CPU, và cỗ máy thật sẽ nhanh hơn."
+
+msgid "Install the Vulkan tools so the size can be read from the driver, or record it in a hardware profile (`llamafit hardware path` says where those go) and pass --profile."
+msgstr "Hãy cài bộ công cụ Vulkan để đọc được dung lượng từ trình điều khiển, hoặc ghi nó vào một hồ sơ phần cứng (`llamafit hardware path` cho biết hồ sơ nằm ở đâu) rồi truyền --profile."
 
 msgid "No GPU detected"
 msgstr "Không phát hiện GPU"
@@ -882,6 +3213,388 @@ msgstr "còn trống %(size)s"
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr "Phần lớn mô hình hữu dụng cần từ 5 đến 120 GB; hãy giải phóng dung lượng hoặc đổi thư mục tải về."
 
+msgid "%(model)s has no %(quant)s quantisation"
+msgstr "%(model)s không có bản lượng tử hóa %(quant)s"
+
+msgid "It publishes: %(names)s"
+msgstr "Nó công bố: %(names)s"
+
+msgid "licensed %(spdx)s, which this request does not allow"
+msgstr "có giấy phép %(spdx)s, thứ mà yêu cầu này không cho phép"
+
+msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
+msgstr "Băng thông bộ nhớ hệ thống chưa được đo; giả định %(gbps).0f GB/s cho %(arch)s."
+
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
+msgstr "Không rõ băng thông của %(gpu)s; dùng tạm giá trị dự phòng %(gbps).0f GB/s của %(backend)s."
+
+msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
+msgstr "Không có số tính toán của card đồ họa: việc xử lý prompt được ước tính trên CPU."
+
+msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "Mỗi token đọc %(gb).2f GB chuyên gia được định tuyến từ bộ nhớ hệ thống ở %(eff).2f mức %(raw).0f GB/s của nó, vì mỗi token chọn một nhúm chuyên gia khác nhau nên đây là đọc rải rác nhiều khối nhỏ chứ không phải đọc một dòng liền."
+
+msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
+msgstr "Mỗi token đọc %(gb).2f GB trọng số liền mạch từ bộ nhớ hệ thống ở %(eff).2f mức %(raw).0f GB/s của nó."
+
+msgid "No active parameter count was supplied; it was inferred from the weight bytes."
+msgstr "Không có số tham số hoạt động nào được cung cấp; nó được suy ra từ số byte trọng số."
+
+msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "%(pct).0f phần trăm số lớp nằm trong bộ nhớ hệ thống, nên chừng ấy phần phép tính của prompt được tính cho CPU ở %(tflops).2f TFLOP/s chứ không phải cho card. Cả hai mức đều lấy từ một mô hình dày đặc nhỏ trên một máy."
+
+msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "Mỗi lô nhỏ một lần, %(gb).1f GB của tập chuyên gia được truyền qua đường liên kết ở %(gbps).1f GB/s. Mức đó được khớp trên mô hình duy nhất có tập chuyên gia không vừa bộ nhớ hệ thống, nên một phần việc đọc lấy từ đĩa; một tập chuyên gia nằm gọn trong bộ nhớ đệm trang sẽ truyền nhanh hơn chừng ba lần, và với một mô hình như thế thì số hạng này chậm hơn thực tế đúng chừng ấy."
+
+msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+msgstr "Mỗi lô nhỏ một lần, %(gb).1f GB của tập chuyên gia được đọc ra từ bộ nhớ hệ thống ở %(gbps).1f GB/s, vì không có card nào để truyền tới."
+
+msgid "No placement of this model on this machine could run it."
+msgstr "Không cách bố trí nào của mô hình này trên máy này chạy được nó."
+
+msgid "Generation is a benchmark of this configuration, not a prediction."
+msgstr "Tốc độ sinh là một phép đo của chính cấu hình này, không phải dự đoán."
+
+msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "Tốc độ sinh là công thức đã hiệu chỉnh theo hệ số %(factor).2f, từ một phép đo %(profile)s trên máy này lấy ngày %(date)s."
+
+msgid "Prompt processing is a benchmark of this configuration."
+msgstr "Việc xử lý prompt là một phép đo của chính cấu hình này."
+
+msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
+msgstr "Việc xử lý prompt là công thức đã hiệu chỉnh theo hệ số %(factor).2f từ một phép đo."
+
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr "Dòng lệnh của phép đo đó không ghi lại có bao nhiêu lớp lên card, nên phép hiệu chỉnh giả định nó đã chạy với cách bố trí này."
+
+msgid "This figure assumes nothing pages: a placement this tight often does, silently."
+msgstr "Con số này giả định không có gì bị đẩy bộ nhớ: một cách bố trí sát như thế này thì thường có, mà lại lặng lẽ."
+
+msgid "Board"
+msgstr "Bảng"
+
+msgid "Needs"
+msgstr "Yêu cầu"
+
+msgid "Plan"
+msgstr "Kế hoạch"
+
+msgid "Simulate"
+msgstr "Mô phỏng"
+
+msgid "There is no terminal here to draw the dashboard in, so this is what `llamafit recommend` would print."
+msgstr "Ở đây không có terminal nào để vẽ bảng điều khiển, nên đây là những gì `llamafit recommend` sẽ in ra."
+
+msgid "%(name)s %(quant)s, %(vendor)s, licensed %(license)s; it can: %(capabilities)s"
+msgstr "%(name)s %(quant)s, %(vendor)s, giấy phép %(license)s; nó có thể: %(capabilities)s"
+
+msgid "Choose a row to see what put it there."
+msgstr "Hãy chọn một dòng để xem điều gì đưa nó tới đó."
+
+msgid "Nothing has been ranked yet."
+msgstr "Chưa có gì được xếp hạng."
+
+msgid "Every candidate in the catalog was ranked; none was excluded."
+msgstr "Mọi ứng viên trong danh mục đều được xếp hạng; không ứng viên nào bị loại."
+
+msgid "keys"
+msgstr "phím"
+
+msgid "theme"
+msgstr "giao diện"
+
+msgid "quit"
+msgstr "thoát"
+
+msgid "choose"
+msgstr "chọn"
+
+msgid "why"
+msgstr "vì sao"
+
+msgid "command line"
+msgstr "dòng lệnh"
+
+msgid "search"
+msgstr "tìm"
+
+msgid "fit"
+msgstr "độ vừa"
+
+msgid "sort"
+msgstr "sắp xếp"
+
+msgid "sort back"
+msgstr "sắp lùi lại"
+
+msgid "reverse"
+msgstr "đảo chiều"
+
+msgid "on disk"
+msgstr "trên đĩa"
+
+msgid "all quants"
+msgstr "mọi bản lượng tử"
+
+msgid "unranked rows"
+msgstr "dòng chưa xếp hạng"
+
+msgid "all columns"
+msgstr "mọi cột"
+
+msgid "explanation"
+msgstr "giải thích"
+
+msgid "not ranked"
+msgstr "chưa xếp hạng"
+
+msgid "apply"
+msgstr "áp dụng"
+
+msgid "reset"
+msgstr "đặt lại"
+
+msgid "rescan"
+msgstr "dò lại"
+
+msgid "more context"
+msgstr "thêm ngữ cảnh"
+
+msgid "less context"
+msgstr "bớt ngữ cảnh"
+
+msgid "vision"
+msgstr "thị giác"
+
+msgid "copy"
+msgstr "chép"
+
+msgid "this machine"
+msgstr "máy này"
+
+msgctxt "use case"
+msgid "general use"
+msgstr "mục đích chung"
+
+msgctxt "use case"
+msgid "writing code"
+msgstr "viết mã"
+
+msgctxt "use case"
+msgid "reasoning"
+msgstr "suy luận"
+
+msgctxt "use case"
+msgid "chat"
+msgstr "trò chuyện"
+
+msgctxt "use case"
+msgid "images and text"
+msgstr "ảnh và văn bản"
+
+msgctxt "use case"
+msgid "embeddings"
+msgstr "embedding"
+
+msgctxt "preference"
+msgid "balanced"
+msgstr "cân bằng"
+
+msgctxt "preference"
+msgid "lean towards quality"
+msgstr "nghiêng về chất lượng"
+
+msgctxt "preference"
+msgid "lean towards speed"
+msgstr "nghiêng về tốc độ"
+
+msgid "Move with the up and down arrows. Enter says why a row is where it is; p gives the command line that runs it."
+msgstr "Di chuyển bằng phím mũi tên lên xuống. Enter cho biết vì sao một dòng ở vị trí đó; p đưa ra dòng lệnh chạy nó."
+
+msgid "Terms: %(terms)s; anything else is text to look for. Enter with the box empty clears them."
+msgstr "Từ khóa: %(terms)s; mọi thứ khác là chuỗi cần tìm. Enter với ô trống sẽ xóa hết."
+
+msgid "Part of a model name, then Enter"
+msgstr "Một phần tên mô hình, rồi Enter"
+
+msgid "Keys"
+msgstr "Phím"
+
+msgctxt "column heading"
+msgid "Screen"
+msgstr "Màn hình"
+
+msgctxt "column heading"
+msgid "Key"
+msgstr "Phím"
+
+msgctxt "column heading"
+msgid "What it does"
+msgstr "Làm gì"
+
+msgctxt "dashboard screen"
+msgid "Everywhere"
+msgstr "Mọi nơi"
+
+msgctxt "dashboard screen"
+msgid "Board"
+msgstr "Bảng"
+
+msgctxt "dashboard screen"
+msgid "Needs"
+msgstr "Yêu cầu"
+
+msgctxt "dashboard screen"
+msgid "Host"
+msgstr "Máy"
+
+msgctxt "dashboard screen"
+msgid "Plan"
+msgstr "Kế hoạch"
+
+msgctxt "dashboard screen"
+msgid "Simulate"
+msgstr "Mô phỏng"
+
+msgid "Press Escape to go back."
+msgstr "Nhấn Escape để quay lại."
+
+msgid "Catalog files with a problem"
+msgstr "Các tệp danh mục có vấn đề"
+
+msgid "This machine has not been scanned yet."
+msgstr "Máy này chưa được dò."
+
+msgid "What do you want a model for?"
+msgstr "Bạn cần mô hình để làm gì?"
+
+msgid "It must be able to:"
+msgstr "Nó phải làm được:"
+
+msgid "At least this much context, in tokens:"
+msgstr "Ít nhất chừng này ngữ cảnh, tính bằng token:"
+
+msgid "Willing to download at most, for example 40G (blank for no limit):"
+msgstr "Sẵn sàng tải về nhiều nhất, ví dụ 40G (để trống nghĩa là không giới hạn):"
+
+msgid "Slowest generation worth having, in tokens per second (blank for the speed a person reads at; 0 when nobody is waiting on the tokens):"
+msgstr "Tốc độ sinh thấp nhất còn đáng dùng, tính bằng token mỗi giây (để trống nghĩa là tốc độ đọc của một người; 0 khi không ai phải chờ các token đó):"
+
+msgid "Licences you will accept (tick none to accept any):"
+msgstr "Các giấy phép bạn chấp nhận (không đánh dấu cái nào nghĩa là chấp nhận tất cả):"
+
+msgid "Lean the score:"
+msgstr "Nghiêng điểm số:"
+
+msgid "Keep the vision projector when a model has one"
+msgstr "Giữ projector thị giác khi mô hình có"
+
+msgid "Apply"
+msgstr "Áp dụng"
+
+msgid "Reset"
+msgstr "Đặt lại"
+
+msgid "The minimum context is a number of tokens, for example %(example)s."
+msgstr "Ngữ cảnh tối thiểu là một số token, ví dụ %(example)s."
+
+msgid "The minimum context cannot be below zero."
+msgstr "Ngữ cảnh tối thiểu không thể nhỏ hơn không."
+
+msgid "The minimum speed is a number of tokens per second, for example 12."
+msgstr "Tốc độ tối thiểu là một số token mỗi giây, ví dụ 12."
+
+msgid "The minimum speed cannot be below zero."
+msgstr "Tốc độ tối thiểu không thể nhỏ hơn không."
+
+msgid "Choose a row on the Board and press p, and its plan and command line appear here."
+msgstr "Hãy chọn một dòng trên Bảng rồi nhấn p, kế hoạch và dòng lệnh của nó sẽ hiện ở đây."
+
+msgid "%(model)s is no longer in the catalog this board was built from."
+msgstr "%(model)s không còn trong danh mục đã dựng nên bảng này."
+
+msgid "Planned with the vision projector; press v to leave it out."
+msgstr "Lập kế hoạch có projector thị giác; nhấn v để bỏ nó ra."
+
+msgid "Planned without the vision projector; press v to put it back."
+msgstr "Lập kế hoạch không có projector thị giác; nhấn v để đưa nó trở lại."
+
+msgid "The ladder has no rung above %(context)s."
+msgstr "Thang không có bậc nào trên %(context)s."
+
+msgid "The ladder has no rung below %(context)s."
+msgstr "Thang không có bậc nào dưới %(context)s."
+
+msgid "There is no command line to copy yet."
+msgstr "Chưa có dòng lệnh nào để chép."
+
+msgid "The command line is on the clipboard."
+msgstr "Dòng lệnh đã nằm trên bảng nháp."
+
+msgid "Everything on every screen answers about the machine chosen here. While it is not this one, the band at the top says SIMULATED."
+msgstr "Mọi thứ trên mọi màn hình đều trả lời về cỗ máy được chọn ở đây. Chừng nào nó chưa phải máy này, dải trên cùng sẽ ghi SIMULATED."
+
+msgid "Answer for this machine instead:"
+msgstr "Trả lời cho cỗ máy này thay vào đó:"
+
+msgid "Pretend the graphics card has this much memory (blank to leave it):"
+msgstr "Giả vờ card đồ họa có chừng này bộ nhớ (để trống là giữ nguyên):"
+
+msgid "Pretend the machine has this much system memory (blank to leave it):"
+msgstr "Giả vờ máy có chừng này bộ nhớ hệ thống (để trống là giữ nguyên):"
+
+msgid "Pretend the processor has this many cores (blank to leave it):"
+msgstr "Giả vờ bộ xử lý có chừng này nhân (để trống là giữ nguyên):"
+
+msgid "Back to this machine"
+msgstr "Trở về máy này"
+
+msgctxt "hardware profile"
+msgid "this machine"
+msgstr "máy này"
+
+msgid "The core count is a whole number, for example 8."
+msgstr "Số nhân là một số nguyên, ví dụ 8."
+
+msgctxt "dashboard header separator"
+msgid " · "
+msgstr " · "
+
+msgctxt "dashboard header"
+msgid "no GPU detected"
+msgstr "không phát hiện GPU"
+
+msgid "%(name)s, VRAM unknown"
+msgstr "%(name)s, không rõ VRAM"
+
+msgid "%(name)s, %(free)s free of %(total)s"
+msgstr "%(name)s, còn trống %(free)s trên %(total)s"
+
+msgid "%(available)s free of %(total)s RAM"
+msgstr "còn trống %(available)s trên %(total)s RAM"
+
+msgid "%(model)s, %(count)d core"
+msgid_plural "%(model)s, %(count)d cores"
+msgstr[0] "%(model)s, %(count)d nhân"
+
+msgctxt "dashboard header"
+msgid "llama.cpp not installed"
+msgstr "chưa cài llama.cpp"
+
+msgctxt "dashboard header"
+msgid "llama.cpp installed"
+msgstr "đã cài llama.cpp"
+
+msgid "llama.cpp b%(build)d"
+msgstr "llama.cpp b%(build)d"
+
+msgctxt "dashboard header"
+msgid "scanning this machine…"
+msgstr "đang dò máy này…"
+
+msgid "These speeds were not all arrived at the same way; the How column says which each row is."
+msgstr "Các tốc độ này không phải đều có được theo cùng một cách; cột Cách cho biết mỗi dòng thuộc loại nào."
+
 msgctxt "thousands separator"
 msgid ","
 msgstr "."
@@ -901,3 +3614,160 @@ msgstr "B"
 msgctxt "size"
 msgid "unknown"
 msgstr "không rõ"
+
+msgid "profile must be a name, not a path: %(value)s"
+msgstr "profile phải là một tên, không phải một đường dẫn: %(value)s"
+
+msgid "Ask GET /api/v1/profiles for the names this machine has."
+msgstr "Hãy hỏi GET /api/v1/profiles để biết máy này có những tên nào."
+
+msgid "unknown query parameter: %(names)s"
+msgstr "tham số truy vấn không rõ: %(names)s"
+
+msgid "This endpoint takes: %(names)s"
+msgstr "Điểm cuối này nhận: %(names)s"
+
+msgid "invalid prefer %(value)s"
+msgstr "prefer không hợp lệ: %(value)s"
+
+msgid "invalid sort %(value)s"
+msgstr "sort không hợp lệ: %(value)s"
+
+msgid "%(host)s:%(port)d is not this machine only. Anyone who can reach this computer on that port can read everything the dashboard shows -- your hardware, your disks, your file paths and the models you have downloaded. There is no password, because LlamaFit is meant for the person sitting at the keyboard. Press Ctrl+C now if you did not mean this."
+msgstr "%(host)s:%(port)d không chỉ là riêng máy này. Bất cứ ai tới được máy tính này trên cổng đó đều đọc được mọi thứ bảng điều khiển hiển thị — phần cứng của bạn, các ổ đĩa, các đường dẫn tệp và những mô hình bạn đã tải về. Không có mật khẩu, vì LlamaFit dành cho người đang ngồi trước bàn phím. Hãy nhấn Ctrl+C ngay nếu bạn không định làm vậy."
+
+msgid "the web dashboard needs FastAPI and uvicorn, which are not installed"
+msgstr "bảng điều khiển web cần FastAPI và uvicorn, hai thứ chưa được cài"
+
+msgid "Install them with: pip install \"llamafit[web]\""
+msgstr "Hãy cài chúng bằng: pip install \"llamafit[web]\""
+
+msgid "%(host)s is not a loopback address, and the dashboard has no authentication"
+msgstr "%(host)s không phải địa chỉ loopback, mà bảng điều khiển thì không có xác thực"
+
+msgid "Leave --host alone to serve this machine only, or pass it to mean it."
+msgstr "Hãy để nguyên --host để chỉ phục vụ máy này, hoặc truyền nó khi bạn thật sự muốn thế."
+
+msgctxt "column heading"
+msgid "Why not"
+msgstr "Vì sao không"
+
+msgid "Why this row"
+msgstr "Vì sao có dòng này"
+
+msgid "Plan this"
+msgstr "Lập kế hoạch cho bản này"
+
+msgid "Already on this machine"
+msgstr "Đã có trên máy này"
+
+msgid "Score"
+msgstr "Điểm"
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; raise “Rows to show” for the rest, which are neither worse-behaved nor hidden, only further down."
+msgstr "Đang hiện %(shown)s bản tốt nhất trong %(total)s bản đạt yêu cầu; hãy tăng “Số dòng hiển thị” để xem phần còn lại, vốn không tệ hơn cũng không bị giấu, chỉ là nằm thấp hơn."
+
+msgid "What the model is for"
+msgstr "Mô hình dùng để làm gì"
+
+msgid "Capabilities it must have"
+msgstr "Các khả năng bắt buộc phải có"
+
+msgid "Lean the weights"
+msgstr "Nghiêng các trọng số"
+
+msgid "Smallest context worth having"
+msgstr "Ngữ cảnh nhỏ nhất còn đáng dùng"
+
+msgid "Most you will download"
+msgstr "Nhiều nhất bạn sẽ tải về"
+
+msgid "Show every quantisation"
+msgstr "Hiện mọi bản lượng tử hóa"
+
+msgid "Keep the vision projector"
+msgstr "Giữ projector thị giác"
+
+msgid "Rows to show"
+msgstr "Số dòng hiển thị"
+
+msgid "Scan again"
+msgstr "Dò lại"
+
+msgid "llama.cpp"
+msgstr "llama.cpp"
+
+msgid "Quantisation"
+msgstr "Bản lượng tử hóa"
+
+msgid "Context"
+msgstr "Ngữ cảnh"
+
+msgid "Micro-batch"
+msgstr "Lô nhỏ"
+
+msgid "Plan it"
+msgstr "Lập kế hoạch"
+
+msgid "Copy"
+msgstr "Chép"
+
+msgid "Copied"
+msgstr "Đã chép"
+
+msgid "Flags"
+msgstr "Cờ"
+
+msgid "Speed"
+msgstr "Tốc độ"
+
+msgid "Choose a row on the board first."
+msgstr "Hãy chọn một dòng trên bảng trước."
+
+msgid "Hardware profile"
+msgstr "Hồ sơ phần cứng"
+
+msgid "This machine, as scanned"
+msgstr "Máy này, như đã dò"
+
+msgid "Graphics memory"
+msgstr "Bộ nhớ đồ họa"
+
+msgid "System memory"
+msgstr "Bộ nhớ hệ thống"
+
+msgid "Processor cores"
+msgstr "Nhân của bộ xử lý"
+
+msgid "Score against that machine"
+msgstr "Chấm điểm theo cỗ máy đó"
+
+msgid "What runs here, how fast, and with which settings."
+msgstr "Ở đây chạy được gì, nhanh đến đâu, và với những thiết lập nào."
+
+msgid "Working…"
+msgstr "Đang làm…"
+
+msgid "Something went wrong"
+msgstr "Có gì đó không ổn"
+
+msgid "Hint"
+msgstr "Gợi ý"
+
+msgid "Command"
+msgstr "Lệnh"
+
+msgid "About these figures"
+msgstr "Về các con số này"
+
+msgid "Close"
+msgstr "Đóng"
+
+msgid "%(shown)s of %(total)s in the catalog"
+msgstr "%(shown)s trên %(total)s trong danh mục"
+
+msgid "Source code (AGPL-3.0-or-later)"
+msgstr "Mã nguồn (AGPL-3.0-or-later)"
+
+msgid "This dashboard is served from your own machine and sends nothing anywhere."
+msgstr "Bảng điều khiển này được phục vụ từ chính máy của bạn và không gửi gì đi đâu cả."
