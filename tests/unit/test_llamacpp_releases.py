@@ -560,14 +560,26 @@ def test_the_selector_still_finds_a_build_in_the_release_llama_cpp_publishes_tod
     """The one check a recorded fixture cannot make: that the names have not moved.
 
     Every rule in this module reads asset names, and the llama.cpp project has renamed
-    them before — ``cu12.4`` became ``cuda-12.4``, and the per-instruction-set Windows
-    CPU archives became one. A rename would make the selector quietly find nothing, and
+    them before: ``cu12.4`` became ``cuda-12.4``, and the per-instruction-set Windows
+    CPU archives became one. A rename would make the selector silently find nothing, and
     a suite of recorded fixtures would stay green through all of it. Marked ``network``,
     so it stays out of continuous integration and is run deliberately before a release.
+
+    A release with no assets at all is skipped rather than failed. llama.cpp tags several
+    builds a day and the binaries are uploaded after the tag, so there is a window of
+    minutes where the newest release carries nothing; that is a fact about their upload
+    and not about this selector. Failing there reported "nothing selected for
+    windows/x86_64/nvidia", which sends the next reader to the one place that is working.
     """
     with httpx.Client(follow_redirects=True) as http:
         release = HttpReleaseClient(client=http).latest()
     assert release.build is not None
+    if not release.assets:
+        pytest.skip(
+            f"release {release.tag} carries no assets yet, so there is nothing to select "
+            "from. That is llama.cpp tagging a build before its binaries finish uploading. "
+            "Run again in a few minutes."
+        )
     for os_name, arch, vendor in [
         ("windows", "x86_64", "nvidia"),
         ("windows", "x86_64", None),
