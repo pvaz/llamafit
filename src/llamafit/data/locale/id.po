@@ -279,24 +279,24 @@ msgstr "%(compute)s TFLOPS fp16"
 
 msgid "%(count)d core"
 msgid_plural "%(count)d cores"
-msgstr[0] ""
+msgstr[0] "%(count)d inti"
 
 msgid "%(count)d thread"
 msgid_plural "%(count)d threads"
-msgstr[0] ""
+msgstr[0] "%(count)d thread"
 
 msgid "%(cores)s / %(threads)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s"
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
 msgstr[0] "%(count)d inti performa"
 
 msgid "%(cores)s / %(threads)s, %(performance)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s, %(performance)s"
 
 msgid "%(type)s at %(speed)d MT/s"
-msgstr ""
+msgstr "%(type)s pada %(speed)d MT/s"
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -310,23 +310,23 @@ msgid_plural "%(count)d channels"
 msgstr[0] "%(count)d kanal"
 
 msgid "%(kind)s, %(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s tersebar di %(channels)s"
 
 msgid "%(kind)s, %(modules)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s"
 
 msgid "%(kind)s, %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(channels)s"
 
 msgid "%(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(modules)s tersebar di %(channels)s"
 
 msgctxt "memory type"
 msgid "type unknown"
 msgstr "tipe tidak diketahui"
 
 msgid "%(specs)s (spec), driver %(driver)s"
-msgstr ""
+msgstr "%(specs)s (spesifikasi), driver %(driver)s"
 
 msgid "%(specs)s (spec)"
 msgstr "%(specs)s (spesifikasi)"
@@ -507,10 +507,10 @@ msgid "Capabilities"
 msgstr "Kemampuan"
 
 msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr ""
+msgstr "%(heading)s adalah dasar penilaian redaksi, sebelum penalti kuantisasi apa pun; jalankan `llamafit info <model>` untuk melihat benchmark bersumber di baliknya."
 
 msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr ""
+msgstr "%(heading)s adalah total/aktif dalam miliar untuk model mixture-of-experts, atau satu angka bila keduanya sama."
 
 msgid "Models"
 msgstr "Model"
@@ -534,10 +534,10 @@ msgid "Parameters"
 msgstr "Parameter"
 
 msgid "%(total)s total, %(active)s active"
-msgstr ""
+msgstr "%(total)s total, %(active)s aktif"
 
 msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
-msgstr ""
+msgstr "%(tokens)s token secara native, %(extended)s diperluas lewat %(method)s"
 
 msgctxt "context extension method"
 msgid "unspecified method"
@@ -581,13 +581,13 @@ msgid_plural "%(count)d layers"
 msgstr[0] "%(count)d lapisan"
 
 msgid "%(arch)s, %(layers)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s, %(experts)s"
 
 msgid "%(arch)s, %(layers)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s"
 
 msgid "%(arch)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(experts)s"
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
@@ -627,7 +627,7 @@ msgstr "Perintah: %(command)s"
 
 msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
 msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr[0] ""
+msgstr[0] "header GGUF terpotong: diinginkan %(wanted)d byte pada offset %(offset)d, didapat %(got)d"
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "File itu mungkin masih diunduh, atau URL-nya mungkin bukan file GGUF."
@@ -652,7 +652,7 @@ msgstr "LlamaFit mendukung GGUF versi %(versions)s."
 
 msgid "%(count)d shard"
 msgid_plural "%(count)d shards"
-msgstr[0] ""
+msgstr[0] "%(count)d shard"
 
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "file GGUF ini bukan satu model split: semuanya tidak sepakat soal '%(key)s', dan menyatakan %(values)s"
@@ -668,13 +668,13 @@ msgstr "Berikan file model itu, atau setiap shard dari sebuah model split."
 
 msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
 msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr[0] ""
+msgstr[0] "%(count)d file GGUF dari %(total)d yang diberikan tidak membawa kunci '%(key)s', jadi posisinya dalam model split tidak dapat ditetapkan"
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Berikan satu file utuh tanpa split, atau setiap shard dari satu model split."
 
 msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr ""
+msgstr "kumpulan shard tidak lengkap: model itu menyatakan %(shards)s dan %(arrived)d yang tiba (%(key)s %(numbers)s)"
 
 msgid "Pass every shard of the split model."
 msgstr "Berikan setiap shard dari model split itu."
@@ -692,11 +692,11 @@ msgid "Pass each shard of the split model exactly once."
 msgstr "Berikan setiap shard dari model split itu tepat sekali."
 
 msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
-msgstr ""
+msgstr "kumpulan shard tidak lengkap: model itu menyatakan %(tensors)s dan %(shards)s miliknya hanya memuat %(held)d di antara semuanya"
 
 msgid "%(count)d tensor"
 msgid_plural "%(count)d tensors"
-msgstr[0] ""
+msgstr[0] "%(count)d tensor"
 
 msgid "could not read %(path)s: %(error)s"
 msgstr "tidak dapat membaca %(path)s: %(error)s"
@@ -743,7 +743,7 @@ msgstr "tidak ada SPMemoryDataType"
 
 msgid "%(program)s: timed out after %(seconds)s second"
 msgid_plural "%(program)s: timed out after %(seconds)s seconds"
-msgstr[0] ""
+msgstr[0] "%(program)s: waktu habis setelah %(seconds)s detik"
 
 msgid "empty command"
 msgstr "perintah kosong"
@@ -912,3 +912,2819 @@ msgstr "B"
 msgctxt "size"
 msgid "unknown"
 msgstr "tidak diketahui"
+
+msgid "nothing measured touches this term, so there is no equation it appears in"
+msgstr "tidak ada hasil pengukuran yang menyentuh suku ini, jadi tidak ada persamaan yang memuatnya"
+
+msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
+msgstr "%(measurements)d konfigurasi berbeda untuk %(parameters)d parameter bebas; titik yang lebih sedikit daripada parameter menghasilkan angka yang tampak presisi tetapi sebenarnya sembarang"
+
+msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
+msgstr "%(measurements)d konfigurasi itu tidak cukup bervariasi secara independen untuk memisahkan %(parameters)d parameter"
+
+msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "hasil fit menempatkannya di %(value).3f, yang tidak diizinkan oleh definisinya sendiri; hasil pengukuran saling bertentangan di bawah model bagian 10.1"
+
+msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "nilainya keluar %(value).3f, tetapi parameter lain dari fit yang sama mustahil, dan kuadrat terkecil memilih keduanya saling bertentangan"
+
+msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
+msgstr "penaksir tidak punya suku seperti itu: bagian 10.1 menghapus overhead per lapisan, yang untuk model 28 lapisan melebihi seluruh token terukur"
+
+msgid "generation (llama-bench)"
+msgstr "generasi (llama-bench)"
+
+msgid "prompt (llama-bench)"
+msgstr "prompt (llama-bench)"
+
+msgid "generation, first request"
+msgstr "generasi, permintaan pertama"
+
+msgid "generation, 1K prompt"
+msgstr "generasi, prompt 1K"
+
+msgid "prompt, 1K request"
+msgstr "prompt, permintaan 1K"
+
+msgid "peak VRAM"
+msgstr "VRAM puncak"
+
+msgid "no graphics card"
+msgstr "tidak ada kartu grafis"
+
+msgid "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+msgstr "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+
+msgid "%(flag)s was asked for as %(wanted)s but the run reports %(actual)s"
+msgstr "%(flag)s diminta sebagai %(wanted)s tetapi proses itu melaporkan %(actual)s"
+
+msgid "The card was full and generation came in below three fifths of the estimate: the driver was paging to system memory, which does not fail and does not appear in the log."
+msgstr "Kartu itu penuh dan generasi berada di bawah tiga perlima perkiraan: driver melakukan paging ke memori sistem, yang tidak menimbulkan kegagalan dan tidak muncul di log."
+
+msgid "Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page."
+msgstr "VRAM puncak tetap jauh dari total kartu, jadi tidak ada yang perlu di-paging oleh driver."
+
+msgid "The card was full, which a good plan is meant to be, and the speed was close enough to the estimate that nothing was paging."
+msgstr "Kartu itu penuh, sebagaimana memang seharusnya rencana yang baik, dan kecepatannya cukup dekat dengan perkiraan sehingga tidak ada paging."
+
+msgid "No VRAM reading was taken during the run, so this configuration has not been cleared of paging; it has only not been checked."
+msgstr "Tidak ada pembacaan VRAM yang diambil selama proses itu, jadi konfigurasi ini belum dinyatakan bebas paging; ia hanya belum diperiksa."
+
+msgid "The card's total memory is unknown, so a reading of what was in use says nothing about how close to full it was."
+msgstr "Total memori kartu itu tidak diketahui, jadi pembacaan berapa yang terpakai tidak mengatakan apa pun tentang seberapa dekat ia dengan penuh."
+
+msgid "There was no estimate to compare the measured speed against, so the second half of the signature could not be tested."
+msgstr "Tidak ada perkiraan untuk membandingkan kecepatan terukur, jadi paruh kedua tanda itu tidak dapat diuji."
+
+msgid "llama-bench did not produce JSON"
+msgstr "llama-bench tidak menghasilkan JSON"
+
+msgid "llama-bench JSON is not a list of results"
+msgstr "JSON llama-bench bukan daftar hasil"
+
+msgid "llama-bench JSON held no readable results"
+msgstr "JSON llama-bench tidak memuat hasil yang dapat dibaca"
+
+msgid "no llama-bench result rows found"
+msgstr "tidak ditemukan baris hasil llama-bench"
+
+msgid "could not open %(path)s for the server log"
+msgstr "tidak dapat membuka %(path)s untuk log server"
+
+msgid "could not start llama-server"
+msgstr "tidak dapat menjalankan llama-server"
+
+msgid "llama-bench exited with code %(code)d: %(detail)s"
+msgstr "llama-bench keluar dengan kode %(code)d: %(detail)s"
+
+msgid "llama-bench output could not be read: %(error)s"
+msgstr "keluaran llama-bench tidak dapat dibaca: %(error)s"
+
+msgid "llama-server did not become healthy"
+msgstr "llama-server tidak pernah lolos pemeriksaan kesehatan"
+
+msgid "Its whole output is in the log file `bench` named; the end says why."
+msgstr "Seluruh keluarannya ada di file log yang disebut `bench`; bagian akhirnya menjelaskan sebabnya."
+
+msgid "%(path)s was written by a newer LlamaFit (benchmark format %(found)d, this build reads %(known)d)"
+msgstr "%(path)s ditulis oleh LlamaFit yang lebih baru (format benchmark %(found)d, build ini membaca %(known)d)"
+
+msgid "Upgrade LlamaFit, or move the file aside to start a new one."
+msgstr "Perbarui LlamaFit, atau pindahkan file itu agar yang baru dapat dimulai."
+
+msgid "a benchmark cannot be recorded against a simulated machine"
+msgstr "benchmark tidak dapat dicatat terhadap mesin simulasi"
+
+msgid "Run `llamafit bench` on the machine itself, without --profile."
+msgstr "Jalankan `llamafit bench` di mesin itu sendiri, tanpa --profile."
+
+msgid "the run did not use the settings it was given: %(problems)s"
+msgstr "proses itu tidak memakai pengaturan yang diberikan kepadanya: %(problems)s"
+
+msgid "Nothing was stored. A result filed under flags it was not taken with would be believed later by everything that reads it."
+msgstr "Tidak ada yang disimpan. Hasil yang diarsipkan di bawah flag yang bukan flag pengambilannya akan dipercaya kemudian oleh semua yang membacanya."
+
+msgid "a conservative default; nobody has measured this card's backend overhead"
+msgstr "bawaan yang konservatif; belum ada yang mengukur overhead backend kartu ini"
+
+msgid "measured on this card with driver %(driver)s and llama.cpp %(build)s; one machine"
+msgstr "diukur pada kartu ini dengan driver %(driver)s dan llama.cpp %(build)s; satu mesin"
+
+msgid "A hybrid placement has to say how many layers are on the graphics card."
+msgstr "Penempatan hibrida harus menyebutkan berapa lapisan yang ada di kartu grafis."
+
+msgid "Pass gpu_layers, which is what -ngl would be."
+msgstr "Berikan gpu_layers, yang setara dengan -ngl."
+
+msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
+msgstr "LlamaFit belum membaca file %(quant)s milik %(model)s, jadi ia tidak dapat mengukurnya."
+
+msgid "Run `llamafit catalog refresh` to read the file's header."
+msgstr "Jalankan `llamafit catalog refresh` untuk membaca header file itu."
+
+msgid "the server process before any model buffer"
+msgstr "proses server sebelum buffer model apa pun"
+
+msgid "fitted to one machine's measurements; the least certain line here"
+msgstr "dicocokkan dengan hasil pengukuran satu mesin; baris yang paling tidak pasti di sini"
+
+msgid "room for one logit per vocabulary entry per token of the batch"
+msgstr "ruang untuk satu logit per entri kosakata per token dalam batch"
+
+msgid "LlamaFit cannot size a %(kv_type)s key-value cache."
+msgstr "LlamaFit tidak dapat mengukur cache key-value %(kv_type)s."
+
+msgid "Use one of: %(types)s."
+msgstr "Gunakan salah satu dari: %(types)s."
+
+msgid "This model's file does not say how large its key-value cache is per token."
+msgstr "File model ini tidak menyebutkan seberapa besar cache key-value-nya per token."
+
+msgid "Refresh the catalog so the file's header is read again."
+msgstr "Perbarui katalog agar header file itu dibaca ulang."
+
+msgid "the attention-layer count was assumed, not counted"
+msgstr "jumlah lapisan atensi diasumsikan, bukan dihitung"
+
+msgid "%(arch)s allocates more cache than its header describes; see the line below"
+msgstr "%(arch)s mengalokasikan cache lebih banyak daripada yang digambarkan header-nya; lihat baris di bawah"
+
+msgid "what %(arch)s allocates beyond its header, measured rather than derived"
+msgstr "yang dialokasikan %(arch)s di luar header-nya, diukur alih-alih diturunkan"
+
+msgid "from the architecture's state dimensions; it does not grow with context"
+msgstr "dari dimensi state arsitektur itu; ia tidak tumbuh seiring konteks"
+
+msgid "the projector file itself"
+msgstr "file proyektor itu sendiri"
+
+msgid "the projector's own compute space, measured at 248 MiB"
+msgstr "ruang komputasi proyektor itu sendiri, terukur 248 MiB"
+
+msgid "attention projections, feed-forward weights and norms"
+msgstr "proyeksi atensi, bobot feed-forward dan norma"
+
+msgid "always-on experts, which run for every token"
+msgstr "expert yang selalu aktif, yang berjalan untuk setiap token"
+
+msgid "routed experts, read across the bus once per micro-batch"
+msgstr "expert terarah, dibaca lewat bus sekali per mikro-batch"
+
+msgid "this model ties its output projection to its embedding table"
+msgstr "model ini mengikat proyeksi keluarannya ke tabel embedding-nya"
+
+msgid "llama.cpp keeps the embedding table in memory even at full offload"
+msgstr "llama.cpp tetap menyimpan tabel embedding di memori bahkan pada offload penuh"
+
+msgid "streamed from disk as it is needed, not held in memory"
+msgstr "dialirkan dari disk saat dibutuhkan, tidak disimpan di memori"
+
+msgid "held in memory, since streaming from disk was turned off"
+msgstr "disimpan di memori, karena pengaliran dari disk dimatikan"
+
+msgid "With no command, llamafit opens the terminal dashboard; in a pipe, or with --json, it prints what `llamafit recommend` would."
+msgstr "Tanpa perintah, llamafit membuka dasbor terminal; di dalam pipe, atau dengan --json, ia mencetak apa yang akan dicetak `llamafit recommend`."
+
+msgid "Answer for the machine this hardware profile describes instead of this one. Nothing about this machine is probed, and every answer is marked as simulated. `llamafit hardware list` names the profiles you have."
+msgstr "Menjawab untuk mesin yang digambarkan hardware profile ini, bukan untuk mesin ini. Tidak ada yang diperiksa pada mesin ini, dan setiap jawaban ditandai sebagai simulasi. `llamafit hardware list` menyebutkan hardware profile yang Anda punya."
+
+msgid "Pretend the graphics card has this much memory, for example 24G. Everything else stays as scanned, and every answer is marked as simulated."
+msgstr "Berpura-pura kartu grafis punya memori sebanyak ini, misalnya 24G. Selebihnya tetap seperti hasil pemindaian, dan setiap jawaban ditandai sebagai simulasi."
+
+msgid "Pretend the machine has this much system memory, for example 128GiB. Every answer is marked as simulated."
+msgstr "Berpura-pura mesin punya memori sistem sebanyak ini, misalnya 128GiB. Setiap jawaban ditandai sebagai simulasi."
+
+msgid "Pretend the processor has this many physical cores. Every answer is marked as simulated."
+msgstr "Berpura-pura prosesor punya sekian inti fisik. Setiap jawaban ditandai sebagai simulasi."
+
+msgid "Plan, report and score no context longer than this. It caps the model's own length; it does not describe a machine."
+msgstr "Merencanakan, melaporkan dan menilai konteks paling panjang sebesar ini. Ia membatasi panjang model itu sendiri; ia tidak menggambarkan sebuah mesin."
+
+msgid "the output's encoding"
+msgstr "pengodean keluaran"
+
+msgid "%(count)d character could not be written in %(encoding)s and is shown as ?."
+msgid_plural "%(count)d characters could not be written in %(encoding)s and are shown as ?."
+msgstr[0] "%(count)d karakter tidak dapat ditulis dalam %(encoding)s dan ditampilkan sebagai ?."
+
+msgid "Set PYTHONUTF8=1 in the environment and run again: Python then writes UTF-8, which carries every language."
+msgstr "Atur PYTHONUTF8=1 di lingkungan lalu jalankan lagi: Python kemudian menulis UTF-8, yang membawa setiap bahasa."
+
+msgid "%(option)s is an option of llamafit itself, so it goes before the command: `llamafit %(option)s %(rest)s`."
+msgstr "%(option)s adalah opsi llamafit itu sendiri, jadi ia ditempatkan sebelum perintah: `llamafit %(option)s %(rest)s`."
+
+msgid "Benchmark this quantisation instead of the planned one."
+msgstr "Mem-benchmark kuantisasi ini, bukan yang direncanakan."
+
+msgid "Size for this many tokens."
+msgstr "Mengukur untuk sekian banyak token."
+
+msgid "Set the micro-batch by hand; the budget is rebuilt around it."
+msgstr "Mengatur mikro-batch secara manual; anggaran dibangun ulang di sekitarnya."
+
+msgid "Measure a model on this machine and show the measurement beside the estimate.\n\nRuns llama-bench and a real server at the planned flags, stores the result with the conditions it was taken under, and flags a configuration the driver was paging. With --calibrate, fits the estimator's constants to this machine from every stored result and says by name which ones the measurements do not determine."
+msgstr "Mengukur sebuah model di mesin ini dan menampilkan hasil pengukuran di samping perkiraan.\n\nMenjalankan llama-bench dan server sungguhan dengan flag yang direncanakan, menyimpan hasilnya beserta kondisi pengambilannya, dan menandai konfigurasi yang di-paging oleh driver. Dengan --calibrate, konstanta penaksir dicocokkan ke mesin ini dari setiap hasil yang tersimpan dan disebutkan namanya mana saja yang tidak ditentukan oleh hasil pengukuran."
+
+msgid "Measure prompt processing at every micro-batch of the ladder, not only the planned one. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all."
+msgstr "Mengukur pemrosesan prompt pada setiap mikro-batch di tangga, bukan hanya yang direncanakan. Bagian 10.2 punya dua parameter bebas dan satu mikro-batch adalah satu persamaan, jadi tanpa ini paruh prompt dari sebuah kalibrasi sama sekali tidak dapat dicocokkan."
+
+msgid "Run llama-bench only. Faster, and it gives up the paging check, the buffer sizes and the tool-call test, all of which need a real server."
+msgstr "Hanya menjalankan llama-bench. Lebih cepat, tetapi melepaskan pemeriksaan paging, ukuran buffer dan uji panggilan alat, yang semuanya membutuhkan server sungguhan."
+
+msgid "Print the result without writing it to the database."
+msgstr "Mencetak hasilnya tanpa menulisnya ke basis data."
+
+msgid "Print the commands that would run, and run nothing."
+msgstr "Mencetak perintah yang akan dijalankan, tanpa menjalankan apa pun."
+
+msgid "Fit the estimator's constants to this machine from every result."
+msgstr "Mencocokkan konstanta penaksir ke mesin ini dari setiap hasil."
+
+msgid "List what is already stored and stop."
+msgstr "Menampilkan apa yang sudah tersimpan lalu berhenti."
+
+msgid "`llamafit bench` needs a model to measure"
+msgstr "`llamafit bench` membutuhkan sebuah model untuk diukur"
+
+msgid "Try `llamafit bench <model>`, `--calibrate` on its own, or `--show`."
+msgstr "Coba `llamafit bench <model>`, `--calibrate` sendirian, atau `--show`."
+
+msgid "llama.cpp was not found, so there is nothing to benchmark with"
+msgstr "llama.cpp tidak ditemukan, jadi tidak ada yang dapat dipakai untuk benchmark"
+
+msgid "Run `llamafit doctor` to see where it was looked for."
+msgstr "Jalankan `llamafit doctor` untuk melihat di mana ia dicari."
+
+msgid "%(path)s has llama-server but no llama-bench"
+msgstr "%(path)s punya llama-server tetapi tidak punya llama-bench"
+
+msgid "Some release archives leave it out; a full build has it beside the server."
+msgstr "Sebagian arsip rilis tidak menyertakannya; build lengkap punya ia di samping server."
+
+msgid "this host is simulated, and a simulated machine cannot be measured"
+msgstr "mesin ini disimulasikan, dan mesin simulasi tidak dapat diukur"
+
+msgid "Run `llamafit bench` on the machine itself."
+msgstr "Jalankan `llamafit bench` di mesin itu sendiri."
+
+msgid "the model file is not on this machine: %(path)s"
+msgstr "file model itu tidak ada di mesin ini: %(path)s"
+
+msgid "Download it first; `llamafit plan` shows the path the command line uses."
+msgstr "Unduh dulu; `llamafit plan` menampilkan path yang dipakai baris perintah."
+
+msgid "Would run:"
+msgstr "Akan menjalankan:"
+
+msgid "Nothing has been measured on this machine yet."
+msgstr "Belum ada yang diukur di mesin ini."
+
+msgid "Stored measurements"
+msgstr "Pengukuran tersimpan"
+
+msgid "model"
+msgstr "model"
+
+msgid "kind"
+msgstr "jenis"
+
+msgid "gen tok/s"
+msgstr "gen tok/s"
+
+msgid "prompt tok/s"
+msgstr "prompt tok/s"
+
+msgid "taken"
+msgstr "diambil"
+
+msgid "flags"
+msgstr "flag"
+
+msgid "Nothing was written to the database, so no estimate will be relabelled."
+msgstr "Tidak ada yang ditulis ke basis data, jadi tidak ada perkiraan yang akan dilabeli ulang."
+
+msgid "Estimated against measured"
+msgstr "Perkiraan dibandingkan pengukuran"
+
+msgid "figure"
+msgstr "angka"
+
+msgid "context"
+msgstr "konteks"
+
+msgid "micro-batch"
+msgstr "mikro-batch"
+
+msgid "estimated"
+msgstr "perkiraan"
+
+msgid "measured"
+msgstr "terukur"
+
+msgid "ratio"
+msgstr "rasio"
+
+msgid "The plan sizes this configuration for %(context)s tokens and estimates %(tps)s generated tokens per second there. Nothing above ran at that context, so that figure is reported and not compared."
+msgstr "Rencana itu mengukur konfigurasi ini untuk %(context)s token dan memperkirakan %(tps)s token dihasilkan per detik di sana. Tidak ada di atas yang berjalan pada konteks itu, jadi angka itu dilaporkan dan tidak dibandingkan."
+
+msgid "%(count)d figure is outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgid_plural "%(count)d figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgstr[0] "%(count)d angka berada di luar pita 0,8 sampai 1,25 yang diharapkan dicapai rumus tanpa kalibrasi."
+
+msgid "This configuration was paging."
+msgstr "Konfigurasi ini melakukan paging."
+
+msgid "This configuration was not paging."
+msgstr "Konfigurasi ini tidak melakukan paging."
+
+msgid "Paging could not be checked."
+msgstr "Paging tidak dapat diperiksa."
+
+msgid "Peak VRAM was %(percent)s percent of the card, and generation was %(speed)s percent of the estimate."
+msgstr "VRAM puncak adalah %(percent)s persen dari kartu, dan generasi adalah %(speed)s persen dari perkiraan."
+
+msgid "Peak VRAM was %(percent)s percent of the card. Generation was not compared with the estimate."
+msgstr "VRAM puncak adalah %(percent)s persen dari kartu. Generasi tidak dibandingkan dengan perkiraan."
+
+msgid "The largest context on the ladder that would not page is %(tokens)s."
+msgstr "Konteks terbesar di tangga yang tidak akan melakukan paging adalah %(tokens)s."
+
+msgid "Calibration"
+msgstr "Kalibrasi"
+
+msgid "constant"
+msgstr "konstanta"
+
+msgid "value"
+msgstr "nilai"
+
+msgid "from"
+msgstr "dari"
+
+msgid "%(base)s + %(slope)s per 1K"
+msgstr "%(base)s + %(slope)s per 1K"
+
+msgid "%(count)d measured context"
+msgid_plural "%(count)d measured contexts"
+msgstr[0] "%(count)d konteks terukur"
+
+msgid "Nothing was fitted. Every line below says what its constant was missing; a calibration made from less than that would look precise and be arbitrary."
+msgstr "Tidak ada yang dicocokkan. Setiap baris di bawah menyebutkan apa yang kurang bagi konstantanya; kalibrasi yang dibuat dari kurang dari itu akan tampak presisi tetapi sebenarnya sembarang."
+
+msgid "%(name)s was not fitted: %(reason)s"
+msgstr "%(name)s tidak dicocokkan: %(reason)s"
+
+msgid "%(count)d measured configuration"
+msgid_plural "%(count)d measured configurations"
+msgstr[0] "%(count)d konfigurasi terukur"
+
+msgid "What the model is for. It sets the score weights, the speed target and the context a candidate is measured against."
+msgstr "Untuk apa model itu. Ia menetapkan bobot skor, target kecepatan dan konteks yang dipakai untuk mengukur sebuah kandidat."
+
+msgid "Capability the model must have; a model without it is excluded "
+msgstr "Kemampuan yang harus dimiliki model; model tanpa itu dikecualikan "
+
+msgid "balanced, quality or speed: moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights."
+msgstr "balanced, quality atau speed: memindahkan sepersepuluh bobot antara kualitas dan kecepatan. Ia memiringkan papan; ia tidak menggantikan bobot."
+
+msgid "Exclude anything larger to download, for example 40G or 7.5GiB."
+msgstr "Mengecualikan apa pun yang lebih besar untuk diunduh, misalnya 40G atau 7.5GiB."
+
+msgid "The worst verdict to list: comfortable, fits or tight."
+msgstr "Putusan terburuk yang ditampilkan: comfortable, fits atau tight."
+
+msgid "Exclude candidates generating fewer tokens per second than this, in place of the speed a person reads at. Pass 0 when nobody is waiting on the tokens."
+msgstr "Mengecualikan kandidat yang menghasilkan token per detik lebih sedikit daripada ini, menggantikan kecepatan baca seseorang. Berikan 0 bila tidak ada yang menunggui token itu."
+
+msgid "Order the rows drawn: score, speed, quality, context, size, prompt, card, ram, fit, model or quant, largest or best first unless :asc says otherwise. The # column keeps the ranking."
+msgstr "Mengurutkan baris yang digambar: score, speed, quality, context, size, prompt, card, ram, fit, model atau quant, terbesar atau terbaik dulu kecuali :asc mengatakan sebaliknya. Kolom # tetap menjaga peringkat."
+
+msgid "Draw only rows whose id, name or quantisation contains this text."
+msgstr "Hanya menggambar baris yang id, nama atau kuantisasinya memuat teks ini."
+
+msgid "Draw only rows whose file is already on this machine."
+msgstr "Hanya menggambar baris yang file-nya sudah ada di mesin ini."
+
+msgid "Draw only rows that run this way: gpu, moe-offload, hybrid or cpu."
+msgstr "Hanya menggambar baris yang berjalan dengan cara ini: gpu, moe-offload, hybrid atau cpu."
+
+msgid "Draw only rows at or above this verdict: comfortable, fits or tight. The ranking is unchanged and a hidden row is still counted."
+msgstr "Hanya menggambar baris pada putusan ini atau di atasnya: comfortable, fits atau tight. Peringkatnya tidak berubah dan baris yang disembunyikan tetap dihitung."
+
+msgid "Draw exactly these columns, comma-separated, in this order, named as --json names them: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+msgstr "Menggambar persis kolom-kolom ini, dipisahkan koma, dalam urutan ini, dinamai seperti --json menamainya: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+
+msgid "Draw every column whatever the terminal's width; a cell that does not fit folds."
+msgstr "Menggambar setiap kolom berapa pun lebar terminal; sel yang tidak muat akan dilipat."
+
+msgid "Leave the candidates that were not ranked off the table. The reasons are still printed under it."
+msgstr "Tidak memasukkan kandidat yang tidak diperingkat ke dalam tabel. Alasannya tetap dicetak di bawahnya."
+
+msgid "invalid --min-fit %(value)s"
+msgstr "--min-fit tidak sah: %(value)s"
+
+msgid "Valid values: %(values)s"
+msgstr "Nilai yang sah: %(values)s"
+
+msgid "invalid --prefer %(value)s"
+msgstr "--prefer tidak sah: %(value)s"
+
+msgid "invalid --runs %(value)s"
+msgstr "--runs tidak sah: %(value)s"
+
+msgid "invalid --sort %(value)s"
+msgstr "--sort tidak sah: %(value)s"
+
+msgid "invalid --columns %(value)s"
+msgstr "--columns tidak sah: %(value)s"
+
+msgid "Rank the catalog for what you want to do on this machine.\n\nEvery candidate is planned, sized and estimated here, so the first run scans the machine. Speeds compare candidates at 8K tokens of context; --explain expands a row into the scores, the weights, the budget and the speed breakdown that produced it."
+msgstr "Memeringkat katalog untuk apa yang ingin Anda lakukan di mesin ini.\n\nSetiap kandidat direncanakan, diukur dan diperkirakan di sini, jadi proses pertama akan memindai mesin ini. Kecepatan membandingkan kandidat pada 8K token konteks; --explain membentangkan sebuah baris menjadi skor, bobot, anggaran dan rincian kecepatan yang menghasilkannya."
+
+msgid "Exclude candidates that cannot hold at least this many tokens."
+msgstr "Mengecualikan kandidat yang tidak dapat menampung setidaknya sekian token."
+
+msgid "Show at most this many rows."
+msgstr "Menampilkan paling banyak sekian baris."
+
+msgid "Show every quantisation instead of the best one per model."
+msgstr "Menampilkan setiap kuantisasi, bukan hanya yang terbaik per model."
+
+msgid "Expand every row shown into the scores, weights, budget and speed breakdown behind it. Combine with --limit 1 for one model."
+msgstr "Membentangkan setiap baris yang ditampilkan menjadi skor, bobot, anggaran dan rincian kecepatan di baliknya. Gabungkan dengan --limit 1 untuk satu model."
+
+msgid "Plan without a vision projector, freeing its memory."
+msgstr "Merencanakan tanpa proyektor penglihatan, sehingga memorinya dibebaskan."
+
+msgid "Rank every model by how well it uses this machine, whatever it is for.\n\nNo use case, no weights and no score: this is the memory question on its own. Models are sized for 32K tokens of context, and the context column is the largest each one holds in the mode shown."
+msgstr "Memeringkat setiap model menurut seberapa baik ia memakai mesin ini, untuk apa pun ia dipakai.\n\nTanpa kasus penggunaan, tanpa bobot dan tanpa skor: ini semata-mata soal memori. Model diukur untuk 32K token konteks, dan kolom konteks adalah yang terbesar yang dapat ditampung masing-masing dalam mode yang ditampilkan."
+
+msgid "Only the configurations that use the machine well: at least half its memory held in weights, and no pool past four fifths."
+msgstr "Hanya konfigurasi yang memakai mesin ini dengan baik: setidaknya separuh memorinya tersimpan dalam bobot, dan tidak ada kumpulan yang melewati empat perlima."
+
+msgid "Show only this quantisation, matched case-insensitively, in both tables."
+msgstr "Hanya menampilkan kuantisasi ini, dicocokkan tanpa membedakan huruf besar dan kecil, di kedua tabel."
+
+msgid "Size every quantisation for this many tokens instead of the usual 32,768."
+msgstr "Mengukur setiap kuantisasi untuk sekian token, bukan 32.768 seperti biasanya."
+
+msgid "Show one model: its facts, the quants it publishes, and what each would cost on this machine.\n\nThe last table is sized against this machine, so the first run scans it. One line per quantisation; plan opens one of those rows into the memory budget, the context ladder and the command line."
+msgstr "Menampilkan satu model: faktanya, quant yang diterbitkannya, dan berapa biaya masing-masing di mesin ini.\n\nTabel terakhir diukur terhadap mesin ini, jadi proses pertama akan memindainya. Satu baris per kuantisasi; plan membuka salah satu baris itu menjadi anggaran memori, tangga konteks dan baris perintah."
+
+msgid "invalid %(option)s value: %(values)s"
+msgid_plural "invalid %(option)s values: %(values)s"
+msgstr[0] "nilai %(option)s tidak sah: %(values)s"
+
+msgid "%(option)s is not a size: %(value)s"
+msgstr "%(option)s bukan sebuah ukuran: %(value)s"
+
+msgid "Sizes look like 8G, 7.5GiB or 512M; a bare number is bytes."
+msgstr "Ukuran ditulis seperti 8G, 7.5GiB atau 512M; angka polos berarti byte."
+
+msgid "%(ceiling)s %(max)s is below %(floor)s %(min)s"
+msgstr "%(ceiling)s %(max)s berada di bawah %(floor)s %(min)s"
+
+msgid "Raise %(ceiling)s, or lower %(floor)s."
+msgstr "Naikkan %(ceiling)s, atau turunkan %(floor)s."
+
+msgid "`llamafit %(command)s` reports on the machine LlamaFit is running on"
+msgstr "`llamafit %(command)s` melaporkan tentang mesin tempat LlamaFit berjalan"
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a profile describes, run `llamafit hardware show NAME --as-host`."
+msgstr "Hilangkan --profile, --memory, --ram dan --cpu-cores. Untuk melihat mesin yang digambarkan sebuah profil, jalankan `llamafit hardware show NAME --as-host`."
+
+msgid "Hardware profiles: describe a machine in a file and score models against it."
+msgstr "Hardware profile: menggambarkan sebuah mesin dalam sebuah file dan menilai model terhadapnya."
+
+msgid "Validate only this file instead of every bundled and user profile."
+msgstr "Hanya memvalidasi file ini, bukan setiap profil bawaan dan profil pengguna."
+
+msgid "A profile name, or a path to a profile file."
+msgstr "Nama sebuah profil, atau path ke file profil."
+
+msgid "%(count)d hardware profile problem found; run `llamafit hardware validate` for details."
+msgid_plural "%(count)d hardware profile problems found; run `llamafit hardware validate` for details."
+msgstr[0] "Ditemukan %(count)d masalah hardware profile; jalankan `llamafit hardware validate` untuk rinciannya."
+
+msgid "List the hardware profiles LlamaFit has: the bundled ones and your own."
+msgstr "Menampilkan hardware profile yang dimiliki LlamaFit: yang bawaan dan milik Anda sendiri."
+
+msgid "No hardware profiles. Run `llamafit hardware path` to see where yours would go."
+msgstr "Tidak ada hardware profile. Jalankan `llamafit hardware path` untuk melihat di mana milik Anda akan disimpan."
+
+msgid "Show one profile; with --as-host, the machine it stands in for.\n\nA host built from a profile is marked as simulated, in the table and in the JSON, so a what-if is never mistaken for a scan of this machine."
+msgstr "Menampilkan satu profil; dengan --as-host, mesin yang diwakilinya.\n\nMesin yang dibangun dari sebuah profil ditandai sebagai simulasi, di tabel maupun di JSON, sehingga sebuah pengandaian tidak pernah dikira hasil pemindaian mesin ini."
+
+msgid "Show the host this profile substitutes, as `llamafit system` would."
+msgstr "Menampilkan mesin yang digantikan profil ini, sebagaimana `llamafit system` menampilkannya."
+
+msgid "Check hardware profile files against the schema, printing one line per problem."
+msgstr "Memeriksa file hardware profile terhadap skema, mencetak satu baris per masalah."
+
+msgid "Print the directory your own hardware profiles go in."
+msgstr "Mencetak direktori tempat hardware profile Anda sendiri disimpan."
+
+msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr "Direktori itu belum ada; buatlah dan letakkan sebuah file %(suffix)s di dalamnya."
+
+msgid "Install what it takes to run a model: llama.cpp itself, and the weights."
+msgstr "Memasang apa yang diperlukan untuk menjalankan sebuah model: llama.cpp itu sendiri, dan bobotnya."
+
+msgid "Fetch this quantisation instead of the first the catalog publishes."
+msgstr "Mengambil kuantisasi ini, bukan yang pertama diterbitkan katalog."
+
+msgid "Put the files here instead of under the configured downloads directory."
+msgstr "Meletakkan file di sini, bukan di bawah direktori unduhan yang dikonfigurasi."
+
+msgid "Use at most this much bandwidth, for example 5M. Shared across every worker, so the figure is the figure whatever --workers says."
+msgstr "Memakai bandwidth paling banyak sebesar ini, misalnya 5M. Dibagi ke seluruh worker, jadi angkanya tetap angka itu berapa pun yang dikatakan --workers."
+
+msgid "How many requests to keep in flight. More is not always faster, and a home connection is shared with whoever else is using it."
+msgstr "Berapa banyak permintaan yang dijalankan bersamaan. Lebih banyak tidak selalu lebih cepat, dan koneksi rumah dibagi dengan siapa pun yang juga memakainya."
+
+msgid "Do not ask before starting."
+msgstr "Tidak bertanya sebelum memulai."
+
+msgid "Show what would be fetched and stop before fetching it."
+msgstr "Menampilkan apa yang akan diambil lalu berhenti sebelum mengambilnya."
+
+msgid "Fetch only the weights, not the vision projector or the draft model."
+msgstr "Hanya mengambil bobotnya, bukan proyektor penglihatan atau model draf."
+
+msgid "Re-read files that are already here and check them against the catalog."
+msgstr "Membaca ulang file yang sudah ada di sini dan memeriksanya terhadap katalog."
+
+msgid "Fetch files the catalog holds no checksum for. Nothing will be able to tell you whether they arrived intact."
+msgstr "Mengambil file yang checksum-nya tidak dimiliki katalog. Tidak ada yang dapat memberi tahu Anda apakah file itu tiba utuh."
+
+msgid "Show at most this many entries."
+msgstr "Menampilkan paling banyak sekian entri."
+
+msgid "Download a model's weights, resuming anything an earlier run left and checking every file against the catalog's checksum."
+msgstr "Mengunduh bobot sebuah model, melanjutkan apa pun yang ditinggalkan proses sebelumnya dan memeriksa setiap file terhadap checksum katalog."
+
+msgid "Start the download?"
+msgstr "Mulai unduhan?"
+
+msgid "Show what has been downloaded, newest first."
+msgstr "Menampilkan apa yang sudah diunduh, terbaru lebih dulu."
+
+msgid "Nothing has been downloaded yet."
+msgstr "Belum ada yang diunduh."
+
+msgid "Install this backend instead of the one chosen for your GPU: cuda, vulkan, hip, sycl, metal or cpu."
+msgstr "Memasang backend ini, bukan yang dipilih untuk GPU Anda: cuda, vulkan, hip, sycl, metal atau cpu."
+
+msgid "Install here instead of ~/.llamafit/llama.cpp."
+msgstr "Memasang di sini, bukan di ~/.llamafit/llama.cpp."
+
+msgid "Install this release tag, for example b6100, not the latest."
+msgstr "Memasang tag rilis ini, misalnya b6100, bukan yang terbaru."
+
+msgid "invalid --backend %(value)s"
+msgstr "--backend tidak sah: %(value)s"
+
+msgid "Valid backends: %(values)s"
+msgstr "Backend yang sah: %(values)s"
+
+msgid "release %(tag)s publishes no %(backend)s build for %(os)s %(arch)s."
+msgstr "rilis %(tag)s tidak menerbitkan build %(backend)s untuk %(os)s %(arch)s."
+
+msgid "Leave --backend out and LlamaFit will choose a published one."
+msgstr "Hilangkan --backend dan LlamaFit akan memilih salah satu yang diterbitkan."
+
+msgid "release %(tag)s publishes nothing for %(os)s %(arch)s."
+msgstr "rilis %(tag)s tidak menerbitkan apa pun untuk %(os)s %(arch)s."
+
+msgid "Build llama.cpp from source; see the project's own instructions."
+msgstr "Bangun llama.cpp dari sumber; lihat petunjuk proyek itu sendiri."
+
+msgid "Downloading"
+msgstr "Mengunduh"
+
+msgid "Change your PATH?"
+msgstr "Ubah PATH Anda?"
+
+msgid "PATH left alone."
+msgstr "PATH dibiarkan apa adanya."
+
+msgid "PATH changed. Open a new terminal for it to take effect."
+msgstr "PATH diubah. Buka terminal baru agar perubahannya berlaku."
+
+msgid "Download a published llama.cpp build and install it into ~/.llamafit/llama.cpp.\n\nThe plan is printed before anything is written. The archive's checksum is verified before it is unpacked, an interrupted download continues where it stopped, and a directory LlamaFit did not create is never overwritten."
+msgstr "Mengunduh build llama.cpp yang diterbitkan dan memasangnya ke ~/.llamafit/llama.cpp.\n\nRencananya dicetak sebelum ada yang ditulis. Checksum arsip itu diverifikasi sebelum dibongkar, unduhan yang terputus dilanjutkan dari tempat ia berhenti, dan direktori yang tidak dibuat LlamaFit tidak pernah ditimpa."
+
+msgid "Offer to add the bin directory to your PATH, showing the undo first."
+msgstr "Menawarkan untuk menambahkan direktori bin ke PATH Anda, dengan lebih dulu menampilkan cara membatalkannya."
+
+msgid "Install over a directory LlamaFit did not create. Ask yourself twice."
+msgstr "Memasang menimpa direktori yang tidak dibuat LlamaFit. Pikirkan dua kali."
+
+msgid "Install an archive that publishes no checksum. Nothing can be checked."
+msgstr "Memasang arsip yang tidak menerbitkan checksum. Tidak ada yang dapat diperiksa."
+
+msgid "Print the plan and write nothing."
+msgstr "Mencetak rencananya tanpa menulis apa pun."
+
+msgid "Do not ask; assume yes."
+msgstr "Tidak bertanya; menganggap ya."
+
+msgid "Install this?"
+msgstr "Pasang ini?"
+
+msgid "Nothing was written."
+msgstr "Tidak ada yang ditulis."
+
+msgid "Plan this quantisation instead of the one that scores best on this machine."
+msgstr "Merencanakan kuantisasi ini, bukan yang skornya terbaik di mesin ini."
+
+msgid "Size for this many tokens. When it does not fit, the plan sizes down and shows what the context you asked for would have cost."
+msgstr "Mengukur untuk sekian token. Bila tidak muat, rencana itu mengecilkan ukurannya dan menampilkan berapa biaya konteks yang Anda minta."
+
+msgid "Set the micro-batch by hand. The whole budget is rebuilt around it, since it moves the compute buffer and with it the verdict."
+msgstr "Mengatur mikro-batch secara manual. Seluruh anggaran dibangun ulang di sekitarnya, karena ia menggeser buffer komputasi dan ikut menggeser putusannya."
+
+msgid "A generation speed to answer against: whether this reaches it, and what context would."
+msgstr "Kecepatan generasi sebagai acuan jawaban: apakah ini mencapainya, dan konteks mana yang akan mencapainya."
+
+msgid "%(model)s publishes no quantisations"
+msgstr "%(model)s tidak menerbitkan kuantisasi apa pun"
+
+msgid "Run `llamafit catalog refresh --model %(model)s`."
+msgstr "Jalankan `llamafit catalog refresh --model %(model)s`."
+
+msgid "Place one model on this machine and print the command line that runs it.\n\nShows the memory budget component by component, the context ladder a launch script chooses from, where a token's time goes, and any run the catalog records for comparison."
+msgstr "Menempatkan satu model di mesin ini dan mencetak baris perintah yang menjalankannya.\n\nMenampilkan anggaran memori komponen demi komponen, tangga konteks yang menjadi pilihan sebuah skrip peluncur, ke mana waktu sebuah token pergi, dan proses apa pun yang dicatat katalog sebagai pembanding."
+
+msgid "Leave the vision projector out, freeing its memory for context."
+msgstr "Meninggalkan proyektor penglihatan, sehingga memorinya bebas untuk konteks."
+
+msgid "Write the files here instead of in LlamaFit's own presets directory."
+msgstr "Menulis file di sini, bukan di direktori preset milik LlamaFit sendiri."
+
+msgid "Bind this port instead of llama.cpp's default 8080."
+msgstr "Memakai port ini, bukan 8080 yang menjadi bawaan llama.cpp."
+
+msgid "Size for this many tokens. It becomes the top of the ladder the script chooses from; the script never goes above it."
+msgstr "Mengukur untuk sekian token. Itu menjadi puncak tangga yang menjadi pilihan skrip; skrip tidak pernah melampauinya."
+
+msgid "%(model)s does not fit this machine in any configuration"
+msgstr "%(model)s tidak muat di mesin ini dalam konfigurasi mana pun"
+
+msgid "Run `llamafit plan %(model)s` to see what it would need."
+msgstr "Jalankan `llamafit plan %(model)s` untuk melihat apa yang dibutuhkannya."
+
+msgid "Write launch scripts for one model: a script that picks its context from free card memory at start time, a router section, and a README.\n\nA file you have edited is never overwritten without --force."
+msgstr "Menulis skrip peluncur untuk satu model: skrip yang memilih konteksnya dari memori kartu yang bebas saat mulai, sebuah bagian router, dan sebuah README.\n\nFile yang sudah Anda sunting tidak pernah ditimpa tanpa --force."
+
+msgid "Overwrite files you have edited. It says which ones it discarded."
+msgstr "Menimpa file yang sudah Anda sunting. Ia menyebutkan mana saja yang dibuangnya."
+
+msgid "Run a model's preset, wait for the server to answer, and print its endpoints. --stop stops the server LlamaFit started."
+msgstr "Menjalankan preset sebuah model, menunggu server menjawab, dan mencetak endpoint-nya. --stop menghentikan server yang dijalankan LlamaFit."
+
+msgid "Stop the server LlamaFit started for this model."
+msgstr "Menghentikan server yang dijalankan LlamaFit untuk model ini."
+
+msgid "Seconds to wait for /health before reporting that it has not answered."
+msgstr "Berapa detik menunggu /health sebelum melaporkan bahwa ia tidak menjawab."
+
+msgid "the preset could not be written"
+msgstr "preset itu tidak dapat ditulis"
+
+msgid "Wrote a preset first: %(path)s"
+msgstr "Preset ditulis lebih dulu: %(path)s"
+
+msgid "Nothing to stop: LlamaFit has no record of starting %(model)s."
+msgstr "Tidak ada yang perlu dihentikan: LlamaFit tidak punya catatan pernah menjalankan %(model)s."
+
+msgid "Stopped %(model)s, which was serving on %(url)s."
+msgstr "%(model)s dihentikan; ia melayani di %(url)s."
+
+msgid "Preset for %(name)s (%(quant)s) in %(dir)s"
+msgstr "Preset untuk %(name)s (%(quant)s) di %(dir)s"
+
+msgid "The server will answer on %(url)s."
+msgstr "Server akan menjawab di %(url)s."
+
+msgid "Your edits were kept. Nothing above was written to those files; run the command again with --force to replace them."
+msgstr "Suntingan Anda dipertahankan. Tidak ada yang di atas ditulis ke file itu; jalankan perintahnya lagi dengan --force untuk menggantinya."
+
+msgid "At start time the script reads how much card memory is free, keeps %(reserve)s MiB back, and takes the largest context that still fits."
+msgstr "Saat mulai, skrip itu membaca berapa memori kartu yang bebas, menyisakan %(reserve)s MiB, lalu mengambil konteks terbesar yang masih muat."
+
+msgid "This machine has nothing the script can ask for free card memory, so it will start at %(context)s tokens; the script's header says why."
+msgstr "Mesin ini tidak punya apa pun yang dapat ditanyai skrip itu soal memori kartu yang bebas, jadi ia akan mulai pada %(context)s token; header skrip itu menjelaskan sebabnya."
+
+msgid "Files"
+msgstr "File"
+
+msgctxt "column heading"
+msgid "File"
+msgstr "File"
+
+msgctxt "column heading"
+msgid "What happened"
+msgstr "Yang terjadi"
+
+msgid "Context tiers the script may choose"
+msgstr "Tingkat konteks yang dapat dipilih skrip"
+
+msgctxt "column heading"
+msgid "Card needs"
+msgstr "Butuh kartu"
+
+msgctxt "column heading"
+msgid "Free card memory to reach it"
+msgstr "Memori kartu bebas untuk mencapainya"
+
+msgid "%(value)s MiB"
+msgstr "%(value)s MiB"
+
+msgid "written"
+msgstr "ditulis"
+
+msgid "brought up to date"
+msgstr "dimutakhirkan"
+
+msgid "already up to date"
+msgstr "sudah mutakhir"
+
+msgid "kept: you edited it"
+msgstr "dipertahankan: Anda menyuntingnya"
+
+msgid "overwritten: your edits are gone"
+msgstr "ditimpa: suntingan Anda hilang"
+
+msgid "The preset could not be started: %(error)s"
+msgstr "Preset itu tidak dapat dijalankan: %(error)s"
+
+msgid "Started, but %(url)s has not answered yet. A large model can spend minutes reading its weights; try the health endpoint again in a moment, or run `llamafit launch %(model)s --stop`."
+msgstr "Sudah dijalankan, tetapi %(url)s belum menjawab. Model besar dapat menghabiskan beberapa menit untuk membaca bobotnya; coba lagi endpoint health sebentar lagi, atau jalankan `llamafit launch %(model)s --stop`."
+
+msgid "%(model)s was already serving on %(url)s."
+msgstr "%(model)s sudah melayani di %(url)s."
+
+msgid "%(model)s is serving on %(url)s."
+msgstr "%(model)s melayani di %(url)s."
+
+msgid "Stop it with `llamafit launch %(model)s --stop`."
+msgstr "Hentikan dengan `llamafit launch %(model)s --stop`."
+
+msgid "Endpoints"
+msgstr "Endpoint"
+
+msgctxt "column heading"
+msgid "What"
+msgstr "Apa"
+
+msgctxt "column heading"
+msgid "Where"
+msgstr "Di mana"
+
+msgid "Web interface"
+msgstr "Antarmuka web"
+
+msgid "Chat completions"
+msgstr "Chat completions"
+
+msgid "Health"
+msgstr "Status server"
+
+msgid "Ask for the model by the alias %(alias)s."
+msgstr "Mintalah model itu dengan alias %(alias)s."
+
+msgid "%(gbps)s GB/s (%(source)s, cached)"
+msgstr "%(gbps)s GB/s (%(source)s, dari cache)"
+
+msgctxt "simulation override"
+msgid "VRAM"
+msgstr "VRAM"
+
+msgctxt "simulation override"
+msgid "system memory"
+msgstr "memori sistem"
+
+msgctxt "simulation override"
+msgid "CPU cores"
+msgstr "inti CPU"
+
+msgid "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgid_plural "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgstr[0] "angka-angka ini berasal dari hardware profile %(profile)s dengan %(fields)s ditimpa; ini bukan mesin ini"
+
+msgid "these figures come from the hardware profile %(profile)s; they are not this machine"
+msgstr "angka-angka ini berasal dari hardware profile %(profile)s; ini bukan mesin ini"
+
+msgid "%(fields)s was overridden for a what-if; these figures are not what was scanned"
+msgid_plural "%(fields)s were overridden for a what-if; these figures are not what was scanned"
+msgstr[0] "%(fields)s ditimpa untuk sebuah pengandaian; angka-angka ini bukan hasil pemindaian"
+
+msgid "these figures are not this machine"
+msgstr "angka-angka ini bukan mesin ini"
+
+msgid "SIMULATED"
+msgstr "SIMULASI"
+
+msgid "%(total)s VRAM, %(free)s free (Vulkan driver)"
+msgstr "%(total)s VRAM, %(free)s bebas (driver Vulkan)"
+
+msgid "%(total)s VRAM, free unknown"
+msgstr "%(total)s VRAM, yang bebas tidak diketahui"
+
+msgid "Card memory"
+msgstr "Memori kartu"
+
+msgid "%(gpus)s: nothing here could read how much of the card is free, so every budget on this machine was computed as if there were no card at all. Install the Vulkan tools, or write the size into a hardware profile."
+msgstr "%(gpus)s: tidak ada di sini yang dapat membaca berapa banyak kartu itu yang bebas, jadi setiap anggaran di mesin ini dihitung seolah-olah tidak ada kartu sama sekali. Pasang perkakas Vulkan, atau tulis ukurannya ke dalam sebuah hardware profile."
+
+msgid "On this machine"
+msgstr "Di mesin ini"
+
+msgctxt "column heading"
+msgid "Quant"
+msgstr "Quant"
+
+msgctxt "column heading"
+msgid "Runs"
+msgstr "Mode"
+
+msgctxt "column heading"
+msgid "Card"
+msgstr "Kartu"
+
+msgctxt "column heading"
+msgid "RAM"
+msgstr "RAM"
+
+msgctxt "column heading"
+msgid "Tok/s"
+msgstr "Tok/s"
+
+msgctxt "column heading"
+msgid "Ctx"
+msgstr "Ctx"
+
+msgctxt "column heading"
+msgid "Fit"
+msgstr "Muat"
+
+msgid "%(quant)s: %(reason)s"
+msgstr "%(quant)s: %(reason)s"
+
+msgctxt "tokens per second"
+msgid "unknown"
+msgstr "tidak diketahui"
+
+msgctxt "context length"
+msgid "none"
+msgstr "tidak ada"
+
+msgid "Sized for %(context)s tokens, with every figure from a placement computed for this machine. `llamafit plan MODEL --quant NAME` opens one of these rows into the budget line by line, the context ladder and the command line that runs it."
+msgstr "Diukur untuk %(context)s token, dengan setiap angka berasal dari penempatan yang dihitung untuk mesin ini. `llamafit plan MODEL --quant NAME` membuka salah satu baris ini menjadi anggaran baris demi baris, tangga konteks dan baris perintah yang menjalankannya."
+
+msgid "To reach %(context)s tokens, free %(free)s more on the graphics card: that rung needs %(needed)s, which is %(share)s of what is free and over the line where the driver starts paging."
+msgstr "Untuk mencapai %(context)s token, bebaskan %(free)s lagi di kartu grafis: anak tangga itu butuh %(needed)s, yaitu %(share)s dari yang bebas dan melewati batas tempat driver mulai melakukan paging."
+
+msgid "%(context)s tokens is past what this machine holds: that rung needs %(needed)s on the graphics card and there is nothing left to absorb what would not fit, so freeing the card is not the change that reaches it."
+msgstr "%(context)s token melampaui apa yang dapat ditampung mesin ini: anak tangga itu butuh %(needed)s di kartu grafis dan tidak ada lagi yang tersisa untuk menyerap apa yang tidak muat, jadi membebaskan kartu bukanlah perubahan yang akan mencapainya."
+
+msgid "%(quant)s, the next quantisation down, could not be sized: %(reason)s"
+msgstr "%(quant)s, kuantisasi satu tingkat di bawahnya, tidak dapat diukur: %(reason)s"
+
+msgid "%(quant)s, the next quantisation down, does not fit this machine either."
+msgstr "%(quant)s, kuantisasi satu tingkat di bawahnya, juga tidak muat di mesin ini."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens."
+msgstr "%(quant)s, kuantisasi satu tingkat di bawahnya, juga direncanakan di sini: %(mode)s, %(verdict)s, sampai %(context)s token."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens at %(tps)s tokens per second."
+msgstr "%(quant)s, kuantisasi satu tingkat di bawahnya, juga direncanakan di sini: %(mode)s, %(verdict)s, sampai %(context)s token pada %(tps)s token per detik."
+
+msgid "It fits entirely on the graphics card, which this one does not."
+msgstr "Ia muat seluruhnya di kartu grafis, sedangkan yang ini tidak."
+
+msgid "It fits better: %(theirs)s rather than %(mine)s."
+msgstr "Ia lebih pas: %(theirs)s, bukan %(mine)s."
+
+msgid "It holds %(theirs)s tokens rather than %(mine)s."
+msgstr "Ia menampung %(theirs)s token, bukan %(mine)s."
+
+msgid "It generates %(theirs)s tokens per second rather than %(mine)s."
+msgstr "Ia menghasilkan %(theirs)s token per detik, bukan %(mine)s."
+
+msgid "It is no better here, so there is nothing to gain by dropping to it."
+msgstr "Ia tidak lebih baik di sini, jadi tidak ada untungnya turun ke sana."
+
+msgid "Every context this model offers already fits here; the machine is not what limits it."
+msgstr "Setiap konteks yang ditawarkan model ini sudah muat di sini; bukan mesin ini yang membatasinya."
+
+msgid "What would change it"
+msgstr "Apa yang akan mengubahnya"
+
+msgctxt "profile origin"
+msgid "bundled"
+msgstr "bawaan"
+
+msgctxt "profile origin"
+msgid "yours"
+msgstr "milik Anda"
+
+msgid "%(ram)s RAM, no graphics card"
+msgstr "RAM %(ram)s, tanpa kartu grafis"
+
+msgid "%(ram)s RAM shared with %(gpu)s"
+msgstr "RAM %(ram)s dibagi dengan %(gpu)s"
+
+msgid "%(ram)s RAM, %(gpu)s with %(vram)s"
+msgstr "RAM %(ram)s, %(gpu)s dengan %(vram)s"
+
+msgid "%(cores)d core / %(threads)d thread"
+msgid_plural "%(cores)d cores / %(threads)d threads"
+msgstr[0] "%(cores)d inti / %(threads)d thread"
+
+msgid "%(total)s total, %(available)s available; bandwidth %(bandwidth)s"
+msgstr "%(total)s total, %(available)s tersedia; bandwidth %(bandwidth)s"
+
+msgctxt "GPU specifications"
+msgid "no bandwidth or compute figure"
+msgstr "tanpa angka bandwidth atau komputasi"
+
+msgid "%(specs)s (from the profile)"
+msgstr "%(specs)s (dari profil)"
+
+msgid "%(specs)s (from the specification table)"
+msgstr "%(specs)s (dari tabel spesifikasi)"
+
+msgctxt "GPU VRAM"
+msgid "VRAM from the shared pool"
+msgstr "VRAM dari kumpulan bersama"
+
+msgid "Hardware profiles"
+msgstr "Hardware profile"
+
+msgid "Machine"
+msgstr "Mesin"
+
+msgid "a graphics card whose name contains %(text)s"
+msgstr "kartu grafis yang namanya memuat %(text)s"
+
+msgid "a processor whose model contains %(text)s"
+msgstr "prosesor yang modelnya memuat %(text)s"
+
+msgid "at least %(ram)s of memory"
+msgstr "setidaknya %(ram)s memori"
+
+msgctxt "profile match rules"
+msgid "none, so this profile is never chosen for you"
+msgstr "tidak ada, jadi profil ini tidak pernah dipilihkan untuk Anda"
+
+msgid "Description"
+msgstr "Deskripsi"
+
+msgid "From"
+msgstr "Dari"
+
+msgid "File"
+msgstr "File"
+
+msgid "Matches"
+msgstr "Cocok bila"
+
+msgid "Recorded"
+msgstr "Dicatat"
+
+msgid "Provenance"
+msgstr "Asal"
+
+msgid "recorded from %(source)s; this build stores it but does not apply it yet"
+msgstr "dicatat dari %(source)s; build ini menyimpannya tetapi belum menerapkannya"
+
+msgctxt "utilisation"
+msgid "n/a"
+msgstr "n/a"
+
+msgctxt "run mode"
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "run mode"
+msgid "experts in RAM"
+msgstr "expert di RAM"
+
+msgctxt "run mode"
+msgid "split"
+msgstr "terbagi"
+
+msgctxt "run mode"
+msgid "CPU"
+msgstr "CPU"
+
+msgctxt "run mode"
+msgid "nowhere"
+msgstr "tak ada tempat"
+
+msgctxt "fit verdict"
+msgid "roomy"
+msgstr "lega"
+
+msgctxt "fit verdict"
+msgid "fits"
+msgstr "muat"
+
+msgctxt "fit verdict"
+msgid "tight"
+msgstr "sempit"
+
+msgctxt "fit verdict"
+msgid "pages"
+msgstr "paging"
+
+msgctxt "fit verdict"
+msgid "no room"
+msgstr "tak muat"
+
+msgid "Roomy: there is room for a longer context or a second model."
+msgstr "Lega: ada ruang untuk konteks yang lebih panjang atau model kedua."
+
+msgid "Fits: the intended configuration runs as planned."
+msgstr "Muat: konfigurasi yang dimaksud berjalan sesuai rencana."
+
+msgid "Tight: it runs, but a browser or a second process can push it over."
+msgstr "Sempit: ia berjalan, tetapi sebuah peramban atau proses kedua dapat mendorongnya melewati batas."
+
+msgid "Pages: this needs more of the graphics card than is free. The driver will not refuse it — it moves the overflow to system memory, the server starts, the log looks healthy, and generation runs at a fraction of its speed with nothing saying why."
+msgstr "Paging: ini butuh kartu grafis lebih banyak daripada yang bebas. Driver tidak akan menolaknya: ia memindahkan kelebihannya ke memori sistem, server tetap jalan, log tampak sehat, dan generasi berjalan pada sebagian kecil kecepatannya tanpa ada yang menjelaskan sebabnya."
+
+msgid "No room: more memory than this machine has, with nothing to page to."
+msgstr "Tak muat: butuh memori lebih banyak daripada yang dimiliki mesin ini, dan tidak ada tempat untuk paging."
+
+msgctxt "confidence"
+msgid "measured"
+msgstr "diukur"
+
+msgctxt "confidence"
+msgid "calibrated"
+msgstr "dikalibrasi"
+
+msgctxt "confidence"
+msgid "estimated"
+msgstr "diperkirakan"
+
+msgctxt "confidence"
+msgid "no estimate"
+msgstr "tanpa perkiraan"
+
+msgid "Speeds are benchmarks taken on this machine, not predictions."
+msgstr "Kecepatan di sini adalah benchmark yang diambil di mesin ini, bukan prediksi."
+
+msgid "Speeds are section 10's formula corrected by benchmarks taken on this machine."
+msgstr "Kecepatan di sini adalah rumus bagian 10 yang dikoreksi oleh benchmark yang diambil di mesin ini."
+
+msgid "Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement."
+msgstr "Kecepatan di sini adalah rumus bagian 10 dengan konstanta bawaannya. Belum ada yang di-benchmark di mesin ini, jadi tidak ada angka di sini yang merupakan hasil pengukuran."
+
+msgid "No speed could be estimated."
+msgstr "Tidak ada kecepatan yang dapat diperkirakan."
+
+msgctxt "memory pool"
+msgid "card"
+msgstr "kartu"
+
+msgctxt "memory pool"
+msgid "system"
+msgstr "sistem"
+
+msgctxt "memory pool"
+msgid "disk"
+msgstr "disk"
+
+msgctxt "budget component"
+msgid "dense weights"
+msgstr "bobot padat"
+
+msgctxt "budget component"
+msgid "shared experts"
+msgstr "expert bersama"
+
+msgctxt "budget component"
+msgid "routed experts"
+msgstr "expert terarah"
+
+msgctxt "budget component"
+msgid "token embedding"
+msgstr "embedding token"
+
+msgctxt "budget component"
+msgid "output head"
+msgstr "kepala keluaran"
+
+msgctxt "budget component"
+msgid "other weights"
+msgstr "bobot lain"
+
+msgctxt "budget component"
+msgid "streamed tables"
+msgstr "tabel yang dialirkan"
+
+msgctxt "budget component"
+msgid "KV cache"
+msgstr "cache KV"
+
+msgctxt "budget component"
+msgid "KV cache, undeclared"
+msgstr "cache KV, tak dideklarasikan"
+
+msgctxt "budget component"
+msgid "recurrent state"
+msgstr "keadaan rekuren"
+
+msgctxt "budget component"
+msgid "compute buffer"
+msgstr "buffer komputasi"
+
+msgctxt "budget component"
+msgid "output buffer"
+msgstr "buffer keluaran"
+
+msgctxt "budget component"
+msgid "vision projector"
+msgstr "proyektor penglihatan"
+
+msgctxt "budget component"
+msgid "vision compute"
+msgstr "komputasi penglihatan"
+
+msgctxt "budget component"
+msgid "backend overhead"
+msgstr "overhead backend"
+
+msgctxt "budget component"
+msgid "process overhead"
+msgstr "overhead proses"
+
+msgctxt "budget line source"
+msgid "file"
+msgstr "file"
+
+msgctxt "budget line source"
+msgid "formula"
+msgstr "rumus"
+
+msgctxt "column heading"
+msgid "Component"
+msgstr "Komponen"
+
+msgctxt "column heading"
+msgid "From"
+msgstr "Dari"
+
+msgid "Card: %(required)s of %(available)s free, %(share)s used."
+msgstr "Kartu: %(required)s dari %(available)s yang bebas, %(share)s terpakai."
+
+msgid "System memory: %(required)s of %(available)s free, %(share)s used."
+msgstr "Memori sistem: %(required)s dari %(available)s yang bebas, %(share)s terpakai."
+
+msgid "%(component)s: %(note)s"
+msgstr "%(component)s: %(note)s"
+
+msgid "Context tiers"
+msgstr "Tingkat konteks"
+
+msgctxt "column heading"
+msgid "On this machine"
+msgstr "Di mesin ini"
+
+msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
+msgstr "Sebuah skrip peluncur membandingkan memori bebas yang dilihatnya dengan kolom kartu dan mengambil anak tangga terbesar yang muat (lihat docs/cli.md)."
+
+msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
+msgstr "%(gen)s token per detik dihasilkan dan %(prompt)s dibaca, pada %(context)s token konteks (%(confidence)s)."
+
+msgctxt "column heading"
+msgid "A token's time"
+msgstr "Waktu sebuah token"
+
+msgctxt "token time"
+msgid "reading the card"
+msgstr "membaca kartu"
+
+msgctxt "token time"
+msgid "reading system memory"
+msgstr "membaca memori sistem"
+
+msgctxt "token time"
+msgid "everything else"
+msgstr "selebihnya"
+
+msgctxt "column heading"
+msgid "A prompt token's time"
+msgstr "Waktu sebuah token prompt"
+
+msgctxt "prompt token time"
+msgid "doing the arithmetic"
+msgstr "melakukan perhitungan"
+
+msgctxt "prompt token time"
+msgid "streaming the experts across the link"
+msgstr "mengalirkan expert lewat link"
+
+msgctxt "prompt token time"
+msgid "reading the experts from system memory"
+msgstr "membaca expert dari memori sistem"
+
+msgctxt "column heading"
+msgid "Seconds"
+msgstr "Detik"
+
+msgctxt "column heading"
+msgid "Share"
+msgstr "Porsi"
+
+msgid "Measured on %(date)s."
+msgstr "Diukur pada %(date)s."
+
+msgid "Recorded elsewhere"
+msgstr "Dicatat di tempat lain"
+
+msgctxt "column heading"
+msgid "Run"
+msgstr "Proses"
+
+msgctxt "column heading"
+msgid "Date"
+msgstr "Tanggal"
+
+msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
+msgstr "Ini adalah proses milik kurator sendiri di mesin mereka, bukan benchmark mesin ini, jadi tidak ada di atas yang dilabeli sebagai diukur. Bandingkan dengan perkiraan; `llamafit bench` akan mengukur mesin ini pada fase 3."
+
+msgid "%(profile)s: %(flags)s"
+msgstr "%(profile)s: %(flags)s"
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
+msgstr "%(baseline)s dari kurator, dikurangi %(penalty)s untuk kuantisasi ini, ditambah %(bonus)s karena %(use_case)s adalah tugas yang menjadi tujuan pembuatannya."
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
+msgstr "%(baseline)s dari kurator, dikurangi %(penalty)s untuk kuantisasi ini; ia mencantumkan %(use_case)s tetapi bukan untuk itu ia dibuat."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
+msgstr "%(gen)s token per detik terhadap %(target)s yang diminta kasus penggunaan ini, dikurangi %(penalty)s karena ia membaca prompt pada %(prompt)s."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
+msgstr "%(gen)s token per detik terhadap %(target)s yang diminta kasus penggunaan ini."
+
+msgid "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool is %(share)s full. The score wants at least %(low)s of the memory taken and no more than %(high)s of any one pool."
+msgstr "Bobotnya menempati %(weights)s dari %(memory)s milik mesin ini dan kumpulan yang paling sempit terisi %(share)s. Skor menghendaki setidaknya %(low)s memori terpakai dan tidak lebih dari %(high)s untuk satu kumpulan mana pun."
+
+msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
+msgstr "Menampung %(fit)s token dari %(requested)s yang menjadi acuan penilaian permintaan ini."
+
+msgid "Score %(total)s"
+msgstr "Skor %(total)s"
+
+msgctxt "column heading"
+msgid "Part"
+msgstr "Bagian"
+
+msgctxt "column heading"
+msgid "Weight"
+msgstr "Bobot"
+
+msgctxt "column heading"
+msgid "Adds"
+msgstr "Menambah"
+
+msgctxt "score part"
+msgid "quality"
+msgstr "kualitas"
+
+msgctxt "score part"
+msgid "speed"
+msgstr "kecepatan"
+
+msgctxt "score part"
+msgid "fit"
+msgstr "muat"
+
+msgctxt "score part"
+msgid "context"
+msgstr "konteks"
+
+msgctxt "board sort"
+msgid "score"
+msgstr "skor"
+
+msgctxt "board sort"
+msgid "speed"
+msgstr "kecepatan"
+
+msgctxt "board sort"
+msgid "quality"
+msgstr "kualitas"
+
+msgctxt "board sort"
+msgid "context"
+msgstr "konteks"
+
+msgctxt "board sort"
+msgid "download size"
+msgstr "ukuran unduhan"
+
+msgctxt "board sort"
+msgid "prompt speed"
+msgstr "kecepatan prompt"
+
+msgctxt "board sort"
+msgid "card memory"
+msgstr "memori kartu"
+
+msgctxt "board sort"
+msgid "system memory"
+msgstr "memori sistem"
+
+msgctxt "board sort"
+msgid "fit"
+msgstr "muat"
+
+msgctxt "board sort"
+msgid "model id"
+msgstr "id model"
+
+msgctxt "board sort"
+msgid "quantisation"
+msgstr "kuantisasi"
+
+msgctxt "column heading"
+msgid "#"
+msgstr "#"
+
+msgctxt "column heading"
+msgid "Model"
+msgstr "Model"
+
+msgctxt "column heading"
+msgid "Size"
+msgstr "Ukuran"
+
+msgctxt "column heading"
+msgid "Have"
+msgstr "Di disk"
+
+msgctxt "column heading"
+msgid "Score"
+msgstr "Skor"
+
+msgctxt "column heading"
+msgid "Qual"
+msgstr "Kual."
+
+msgctxt "column heading"
+msgid "Prompt tok/s"
+msgstr "Tok/s prompt"
+
+msgctxt "column heading"
+msgid "How"
+msgstr "Cara"
+
+msgctxt "model file on this machine"
+msgid "yes"
+msgstr "ya"
+
+msgctxt "model file on this machine"
+msgid "no"
+msgstr "tidak"
+
+msgid "no placement of it fits this machine at any context"
+msgstr "tidak ada penempatannya yang muat di mesin ini pada konteks mana pun"
+
+msgctxt "exclusion tag"
+msgid "no room"
+msgstr "tak muat"
+
+msgctxt "exclusion tag"
+msgid "no facts"
+msgstr "tanpa fakta"
+
+msgctxt "exclusion tag"
+msgid "not ranked"
+msgstr "tak diperingkat"
+
+msgctxt "board cell with no figure"
+msgid "–"
+msgstr "–"
+
+msgid "%(term)s is not a filter; the terms are %(terms)s, and anything else is text to look for."
+msgstr "%(term)s bukan sebuah filter; istilah yang ada adalah %(terms)s, dan selain itu dianggap teks yang dicari."
+
+msgid "fit>= takes one of %(values)s"
+msgstr "fit>= menerima salah satu dari %(values)s"
+
+msgid "runs= takes one of %(values)s"
+msgstr "runs= menerima salah satu dari %(values)s"
+
+msgid "%(term)s needs a number"
+msgstr "%(term)s membutuhkan sebuah angka"
+
+msgid "%(term)s needs a size such as 8G, 7.5GiB or 512M"
+msgstr "%(term)s membutuhkan sebuah ukuran seperti 8G, 7.5GiB atau 512M"
+
+msgctxt "board filter"
+msgid "every candidate"
+msgstr "setiap kandidat"
+
+msgctxt "board filter"
+msgid "the ones with room to spare"
+msgstr "yang masih punya ruang lebih"
+
+msgctxt "board filter"
+msgid "the ones that fit"
+msgstr "yang muat"
+
+msgctxt "board filter"
+msgid "the ones that run"
+msgstr "yang berjalan"
+
+msgid "matching %(text)s"
+msgstr "yang cocok dengan %(text)s"
+
+msgid "running as %(mode)s"
+msgstr "yang berjalan sebagai %(mode)s"
+
+msgid "at least %(tps)s tokens per second"
+msgstr "setidaknya %(tps)s token per detik"
+
+msgid "no more than %(size)s to download"
+msgstr "tidak lebih dari %(size)s untuk diunduh"
+
+msgid "no more than %(size)s on the card"
+msgstr "tidak lebih dari %(size)s di kartu"
+
+msgid "no more than %(size)s of system memory"
+msgstr "tidak lebih dari %(size)s memori sistem"
+
+msgid "holding at least %(context)s tokens"
+msgstr "yang menampung setidaknya %(context)s token"
+
+msgid "a quality of at least %(quality)s"
+msgstr "kualitas setidaknya %(quality)s"
+
+msgid "%(shown)d of %(total)d shown"
+msgstr "%(shown)d dari %(total)d ditampilkan"
+
+msgid "%(sort)s in reverse"
+msgstr "%(sort)s secara terbalik"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s already on this machine."
+msgstr "%(counted)s, menurut %(sort)s, menampilkan %(filter)s yang sudah ada di mesin ini."
+
+msgctxt "board filter"
+msgid "already on this machine"
+msgstr "yang sudah ada di mesin ini"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s."
+msgstr "%(counted)s, menurut %(sort)s, menampilkan %(filter)s."
+
+msgid "Nothing was ranked. Every candidate is listed below with the reason; widen the request or free some memory."
+msgstr "Tidak ada yang diperingkat. Setiap kandidat didaftarkan di bawah beserta alasannya; perluas permintaan Anda atau bebaskan sebagian memori."
+
+msgid "Recommended"
+msgstr "Direkomendasikan"
+
+msgid "--min-tps 0: nobody is waiting on these tokens, so nothing was excluded for generating more slowly than a person reads."
+msgstr "--min-tps 0: tidak ada yang menunggui token ini, jadi tidak ada yang dikecualikan karena menghasilkan lebih lambat daripada kecepatan baca seseorang."
+
+msgid "--min-tps %(tps)s: this board wanted at least that many tokens per second, and anything slower is excluded below rather than ranked here."
+msgstr "--min-tps %(tps)s: papan ini menghendaki setidaknya sekian token per detik, dan apa pun yang lebih lambat dikecualikan di bawah, bukan diperingkat di sini."
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; --limit sets how many, and the rest are neither worse-behaved nor hidden, only further down."
+msgstr "Menampilkan %(shown)s terbaik dari %(total)s yang memenuhi syarat; --limit menentukan berapa banyak, dan sisanya tidak lebih buruk maupun disembunyikan, hanya berada lebih ke bawah."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every speed above is a CPU-only speed. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s ada di mesin ini dan tidak ada yang dapat membaca berapa banyak yang bebas, jadi setiap kecepatan di atas adalah kecepatan CPU saja. `llamafit doctor` menjelaskan cara memperbaikinya."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
+msgstr "Kecepatan di sini untuk %(working)s token konteks agar setiap baris dibandingkan setara; kolom konteks adalah yang terbesar yang dapat ditampung masing-masing. Diukur dan dinilai untuk %(use_case)s pada %(requested)s token."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
+msgstr "Kecepatan di sini untuk %(working)s token konteks agar setiap baris dibandingkan setara; kolom konteks adalah yang terbesar yang dapat ditampung masing-masing. Diukur untuk %(planned)s token dan dinilai untuk %(use_case)s terhadap %(requested)s."
+
+msgid "Weights: %(weights)s."
+msgstr "Bobot: %(weights)s."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free, no card."
+msgstr "Dihitung dengan %(ram_free)s dari %(ram_total)s memori sistem yang bebas, tanpa kartu."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free and %(vram_free)s of %(vram_total)s free on the %(gpu)s."
+msgstr "Dihitung dengan %(ram_free)s dari %(ram_total)s memori sistem yang bebas dan %(vram_free)s dari %(vram_total)s yang bebas pada %(gpu)s."
+
+msgid "Every speed above is derived from %(bandwidth)s of memory bandwidth."
+msgstr "Setiap kecepatan di atas diturunkan dari bandwidth memori %(bandwidth)s."
+
+msgid "That bandwidth was kept from an earlier run on this machine; `llamafit system --refresh-bandwidth` times it again."
+msgstr "Bandwidth itu disimpan dari proses sebelumnya di mesin ini; `llamafit system --refresh-bandwidth` mengukurnya lagi."
+
+msgid "generates fewer than the %(floor)s tokens per second this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "menghasilkan kurang dari %(floor)s token per detik yang diminta permintaan ini; turunkan --min-tps atau pilih model atau kuantisasi yang lebih kecil"
+
+msgid "generates fewer than the %(floor)s tokens per second a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "menghasilkan kurang dari %(floor)s token per detik yang menjadi kecepatan baca seseorang: sebuah perkakas batch di mesin ini, bukan yang ditunggui di depan layar; model atau kuantisasi yang lebih kecil akan mengimbangi"
+
+msgid "%(tps)s tok/s"
+msgstr "%(tps)s tok/s"
+
+msgctxt "exclusion tag"
+msgid "too slow"
+msgstr "kurang cepat"
+
+msgctxt "exclusion tag"
+msgid "too big"
+msgstr "terlalu besar"
+
+msgid "larger to download than the %(limit)s this request allows"
+msgstr "lebih besar untuk diunduh daripada %(limit)s yang diizinkan permintaan ini"
+
+msgctxt "exclusion tag"
+msgid "unknown quant"
+msgstr "quant tak dikenal"
+
+msgid "a quantisation whose cost in quality is not known, so it cannot be scored"
+msgstr "kuantisasi yang biaya kualitasnya tidak diketahui, jadi ia tidak dapat dinilai"
+
+msgid "needs more memory than this machine has, even at its smallest context"
+msgstr "butuh memori lebih banyak daripada yang dimiliki mesin ini, bahkan pada konteks terkecilnya"
+
+msgctxt "exclusion tag"
+msgid "unsupported"
+msgstr "tak didukung"
+
+msgid "no run mode supports this model on this machine"
+msgstr "tidak ada mode jalan yang mendukung model ini di mesin ini"
+
+msgctxt "exclusion tag"
+msgid "short context"
+msgstr "konteks pendek"
+
+msgid "holds fewer than the %(minimum)s tokens asked for; lower the minimum context or free memory to see it ranked"
+msgstr "menampung kurang dari %(minimum)s token yang diminta; turunkan konteks minimum atau bebaskan memori agar ia diperingkat"
+
+msgctxt "exclusion tag"
+msgid "no estimate"
+msgstr "tanpa perkiraan"
+
+msgid "no speed estimate, so it cannot be ranked against models that have one"
+msgstr "tidak ada perkiraan kecepatan, jadi ia tidak dapat diperingkat terhadap model yang punya"
+
+msgctxt "exclusion tag"
+msgid "no %(capability)s"
+msgstr "tanpa %(capability)s"
+
+msgid "no %(capability)s capability; drop it from the request, or ask for a use case that does not need it"
+msgstr "tidak punya kemampuan %(capability)s; hilangkan dari permintaan, atau minta kasus penggunaan yang tidak membutuhkannya"
+
+msgid "Not ranked"
+msgstr "Tidak diperingkat"
+
+msgid "Not placed"
+msgstr "Tidak ditempatkan"
+
+msgid "%(tag)s (%(count)s):"
+msgstr "%(tag)s (%(count)s):"
+
+msgid "%(model)s %(quant)s: %(reason)s"
+msgstr "%(model)s %(quant)s: %(reason)s"
+
+msgid "%(tag)s (%(count)s): %(sentence)s."
+msgstr "%(tag)s (%(count)s): %(sentence)s."
+
+msgid "%(model)s %(quant)s (%(figure)s)"
+msgstr "%(model)s %(quant)s (%(figure)s)"
+
+msgid "%(name)s %(quant)s (%(tag)s)"
+msgstr "%(name)s %(quant)s (%(tag)s)"
+
+msgid "%(rank)s. %(name)s %(quant)s"
+msgstr "%(rank)s. %(name)s %(quant)s"
+
+msgid "Nothing fits this machine at that threshold. Try --min-fit tight, or drop --perfect."
+msgstr "Tidak ada yang muat di mesin ini pada ambang itu. Coba --min-fit tight, atau hilangkan --perfect."
+
+msgid "Fit on the simulated machine"
+msgstr "Muat di mesin simulasi"
+
+msgid "Fit on this machine"
+msgstr "Muat di mesin ini"
+
+msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
+msgstr "Diukur untuk %(context)s token. Kolom konteks adalah yang terbesar yang dapat ditampung masing-masing dalam mode yang ditampilkan."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every row was sized as if there were no card. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s ada di mesin ini dan tidak ada yang dapat membaca berapa banyak yang bebas, jadi setiap baris diukur seolah-olah tidak ada kartu. `llamafit doctor` menjelaskan cara memperbaikinya."
+
+msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
+msgstr "%(mode)s pada %(context)s token, mikro-batch %(ub)s, cache %(kv)s, %(threads)s thread."
+
+msgid "This reaches the %(target)s tokens per second asked for."
+msgstr "Ini mencapai %(target)s token per detik yang diminta."
+
+msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
+msgstr "Ia tidak mencapai %(target)s token per detik di sini, tetapi %(context)s token konteks akan mencapainya: berikan --context %(tokens)s."
+
+msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
+msgstr "Tidak ada yang dapat dilakukan model dan kuantisasi ini di mesin ini yang mencapai %(target)s token per detik; konfigurasi tercepat yang dicoba adalah %(best)s. Model yang lebih kecil atau kuantisasi yang lebih kecil adalah perubahan yang akan mencapainya."
+
+msgid "%(name)s %(quant)s"
+msgstr "%(name)s %(quant)s"
+
+msgid "Memory budget"
+msgstr "Anggaran memori"
+
+msgid "The %(context)s tokens asked for would have cost"
+msgstr "%(context)s token yang diminta akan menelan biaya"
+
+msgid "Command line"
+msgstr "Baris perintah"
+
+msgid "Model file: %(path)s."
+msgstr "File model: %(path)s."
+
+msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
+msgstr "File model: %(path)s, yang belum ada di mesin ini; di situlah sebuah unduhan akan meletakkannya. %(size)s untuk diambil."
+
+msgid "%(shown)d of %(total)d candidate shown."
+msgid_plural "%(shown)d of %(total)d candidates shown."
+msgstr[0] "%(shown)d dari %(total)d kandidat ditampilkan."
+
+msgid "Release"
+msgstr "Rilis"
+
+msgid "%(tag)s (build %(build)s)"
+msgstr "%(tag)s (build %(build)s)"
+
+msgid "Backend"
+msgstr "Backend"
+
+msgid "Archive"
+msgstr "Arsip"
+
+msgid "Also"
+msgstr "Juga"
+
+msgid "Download"
+msgstr "Unduhan"
+
+msgid "%(size)s (%(done)s already on disk)"
+msgstr "%(size)s (%(done)s sudah ada di disk)"
+
+msgid "Checksum"
+msgstr "Checksum"
+
+msgid "published, checked before anything is unpacked"
+msgstr "diterbitkan, diperiksa sebelum ada yang dibongkar"
+
+msgid "none published"
+msgstr "tidak ada yang diterbitkan"
+
+msgid "Install into"
+msgstr "Pasang ke"
+
+msgid "Directory"
+msgstr "Direktori"
+
+msgid "Free space"
+msgstr "Ruang bebas"
+
+msgid "Free space (cache)"
+msgstr "Ruang bebas (cache)"
+
+msgid "%(free)s on %(path)s, %(needed)s needed"
+msgstr "%(free)s di %(path)s, %(needed)s dibutuhkan"
+
+msgid "will be created"
+msgstr "akan dibuat"
+
+msgid "exists and is empty"
+msgstr "ada dan kosong"
+
+msgid "holds %(tag)s, installed by LlamaFit; it will be replaced"
+msgstr "memuat %(tag)s, dipasang oleh LlamaFit; ia akan diganti"
+
+msgid "installed by LlamaFit; it will be replaced"
+msgstr "dipasang oleh LlamaFit; ia akan diganti"
+
+msgid "was not installed by LlamaFit"
+msgstr "tidak dipasang oleh LlamaFit"
+
+msgid "Installed llama.cpp %(tag)s into %(path)s."
+msgstr "llama.cpp %(tag)s dipasang ke %(path)s."
+
+msgid "Replaced %(tag)s."
+msgstr "%(tag)s diganti."
+
+msgid "Backends found in it: %(backends)s"
+msgstr "Backend yang ditemukan di dalamnya: %(backends)s"
+
+msgid "none"
+msgstr "tidak ada"
+
+msgid "Check it with `llamafit doctor`."
+msgstr "Periksa dengan `llamafit doctor`."
+
+msgid "already here"
+msgstr "sudah ada di sini"
+
+msgid "to fetch"
+msgstr "akan diambil"
+
+msgid "About to download"
+msgstr "Akan mengunduh"
+
+msgid "Role"
+msgstr "Peran"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "%(name)s %(quant)s from %(repo)s"
+msgstr "%(name)s %(quant)s dari %(repo)s"
+
+msgid "%(count)d file, %(total)s in all, %(needed)s still to fetch."
+msgid_plural "%(count)d files, %(total)s in all, %(needed)s still to fetch."
+msgstr[0] "%(count)d file, %(total)s seluruhnya, %(needed)s masih harus diambil."
+
+msgid "Into %(path)s, which has %(free)s free; %(after)s would be left."
+msgstr "Ke %(path)s, yang punya %(free)s bebas; %(after)s akan tersisa."
+
+msgid "The catalog holds no checksum for %(files)s."
+msgid_plural "The catalog holds no checksums for %(files)s."
+msgstr[0] "Katalog tidak punya checksum untuk %(files)s."
+
+msgid "%(model)s %(quant)s is already here; nothing to do."
+msgstr "%(model)s %(quant)s sudah ada di sini; tidak ada yang perlu dilakukan."
+
+msgid "Stopped. What arrived is kept; run `llamafit install model %(model)s` again to carry on from there."
+msgstr "Dihentikan. Apa yang sudah tiba dipertahankan; jalankan `llamafit install model %(model)s` lagi untuk melanjutkan dari sana."
+
+msgid "%(count)d file, %(size)s, checked against the catalog."
+msgid_plural "%(count)d files, %(size)s, checked against the catalog."
+msgstr[0] "%(count)d file, %(size)s, diperiksa terhadap katalog."
+
+msgid "In %(path)s. Run `llamafit plan %(model)s` for the command line that runs it."
+msgstr "Di %(path)s. Jalankan `llamafit plan %(model)s` untuk baris perintah yang menjalankannya."
+
+msgid "Downloads"
+msgstr "Unduhan"
+
+msgid "When"
+msgstr "Kapan"
+
+msgid "Model"
+msgstr "Model"
+
+msgid "Quant"
+msgstr "Quant"
+
+msgid "Outcome"
+msgstr "Hasil"
+
+msgid "finished"
+msgstr "selesai"
+
+msgid "stopped"
+msgstr "dihentikan"
+
+msgid "Bind to this address instead of 127.0.0.1. Anything but loopback puts the dashboard on your network, where there is no password and no login; it prints what that exposes before it starts."
+msgstr "Mengikat ke alamat ini, bukan 127.0.0.1. Apa pun selain loopback menaruh dasbor itu di jaringan Anda, tempat tidak ada kata sandi dan tidak ada login; ia mencetak apa yang terpapar sebelum mulai."
+
+msgid "Listen on this port."
+msgstr "Mendengarkan pada port ini."
+
+msgid "Open the dashboard in a browser: the board, the machine and the plans.\n\nIt serves the same numbers `--json` prints, from the same code, on this machine only. Nothing is fetched from the internet to draw the page."
+msgstr "Membuka dasbor di peramban: papan, mesin dan rencananya.\n\nIa menyajikan angka yang sama dengan yang dicetak `--json`, dari kode yang sama, hanya di mesin ini. Tidak ada yang diambil dari internet untuk menggambar halaman itu."
+
+msgid "Open the page in your browser."
+msgstr "Membuka halaman itu di peramban Anda."
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores, then open the Simulate panel on the page: it substitutes a machine for as long as you want it, and marks every answer it produces."
+msgstr "Hilangkan --profile, --memory, --ram dan --cpu-cores, lalu buka panel Simulasi di halaman itu: ia menggantikan sebuah mesin selama Anda menginginkannya, dan menandai setiap jawaban yang dihasilkannya."
+
+msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
+msgstr "LlamaFit ada di %(url)s. Tekan Ctrl+C untuk menghentikannya."
+
+msgid "Measure RAM bandwidth again instead of reading back the figure kept for this machine, and keep the new one."
+msgstr "Mengukur ulang bandwidth RAM alih-alih membaca kembali angka yang disimpan untuk mesin ini, lalu menyimpan yang baru."
+
+msgid "%(url)s answered a range request with the whole file."
+msgstr "%(url)s menjawab permintaan range dengan seluruh file."
+
+msgid "%(url)s is rate-limiting this download (HTTP %(status)d)."
+msgstr "%(url)s membatasi laju unduhan ini (HTTP %(status)d)."
+
+msgid "Check your network connection and run the command again to resume."
+msgstr "Periksa koneksi jaringan Anda lalu jalankan perintahnya lagi untuk melanjutkan."
+
+msgid "%(file)s needs authorisation (HTTP %(status)d)."
+msgstr "%(file)s membutuhkan otorisasi (HTTP %(status)d)."
+
+msgid "This repository is gated. Accept its terms on Hugging Face and set HF_TOKEN to a token that can read it."
+msgstr "Repositori ini terkunci. Terima ketentuannya di Hugging Face lalu atur HF_TOKEN ke token yang dapat membacanya."
+
+msgid "%(file)s is not at %(url)s any more (HTTP 404)."
+msgstr "%(file)s tidak lagi ada di %(url)s (HTTP 404)."
+
+msgid "Run `llamafit catalog refresh` to pick up the repository's current files."
+msgstr "Jalankan `llamafit catalog refresh` untuk mengambil file repositori yang sekarang."
+
+msgid "%(url)s returned HTTP %(status)d."
+msgstr "%(url)s mengembalikan HTTP %(status)d."
+
+msgid "Confirm the URL points at a downloadable file."
+msgstr "Pastikan URL itu menunjuk ke file yang dapat diunduh."
+
+msgid "%(url)s did not say how big %(file)s is."
+msgstr "%(url)s tidak menyebutkan seberapa besar %(file)s."
+
+msgid "%(file)s is %(actual)s on the server but the catalog says %(expected)s; the repository has been re-uploaded since the catalog was refreshed."
+msgstr "%(file)s berukuran %(actual)s di server tetapi katalog menyebut %(expected)s; repositori itu telah diunggah ulang sejak katalog diperbarui."
+
+msgid "Run `llamafit catalog refresh` and try again."
+msgstr "Jalankan `llamafit catalog refresh` lalu coba lagi."
+
+msgid "%(file)s: the server sent %(actual)d bytes of a %(expected)d byte range."
+msgstr "%(file)s: server mengirim %(actual)d byte dari range %(expected)d byte."
+
+msgid "Run the command again; the parts that did arrive are kept."
+msgstr "Jalankan perintahnya lagi; bagian yang sudah tiba dipertahankan."
+
+msgid "Stopped."
+msgstr "Dihentikan."
+
+msgid "%(file)s: the server asked for fewer connections; using %(count)d."
+msgstr "%(file)s: server meminta lebih sedikit koneksi; memakai %(count)d."
+
+msgid "%(file)s: this server will not serve byte ranges; fetching it in one stream."
+msgstr "%(file)s: server ini tidak melayani range byte; mengambilnya dalam satu aliran."
+
+msgid "%(file)s does not match its checksum; fetching it again."
+msgstr "%(file)s tidak cocok dengan checksum-nya; mengambilnya lagi."
+
+msgid "Check that the download directory is writable."
+msgstr "Pastikan direktori unduhan dapat ditulisi."
+
+msgid "%(needed)s is needed for this model but %(path)s has only %(free)s free, %(short)s short of what is wanted with %(headroom)s left spare."
+msgstr "Dibutuhkan %(needed)s untuk model ini tetapi %(path)s hanya punya %(free)s bebas, kurang %(short)s dari yang diinginkan dengan sisa cadangan %(headroom)s."
+
+msgid "Free some space, or choose another directory with --dir, or a smaller quantisation with --quant."
+msgstr "Bebaskan sebagian ruang, atau pilih direktori lain dengan --dir, atau kuantisasi yang lebih kecil dengan --quant."
+
+msgid "could not measure the free space on %(path)s: %(error)s"
+msgstr "tidak dapat mengukur ruang bebas di %(path)s: %(error)s"
+
+msgid "Check that the download directory's volume is available."
+msgstr "Pastikan volume direktori unduhan itu tersedia."
+
+msgid "%(model)s has no downloadable source in the catalog."
+msgstr "%(model)s tidak punya sumber yang dapat diunduh di katalog."
+
+msgid "Only Hugging Face sources can be installed; this entry has none."
+msgstr "Hanya sumber Hugging Face yang dapat dipasang; entri ini tidak punya."
+
+msgid "the catalog has no file list for %(model)s %(quant)s."
+msgstr "katalog tidak punya daftar file untuk %(model)s %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the file names."
+msgstr "Jalankan `llamafit catalog refresh` untuk mengisi nama file-nya."
+
+msgid "%(model)s publishes no quantisations."
+msgstr "%(model)s tidak menerbitkan kuantisasi apa pun."
+
+msgid "%(model)s does not publish a %(quant)s quantisation."
+msgstr "%(model)s tidak menerbitkan kuantisasi %(quant)s."
+
+msgid "It publishes: %(quants)s"
+msgstr "Ia menerbitkan: %(quants)s"
+
+msgid "the catalog does not record how big %(quant)s is."
+msgstr "katalog tidak mencatat seberapa besar %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the sizes."
+msgstr "Jalankan `llamafit catalog refresh` untuk mengisi ukurannya."
+
+msgid "the catalog holds no checksum for %(files)s."
+msgid_plural "the catalog holds no checksums for %(files)s."
+msgstr[0] "katalog tidak punya checksum untuk %(files)s."
+
+msgid "Run `llamafit catalog refresh` to fetch them, or pass --allow-unverified to download anyway and check the files yourself."
+msgstr "Jalankan `llamafit catalog refresh` untuk mengambilnya, atau berikan --allow-unverified untuk tetap mengunduh dan memeriksa file-nya sendiri."
+
+msgid "%(done)s of %(total)s"
+msgstr "%(done)s dari %(total)s"
+
+msgid "%(rate)s/s"
+msgstr "%(rate)s/s"
+
+msgid "Fetching %(file)s (%(size)s)"
+msgstr "Mengambil %(file)s (%(size)s)"
+
+msgid "Checking %(file)s against its checksum"
+msgstr "Memeriksa %(file)s terhadap checksum-nya"
+
+msgid "Done: %(file)s"
+msgstr "Selesai: %(file)s"
+
+msgid "could not create %(path)s: %(error)s"
+msgstr "tidak dapat membuat %(path)s: %(error)s"
+
+msgid "Check that the download directory is writable and has room."
+msgstr "Pastikan direktori unduhan dapat ditulisi dan masih punya ruang."
+
+msgid "could not move %(source)s into place: %(error)s"
+msgstr "tidak dapat memindahkan %(source)s ke tempatnya: %(error)s"
+
+msgid "could not record progress in %(path)s: %(error)s"
+msgstr "tidak dapat mencatat kemajuan di %(path)s: %(error)s"
+
+msgid "Stopped before the checksum was finished."
+msgstr "Dihentikan sebelum checksum selesai."
+
+msgid "%(file)s is %(actual)d bytes, but the catalog says %(expected)d"
+msgstr "%(file)s berukuran %(actual)d byte, tetapi katalog menyebut %(expected)d"
+
+msgid "The transfer was cut short. Run the command again to fetch it properly."
+msgstr "Transfer itu terputus. Jalankan perintahnya lagi untuk mengambilnya dengan benar."
+
+msgid "%(file)s does not match the checksum the catalog holds."
+msgstr "%(file)s tidak cocok dengan checksum yang dimiliki katalog."
+
+msgid "Expected %(expected)s but the file hashes to %(actual)s. The bad copy has been deleted; run the command again to fetch it."
+msgstr "Diharapkan %(expected)s tetapi hash file itu %(actual)s. Salinan yang rusak sudah dihapus; jalankan perintahnya lagi untuk mengambilnya."
+
+msgid "A memory budget built without these tensors would be too small, so none is built. If llama.cpp loads the file, LlamaFit's tensor-size table is missing the type."
+msgstr "Anggaran memori yang dibangun tanpa tensor-tensor ini akan terlalu kecil, jadi tidak ada yang dibangun. Jika llama.cpp memuat file itu, berarti tabel ukuran tensor LlamaFit kekurangan tipe tersebut."
+
+msgid "%(type)d (%(count)d tensor, first %(name)s)"
+msgid_plural "%(type)d (%(count)d tensors, first %(name)s)"
+msgstr[0] "%(type)d (%(count)d tensor, yang pertama %(name)s)"
+
+msgid "cannot size this GGUF file: %(count)d tensor uses a GGML type LlamaFit does not know: %(details)s"
+msgid_plural "cannot size this GGUF file: %(count)d tensors use GGML types LlamaFit does not know: %(details)s"
+msgstr[0] "tidak dapat mengukur file GGUF ini: %(count)d tensor memakai tipe GGML yang tidak dikenal LlamaFit: %(details)s"
+
+msgid "vulkaninfo reported no discrete device with a memory heap"
+msgstr "vulkaninfo tidak melaporkan perangkat diskret dengan heap memori"
+
+msgid "no hardware profile file at %(path)s"
+msgstr "tidak ada file hardware profile di %(path)s"
+
+msgid "Run `llamafit hardware list` to see the profiles LlamaFit has."
+msgstr "Jalankan `llamafit hardware list` untuk melihat profil yang dimiliki LlamaFit."
+
+msgid "%(path)s is not a valid hardware profile: %(details)s"
+msgstr "%(path)s bukan hardware profile yang sah: %(details)s"
+
+msgid "Run `llamafit hardware validate FILE` for the whole list."
+msgstr "Jalankan `llamafit hardware validate FILE` untuk daftar selengkapnya."
+
+msgid "no hardware profile named %(name)s"
+msgstr "tidak ada hardware profile bernama %(name)s"
+
+msgid "Profiles LlamaFit has: %(names)s"
+msgstr "Profil yang dimiliki LlamaFit: %(names)s"
+
+msgid "Run `llamafit hardware path` to see where your own profiles go."
+msgstr "Jalankan `llamafit hardware path` untuk melihat di mana profil Anda sendiri disimpan."
+
+msgid "this machine has no graphics card, so there is no VRAM to override"
+msgstr "mesin ini tidak punya kartu grafis, jadi tidak ada VRAM yang dapat ditimpa"
+
+msgid "Describe the whole machine in a hardware profile and pass --profile."
+msgstr "Gambarkan seluruh mesin itu dalam sebuah hardware profile lalu berikan --profile."
+
+msgid "this machine has one memory pool shared with the graphics card"
+msgstr "mesin ini punya satu kumpulan memori yang dibagi dengan kartu grafis"
+
+msgid "Use --ram to resize the pool; --memory would change only half of it."
+msgstr "Pakai --ram untuk mengubah ukuran kumpulan itu; --memory hanya akan mengubah separuhnya."
+
+msgid "%(option)s needs a value above zero"
+msgstr "%(option)s membutuhkan nilai di atas nol"
+
+msgid "no build number in the version output: %(text)s"
+msgstr "tidak ada nomor build di keluaran versi: %(text)s"
+
+msgid "%(path)s is a file, not a directory."
+msgstr "%(path)s adalah sebuah file, bukan direktori."
+
+msgid "%(path)s cannot be read: %(error)s"
+msgstr "%(path)s tidak dapat dibaca: %(error)s"
+
+msgid "%(path)s has a marker file that cannot be read."
+msgstr "%(path)s punya file penanda yang tidak dapat dibaca."
+
+msgid "%(path)s already holds %(count)d file that LlamaFit did not install."
+msgid_plural "%(path)s already holds %(count)d files that LlamaFit did not install."
+msgstr[0] "%(path)s sudah memuat %(count)d file yang tidak dipasang LlamaFit."
+
+msgid "%(name)s has no published checksum, so it cannot be verified."
+msgstr "%(name)s tidak punya checksum yang diterbitkan, jadi ia tidak dapat diverifikasi."
+
+msgid "Pass --allow-unverified to install it anyway, knowing the archive is unchecked."
+msgstr "Berikan --allow-unverified untuk tetap memasangnya, dengan menyadari arsip itu tidak diperiksa."
+
+msgid "could not download %(url)s: %(error)s"
+msgstr "tidak dapat mengunduh %(url)s: %(error)s"
+
+msgid "the connection was closed"
+msgstr "koneksi itu ditutup"
+
+msgid "Run the command again; it continues from where it stopped."
+msgstr "Jalankan perintahnya lagi; ia melanjutkan dari tempat ia berhenti."
+
+msgid "the download of %(url)s stopped early: %(error)s"
+msgstr "unduhan %(url)s berhenti lebih awal: %(error)s"
+
+msgid "%(got)s of %(want)s arrived"
+msgstr "%(got)s dari %(want)s yang tiba"
+
+msgid "the disk holding %(path)s is full."
+msgstr "disk yang memuat %(path)s penuh."
+
+msgid "Free some space and run the command again; the download resumes."
+msgstr "Bebaskan sebagian ruang lalu jalankan perintahnya lagi; unduhan akan dilanjutkan."
+
+msgid "Check that the directory exists and is writable."
+msgstr "Pastikan direktori itu ada dan dapat ditulisi."
+
+msgid "%(name)s did not match its published checksum and was discarded."
+msgstr "%(name)s tidak cocok dengan checksum yang diterbitkan dan sudah dibuang."
+
+msgid "Nothing was unpacked. Run the command again: the archive arrived damaged, which a second download usually fixes."
+msgstr "Tidak ada yang dibongkar. Jalankan perintahnya lagi: arsip itu tiba dalam keadaan rusak, dan unduhan kedua biasanya memperbaikinya."
+
+msgid "%(archive)s contains %(name)s, which would be written outside the install directory."
+msgstr "%(archive)s memuat %(name)s, yang akan ditulis di luar direktori pemasangan."
+
+msgid "Do not install this archive; report it to the llama.cpp project."
+msgstr "Jangan pasang arsip ini; laporkan ke proyek llama.cpp."
+
+msgid "%(name)s is not an archive LlamaFit knows how to unpack."
+msgstr "%(name)s bukan arsip yang dapat dibongkar LlamaFit."
+
+msgid "%(name)s could not be unpacked: %(error)s"
+msgstr "%(name)s tidak dapat dibongkar: %(error)s"
+
+msgid "Delete it and run the command again to download it afresh."
+msgstr "Hapus lalu jalankan perintahnya lagi untuk mengunduhnya dari awal."
+
+msgid "the archive holds no %(name)s."
+msgstr "arsip itu tidak memuat %(name)s."
+
+msgid "Report this; the release layout has changed."
+msgstr "Laporkan ini; tata letak rilisnya telah berubah."
+
+msgid "%(path)s was not installed by LlamaFit."
+msgstr "%(path)s tidak dipasang oleh LlamaFit."
+
+msgid "Pass --force to replace it, or --dir to install somewhere else. LlamaFit never overwrites an installation it did not create."
+msgstr "Berikan --force untuk menggantinya, atau --dir untuk memasang di tempat lain. LlamaFit tidak pernah menimpa pemasangan yang tidak dibuatnya."
+
+msgid "%(path)s has %(free)s free; this install needs %(needed)s."
+msgstr "%(path)s punya %(free)s bebas; pemasangan ini butuh %(needed)s."
+
+msgid "Free some space, or pass --dir to install on another volume."
+msgstr "Bebaskan sebagian ruang, atau berikan --dir untuk memasang di volume lain."
+
+msgid "the %(backend)s libraries are not in the installed directory."
+msgstr "pustaka %(backend)s tidak ada di direktori yang terpasang."
+
+msgid "no ggml backend libraries were installed; the build may be a static one."
+msgstr "tidak ada pustaka backend ggml yang terpasang; build-nya mungkin static."
+
+msgid "Your PATH could not be read, so it will not be changed."
+msgstr "PATH Anda tidak dapat dibaca, jadi ia tidak akan diubah."
+
+msgid "Add %(path)s to your user PATH (HKCU\\Environment)."
+msgstr "Tambahkan %(path)s ke PATH pengguna Anda (HKCU\\Environment)."
+
+msgid "To undo: run `setx PATH \"%(previous)s\"`, or remove the entry in System > About > Advanced system settings > Environment Variables."
+msgstr "Untuk membatalkan: jalankan `setx PATH \"%(previous)s\"`, atau hapus entrinya di System > About > Advanced system settings > Environment Variables."
+
+msgid "%(path)s is already on your PATH."
+msgstr "%(path)s sudah ada di PATH Anda."
+
+msgid "Nothing to undo."
+msgstr "Tidak ada yang perlu dibatalkan."
+
+msgid "Append a PATH line for %(path)s to %(file)s."
+msgstr "Menambahkan baris PATH untuk %(path)s ke %(file)s."
+
+msgid "To undo: delete the two lines marked `%(mark)s` from %(file)s."
+msgstr "Untuk membatalkan: hapus dua baris bertanda `%(mark)s` dari %(file)s."
+
+msgid "your PATH could not be changed: %(error)s"
+msgstr "PATH Anda tidak dapat diubah: %(error)s"
+
+msgid "To remove it later, delete %(path)s."
+msgstr "Untuk menghapusnya nanti, hapus %(path)s."
+
+msgid "the most recent %(count)d llama.cpp releases hold no build."
+msgstr "%(count)d rilis llama.cpp terbaru tidak memuat build."
+
+msgid "Name one with `llamafit install llama.cpp --tag ...`."
+msgstr "Sebutkan salah satunya dengan `llamafit install llama.cpp --tag ...`."
+
+msgid "could not reach GitHub at %(url)s: %(error)s"
+msgstr "tidak dapat menjangkau GitHub di %(url)s: %(error)s"
+
+msgid "GitHub refused the request for %(url)s: the rate limit is exhausted."
+msgstr "GitHub menolak permintaan untuk %(url)s: batas lajunya sudah habis."
+
+msgid "Wait for the limit to reset, or set GITHUB_TOKEN to a personal access token with no scopes."
+msgstr "Tunggu sampai batasnya disetel ulang, atau atur GITHUB_TOKEN ke personal access token tanpa scope."
+
+msgid "GitHub has no release at %(url)s."
+msgstr "GitHub tidak punya rilis di %(url)s."
+
+msgid "Check the tag with `llamafit install llama.cpp --tag ...`."
+msgstr "Periksa tag-nya dengan `llamafit install llama.cpp --tag ...`."
+
+msgid "GitHub returned %(status)d for %(url)s."
+msgstr "GitHub mengembalikan %(status)d untuk %(url)s."
+
+msgid "GitHub's answer for %(url)s was not JSON."
+msgstr "Jawaban GitHub untuk %(url)s bukan JSON."
+
+msgid "GitHub's answer did not describe a release."
+msgstr "Jawaban GitHub tidak menggambarkan sebuah rilis."
+
+msgid "%(model)s holds %(native)s tokens, fewer than the %(minimum)s asked for."
+msgstr "%(model)s menampung %(native)s token, lebih sedikit daripada %(minimum)s yang diminta."
+
+msgid "No configuration of this model fits this machine."
+msgstr "Tidak ada konfigurasi model ini yang muat di mesin ini."
+
+msgid "Routed experts are held in system memory, and so are the always-on shared experts, which is what -ot ffn_.*_shexp=CPU does; attention and the KV cache stay on the card."
+msgstr "Expert terarah disimpan di memori sistem, begitu pula expert bersama yang selalu aktif, yaitu yang dilakukan -ot ffn_.*_shexp=CPU; atensi dan cache KV tetap di kartu."
+
+msgid "Routed experts are held in system memory; attention, the KV cache and the shared experts stay on the card."
+msgstr "Expert terarah disimpan di memori sistem; atensi, cache KV dan expert bersama tetap di kartu."
+
+msgid "%(layers)s layers are on the card and the rest run on the processor."
+msgstr "%(layers)s lapisan ada di kartu dan sisanya berjalan di prosesor."
+
+msgid "Nothing runs on a graphics card: every weight is in system memory."
+msgstr "Tidak ada yang berjalan di kartu grafis: setiap bobot ada di memori sistem."
+
+msgid "%(gpus)s is here, but nothing could read how much of it is free, so this plan was made as if it were not. The real machine will be faster than these figures."
+msgstr "%(gpus)s ada di sini, tetapi tidak ada yang dapat membaca berapa banyak yang bebas, jadi rencana ini dibuat seolah-olah ia tidak ada. Mesin yang sebenarnya akan lebih cepat daripada angka-angka ini."
+
+msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
+msgstr "Diukur untuk %(context)s token, bukan %(requested)s yang diminta."
+
+msgid "The KV cache is quantised to %(type)s to reach this context."
+msgstr "Cache KV dikuantisasi ke %(type)s untuk mencapai konteks ini."
+
+msgid "Vision is off: the projector did not fit, on the card or in system memory."
+msgstr "Penglihatan dimatikan: proyektornya tidak muat, baik di kartu maupun di memori sistem."
+
+msgid "The vision projector is in system memory (--no-mmproj-offload), which costs nothing measurable for text and makes images slower."
+msgstr "Proyektor penglihatan ada di memori sistem (--no-mmproj-offload), yang tidak menimbulkan biaya terukur untuk teks dan membuat gambar lebih lambat."
+
+msgid "%(threads)s threads, not the %(available)s this processor has: the efficiency cores are left out because generation measures slower with them, and what is left is the threads the performance cores provide."
+msgstr "%(threads)s thread, bukan %(available)s yang dimiliki prosesor ini: inti efisiensi ditinggalkan karena generasi terukur lebih lambat dengannya, dan yang tersisa adalah thread yang disediakan inti performa."
+
+msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
+msgstr "Sempit: %(vram)s kartu grafis yang bebas dan ini butuh %(needed)s, jadi program lain dapat mendorongnya melewati batas. Tabel tingkat konteks adalah cara skrip peluncur memulihkannya."
+
+msgid "no %(capability)s capability, which %(use_case)s needs; ask for a different use case, or add it to the entry when the model really has it"
+msgstr "tidak punya kemampuan %(capability)s, yang dibutuhkan %(use_case)s; minta kasus penggunaan lain, atau tambahkan ke entrinya bila model itu memang punya"
+
+msgid "no %(capability)s capability; drop it from the request to see this model"
+msgstr "tidak punya kemampuan %(capability)s; hilangkan dari permintaan untuk melihat model ini"
+
+msgid "%(size)s to download, over the %(limit)s this request allows"
+msgstr "%(size)s untuk diunduh, melebihi %(limit)s yang diizinkan permintaan ini"
+
+msgid "unknown quantisation %(quant)s, so its cost in quality cannot be told"
+msgstr "kuantisasi %(quant)s tidak dikenal, jadi biaya kualitasnya tidak dapat disebutkan"
+
+msgid "nowhere to put it: no placement fits this machine at any context"
+msgstr "tidak ada tempat untuk menaruhnya: tidak ada penempatan yang muat di mesin ini pada konteks mana pun"
+
+msgid "holds %(fit)s tokens at most, under the %(minimum)s asked for; lower the minimum context or free memory to see it ranked"
+msgstr "menampung paling banyak %(fit)s token, di bawah %(minimum)s yang diminta; turunkan konteks minimum atau bebaskan memori agar ia diperingkat"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "menghasilkan %(tps)s token per detik, di bawah %(floor)s yang diminta permintaan ini; turunkan --min-tps atau pilih model atau kuantisasi yang lebih kecil"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "menghasilkan %(tps)s token per detik, di bawah %(floor)s yang menjadi kecepatan baca seseorang: sebuah perkakas batch di mesin ini, bukan yang ditunggui di depan layar; model atau kuantisasi yang lebih kecil akan mengimbangi"
+
+msgid "unknown use case %(use_case)s"
+msgstr "kasus penggunaan %(use_case)s tidak dikenal"
+
+msgid "Known use cases: %(known)s."
+msgstr "Kasus penggunaan yang dikenal: %(known)s."
+
+msgid "unknown score part %(part)s in the weights for %(use_case)s"
+msgstr "bagian skor %(part)s tidak dikenal di dalam bobot untuk %(use_case)s"
+
+msgid "The parts are: %(parts)s."
+msgstr "Bagian-bagiannya adalah: %(parts)s."
+
+msgid "the weights for %(use_case)s leave out %(part)s"
+msgstr "bobot untuk %(use_case)s tidak menyertakan %(part)s"
+
+msgid "Overriding a use case means giving all four parts: %(parts)s."
+msgstr "Menimpa sebuah kasus penggunaan berarti memberikan keempat bagiannya: %(parts)s."
+
+msgid "the weight for %(part)s in %(use_case)s is below zero"
+msgstr "bobot untuk %(part)s di %(use_case)s berada di bawah nol"
+
+msgid "A weight says how much a part counts; it cannot count less than none."
+msgstr "Bobot menyatakan seberapa besar sebuah bagian berarti; ia tidak dapat berarti kurang dari nol."
+
+msgid "the weights for %(use_case)s add up to nothing"
+msgstr "bobot untuk %(use_case)s berjumlah nol"
+
+msgid "At least one part has to count for something."
+msgstr "Setidaknya satu bagian harus berarti sesuatu."
+
+msgid "unknown preference %(prefer)s"
+msgstr "preferensi %(prefer)s tidak dikenal"
+
+msgid "Preferences: %(known)s."
+msgstr "Preferensi: %(known)s."
+
+msgid "Install the Vulkan tools (vulkan-tools on Linux, the vendor's Vulkan runtime on Windows) so an unsized card's memory can be read from its driver. This probe runs only when no vendor tool sized the card, so it is the last source there is."
+msgstr "Pasang perkakas Vulkan (vulkan-tools di Linux, runtime Vulkan dari vendor di Windows) agar memori kartu yang belum terukur dapat dibaca dari drivernya. Pemeriksaan ini hanya berjalan bila tidak ada perkakas vendor yang mengukur kartu itu, jadi ia adalah sumber terakhir yang ada."
+
+msgid "Run `llamafit install llama.cpp`, which picks the right build for this machine, checks it against its published checksum, and never touches an installation LlamaFit did not create."
+msgstr "Jalankan `llamafit install llama.cpp`, yang memilih build yang tepat untuk mesin ini, memeriksanya terhadap checksum yang diterbitkan, dan tidak pernah menyentuh pemasangan yang tidak dibuat LlamaFit."
+
+msgid "%(gpus)s: planned around, not planned on"
+msgstr "%(gpus)s: rencananya menghindarinya, bukan memanfaatkannya"
+
+msgid "with no reading of how much of the card is free, every budget and every speed on this machine was computed as if there were no card: they are CPU-only figures, and the real machine will be faster."
+msgstr "tanpa pembacaan berapa banyak kartu itu yang bebas, setiap anggaran dan setiap kecepatan di mesin ini dihitung seolah-olah tidak ada kartu: semuanya angka CPU saja, dan mesin yang sebenarnya akan lebih cepat."
+
+msgid "Install the Vulkan tools so the size can be read from the driver, or record it in a hardware profile (`llamafit hardware path` says where those go) and pass --profile."
+msgstr "Pasang perkakas Vulkan agar ukurannya dapat dibaca dari driver, atau catat dalam sebuah hardware profile (`llamafit hardware path` menyebutkan di mana file itu disimpan) lalu berikan --profile."
+
+msgid "%(model)s has no %(quant)s quantisation"
+msgstr "%(model)s tidak punya kuantisasi %(quant)s"
+
+msgid "It publishes: %(names)s"
+msgstr "Ia menerbitkan: %(names)s"
+
+msgid "licensed %(spdx)s, which this request does not allow"
+msgstr "berlisensi %(spdx)s, yang tidak diizinkan permintaan ini"
+
+msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
+msgstr "Bandwidth memori sistem tidak diukur; %(gbps).0f GB/s diasumsikan untuk %(arch)s."
+
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
+msgstr "Bandwidth %(gpu)s tidak diketahui; cadangan %(backend)s sebesar %(gbps).0f GB/s dipakai sebagai pengganti."
+
+msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
+msgstr "Tidak ada angka komputasi kartu grafis: pemrosesan prompt diperkirakan di CPU."
+
+msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "%(gb).2f GB expert terarah dibaca dari memori sistem per token pada %(eff).2f dari %(raw).0f GB/s miliknya, karena setiap token memilih segelintir expert yang berbeda dan pembacaannya adalah sebaran blok-blok kecil, bukan aliran."
+
+msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
+msgstr "%(gb).2f GB bobot yang berurutan dibaca dari memori sistem per token pada %(eff).2f dari %(raw).0f GB/s miliknya."
+
+msgid "No active parameter count was supplied; it was inferred from the weight bytes."
+msgstr "Tidak ada jumlah parameter aktif yang diberikan; angkanya disimpulkan dari byte bobotnya."
+
+msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "%(pct).0f persen lapisannya berada di memori sistem, jadi bagian perhitungan prompt sebesar itu dibebankan ke CPU pada %(tflops).2f TFLOP/s, bukan ke kartu. Kedua laju itu berasal dari satu model padat kecil di satu mesin."
+
+msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "%(gb).1f GB dari himpunan expert dialirkan lewat link sekali per mikro-batch pada %(gbps).1f GB/s. Laju itu dicocokkan pada satu-satunya model yang himpunan expert-nya tidak muat di memori sistem, jadi sebagian pembacaannya datang dari disk; himpunan expert yang tetap berada di page cache mengalir sekitar tiga kali lebih cepat, dan untuk model semacam itu suku ini terlalu lambat sejauh itu."
+
+msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+msgstr "%(gb).1f GB dari himpunan expert dibaca dari memori sistem sekali per mikro-batch pada %(gbps).1f GB/s, karena tidak ada kartu untuk mengalirkannya."
+
+msgid "No placement of this model on this machine could run it."
+msgstr "Tidak ada penempatan model ini di mesin ini yang dapat menjalankannya."
+
+msgid "Generation is a benchmark of this configuration, not a prediction."
+msgstr "Generasi adalah benchmark konfigurasi ini, bukan prediksi."
+
+msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "Generasi adalah rumus yang dikoreksi sebesar %(factor).2f, dari benchmark %(profile)s di mesin ini yang diambil pada %(date)s."
+
+msgid "Prompt processing is a benchmark of this configuration."
+msgstr "Pemrosesan prompt adalah benchmark konfigurasi ini."
+
+msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
+msgstr "Pemrosesan prompt adalah rumus yang dikoreksi sebesar %(factor).2f dari sebuah benchmark."
+
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr "Baris perintah benchmark itu tidak mencatat berapa lapisan yang masuk ke kartu, jadi koreksinya mengasumsikan ia berjalan pada penempatan ini."
+
+msgid "This figure assumes nothing pages: a placement this tight often does, silently."
+msgstr "Angka ini mengasumsikan tidak ada yang melakukan paging: penempatan sesempit ini sering melakukannya, tanpa suara."
+
+msgid "Board"
+msgstr "Papan"
+
+msgid "Needs"
+msgstr "Kebutuhan"
+
+msgid "Plan"
+msgstr "Rencana"
+
+msgid "Simulate"
+msgstr "Simulasi"
+
+msgid "There is no terminal here to draw the dashboard in, so this is what `llamafit recommend` would print."
+msgstr "Tidak ada terminal di sini untuk menggambar dasbornya, jadi inilah yang akan dicetak `llamafit recommend`."
+
+msgid "%(name)s %(quant)s, %(vendor)s, licensed %(license)s; it can: %(capabilities)s"
+msgstr "%(name)s %(quant)s, %(vendor)s, berlisensi %(license)s; ia dapat: %(capabilities)s"
+
+msgid "Choose a row to see what put it there."
+msgstr "Pilih sebuah baris untuk melihat apa yang menempatkannya di situ."
+
+msgid "Nothing has been ranked yet."
+msgstr "Belum ada yang diperingkat."
+
+msgid "Every candidate in the catalog was ranked; none was excluded."
+msgstr "Setiap kandidat di katalog diperingkat; tidak ada yang dikecualikan."
+
+msgid "keys"
+msgstr "tombol"
+
+msgid "theme"
+msgstr "tema"
+
+msgid "quit"
+msgstr "keluar"
+
+msgid "choose"
+msgstr "pilih"
+
+msgid "why"
+msgstr "mengapa"
+
+msgid "command line"
+msgstr "baris perintah"
+
+msgid "search"
+msgstr "cari"
+
+msgid "fit"
+msgstr "muat"
+
+msgid "sort"
+msgstr "urutkan"
+
+msgid "sort back"
+msgstr "urutkan mundur"
+
+msgid "reverse"
+msgstr "balik"
+
+msgid "on disk"
+msgstr "di disk"
+
+msgid "all quants"
+msgstr "semua quant"
+
+msgid "unranked rows"
+msgstr "baris tak diperingkat"
+
+msgid "all columns"
+msgstr "semua kolom"
+
+msgid "explanation"
+msgstr "penjelasan"
+
+msgid "not ranked"
+msgstr "tak diperingkat"
+
+msgid "apply"
+msgstr "terapkan"
+
+msgid "reset"
+msgstr "atur ulang"
+
+msgid "rescan"
+msgstr "pindai ulang"
+
+msgid "more context"
+msgstr "konteks lebih"
+
+msgid "less context"
+msgstr "konteks kurang"
+
+msgid "vision"
+msgstr "penglihatan"
+
+msgid "copy"
+msgstr "salin"
+
+msgid "this machine"
+msgstr "mesin ini"
+
+msgctxt "use case"
+msgid "general use"
+msgstr "penggunaan umum"
+
+msgctxt "use case"
+msgid "writing code"
+msgstr "menulis kode"
+
+msgctxt "use case"
+msgid "reasoning"
+msgstr "penalaran"
+
+msgctxt "use case"
+msgid "chat"
+msgstr "obrolan"
+
+msgctxt "use case"
+msgid "images and text"
+msgstr "gambar dan teks"
+
+msgctxt "use case"
+msgid "embeddings"
+msgstr "embedding"
+
+msgctxt "preference"
+msgid "balanced"
+msgstr "seimbang"
+
+msgctxt "preference"
+msgid "lean towards quality"
+msgstr "condong ke kualitas"
+
+msgctxt "preference"
+msgid "lean towards speed"
+msgstr "condong ke kecepatan"
+
+msgid "Move with the up and down arrows. Enter says why a row is where it is; p gives the command line that runs it."
+msgstr "Bergerak dengan panah atas dan bawah. Enter menjelaskan mengapa sebuah baris ada di posisinya; p memberikan baris perintah yang menjalankannya."
+
+msgid "Terms: %(terms)s; anything else is text to look for. Enter with the box empty clears them."
+msgstr "Istilah: %(terms)s; selain itu dianggap teks yang dicari. Enter dengan kotak kosong menghapus semuanya."
+
+msgid "Part of a model name, then Enter"
+msgstr "Sebagian nama model, lalu Enter"
+
+msgid "Keys"
+msgstr "Tombol"
+
+msgctxt "column heading"
+msgid "Screen"
+msgstr "Layar"
+
+msgctxt "column heading"
+msgid "Key"
+msgstr "Tombol"
+
+msgctxt "column heading"
+msgid "What it does"
+msgstr "Fungsinya"
+
+msgctxt "dashboard screen"
+msgid "Everywhere"
+msgstr "Di mana saja"
+
+msgctxt "dashboard screen"
+msgid "Board"
+msgstr "Papan"
+
+msgctxt "dashboard screen"
+msgid "Needs"
+msgstr "Kebutuhan"
+
+msgctxt "dashboard screen"
+msgid "Host"
+msgstr "Mesin"
+
+msgctxt "dashboard screen"
+msgid "Plan"
+msgstr "Rencana"
+
+msgctxt "dashboard screen"
+msgid "Simulate"
+msgstr "Simulasi"
+
+msgid "Press Escape to go back."
+msgstr "Tekan Escape untuk kembali."
+
+msgid "Catalog files with a problem"
+msgstr "File katalog yang bermasalah"
+
+msgid "This machine has not been scanned yet."
+msgstr "Mesin ini belum dipindai."
+
+msgid "What do you want a model for?"
+msgstr "Untuk apa Anda menginginkan sebuah model?"
+
+msgid "It must be able to:"
+msgstr "Ia harus dapat:"
+
+msgid "At least this much context, in tokens:"
+msgstr "Setidaknya sebanyak ini konteks, dalam token:"
+
+msgid "Willing to download at most, for example 40G (blank for no limit):"
+msgstr "Bersedia mengunduh paling banyak, misalnya 40G (kosongkan untuk tanpa batas):"
+
+msgid "Slowest generation worth having, in tokens per second (blank for the speed a person reads at; 0 when nobody is waiting on the tokens):"
+msgstr "Generasi paling lambat yang masih layak, dalam token per detik (kosongkan untuk kecepatan baca seseorang; 0 bila tidak ada yang menunggui token itu):"
+
+msgid "Licences you will accept (tick none to accept any):"
+msgstr "Lisensi yang Anda terima (jangan centang apa pun untuk menerima semua):"
+
+msgid "Lean the score:"
+msgstr "Condongkan skornya:"
+
+msgid "Keep the vision projector when a model has one"
+msgstr "Mempertahankan proyektor penglihatan bila sebuah model punya"
+
+msgid "Apply"
+msgstr "Terapkan"
+
+msgid "Reset"
+msgstr "Atur ulang"
+
+msgid "The minimum context is a number of tokens, for example %(example)s."
+msgstr "Konteks minimum adalah jumlah token, misalnya %(example)s."
+
+msgid "The minimum context cannot be below zero."
+msgstr "Konteks minimum tidak boleh di bawah nol."
+
+msgid "The minimum speed is a number of tokens per second, for example 12."
+msgstr "Kecepatan minimum adalah jumlah token per detik, misalnya 12."
+
+msgid "The minimum speed cannot be below zero."
+msgstr "Kecepatan minimum tidak boleh di bawah nol."
+
+msgid "Choose a row on the Board and press p, and its plan and command line appear here."
+msgstr "Pilih sebuah baris di Papan lalu tekan p, maka rencana dan baris perintahnya muncul di sini."
+
+msgid "%(model)s is no longer in the catalog this board was built from."
+msgstr "%(model)s tidak lagi ada di katalog yang menjadi dasar papan ini."
+
+msgid "Planned with the vision projector; press v to leave it out."
+msgstr "Direncanakan dengan proyektor penglihatan; tekan v untuk meninggalkannya."
+
+msgid "Planned without the vision projector; press v to put it back."
+msgstr "Direncanakan tanpa proyektor penglihatan; tekan v untuk mengembalikannya."
+
+msgid "The ladder has no rung above %(context)s."
+msgstr "Tangga itu tidak punya anak tangga di atas %(context)s."
+
+msgid "The ladder has no rung below %(context)s."
+msgstr "Tangga itu tidak punya anak tangga di bawah %(context)s."
+
+msgid "There is no command line to copy yet."
+msgstr "Belum ada baris perintah untuk disalin."
+
+msgid "The command line is on the clipboard."
+msgstr "Baris perintah itu sudah ada di papan klip."
+
+msgid "Everything on every screen answers about the machine chosen here. While it is not this one, the band at the top says SIMULATED."
+msgstr "Segala sesuatu di setiap layar menjawab tentang mesin yang dipilih di sini. Selama itu bukan mesin ini, pita di bagian atas bertuliskan SIMULASI."
+
+msgid "Answer for this machine instead:"
+msgstr "Menjawab untuk mesin ini sebagai gantinya:"
+
+msgid "Pretend the graphics card has this much memory (blank to leave it):"
+msgstr "Berpura-pura kartu grafis punya memori sebanyak ini (kosongkan untuk membiarkannya):"
+
+msgid "Pretend the machine has this much system memory (blank to leave it):"
+msgstr "Berpura-pura mesin punya memori sistem sebanyak ini (kosongkan untuk membiarkannya):"
+
+msgid "Pretend the processor has this many cores (blank to leave it):"
+msgstr "Berpura-pura prosesor punya sekian inti (kosongkan untuk membiarkannya):"
+
+msgid "Back to this machine"
+msgstr "Kembali ke mesin ini"
+
+msgctxt "hardware profile"
+msgid "this machine"
+msgstr "mesin ini"
+
+msgid "The core count is a whole number, for example 8."
+msgstr "Jumlah inti adalah bilangan bulat, misalnya 8."
+
+msgctxt "dashboard header separator"
+msgid " · "
+msgstr " · "
+
+msgctxt "dashboard header"
+msgid "no GPU detected"
+msgstr "tidak ada GPU terdeteksi"
+
+msgid "%(name)s, VRAM unknown"
+msgstr "%(name)s, VRAM tidak diketahui"
+
+msgid "%(name)s, %(free)s free of %(total)s"
+msgstr "%(name)s, %(free)s bebas dari %(total)s"
+
+msgid "%(available)s free of %(total)s RAM"
+msgstr "%(available)s bebas dari %(total)s RAM"
+
+msgid "%(model)s, %(count)d core"
+msgid_plural "%(model)s, %(count)d cores"
+msgstr[0] "%(model)s, %(count)d inti"
+
+msgctxt "dashboard header"
+msgid "llama.cpp not installed"
+msgstr "llama.cpp tidak terpasang"
+
+msgctxt "dashboard header"
+msgid "llama.cpp installed"
+msgstr "llama.cpp terpasang"
+
+msgid "llama.cpp b%(build)d"
+msgstr "llama.cpp b%(build)d"
+
+msgctxt "dashboard header"
+msgid "scanning this machine…"
+msgstr "memindai mesin ini…"
+
+msgid "These speeds were not all arrived at the same way; the How column says which each row is."
+msgstr "Kecepatan-kecepatan ini tidak semuanya diperoleh dengan cara yang sama; kolom Cara menyebutkan yang mana untuk tiap baris."
+
+msgid "profile must be a name, not a path: %(value)s"
+msgstr "profile harus berupa nama, bukan path: %(value)s"
+
+msgid "Ask GET /api/v1/profiles for the names this machine has."
+msgstr "Minta GET /api/v1/profiles untuk melihat nama-nama yang dimiliki mesin ini."
+
+msgid "unknown query parameter: %(names)s"
+msgstr "parameter kueri tidak dikenal: %(names)s"
+
+msgid "This endpoint takes: %(names)s"
+msgstr "Endpoint ini menerima: %(names)s"
+
+msgid "invalid prefer %(value)s"
+msgstr "prefer tidak sah: %(value)s"
+
+msgid "invalid sort %(value)s"
+msgstr "sort tidak sah: %(value)s"
+
+msgid "%(host)s:%(port)d is not this machine only. Anyone who can reach this computer on that port can read everything the dashboard shows -- your hardware, your disks, your file paths and the models you have downloaded. There is no password, because LlamaFit is meant for the person sitting at the keyboard. Press Ctrl+C now if you did not mean this."
+msgstr "%(host)s:%(port)d bukan hanya mesin ini. Siapa pun yang dapat menjangkau komputer ini pada port itu dapat membaca semua yang ditampilkan dasbor: perangkat keras Anda, disk Anda, path file Anda dan model yang sudah Anda unduh. Tidak ada kata sandi, karena LlamaFit ditujukan untuk orang yang duduk di depan papan ketik. Tekan Ctrl+C sekarang jika Anda tidak bermaksud begini."
+
+msgid "the web dashboard needs FastAPI and uvicorn, which are not installed"
+msgstr "dasbor web membutuhkan FastAPI dan uvicorn, yang belum terpasang"
+
+msgid "Install them with: pip install \"llamafit[web]\""
+msgstr "Pasang dengan: pip install \"llamafit[web]\""
+
+msgid "%(host)s is not a loopback address, and the dashboard has no authentication"
+msgstr "%(host)s bukan alamat loopback, dan dasbor itu tidak punya autentikasi"
+
+msgid "Leave --host alone to serve this machine only, or pass it to mean it."
+msgstr "Biarkan --host apa adanya agar hanya melayani mesin ini, atau berikan bila Anda memang bermaksud begitu."
+
+msgctxt "column heading"
+msgid "Why not"
+msgstr "Mengapa tidak"
+
+msgid "Why this row"
+msgstr "Mengapa baris ini"
+
+msgid "Plan this"
+msgstr "Rencanakan ini"
+
+msgid "Already on this machine"
+msgstr "Sudah ada di mesin ini"
+
+msgid "Score"
+msgstr "Skor"
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; raise “Rows to show” for the rest, which are neither worse-behaved nor hidden, only further down."
+msgstr "Menampilkan %(shown)s terbaik dari %(total)s yang memenuhi syarat; naikkan “Baris yang ditampilkan” untuk sisanya, yang tidak lebih buruk maupun disembunyikan, hanya berada lebih ke bawah."
+
+msgid "What the model is for"
+msgstr "Untuk apa model itu"
+
+msgid "Capabilities it must have"
+msgstr "Kemampuan yang harus dimilikinya"
+
+msgid "Lean the weights"
+msgstr "Condongkan bobotnya"
+
+msgid "Smallest context worth having"
+msgstr "Konteks terkecil yang masih layak"
+
+msgid "Most you will download"
+msgstr "Paling banyak yang akan Anda unduh"
+
+msgid "Show every quantisation"
+msgstr "Menampilkan setiap kuantisasi"
+
+msgid "Keep the vision projector"
+msgstr "Mempertahankan proyektor penglihatan"
+
+msgid "Rows to show"
+msgstr "Baris yang ditampilkan"
+
+msgid "Scan again"
+msgstr "Pindai ulang"
+
+msgid "llama.cpp"
+msgstr "llama.cpp"
+
+msgid "Quantisation"
+msgstr "Kuantisasi"
+
+msgid "Context"
+msgstr "Konteks"
+
+msgid "Micro-batch"
+msgstr "Mikro-batch"
+
+msgid "Plan it"
+msgstr "Rencanakan"
+
+msgid "Copy"
+msgstr "Salin"
+
+msgid "Copied"
+msgstr "Tersalin"
+
+msgid "Flags"
+msgstr "Flag"
+
+msgid "Speed"
+msgstr "Kecepatan"
+
+msgid "Choose a row on the board first."
+msgstr "Pilih dulu sebuah baris di papan."
+
+msgid "Hardware profile"
+msgstr "Hardware profile"
+
+msgid "This machine, as scanned"
+msgstr "Mesin ini, seperti hasil pemindaian"
+
+msgid "Graphics memory"
+msgstr "Memori grafis"
+
+msgid "System memory"
+msgstr "Memori sistem"
+
+msgid "Processor cores"
+msgstr "Inti prosesor"
+
+msgid "Score against that machine"
+msgstr "Nilai terhadap mesin itu"
+
+msgid "What runs here, how fast, and with which settings."
+msgstr "Apa yang berjalan di sini, seberapa cepat, dan dengan pengaturan apa."
+
+msgid "Working…"
+msgstr "Sedang bekerja…"
+
+msgid "Something went wrong"
+msgstr "Ada yang tidak beres"
+
+msgid "Hint"
+msgstr "Petunjuk"
+
+msgid "Command"
+msgstr "Perintah"
+
+msgid "About these figures"
+msgstr "Tentang angka-angka ini"
+
+msgid "Close"
+msgstr "Tutup"
+
+msgid "%(shown)s of %(total)s in the catalog"
+msgstr "%(shown)s dari %(total)s di katalog"
+
+msgid "Source code (AGPL-3.0-or-later)"
+msgstr "Kode sumber (AGPL-3.0-or-later)"
+
+msgid "This dashboard is served from your own machine and sends nothing anywhere."
+msgstr "Dasbor ini dilayani dari mesin Anda sendiri dan tidak mengirim apa pun ke mana pun."
