@@ -275,8 +275,8 @@ either way — an empty `msgstr` prints the same `B` and then reads as one messa
 every completeness report from now on.
 
 **These entries hold a character, not a grouping rule.** LlamaFit groups digits in threes
-everywhere, so Hindi and Urdu come out as `3,276,800` rather than on the South Asian pattern
-their readers use, `32,76,800`. That is a known limitation and not something this entry can
+everywhere, so Hindi, Bengali and Urdu come out as `3,276,800` rather than on the South
+Asian pattern their readers use, `32,76,800`. That is a known limitation and not something this entry can
 fix: it is one separator, and where the separators go is decided in the code. Say so in an
 issue if it matters to your language — the fix is a grouping pattern per language, and it
 has to be made once for all of them.
