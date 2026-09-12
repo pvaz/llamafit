@@ -6,6 +6,11 @@
 # ennen kuin se lasketaan tarkistetuksi. Lue se rivi riviltä ja korjaa se pull
 # requestissa.
 #
+# A Latin identifier takes no Finnish case ending and cannot take one, so where the
+# grammar would want one on a model id, a flag or a quantisation name, the sentence is
+# rephrased around it and an ordinary noun — "malli", "tiedosto", "osoite" — carries
+# the ending instead.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: llamafit 0.1.0a1\n"
@@ -16,6 +21,198 @@ msgstr ""
 "Language: fi\n"
 "Language-Team: Finnish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "nothing measured touches this term, so there is no equation it appears in"
+msgstr "mikään mitattu ei kosketa tätä termiä, joten ei ole yhtälöä, jossa se esiintyisi"
+
+msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
+msgstr "%(measurements)d erillistä kokoonpanoa %(parameters)d vapaalle parametrille; kun pisteitä on vähemmän kuin parametreja, luvut näyttävät tarkoilta mutta ovat mielivaltaisia"
+
+msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
+msgstr "nämä %(measurements)d kokoonpanoa eivät vaihtele toisistaan riippumatta tarpeeksi, jotta %(parameters)d parametria voitaisiin erottaa toisistaan"
+
+msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "sovitus antoi arvoksi %(value).3f, mitä sen oma määritelmä ei salli; mittaukset ovat keskenään ristiriidassa luvun 10.1 mallin mukaan"
+
+msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "tulokseksi tuli %(value).3f, mutta saman sovituksen toinen parametri oli mahdoton, ja pienimmän neliösumman menetelmä valitsi ne toisiaan vastaan"
+
+msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
+msgstr "estimaattorissa ei ole tällaista termiä: luku 10.1 poisti kerroskohtaisen lisäkuorman, joka 28-kerroksisella mallilla ylitti koko mitatun tokenin"
+
+msgid "generation (llama-bench)"
+msgstr "generointi (llama-bench)"
+
+msgid "prompt (llama-bench)"
+msgstr "prompt (llama-bench)"
+
+msgid "generation, first request"
+msgstr "generointi, ensimmäinen pyyntö"
+
+msgid "generation, 1K prompt"
+msgstr "generointi, 1K prompt"
+
+msgid "prompt, 1K request"
+msgstr "prompt, 1K pyyntö"
+
+msgid "peak VRAM"
+msgstr "VRAM-huippu"
+
+msgid "no graphics card"
+msgstr "ei näytönohjainta"
+
+msgid "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+msgstr "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+
+msgid "%(flag)s was asked for as %(wanted)s but the run reports %(actual)s"
+msgstr "valitsimelle %(flag)s pyydettiin %(wanted)s, mutta ajo ilmoittaa %(actual)s"
+
+msgid "The card was full and generation came in below three fifths of the estimate: the driver was paging to system memory, which does not fail and does not appear in the log."
+msgstr "Kortti oli täynnä ja generointi jäi alle kolmeen viidesosaan arviosta: ajuri sivutti järjestelmämuistiin, mikä ei kaadu eikä näy lokissa."
+
+msgid "Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page."
+msgstr "VRAM-huippu jäi selvästi alle kortin koko muistin, joten ajurilla ei ollut mitään sivutettavaa."
+
+msgid "The card was full, which a good plan is meant to be, and the speed was close enough to the estimate that nothing was paging."
+msgstr "Kortti oli täynnä, kuten hyvän suunnitelman kuuluukin olla, ja nopeus oli riittävän lähellä arviota, ettei mikään sivuttanut."
+
+msgid "No VRAM reading was taken during the run, so this configuration has not been cleared of paging; it has only not been checked."
+msgstr "Ajon aikana ei luettu VRAM-arvoa, joten tätä kokoonpanoa ei ole todettu sivuttamattomaksi; sitä ei vain ole tarkistettu."
+
+msgid "The card's total memory is unknown, so a reading of what was in use says nothing about how close to full it was."
+msgstr "Kortin koko muistin määrä on tuntematon, joten lukema käytössä olleesta muistista ei kerro mitään siitä, kuinka lähellä täyttä oltiin."
+
+msgid "There was no estimate to compare the measured speed against, so the second half of the signature could not be tested."
+msgstr "Ei ollut arviota, johon mitattua nopeutta olisi voinut verrata, joten tunnusmerkin toista puolta ei voitu testata."
+
+msgid "llama-bench did not produce JSON"
+msgstr "llama-bench ei tuottanut JSONia"
+
+msgid "llama-bench JSON is not a list of results"
+msgstr "llama-benchin JSON ei ole lista tuloksia"
+
+msgid "llama-bench JSON held no readable results"
+msgstr "llama-benchin JSON ei sisältänyt luettavia tuloksia"
+
+msgid "no llama-bench result rows found"
+msgstr "llama-benchin tulosrivejä ei löytynyt"
+
+msgid "could not open %(path)s for the server log"
+msgstr "tiedostoa %(path)s ei voitu avata palvelimen lokia varten"
+
+msgid "could not start llama-server"
+msgstr "llama-serveriä ei voitu käynnistää"
+
+msgid "no output"
+msgstr "ei tulostetta"
+
+msgid "llama-bench exited with code %(code)d: %(detail)s"
+msgstr "llama-bench päättyi koodilla %(code)d: %(detail)s"
+
+msgid "llama-bench output could not be read: %(error)s"
+msgstr "llama-benchin tulostetta ei voitu lukea: %(error)s"
+
+msgid "llama-server did not become healthy"
+msgstr "llama-server ei saavuttanut toimivaa tilaa"
+
+msgid "Its whole output is in the log file `bench` named; the end says why."
+msgstr "Sen koko tuloste on siinä lokitiedostossa, jonka `bench` nimesi; loppu kertoo miksi."
+
+msgid "%(path)s was written by a newer LlamaFit (benchmark format %(found)d, this build reads %(known)d)"
+msgstr "tiedoston %(path)s on kirjoittanut uudempi LlamaFit (mittausmuoto %(found)d, tämä koontiversio lukee muotoa %(known)d)"
+
+msgid "Upgrade LlamaFit, or move the file aside to start a new one."
+msgstr "Päivitä LlamaFit tai siirrä tiedosto syrjään, niin aloitetaan uusi."
+
+msgid "a benchmark cannot be recorded against a simulated machine"
+msgstr "simuloidulle koneelle ei voi kirjata mittausta"
+
+msgid "Run `llamafit bench` on the machine itself, without --profile."
+msgstr "Suorita `llamafit bench` itse koneella ilman valitsinta --profile."
+
+msgid "the run did not use the settings it was given: %(problems)s"
+msgstr "ajo ei käyttänyt sille annettuja asetuksia: %(problems)s"
+
+msgid "Nothing was stored. A result filed under flags it was not taken with would be believed later by everything that reads it."
+msgstr "Mitään ei tallennettu. Tulosta, joka on kirjattu valitsimille joilla sitä ei otettu, uskoisi myöhemmin kaikki sen lukevat."
+
+msgid "a conservative default; nobody has measured this card's backend overhead"
+msgstr "varovainen oletusarvo; kenenkään mittaamatta on, paljonko tämän kortin backend vie"
+
+msgid "measured on this card with driver %(driver)s and llama.cpp %(build)s; one machine"
+msgstr "mitattu tällä kortilla, ajuri %(driver)s ja llama.cpp %(build)s; yksi kone"
+
+msgid "A hybrid placement has to say how many layers are on the graphics card."
+msgstr "Hybridisijoittelun on kerrottava, montako kerrosta on näytönohjaimella."
+
+msgid "Pass gpu_layers, which is what -ngl would be."
+msgstr "Anna gpu_layers, eli se mitä -ngl olisi."
+
+msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
+msgstr "LlamaFit ei ole lukenut mallin %(model)s tiedostoa %(quant)s, joten se ei voi mitoittaa sitä."
+
+msgid "Run `llamafit catalog refresh` to read the file's header."
+msgstr "Suorita `llamafit catalog refresh`, niin tiedoston otsake luetaan."
+
+msgid "the server process before any model buffer"
+msgstr "palvelinprosessi ennen mitään mallipuskuria"
+
+msgid "fitted to one machine's measurements; the least certain line here"
+msgstr "sovitettu yhden koneen mittauksiin; epävarmin rivi tässä"
+
+msgid "room for one logit per vocabulary entry per token of the batch"
+msgstr "tilaa yhdelle logitille jokaista sanaston alkiota ja erän tokenia kohti"
+
+msgid "LlamaFit cannot size a %(kv_type)s key-value cache."
+msgstr "LlamaFit ei osaa mitoittaa tyypin %(kv_type)s avain-arvo-välimuistia."
+
+msgid "Use one of: %(types)s."
+msgstr "Käytä jotain näistä: %(types)s."
+
+msgid "This model's file does not say how large its key-value cache is per token."
+msgstr "Tämän mallin tiedosto ei kerro, kuinka suuri sen avain-arvo-välimuisti on tokenia kohti."
+
+msgid "Refresh the catalog so the file's header is read again."
+msgstr "Päivitä luettelo, niin tiedoston otsake luetaan uudelleen."
+
+msgid "the attention-layer count was assumed, not counted"
+msgstr "tarkkaavuuskerrosten määrä oletettiin, sitä ei laskettu"
+
+msgid "%(arch)s allocates more cache than its header describes; see the line below"
+msgstr "%(arch)s varaa enemmän välimuistia kuin sen otsake kuvaa; katso alla oleva rivi"
+
+msgid "what %(arch)s allocates beyond its header, measured rather than derived"
+msgstr "se minkä %(arch)s varaa otsakkeensa yli, mitattuna eikä johdettuna"
+
+msgid "from the architecture's state dimensions; it does not grow with context"
+msgstr "arkkitehtuurin tilaulottuvuuksista; ei kasva kontekstin mukana"
+
+msgid "the projector file itself"
+msgstr "projektoritiedosto itse"
+
+msgid "the projector's own compute space, measured at 248 MiB"
+msgstr "projektorin oma laskentatila, mitattu 248 MiB:ksi"
+
+msgid "attention projections, feed-forward weights and norms"
+msgstr "tarkkaavuusprojektiot, myötäkytketyt painot ja normalisoinnit"
+
+msgid "always-on experts, which run for every token"
+msgstr "aina päällä olevat asiantuntijat, jotka ajetaan joka tokenille"
+
+msgid "routed experts, read across the bus once per micro-batch"
+msgstr "reititetyt asiantuntijat, jotka luetaan väylän yli kerran mikroerää kohti"
+
+msgid "this model ties its output projection to its embedding table"
+msgstr "tämä malli sitoo ulostuloprojektionsa upotustauluunsa"
+
+msgid "llama.cpp keeps the embedding table in memory even at full offload"
+msgstr "llama.cpp pitää upotustaulun muistissa silloinkin, kun kaikki on siirretty kortille"
+
+msgid "streamed from disk as it is needed, not held in memory"
+msgstr "virtaa levyltä sitä mukaa kuin tarvitaan, ei muistissa"
+
+msgid "held in memory, since streaming from disk was turned off"
+msgstr "muistissa, koska levyltä virtaaminen on kytketty pois"
 
 msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
 msgstr "Hugging Face vastasi %(status)d haettaessa tiedostoluetteloa kohteelle %(repo)s."
@@ -63,6 +260,9 @@ msgstr "Suorita `llamafit catalog refresh` ilman valitsinta --model rakentaakses
 msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
 msgstr "Etsi, mitoita, asenna ja varmista avoimin painoin julkaistut LLM:t llama.cpp:lle omalla koneellasi."
 
+msgid "With no command, llamafit opens the terminal dashboard; in a pipe, or with --json, it prints what `llamafit recommend` would."
+msgstr "Ilman komentoa llamafit avaa päätteen näkymän; putkessa tai valitsimella --json se tulostaa sen, minkä `llamafit recommend` tulostaisi."
+
 msgid "Print machine-readable JSON instead of tables."
 msgstr "Tulostaa koneluettavaa JSONia taulukoiden sijaan."
 
@@ -72,17 +272,322 @@ msgstr "Kirjoittaa tarkemmat tiedot lokihakemiston tiedostoon llamafit.log ja n�
 msgid "Disable colours."
 msgstr "Poistaa värit käytöstä."
 
+msgid "Answer for the machine this hardware profile describes instead of this one. Nothing about this machine is probed, and every answer is marked as simulated. `llamafit hardware list` names the profiles you have."
+msgstr "Vastaa tämän koneen sijasta sen koneen puolesta, jota tämä laitteistoprofiili kuvaa. Tästä koneesta ei tutkita mitään, ja jokainen vastaus merkitään simuloiduksi. `llamafit hardware list` kertoo, mitä profiileja sinulla on."
+
+msgid "Pretend the graphics card has this much memory, for example 24G. Everything else stays as scanned, and every answer is marked as simulated."
+msgstr "Olettaa, että näytönohjaimella on näin paljon muistia, esimerkiksi 24G. Kaikki muu jää skannatun mukaiseksi, ja jokainen vastaus merkitään simuloiduksi."
+
+msgid "Pretend the machine has this much system memory, for example 128GiB. Every answer is marked as simulated."
+msgstr "Olettaa, että koneessa on näin paljon järjestelmämuistia, esimerkiksi 128GiB. Jokainen vastaus merkitään simuloiduksi."
+
+msgid "Pretend the processor has this many physical cores. Every answer is marked as simulated."
+msgstr "Olettaa, että suorittimessa on näin monta fyysistä ydintä. Jokainen vastaus merkitään simuloiduksi."
+
+msgid "Plan, report and score no context longer than this. It caps the model's own length; it does not describe a machine."
+msgstr "Ei suunnittele, raportoi eikä pisteytä tätä pidempää kontekstia. Rajaa mallin omaa pituutta; ei kuvaa konetta."
+
 msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
 msgstr "Puhuu tätä kieltä, esimerkiksi pt_PT. Kieli, jota LlamaFitillä ei ole, vaihtuu englantiin, ja silloin kerrotaan, mitkä kielet siltä löytyvät."
 
 msgid "Print the version and exit."
 msgstr "Tulostaa version ja lopettaa."
 
+msgid "the output's encoding"
+msgstr "tulosteen merkistökoodaus"
+
+msgid "%(count)d character could not be written in %(encoding)s and is shown as ?."
+msgid_plural "%(count)d characters could not be written in %(encoding)s and are shown as ?."
+msgstr[0] "%(count)d merkkiä ei voitu kirjoittaa koodauksella %(encoding)s, ja se näkyy merkkinä ?."
+msgstr[1] "%(count)d merkkiä ei voitu kirjoittaa koodauksella %(encoding)s, ja ne näkyvät merkkinä ?."
+
+msgid "Set PYTHONUTF8=1 in the environment and run again: Python then writes UTF-8, which carries every language."
+msgstr "Aseta ympäristöön PYTHONUTF8=1 ja suorita uudelleen: silloin Python kirjoittaa UTF-8:aa, joka kantaa kaikki kielet."
+
+msgid "%(option)s is an option of llamafit itself, so it goes before the command: `llamafit %(option)s %(rest)s`."
+msgstr "%(option)s on llamafitin oma valitsin, joten se tulee ennen komentoa: `llamafit %(option)s %(rest)s`."
+
 msgid "Unexpected error: %(error)s"
 msgstr "Odottamaton virhe: %(error)s"
 
 msgid "Run again with --verbose for the full traceback."
 msgstr "Suorita uudelleen valitsimella --verbose nähdäksesi koko virhepinon."
+
+msgid "A catalog model id."
+msgstr "Luettelossa olevan mallin tunnus."
+
+msgid "Benchmark this quantisation instead of the planned one."
+msgstr "Mittaa tämän kvantisoinnin suunnitellun sijaan."
+
+msgid "Size for this many tokens."
+msgstr "Mitoittaa näin monelle tokenille."
+
+msgid "Set the micro-batch by hand; the budget is rebuilt around it."
+msgstr "Asettaa mikroerän käsin; budjetti rakennetaan uudelleen sen ympärille."
+
+msgid ""
+"Measure a model on this machine and show the measurement beside the estimate.\n"
+"\n"
+"Runs llama-bench and a real server at the planned flags, stores the result with the conditions it was taken under, and flags a configuration the driver was paging. With --calibrate, fits the estimator's constants to this machine from every stored result and says by name which ones the measurements do not determine."
+msgstr ""
+"Mittaa mallin tällä koneella ja näyttää mittauksen arvion vierellä.\n"
+"\n"
+"Ajaa llama-benchin ja oikean palvelimen suunnitelluilla valitsimilla, tallentaa tuloksen niiden olosuhteiden kanssa joissa se otettiin, ja merkitsee kokoonpanon jossa ajuri sivutti. Valitsimella --calibrate sovittaa estimaattorin vakiot tälle koneelle kaikista tallennetuista tuloksista ja kertoo nimeltä, mitkä niistä mittaukset jättävät määräämättä."
+
+msgid "Measure prompt processing at every micro-batch of the ladder, not only the planned one. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all."
+msgstr "Mittaa promptin käsittelyn tikkaiden jokaisella mikroerällä, ei vain suunnitellulla. Luvussa 10.2 on kaksi vapaata parametria ja yksi mikroerä on yksi yhtälö, joten ilman tätä kalibroinnin prompt-puolta ei voi sovittaa lainkaan."
+
+msgid "Run llama-bench only. Faster, and it gives up the paging check, the buffer sizes and the tool-call test, all of which need a real server."
+msgstr "Ajaa vain llama-benchin. Nopeampi, mutta luopuu sivutustarkistuksesta, puskurikoista ja työkalukutsutestistä, joihin kaikkiin tarvitaan oikea palvelin."
+
+msgid "Print the result without writing it to the database."
+msgstr "Tulostaa tuloksen kirjoittamatta sitä tietokantaan."
+
+msgid "Print the commands that would run, and run nothing."
+msgstr "Tulostaa komennot jotka ajettaisiin, eikä aja mitään."
+
+msgid "Fit the estimator's constants to this machine from every result."
+msgstr "Sovittaa estimaattorin vakiot tälle koneelle kaikista tuloksista."
+
+msgid "List what is already stored and stop."
+msgstr "Luettelee jo tallennetut ja lopettaa."
+
+msgid "`llamafit bench` needs a model to measure"
+msgstr "`llamafit bench` tarvitsee mallin, jonka se mittaa"
+
+msgid "Try `llamafit bench <model>`, `--calibrate` on its own, or `--show`."
+msgstr "Kokeile `llamafit bench <model>`, pelkkää `--calibrate`-valitsinta tai `--show`-valitsinta."
+
+msgid "llama.cpp was not found, so there is nothing to benchmark with"
+msgstr "llama.cpp:tä ei löytynyt, joten ei ole mitään millä mitata"
+
+msgid "Run `llamafit doctor` to see where it was looked for."
+msgstr "Suorita `llamafit doctor` nähdäksesi, mistä sitä etsittiin."
+
+msgid "%(path)s has llama-server but no llama-bench"
+msgstr "polussa %(path)s on llama-server mutta ei llama-benchiä"
+
+msgid "Some release archives leave it out; a full build has it beside the server."
+msgstr "Joistain julkaisupaketeista se puuttuu; täydessä koontiversiossa se on palvelimen vierellä."
+
+msgid "this host is simulated, and a simulated machine cannot be measured"
+msgstr "tämä kone on simuloitu, eikä simuloitua konetta voi mitata"
+
+msgid "Run `llamafit bench` on the machine itself."
+msgstr "Suorita `llamafit bench` itse koneella."
+
+msgid "the model file is not on this machine: %(path)s"
+msgstr "mallin tiedostoa ei ole tällä koneella: %(path)s"
+
+msgid "Download it first; `llamafit plan` shows the path the command line uses."
+msgstr "Lataa se ensin; `llamafit plan` näyttää polun, jota komentorivi käyttää."
+
+msgid "Would run:"
+msgstr "Ajettaisiin:"
+
+msgid "Nothing has been measured on this machine yet."
+msgstr "Tällä koneella ei ole vielä mitattu mitään."
+
+msgid "Stored measurements"
+msgstr "Tallennetut mittaukset"
+
+msgid "model"
+msgstr "malli"
+
+msgid "kind"
+msgstr "laji"
+
+msgid "gen tok/s"
+msgstr "gen tok/s"
+
+msgid "prompt tok/s"
+msgstr "prompt tok/s"
+
+msgid "taken"
+msgstr "otettu"
+
+msgid "flags"
+msgstr "valitsimet"
+
+msgid "Nothing was written to the database, so no estimate will be relabelled."
+msgstr "Tietokantaan ei kirjoitettu mitään, joten yhdenkään arvion merkintä ei muutu."
+
+msgid "Estimated against measured"
+msgstr "Arvioitu vastaan mitattu"
+
+msgid "figure"
+msgstr "suure"
+
+msgid "context"
+msgstr "konteksti"
+
+msgid "micro-batch"
+msgstr "mikroerä"
+
+msgid "estimated"
+msgstr "arvioitu"
+
+msgid "measured"
+msgstr "mitattu"
+
+msgid "ratio"
+msgstr "suhde"
+
+msgid "The plan sizes this configuration for %(context)s tokens and estimates %(tps)s generated tokens per second there. Nothing above ran at that context, so that figure is reported and not compared."
+msgstr "Suunnitelma mitoittaa tämän kokoonpanon %(context)s tokenille ja arvioi siinä %(tps)s generoitua tokenia sekunnissa. Mikään yllä olevista ei ajanut sillä kontekstilla, joten tämä luku vain raportoidaan, sitä ei verrata."
+
+msgid "%(count)d figure is outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgid_plural "%(count)d figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgstr[0] "%(count)d luku on sen 0,8 ja 1,25 välisen kaistan ulkopuolella, johon kalibroimattoman kaavan odotetaan osuvan."
+msgstr[1] "%(count)d lukua on sen 0,8 ja 1,25 välisen kaistan ulkopuolella, johon kalibroimattoman kaavan odotetaan osuvan."
+
+msgid "This configuration was paging."
+msgstr "Tämä kokoonpano sivutti."
+
+msgid "This configuration was not paging."
+msgstr "Tämä kokoonpano ei sivuttanut."
+
+msgid "Paging could not be checked."
+msgstr "Sivutusta ei voitu tarkistaa."
+
+msgid "Peak VRAM was %(percent)s percent of the card, and generation was %(speed)s percent of the estimate."
+msgstr "VRAM-huippu oli %(percent)s prosenttia kortista, ja generointi oli %(speed)s prosenttia arviosta."
+
+msgid "Peak VRAM was %(percent)s percent of the card. Generation was not compared with the estimate."
+msgstr "VRAM-huippu oli %(percent)s prosenttia kortista. Generointia ei verrattu arvioon."
+
+msgid "The largest context on the ladder that would not page is %(tokens)s."
+msgstr "Tikkaiden suurin konteksti, joka ei sivuttaisi, on %(tokens)s."
+
+msgid "Calibration"
+msgstr "Kalibrointi"
+
+msgid "constant"
+msgstr "vakio"
+
+msgid "value"
+msgstr "arvo"
+
+msgid "from"
+msgstr "mistä"
+
+msgid "%(base)s + %(slope)s per 1K"
+msgstr "%(base)s + %(slope)s / 1K"
+
+msgid "%(count)d measured context"
+msgid_plural "%(count)d measured contexts"
+msgstr[0] "%(count)d mitattu konteksti"
+msgstr[1] "%(count)d mitattua kontekstia"
+
+msgid "Nothing was fitted. Every line below says what its constant was missing; a calibration made from less than that would look precise and be arbitrary."
+msgstr "Mitään ei sovitettu. Jokainen alla oleva rivi kertoo, mitä sen vakiolta puuttui; tätä vähemmästä tehty kalibrointi näyttäisi tarkalta ja olisi mielivaltainen."
+
+msgid "%(name)s was not fitted: %(reason)s"
+msgstr "%(name)s jäi sovittamatta: %(reason)s"
+
+msgid "%(count)d measured configuration"
+msgid_plural "%(count)d measured configurations"
+msgstr[0] "%(count)d mitattu kokoonpano"
+msgstr[1] "%(count)d mitattua kokoonpanoa"
+
+msgid "What the model is for. It sets the score weights, the speed target and the context a candidate is measured against."
+msgstr "Mihin malli on tarkoitettu. Se asettaa pisteytyksen painot, nopeustavoitteen ja kontekstin, johon ehdokasta verrataan."
+
+msgid "Capability the model must have; a model without it is excluded "
+msgstr "Ominaisuus, joka mallilla on oltava; ilman sitä malli jää pois."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Säilyttää vain nämä lisenssitunnukset (voidaan toistaa)."
+
+msgid "balanced, quality or speed: moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights."
+msgstr "balanced, quality tai speed: siirtää kymmenesosan painosta laadun ja nopeuden välillä. Kallistaa taulua; ei korvaa painoja."
+
+msgid "Exclude anything larger to download, for example 40G or 7.5GiB."
+msgstr "Sulkee pois kaiken tätä suuremman ladattavan, esimerkiksi 40G tai 7.5GiB."
+
+msgid "The worst verdict to list: comfortable, fits or tight."
+msgstr "Huonoin lueteltava arvio: comfortable, fits tai tight."
+
+msgid "Exclude candidates generating fewer tokens per second than this, in place of the speed a person reads at. Pass 0 when nobody is waiting on the tokens."
+msgstr "Sulkee pois ehdokkaat, jotka generoivat tätä vähemmän tokeneita sekunnissa, ihmisen lukunopeuden sijaan. Anna 0, kun kukaan ei odota tokeneita."
+
+msgid "Order the rows drawn: score, speed, quality, context, size, prompt, card, ram, fit, model or quant, largest or best first unless :asc says otherwise. The # column keeps the ranking."
+msgstr "Järjestää piirrettävät rivit: score, speed, quality, context, size, prompt, card, ram, fit, model tai quant; suurin tai paras ensin, ellei :asc muuta sano. Sarake # säilyttää sijoituksen."
+
+msgid "Draw only rows whose id, name or quantisation contains this text."
+msgstr "Piirtää vain rivit, joiden tunnus, nimi tai kvantisointi sisältää tämän tekstin."
+
+msgid "Draw only rows whose file is already on this machine."
+msgstr "Piirtää vain rivit, joiden tiedosto on jo tällä koneella."
+
+msgid "Draw only rows that run this way: gpu, moe-offload, hybrid or cpu."
+msgstr "Piirtää vain rivit, jotka toimivat näin: gpu, moe-offload, hybrid tai cpu."
+
+msgid "Draw only rows at or above this verdict: comfortable, fits or tight. The ranking is unchanged and a hidden row is still counted."
+msgstr "Piirtää vain rivit, jotka yltävät tähän arvioon tai parempaan: comfortable, fits tai tight. Sijoitus ei muutu, ja piilotettukin rivi lasketaan mukaan."
+
+msgid "Draw exactly these columns, comma-separated, in this order, named as --json names them: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+msgstr "Piirtää täsmälleen nämä sarakkeet pilkuin eroteltuina tässä järjestyksessä, niillä nimillä joita --json käyttää: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+
+msgid "Draw every column whatever the terminal's width; a cell that does not fit folds."
+msgstr "Piirtää kaikki sarakkeet päätteen leveydestä riippumatta; solu joka ei mahdu, taittuu."
+
+msgid "Leave the candidates that were not ranked off the table. The reasons are still printed under it."
+msgstr "Jättää sijoittamatta jääneet ehdokkaat pois taulukosta. Syyt tulostetaan silti sen alle."
+
+msgid "invalid --min-fit %(value)s"
+msgstr "virheellinen --min-fit: %(value)s"
+
+msgid "Valid values: %(values)s"
+msgstr "Kelvolliset arvot: %(values)s"
+
+msgid "invalid --prefer %(value)s"
+msgstr "virheellinen --prefer: %(value)s"
+
+msgid "invalid --runs %(value)s"
+msgstr "virheellinen --runs: %(value)s"
+
+msgid "invalid --sort %(value)s"
+msgstr "virheellinen --sort: %(value)s"
+
+msgid "invalid --columns %(value)s"
+msgstr "virheellinen --columns: %(value)s"
+
+msgid ""
+"Rank the catalog for what you want to do on this machine.\n"
+"\n"
+"Every candidate is planned, sized and estimated here, so the first run scans the machine. Speeds compare candidates at 8K tokens of context; --explain expands a row into the scores, the weights, the budget and the speed breakdown that produced it."
+msgstr ""
+"Asettaa luettelon järjestykseen sen mukaan, mitä haluat tällä koneella tehdä.\n"
+"\n"
+"Jokainen ehdokas suunnitellaan, mitoitetaan ja arvioidaan tässä, joten ensimmäinen ajo skannaa koneen. Nopeudet vertaavat ehdokkaita 8K tokenin kontekstilla; --explain avaa rivin niiksi pisteiksi, painoiksi, budjetiksi ja nopeuden erittelyksi, joista se syntyi."
+
+msgid "Exclude candidates that cannot hold at least this many tokens."
+msgstr "Sulkee pois ehdokkaat, jotka eivät pysty pitämään ainakaan näin montaa tokenia."
+
+msgid "Show at most this many rows."
+msgstr "Näyttää enintään näin monta riviä."
+
+msgid "Show every quantisation instead of the best one per model."
+msgstr "Näyttää kaikki kvantisoinnit mallikohtaisen parhaan sijaan."
+
+msgid "Expand every row shown into the scores, weights, budget and speed breakdown behind it. Combine with --limit 1 for one model."
+msgstr "Avaa jokaisen näytetyn rivin niiksi pisteiksi, painoiksi, budjetiksi ja nopeuden erittelyksi, jotka ovat sen takana. Yhdistä valitsimeen --limit 1, jos haluat yhden mallin."
+
+msgid "Plan without a vision projector, freeing its memory."
+msgstr "Suunnittelee ilman konenäköprojektoria ja vapauttaa sen muistin."
+
+msgid ""
+"Rank every model by how well it uses this machine, whatever it is for.\n"
+"\n"
+"No use case, no weights and no score: this is the memory question on its own. Models are sized for 32K tokens of context, and the context column is the largest each one holds in the mode shown."
+msgstr ""
+"Asettaa kaikki mallit järjestykseen sen mukaan, kuinka hyvin ne käyttävät tätä konetta, olivatpa ne mihin tahansa tarkoitettuja.\n"
+"\n"
+"Ei käyttötapausta, ei painoja eikä pisteitä: tässä on pelkkä muistikysymys. Mallit mitoitetaan 32K tokenin kontekstille, ja kontekstisarake näyttää suurimman, jonka kukin pitää näytetyssä tilassa."
+
+msgid "Only the configurations that use the machine well: at least half its memory held in weights, and no pool past four fifths."
+msgstr "Vain ne kokoonpanot, jotka käyttävät konetta hyvin: vähintään puolet sen muistista painoissa, eikä yksikään varanto yli neljän viidesosan täynnä."
 
 msgid "Maintain the catalog: validate its files, refresh volatile fields."
 msgstr "Ylläpitää luetteloa: tarkistaa sen tiedostot, päivittää muuttuvat kentät."
@@ -93,37 +598,17 @@ msgstr "Säilyttää vain tämän käyttötapauksen."
 msgid "Keep only models with this capability (repeatable)."
 msgstr "Säilyttää vain mallit, joilla on tämä ominaisuus (voidaan toistaa)."
 
-msgid "Keep only these licence identifiers (repeatable)."
-msgstr "Säilyttää vain nämä lisenssitunnukset (voidaan toistaa)."
+msgid "Show only this quantisation, matched case-insensitively, in both tables."
+msgstr "Näyttää vain tämän kvantisoinnin molemmissa taulukoissa, kirjainkoosta riippumatta."
+
+msgid "Size every quantisation for this many tokens instead of the usual 32,768."
+msgstr "Mitoittaa jokaisen kvantisoinnin näin monelle tokenille tavanomaisen 32 768:n sijaan."
 
 msgid "Validate only this file instead of the bundled catalog and custom overrides."
 msgstr "Tarkistaa vain tämän tiedoston mukana tulevan luettelon ja omien mukautusten sijaan."
 
-msgid "Did you mean: %(ids)s?"
-msgstr "Tarkoititko: %(ids)s?"
-
-msgid "Run `llamafit list` to see every model id."
-msgstr "Suorita `llamafit list` nähdäksesi kaikki mallitunnukset."
-
-msgid "no model named %(id)s in the catalog"
-msgstr "luettelossa ei ole mallia nimeltä %(id)s"
-
-msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
-msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
-msgstr[0] "Luettelosta löytyi %(count)d ongelma; suorita `llamafit catalog validate` nähdäksesi tarkemmat tiedot."
-msgstr[1] "Luettelosta löytyi %(count)d ongelmaa; suorita `llamafit catalog validate` nähdäksesi tarkemmat tiedot."
-
 msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
 msgstr "Yksikään malli ei täsmännyt. Kokeile väljempää valitsinta --use-case, --capability, --license, --vendor tai --search."
-
-msgid "invalid --use-case %(value)s"
-msgstr "virheellinen --use-case: %(value)s"
-
-msgid "Valid use cases: %(values)s"
-msgstr "Kelvolliset käyttötapaukset: %(values)s"
-
-msgid "Valid capabilities: %(values)s"
-msgstr "Kelvolliset ominaisuudet: %(values)s"
 
 msgid ""
 "List the model catalog, narrowed by any filters given.\n"
@@ -149,8 +634,14 @@ msgstr "Lyhenne komennolle llamafit list --search TEKSTI."
 msgid "Text to match against id, name, vendor or family."
 msgstr "Teksti, jota etsitään mallitunnuksesta, nimestä, valmistajasta tai perheestä."
 
-msgid "A catalog model id."
-msgstr "Luettelossa olevan mallin tunnus."
+msgid ""
+"Show one model: its facts, the quants it publishes, and what each would cost on this machine.\n"
+"\n"
+"The last table is sized against this machine, so the first run scans it. One line per quantisation; plan opens one of those rows into the memory budget, the context ladder and the command line."
+msgstr ""
+"Näyttää yhden mallin: sen tiedot, sen julkaisemat kvantisoinnit ja sen, mitä kukin maksaisi tällä koneella.\n"
+"\n"
+"Viimeinen taulukko on mitoitettu tälle koneelle, joten ensimmäinen ajo skannaa sen. Yksi rivi kvantisointia kohti; plan avaa yhden näistä riveistä muistibudjetiksi, kontekstitikkaiksi ja komentoriviksi."
 
 msgid "Validate catalog YAML files against the schema, printing one line per problem."
 msgstr "Tarkistaa luettelon YAML-tiedostot skeemaa vasten ja tulostaa yhden rivin ongelmaa kohti."
@@ -198,8 +689,387 @@ msgstr "Tulostaa yhden mallin raa'an luettelomerkinnän, oletuksena JSONina tai 
 msgid "Print YAML instead of JSON."
 msgstr "Tulostaa YAMLia JSONin sijaan."
 
+msgid "Did you mean: %(ids)s?"
+msgstr "Tarkoititko: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Suorita `llamafit list` nähdäksesi kaikki mallitunnukset."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "luettelossa ei ole mallia nimeltä %(id)s"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "Luettelosta löytyi %(count)d ongelma; suorita `llamafit catalog validate` nähdäksesi tarkemmat tiedot."
+msgstr[1] "Luettelosta löytyi %(count)d ongelmaa; suorita `llamafit catalog validate` nähdäksesi tarkemmat tiedot."
+
+msgid "invalid --use-case %(value)s"
+msgstr "virheellinen --use-case: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Kelvolliset käyttötapaukset: %(values)s"
+
+msgid "invalid %(option)s value: %(values)s"
+msgid_plural "invalid %(option)s values: %(values)s"
+msgstr[0] "virheellinen %(option)s-arvo: %(values)s"
+msgstr[1] "virheelliset %(option)s-arvot: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Kelvolliset ominaisuudet: %(values)s"
+
+msgid "%(option)s is not a size: %(value)s"
+msgstr "%(option)s ei ole koko: %(value)s"
+
+msgid "Sizes look like 8G, 7.5GiB or 512M; a bare number is bytes."
+msgstr "Koot kirjoitetaan muodossa 8G, 7.5GiB tai 512M; pelkkä luku tarkoittaa tavuja."
+
+msgid "%(ceiling)s %(max)s is below %(floor)s %(min)s"
+msgstr "%(ceiling)s %(max)s on pienempi kuin %(floor)s %(min)s"
+
+msgid "Raise %(ceiling)s, or lower %(floor)s."
+msgstr "Nosta arvoa %(ceiling)s tai laske arvoa %(floor)s."
+
+msgid "`llamafit %(command)s` reports on the machine LlamaFit is running on"
+msgstr "`llamafit %(command)s` raportoi siitä koneesta, jolla LlamaFit on käynnissä"
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a profile describes, run `llamafit hardware show NAME --as-host`."
+msgstr "Jätä pois --profile, --memory, --ram ja --cpu-cores. Nähdäksesi koneen, jota profiili kuvaa, suorita `llamafit hardware show NAME --as-host`."
+
 msgid "Explain what was detected, what failed, and what would unlock more."
 msgstr "Selittää, mitä havaittiin, mikä epäonnistui ja mikä avaisi lisää."
+
+msgid "Hardware profiles: describe a machine in a file and score models against it."
+msgstr "Laitteistoprofiilit: kuvaa kone tiedostossa ja pisteytä mallit sitä vasten."
+
+msgid "Validate only this file instead of every bundled and user profile."
+msgstr "Tarkistaa vain tämän tiedoston kaikkien mukana tulevien ja omien profiilien sijaan."
+
+msgid "A profile name, or a path to a profile file."
+msgstr "Profiilin nimi tai polku profiilitiedostoon."
+
+msgid "%(count)d hardware profile problem found; run `llamafit hardware validate` for details."
+msgid_plural "%(count)d hardware profile problems found; run `llamafit hardware validate` for details."
+msgstr[0] "Löytyi %(count)d laitteistoprofiilin ongelma; suorita `llamafit hardware validate` nähdäksesi tarkemmat tiedot."
+msgstr[1] "Löytyi %(count)d laitteistoprofiilin ongelmaa; suorita `llamafit hardware validate` nähdäksesi tarkemmat tiedot."
+
+msgid "List the hardware profiles LlamaFit has: the bundled ones and your own."
+msgstr "Luettelee LlamaFitin laitteistoprofiilit: mukana tulevat ja omasi."
+
+msgid "No hardware profiles. Run `llamafit hardware path` to see where yours would go."
+msgstr "Ei laitteistoprofiileja. Suorita `llamafit hardware path` nähdäksesi, minne omasi menisivät."
+
+msgid ""
+"Show one profile; with --as-host, the machine it stands in for.\n"
+"\n"
+"A host built from a profile is marked as simulated, in the table and in the JSON, so a what-if is never mistaken for a scan of this machine."
+msgstr ""
+"Näyttää yhden profiilin; valitsimella --as-host sen koneen, jonka se korvaa.\n"
+"\n"
+"Profiilista rakennettu kone merkitään simuloiduksi sekä taulukossa että JSONissa, jottei mitä-jos-tilannetta koskaan luultaisi tämän koneen skannaukseksi."
+
+msgid "Show the host this profile substitutes, as `llamafit system` would."
+msgstr "Näyttää koneen, jonka tämä profiili korvaa, samaan tapaan kuin `llamafit system` näyttäisi."
+
+msgid "Check hardware profile files against the schema, printing one line per problem."
+msgstr "Tarkistaa laitteistoprofiilitiedostot skeemaa vasten ja tulostaa yhden rivin ongelmaa kohti."
+
+msgid "Print the directory your own hardware profiles go in."
+msgstr "Tulostaa hakemiston, johon omat laitteistoprofiilisi menevät."
+
+msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr "Sitä ei ole vielä olemassa; luo se ja laita sinne %(suffix)s-tiedosto."
+
+msgid "Install what it takes to run a model: llama.cpp itself, and the weights."
+msgstr "Asentaa sen, mitä mallin ajamiseen tarvitaan: llama.cpp:n itsensä ja painot."
+
+msgid "Fetch this quantisation instead of the first the catalog publishes."
+msgstr "Hakee tämän kvantisoinnin sen ensimmäisen sijaan, jonka luettelo julkaisee."
+
+msgid "Put the files here instead of under the configured downloads directory."
+msgstr "Laittaa tiedostot tänne määritellyn latauskansion sijaan."
+
+msgid "Use at most this much bandwidth, for example 5M. Shared across every worker, so the figure is the figure whatever --workers says."
+msgstr "Käyttää enintään näin paljon kaistaa, esimerkiksi 5M. Jaetaan kaikkien työntekijöiden kesken, joten luku on sama riippumatta siitä, mitä --workers sanoo."
+
+msgid "How many requests to keep in flight. More is not always faster, and a home connection is shared with whoever else is using it."
+msgstr "Montako pyyntöä pidetään yhtä aikaa liikkeellä. Enemmän ei ole aina nopeampaa, ja kotiyhteys jaetaan kaikkien muiden käyttäjien kanssa."
+
+msgid "Do not ask before starting."
+msgstr "Ei kysy ennen aloittamista."
+
+msgid "Show what would be fetched and stop before fetching it."
+msgstr "Näyttää, mitä haettaisiin, ja pysähtyy ennen hakemista."
+
+msgid "Fetch only the weights, not the vision projector or the draft model."
+msgstr "Hakee vain painot, ei konenäköprojektoria eikä luonnosmallia."
+
+msgid "Re-read files that are already here and check them against the catalog."
+msgstr "Lukee jo täällä olevat tiedostot uudelleen ja tarkistaa ne luetteloa vasten."
+
+msgid "Fetch files the catalog holds no checksum for. Nothing will be able to tell you whether they arrived intact."
+msgstr "Hakee tiedostot, joille luettelossa ei ole tarkistussummaa. Mikään ei pysty kertomaan, saapuivatko ne ehjinä."
+
+msgid "Show at most this many entries."
+msgstr "Näyttää enintään näin monta merkintää."
+
+msgid "Download a model's weights, resuming anything an earlier run left and checking every file against the catalog's checksum."
+msgstr "Lataa mallin painot, jatkaa sitä minkä aiempi ajo jätti kesken ja tarkistaa jokaisen tiedoston luettelon tarkistussummaa vasten."
+
+msgid "Start the download?"
+msgstr "Aloitetaanko lataus?"
+
+msgid "Show what has been downloaded, newest first."
+msgstr "Näyttää, mitä on ladattu, uusin ensin."
+
+msgid "Nothing has been downloaded yet."
+msgstr "Mitään ei ole vielä ladattu."
+
+msgid "Install this backend instead of the one chosen for your GPU: cuda, vulkan, hip, sycl, metal or cpu."
+msgstr "Asentaa tämän backendin sen sijaan, joka näytönohjaimellesi valittiin: cuda, vulkan, hip, sycl, metal tai cpu."
+
+msgid "Install here instead of ~/.llamafit/llama.cpp."
+msgstr "Asentaa tänne hakemiston ~/.llamafit/llama.cpp sijaan."
+
+msgid "Install this release tag, for example b6100, not the latest."
+msgstr "Asentaa tämän julkaisuversion, esimerkiksi b6100, eikä uusinta."
+
+msgid "invalid --backend %(value)s"
+msgstr "virheellinen --backend: %(value)s"
+
+msgid "Valid backends: %(values)s"
+msgstr "Kelvolliset backendit: %(values)s"
+
+msgid "release %(tag)s publishes no %(backend)s build for %(os)s %(arch)s."
+msgstr "julkaisu %(tag)s ei julkaise %(backend)s-koontiversiota järjestelmälle %(os)s %(arch)s."
+
+msgid "Leave --backend out and LlamaFit will choose a published one."
+msgstr "Jätä --backend pois, niin LlamaFit valitsee julkaistun."
+
+msgid "release %(tag)s publishes nothing for %(os)s %(arch)s."
+msgstr "julkaisu %(tag)s ei julkaise mitään järjestelmälle %(os)s %(arch)s."
+
+msgid "Build llama.cpp from source; see the project's own instructions."
+msgstr "Käännä llama.cpp lähdekoodista; katso projektin omat ohjeet."
+
+msgid "Downloading"
+msgstr "Ladataan"
+
+msgid "Change your PATH?"
+msgstr "Muutetaanko PATH?"
+
+msgid "PATH left alone."
+msgstr "PATH jätettiin rauhaan."
+
+msgid "PATH changed. Open a new terminal for it to take effect."
+msgstr "PATH muuttui. Avaa uusi pääte, jotta muutos tulee voimaan."
+
+msgid ""
+"Download a published llama.cpp build and install it into ~/.llamafit/llama.cpp.\n"
+"\n"
+"The plan is printed before anything is written. The archive's checksum is verified before it is unpacked, an interrupted download continues where it stopped, and a directory LlamaFit did not create is never overwritten."
+msgstr ""
+"Lataa julkaistun llama.cpp-koontiversion ja asentaa sen hakemistoon ~/.llamafit/llama.cpp.\n"
+"\n"
+"Suunnitelma tulostetaan ennen kuin mitään kirjoitetaan. Paketin tarkistussumma varmistetaan ennen purkamista, keskeytynyt lataus jatkuu siitä mihin jäi, eikä hakemistoa jota LlamaFit ei luonut koskaan korvata."
+
+msgid "Offer to add the bin directory to your PATH, showing the undo first."
+msgstr "Tarjoutuu lisäämään bin-hakemiston PATH-muuttujaasi ja näyttää ensin, miten sen peruu."
+
+msgid "Install over a directory LlamaFit did not create. Ask yourself twice."
+msgstr "Asentaa hakemiston päälle, jota LlamaFit ei luonut. Mieti kahdesti."
+
+msgid "Install an archive that publishes no checksum. Nothing can be checked."
+msgstr "Asentaa paketin, jolle ei ole julkaistu tarkistussummaa. Mitään ei voi tarkistaa."
+
+msgid "Print the plan and write nothing."
+msgstr "Tulostaa suunnitelman eikä kirjoita mitään."
+
+msgid "Do not ask; assume yes."
+msgstr "Ei kysy; olettaa vastaukseksi kyllä."
+
+msgid "Install this?"
+msgstr "Asennetaanko tämä?"
+
+msgid "Nothing was written."
+msgstr "Mitään ei kirjoitettu."
+
+msgid "Plan this quantisation instead of the one that scores best on this machine."
+msgstr "Suunnittelee tämän kvantisoinnin sen sijaan, joka saa tällä koneella parhaat pisteet."
+
+msgid "Size for this many tokens. When it does not fit, the plan sizes down and shows what the context you asked for would have cost."
+msgstr "Mitoittaa näin monelle tokenille. Kun se ei mahdu, suunnitelma pienentää mitoitusta ja näyttää, mitä pyytämäsi konteksti olisi maksanut."
+
+msgid "Set the micro-batch by hand. The whole budget is rebuilt around it, since it moves the compute buffer and with it the verdict."
+msgstr "Asettaa mikroerän käsin. Koko budjetti rakennetaan uudelleen sen ympärille, koska se siirtää laskentapuskuria ja sen mukana arviota."
+
+msgid "A generation speed to answer against: whether this reaches it, and what context would."
+msgstr "Generointinopeus, jota vasten vastataan: yltääkö tämä siihen, ja mikä konteksti yltäisi."
+
+msgid "%(model)s publishes no quantisations"
+msgstr "malli %(model)s ei julkaise kvantisointeja"
+
+msgid "Run `llamafit catalog refresh --model %(model)s`."
+msgstr "Suorita `llamafit catalog refresh --model %(model)s`."
+
+msgid ""
+"Place one model on this machine and print the command line that runs it.\n"
+"\n"
+"Shows the memory budget component by component, the context ladder a launch script chooses from, where a token's time goes, and any run the catalog records for comparison."
+msgstr ""
+"Sijoittaa yhden mallin tälle koneelle ja tulostaa komentorivin, joka ajaa sen.\n"
+"\n"
+"Näyttää muistibudjetin osa osalta, kontekstitikkaat joista käynnistysskripti valitsee, mihin tokenin aika kuluu, ja kaikki ajot jotka luettelo kirjaa vertailua varten."
+
+msgid "Leave the vision projector out, freeing its memory for context."
+msgstr "Jättää konenäköprojektorin pois ja vapauttaa sen muistin kontekstille."
+
+msgid "Write the files here instead of in LlamaFit's own presets directory."
+msgstr "Kirjoittaa tiedostot tänne LlamaFitin oman esiasetushakemiston sijaan."
+
+msgid "Bind this port instead of llama.cpp's default 8080."
+msgstr "Varaa tämän portin llama.cpp:n oletusportin 8080 sijaan."
+
+msgid "Size for this many tokens. It becomes the top of the ladder the script chooses from; the script never goes above it."
+msgstr "Mitoittaa näin monelle tokenille. Tästä tulee tikkaiden ylin askelma, josta skripti valitsee; skripti ei koskaan mene sen yli."
+
+msgid "%(model)s does not fit this machine in any configuration"
+msgstr "malli %(model)s ei mahdu tälle koneelle millään kokoonpanolla"
+
+msgid "Run `llamafit plan %(model)s` to see what it would need."
+msgstr "Suorita `llamafit plan %(model)s` nähdäksesi, mitä se vaatisi."
+
+msgid ""
+"Write launch scripts for one model: a script that picks its context from free card memory at start time, a router section, and a README.\n"
+"\n"
+"A file you have edited is never overwritten without --force."
+msgstr ""
+"Kirjoittaa käynnistysskriptit yhdelle mallille: skriptin joka valitsee kontekstinsa kortin vapaasta muistista käynnistyshetkellä, reititysosion ja README-tiedoston.\n"
+"\n"
+"Tiedostoa jota olet muokannut ei koskaan korvata ilman valitsinta --force."
+
+msgid "Overwrite files you have edited. It says which ones it discarded."
+msgstr "Korvaa tiedostot joita olet muokannut. Kertoo, mitkä se hylkäsi."
+
+msgid "Run a model's preset, wait for the server to answer, and print its endpoints. --stop stops the server LlamaFit started."
+msgstr "Ajaa mallin esiasetuksen, odottaa että palvelin vastaa, ja tulostaa sen päätepisteet. --stop pysäyttää palvelimen, jonka LlamaFit käynnisti."
+
+msgid "Stop the server LlamaFit started for this model."
+msgstr "Pysäyttää palvelimen, jonka LlamaFit käynnisti tälle mallille."
+
+msgid "Seconds to wait for /health before reporting that it has not answered."
+msgstr "Montako sekuntia odotetaan /health-vastausta, ennen kuin ilmoitetaan ettei se vastannut."
+
+msgid "the preset could not be written"
+msgstr "esiasetusta ei voitu kirjoittaa"
+
+msgid "Wrote a preset first: %(path)s"
+msgstr "Kirjoitettiin ensin esiasetus: %(path)s"
+
+msgid "Nothing to stop: LlamaFit has no record of starting %(model)s."
+msgstr "Ei mitään pysäytettävää: LlamaFitillä ei ole merkintää siitä, että se olisi käynnistänyt mallin %(model)s."
+
+msgid "Stopped %(model)s, which was serving on %(url)s."
+msgstr "Pysäytettiin malli %(model)s, joka palveli osoitteessa %(url)s."
+
+msgid "Preset for %(name)s (%(quant)s) in %(dir)s"
+msgstr "Esiasetus mallille %(name)s (%(quant)s) hakemistossa %(dir)s"
+
+msgid "The server will answer on %(url)s."
+msgstr "Palvelin vastaa osoitteessa %(url)s."
+
+msgid "Your edits were kept. Nothing above was written to those files; run the command again with --force to replace them."
+msgstr "Muokkauksesi säilytettiin. Mitään yllä olevasta ei kirjoitettu noihin tiedostoihin; suorita komento uudelleen valitsimella --force korvataksesi ne."
+
+msgid "At start time the script reads how much card memory is free, keeps %(reserve)s MiB back, and takes the largest context that still fits."
+msgstr "Käynnistyshetkellä skripti lukee, paljonko kortin muistia on vapaana, jättää %(reserve)s MiB varalle ja ottaa suurimman kontekstin joka vielä mahtuu."
+
+msgid "This machine has nothing the script can ask for free card memory, so it will start at %(context)s tokens; the script's header says why."
+msgstr "Tässä koneessa ei ole mitään, jolta skripti voisi kysyä kortin vapaata muistia, joten se aloittaa %(context)s tokenilla; skriptin otsake kertoo miksi."
+
+msgid "Files"
+msgstr "Tiedostot"
+
+msgctxt "column heading"
+msgid "File"
+msgstr "Tiedosto"
+
+msgctxt "column heading"
+msgid "What happened"
+msgstr "Mitä tapahtui"
+
+msgid "Context tiers the script may choose"
+msgstr "Kontekstiportaat, joista skripti voi valita"
+
+msgctxt "column heading"
+msgid "Context"
+msgstr "Konteksti"
+
+msgctxt "column heading"
+msgid "Card needs"
+msgstr "Kortin tarve"
+
+msgctxt "column heading"
+msgid "Free card memory to reach it"
+msgstr "Vaadittu vapaa muisti"
+
+msgid "%(value)s MiB"
+msgstr "%(value)s MiB"
+
+msgid "written"
+msgstr "kirjoitettu"
+
+msgid "brought up to date"
+msgstr "päivitetty"
+
+msgid "already up to date"
+msgstr "jo ajan tasalla"
+
+msgid "kept: you edited it"
+msgstr "säilytetty: olet muokannut sitä"
+
+msgid "overwritten: your edits are gone"
+msgstr "korvattu: muokkauksesi ovat menneet"
+
+msgid "The preset could not be started: %(error)s"
+msgstr "Esiasetusta ei voitu käynnistää: %(error)s"
+
+msgid "Started, but %(url)s has not answered yet. A large model can spend minutes reading its weights; try the health endpoint again in a moment, or run `llamafit launch %(model)s --stop`."
+msgstr "Käynnistyi, mutta osoite %(url)s ei ole vielä vastannut. Suurelta mallilta voi kulua minuutteja painojen lukemiseen; kokeile health-päätepistettä uudelleen hetken päästä tai suorita `llamafit launch %(model)s --stop`."
+
+msgid "%(model)s was already serving on %(url)s."
+msgstr "Malli %(model)s palveli jo osoitteessa %(url)s."
+
+msgid "%(model)s is serving on %(url)s."
+msgstr "Malli %(model)s palvelee osoitteessa %(url)s."
+
+msgid "Stop it with `llamafit launch %(model)s --stop`."
+msgstr "Pysäytä se komennolla `llamafit launch %(model)s --stop`."
+
+msgid "Endpoints"
+msgstr "Päätepisteet"
+
+msgctxt "column heading"
+msgid "What"
+msgstr "Mikä"
+
+msgctxt "column heading"
+msgid "Where"
+msgstr "Missä"
+
+msgid "Web interface"
+msgstr "Selainkäyttöliittymä"
+
+msgid "Chat completions"
+msgstr "Chat completions"
+
+msgid "Models"
+msgstr "Mallit"
+
+msgid "Health"
+msgstr "Health"
+
+msgid "Ask for the model by the alias %(alias)s."
+msgstr "Pyydä mallia aliaksella %(alias)s."
 
 msgctxt "finding level"
 msgid "OK"
@@ -230,6 +1100,47 @@ msgstr "oletettu"
 msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "tuntematon"
+
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "tuntematon"
+
+msgid "%(gbps)s GB/s (%(source)s, cached)"
+msgstr "%(gbps)s GB/s (%(source)s, välimuistista)"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+msgctxt "simulation override"
+msgid "VRAM"
+msgstr "VRAM"
+
+msgctxt "simulation override"
+msgid "system memory"
+msgstr "järjestelmämuisti"
+
+msgctxt "simulation override"
+msgid "CPU cores"
+msgstr "CPU-ytimet"
+
+msgid "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgid_plural "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgstr[0] "nämä luvut tulevat laitteistoprofiilista %(profile)s, jossa on ohitettu %(fields)s; ne eivät ole tämä kone"
+msgstr[1] "nämä luvut tulevat laitteistoprofiilista %(profile)s, jossa on ohitettu %(fields)s; ne eivät ole tämä kone"
+
+msgid "these figures come from the hardware profile %(profile)s; they are not this machine"
+msgstr "nämä luvut tulevat laitteistoprofiilista %(profile)s; ne eivät ole tämä kone"
+
+msgid "%(fields)s was overridden for a what-if; these figures are not what was scanned"
+msgid_plural "%(fields)s were overridden for a what-if; these figures are not what was scanned"
+msgstr[0] "%(fields)s ohitettiin mitä-jos-tilannetta varten; nämä luvut eivät ole sitä mitä skannattiin"
+msgstr[1] "%(fields)s ohitettiin mitä-jos-tilannetta varten; nämä luvut eivät ole sitä mitä skannattiin"
+
+msgid "these figures are not this machine"
+msgstr "nämä luvut eivät ole tämä kone"
+
+msgid "SIMULATED"
+msgstr "SIMULOITU"
 
 msgctxt "model capability"
 msgid "coding"
@@ -274,16 +1185,16 @@ msgstr "%(compute)s TFLOPS fp16"
 
 msgid "%(count)d core"
 msgid_plural "%(count)d cores"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d ydin"
+msgstr[1] "%(count)d ydintä"
 
 msgid "%(count)d thread"
 msgid_plural "%(count)d threads"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d säie"
+msgstr[1] "%(count)d säiettä"
 
 msgid "%(cores)s / %(threads)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s"
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -291,10 +1202,10 @@ msgstr[0] "%(count)d tehoydin"
 msgstr[1] "%(count)d tehoydintä"
 
 msgid "%(cores)s / %(threads)s, %(performance)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s, %(performance)s"
 
 msgid "%(type)s at %(speed)d MT/s"
-msgstr ""
+msgstr "%(type)s, %(speed)d MT/s"
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -310,23 +1221,23 @@ msgstr[0] "%(count)d kanava"
 msgstr[1] "%(count)d kanavaa"
 
 msgid "%(kind)s, %(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s, %(channels)s"
 
 msgid "%(kind)s, %(modules)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s"
 
 msgid "%(kind)s, %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(channels)s"
 
 msgid "%(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(modules)s, %(channels)s"
 
 msgctxt "memory type"
 msgid "type unknown"
 msgstr "tyyppi tuntematon"
 
 msgid "%(specs)s (spec), driver %(driver)s"
-msgstr ""
+msgstr "%(specs)s (datalehti), ajuri %(driver)s"
 
 # "(spec)" marks a figure that comes from the bundled specification table rather than
 # from this machine; "datalehti" is what a Finnish reader calls that table, and it is
@@ -341,6 +1252,19 @@ msgctxt "GPU specifications"
 msgid "no specs"
 msgstr "ei teknisiä tietoja"
 
+msgid "%(total)s VRAM, %(free)s free (Vulkan driver)"
+msgstr "%(total)s VRAM-muistia, %(free)s vapaana (Vulkan-ajuri)"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM-muistia, %(free)s vapaana"
+
+msgid "%(total)s VRAM, free unknown"
+msgstr "%(total)s VRAM-muistia, vapaa osuus tuntematon"
+
+msgctxt "GPU VRAM"
+msgid "VRAM unknown"
+msgstr "VRAM tuntematon"
+
 msgid "Host"
 msgstr "Tietokone"
 
@@ -352,20 +1276,6 @@ msgstr "%(os)s %(version)s (%(arch)s)"
 
 msgid "CPU"
 msgstr "CPU"
-
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgctxt "CPU instruction sets"
-msgid "isa unknown"
-msgstr "isa tuntematon"
-
-msgid "%(gbps)s GB/s (%(source)s)"
-msgstr "%(gbps)s GB/s (%(source)s)"
-
-msgctxt "memory bandwidth"
-msgid "unknown"
-msgstr "tuntematon"
 
 msgid "Memory"
 msgstr "Muisti"
@@ -380,18 +1290,14 @@ msgctxt "GPU"
 msgid "none detected"
 msgstr "ei havaittu"
 
-msgid "%(total)s VRAM, %(free)s free"
-msgstr "%(total)s VRAM-muistia, %(free)s vapaana"
-
-msgctxt "GPU VRAM"
-msgid "VRAM unknown"
-msgstr "VRAM tuntematon"
-
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
-msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgid "Card memory"
+msgstr "Kortin muisti"
+
+msgid "%(gpus)s: nothing here could read how much of the card is free, so every budget on this machine was computed as if there were no card at all. Install the Vulkan tools, or write the size into a hardware profile."
+msgstr "%(gpus)s: mikään täällä ei pystynyt lukemaan, paljonko kortista on vapaana, joten jokainen budjetti tällä koneella laskettiin ikään kuin korttia ei olisi lainkaan. Asenna Vulkan-työkalut tai kirjaa koko laitteistoprofiiliin."
 
 msgid "Memory pool"
 msgstr "Muistivaranto"
@@ -505,21 +1411,14 @@ msgid "Params"
 msgstr "Param."
 
 msgctxt "column heading"
-msgid "Context"
-msgstr "Konteksti"
-
-msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Ominaisuudet"
 
 msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr ""
+msgstr "%(heading)s on toimituksellinen perustaso ennen mitään kvantisointivähennystä; suorita `llamafit info <model>` nähdäksesi sen takana olevat lähteistetyt vertailutestit."
 
 msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr ""
-
-msgid "Models"
-msgstr "Mallit"
+msgstr "%(heading)s on asiantuntijaseosmallin kokonais- ja aktiivimiljardit, tai yksi luku kun ne ovat samat."
 
 msgid "Vendor"
 msgstr "Valmistaja"
@@ -542,10 +1441,10 @@ msgid "Parameters"
 msgstr "Parametrit"
 
 msgid "%(total)s total, %(active)s active"
-msgstr ""
+msgstr "%(total)s yhteensä, %(active)s aktiivisena"
 
 msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
-msgstr ""
+msgstr "%(tokens)s tokenia natiivisti, %(extended)s laajennettuna menetelmällä %(method)s"
 
 msgctxt "context extension method"
 msgid "unspecified method"
@@ -592,13 +1491,13 @@ msgstr[0] "%(count)d kerros"
 msgstr[1] "%(count)d kerrosta"
 
 msgid "%(arch)s, %(layers)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s, %(experts)s"
 
 msgid "%(arch)s, %(layers)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s"
 
 msgid "%(arch)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(experts)s"
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
@@ -631,19 +1530,1170 @@ msgctxt "bits per weight"
 msgid "unknown"
 msgstr "tuntematon"
 
+msgid "On this machine"
+msgstr "Tällä koneella"
+
+msgctxt "column heading"
+msgid "Quant"
+msgstr "Kvant."
+
+msgctxt "column heading"
+msgid "Runs"
+msgstr "Tapa"
+
+msgctxt "column heading"
+msgid "Card"
+msgstr "Kortti"
+
+msgctxt "column heading"
+msgid "RAM"
+msgstr "RAM"
+
+msgctxt "column heading"
+msgid "Tok/s"
+msgstr "Tok/s"
+
+msgctxt "column heading"
+msgid "Ctx"
+msgstr "Ktx"
+
+msgctxt "column heading"
+msgid "Fit"
+msgstr "Tila"
+
+msgid "%(quant)s: %(reason)s"
+msgstr "%(quant)s: %(reason)s"
+
+msgctxt "tokens per second"
+msgid "unknown"
+msgstr "tuntematon"
+
+msgctxt "context length"
+msgid "none"
+msgstr "ei mitään"
+
+msgid "Sized for %(context)s tokens, with every figure from a placement computed for this machine. `llamafit plan MODEL --quant NAME` opens one of these rows into the budget line by line, the context ladder and the command line that runs it."
+msgstr "Mitoitettu %(context)s tokenille, ja jokainen luku tulee tälle koneelle lasketusta sijoittelusta. `llamafit plan MODEL --quant NAME` avaa yhden näistä riveistä rivi riviltä budjetiksi, kontekstitikkaiksi ja komentoriviksi, joka ajaa sen."
+
+msgid "To reach %(context)s tokens, free %(free)s more on the graphics card: that rung needs %(needed)s, which is %(share)s of what is free and over the line where the driver starts paging."
+msgstr "Yltääksesi %(context)s tokeniin vapauta näytönohjaimelta %(free)s lisää: se askelma tarvitsee %(needed)s, mikä on %(share)s vapaasta ja yli sen rajan, jossa ajuri alkaa sivuttaa."
+
+msgid "%(context)s tokens is past what this machine holds: that rung needs %(needed)s on the graphics card and there is nothing left to absorb what would not fit, so freeing the card is not the change that reaches it."
+msgstr "%(context)s tokenia on enemmän kuin tämä kone pitää: se askelma tarvitsee näytönohjaimelta %(needed)s, eikä mitään ole jäljellä ottamaan vastaan sitä mikä ei mahdu, joten kortin vapauttaminen ei ole se muutos joka siihen yltäisi."
+
+msgid "%(quant)s, the next quantisation down, could not be sized: %(reason)s"
+msgstr "%(quant)s, seuraava kvantisointi alaspäin, ei ollut mitoitettavissa: %(reason)s"
+
+msgid "%(quant)s, the next quantisation down, does not fit this machine either."
+msgstr "%(quant)s, seuraava kvantisointi alaspäin, ei mahdu tälle koneelle sekään."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens."
+msgstr "%(quant)s, seuraava kvantisointi alaspäin, suunniteltiin myös tähän: %(mode)s, %(verdict)s, enintään %(context)s tokenia."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens at %(tps)s tokens per second."
+msgstr "%(quant)s, seuraava kvantisointi alaspäin, suunniteltiin myös tähän: %(mode)s, %(verdict)s, enintään %(context)s tokenia nopeudella %(tps)s tokenia sekunnissa."
+
+msgid "It fits entirely on the graphics card, which this one does not."
+msgstr "Se mahtuu kokonaan näytönohjaimelle, mitä tämä ei tee."
+
+msgid "It fits better: %(theirs)s rather than %(mine)s."
+msgstr "Se mahtuu paremmin: %(theirs)s eikä %(mine)s."
+
+msgid "It holds %(theirs)s tokens rather than %(mine)s."
+msgstr "Se pitää %(theirs)s tokenia eikä %(mine)s."
+
+msgid "It generates %(theirs)s tokens per second rather than %(mine)s."
+msgstr "Se generoi %(theirs)s tokenia sekunnissa eikä %(mine)s."
+
+msgid "It is no better here, so there is nothing to gain by dropping to it."
+msgstr "Se ei ole täällä yhtään parempi, joten siihen laskeutumisesta ei ole hyötyä."
+
+msgid "Every context this model offers already fits here; the machine is not what limits it."
+msgstr "Kaikki kontekstit, joita tämä malli tarjoaa, mahtuvat jo tähän; kone ei ole se mikä sitä rajoittaa."
+
+msgid "What would change it"
+msgstr "Mikä sen muuttaisi"
+
+msgctxt "profile origin"
+msgid "bundled"
+msgstr "mukana tuleva"
+
+msgctxt "profile origin"
+msgid "yours"
+msgstr "omasi"
+
+msgid "%(ram)s RAM, no graphics card"
+msgstr "%(ram)s RAM-muistia, ei näytönohjainta"
+
+msgid "%(ram)s RAM shared with %(gpu)s"
+msgstr "%(ram)s RAM-muistia jaettuna näytönohjaimen %(gpu)s kanssa"
+
+msgid "%(ram)s RAM, %(gpu)s with %(vram)s"
+msgstr "%(ram)s RAM-muistia, %(gpu)s ja %(vram)s"
+
+msgid "%(cores)d core / %(threads)d thread"
+msgid_plural "%(cores)d cores / %(threads)d threads"
+msgstr[0] "%(cores)d ydin / %(threads)d säie"
+msgstr[1] "%(cores)d ydintä / %(threads)d säiettä"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "isa tuntematon"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "%(total)s total, %(available)s available; bandwidth %(bandwidth)s"
+msgstr "%(total)s yhteensä, %(available)s käytettävissä; kaistanleveys %(bandwidth)s"
+
+msgctxt "GPU specifications"
+msgid "no bandwidth or compute figure"
+msgstr "ei kaistanleveys- eikä laskentalukua"
+
+msgid "%(specs)s (from the profile)"
+msgstr "%(specs)s (profiilista)"
+
+msgid "%(specs)s (from the specification table)"
+msgstr "%(specs)s (teknisten tietojen taulukosta)"
+
+msgctxt "GPU VRAM"
+msgid "VRAM from the shared pool"
+msgstr "VRAM jaetusta varannosta"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "Hardware profiles"
+msgstr "Laitteistoprofiilit"
+
+msgid "Machine"
+msgstr "Kone"
+
+msgid "a graphics card whose name contains %(text)s"
+msgstr "näytönohjain, jonka nimi sisältää tekstin %(text)s"
+
+msgid "a processor whose model contains %(text)s"
+msgstr "suoritin, jonka malli sisältää tekstin %(text)s"
+
+msgid "at least %(ram)s of memory"
+msgstr "vähintään %(ram)s muistia"
+
+msgctxt "profile match rules"
+msgid "none, so this profile is never chosen for you"
+msgstr "ei mitään, joten tätä profiilia ei koskaan valita puolestasi"
+
+msgid "Description"
+msgstr "Kuvaus"
+
+msgid "From"
+msgstr "Mistä"
+
+msgid "File"
+msgstr "Tiedosto"
+
+msgid "Matches"
+msgstr "Ehdot"
+
+msgid "Recorded"
+msgstr "Kirjattu"
+
+msgid "Provenance"
+msgstr "Alkuperä"
+
+msgid "recorded from %(source)s; this build stores it but does not apply it yet"
+msgstr "kirjattu lähteestä %(source)s; tämä koontiversio tallentaa sen mutta ei vielä käytä sitä"
+
+msgctxt "utilisation"
+msgid "n/a"
+msgstr "ei saat."
+
+msgctxt "run mode"
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "run mode"
+msgid "experts in RAM"
+msgstr "asiantuntijat muistissa"
+
+msgctxt "run mode"
+msgid "split"
+msgstr "jaettu"
+
+msgctxt "run mode"
+msgid "CPU"
+msgstr "CPU"
+
+msgctxt "run mode"
+msgid "nowhere"
+msgstr "ei mihinkään"
+
+msgctxt "fit verdict"
+msgid "roomy"
+msgstr "väljä"
+
+msgctxt "fit verdict"
+msgid "fits"
+msgstr "mahtuu"
+
+msgctxt "fit verdict"
+msgid "tight"
+msgstr "tiukka"
+
+msgctxt "fit verdict"
+msgid "pages"
+msgstr "sivuttaa"
+
+msgctxt "fit verdict"
+msgid "no room"
+msgstr "ei tilaa"
+
+msgid "Roomy: there is room for a longer context or a second model."
+msgstr "Väljä: tilaa on pidemmälle kontekstille tai toiselle mallille."
+
+msgid "Fits: the intended configuration runs as planned."
+msgstr "Mahtuu: tarkoitettu kokoonpano toimii suunnitellusti."
+
+msgid "Tight: it runs, but a browser or a second process can push it over."
+msgstr "Tiukka: se toimii, mutta selain tai toinen prosessi voi työntää sen yli."
+
+msgid "Pages: this needs more of the graphics card than is free. The driver will not refuse it — it moves the overflow to system memory, the server starts, the log looks healthy, and generation runs at a fraction of its speed with nothing saying why."
+msgstr "Sivuttaa: tämä tarvitsee näytönohjaimelta enemmän kuin on vapaana. Ajuri ei kieltäydy — se siirtää ylivuodon järjestelmämuistiin, palvelin käynnistyy, loki näyttää terveeltä, ja generointi käy murto-osalla nopeudestaan ilman että mikään kertoo miksi."
+
+msgid "No room: more memory than this machine has, with nothing to page to."
+msgstr "Ei tilaa: enemmän muistia kuin tässä koneessa on, eikä mitään mihin sivuttaa."
+
+msgctxt "confidence"
+msgid "measured"
+msgstr "mitattu"
+
+msgctxt "confidence"
+msgid "calibrated"
+msgstr "kalibroitu"
+
+msgctxt "confidence"
+msgid "estimated"
+msgstr "arvioitu"
+
+msgctxt "confidence"
+msgid "no estimate"
+msgstr "ei arviota"
+
+msgid "Speeds are benchmarks taken on this machine, not predictions."
+msgstr "Nopeudet ovat tällä koneella otettuja mittauksia, eivät ennusteita."
+
+msgid "Speeds are section 10's formula corrected by benchmarks taken on this machine."
+msgstr "Nopeudet ovat luvun 10 kaava korjattuna tällä koneella otetuilla mittauksilla."
+
+msgid "Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement."
+msgstr "Nopeudet ovat luvun 10 kaava oletusvakioillaan. Tällä koneella ei ole vielä mitattu mitään, joten yksikään luku tässä ei ole mittaus."
+
+msgid "No speed could be estimated."
+msgstr "Yhtäkään nopeutta ei voitu arvioida."
+
+msgctxt "memory pool"
+msgid "card"
+msgstr "kortti"
+
+msgctxt "memory pool"
+msgid "system"
+msgstr "järjestelmä"
+
+msgctxt "memory pool"
+msgid "disk"
+msgstr "levy"
+
+msgctxt "budget component"
+msgid "dense weights"
+msgstr "tiheät painot"
+
+msgctxt "budget component"
+msgid "shared experts"
+msgstr "jaetut asiantuntijat"
+
+msgctxt "budget component"
+msgid "routed experts"
+msgstr "reititetyt asiantuntijat"
+
+msgctxt "budget component"
+msgid "token embedding"
+msgstr "tokenien upotus"
+
+msgctxt "budget component"
+msgid "output head"
+msgstr "ulostulopää"
+
+msgctxt "budget component"
+msgid "other weights"
+msgstr "muut painot"
+
+msgctxt "budget component"
+msgid "streamed tables"
+msgstr "virtaavat taulut"
+
+msgctxt "budget component"
+msgid "KV cache"
+msgstr "KV-välimuisti"
+
+msgctxt "budget component"
+msgid "KV cache, undeclared"
+msgstr "KV-välimuisti, ilmoittamaton"
+
+msgctxt "budget component"
+msgid "recurrent state"
+msgstr "rekurrentti tila"
+
+msgctxt "budget component"
+msgid "compute buffer"
+msgstr "laskentapuskuri"
+
+msgctxt "budget component"
+msgid "output buffer"
+msgstr "ulostulopuskuri"
+
+msgctxt "budget component"
+msgid "vision projector"
+msgstr "konenäköprojektori"
+
+msgctxt "budget component"
+msgid "vision compute"
+msgstr "konenäön laskenta"
+
+msgctxt "budget component"
+msgid "backend overhead"
+msgstr "backendin yleiskuorma"
+
+msgctxt "budget component"
+msgid "process overhead"
+msgstr "prosessin yleiskuorma"
+
+msgctxt "budget line source"
+msgid "file"
+msgstr "tiedosto"
+
+msgctxt "budget line source"
+msgid "formula"
+msgstr "kaava"
+
+msgctxt "column heading"
+msgid "Component"
+msgstr "Osa"
+
+msgctxt "column heading"
+msgid "From"
+msgstr "Lähde"
+
+msgid "Card: %(required)s of %(available)s free, %(share)s used."
+msgstr "Kortti: %(required)s / %(available)s vapaana, %(share)s käytössä."
+
+msgid "System memory: %(required)s of %(available)s free, %(share)s used."
+msgstr "Järjestelmämuisti: %(required)s / %(available)s vapaana, %(share)s käytössä."
+
+msgid "%(component)s: %(note)s"
+msgstr "%(component)s: %(note)s"
+
+msgid "Context tiers"
+msgstr "Kontekstiportaat"
+
+msgctxt "column heading"
+msgid "On this machine"
+msgstr "Tällä koneella"
+
+msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
+msgstr "Käynnistysskripti vertaa näkemäänsä vapaata muistia korttisarakkeeseen ja ottaa suurimman mahtuvan askelman (katso docs/cli.md)."
+
+msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
+msgstr "%(gen)s tokenia sekunnissa generoituna ja %(prompt)s luettuna, %(context)s tokenin kontekstilla (%(confidence)s)."
+
+msgctxt "column heading"
+msgid "A token's time"
+msgstr "Tokenin aika"
+
+msgctxt "token time"
+msgid "reading the card"
+msgstr "kortin lukeminen"
+
+msgctxt "token time"
+msgid "reading system memory"
+msgstr "järjestelmämuistin lukeminen"
+
+msgctxt "token time"
+msgid "everything else"
+msgstr "kaikki muu"
+
+msgctxt "column heading"
+msgid "A prompt token's time"
+msgstr "Prompt-tokenin aika"
+
+msgctxt "prompt token time"
+msgid "doing the arithmetic"
+msgstr "laskutoimitukset"
+
+msgctxt "prompt token time"
+msgid "streaming the experts across the link"
+msgstr "asiantuntijoiden virtaus väylän yli"
+
+msgctxt "prompt token time"
+msgid "reading the experts from system memory"
+msgstr "asiantuntijoiden lukeminen järjestelmämuistista"
+
+msgctxt "column heading"
+msgid "Seconds"
+msgstr "Sek."
+
+msgctxt "column heading"
+msgid "Share"
+msgstr "Osuus"
+
+msgid "Measured on %(date)s."
+msgstr "Mitattu %(date)s."
+
+msgid "Recorded elsewhere"
+msgstr "Kirjattu muualla"
+
+msgctxt "column heading"
+msgid "Run"
+msgstr "Ajo"
+
+msgctxt "column heading"
+msgid "Date"
+msgstr "Pvm"
+
+msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
+msgstr "Nämä ovat kuraattorin omia ajoja hänen koneellaan, eivät tämän koneen mittauksia, joten mitään yllä olevaa ei merkitä mitatuksi. Vertaa niitä arvioon; `llamafit bench` mittaa tämän koneen vaiheessa 3."
+
+msgid "%(profile)s: %(flags)s"
+msgstr "%(profile)s: %(flags)s"
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
+msgstr "%(baseline)s kuraattorilta, miinus %(penalty)s tästä kvantisoinnista, plus %(bonus)s koska %(use_case)s on se työ johon se rakennettiin."
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
+msgstr "%(baseline)s kuraattorilta, miinus %(penalty)s tästä kvantisoinnista; se listaa käyttötapauksen %(use_case)s mutta ei ole rakennettu siihen."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
+msgstr "%(gen)s tokenia sekunnissa verrattuna tavoitteeseen %(target)s, jota tämä käyttötapaus vaatii, miinus %(penalty)s koska se lukee promptin nopeudella %(prompt)s."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
+msgstr "%(gen)s tokenia sekunnissa verrattuna tavoitteeseen %(target)s, jota tämä käyttötapaus vaatii."
+
+msgid "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool is %(share)s full. The score wants at least %(low)s of the memory taken and no more than %(high)s of any one pool."
+msgstr "Sen painot vievät %(weights)s tämän koneen %(memory)s muistista, ja tiukin varanto on %(share)s täynnä. Pisteytys haluaa, että muistista on varattu vähintään %(low)s eikä yksikään varanto ole yli %(high)s täynnä."
+
+msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
+msgstr "Pitää %(fit)s tokenia niistä %(requested)s tokenista, joita vasten tämä pyyntö pisteytetään."
+
+msgid "Score %(total)s"
+msgstr "Pisteet %(total)s"
+
+msgctxt "column heading"
+msgid "Part"
+msgstr "Osa"
+
+msgctxt "column heading"
+msgid "Weight"
+msgstr "Paino"
+
+msgctxt "column heading"
+msgid "Adds"
+msgstr "Lisää"
+
+msgctxt "score part"
+msgid "quality"
+msgstr "laatu"
+
+msgctxt "score part"
+msgid "speed"
+msgstr "nopeus"
+
+msgctxt "score part"
+msgid "fit"
+msgstr "tila"
+
+msgctxt "score part"
+msgid "context"
+msgstr "konteksti"
+
+msgctxt "board sort"
+msgid "score"
+msgstr "pisteiden"
+
+msgctxt "board sort"
+msgid "speed"
+msgstr "nopeuden"
+
+msgctxt "board sort"
+msgid "quality"
+msgstr "laadun"
+
+msgctxt "board sort"
+msgid "context"
+msgstr "kontekstin"
+
+msgctxt "board sort"
+msgid "download size"
+msgstr "latauskoon"
+
+msgctxt "board sort"
+msgid "prompt speed"
+msgstr "prompt-nopeuden"
+
+msgctxt "board sort"
+msgid "card memory"
+msgstr "korttimuistin"
+
+msgctxt "board sort"
+msgid "system memory"
+msgstr "järjestelmämuistin"
+
+msgctxt "board sort"
+msgid "fit"
+msgstr "tilan"
+
+msgctxt "board sort"
+msgid "model id"
+msgstr "mallitunnuksen"
+
+msgctxt "board sort"
+msgid "quantisation"
+msgstr "kvantisoinnin"
+
+msgctxt "column heading"
+msgid "#"
+msgstr "#"
+
+msgctxt "column heading"
+msgid "Model"
+msgstr "Malli"
+
+msgctxt "column heading"
+msgid "Size"
+msgstr "Koko"
+
+msgctxt "column heading"
+msgid "Have"
+msgstr "On"
+
+msgctxt "column heading"
+msgid "Score"
+msgstr "Pist."
+
+msgctxt "column heading"
+msgid "Qual"
+msgstr "Laatu"
+
+msgctxt "column heading"
+msgid "Prompt tok/s"
+msgstr "Prompt tok/s"
+
+msgctxt "column heading"
+msgid "How"
+msgstr "Mistä"
+
+msgctxt "model file on this machine"
+msgid "yes"
+msgstr "kyllä"
+
+msgctxt "model file on this machine"
+msgid "no"
+msgstr "ei"
+
+msgid "no placement of it fits this machine at any context"
+msgstr "yksikään sen sijoittelu ei mahdu tälle koneelle millään kontekstilla"
+
+msgctxt "exclusion tag"
+msgid "no room"
+msgstr "ei tilaa"
+
+msgctxt "exclusion tag"
+msgid "no facts"
+msgstr "ei tietoja"
+
+msgctxt "exclusion tag"
+msgid "not ranked"
+msgstr "ei sijalla"
+
+msgctxt "board cell with no figure"
+msgid "–"
+msgstr "–"
+
+msgid "%(term)s is not a filter; the terms are %(terms)s, and anything else is text to look for."
+msgstr "%(term)s ei ole suodatin; termit ovat %(terms)s, ja kaikki muu on etsittävää tekstiä."
+
+msgid "fit>= takes one of %(values)s"
+msgstr "fit>= hyväksyy yhden näistä: %(values)s"
+
+msgid "runs= takes one of %(values)s"
+msgstr "runs= hyväksyy yhden näistä: %(values)s"
+
+msgid "%(term)s needs a number"
+msgstr "%(term)s vaatii luvun"
+
+msgid "%(term)s needs a size such as 8G, 7.5GiB or 512M"
+msgstr "%(term)s vaatii koon, esimerkiksi 8G, 7.5GiB tai 512M"
+
+msgctxt "board filter"
+msgid "every candidate"
+msgstr "kaikki ehdokkaat"
+
+msgctxt "board filter"
+msgid "the ones with room to spare"
+msgstr "ne joilla on tilaa jäljellä"
+
+msgctxt "board filter"
+msgid "the ones that fit"
+msgstr "ne jotka mahtuvat"
+
+msgctxt "board filter"
+msgid "the ones that run"
+msgstr "ne jotka toimivat"
+
+msgid "matching %(text)s"
+msgstr "ne jotka vastaavat tekstiä %(text)s"
+
+msgid "running as %(mode)s"
+msgstr "ne jotka toimivat tilassa %(mode)s"
+
+msgid "at least %(tps)s tokens per second"
+msgstr "ne jotka antavat vähintään %(tps)s tokenia sekunnissa"
+
+msgid "no more than %(size)s to download"
+msgstr "ne joiden lataus on enintään %(size)s"
+
+msgid "no more than %(size)s on the card"
+msgstr "ne jotka vievät kortilta enintään %(size)s"
+
+msgid "no more than %(size)s of system memory"
+msgstr "ne jotka vievät järjestelmämuistia enintään %(size)s"
+
+msgid "holding at least %(context)s tokens"
+msgstr "ne jotka pitävät vähintään %(context)s tokenia"
+
+msgid "a quality of at least %(quality)s"
+msgstr "ne joiden laatu on vähintään %(quality)s"
+
+msgid "%(shown)d of %(total)d shown"
+msgstr "%(shown)d / %(total)d näkyvissä"
+
+msgid "%(sort)s in reverse"
+msgstr "käänteisesti %(sort)s"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s already on this machine."
+msgstr "%(counted)s, %(sort)s mukaan, näytetään %(filter)s jo tällä koneella."
+
+msgctxt "board filter"
+msgid "already on this machine"
+msgstr "jo tällä koneella"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s."
+msgstr "%(counted)s, %(sort)s mukaan, näytetään %(filter)s."
+
+msgid "Nothing was ranked. Every candidate is listed below with the reason; widen the request or free some memory."
+msgstr "Mitään ei sijoitettu. Kaikki ehdokkaat on lueteltu alla syineen; laajenna pyyntöä tai vapauta muistia."
+
+msgid "Recommended"
+msgstr "Suositellut"
+
+msgid "--min-tps 0: nobody is waiting on these tokens, so nothing was excluded for generating more slowly than a person reads."
+msgstr "--min-tps 0: kukaan ei odota näitä tokeneita, joten mitään ei suljettu pois siksi, että se generoi hitaammin kuin ihminen lukee."
+
+msgid "--min-tps %(tps)s: this board wanted at least that many tokens per second, and anything slower is excluded below rather than ranked here."
+msgstr "--min-tps %(tps)s: tämä taulu halusi vähintään noin monta tokenia sekunnissa, ja sitä hitaammat suljetaan pois alla eikä sijoiteta tähän."
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; --limit sets how many, and the rest are neither worse-behaved nor hidden, only further down."
+msgstr "Näkyvissä on paras %(shown)s niistä %(total)s, jotka täyttivät ehdot; --limit määrää montako, eivätkä loput ole huonompia tai piilotettuja, vain alempana."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every speed above is a CPU-only speed. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s on tässä koneessa, eikä mikään pystynyt lukemaan paljonko siitä on vapaana, joten kaikki yllä olevat nopeudet ovat pelkän suorittimen nopeuksia. `llamafit doctor` kertoo, miten sen korjaa."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
+msgstr "Nopeudet koskevat %(working)s tokenin kontekstia, jotta rivit ovat keskenään vertailukelpoisia; kontekstisarake näyttää suurimman jonka kukin pitää. Mitoitettu ja pisteytetty käyttötapaukselle %(use_case)s %(requested)s tokenilla."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
+msgstr "Nopeudet koskevat %(working)s tokenin kontekstia, jotta rivit ovat keskenään vertailukelpoisia; kontekstisarake näyttää suurimman jonka kukin pitää. Mitoitettu %(planned)s tokenille ja pisteytetty käyttötapaukselle %(use_case)s %(requested)s tokenia vasten."
+
+msgid "Weights: %(weights)s."
+msgstr "Painot: %(weights)s."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free, no card."
+msgstr "Laskettu siten, että järjestelmämuistia on vapaana %(ram_free)s / %(ram_total)s, ei korttia."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free and %(vram_free)s of %(vram_total)s free on the %(gpu)s."
+msgstr "Laskettu siten, että järjestelmämuistia on vapaana %(ram_free)s / %(ram_total)s ja näytönohjaimella %(gpu)s vapaana %(vram_free)s / %(vram_total)s."
+
+msgid "Every speed above is derived from %(bandwidth)s of memory bandwidth."
+msgstr "Kaikki yllä olevat nopeudet johdetaan muistin kaistanleveydestä %(bandwidth)s."
+
+msgid "That bandwidth was kept from an earlier run on this machine; `llamafit system --refresh-bandwidth` times it again."
+msgstr "Se kaistanleveys säilytettiin aiemmasta ajosta tällä koneella; `llamafit system --refresh-bandwidth` ajastaa sen uudelleen."
+
+msgid "generates fewer than the %(floor)s tokens per second this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "generoi vähemmän kuin ne %(floor)s tokenia sekunnissa, joita tämä pyyntö vaatii; laske --min-tps tai valitse pienempi malli tai kvantisointi"
+
+msgid "generates fewer than the %(floor)s tokens per second a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "generoi vähemmän kuin ne %(floor)s tokenia sekunnissa, jotka ihminen lukee: eräajotyökalu tällä koneella eikä sellainen jonka ääreen istutaan; pienempi malli tai kvantisointi pysyisi perässä"
+
+msgid "%(tps)s tok/s"
+msgstr "%(tps)s tok/s"
+
+msgctxt "exclusion tag"
+msgid "too slow"
+msgstr "liian hidas"
+
+msgctxt "exclusion tag"
+msgid "too big"
+msgstr "liian suuri"
+
+msgid "larger to download than the %(limit)s this request allows"
+msgstr "ladattavana suurempi kuin ne %(limit)s, jotka tämä pyyntö sallii"
+
+msgctxt "exclusion tag"
+msgid "unknown quant"
+msgstr "tuntematon kvant."
+
+msgid "a quantisation whose cost in quality is not known, so it cannot be scored"
+msgstr "kvantisointi, jonka hinta laadussa ei ole tiedossa, joten sitä ei voi pisteyttää"
+
+msgid "needs more memory than this machine has, even at its smallest context"
+msgstr "vaatii enemmän muistia kuin tässä koneessa on, pienimmälläkin kontekstillaan"
+
+msgctxt "exclusion tag"
+msgid "unsupported"
+msgstr "ei tuettu"
+
+msgid "no run mode supports this model on this machine"
+msgstr "mikään ajotapa ei tue tätä mallia tällä koneella"
+
+msgctxt "exclusion tag"
+msgid "short context"
+msgstr "lyhyt konteksti"
+
+msgid "holds fewer than the %(minimum)s tokens asked for; lower the minimum context or free memory to see it ranked"
+msgstr "pitää vähemmän kuin pyydetyt %(minimum)s tokenia; laske vähimmäiskontekstia tai vapauta muistia nähdäksesi sen sijoitettuna"
+
+msgctxt "exclusion tag"
+msgid "no estimate"
+msgstr "ei arviota"
+
+msgid "no speed estimate, so it cannot be ranked against models that have one"
+msgstr "ei nopeusarviota, joten sitä ei voi sijoittaa niiden mallien rinnalle joilla sellainen on"
+
+msgctxt "exclusion tag"
+msgid "no %(capability)s"
+msgstr "ei %(capability)s"
+
+msgid "no %(capability)s capability; drop it from the request, or ask for a use case that does not need it"
+msgstr "ei ominaisuutta %(capability)s; jätä se pois pyynnöstä tai pyydä käyttötapausta joka ei sitä vaadi"
+
+msgid "Not ranked"
+msgstr "Ei sijoitettu"
+
+msgid "Not placed"
+msgstr "Ei sijoiteltu"
+
+msgid "%(tag)s (%(count)s):"
+msgstr "%(tag)s (%(count)s):"
+
+msgid "%(model)s %(quant)s: %(reason)s"
+msgstr "%(model)s %(quant)s: %(reason)s"
+
+msgid "%(tag)s (%(count)s): %(sentence)s."
+msgstr "%(tag)s (%(count)s): %(sentence)s."
+
+msgid "%(model)s %(quant)s (%(figure)s)"
+msgstr "%(model)s %(quant)s (%(figure)s)"
+
+msgid "%(name)s %(quant)s (%(tag)s)"
+msgstr "%(name)s %(quant)s (%(tag)s)"
+
+msgid "%(rank)s. %(name)s %(quant)s"
+msgstr "%(rank)s. %(name)s %(quant)s"
+
+msgid "Nothing fits this machine at that threshold. Try --min-fit tight, or drop --perfect."
+msgstr "Mikään ei mahdu tälle koneelle tuolla kynnyksellä. Kokeile --min-fit tight tai jätä --perfect pois."
+
+msgid "Fit on the simulated machine"
+msgstr "Mahtuminen simuloidulle koneelle"
+
+msgid "Fit on this machine"
+msgstr "Mahtuminen tälle koneelle"
+
+msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
+msgstr "Mitoitettu %(context)s tokenille. Kontekstisarake näyttää suurimman, jonka kukin pitää näytetyssä tilassa."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every row was sized as if there were no card. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s on tässä koneessa, eikä mikään pystynyt lukemaan paljonko siitä on vapaana, joten jokainen rivi mitoitettiin ikään kuin korttia ei olisi. `llamafit doctor` kertoo, miten sen korjaa."
+
+msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
+msgstr "%(mode)s %(context)s tokenilla, mikroerä %(ub)s, %(kv)s-välimuisti, %(threads)s säiettä."
+
+msgid "This reaches the %(target)s tokens per second asked for."
+msgstr "Tämä yltää pyydettyihin %(target)s tokeniin sekunnissa."
+
+msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
+msgstr "Tämä ei yllä täällä %(target)s tokeniin sekunnissa, mutta %(context)s tokenin konteksti yltäisi: anna --context %(tokens)s."
+
+msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
+msgstr "Mikään mihin tämä malli ja kvantisointi tällä koneella pystyvät ei yllä %(target)s tokeniin sekunnissa; nopein kokeiltu kokoonpano on %(best)s. Pienempi malli tai pienempi kvantisointi on se muutos joka siihen yltäisi."
+
+msgid "%(name)s %(quant)s"
+msgstr "%(name)s %(quant)s"
+
+msgid "Memory budget"
+msgstr "Muistibudjetti"
+
+msgid "The %(context)s tokens asked for would have cost"
+msgstr "Pyydetyt %(context)s tokenia olisivat maksaneet"
+
+msgid "Command line"
+msgstr "Komentorivi"
+
+msgid "Model file: %(path)s."
+msgstr "Mallitiedosto: %(path)s."
+
+msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
+msgstr "Mallitiedosto: %(path)s, jota ei vielä ole tällä koneella; sinne lataus sen veisi. Haettavaa %(size)s."
+
+msgid "%(shown)d of %(total)d candidate shown."
+msgid_plural "%(shown)d of %(total)d candidates shown."
+msgstr[0] "%(shown)d / %(total)d ehdokas näkyvissä."
+msgstr[1] "%(shown)d / %(total)d ehdokasta näkyvissä."
+
+msgid "Release"
+msgstr "Julkaisu"
+
+msgid "%(tag)s (build %(build)s)"
+msgstr "%(tag)s (koontiversio %(build)s)"
+
+msgid "Backend"
+msgstr "Backend"
+
+msgid "Archive"
+msgstr "Paketti"
+
+msgid "Also"
+msgstr "Lisäksi"
+
+msgid "Download"
+msgstr "Lataus"
+
+msgid "%(size)s (%(done)s already on disk)"
+msgstr "%(size)s (%(done)s jo levyllä)"
+
+msgid "Checksum"
+msgstr "Tarkistussumma"
+
+msgid "published, checked before anything is unpacked"
+msgstr "julkaistu, tarkistetaan ennen kuin mitään puretaan"
+
+msgid "none published"
+msgstr "ei julkaistu"
+
+msgid "Install into"
+msgstr "Asennetaan hakemistoon"
+
+msgid "Directory"
+msgstr "Hakemisto"
+
+msgid "Free space"
+msgstr "Vapaa tila"
+
+msgid "Free space (cache)"
+msgstr "Vapaa tila (välimuisti)"
+
+msgid "%(free)s on %(path)s, %(needed)s needed"
+msgstr "%(free)s polussa %(path)s, tarvitaan %(needed)s"
+
+msgid "will be created"
+msgstr "luodaan"
+
+msgid "exists and is empty"
+msgstr "on olemassa ja tyhjä"
+
+msgid "holds %(tag)s, installed by LlamaFit; it will be replaced"
+msgstr "sisältää version %(tag)s, LlamaFitin asentama; se korvataan"
+
+msgid "installed by LlamaFit; it will be replaced"
+msgstr "LlamaFitin asentama; se korvataan"
+
+msgid "was not installed by LlamaFit"
+msgstr "ei LlamaFitin asentama"
+
+msgid "Installed llama.cpp %(tag)s into %(path)s."
+msgstr "Asennettiin llama.cpp %(tag)s polkuun %(path)s."
+
+msgid "Replaced %(tag)s."
+msgstr "Korvattiin %(tag)s."
+
+msgid "Backends found in it: %(backends)s"
+msgstr "Siitä löytyneet backendit: %(backends)s"
+
+msgid "none"
+msgstr "ei mitään"
+
+msgid "Check it with `llamafit doctor`."
+msgstr "Tarkista se komennolla `llamafit doctor`."
+
+msgid "already here"
+msgstr "jo täällä"
+
+msgid "to fetch"
+msgstr "haettava"
+
+msgid "About to download"
+msgstr "Ladataan kohta"
+
+msgid "Role"
+msgstr "Rooli"
+
+msgid "Status"
+msgstr "Tila"
+
+msgid "%(name)s %(quant)s from %(repo)s"
+msgstr "%(name)s %(quant)s lähteestä %(repo)s"
+
+msgid "%(count)d file, %(total)s in all, %(needed)s still to fetch."
+msgid_plural "%(count)d files, %(total)s in all, %(needed)s still to fetch."
+msgstr[0] "%(count)d tiedosto, yhteensä %(total)s, josta %(needed)s vielä haettavana."
+msgstr[1] "%(count)d tiedostoa, yhteensä %(total)s, josta %(needed)s vielä haettavana."
+
+msgid "Into %(path)s, which has %(free)s free; %(after)s would be left."
+msgstr "Hakemistoon %(path)s, jossa on %(free)s vapaana; jäljelle jäisi %(after)s."
+
+msgid "The catalog holds no checksum for %(files)s."
+msgid_plural "The catalog holds no checksums for %(files)s."
+msgstr[0] "Luettelossa ei ole tarkistussummaa tiedostolle %(files)s."
+msgstr[1] "Luettelossa ei ole tarkistussummia tiedostoille %(files)s."
+
+msgid "%(model)s %(quant)s is already here; nothing to do."
+msgstr "%(model)s %(quant)s on jo täällä; ei tehtävää."
+
+msgid "Stopped. What arrived is kept; run `llamafit install model %(model)s` again to carry on from there."
+msgstr "Pysähtyi. Saapunut säilytetään; suorita `llamafit install model %(model)s` uudelleen jatkaaksesi siitä."
+
+msgid "%(count)d file, %(size)s, checked against the catalog."
+msgid_plural "%(count)d files, %(size)s, checked against the catalog."
+msgstr[0] "%(count)d tiedosto, %(size)s, tarkistettu luetteloa vasten."
+msgstr[1] "%(count)d tiedostoa, %(size)s, tarkistettu luetteloa vasten."
+
+msgid "In %(path)s. Run `llamafit plan %(model)s` for the command line that runs it."
+msgstr "Hakemistossa %(path)s. Suorita `llamafit plan %(model)s` nähdäksesi komentorivin, joka ajaa sen."
+
+msgid "Downloads"
+msgstr "Lataukset"
+
+msgid "When"
+msgstr "Milloin"
+
+msgid "Model"
+msgstr "Malli"
+
+msgid "Quant"
+msgstr "Kvantisointi"
+
+msgid "Outcome"
+msgstr "Lopputulos"
+
+msgid "finished"
+msgstr "valmistui"
+
+msgid "stopped"
+msgstr "pysähtyi"
+
+msgid "Bind to this address instead of 127.0.0.1. Anything but loopback puts the dashboard on your network, where there is no password and no login; it prints what that exposes before it starts."
+msgstr "Sitoutuu tähän osoitteeseen osoitteen 127.0.0.1 sijaan. Mikä tahansa muu kuin loopback tuo näkymän verkkoosi, jossa ei ole salasanaa eikä kirjautumista; se tulostaa ennen käynnistystä, mitä tämä paljastaa."
+
+msgid "Listen on this port."
+msgstr "Kuuntelee tätä porttia."
+
+msgid ""
+"Open the dashboard in a browser: the board, the machine and the plans.\n"
+"\n"
+"It serves the same numbers `--json` prints, from the same code, on this machine only. Nothing is fetched from the internet to draw the page."
+msgstr ""
+"Avaa näkymän selaimessa: taulun, koneen ja suunnitelmat.\n"
+"\n"
+"Se tarjoilee samat luvut jotka --json tulostaa, samasta koodista, vain tällä koneella. Mitään ei haeta internetistä sivun piirtämiseksi."
+
+msgid "Open the page in your browser."
+msgstr "Avaa sivun selaimessasi."
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores, then open the Simulate panel on the page: it substitutes a machine for as long as you want it, and marks every answer it produces."
+msgstr "Jätä pois --profile, --memory, --ram ja --cpu-cores, ja avaa sitten sivulta Simulointi-paneeli: se korvaa koneen niin pitkäksi aikaa kuin haluat ja merkitsee jokaisen tuottamansa vastauksen."
+
+msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
+msgstr "LlamaFit on osoitteessa %(url)s. Pysäytä painamalla Ctrl+C."
+
 msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
 msgstr "Näyttää, mitä tässä koneessa on: CPU, muisti, GPU:t, levyt ja llama.cpp."
 
 msgid "Skip the RAM bandwidth measurement."
 msgstr "Ohittaa RAM-muistin kaistanleveyden mittauksen."
 
+msgid "Measure RAM bandwidth again instead of reading back the figure kept for this machine, and keep the new one."
+msgstr "Mittaa RAM-muistin kaistanleveyden uudelleen sen sijaan että lukisi tälle koneelle säilötyn luvun, ja säilyttää uuden."
+
+msgid "%(url)s answered a range request with the whole file."
+msgstr "%(url)s vastasi osittaiseen pyyntöön koko tiedostolla."
+
+msgid "%(url)s is rate-limiting this download (HTTP %(status)d)."
+msgstr "%(url)s rajoittaa tämän latauksen nopeutta (HTTP %(status)d)."
+
+msgid "Check your network connection and run the command again to resume."
+msgstr "Tarkista verkkoyhteytesi ja suorita komento uudelleen jatkaaksesi."
+
+msgid "%(file)s needs authorisation (HTTP %(status)d)."
+msgstr "%(file)s vaatii valtuutuksen (HTTP %(status)d)."
+
+msgid "This repository is gated. Accept its terms on Hugging Face and set HF_TOKEN to a token that can read it."
+msgstr "Tämä repositorio on portin takana. Hyväksy sen ehdot Hugging Facessa ja aseta HF_TOKEN tokeniksi, joka saa lukea sen."
+
+msgid "%(file)s is not at %(url)s any more (HTTP 404)."
+msgstr "Tiedostoa %(file)s ei enää ole osoitteessa %(url)s (HTTP 404)."
+
+msgid "Run `llamafit catalog refresh` to pick up the repository's current files."
+msgstr "Suorita `llamafit catalog refresh` hakeaksesi repositorion nykyiset tiedostot."
+
+msgid "%(url)s returned HTTP %(status)d."
+msgstr "%(url)s vastasi HTTP %(status)d."
+
+msgid "Confirm the URL points at a downloadable file."
+msgstr "Varmista, että osoite osoittaa ladattavaan tiedostoon."
+
+msgid "%(url)s did not say how big %(file)s is."
+msgstr "%(url)s ei kertonut, kuinka suuri %(file)s on."
+
+msgid "%(file)s is %(actual)s on the server but the catalog says %(expected)s; the repository has been re-uploaded since the catalog was refreshed."
+msgstr "%(file)s on palvelimella %(actual)s, mutta luettelon mukaan %(expected)s; repositorio on ladattu uudelleen sen jälkeen kun luettelo päivitettiin."
+
+msgid "Run `llamafit catalog refresh` and try again."
+msgstr "Suorita `llamafit catalog refresh` ja yritä uudelleen."
+
+msgid "%(file)s: the server sent %(actual)d bytes of a %(expected)d byte range."
+msgstr "%(file)s: palvelin lähetti %(actual)d tavua %(expected)d tavun alueesta."
+
+msgid "Run the command again; the parts that did arrive are kept."
+msgstr "Suorita komento uudelleen; saapuneet osat säilyvät."
+
+msgid "Stopped."
+msgstr "Pysähtyi."
+
+msgid "%(file)s: the server asked for fewer connections; using %(count)d."
+msgstr "%(file)s: palvelin pyysi vähemmän yhteyksiä; käytetään %(count)d."
+
+msgid "%(file)s: this server will not serve byte ranges; fetching it in one stream."
+msgstr "%(file)s: tämä palvelin ei tarjoile tavualueita; haetaan yhtenä virtana."
+
+msgid "%(file)s does not match its checksum; fetching it again."
+msgstr "%(file)s ei vastaa tarkistussummaansa; haetaan uudelleen."
+
+msgid "Check that the download directory is writable."
+msgstr "Tarkista, että latauskansioon voi kirjoittaa."
+
+msgid "%(needed)s is needed for this model but %(path)s has only %(free)s free, %(short)s short of what is wanted with %(headroom)s left spare."
+msgstr "Tähän malliin tarvitaan %(needed)s, mutta polussa %(path)s on vapaana vain %(free)s, %(short)s vajaa siitä mitä halutaan %(headroom)s pelivaran kanssa."
+
+msgid "Free some space, or choose another directory with --dir, or a smaller quantisation with --quant."
+msgstr "Vapauta tilaa, valitse toinen hakemisto valitsimella --dir tai pienempi kvantisointi valitsimella --quant."
+
+msgid "could not measure the free space on %(path)s: %(error)s"
+msgstr "vapaata tilaa polussa %(path)s ei voitu mitata: %(error)s"
+
+msgid "Check that the download directory's volume is available."
+msgstr "Tarkista, että latauskansion levy on käytettävissä."
+
+msgid "%(model)s has no downloadable source in the catalog."
+msgstr "Mallille %(model)s ei ole luettelossa ladattavaa lähdettä."
+
+msgid "Only Hugging Face sources can be installed; this entry has none."
+msgstr "Vain Hugging Face -lähteitä voi asentaa; tällä merkinnällä ei ole yhtään."
+
+msgid "the catalog has no file list for %(model)s %(quant)s."
+msgstr "luettelossa ei ole tiedostolistaa kohteelle %(model)s %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the file names."
+msgstr "Suorita `llamafit catalog refresh` täyttääksesi tiedostonimet."
+
+msgid "%(model)s publishes no quantisations."
+msgstr "Malli %(model)s ei julkaise kvantisointeja."
+
+msgid "%(model)s does not publish a %(quant)s quantisation."
+msgstr "Malli %(model)s ei julkaise kvantisointia %(quant)s."
+
+msgid "It publishes: %(quants)s"
+msgstr "Se julkaisee: %(quants)s"
+
+msgid "the catalog does not record how big %(quant)s is."
+msgstr "luettelo ei kirjaa, kuinka suuri %(quant)s on."
+
+msgid "Run `llamafit catalog refresh` to fill in the sizes."
+msgstr "Suorita `llamafit catalog refresh` täyttääksesi koot."
+
+msgid "the catalog holds no checksum for %(files)s."
+msgid_plural "the catalog holds no checksums for %(files)s."
+msgstr[0] "luettelossa ei ole tarkistussummaa tiedostolle %(files)s."
+msgstr[1] "luettelossa ei ole tarkistussummia tiedostoille %(files)s."
+
+msgid "Run `llamafit catalog refresh` to fetch them, or pass --allow-unverified to download anyway and check the files yourself."
+msgstr "Suorita `llamafit catalog refresh` hakeaksesi ne, tai anna --allow-unverified ladataksesi silti ja tarkistaaksesi tiedostot itse."
+
+msgid "%(done)s of %(total)s"
+msgstr "%(done)s / %(total)s"
+
+msgid "%(rate)s/s"
+msgstr "%(rate)s/s"
+
+msgid "Fetching %(file)s (%(size)s)"
+msgstr "Haetaan %(file)s (%(size)s)"
+
+msgid "Checking %(file)s against its checksum"
+msgstr "Tarkistetaan %(file)s tarkistussummaa vasten"
+
+msgid "Done: %(file)s"
+msgstr "Valmis: %(file)s"
+
+msgid "could not create %(path)s: %(error)s"
+msgstr "kohdetta %(path)s ei voitu luoda: %(error)s"
+
+msgid "Check that the download directory is writable and has room."
+msgstr "Tarkista, että latauskansioon voi kirjoittaa ja että siinä on tilaa."
+
+msgid "could not move %(source)s into place: %(error)s"
+msgstr "kohdetta %(source)s ei voitu siirtää paikalleen: %(error)s"
+
+msgid "could not record progress in %(path)s: %(error)s"
+msgstr "edistymistä ei voitu kirjata polkuun %(path)s: %(error)s"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "osoitetta %(url)s ei voitu hakea: %(error)s"
+
+msgid "Stopped before the checksum was finished."
+msgstr "Pysähtyi ennen kuin tarkistussumma valmistui."
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "tiedostoa %(path)s ei voitu lukea: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Tarkista, että tiedosto on olemassa ja luettavissa."
+
+msgid "%(file)s is %(actual)d bytes, but the catalog says %(expected)d"
+msgstr "%(file)s on %(actual)d tavua, mutta luettelon mukaan %(expected)d"
+
+msgid "The transfer was cut short. Run the command again to fetch it properly."
+msgstr "Siirto katkesi kesken. Suorita komento uudelleen, niin se haetaan kunnolla."
+
+msgid "%(file)s does not match the checksum the catalog holds."
+msgstr "%(file)s ei vastaa luettelon tarkistussummaa."
+
+msgid "Expected %(expected)s but the file hashes to %(actual)s. The bad copy has been deleted; run the command again to fetch it."
+msgstr "Odotettiin %(expected)s, mutta tiedoston tiiviste on %(actual)s. Viallinen kopio on poistettu; suorita komento uudelleen hakeaksesi sen."
+
 msgid "Command: %(command)s"
 msgstr "Komento: %(command)s"
 
 msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
 msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "typistynyt GGUF-otsake: haluttiin %(wanted)d tavu kohdassa %(offset)d, saatiin %(got)d"
+msgstr[1] "typistynyt GGUF-otsake: haluttiin %(wanted)d tavua kohdassa %(offset)d, saatiin %(got)d"
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Tiedosto saattaa olla vielä latautumassa, tai osoite ei osoita GGUF-tiedostoon."
@@ -666,10 +2716,23 @@ msgstr "GGUF-versiota %(version)d ei tueta, kohdassa 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit tukee GGUF-versioita %(versions)s."
 
+msgid "A memory budget built without these tensors would be too small, so none is built. If llama.cpp loads the file, LlamaFit's tensor-size table is missing the type."
+msgstr "Ilman näitä tensoreita rakennettu muistibudjetti olisi liian pieni, joten sitä ei rakenneta lainkaan. Jos llama.cpp lataa tiedoston, LlamaFitin tensorikokotaulusta puuttuu tyyppi."
+
+msgid "%(type)d (%(count)d tensor, first %(name)s)"
+msgid_plural "%(type)d (%(count)d tensors, first %(name)s)"
+msgstr[0] "%(type)d (%(count)d tensori, ensimmäinen %(name)s)"
+msgstr[1] "%(type)d (%(count)d tensoria, ensimmäinen %(name)s)"
+
+msgid "cannot size this GGUF file: %(count)d tensor uses a GGML type LlamaFit does not know: %(details)s"
+msgid_plural "cannot size this GGUF file: %(count)d tensors use GGML types LlamaFit does not know: %(details)s"
+msgstr[0] "tätä GGUF-tiedostoa ei voi mitoittaa: %(count)d tensori käyttää GGML-tyyppiä, jota LlamaFit ei tunne: %(details)s"
+msgstr[1] "tätä GGUF-tiedostoa ei voi mitoittaa: %(count)d tensoria käyttää GGML-tyyppejä, joita LlamaFit ei tunne: %(details)s"
+
 msgid "%(count)d shard"
 msgid_plural "%(count)d shards"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d osa"
+msgstr[1] "%(count)d osaa"
 
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "nämä GGUF-tiedostot eivät ole yksi jaettu malli: ne ovat eri mieltä avaimesta '%(key)s' ja ilmoittavat %(values)s"
@@ -688,14 +2751,14 @@ msgstr "Anna mallin tiedosto tai jaetun mallin kaikki osat."
 
 msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
 msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "annetuista %(total)d GGUF-tiedostosta %(count)d ei kanna avainta '%(key)s', joten sen paikkaa jaetussa mallissa ei voi määrittää"
+msgstr[1] "annetuista %(total)d GGUF-tiedostosta %(count)d ei kanna avainta '%(key)s', joten niiden paikkaa jaetussa mallissa ei voi määrittää"
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Anna joko yksi jakamaton tiedosto yksinään tai yhden jaetun mallin kaikki osat."
 
 msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr ""
+msgstr "epätäydellinen osajoukko: malli ilmoittaa %(shards)s ja saapui %(arrived)d (%(key)s %(numbers)s)"
 
 msgid "Pass every shard of the split model."
 msgstr "Anna jaetun mallin kaikki osat."
@@ -713,21 +2776,12 @@ msgid "Pass each shard of the split model exactly once."
 msgstr "Anna jaetun mallin jokainen osa täsmälleen kerran."
 
 msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
-msgstr ""
+msgstr "epätäydellinen osajoukko: malli ilmoittaa %(tensors)s ja sen %(shards)s pitävät yhteensä %(held)d"
 
 msgid "%(count)d tensor"
 msgid_plural "%(count)d tensors"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "could not read %(path)s: %(error)s"
-msgstr "tiedostoa %(path)s ei voitu lukea: %(error)s"
-
-msgid "Check that the file exists and is readable."
-msgstr "Tarkista, että tiedosto on olemassa ja luettavissa."
-
-msgid "could not fetch %(url)s: %(error)s"
-msgstr "osoitetta %(url)s ei voitu hakea: %(error)s"
+msgstr[0] "%(count)d tensori"
+msgstr[1] "%(count)d tensoria"
 
 msgid "Check your network connection and that the URL is reachable."
 msgstr "Tarkista verkkoyhteytesi ja että osoite on tavoitettavissa."
@@ -757,6 +2811,9 @@ msgstr "WMI ei palauttanut yhtään näytönohjainta"
 msgid "lspci found no display controllers"
 msgstr "lspci ei löytänyt yhtään näytönohjainta"
 
+msgid "vulkaninfo reported no discrete device with a memory heap"
+msgstr "vulkaninfo ei ilmoittanut erillistä laitetta, jolla olisi muistikeko"
+
 msgid "no populated memory modules"
 msgstr "ei käytössä olevia muistimoduuleja"
 
@@ -765,8 +2822,8 @@ msgstr "ei SPMemoryDataType-tietoa"
 
 msgid "%(program)s: timed out after %(seconds)s second"
 msgid_plural "%(program)s: timed out after %(seconds)s seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(program)s: aikakatkaisu %(seconds)s sekunnin jälkeen"
+msgstr[1] "%(program)s: aikakatkaisu %(seconds)s sekunnin jälkeen"
 
 msgid "empty command"
 msgstr "tyhjä komento"
@@ -777,11 +2834,47 @@ msgstr "%(program)s: %(error)s"
 msgid "%(program)s: not found"
 msgstr "%(program)s: ei löytynyt"
 
-msgid "no output"
-msgstr "ei tulostetta"
-
 msgid "exit code %(code)d: %(detail)s"
 msgstr "paluukoodi %(code)d: %(detail)s"
+
+msgid "no hardware profile file at %(path)s"
+msgstr "polussa %(path)s ei ole laitteistoprofiilitiedostoa"
+
+msgid "Run `llamafit hardware list` to see the profiles LlamaFit has."
+msgstr "Suorita `llamafit hardware list` nähdäksesi LlamaFitin profiilit."
+
+msgid "%(path)s is not a valid hardware profile: %(details)s"
+msgstr "%(path)s ei ole kelvollinen laitteistoprofiili: %(details)s"
+
+msgid "Run `llamafit hardware validate FILE` for the whole list."
+msgstr "Suorita `llamafit hardware validate FILE` nähdäksesi koko listan."
+
+msgid "no hardware profile named %(name)s"
+msgstr "ei laitteistoprofiilia nimeltä %(name)s"
+
+msgid "Profiles LlamaFit has: %(names)s"
+msgstr "LlamaFitin profiilit: %(names)s"
+
+msgid "Run `llamafit hardware path` to see where your own profiles go."
+msgstr "Suorita `llamafit hardware path` nähdäksesi, minne omat profiilisi menevät."
+
+msgid "this machine has no graphics card, so there is no VRAM to override"
+msgstr "tässä koneessa ei ole näytönohjainta, joten ei ole VRAM-muistia jonka voisi ohittaa"
+
+msgid "Describe the whole machine in a hardware profile and pass --profile."
+msgstr "Kuvaa koko kone laitteistoprofiilissa ja anna --profile."
+
+msgid "this machine has one memory pool shared with the graphics card"
+msgstr "tässä koneessa on yksi muistivaranto, joka jaetaan näytönohjaimen kanssa"
+
+msgid "Use --ram to resize the pool; --memory would change only half of it."
+msgstr "Muuta varannon kokoa valitsimella --ram; --memory muuttaisi siitä vain puolet."
+
+msgid "%(option)s needs a value above zero"
+msgstr "%(option)s vaatii nollaa suuremman arvon"
+
+msgid "no build number in the version output: %(text)s"
+msgstr "versiotulosteessa ei ole koontinumeroa: %(text)s"
 
 msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
 msgstr "llama.cpp:tä ei löytynyt: llama-server ei ole PATHissa, LLAMA_CPP_PATHissa eikä tavanomaisissa hakemistoissa"
@@ -789,11 +2882,256 @@ msgstr "llama.cpp:tä ei löytynyt: llama-server ei ole PATHissa, LLAMA_CPP_PATH
 msgid "no ggml backend libraries found next to llama-server; the build may be static"
 msgstr "llama-serverin vierestä ei löytynyt ggml-backend-kirjastoja; koontiversio voi olla staattinen"
 
+msgid "%(path)s is a file, not a directory."
+msgstr "%(path)s on tiedosto, ei hakemisto."
+
+msgid "%(path)s cannot be read: %(error)s"
+msgstr "%(path)s ei ole luettavissa: %(error)s"
+
+msgid "%(path)s has a marker file that cannot be read."
+msgstr "Polussa %(path)s on merkkitiedosto, jota ei voi lukea."
+
+msgid "%(path)s already holds %(count)d file that LlamaFit did not install."
+msgid_plural "%(path)s already holds %(count)d files that LlamaFit did not install."
+msgstr[0] "Polussa %(path)s on jo %(count)d tiedosto, jota LlamaFit ei asentanut."
+msgstr[1] "Polussa %(path)s on jo %(count)d tiedostoa, joita LlamaFit ei asentanut."
+
+msgid "%(name)s has no published checksum, so it cannot be verified."
+msgstr "Kohteelle %(name)s ei ole julkaistua tarkistussummaa, joten sitä ei voi varmistaa."
+
+msgid "Pass --allow-unverified to install it anyway, knowing the archive is unchecked."
+msgstr "Anna --allow-unverified asentaaksesi sen silti, tietäen että paketti on tarkistamaton."
+
+msgid "could not download %(url)s: %(error)s"
+msgstr "osoitetta %(url)s ei voitu ladata: %(error)s"
+
+msgid "the connection was closed"
+msgstr "yhteys katkaistiin"
+
+msgid "Run the command again; it continues from where it stopped."
+msgstr "Suorita komento uudelleen; se jatkuu siitä mihin jäi."
+
+msgid "the download of %(url)s stopped early: %(error)s"
+msgstr "osoitteen %(url)s lataus keskeytyi ennenaikaisesti: %(error)s"
+
+msgid "%(got)s of %(want)s arrived"
+msgstr "saapui %(got)s / %(want)s"
+
+msgid "the disk holding %(path)s is full."
+msgstr "levy jolla %(path)s on, on täynnä."
+
+msgid "Free some space and run the command again; the download resumes."
+msgstr "Vapauta tilaa ja suorita komento uudelleen; lataus jatkuu."
+
+msgid "Check that the directory exists and is writable."
+msgstr "Tarkista, että hakemisto on olemassa ja siihen voi kirjoittaa."
+
+msgid "%(name)s did not match its published checksum and was discarded."
+msgstr "%(name)s ei vastannut julkaistua tarkistussummaansa ja hylättiin."
+
+msgid "Nothing was unpacked. Run the command again: the archive arrived damaged, which a second download usually fixes."
+msgstr "Mitään ei purettu. Suorita komento uudelleen: paketti saapui vaurioituneena, minkä toinen lataus yleensä korjaa."
+
+msgid "%(archive)s contains %(name)s, which would be written outside the install directory."
+msgstr "%(archive)s sisältää kohteen %(name)s, joka kirjoitettaisiin asennushakemiston ulkopuolelle."
+
+msgid "Do not install this archive; report it to the llama.cpp project."
+msgstr "Älä asenna tätä pakettia; ilmoita siitä llama.cpp-projektille."
+
+msgid "%(name)s is not an archive LlamaFit knows how to unpack."
+msgstr "%(name)s ei ole paketti, jonka LlamaFit osaa purkaa."
+
+msgid "%(name)s could not be unpacked: %(error)s"
+msgstr "kohdetta %(name)s ei voitu purkaa: %(error)s"
+
+msgid "Delete it and run the command again to download it afresh."
+msgstr "Poista se ja suorita komento uudelleen, niin se ladataan alusta."
+
+msgid "the archive holds no %(name)s."
+msgstr "paketti ei sisällä kohdetta %(name)s."
+
+msgid "Report this; the release layout has changed."
+msgstr "Ilmoita tästä; julkaisun rakenne on muuttunut."
+
+msgid "%(path)s was not installed by LlamaFit."
+msgstr "Polkua %(path)s ei asentanut LlamaFit."
+
+msgid "Pass --force to replace it, or --dir to install somewhere else. LlamaFit never overwrites an installation it did not create."
+msgstr "Anna --force korvataksesi sen, tai --dir asentaaksesi muualle. LlamaFit ei koskaan korvaa asennusta, jota se ei itse luonut."
+
+msgid "%(path)s has %(free)s free; this install needs %(needed)s."
+msgstr "Polussa %(path)s on %(free)s vapaana; tämä asennus tarvitsee %(needed)s."
+
+msgid "Free some space, or pass --dir to install on another volume."
+msgstr "Vapauta tilaa tai anna --dir asentaaksesi toiselle levylle."
+
+msgid "the %(backend)s libraries are not in the installed directory."
+msgstr "%(backend)s-kirjastot eivät ole asennushakemistossa."
+
+msgid "no ggml backend libraries were installed; the build may be a static one."
+msgstr "yhtään ggml-backend-kirjastoa ei asennettu; koontiversio voi olla staattinen."
+
+msgid "Your PATH could not be read, so it will not be changed."
+msgstr "PATH-muuttujaasi ei voitu lukea, joten sitä ei muuteta."
+
+msgid "Add %(path)s to your user PATH (HKCU\\Environment)."
+msgstr "Lisätään %(path)s käyttäjäsi PATH-muuttujaan (HKCU\\Environment)."
+
+msgid "To undo: run `setx PATH \"%(previous)s\"`, or remove the entry in System > About > Advanced system settings > Environment Variables."
+msgstr "Peruminen: suorita `setx PATH \"%(previous)s\"` tai poista merkintä kohdasta Järjestelmä > Tietoja > Järjestelmän lisäasetukset > Ympäristömuuttujat."
+
+msgid "%(path)s is already on your PATH."
+msgstr "%(path)s on jo PATH-muuttujassasi."
+
+msgid "Nothing to undo."
+msgstr "Ei mitään peruttavaa."
+
+msgid "Append a PATH line for %(path)s to %(file)s."
+msgstr "Lisätään PATH-rivi polulle %(path)s tiedostoon %(file)s."
+
+msgid "To undo: delete the two lines marked `%(mark)s` from %(file)s."
+msgstr "Peruminen: poista tiedostosta %(file)s ne kaksi riviä, jotka on merkitty merkinnällä `%(mark)s`."
+
+msgid "your PATH could not be changed: %(error)s"
+msgstr "PATH-muuttujaasi ei voitu muuttaa: %(error)s"
+
+msgid "To remove it later, delete %(path)s."
+msgstr "Poistaaksesi sen myöhemmin poista %(path)s."
+
+msgid "the most recent %(count)d llama.cpp releases hold no build."
+msgstr "llama.cpp:n %(count)d uusimmassa julkaisussa ei ole koontiversiota."
+
+msgid "Name one with `llamafit install llama.cpp --tag ...`."
+msgstr "Nimeä yksi komennolla `llamafit install llama.cpp --tag ...`."
+
+msgid "could not reach GitHub at %(url)s: %(error)s"
+msgstr "GitHubiin ei saatu yhteyttä osoitteessa %(url)s: %(error)s"
+
+msgid "GitHub refused the request for %(url)s: the rate limit is exhausted."
+msgstr "GitHub hylkäsi pyynnön osoitteeseen %(url)s: pyyntöraja on käytetty loppuun."
+
+msgid "Wait for the limit to reset, or set GITHUB_TOKEN to a personal access token with no scopes."
+msgstr "Odota rajan nollautumista tai aseta GITHUB_TOKEN henkilökohtaiseksi käyttöoikeustokeniksi ilman oikeuksia."
+
+msgid "GitHub has no release at %(url)s."
+msgstr "GitHubissa ei ole julkaisua osoitteessa %(url)s."
+
+msgid "Check the tag with `llamafit install llama.cpp --tag ...`."
+msgstr "Tarkista versiotunniste komennolla `llamafit install llama.cpp --tag ...`."
+
+msgid "GitHub returned %(status)d for %(url)s."
+msgstr "GitHub vastasi %(status)d osoitteeseen %(url)s."
+
+msgid "GitHub's answer for %(url)s was not JSON."
+msgstr "GitHubin vastaus osoitteeseen %(url)s ei ollut JSONia."
+
+msgid "GitHub's answer did not describe a release."
+msgstr "GitHubin vastaus ei kuvannut julkaisua."
+
 msgid "no llama-server answering"
 msgstr "yksikään llama-server ei vastaa"
 
 msgid "unexpected response: %(error)s"
 msgstr "odottamaton vastaus: %(error)s"
+
+msgid "%(model)s holds %(native)s tokens, fewer than the %(minimum)s asked for."
+msgstr "Malli %(model)s pitää %(native)s tokenia, vähemmän kuin pyydetyt %(minimum)s."
+
+msgid "No configuration of this model fits this machine."
+msgstr "Yksikään tämän mallin kokoonpano ei mahdu tälle koneelle."
+
+msgid "Routed experts are held in system memory, and so are the always-on shared experts, which is what -ot ffn_.*_shexp=CPU does; attention and the KV cache stay on the card."
+msgstr "Reititetyt asiantuntijat pidetään järjestelmämuistissa, ja samoin aina päällä olevat jaetut asiantuntijat, mitä -ot ffn_.*_shexp=CPU tekee; tarkkaavuus ja KV-välimuisti pysyvät kortilla."
+
+msgid "Routed experts are held in system memory; attention, the KV cache and the shared experts stay on the card."
+msgstr "Reititetyt asiantuntijat pidetään järjestelmämuistissa; tarkkaavuus, KV-välimuisti ja jaetut asiantuntijat pysyvät kortilla."
+
+msgid "%(layers)s layers are on the card and the rest run on the processor."
+msgstr "%(layers)s kerrosta on kortilla ja loput ajetaan suorittimella."
+
+msgid "Nothing runs on a graphics card: every weight is in system memory."
+msgstr "Mitään ei ajeta näytönohjaimella: jokainen paino on järjestelmämuistissa."
+
+msgid "%(gpus)s is here, but nothing could read how much of it is free, so this plan was made as if it were not. The real machine will be faster than these figures."
+msgstr "%(gpus)s on täällä, mutta mikään ei pystynyt lukemaan paljonko siitä on vapaana, joten tämä suunnitelma tehtiin ikään kuin sitä ei olisi. Oikea kone on näitä lukuja nopeampi."
+
+msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
+msgstr "Mitoitettu %(context)s tokenille pyydettyjen %(requested)s sijaan."
+
+msgid "The KV cache is quantised to %(type)s to reach this context."
+msgstr "KV-välimuisti on kvantisoitu tyyppiin %(type)s, jotta tähän kontekstiin ylletään."
+
+msgid "Vision is off: the projector did not fit, on the card or in system memory."
+msgstr "Konenäkö on pois päältä: projektori ei mahtunut kortille eikä järjestelmämuistiin."
+
+msgid "The vision projector is in system memory (--no-mmproj-offload), which costs nothing measurable for text and makes images slower."
+msgstr "Konenäköprojektori on järjestelmämuistissa (--no-mmproj-offload), mikä ei maksa tekstille mitattavasti mitään ja hidastaa kuvia."
+
+msgid "%(threads)s threads, not the %(available)s this processor has: the efficiency cores are left out because generation measures slower with them, and what is left is the threads the performance cores provide."
+msgstr "%(threads)s säiettä eikä niitä %(available)s, jotka tässä suorittimessa on: tehokkuusytimet jätetään pois, koska niiden kanssa generointi mittautuu hitaammaksi, ja jäljelle jää se säiemäärä jonka tehoytimet antavat."
+
+msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
+msgstr "Tiukka: näytönohjaimelta on vapaana %(vram)s ja tämä tarvitsee %(needed)s, joten toinen ohjelma voi työntää sen yli. Kontekstiporrastaulukko on se, miten käynnistysskripti tästä toipuu."
+
+msgid "no %(capability)s capability, which %(use_case)s needs; ask for a different use case, or add it to the entry when the model really has it"
+msgstr "ei ominaisuutta %(capability)s, jota %(use_case)s vaatii; pyydä toista käyttötapausta tai lisää se merkintään, jos mallilla se oikeasti on"
+
+msgid "no %(capability)s capability; drop it from the request to see this model"
+msgstr "ei ominaisuutta %(capability)s; jätä se pois pyynnöstä nähdäksesi tämän mallin"
+
+msgid "%(size)s to download, over the %(limit)s this request allows"
+msgstr "ladattavaa %(size)s, yli niiden %(limit)s jotka tämä pyyntö sallii"
+
+msgid "unknown quantisation %(quant)s, so its cost in quality cannot be told"
+msgstr "tuntematon kvantisointi %(quant)s, joten sen hintaa laadussa ei voi kertoa"
+
+msgid "nowhere to put it: no placement fits this machine at any context"
+msgstr "ei mihinkään mihin laittaa: yksikään sijoittelu ei mahdu tälle koneelle millään kontekstilla"
+
+msgid "holds %(fit)s tokens at most, under the %(minimum)s asked for; lower the minimum context or free memory to see it ranked"
+msgstr "pitää enintään %(fit)s tokenia, alle pyydettyjen %(minimum)s; laske vähimmäiskontekstia tai vapauta muistia nähdäksesi sen sijoitettuna"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "generoi %(tps)s tokenia sekunnissa, alle niiden %(floor)s joita tämä pyyntö vaatii; laske --min-tps tai valitse pienempi malli tai kvantisointi"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "generoi %(tps)s tokenia sekunnissa, alle niiden %(floor)s jotka ihminen lukee: eräajotyökalu tällä koneella eikä sellainen jonka ääreen istutaan; pienempi malli tai kvantisointi pysyisi perässä"
+
+msgid "unknown use case %(use_case)s"
+msgstr "tuntematon käyttötapaus %(use_case)s"
+
+msgid "Known use cases: %(known)s."
+msgstr "Tunnetut käyttötapaukset: %(known)s."
+
+msgid "unknown score part %(part)s in the weights for %(use_case)s"
+msgstr "tuntematon pisteytyksen osa %(part)s käyttötapauksen %(use_case)s painoissa"
+
+msgid "The parts are: %(parts)s."
+msgstr "Osat ovat: %(parts)s."
+
+msgid "the weights for %(use_case)s leave out %(part)s"
+msgstr "käyttötapauksen %(use_case)s painoista puuttuu %(part)s"
+
+msgid "Overriding a use case means giving all four parts: %(parts)s."
+msgstr "Käyttötapauksen ohittaminen tarkoittaa kaikkien neljän osan antamista: %(parts)s."
+
+msgid "the weight for %(part)s in %(use_case)s is below zero"
+msgstr "osan %(part)s paino käyttötapauksessa %(use_case)s on alle nollan"
+
+msgid "A weight says how much a part counts; it cannot count less than none."
+msgstr "Paino kertoo, kuinka paljon osa merkitsee; se ei voi merkitä vähemmän kuin ei mitään."
+
+msgid "the weights for %(use_case)s add up to nothing"
+msgstr "käyttötapauksen %(use_case)s painojen summa on nolla"
+
+msgid "At least one part has to count for something."
+msgstr "Ainakin yhden osan on merkittävä jotain."
+
+msgid "unknown preference %(prefer)s"
+msgstr "tuntematon painotus %(prefer)s"
+
+msgid "Preferences: %(known)s."
+msgstr "Painotukset: %(known)s."
 
 msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
 msgstr "Asenna tai korjaa NVIDIA-ajuri; nvidia-smi tulee sen mukana ja sen on oltava PATHissa."
@@ -828,6 +3166,9 @@ msgstr "llama-server on olemassa, mutta se ei kertonut versiota; ohjelmatiedosto
 msgid "system_profiler failed; GPU information is unavailable."
 msgstr "system_profiler epäonnistui; GPU:sta ei ole tietoja."
 
+msgid "Install the Vulkan tools (vulkan-tools on Linux, the vendor's Vulkan runtime on Windows) so an unsized card's memory can be read from its driver. This probe runs only when no vendor tool sized the card, so it is the last source there is."
+msgstr "Asenna Vulkan-työkalut (Linuxissa vulkan-tools, Windowsissa valmistajan Vulkan-ajoympäristö), jotta mitoittamattoman kortin muisti voidaan lukea sen ajurista. Tämä testi ajetaan vain, kun yksikään valmistajan työkalu ei mitoittanut korttia, joten se on viimeinen lähde mitä on."
+
 msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
 msgstr "Yksikään valmistajan työkalu ei kertonut GPU:n muistin kokoa; kirjaa koko laitteistoprofiiliin, jotta budjetit voidaan laskea tälle koneelle."
 
@@ -846,6 +3187,9 @@ msgstr "llama.cpp:tä ei löytynyt"
 
 msgid "no llama-server binary was found"
 msgstr "llama-server-ohjelmatiedostoa ei löytynyt"
+
+msgid "Run `llamafit install llama.cpp`, which picks the right build for this machine, checks it against its published checksum, and never touches an installation LlamaFit did not create."
+msgstr "Suorita `llamafit install llama.cpp`, joka valitsee oikean koontiversion tälle koneelle, tarkistaa sen julkaistua tarkistussummaa vasten eikä koskaan koske asennukseen jota LlamaFit ei luonut."
 
 msgid "Memory size unknown"
 msgstr "Muistin koko tuntematon"
@@ -871,6 +3215,15 @@ msgstr "%(gpu)s: VRAM-muistin koko tuntematon"
 
 msgid "the vendor tool that reports memory was not available"
 msgstr "muistin kertova valmistajan työkalu ei ollut käytettävissä"
+
+msgid "%(gpus)s: planned around, not planned on"
+msgstr "%(gpus)s: suunniteltu sen ympäri, ei sille"
+
+msgid "with no reading of how much of the card is free, every budget and every speed on this machine was computed as if there were no card: they are CPU-only figures, and the real machine will be faster."
+msgstr "koska mikään ei lukenut paljonko kortista on vapaana, jokainen budjetti ja jokainen nopeus tällä koneella laskettiin ikään kuin korttia ei olisi: ne ovat pelkän suorittimen lukuja, ja oikea kone on nopeampi."
+
+msgid "Install the Vulkan tools so the size can be read from the driver, or record it in a hardware profile (`llamafit hardware path` says where those go) and pass --profile."
+msgstr "Asenna Vulkan-työkalut, jotta koko voidaan lukea ajurista, tai kirjaa se laitteistoprofiiliin (`llamafit hardware path` kertoo minne ne menevät) ja anna --profile."
 
 msgid "No GPU detected"
 msgstr "GPU:ta ei havaittu"
@@ -916,6 +3269,389 @@ msgstr "%(size)s vapaana"
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr "Useimmat hyödylliset mallit tarvitsevat 5-120 GB; vapauta tilaa tai vaihda latauskansiota."
 
+msgid "%(model)s has no %(quant)s quantisation"
+msgstr "mallilla %(model)s ei ole kvantisointia %(quant)s"
+
+msgid "It publishes: %(names)s"
+msgstr "Se julkaisee: %(names)s"
+
+msgid "licensed %(spdx)s, which this request does not allow"
+msgstr "lisensoitu %(spdx)s, mitä tämä pyyntö ei salli"
+
+msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
+msgstr "Järjestelmämuistin kaistanleveyttä ei mitattu; oletettu %(gbps).0f GB/s arkkitehtuurille %(arch)s."
+
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
+msgstr "Näytönohjaimen %(gpu)s kaistanleveys on tuntematon; tilalle tulee %(backend)s-varalukema %(gbps).0f GB/s."
+
+msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
+msgstr "Ei näytönohjaimen laskentalukemaa: promptin käsittely arvioidaan suorittimelle."
+
+msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "Reititettyjä asiantuntijoita luetaan järjestelmämuistista %(gb).2f GB tokenia kohti nopeudella, joka on %(eff).2f sen %(raw).0f GB/s:stä, koska jokainen token valitsee eri kourallisen asiantuntijoita ja luku on pienten lohkojen hajontaa eikä virtaa."
+
+msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
+msgstr "Yhtenäisiä painoja luetaan järjestelmämuistista %(gb).2f GB tokenia kohti nopeudella, joka on %(eff).2f sen %(raw).0f GB/s:stä."
+
+msgid "No active parameter count was supplied; it was inferred from the weight bytes."
+msgstr "Aktiivisten parametrien määrää ei annettu; se pääteltiin painojen tavuista."
+
+msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "%(pct).0f prosenttia kerroksista on järjestelmämuistissa, joten tuo osuus promptin laskennasta veloitetaan suorittimelta nopeudella %(tflops).2f TFLOP/s eikä kortilta. Molemmat nopeudet tulevat yhdestä pienestä tiheästä mallista yhdellä koneella."
+
+msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "Asiantuntijajoukosta virtaa %(gb).1f GB väylän yli kerran mikroerää kohti nopeudella %(gbps).1f GB/s. Tuo nopeus sovitettiin siihen yhteen malliin, jonka asiantuntijajoukko ei mahdu järjestelmämuistiin, joten osa sen luvusta tulee levyltä; asiantuntijajoukko joka pysyy sivuvälimuistissa virtaa noin kolme kertaa nopeammin, ja sellaisella tämä termi on juuri sen verran liian hidas."
+
+msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+msgstr "Asiantuntijajoukosta luetaan %(gb).1f GB järjestelmämuistista kerran mikroerää kohti nopeudella %(gbps).1f GB/s, koska ei ole korttia jolle sitä virtauttaa."
+
+msgid "No placement of this model on this machine could run it."
+msgstr "Yksikään tämän mallin sijoittelu tälle koneelle ei olisi voinut ajaa sitä."
+
+msgid "Generation is a benchmark of this configuration, not a prediction."
+msgstr "Generointi on tämän kokoonpanon mittaus, ei ennuste."
+
+msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "Generointi on kaava korjattuna kertoimella %(factor).2f mittauksesta %(profile)s, joka otettiin tällä koneella %(date)s."
+
+msgid "Prompt processing is a benchmark of this configuration."
+msgstr "Promptin käsittely on tämän kokoonpanon mittaus."
+
+msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
+msgstr "Promptin käsittely on kaava korjattuna kertoimella %(factor).2f mittauksesta."
+
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr "Tuon mittauksen komentorivi ei kirjaa, montako kerrosta meni kortille, joten korjaus olettaa sen ajaneen tällä sijoittelulla."
+
+msgid "This figure assumes nothing pages: a placement this tight often does, silently."
+msgstr "Tämä luku olettaa, ettei mikään sivuta: näin tiukka sijoittelu usein sivuttaa, äänettömästi."
+
+msgid "Board"
+msgstr "Taulu"
+
+msgid "Needs"
+msgstr "Tarpeet"
+
+msgid "Plan"
+msgstr "Suunnitelma"
+
+msgid "Simulate"
+msgstr "Simulointi"
+
+msgid "There is no terminal here to draw the dashboard in, so this is what `llamafit recommend` would print."
+msgstr "Täällä ei ole päätettä johon näkymän voisi piirtää, joten tässä on se minkä `llamafit recommend` tulostaisi."
+
+msgid "%(name)s %(quant)s, %(vendor)s, licensed %(license)s; it can: %(capabilities)s"
+msgstr "%(name)s %(quant)s, %(vendor)s, lisenssi %(license)s; se osaa: %(capabilities)s"
+
+msgid "Choose a row to see what put it there."
+msgstr "Valitse rivi nähdäksesi, mikä sen sinne vei."
+
+msgid "Nothing has been ranked yet."
+msgstr "Mitään ei ole vielä sijoitettu."
+
+msgid "Every candidate in the catalog was ranked; none was excluded."
+msgstr "Kaikki luettelon ehdokkaat sijoitettiin; yhtäkään ei suljettu pois."
+
+msgid "keys"
+msgstr "näppäimet"
+
+msgid "theme"
+msgstr "teema"
+
+msgid "quit"
+msgstr "lopeta"
+
+msgid "choose"
+msgstr "valitse"
+
+msgid "why"
+msgstr "miksi"
+
+msgid "command line"
+msgstr "komentorivi"
+
+msgid "search"
+msgstr "haku"
+
+msgid "fit"
+msgstr "tila"
+
+msgid "sort"
+msgstr "järjestys"
+
+msgid "sort back"
+msgstr "järjestys taakse"
+
+msgid "reverse"
+msgstr "käännä"
+
+msgid "on disk"
+msgstr "levyllä"
+
+msgid "all quants"
+msgstr "kaikki kvantisoinnit"
+
+msgid "unranked rows"
+msgstr "sijoittamattomat rivit"
+
+msgid "all columns"
+msgstr "kaikki sarakkeet"
+
+msgid "explanation"
+msgstr "selitys"
+
+msgid "not ranked"
+msgstr "ei sijalla"
+
+msgid "apply"
+msgstr "käytä"
+
+msgid "reset"
+msgstr "palauta"
+
+msgid "rescan"
+msgstr "skannaa uudelleen"
+
+msgid "more context"
+msgstr "lisää kontekstia"
+
+msgid "less context"
+msgstr "vähemmän kontekstia"
+
+msgid "vision"
+msgstr "konenäkö"
+
+msgid "copy"
+msgstr "kopioi"
+
+msgid "this machine"
+msgstr "tämä kone"
+
+msgctxt "use case"
+msgid "general use"
+msgstr "yleiskäyttö"
+
+msgctxt "use case"
+msgid "writing code"
+msgstr "koodin kirjoittaminen"
+
+msgctxt "use case"
+msgid "reasoning"
+msgstr "päättely"
+
+msgctxt "use case"
+msgid "chat"
+msgstr "keskustelu"
+
+msgctxt "use case"
+msgid "images and text"
+msgstr "kuvat ja teksti"
+
+msgctxt "use case"
+msgid "embeddings"
+msgstr "upotukset"
+
+msgctxt "preference"
+msgid "balanced"
+msgstr "tasapainoinen"
+
+msgctxt "preference"
+msgid "lean towards quality"
+msgstr "painotus laatuun"
+
+msgctxt "preference"
+msgid "lean towards speed"
+msgstr "painotus nopeuteen"
+
+msgid "Move with the up and down arrows. Enter says why a row is where it is; p gives the command line that runs it."
+msgstr "Liiku ylä- ja alanuolella. Enter kertoo, miksi rivi on siinä missä se on; p antaa komentorivin, joka ajaa sen."
+
+msgid "Terms: %(terms)s; anything else is text to look for. Enter with the box empty clears them."
+msgstr "Termit: %(terms)s; kaikki muu on etsittävää tekstiä. Enter tyhjällä kentällä tyhjentää ne."
+
+msgid "Part of a model name, then Enter"
+msgstr "Osa mallin nimestä, sitten Enter"
+
+msgid "Keys"
+msgstr "Näppäimet"
+
+msgctxt "column heading"
+msgid "Screen"
+msgstr "Näkymä"
+
+msgctxt "column heading"
+msgid "Key"
+msgstr "Näppäin"
+
+msgctxt "column heading"
+msgid "What it does"
+msgstr "Mitä tekee"
+
+msgctxt "dashboard screen"
+msgid "Everywhere"
+msgstr "Kaikkialla"
+
+msgctxt "dashboard screen"
+msgid "Board"
+msgstr "Taulu"
+
+msgctxt "dashboard screen"
+msgid "Needs"
+msgstr "Tarpeet"
+
+msgctxt "dashboard screen"
+msgid "Host"
+msgstr "Kone"
+
+msgctxt "dashboard screen"
+msgid "Plan"
+msgstr "Suunnitelma"
+
+msgctxt "dashboard screen"
+msgid "Simulate"
+msgstr "Simulointi"
+
+msgid "Press Escape to go back."
+msgstr "Palaa painamalla Escape."
+
+msgid "Catalog files with a problem"
+msgstr "Luettelotiedostot joissa on ongelma"
+
+msgid "This machine has not been scanned yet."
+msgstr "Tätä konetta ei ole vielä skannattu."
+
+msgid "What do you want a model for?"
+msgstr "Mihin haluat mallin?"
+
+msgid "It must be able to:"
+msgstr "Sen on osattava:"
+
+msgid "At least this much context, in tokens:"
+msgstr "Vähintään näin paljon kontekstia, tokeneina:"
+
+msgid "Willing to download at most, for example 40G (blank for no limit):"
+msgstr "Valmis lataamaan enintään, esimerkiksi 40G (tyhjä tarkoittaa rajatonta):"
+
+msgid "Slowest generation worth having, in tokens per second (blank for the speed a person reads at; 0 when nobody is waiting on the tokens):"
+msgstr "Hitain generointi joka kannattaa, tokeneina sekunnissa (tyhjä tarkoittaa ihmisen lukunopeutta; 0, kun kukaan ei odota tokeneita):"
+
+msgid "Licences you will accept (tick none to accept any):"
+msgstr "Lisenssit jotka hyväksyt (älä rastita yhtään, niin hyväksyt kaikki):"
+
+msgid "Lean the score:"
+msgstr "Pisteytyksen painotus:"
+
+msgid "Keep the vision projector when a model has one"
+msgstr "Säilytä konenäköprojektori, jos mallilla on sellainen"
+
+msgid "Apply"
+msgstr "Käytä"
+
+msgid "Reset"
+msgstr "Palauta"
+
+msgid "The minimum context is a number of tokens, for example %(example)s."
+msgstr "Vähimmäiskonteksti on tokenien määrä, esimerkiksi %(example)s."
+
+msgid "The minimum context cannot be below zero."
+msgstr "Vähimmäiskonteksti ei voi olla alle nollan."
+
+msgid "The minimum speed is a number of tokens per second, for example 12."
+msgstr "Vähimmäisnopeus on tokenien määrä sekunnissa, esimerkiksi 12."
+
+msgid "The minimum speed cannot be below zero."
+msgstr "Vähimmäisnopeus ei voi olla alle nollan."
+
+msgid "Choose a row on the Board and press p, and its plan and command line appear here."
+msgstr "Valitse rivi Taulusta ja paina p, niin sen suunnitelma ja komentorivi ilmestyvät tähän."
+
+msgid "%(model)s is no longer in the catalog this board was built from."
+msgstr "Mallia %(model)s ei enää ole siinä luettelossa, josta tämä taulu rakennettiin."
+
+msgid "Planned with the vision projector; press v to leave it out."
+msgstr "Suunniteltu konenäköprojektorin kanssa; paina v jättääksesi sen pois."
+
+msgid "Planned without the vision projector; press v to put it back."
+msgstr "Suunniteltu ilman konenäköprojektoria; paina v ottaaksesi sen mukaan."
+
+msgid "The ladder has no rung above %(context)s."
+msgstr "Tikkailla ei ole askelmaa yli %(context)s."
+
+msgid "The ladder has no rung below %(context)s."
+msgstr "Tikkailla ei ole askelmaa alle %(context)s."
+
+msgid "There is no command line to copy yet."
+msgstr "Kopioitavaa komentoriviä ei vielä ole."
+
+msgid "The command line is on the clipboard."
+msgstr "Komentorivi on leikepöydällä."
+
+msgid "Everything on every screen answers about the machine chosen here. While it is not this one, the band at the top says SIMULATED."
+msgstr "Kaikki jokaisella näkymällä vastaa siitä koneesta, joka tässä valitaan. Niin kauan kuin se ei ole tämä kone, yläpalkki sanoo SIMULOITU."
+
+msgid "Answer for this machine instead:"
+msgstr "Vastaa sen sijaan tästä koneesta:"
+
+msgid "Pretend the graphics card has this much memory (blank to leave it):"
+msgstr "Oletetaan, että näytönohjaimella on näin paljon muistia (tyhjä jättää ennalleen):"
+
+msgid "Pretend the machine has this much system memory (blank to leave it):"
+msgstr "Oletetaan, että koneessa on näin paljon järjestelmämuistia (tyhjä jättää ennalleen):"
+
+msgid "Pretend the processor has this many cores (blank to leave it):"
+msgstr "Oletetaan, että suorittimessa on näin monta ydintä (tyhjä jättää ennalleen):"
+
+msgid "Back to this machine"
+msgstr "Takaisin tähän koneeseen"
+
+msgctxt "hardware profile"
+msgid "this machine"
+msgstr "tämä kone"
+
+msgid "The core count is a whole number, for example 8."
+msgstr "Ytimien määrä on kokonaisluku, esimerkiksi 8."
+
+msgctxt "dashboard header separator"
+msgid " · "
+msgstr " · "
+
+msgctxt "dashboard header"
+msgid "no GPU detected"
+msgstr "GPU:ta ei havaittu"
+
+msgid "%(name)s, VRAM unknown"
+msgstr "%(name)s, VRAM tuntematon"
+
+msgid "%(name)s, %(free)s free of %(total)s"
+msgstr "%(name)s, %(free)s vapaana, yhteensä %(total)s"
+
+msgid "%(available)s free of %(total)s RAM"
+msgstr "%(available)s vapaana, RAM-muistia yhteensä %(total)s"
+
+msgid "%(model)s, %(count)d core"
+msgid_plural "%(model)s, %(count)d cores"
+msgstr[0] "%(model)s, %(count)d ydin"
+msgstr[1] "%(model)s, %(count)d ydintä"
+
+msgctxt "dashboard header"
+msgid "llama.cpp not installed"
+msgstr "llama.cpp ei ole asennettu"
+
+msgctxt "dashboard header"
+msgid "llama.cpp installed"
+msgstr "llama.cpp asennettu"
+
+msgid "llama.cpp b%(build)d"
+msgstr "llama.cpp b%(build)d"
+
+msgctxt "dashboard header"
+msgid "scanning this machine…"
+msgstr "skannataan tätä konetta…"
+
+msgid "These speeds were not all arrived at the same way; the How column says which each row is."
+msgstr "Näitä nopeuksia ei ole kaikkia saatu samalla tavalla; Mistä-sarake kertoo, mikä mikin on."
+
 # The thousands separator below is a no-break space (U+00A0), not an ordinary space
 # and not an empty translation. Finnish groups digits with a space, and the entry is
 # read literally, so the space is the answer. Do not "tidy" it away.
@@ -938,3 +3674,160 @@ msgstr "B"
 msgctxt "size"
 msgid "unknown"
 msgstr "tuntematon"
+
+msgid "profile must be a name, not a path: %(value)s"
+msgstr "profile on oltava nimi eikä polku: %(value)s"
+
+msgid "Ask GET /api/v1/profiles for the names this machine has."
+msgstr "Kysy GET /api/v1/profiles saadaksesi nimet, jotka tällä koneella on."
+
+msgid "unknown query parameter: %(names)s"
+msgstr "tuntematon kyselyparametri: %(names)s"
+
+msgid "This endpoint takes: %(names)s"
+msgstr "Tämä päätepiste ottaa vastaan: %(names)s"
+
+msgid "invalid prefer %(value)s"
+msgstr "virheellinen prefer: %(value)s"
+
+msgid "invalid sort %(value)s"
+msgstr "virheellinen sort: %(value)s"
+
+msgid "%(host)s:%(port)d is not this machine only. Anyone who can reach this computer on that port can read everything the dashboard shows -- your hardware, your disks, your file paths and the models you have downloaded. There is no password, because LlamaFit is meant for the person sitting at the keyboard. Press Ctrl+C now if you did not mean this."
+msgstr "%(host)s:%(port)d ei ole vain tämä kone. Kuka tahansa, joka tavoittaa tämän tietokoneen siitä portista, voi lukea kaiken mitä näkymä näyttää -- laitteistosi, levysi, tiedostopolkusi ja lataamasi mallit. Salasanaa ei ole, koska LlamaFit on tarkoitettu sille, joka istuu näppäimistön ääressä. Paina nyt Ctrl+C, jos et tarkoittanut tätä."
+
+msgid "the web dashboard needs FastAPI and uvicorn, which are not installed"
+msgstr "selainnäkymä tarvitsee FastAPIn ja uvicornin, joita ei ole asennettu"
+
+msgid "Install them with: pip install \"llamafit[web]\""
+msgstr "Asenna ne komennolla: pip install \"llamafit[web]\""
+
+msgid "%(host)s is not a loopback address, and the dashboard has no authentication"
+msgstr "%(host)s ei ole loopback-osoite, eikä näkymässä ole tunnistautumista"
+
+msgid "Leave --host alone to serve this machine only, or pass it to mean it."
+msgstr "Jätä --host rauhaan, niin palvellaan vain tätä konetta, tai anna se tarkoittaen sitä."
+
+msgctxt "column heading"
+msgid "Why not"
+msgstr "Miksi ei"
+
+msgid "Why this row"
+msgstr "Miksi tämä rivi"
+
+msgid "Plan this"
+msgstr "Suunnittele tämä"
+
+msgid "Already on this machine"
+msgstr "Jo tällä koneella"
+
+msgid "Score"
+msgstr "Pisteet"
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; raise “Rows to show” for the rest, which are neither worse-behaved nor hidden, only further down."
+msgstr "Näkyvissä on paras %(shown)s niistä %(total)s, jotka täyttivät ehdot; nosta ”Näytettävät rivit” nähdäksesi loput, jotka eivät ole huonompia tai piilotettuja, vain alempana."
+
+msgid "What the model is for"
+msgstr "Mihin malli on tarkoitettu"
+
+msgid "Capabilities it must have"
+msgstr "Vaadittavat ominaisuudet"
+
+msgid "Lean the weights"
+msgstr "Painojen painotus"
+
+msgid "Smallest context worth having"
+msgstr "Pienin konteksti joka kannattaa"
+
+msgid "Most you will download"
+msgstr "Enintään näin paljon ladattavaa"
+
+msgid "Show every quantisation"
+msgstr "Näytä kaikki kvantisoinnit"
+
+msgid "Keep the vision projector"
+msgstr "Säilytä konenäköprojektori"
+
+msgid "Rows to show"
+msgstr "Näytettävät rivit"
+
+msgid "Scan again"
+msgstr "Skannaa uudelleen"
+
+msgid "llama.cpp"
+msgstr "llama.cpp"
+
+msgid "Quantisation"
+msgstr "Kvantisointi"
+
+msgid "Context"
+msgstr "Konteksti"
+
+msgid "Micro-batch"
+msgstr "Mikroerä"
+
+msgid "Plan it"
+msgstr "Suunnittele"
+
+msgid "Copy"
+msgstr "Kopioi"
+
+msgid "Copied"
+msgstr "Kopioitu"
+
+msgid "Flags"
+msgstr "Valitsimet"
+
+msgid "Speed"
+msgstr "Nopeus"
+
+msgid "Choose a row on the board first."
+msgstr "Valitse ensin rivi taulusta."
+
+msgid "Hardware profile"
+msgstr "Laitteistoprofiili"
+
+msgid "This machine, as scanned"
+msgstr "Tämä kone, sellaisena kuin se skannattiin"
+
+msgid "Graphics memory"
+msgstr "Näytönohjaimen muisti"
+
+msgid "System memory"
+msgstr "Järjestelmämuisti"
+
+msgid "Processor cores"
+msgstr "Suorittimen ytimet"
+
+msgid "Score against that machine"
+msgstr "Pisteytä sitä konetta vasten"
+
+msgid "What runs here, how fast, and with which settings."
+msgstr "Mikä täällä toimii, kuinka nopeasti ja millä asetuksilla."
+
+msgid "Working…"
+msgstr "Työ käynnissä…"
+
+msgid "Something went wrong"
+msgstr "Jokin meni pieleen"
+
+msgid "Hint"
+msgstr "Vinkki"
+
+msgid "Command"
+msgstr "Komento"
+
+msgid "About these figures"
+msgstr "Näistä luvuista"
+
+msgid "Close"
+msgstr "Sulje"
+
+msgid "%(shown)s of %(total)s in the catalog"
+msgstr "%(shown)s / %(total)s luettelossa"
+
+msgid "Source code (AGPL-3.0-or-later)"
+msgstr "Lähdekoodi (AGPL-3.0-or-later)"
+
+msgid "This dashboard is served from your own machine and sends nothing anywhere."
+msgstr "Tämä näkymä tarjoillaan omalta koneeltasi eikä se lähetä mitään minnekään."

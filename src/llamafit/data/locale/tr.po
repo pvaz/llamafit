@@ -12,6 +12,11 @@
 # "%(index)d. Kaynak". A numeral is always followed by a singular noun here, which is
 # why the two plural forms read alike wherever the count itself is printed.
 #
+# A Latin identifier takes no Turkish suffix here, so where the grammar would want a
+# case ending on a model id, a flag or a quantisation name, the sentence is rephrased
+# around it and an ordinary noun — "model", "dosya", "komut" — carries the ending
+# instead.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: llamafit 0.1.0a1\n"
@@ -22,6 +27,198 @@ msgstr ""
 "Language: tr\n"
 "Language-Team: Turkish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "nothing measured touches this term, so there is no equation it appears in"
+msgstr "ölçülen hiçbir şey bu terime dokunmuyor, dolayısıyla terimin göründüğü bir denklem yok"
+
+msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
+msgstr "%(parameters)d serbest parametre için %(measurements)d ayrı yapılandırma; parametre sayısından az nokta, kesin görünen ama keyfi olan sayılar verir"
+
+msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
+msgstr "bu %(measurements)d yapılandırma, %(parameters)d parametreyi birbirinden ayıracak kadar bağımsız değişmiyor"
+
+msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "uyarlama bunu %(value).3f olarak buldu; kendi tanımı buna izin vermiyor, yani ölçümler bölüm 10.1'in modeli altında birbiriyle çelişiyor"
+
+msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "%(value).3f çıktı, ama aynı uyarlamanın başka bir parametresi olanaksızdı ve en küçük kareler ikisini birbirine karşı seçti"
+
+msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
+msgstr "kestiricide böyle bir terim yok: bölüm 10.1, katman başına ek yükü kaldırdı; 28 katmanlı bir modelde bu ek yük ölçülen tokenin tamamını aşıyordu"
+
+msgid "generation (llama-bench)"
+msgstr "üretim (llama-bench)"
+
+msgid "prompt (llama-bench)"
+msgstr "prompt (llama-bench)"
+
+msgid "generation, first request"
+msgstr "üretim, ilk istek"
+
+msgid "generation, 1K prompt"
+msgstr "üretim, 1K prompt"
+
+msgid "prompt, 1K request"
+msgstr "prompt, 1K istek"
+
+msgid "peak VRAM"
+msgstr "en yüksek VRAM"
+
+msgid "no graphics card"
+msgstr "ekran kartı yok"
+
+msgid "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+msgstr "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+
+msgid "%(flag)s was asked for as %(wanted)s but the run reports %(actual)s"
+msgstr "%(flag)s için %(wanted)s istendi ama çalıştırma %(actual)s bildiriyor"
+
+msgid "The card was full and generation came in below three fifths of the estimate: the driver was paging to system memory, which does not fail and does not appear in the log."
+msgstr "Kart doluydu ve üretim tahminin beşte üçünün altına düştü: sürücü sistem belleğine sayfalıyordu; bu ne hata verir ne de günlükte görünür."
+
+msgid "Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page."
+msgstr "En yüksek VRAM kartın toplamından uzak kaldı, yani sürücünün sayfalayacağı bir şey yoktu."
+
+msgid "The card was full, which a good plan is meant to be, and the speed was close enough to the estimate that nothing was paging."
+msgstr "Kart doluydu — iyi bir planın olması gerektiği gibi — ve hız tahmine hiçbir şey sayfalamayacak kadar yakındı."
+
+msgid "No VRAM reading was taken during the run, so this configuration has not been cleared of paging; it has only not been checked."
+msgstr "Çalıştırma sırasında VRAM okunmadı, yani bu yapılandırmanın sayfalamadığı kanıtlanmadı; yalnızca denetlenmedi."
+
+msgid "The card's total memory is unknown, so a reading of what was in use says nothing about how close to full it was."
+msgstr "Kartın toplam belleği bilinmiyor, dolayısıyla kullanımdaki miktarın okunması dolu olmaya ne kadar yaklaşıldığı konusunda bir şey söylemez."
+
+msgid "There was no estimate to compare the measured speed against, so the second half of the signature could not be tested."
+msgstr "Ölçülen hızın karşılaştırılacağı bir tahmin yoktu, bu yüzden imzanın ikinci yarısı sınanamadı."
+
+msgid "llama-bench did not produce JSON"
+msgstr "llama-bench JSON üretmedi"
+
+msgid "llama-bench JSON is not a list of results"
+msgstr "llama-bench JSON çıktısı bir sonuç listesi değil"
+
+msgid "llama-bench JSON held no readable results"
+msgstr "llama-bench JSON çıktısı okunabilir sonuç içermiyordu"
+
+msgid "no llama-bench result rows found"
+msgstr "llama-bench sonuç satırı bulunamadı"
+
+msgid "could not open %(path)s for the server log"
+msgstr "sunucu günlüğü için %(path)s açılamadı"
+
+msgid "could not start llama-server"
+msgstr "llama-server başlatılamadı"
+
+msgid "no output"
+msgstr "çıktı yok"
+
+msgid "llama-bench exited with code %(code)d: %(detail)s"
+msgstr "llama-bench %(code)d koduyla çıktı: %(detail)s"
+
+msgid "llama-bench output could not be read: %(error)s"
+msgstr "llama-bench çıktısı okunamadı: %(error)s"
+
+msgid "llama-server did not become healthy"
+msgstr "llama-server sağlıklı duruma gelmedi"
+
+msgid "Its whole output is in the log file `bench` named; the end says why."
+msgstr "Tüm çıktısı `bench` komutunun adını verdiği günlük dosyasında; sonu nedenini söylüyor."
+
+msgid "%(path)s was written by a newer LlamaFit (benchmark format %(found)d, this build reads %(known)d)"
+msgstr "%(path)s daha yeni bir LlamaFit tarafından yazılmış (ölçüm biçimi %(found)d, bu derleme %(known)d okuyor)"
+
+msgid "Upgrade LlamaFit, or move the file aside to start a new one."
+msgstr "LlamaFit'i yükseltin ya da yenisinin başlaması için dosyayı bir kenara alın."
+
+msgid "a benchmark cannot be recorded against a simulated machine"
+msgstr "benzetilmiş bir makine için ölçüm kaydedilemez"
+
+msgid "Run `llamafit bench` on the machine itself, without --profile."
+msgstr "`llamafit bench` komutunu --profile olmadan makinenin kendisinde çalıştırın."
+
+msgid "the run did not use the settings it was given: %(problems)s"
+msgstr "çalıştırma, kendisine verilen ayarları kullanmadı: %(problems)s"
+
+msgid "Nothing was stored. A result filed under flags it was not taken with would be believed later by everything that reads it."
+msgstr "Hiçbir şey saklanmadı. Alınmadığı seçeneklerin altına kaydedilen bir sonuca, sonradan onu okuyan her şey inanırdı."
+
+msgid "a conservative default; nobody has measured this card's backend overhead"
+msgstr "ihtiyatlı bir öntanımlı değer; bu kartın arka uç ek yükünü kimse ölçmedi"
+
+msgid "measured on this card with driver %(driver)s and llama.cpp %(build)s; one machine"
+msgstr "bu kartta, %(driver)s sürücüsü ve llama.cpp %(build)s ile ölçüldü; tek makine"
+
+msgid "A hybrid placement has to say how many layers are on the graphics card."
+msgstr "Melez bir yerleştirme, ekran kartında kaç katman olduğunu söylemek zorundadır."
+
+msgid "Pass gpu_layers, which is what -ngl would be."
+msgstr "-ngl karşılığı olan gpu_layers değerini verin."
+
+msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
+msgstr "LlamaFit, %(model)s modelinin %(quant)s dosyasını okumadı; bu yüzden boyutlandıramıyor."
+
+msgid "Run `llamafit catalog refresh` to read the file's header."
+msgstr "Dosyanın başlığının okunması için `llamafit catalog refresh` komutunu çalıştırın."
+
+msgid "the server process before any model buffer"
+msgstr "herhangi bir model tamponundan önce sunucu süreci"
+
+msgid "fitted to one machine's measurements; the least certain line here"
+msgstr "tek bir makinenin ölçümlerine uyarlandı; buradaki en belirsiz satır"
+
+msgid "room for one logit per vocabulary entry per token of the batch"
+msgstr "yığının her tokeni için sözlükteki her girdiye bir logit yeri"
+
+msgid "LlamaFit cannot size a %(kv_type)s key-value cache."
+msgstr "LlamaFit, %(kv_type)s türünde bir anahtar-değer önbelleğini boyutlandıramaz."
+
+msgid "Use one of: %(types)s."
+msgstr "Şunlardan birini kullanın: %(types)s."
+
+msgid "This model's file does not say how large its key-value cache is per token."
+msgstr "Bu modelin dosyası, token başına anahtar-değer önbelleğinin ne kadar büyük olduğunu söylemiyor."
+
+msgid "Refresh the catalog so the file's header is read again."
+msgstr "Dosyanın başlığının yeniden okunması için kataloğu yenileyin."
+
+msgid "the attention-layer count was assumed, not counted"
+msgstr "dikkat katmanlarının sayısı sayılmadı, varsayıldı"
+
+msgid "%(arch)s allocates more cache than its header describes; see the line below"
+msgstr "%(arch)s, başlığının anlattığından daha çok önbellek ayırıyor; aşağıdaki satıra bakın"
+
+msgid "what %(arch)s allocates beyond its header, measured rather than derived"
+msgstr "%(arch)s mimarisinin başlığının ötesinde ayırdığı, türetilmiş değil ölçülmüş miktar"
+
+msgid "from the architecture's state dimensions; it does not grow with context"
+msgstr "mimarinin durum boyutlarından; bağlamla birlikte büyümez"
+
+msgid "the projector file itself"
+msgstr "yansıtıcı dosyasının kendisi"
+
+msgid "the projector's own compute space, measured at 248 MiB"
+msgstr "yansıtıcının kendi hesap alanı, 248 MiB olarak ölçüldü"
+
+msgid "attention projections, feed-forward weights and norms"
+msgstr "dikkat izdüşümleri, ileri beslemeli ağırlıklar ve normalleştirmeler"
+
+msgid "always-on experts, which run for every token"
+msgstr "her token için çalışan, her zaman etkin uzmanlar"
+
+msgid "routed experts, read across the bus once per micro-batch"
+msgstr "mikro yığın başına bir kez veri yolundan okunan, yönlendirilen uzmanlar"
+
+msgid "this model ties its output projection to its embedding table"
+msgstr "bu model çıkış izdüşümünü gömme tablosuna bağlıyor"
+
+msgid "llama.cpp keeps the embedding table in memory even at full offload"
+msgstr "llama.cpp, her şey karta aktarılmışken bile gömme tablosunu bellekte tutar"
+
+msgid "streamed from disk as it is needed, not held in memory"
+msgstr "gerektikçe diskten akıtılır, bellekte tutulmaz"
+
+msgid "held in memory, since streaming from disk was turned off"
+msgstr "bellekte tutulur, çünkü diskten akıtma kapatıldı"
 
 msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
 msgstr "%(repo)s için dosyalar listelenirken Hugging Face %(status)d döndürdü."
@@ -69,6 +266,9 @@ msgstr "Dosyanın tamamını yeniden oluşturmak için `llamafit catalog refresh
 msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
 msgstr "llama.cpp için açık ağırlıklı büyük dil modellerini kendi makinenizde bulun, boyutlandırın, kurun ve doğrulayın."
 
+msgid "With no command, llamafit opens the terminal dashboard; in a pipe, or with --json, it prints what `llamafit recommend` would."
+msgstr "Komut verilmezse llamafit uçbirim panosunu açar; bir boruda ya da --json ile `llamafit recommend` komutunun yazdıracağını yazdırır."
+
 msgid "Print machine-readable JSON instead of tables."
 msgstr "Tablolar yerine makinece okunabilir JSON yazdırır."
 
@@ -78,17 +278,322 @@ msgstr "Ayrıntıları günlük dizinindeki llamafit.log dosyasına yazar ve hat
 msgid "Disable colours."
 msgstr "Renkleri kapatır."
 
+msgid "Answer for the machine this hardware profile describes instead of this one. Nothing about this machine is probed, and every answer is marked as simulated. `llamafit hardware list` names the profiles you have."
+msgstr "Bu makine yerine, bu donanım profilinin anlattığı makine için yanıt verir. Bu makineyle ilgili hiçbir şey yoklanmaz ve her yanıt benzetim olarak imlenir. `llamafit hardware list` sahip olduğunuz profilleri sayar."
+
+msgid "Pretend the graphics card has this much memory, for example 24G. Everything else stays as scanned, and every answer is marked as simulated."
+msgstr "Ekran kartında bu kadar bellek varmış gibi davranır, örneğin 24G. Başka her şey tarandığı gibi kalır ve her yanıt benzetim olarak imlenir."
+
+msgid "Pretend the machine has this much system memory, for example 128GiB. Every answer is marked as simulated."
+msgstr "Makinede bu kadar sistem belleği varmış gibi davranır, örneğin 128GiB. Her yanıt benzetim olarak imlenir."
+
+msgid "Pretend the processor has this many physical cores. Every answer is marked as simulated."
+msgstr "İşlemcide bu kadar fiziksel çekirdek varmış gibi davranır. Her yanıt benzetim olarak imlenir."
+
+msgid "Plan, report and score no context longer than this. It caps the model's own length; it does not describe a machine."
+msgstr "Bundan uzun bir bağlamı planlamaz, bildirmez ve puanlamaz. Modelin kendi uzunluğunu sınırlar; bir makineyi anlatmaz."
+
 msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
 msgstr "Bu dili konuşur, örneğin pt_PT. LlamaFit'te bulunmayan bir dil İngilizceye döner ve hangi dillerin bulunduğu söylenir."
 
 msgid "Print the version and exit."
 msgstr "Sürümü yazdırıp çıkar."
 
+msgid "the output's encoding"
+msgstr "çıktının kodlaması"
+
+msgid "%(count)d character could not be written in %(encoding)s and is shown as ?."
+msgid_plural "%(count)d characters could not be written in %(encoding)s and are shown as ?."
+msgstr[0] "%(count)d karakter %(encoding)s ile yazılamadı ve ? olarak gösteriliyor."
+msgstr[1] "%(count)d karakter %(encoding)s ile yazılamadı ve ? olarak gösteriliyor."
+
+msgid "Set PYTHONUTF8=1 in the environment and run again: Python then writes UTF-8, which carries every language."
+msgstr "Ortamda PYTHONUTF8=1 ayarlayıp yeniden çalıştırın: Python o zaman her dili taşıyan UTF-8 yazar."
+
+msgid "%(option)s is an option of llamafit itself, so it goes before the command: `llamafit %(option)s %(rest)s`."
+msgstr "%(option)s, llamafit'in kendi seçeneğidir; bu yüzden komuttan önce gelir: `llamafit %(option)s %(rest)s`."
+
 msgid "Unexpected error: %(error)s"
 msgstr "Beklenmeyen hata: %(error)s"
 
 msgid "Run again with --verbose for the full traceback."
 msgstr "Tam hata izi için --verbose ile yeniden çalıştırın."
+
+msgid "A catalog model id."
+msgstr "Bir katalog model kimliği."
+
+msgid "Benchmark this quantisation instead of the planned one."
+msgstr "Planlanan yerine bu nicemlemeyi ölçer."
+
+msgid "Size for this many tokens."
+msgstr "Bu kadar token için boyutlandırır."
+
+msgid "Set the micro-batch by hand; the budget is rebuilt around it."
+msgstr "Mikro yığını elle ayarlar; bütçe onun çevresinde yeniden kurulur."
+
+msgid ""
+"Measure a model on this machine and show the measurement beside the estimate.\n"
+"\n"
+"Runs llama-bench and a real server at the planned flags, stores the result with the conditions it was taken under, and flags a configuration the driver was paging. With --calibrate, fits the estimator's constants to this machine from every stored result and says by name which ones the measurements do not determine."
+msgstr ""
+"Bu makinede bir modeli ölçer ve ölçümü tahminin yanına koyar.\n"
+"\n"
+"llama-bench'i ve gerçek bir sunucuyu planlanan seçeneklerle çalıştırır, sonucu alındığı koşullarla birlikte saklar ve sürücünün sayfaladığı bir yapılandırmayı imler. --calibrate ile kestiricinin sabitlerini saklanmış her sonuçtan bu makineye uyarlar ve ölçümlerin belirlemediği sabitleri adıyla söyler."
+
+msgid "Measure prompt processing at every micro-batch of the ladder, not only the planned one. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all."
+msgstr "Prompt işlemeyi yalnızca planlanan mikro yığında değil, merdivenin her mikro yığınında ölçer. Bölüm 10.2'nin iki serbest parametresi vardır ve bir mikro yığın bir denklemdir; bu yüzden bu olmadan kalibrasyonun prompt yarısı hiç uyarlanamaz."
+
+msgid "Run llama-bench only. Faster, and it gives up the paging check, the buffer sizes and the tool-call test, all of which need a real server."
+msgstr "Yalnızca llama-bench'i çalıştırır. Daha hızlıdır; ama hepsi gerçek bir sunucu isteyen sayfalama denetiminden, tampon boyutlarından ve araç çağrısı sınamasından vazgeçer."
+
+msgid "Print the result without writing it to the database."
+msgstr "Sonucu veritabanına yazmadan yazdırır."
+
+msgid "Print the commands that would run, and run nothing."
+msgstr "Çalışacak komutları yazdırır, hiçbir şey çalıştırmaz."
+
+msgid "Fit the estimator's constants to this machine from every result."
+msgstr "Kestiricinin sabitlerini her sonuçtan bu makineye uyarlar."
+
+msgid "List what is already stored and stop."
+msgstr "Saklanmış olanları listeler ve durur."
+
+msgid "`llamafit bench` needs a model to measure"
+msgstr "`llamafit bench` ölçecek bir model ister"
+
+msgid "Try `llamafit bench <model>`, `--calibrate` on its own, or `--show`."
+msgstr "`llamafit bench <model>`, tek başına `--calibrate` ya da `--show` deneyin."
+
+msgid "llama.cpp was not found, so there is nothing to benchmark with"
+msgstr "llama.cpp bulunamadı, dolayısıyla ölçüm yapacak bir şey yok"
+
+msgid "Run `llamafit doctor` to see where it was looked for."
+msgstr "Nerede arandığını görmek için `llamafit doctor` komutunu çalıştırın."
+
+msgid "%(path)s has llama-server but no llama-bench"
+msgstr "%(path)s içinde llama-server var ama llama-bench yok"
+
+msgid "Some release archives leave it out; a full build has it beside the server."
+msgstr "Bazı yayın arşivlerinde bulunmaz; tam bir derlemede sunucunun yanındadır."
+
+msgid "this host is simulated, and a simulated machine cannot be measured"
+msgstr "bu makine benzetilmiştir ve benzetilmiş bir makine ölçülemez"
+
+msgid "Run `llamafit bench` on the machine itself."
+msgstr "`llamafit bench` komutunu makinenin kendisinde çalıştırın."
+
+msgid "the model file is not on this machine: %(path)s"
+msgstr "modelin dosyası bu makinede değil: %(path)s"
+
+msgid "Download it first; `llamafit plan` shows the path the command line uses."
+msgstr "Önce indirin; `llamafit plan` komut satırının kullandığı yolu gösterir."
+
+msgid "Would run:"
+msgstr "Şunlar çalışacaktı:"
+
+msgid "Nothing has been measured on this machine yet."
+msgstr "Bu makinede henüz hiçbir şey ölçülmedi."
+
+msgid "Stored measurements"
+msgstr "Saklanan ölçümler"
+
+msgid "model"
+msgstr "model"
+
+msgid "kind"
+msgstr "tür"
+
+msgid "gen tok/s"
+msgstr "gen tok/s"
+
+msgid "prompt tok/s"
+msgstr "prompt tok/s"
+
+msgid "taken"
+msgstr "alındı"
+
+msgid "flags"
+msgstr "seçenekler"
+
+msgid "Nothing was written to the database, so no estimate will be relabelled."
+msgstr "Veritabanına hiçbir şey yazılmadı, dolayısıyla hiçbir tahminin etiketi değişmeyecek."
+
+msgid "Estimated against measured"
+msgstr "Tahmine karşı ölçüm"
+
+msgid "figure"
+msgstr "büyüklük"
+
+msgid "context"
+msgstr "bağlam"
+
+msgid "micro-batch"
+msgstr "mikro yığın"
+
+msgid "estimated"
+msgstr "tahmin"
+
+msgid "measured"
+msgstr "ölçüm"
+
+msgid "ratio"
+msgstr "oran"
+
+msgid "The plan sizes this configuration for %(context)s tokens and estimates %(tps)s generated tokens per second there. Nothing above ran at that context, so that figure is reported and not compared."
+msgstr "Plan bu yapılandırmayı %(context)s token için boyutlandırıyor ve orada saniyede %(tps)s üretilen token tahmin ediyor. Yukarıdakilerin hiçbiri o bağlamda çalışmadı, bu yüzden o değer yalnızca bildiriliyor, karşılaştırılmıyor."
+
+msgid "%(count)d figure is outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgid_plural "%(count)d figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgstr[0] "%(count)d değer, kalibre edilmemiş bir formülün düşmesi beklenen 0,8 ile 1,25 kuşağının dışında."
+msgstr[1] "%(count)d değer, kalibre edilmemiş bir formülün düşmesi beklenen 0,8 ile 1,25 kuşağının dışında."
+
+msgid "This configuration was paging."
+msgstr "Bu yapılandırma sayfalıyordu."
+
+msgid "This configuration was not paging."
+msgstr "Bu yapılandırma sayfalamıyordu."
+
+msgid "Paging could not be checked."
+msgstr "Sayfalama denetlenemedi."
+
+msgid "Peak VRAM was %(percent)s percent of the card, and generation was %(speed)s percent of the estimate."
+msgstr "En yüksek VRAM kartın yüzde %(percent)s kadarıydı ve üretim tahminin yüzde %(speed)s kadarıydı."
+
+msgid "Peak VRAM was %(percent)s percent of the card. Generation was not compared with the estimate."
+msgstr "En yüksek VRAM kartın yüzde %(percent)s kadarıydı. Üretim tahminle karşılaştırılmadı."
+
+msgid "The largest context on the ladder that would not page is %(tokens)s."
+msgstr "Merdivende sayfalamayacak en büyük bağlam %(tokens)s."
+
+msgid "Calibration"
+msgstr "Kalibrasyon"
+
+msgid "constant"
+msgstr "sabit"
+
+msgid "value"
+msgstr "değer"
+
+msgid "from"
+msgstr "kaynak"
+
+msgid "%(base)s + %(slope)s per 1K"
+msgstr "%(base)s + 1K başına %(slope)s"
+
+msgid "%(count)d measured context"
+msgid_plural "%(count)d measured contexts"
+msgstr[0] "%(count)d ölçülen bağlam"
+msgstr[1] "%(count)d ölçülen bağlam"
+
+msgid "Nothing was fitted. Every line below says what its constant was missing; a calibration made from less than that would look precise and be arbitrary."
+msgstr "Hiçbir şey uyarlanmadı. Aşağıdaki her satır, sabitinde neyin eksik olduğunu söylüyor; bundan azıyla yapılan bir kalibrasyon kesin görünür ve keyfi olurdu."
+
+msgid "%(name)s was not fitted: %(reason)s"
+msgstr "%(name)s uyarlanmadı: %(reason)s"
+
+msgid "%(count)d measured configuration"
+msgid_plural "%(count)d measured configurations"
+msgstr[0] "%(count)d ölçülen yapılandırma"
+msgstr[1] "%(count)d ölçülen yapılandırma"
+
+msgid "What the model is for. It sets the score weights, the speed target and the context a candidate is measured against."
+msgstr "Modelin ne için olduğu. Puanlama ağırlıklarını, hız hedefini ve bir adayın karşısında ölçüldüğü bağlamı belirler."
+
+msgid "Capability the model must have; a model without it is excluded "
+msgstr "Modelin sahip olması gereken yetenek; bu yeteneği olmayan model dışarıda kalır."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Yalnızca bu lisans kimliklerini tutar (yinelenebilir)."
+
+msgid "balanced, quality or speed: moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights."
+msgstr "balanced, quality ya da speed: ağırlığın onda birini kalite ile hız arasında kaydırır. Tabloyu eğer; ağırlıkların yerini almaz."
+
+msgid "Exclude anything larger to download, for example 40G or 7.5GiB."
+msgstr "İndirmesi bundan büyük olan her şeyi dışarıda bırakır, örneğin 40G ya da 7.5GiB."
+
+msgid "The worst verdict to list: comfortable, fits or tight."
+msgstr "Listelenecek en kötü karar: comfortable, fits ya da tight."
+
+msgid "Exclude candidates generating fewer tokens per second than this, in place of the speed a person reads at. Pass 0 when nobody is waiting on the tokens."
+msgstr "İnsanın okuma hızı yerine, saniyede bundan az token üreten adayları dışarıda bırakır. Tokenleri bekleyen kimse yoksa 0 verin."
+
+msgid "Order the rows drawn: score, speed, quality, context, size, prompt, card, ram, fit, model or quant, largest or best first unless :asc says otherwise. The # column keeps the ranking."
+msgstr "Çizilen satırları sıralar: score, speed, quality, context, size, prompt, card, ram, fit, model ya da quant; :asc başka bir şey söylemedikçe büyük ya da iyi olan başta. # sütunu sıralamayı korur."
+
+msgid "Draw only rows whose id, name or quantisation contains this text."
+msgstr "Yalnızca kimliği, adı ya da nicemlemesi bu metni içeren satırları çizer."
+
+msgid "Draw only rows whose file is already on this machine."
+msgstr "Yalnızca dosyası zaten bu makinede olan satırları çizer."
+
+msgid "Draw only rows that run this way: gpu, moe-offload, hybrid or cpu."
+msgstr "Yalnızca şu biçimde çalışan satırları çizer: gpu, moe-offload, hybrid ya da cpu."
+
+msgid "Draw only rows at or above this verdict: comfortable, fits or tight. The ranking is unchanged and a hidden row is still counted."
+msgstr "Yalnızca bu karardan yukarıdaki satırları çizer: comfortable, fits ya da tight. Sıralama değişmez ve gizlenen satır yine de sayılır."
+
+msgid "Draw exactly these columns, comma-separated, in this order, named as --json names them: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+msgstr "Tam olarak şu sütunları, virgülle ayrılmış olarak, bu sırayla ve --json çıktısındaki adlarıyla çizer: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+
+msgid "Draw every column whatever the terminal's width; a cell that does not fit folds."
+msgstr "Uçbirimin genişliği ne olursa olsun her sütunu çizer; sığmayan bir hücre katlanır."
+
+msgid "Leave the candidates that were not ranked off the table. The reasons are still printed under it."
+msgstr "Sıralamaya girmeyen adayları tablonun dışında bırakır. Nedenler yine de tablonun altında yazdırılır."
+
+msgid "invalid --min-fit %(value)s"
+msgstr "geçersiz --min-fit değeri: %(value)s"
+
+msgid "Valid values: %(values)s"
+msgstr "Geçerli değerler: %(values)s"
+
+msgid "invalid --prefer %(value)s"
+msgstr "geçersiz --prefer değeri: %(value)s"
+
+msgid "invalid --runs %(value)s"
+msgstr "geçersiz --runs değeri: %(value)s"
+
+msgid "invalid --sort %(value)s"
+msgstr "geçersiz --sort değeri: %(value)s"
+
+msgid "invalid --columns %(value)s"
+msgstr "geçersiz --columns değeri: %(value)s"
+
+msgid ""
+"Rank the catalog for what you want to do on this machine.\n"
+"\n"
+"Every candidate is planned, sized and estimated here, so the first run scans the machine. Speeds compare candidates at 8K tokens of context; --explain expands a row into the scores, the weights, the budget and the speed breakdown that produced it."
+msgstr ""
+"Bu makinede yapmak istediğinize göre kataloğu sıralar.\n"
+"\n"
+"Her aday burada planlanır, boyutlandırılır ve tahmin edilir; bu yüzden ilk çalıştırma makineyi tarar. Hızlar adayları 8K token bağlamda karşılaştırır; --explain bir satırı, onu ortaya çıkaran puanlara, ağırlıklara, bütçeye ve hız dökümüne açar."
+
+msgid "Exclude candidates that cannot hold at least this many tokens."
+msgstr "En az bu kadar token tutamayan adayları dışarıda bırakır."
+
+msgid "Show at most this many rows."
+msgstr "En çok bu kadar satır gösterir."
+
+msgid "Show every quantisation instead of the best one per model."
+msgstr "Model başına en iyisi yerine her nicemlemeyi gösterir."
+
+msgid "Expand every row shown into the scores, weights, budget and speed breakdown behind it. Combine with --limit 1 for one model."
+msgstr "Gösterilen her satırı, ardındaki puanlara, ağırlıklara, bütçeye ve hız dökümüne açar. Tek bir model için --limit 1 ile birlikte kullanın."
+
+msgid "Plan without a vision projector, freeing its memory."
+msgstr "Görü yansıtıcısı olmadan planlar ve onun belleğini serbest bırakır."
+
+msgid ""
+"Rank every model by how well it uses this machine, whatever it is for.\n"
+"\n"
+"No use case, no weights and no score: this is the memory question on its own. Models are sized for 32K tokens of context, and the context column is the largest each one holds in the mode shown."
+msgstr ""
+"Ne için olursa olsun her modeli, bu makineyi ne kadar iyi kullandığına göre sıralar.\n"
+"\n"
+"Kullanım alanı yok, ağırlık yok, puan yok: bu yalnızca bellek sorusudur. Modeller 32K token bağlam için boyutlandırılır ve bağlam sütunu, gösterilen biçimde her birinin tuttuğu en büyük değeri verir."
+
+msgid "Only the configurations that use the machine well: at least half its memory held in weights, and no pool past four fifths."
+msgstr "Yalnızca makineyi iyi kullanan yapılandırmalar: belleğinin en az yarısı ağırlıklarda ve hiçbir havuz beşte dördü aşmıyor."
 
 msgid "Maintain the catalog: validate its files, refresh volatile fields."
 msgstr "Kataloğun bakımını yapar: dosyalarını doğrular, değişken alanlarını yeniler."
@@ -99,37 +604,17 @@ msgstr "Yalnızca bu kullanım alanını tutar."
 msgid "Keep only models with this capability (repeatable)."
 msgstr "Yalnızca bu yeteneğe sahip modelleri tutar (yinelenebilir)."
 
-msgid "Keep only these licence identifiers (repeatable)."
-msgstr "Yalnızca bu lisans kimliklerini tutar (yinelenebilir)."
+msgid "Show only this quantisation, matched case-insensitively, in both tables."
+msgstr "Her iki tabloda da, büyük küçük harf ayrımı yapmadan yalnızca bu nicemlemeyi gösterir."
+
+msgid "Size every quantisation for this many tokens instead of the usual 32,768."
+msgstr "Her nicemlemeyi, alışılmış 32.768 yerine bu kadar token için boyutlandırır."
 
 msgid "Validate only this file instead of the bundled catalog and custom overrides."
 msgstr "Paketle gelen katalog ve özel geçersiz kılmalar yerine yalnızca bu dosyayı doğrular."
 
-msgid "Did you mean: %(ids)s?"
-msgstr "Şunu mu demek istediniz: %(ids)s?"
-
-msgid "Run `llamafit list` to see every model id."
-msgstr "Tüm model kimliklerini görmek için `llamafit list` komutunu çalıştırın."
-
-msgid "no model named %(id)s in the catalog"
-msgstr "katalogda %(id)s adlı bir model yok"
-
-msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
-msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
-msgstr[0] "%(count)d katalog sorunu bulundu; ayrıntılar için `llamafit catalog validate` komutunu çalıştırın."
-msgstr[1] "%(count)d katalog sorunu bulundu; ayrıntılar için `llamafit catalog validate` komutunu çalıştırın."
-
 msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
 msgstr "Eşleşen model yok. Daha geniş bir --use-case, --capability, --license, --vendor veya --search deneyin."
-
-msgid "invalid --use-case %(value)s"
-msgstr "geçersiz --use-case değeri: %(value)s"
-
-msgid "Valid use cases: %(values)s"
-msgstr "Geçerli kullanım alanları: %(values)s"
-
-msgid "Valid capabilities: %(values)s"
-msgstr "Geçerli yetenekler: %(values)s"
 
 msgid ""
 "List the model catalog, narrowed by any filters given.\n"
@@ -155,8 +640,14 @@ msgstr "llamafit list --search TEXT için kısayol."
 msgid "Text to match against id, name, vendor or family."
 msgstr "Kimlik, ad, üretici veya aile ile eşleştirilecek metin."
 
-msgid "A catalog model id."
-msgstr "Bir katalog model kimliği."
+msgid ""
+"Show one model: its facts, the quants it publishes, and what each would cost on this machine.\n"
+"\n"
+"The last table is sized against this machine, so the first run scans it. One line per quantisation; plan opens one of those rows into the memory budget, the context ladder and the command line."
+msgstr ""
+"Tek bir modeli gösterir: bilgilerini, yayımladığı nicemlemeleri ve her birinin bu makinede neye mal olacağını.\n"
+"\n"
+"Son tablo bu makineye göre boyutlandırılır, bu yüzden ilk çalıştırma makineyi tarar. Nicemleme başına bir satır; plan bu satırlardan birini bellek bütçesine, bağlam merdivenine ve komut satırına açar."
 
 msgid "Validate catalog YAML files against the schema, printing one line per problem."
 msgstr "Katalog YAML dosyalarını şemaya göre doğrular ve her sorun için bir satır yazdırır."
@@ -204,8 +695,387 @@ msgstr "Bir modelin ham katalog kaydını yazdırır; öntanımlı olarak JSON, 
 msgid "Print YAML instead of JSON."
 msgstr "JSON yerine YAML yazdırır."
 
+msgid "Did you mean: %(ids)s?"
+msgstr "Şunu mu demek istediniz: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Tüm model kimliklerini görmek için `llamafit list` komutunu çalıştırın."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "katalogda %(id)s adlı bir model yok"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "%(count)d katalog sorunu bulundu; ayrıntılar için `llamafit catalog validate` komutunu çalıştırın."
+msgstr[1] "%(count)d katalog sorunu bulundu; ayrıntılar için `llamafit catalog validate` komutunu çalıştırın."
+
+msgid "invalid --use-case %(value)s"
+msgstr "geçersiz --use-case değeri: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Geçerli kullanım alanları: %(values)s"
+
+msgid "invalid %(option)s value: %(values)s"
+msgid_plural "invalid %(option)s values: %(values)s"
+msgstr[0] "geçersiz %(option)s değeri: %(values)s"
+msgstr[1] "geçersiz %(option)s değerleri: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Geçerli yetenekler: %(values)s"
+
+msgid "%(option)s is not a size: %(value)s"
+msgstr "%(option)s bir boyut değil: %(value)s"
+
+msgid "Sizes look like 8G, 7.5GiB or 512M; a bare number is bytes."
+msgstr "Boyutlar 8G, 7.5GiB ya da 512M gibi yazılır; yalın bir sayı bayt demektir."
+
+msgid "%(ceiling)s %(max)s is below %(floor)s %(min)s"
+msgstr "%(ceiling)s %(max)s, %(floor)s %(min)s değerinin altında"
+
+msgid "Raise %(ceiling)s, or lower %(floor)s."
+msgstr "%(ceiling)s değerini yükseltin ya da %(floor)s değerini düşürün."
+
+msgid "`llamafit %(command)s` reports on the machine LlamaFit is running on"
+msgstr "`llamafit %(command)s`, LlamaFit'in üzerinde çalıştığı makineyi bildirir"
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a profile describes, run `llamafit hardware show NAME --as-host`."
+msgstr "--profile, --memory, --ram ve --cpu-cores seçeneklerini bırakın. Bir profilin anlattığı makineyi görmek için `llamafit hardware show NAME --as-host` çalıştırın."
+
 msgid "Explain what was detected, what failed, and what would unlock more."
 msgstr "Neyin algılandığını, neyin başarısız olduğunu ve neyin daha fazlasını açacağını anlatır."
+
+msgid "Hardware profiles: describe a machine in a file and score models against it."
+msgstr "Donanım profilleri: bir makineyi dosyada anlatın ve modelleri ona göre puanlayın."
+
+msgid "Validate only this file instead of every bundled and user profile."
+msgstr "Paketle gelen ve size ait tüm profiller yerine yalnızca bu dosyayı doğrular."
+
+msgid "A profile name, or a path to a profile file."
+msgstr "Bir profil adı ya da bir profil dosyasının yolu."
+
+msgid "%(count)d hardware profile problem found; run `llamafit hardware validate` for details."
+msgid_plural "%(count)d hardware profile problems found; run `llamafit hardware validate` for details."
+msgstr[0] "%(count)d donanım profili sorunu bulundu; ayrıntılar için `llamafit hardware validate` çalıştırın."
+msgstr[1] "%(count)d donanım profili sorunu bulundu; ayrıntılar için `llamafit hardware validate` çalıştırın."
+
+msgid "List the hardware profiles LlamaFit has: the bundled ones and your own."
+msgstr "LlamaFit'in donanım profillerini listeler: paketle gelenleri ve sizinkileri."
+
+msgid "No hardware profiles. Run `llamafit hardware path` to see where yours would go."
+msgstr "Donanım profili yok. Sizinkilerin nereye gideceğini görmek için `llamafit hardware path` çalıştırın."
+
+msgid ""
+"Show one profile; with --as-host, the machine it stands in for.\n"
+"\n"
+"A host built from a profile is marked as simulated, in the table and in the JSON, so a what-if is never mistaken for a scan of this machine."
+msgstr ""
+"Bir profili gösterir; --as-host ile de yerine geçtiği makineyi.\n"
+"\n"
+"Profilden kurulan bir makine hem tabloda hem JSON'da benzetim olarak imlenir; böylece bir varsayım hiçbir zaman bu makinenin taraması sanılmaz."
+
+msgid "Show the host this profile substitutes, as `llamafit system` would."
+msgstr "Bu profilin yerine geçtiği makineyi, `llamafit system` komutunun göstereceği gibi gösterir."
+
+msgid "Check hardware profile files against the schema, printing one line per problem."
+msgstr "Donanım profili dosyalarını şemaya göre denetler ve her sorun için bir satır yazdırır."
+
+msgid "Print the directory your own hardware profiles go in."
+msgstr "Kendi donanım profillerinizin gittiği dizini yazdırır."
+
+msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr "Henüz yok; oluşturun ve içine bir %(suffix)s dosyası koyun."
+
+msgid "Install what it takes to run a model: llama.cpp itself, and the weights."
+msgstr "Bir modeli çalıştırmak için gerekenleri kurar: llama.cpp'nin kendisini ve ağırlıkları."
+
+msgid "Fetch this quantisation instead of the first the catalog publishes."
+msgstr "Kataloğun yayımladığı ilki yerine bu nicemlemeyi indirir."
+
+msgid "Put the files here instead of under the configured downloads directory."
+msgstr "Dosyaları, ayarlanmış indirme dizini yerine buraya koyar."
+
+msgid "Use at most this much bandwidth, for example 5M. Shared across every worker, so the figure is the figure whatever --workers says."
+msgstr "En çok bu kadar bant genişliği kullanır, örneğin 5M. Tüm işçiler arasında paylaşılır; bu yüzden --workers ne derse desin değer aynıdır."
+
+msgid "How many requests to keep in flight. More is not always faster, and a home connection is shared with whoever else is using it."
+msgstr "Aynı anda kaç isteğin yolda tutulacağı. Daha çoğu her zaman daha hızlı değildir ve ev bağlantısı onu kullanan herkesle paylaşılır."
+
+msgid "Do not ask before starting."
+msgstr "Başlamadan önce sormaz."
+
+msgid "Show what would be fetched and stop before fetching it."
+msgstr "Neyin indirileceğini gösterir ve indirmeden önce durur."
+
+msgid "Fetch only the weights, not the vision projector or the draft model."
+msgstr "Yalnızca ağırlıkları indirir; görü yansıtıcısını ya da taslak modeli değil."
+
+msgid "Re-read files that are already here and check them against the catalog."
+msgstr "Zaten burada olan dosyaları yeniden okur ve kataloğa göre denetler."
+
+msgid "Fetch files the catalog holds no checksum for. Nothing will be able to tell you whether they arrived intact."
+msgstr "Kataloğun sağlama toplamı bulundurmadığı dosyaları indirir. Sağlam geldiklerini hiçbir şey size söyleyemeyecek."
+
+msgid "Show at most this many entries."
+msgstr "En çok bu kadar kayıt gösterir."
+
+msgid "Download a model's weights, resuming anything an earlier run left and checking every file against the catalog's checksum."
+msgstr "Bir modelin ağırlıklarını indirir; daha önceki bir çalıştırmanın bıraktığını sürdürür ve her dosyayı kataloğun sağlama toplamına göre denetler."
+
+msgid "Start the download?"
+msgstr "İndirme başlasın mı?"
+
+msgid "Show what has been downloaded, newest first."
+msgstr "Neyin indirildiğini, en yenisi başta olacak şekilde gösterir."
+
+msgid "Nothing has been downloaded yet."
+msgstr "Henüz hiçbir şey indirilmedi."
+
+msgid "Install this backend instead of the one chosen for your GPU: cuda, vulkan, hip, sycl, metal or cpu."
+msgstr "GPU'nuz için seçilen yerine bu arka ucu kurar: cuda, vulkan, hip, sycl, metal ya da cpu."
+
+msgid "Install here instead of ~/.llamafit/llama.cpp."
+msgstr "~/.llamafit/llama.cpp yerine buraya kurar."
+
+msgid "Install this release tag, for example b6100, not the latest."
+msgstr "En sonuncusunu değil, bu yayın etiketini kurar, örneğin b6100."
+
+msgid "invalid --backend %(value)s"
+msgstr "geçersiz --backend değeri: %(value)s"
+
+msgid "Valid backends: %(values)s"
+msgstr "Geçerli arka uçlar: %(values)s"
+
+msgid "release %(tag)s publishes no %(backend)s build for %(os)s %(arch)s."
+msgstr "%(tag)s yayını, %(os)s %(arch)s için %(backend)s derlemesi yayımlamıyor."
+
+msgid "Leave --backend out and LlamaFit will choose a published one."
+msgstr "--backend seçeneğini bırakın, LlamaFit yayımlanmış olanlardan birini seçsin."
+
+msgid "release %(tag)s publishes nothing for %(os)s %(arch)s."
+msgstr "%(tag)s yayını, %(os)s %(arch)s için hiçbir şey yayımlamıyor."
+
+msgid "Build llama.cpp from source; see the project's own instructions."
+msgstr "llama.cpp'yi kaynaktan derleyin; projenin kendi yönergelerine bakın."
+
+msgid "Downloading"
+msgstr "İndiriliyor"
+
+msgid "Change your PATH?"
+msgstr "PATH değiştirilsin mi?"
+
+msgid "PATH left alone."
+msgstr "PATH'e dokunulmadı."
+
+msgid "PATH changed. Open a new terminal for it to take effect."
+msgstr "PATH değişti. Etkili olması için yeni bir uçbirim açın."
+
+msgid ""
+"Download a published llama.cpp build and install it into ~/.llamafit/llama.cpp.\n"
+"\n"
+"The plan is printed before anything is written. The archive's checksum is verified before it is unpacked, an interrupted download continues where it stopped, and a directory LlamaFit did not create is never overwritten."
+msgstr ""
+"Yayımlanmış bir llama.cpp derlemesini indirir ve ~/.llamafit/llama.cpp içine kurar.\n"
+"\n"
+"Plan, hiçbir şey yazılmadan önce yazdırılır. Arşivin sağlama toplamı açılmadan önce doğrulanır, yarıda kalan bir indirme durduğu yerden sürer ve LlamaFit'in oluşturmadığı bir dizinin üzerine hiçbir zaman yazılmaz."
+
+msgid "Offer to add the bin directory to your PATH, showing the undo first."
+msgstr "bin dizinini PATH'inize eklemeyi önerir ve önce geri almanın yolunu gösterir."
+
+msgid "Install over a directory LlamaFit did not create. Ask yourself twice."
+msgstr "LlamaFit'in oluşturmadığı bir dizinin üzerine kurar. İki kez düşünün."
+
+msgid "Install an archive that publishes no checksum. Nothing can be checked."
+msgstr "Sağlama toplamı yayımlanmamış bir arşivi kurar. Hiçbir şey denetlenemez."
+
+msgid "Print the plan and write nothing."
+msgstr "Planı yazdırır ve hiçbir şey yazmaz."
+
+msgid "Do not ask; assume yes."
+msgstr "Sormaz; evet varsayar."
+
+msgid "Install this?"
+msgstr "Bu kurulsun mu?"
+
+msgid "Nothing was written."
+msgstr "Hiçbir şey yazılmadı."
+
+msgid "Plan this quantisation instead of the one that scores best on this machine."
+msgstr "Bu makinede en iyi puanı alan yerine bu nicemlemeyi planlar."
+
+msgid "Size for this many tokens. When it does not fit, the plan sizes down and shows what the context you asked for would have cost."
+msgstr "Bu kadar token için boyutlandırır. Sığmadığında plan aşağı boyutlandırır ve istediğiniz bağlamın neye mal olacağını gösterir."
+
+msgid "Set the micro-batch by hand. The whole budget is rebuilt around it, since it moves the compute buffer and with it the verdict."
+msgstr "Mikro yığını elle ayarlar. Hesap tamponunu ve onunla birlikte kararı kaydırdığı için bütçenin tamamı çevresinde yeniden kurulur."
+
+msgid "A generation speed to answer against: whether this reaches it, and what context would."
+msgstr "Karşısında yanıt verilecek bir üretim hızı: bu ona ulaşıyor mu ve hangi bağlam ulaşırdı."
+
+msgid "%(model)s publishes no quantisations"
+msgstr "%(model)s hiçbir nicemleme yayımlamıyor"
+
+msgid "Run `llamafit catalog refresh --model %(model)s`."
+msgstr "`llamafit catalog refresh --model %(model)s` çalıştırın."
+
+msgid ""
+"Place one model on this machine and print the command line that runs it.\n"
+"\n"
+"Shows the memory budget component by component, the context ladder a launch script chooses from, where a token's time goes, and any run the catalog records for comparison."
+msgstr ""
+"Bu makineye bir model yerleştirir ve onu çalıştıran komut satırını yazdırır.\n"
+"\n"
+"Bellek bütçesini bileşen bileşen, bir başlatma betiğinin seçtiği bağlam merdivenini, bir tokenin süresinin nereye gittiğini ve kataloğun karşılaştırma için kaydettiği çalıştırmaları gösterir."
+
+msgid "Leave the vision projector out, freeing its memory for context."
+msgstr "Görü yansıtıcısını dışarıda bırakır ve belleğini bağlama açar."
+
+msgid "Write the files here instead of in LlamaFit's own presets directory."
+msgstr "Dosyaları LlamaFit'in kendi hazır ayar dizini yerine buraya yazar."
+
+msgid "Bind this port instead of llama.cpp's default 8080."
+msgstr "llama.cpp'nin öntanımlı 8080 portu yerine bu portu tutar."
+
+msgid "Size for this many tokens. It becomes the top of the ladder the script chooses from; the script never goes above it."
+msgstr "Bu kadar token için boyutlandırır. Betiğin seçtiği merdivenin en üstü olur; betik bunun üzerine hiç çıkmaz."
+
+msgid "%(model)s does not fit this machine in any configuration"
+msgstr "%(model)s bu makineye hiçbir yapılandırmada sığmıyor"
+
+msgid "Run `llamafit plan %(model)s` to see what it would need."
+msgstr "Neye gerek duyacağını görmek için `llamafit plan %(model)s` çalıştırın."
+
+msgid ""
+"Write launch scripts for one model: a script that picks its context from free card memory at start time, a router section, and a README.\n"
+"\n"
+"A file you have edited is never overwritten without --force."
+msgstr ""
+"Bir model için başlatma betikleri yazar: başlangıçta bağlamını kartın boş belleğinden seçen bir betik, bir yönlendirici bölümü ve bir README.\n"
+"\n"
+"Düzenlediğiniz bir dosyanın üzerine --force olmadan hiçbir zaman yazılmaz."
+
+msgid "Overwrite files you have edited. It says which ones it discarded."
+msgstr "Düzenlediğiniz dosyaların üzerine yazar. Hangilerini attığını söyler."
+
+msgid "Run a model's preset, wait for the server to answer, and print its endpoints. --stop stops the server LlamaFit started."
+msgstr "Bir modelin hazır ayarını çalıştırır, sunucunun yanıt vermesini bekler ve uç noktalarını yazdırır. --stop, LlamaFit'in başlattığı sunucuyu durdurur."
+
+msgid "Stop the server LlamaFit started for this model."
+msgstr "LlamaFit'in bu model için başlattığı sunucuyu durdurur."
+
+msgid "Seconds to wait for /health before reporting that it has not answered."
+msgstr "Yanıt vermediğini bildirmeden önce /health için kaç saniye beklenecek."
+
+msgid "the preset could not be written"
+msgstr "hazır ayar yazılamadı"
+
+msgid "Wrote a preset first: %(path)s"
+msgstr "Önce bir hazır ayar yazıldı: %(path)s"
+
+msgid "Nothing to stop: LlamaFit has no record of starting %(model)s."
+msgstr "Durdurulacak bir şey yok: LlamaFit'te %(model)s modelini başlattığına dair bir kayıt yok."
+
+msgid "Stopped %(model)s, which was serving on %(url)s."
+msgstr "%(url)s adresinde hizmet veren %(model)s durduruldu."
+
+msgid "Preset for %(name)s (%(quant)s) in %(dir)s"
+msgstr "%(dir)s içinde %(name)s (%(quant)s) için hazır ayar"
+
+msgid "The server will answer on %(url)s."
+msgstr "Sunucu %(url)s adresinde yanıt verecek."
+
+msgid "Your edits were kept. Nothing above was written to those files; run the command again with --force to replace them."
+msgstr "Düzenlemeleriniz korundu. Yukarıdakilerin hiçbiri o dosyalara yazılmadı; onları değiştirmek için komutu --force ile yeniden çalıştırın."
+
+msgid "At start time the script reads how much card memory is free, keeps %(reserve)s MiB back, and takes the largest context that still fits."
+msgstr "Başlangıçta betik kart belleğinin ne kadarının boş olduğunu okur, %(reserve)s MiB ayırır ve hâlâ sığan en büyük bağlamı alır."
+
+msgid "This machine has nothing the script can ask for free card memory, so it will start at %(context)s tokens; the script's header says why."
+msgstr "Bu makinede betiğin kartın boş belleğini sorabileceği bir şey yok; bu yüzden %(context)s token ile başlayacak, betiğin başlığı nedenini söylüyor."
+
+msgid "Files"
+msgstr "Dosyalar"
+
+msgctxt "column heading"
+msgid "File"
+msgstr "Dosya"
+
+msgctxt "column heading"
+msgid "What happened"
+msgstr "Ne oldu"
+
+msgid "Context tiers the script may choose"
+msgstr "Betiğin seçebileceği bağlam basamakları"
+
+msgctxt "column heading"
+msgid "Context"
+msgstr "Bağlam"
+
+msgctxt "column heading"
+msgid "Card needs"
+msgstr "Kart gereği"
+
+msgctxt "column heading"
+msgid "Free card memory to reach it"
+msgstr "Gereken boş kart belleği"
+
+msgid "%(value)s MiB"
+msgstr "%(value)s MiB"
+
+msgid "written"
+msgstr "yazıldı"
+
+msgid "brought up to date"
+msgstr "güncellendi"
+
+msgid "already up to date"
+msgstr "zaten güncel"
+
+msgid "kept: you edited it"
+msgstr "korundu: siz düzenlediniz"
+
+msgid "overwritten: your edits are gone"
+msgstr "üzerine yazıldı: düzenlemeleriniz gitti"
+
+msgid "The preset could not be started: %(error)s"
+msgstr "Hazır ayar başlatılamadı: %(error)s"
+
+msgid "Started, but %(url)s has not answered yet. A large model can spend minutes reading its weights; try the health endpoint again in a moment, or run `llamafit launch %(model)s --stop`."
+msgstr "Başladı, ama %(url)s henüz yanıt vermedi. Büyük bir model ağırlıklarını okumak için dakikalar harcayabilir; birazdan health uç noktasını yeniden deneyin ya da `llamafit launch %(model)s --stop` çalıştırın."
+
+msgid "%(model)s was already serving on %(url)s."
+msgstr "%(model)s zaten %(url)s adresinde hizmet veriyordu."
+
+msgid "%(model)s is serving on %(url)s."
+msgstr "%(model)s %(url)s adresinde hizmet veriyor."
+
+msgid "Stop it with `llamafit launch %(model)s --stop`."
+msgstr "`llamafit launch %(model)s --stop` ile durdurun."
+
+msgid "Endpoints"
+msgstr "Uç noktalar"
+
+msgctxt "column heading"
+msgid "What"
+msgstr "Ne"
+
+msgctxt "column heading"
+msgid "Where"
+msgstr "Nerede"
+
+msgid "Web interface"
+msgstr "Web arayüzü"
+
+msgid "Chat completions"
+msgstr "Chat completions"
+
+msgid "Models"
+msgstr "Modeller"
+
+msgid "Health"
+msgstr "Health"
+
+msgid "Ask for the model by the alias %(alias)s."
+msgstr "Modeli %(alias)s takma adıyla isteyin."
 
 msgctxt "finding level"
 msgid "OK"
@@ -234,6 +1104,47 @@ msgstr "varsayıldı"
 msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "bilinmiyor"
+
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "bilinmiyor"
+
+msgid "%(gbps)s GB/s (%(source)s, cached)"
+msgstr "%(gbps)s GB/s (%(source)s, önbellekten)"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+msgctxt "simulation override"
+msgid "VRAM"
+msgstr "VRAM"
+
+msgctxt "simulation override"
+msgid "system memory"
+msgstr "sistem belleği"
+
+msgctxt "simulation override"
+msgid "CPU cores"
+msgstr "CPU çekirdekleri"
+
+msgid "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgid_plural "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgstr[0] "bu değerler, %(fields)s geçersiz kılınmış %(profile)s donanım profilinden geliyor; bu makine değiller"
+msgstr[1] "bu değerler, %(fields)s geçersiz kılınmış %(profile)s donanım profilinden geliyor; bu makine değiller"
+
+msgid "these figures come from the hardware profile %(profile)s; they are not this machine"
+msgstr "bu değerler %(profile)s donanım profilinden geliyor; bu makine değiller"
+
+msgid "%(fields)s was overridden for a what-if; these figures are not what was scanned"
+msgid_plural "%(fields)s were overridden for a what-if; these figures are not what was scanned"
+msgstr[0] "bir varsayım için %(fields)s geçersiz kılındı; bu değerler taranan değerler değil"
+msgstr[1] "bir varsayım için %(fields)s geçersiz kılındı; bu değerler taranan değerler değil"
+
+msgid "these figures are not this machine"
+msgstr "bu değerler bu makine değil"
+
+msgid "SIMULATED"
+msgstr "BENZETİM"
 
 msgctxt "model capability"
 msgid "coding"
@@ -278,16 +1189,16 @@ msgstr "%(compute)s TFLOPS fp16"
 
 msgid "%(count)d core"
 msgid_plural "%(count)d cores"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d çekirdek"
+msgstr[1] "%(count)d çekirdek"
 
 msgid "%(count)d thread"
 msgid_plural "%(count)d threads"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d iş parçacığı"
+msgstr[1] "%(count)d iş parçacığı"
 
 msgid "%(cores)s / %(threads)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s"
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -295,10 +1206,10 @@ msgstr[0] "%(count)d performans çekirdeği"
 msgstr[1] "%(count)d performans çekirdeği"
 
 msgid "%(cores)s / %(threads)s, %(performance)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s, %(performance)s"
 
 msgid "%(type)s at %(speed)d MT/s"
-msgstr ""
+msgstr "%(type)s, %(speed)d MT/s"
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -314,23 +1225,23 @@ msgstr[0] "%(count)d kanal"
 msgstr[1] "%(count)d kanal"
 
 msgid "%(kind)s, %(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(channels)s üzerine %(modules)s"
 
 msgid "%(kind)s, %(modules)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s"
 
 msgid "%(kind)s, %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(channels)s"
 
 msgid "%(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(channels)s üzerine %(modules)s"
 
 msgctxt "memory type"
 msgid "type unknown"
 msgstr "tür bilinmiyor"
 
 msgid "%(specs)s (spec), driver %(driver)s"
-msgstr ""
+msgstr "%(specs)s (belirtim), sürücü %(driver)s"
 
 msgid "%(specs)s (spec)"
 msgstr "%(specs)s (belirtim)"
@@ -341,6 +1252,19 @@ msgstr "sürücü %(driver)s"
 msgctxt "GPU specifications"
 msgid "no specs"
 msgstr "belirtim yok"
+
+msgid "%(total)s VRAM, %(free)s free (Vulkan driver)"
+msgstr "%(total)s VRAM, %(free)s boş (Vulkan sürücüsü)"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, %(free)s boş"
+
+msgid "%(total)s VRAM, free unknown"
+msgstr "%(total)s VRAM, boş miktar bilinmiyor"
+
+msgctxt "GPU VRAM"
+msgid "VRAM unknown"
+msgstr "VRAM bilinmiyor"
 
 msgid "Host"
 msgstr "Makine"
@@ -353,20 +1277,6 @@ msgstr "%(os)s %(version)s (%(arch)s)"
 
 msgid "CPU"
 msgstr "CPU"
-
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgctxt "CPU instruction sets"
-msgid "isa unknown"
-msgstr "komut kümesi bilinmiyor"
-
-msgid "%(gbps)s GB/s (%(source)s)"
-msgstr "%(gbps)s GB/s (%(source)s)"
-
-msgctxt "memory bandwidth"
-msgid "unknown"
-msgstr "bilinmiyor"
 
 msgid "Memory"
 msgstr "Bellek"
@@ -381,19 +1291,15 @@ msgctxt "GPU"
 msgid "none detected"
 msgstr "algılanmadı"
 
-msgid "%(total)s VRAM, %(free)s free"
-msgstr "%(total)s VRAM, %(free)s boş"
-
-msgctxt "GPU VRAM"
-msgid "VRAM unknown"
-msgstr "VRAM bilinmiyor"
-
 # Turkish numbers a thing with an ordinal, so the index leads: "2. GPU", not "GPU 2".
 msgid "GPU %(index)d"
 msgstr "%(index)d. GPU"
 
-msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgid "Card memory"
+msgstr "Kart belleği"
+
+msgid "%(gpus)s: nothing here could read how much of the card is free, so every budget on this machine was computed as if there were no card at all. Install the Vulkan tools, or write the size into a hardware profile."
+msgstr "%(gpus)s: buradaki hiçbir şey kartın ne kadarının boş olduğunu okuyamadı; bu yüzden bu makinedeki her bütçe hiç kart yokmuş gibi hesaplandı. Vulkan araçlarını kurun ya da boyutu bir donanım profiline yazın."
 
 msgid "Memory pool"
 msgstr "Bellek havuzu"
@@ -500,21 +1406,14 @@ msgid "Params"
 msgstr "Param."
 
 msgctxt "column heading"
-msgid "Context"
-msgstr "Bağlam"
-
-msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Yetenekler"
 
 msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr ""
+msgstr "%(heading)s, herhangi bir nicemleme cezasından önceki yayın kurulu temelidir; ardındaki kaynaklı kıyaslamalar için `llamafit info <model>` çalıştırın."
 
 msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr ""
-
-msgid "Models"
-msgstr "Modeller"
+msgstr "%(heading)s, uzman karışımı bir modelin toplam/etkin milyarlarıdır; ikisi eşitse tek bir sayıdır."
 
 msgid "Vendor"
 msgstr "Üretici"
@@ -535,10 +1434,10 @@ msgid "Parameters"
 msgstr "Parametreler"
 
 msgid "%(total)s total, %(active)s active"
-msgstr ""
+msgstr "%(total)s toplam, %(active)s etkin"
 
 msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
-msgstr ""
+msgstr "yerel olarak %(tokens)s token, %(method)s ile %(extended)s değerine genişletilmiş"
 
 msgctxt "context extension method"
 msgid "unspecified method"
@@ -584,13 +1483,13 @@ msgstr[0] "%(count)d katman"
 msgstr[1] "%(count)d katman"
 
 msgid "%(arch)s, %(layers)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s, %(experts)s"
 
 msgid "%(arch)s, %(layers)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s"
 
 msgid "%(arch)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(experts)s"
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
@@ -621,19 +1520,1170 @@ msgctxt "bits per weight"
 msgid "unknown"
 msgstr "bilinmiyor"
 
+msgid "On this machine"
+msgstr "Bu makinede"
+
+msgctxt "column heading"
+msgid "Quant"
+msgstr "Nicem."
+
+msgctxt "column heading"
+msgid "Runs"
+msgstr "Mod"
+
+msgctxt "column heading"
+msgid "Card"
+msgstr "Kart"
+
+msgctxt "column heading"
+msgid "RAM"
+msgstr "RAM"
+
+msgctxt "column heading"
+msgid "Tok/s"
+msgstr "Tok/s"
+
+msgctxt "column heading"
+msgid "Ctx"
+msgstr "Bağlam"
+
+msgctxt "column heading"
+msgid "Fit"
+msgstr "Yer"
+
+msgid "%(quant)s: %(reason)s"
+msgstr "%(quant)s: %(reason)s"
+
+msgctxt "tokens per second"
+msgid "unknown"
+msgstr "bilinmiyor"
+
+msgctxt "context length"
+msgid "none"
+msgstr "yok"
+
+msgid "Sized for %(context)s tokens, with every figure from a placement computed for this machine. `llamafit plan MODEL --quant NAME` opens one of these rows into the budget line by line, the context ladder and the command line that runs it."
+msgstr "%(context)s token için boyutlandırıldı; her değer bu makine için hesaplanmış bir yerleştirmeden geliyor. `llamafit plan MODEL --quant NAME` bu satırlardan birini satır satır bütçeye, bağlam merdivenine ve onu çalıştıran komut satırına açar."
+
+msgid "To reach %(context)s tokens, free %(free)s more on the graphics card: that rung needs %(needed)s, which is %(share)s of what is free and over the line where the driver starts paging."
+msgstr "%(context)s tokene ulaşmak için ekran kartında %(free)s daha boşaltın: o basamak %(needed)s istiyor; bu, boş olanın %(share)s kadarı ve sürücünün sayfalamaya başladığı çizginin ötesinde."
+
+msgid "%(context)s tokens is past what this machine holds: that rung needs %(needed)s on the graphics card and there is nothing left to absorb what would not fit, so freeing the card is not the change that reaches it."
+msgstr "%(context)s token bu makinenin tutabileceğinin ötesinde: o basamak ekran kartında %(needed)s istiyor ve sığmayanı soğuracak bir şey kalmıyor; bu yüzden kartı boşaltmak oraya ulaştıran değişiklik değil."
+
+msgid "%(quant)s, the next quantisation down, could not be sized: %(reason)s"
+msgstr "Bir alt nicemleme olan %(quant)s boyutlandırılamadı: %(reason)s"
+
+msgid "%(quant)s, the next quantisation down, does not fit this machine either."
+msgstr "Bir alt nicemleme olan %(quant)s de bu makineye sığmıyor."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens."
+msgstr "Bir alt nicemleme olan %(quant)s de burada planlandı: %(mode)s, %(verdict)s, en çok %(context)s token."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens at %(tps)s tokens per second."
+msgstr "Bir alt nicemleme olan %(quant)s de burada planlandı: %(mode)s, %(verdict)s, saniyede %(tps)s token ile en çok %(context)s token."
+
+msgid "It fits entirely on the graphics card, which this one does not."
+msgstr "O, ekran kartına tümüyle sığıyor; bu sığmıyor."
+
+msgid "It fits better: %(theirs)s rather than %(mine)s."
+msgstr "Daha iyi sığıyor: %(mine)s yerine %(theirs)s."
+
+msgid "It holds %(theirs)s tokens rather than %(mine)s."
+msgstr "%(mine)s yerine %(theirs)s token tutuyor."
+
+msgid "It generates %(theirs)s tokens per second rather than %(mine)s."
+msgstr "Saniyede %(mine)s yerine %(theirs)s token üretiyor."
+
+msgid "It is no better here, so there is nothing to gain by dropping to it."
+msgstr "Burada daha iyi değil, dolayısıyla ona inmekten kazanılacak bir şey yok."
+
+msgid "Every context this model offers already fits here; the machine is not what limits it."
+msgstr "Bu modelin sunduğu her bağlam burada zaten sığıyor; onu sınırlayan makine değil."
+
+msgid "What would change it"
+msgstr "Bunu ne değiştirir"
+
+msgctxt "profile origin"
+msgid "bundled"
+msgstr "paketle gelen"
+
+msgctxt "profile origin"
+msgid "yours"
+msgstr "sizin"
+
+msgid "%(ram)s RAM, no graphics card"
+msgstr "%(ram)s RAM, ekran kartı yok"
+
+msgid "%(ram)s RAM shared with %(gpu)s"
+msgstr "%(gpu)s ile paylaşılan %(ram)s RAM"
+
+msgid "%(ram)s RAM, %(gpu)s with %(vram)s"
+msgstr "%(ram)s RAM, %(vram)s ile %(gpu)s"
+
+msgid "%(cores)d core / %(threads)d thread"
+msgid_plural "%(cores)d cores / %(threads)d threads"
+msgstr[0] "%(cores)d çekirdek / %(threads)d iş parçacığı"
+msgstr[1] "%(cores)d çekirdek / %(threads)d iş parçacığı"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "komut kümesi bilinmiyor"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "%(total)s total, %(available)s available; bandwidth %(bandwidth)s"
+msgstr "%(total)s toplam, %(available)s kullanılabilir; bant genişliği %(bandwidth)s"
+
+msgctxt "GPU specifications"
+msgid "no bandwidth or compute figure"
+msgstr "bant genişliği ya da hesap değeri yok"
+
+msgid "%(specs)s (from the profile)"
+msgstr "%(specs)s (profilden)"
+
+msgid "%(specs)s (from the specification table)"
+msgstr "%(specs)s (belirtim tablosundan)"
+
+msgctxt "GPU VRAM"
+msgid "VRAM from the shared pool"
+msgstr "Ortak havuzdan VRAM"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "Hardware profiles"
+msgstr "Donanım profilleri"
+
+msgid "Machine"
+msgstr "Makine"
+
+msgid "a graphics card whose name contains %(text)s"
+msgstr "adı %(text)s içeren bir ekran kartı"
+
+msgid "a processor whose model contains %(text)s"
+msgstr "modeli %(text)s içeren bir işlemci"
+
+msgid "at least %(ram)s of memory"
+msgstr "en az %(ram)s bellek"
+
+msgctxt "profile match rules"
+msgid "none, so this profile is never chosen for you"
+msgstr "yok, dolayısıyla bu profil sizin için hiçbir zaman seçilmez"
+
+msgid "Description"
+msgstr "Açıklama"
+
+msgid "From"
+msgstr "Kaynak"
+
+msgid "File"
+msgstr "Dosya"
+
+msgid "Matches"
+msgstr "Eşleşme"
+
+msgid "Recorded"
+msgstr "Kaydedildi"
+
+msgid "Provenance"
+msgstr "Köken"
+
+msgid "recorded from %(source)s; this build stores it but does not apply it yet"
+msgstr "%(source)s kaynağından kaydedildi; bu derleme saklıyor ama henüz uygulamıyor"
+
+msgctxt "utilisation"
+msgid "n/a"
+msgstr "yok"
+
+msgctxt "run mode"
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "run mode"
+msgid "experts in RAM"
+msgstr "uzmanlar bellekte"
+
+msgctxt "run mode"
+msgid "split"
+msgstr "bölüşük"
+
+msgctxt "run mode"
+msgid "CPU"
+msgstr "CPU"
+
+msgctxt "run mode"
+msgid "nowhere"
+msgstr "hiçbir yerde"
+
+msgctxt "fit verdict"
+msgid "roomy"
+msgstr "bol"
+
+msgctxt "fit verdict"
+msgid "fits"
+msgstr "sığar"
+
+msgctxt "fit verdict"
+msgid "tight"
+msgstr "sıkışık"
+
+msgctxt "fit verdict"
+msgid "pages"
+msgstr "sayfalar"
+
+msgctxt "fit verdict"
+msgid "no room"
+msgstr "yer yok"
+
+msgid "Roomy: there is room for a longer context or a second model."
+msgstr "Bol: daha uzun bir bağlama ya da ikinci bir modele yer var."
+
+msgid "Fits: the intended configuration runs as planned."
+msgstr "Sığar: amaçlanan yapılandırma planlandığı gibi çalışır."
+
+msgid "Tight: it runs, but a browser or a second process can push it over."
+msgstr "Sıkışık: çalışır, ama bir tarayıcı ya da ikinci bir süreç onu sınırın ötesine itebilir."
+
+msgid "Pages: this needs more of the graphics card than is free. The driver will not refuse it — it moves the overflow to system memory, the server starts, the log looks healthy, and generation runs at a fraction of its speed with nothing saying why."
+msgstr "Sayfalar: bu, ekran kartından boş olandan fazlasını ister. Sürücü bunu geri çevirmez — taşan kısmı sistem belleğine taşır, sunucu başlar, günlük sağlıklı görünür ve üretim hiçbir şey nedenini söylemeden hızının bir kesrinde çalışır."
+
+msgid "No room: more memory than this machine has, with nothing to page to."
+msgstr "Yer yok: bu makinede olandan çok bellek ister ve sayfalanacak bir yer de yok."
+
+msgctxt "confidence"
+msgid "measured"
+msgstr "ölçüldü"
+
+msgctxt "confidence"
+msgid "calibrated"
+msgstr "kalibre edildi"
+
+msgctxt "confidence"
+msgid "estimated"
+msgstr "tahmin edildi"
+
+msgctxt "confidence"
+msgid "no estimate"
+msgstr "tahmin yok"
+
+msgid "Speeds are benchmarks taken on this machine, not predictions."
+msgstr "Hızlar bu makinede alınmış ölçümlerdir, kestirim değil."
+
+msgid "Speeds are section 10's formula corrected by benchmarks taken on this machine."
+msgstr "Hızlar, bölüm 10'un formülünün bu makinede alınmış ölçümlerle düzeltilmiş hâlidir."
+
+msgid "Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement."
+msgstr "Hızlar, bölüm 10'un formülünün öntanımlı sabitleriyle hesaplanmış hâlidir. Bu makinede henüz hiçbir şey ölçülmedi, dolayısıyla buradaki hiçbir değer ölçüm değil."
+
+msgid "No speed could be estimated."
+msgstr "Hiçbir hız tahmin edilemedi."
+
+msgctxt "memory pool"
+msgid "card"
+msgstr "kart"
+
+msgctxt "memory pool"
+msgid "system"
+msgstr "sistem"
+
+msgctxt "memory pool"
+msgid "disk"
+msgstr "disk"
+
+msgctxt "budget component"
+msgid "dense weights"
+msgstr "yoğun ağırlıklar"
+
+msgctxt "budget component"
+msgid "shared experts"
+msgstr "ortak uzmanlar"
+
+msgctxt "budget component"
+msgid "routed experts"
+msgstr "yönlendirilen uzmanlar"
+
+msgctxt "budget component"
+msgid "token embedding"
+msgstr "token gömmesi"
+
+msgctxt "budget component"
+msgid "output head"
+msgstr "çıkış başlığı"
+
+msgctxt "budget component"
+msgid "other weights"
+msgstr "diğer ağırlıklar"
+
+msgctxt "budget component"
+msgid "streamed tables"
+msgstr "akışla okunan tablolar"
+
+msgctxt "budget component"
+msgid "KV cache"
+msgstr "KV önbelleği"
+
+msgctxt "budget component"
+msgid "KV cache, undeclared"
+msgstr "KV önbelleği, bildirilmemiş"
+
+msgctxt "budget component"
+msgid "recurrent state"
+msgstr "yinelemeli durum"
+
+msgctxt "budget component"
+msgid "compute buffer"
+msgstr "hesap tamponu"
+
+msgctxt "budget component"
+msgid "output buffer"
+msgstr "çıkış tamponu"
+
+msgctxt "budget component"
+msgid "vision projector"
+msgstr "görü yansıtıcısı"
+
+msgctxt "budget component"
+msgid "vision compute"
+msgstr "görü hesabı"
+
+msgctxt "budget component"
+msgid "backend overhead"
+msgstr "arka uç ek yükü"
+
+msgctxt "budget component"
+msgid "process overhead"
+msgstr "süreç ek yükü"
+
+msgctxt "budget line source"
+msgid "file"
+msgstr "dosya"
+
+msgctxt "budget line source"
+msgid "formula"
+msgstr "formül"
+
+msgctxt "column heading"
+msgid "Component"
+msgstr "Bileşen"
+
+msgctxt "column heading"
+msgid "From"
+msgstr "Kaynak"
+
+msgid "Card: %(required)s of %(available)s free, %(share)s used."
+msgstr "Kart: %(available)s boşun %(required)s kadarı, %(share)s kullanımda."
+
+msgid "System memory: %(required)s of %(available)s free, %(share)s used."
+msgstr "Sistem belleği: %(available)s boşun %(required)s kadarı, %(share)s kullanımda."
+
+msgid "%(component)s: %(note)s"
+msgstr "%(component)s: %(note)s"
+
+msgid "Context tiers"
+msgstr "Bağlam basamakları"
+
+msgctxt "column heading"
+msgid "On this machine"
+msgstr "Bu makinede"
+
+msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
+msgstr "Bir başlatma betiği gördüğü boş belleği kart sütunuyla karşılaştırır ve sığan en büyük basamağı alır (bkz. docs/cli.md)."
+
+msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
+msgstr "%(context)s token bağlamda saniyede %(gen)s token üretilir ve %(prompt)s token okunur (%(confidence)s)."
+
+msgctxt "column heading"
+msgid "A token's time"
+msgstr "Bir tokenin süresi"
+
+msgctxt "token time"
+msgid "reading the card"
+msgstr "kartı okuma"
+
+msgctxt "token time"
+msgid "reading system memory"
+msgstr "sistem belleğini okuma"
+
+msgctxt "token time"
+msgid "everything else"
+msgstr "geri kalan her şey"
+
+msgctxt "column heading"
+msgid "A prompt token's time"
+msgstr "Bir prompt tokeninin süresi"
+
+msgctxt "prompt token time"
+msgid "doing the arithmetic"
+msgstr "aritmetik"
+
+msgctxt "prompt token time"
+msgid "streaming the experts across the link"
+msgstr "uzmanların bağlantı üzerinden akıtılması"
+
+msgctxt "prompt token time"
+msgid "reading the experts from system memory"
+msgstr "uzmanların sistem belleğinden okunması"
+
+msgctxt "column heading"
+msgid "Seconds"
+msgstr "Saniye"
+
+msgctxt "column heading"
+msgid "Share"
+msgstr "Pay"
+
+msgid "Measured on %(date)s."
+msgstr "%(date)s tarihinde ölçüldü."
+
+msgid "Recorded elsewhere"
+msgstr "Başka yerde kaydedilmiş"
+
+msgctxt "column heading"
+msgid "Run"
+msgstr "Koşu"
+
+msgctxt "column heading"
+msgid "Date"
+msgstr "Tarih"
+
+msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
+msgstr "Bunlar, derleyicinin kendi makinesindeki kendi koşularıdır; bu makinenin ölçümleri değildir, bu yüzden yukarıdakilerin hiçbiri ölçüldü diye etiketlenmez. Onları tahminle karşılaştırın; `llamafit bench` bu makineyi 3. aşamada ölçecek."
+
+msgid "%(profile)s: %(flags)s"
+msgstr "%(profile)s: %(flags)s"
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
+msgstr "Derleyiciden %(baseline)s, bu nicemleme için eksi %(penalty)s, artı %(bonus)s; çünkü %(use_case)s onun için yapıldığı iştir."
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
+msgstr "Derleyiciden %(baseline)s, bu nicemleme için eksi %(penalty)s; %(use_case)s alanını sayıyor ama onun için yapılmamış."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
+msgstr "Bu kullanım alanının istediği %(target)s karşısında saniyede %(gen)s token, eksi %(penalty)s; çünkü promptu %(prompt)s hızında okuyor."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
+msgstr "Bu kullanım alanının istediği %(target)s karşısında saniyede %(gen)s token."
+
+msgid "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool is %(share)s full. The score wants at least %(low)s of the memory taken and no more than %(high)s of any one pool."
+msgstr "Ağırlıkları bu makinenin %(memory)s belleğinin %(weights)s kadarını tutuyor ve en dar havuz %(share)s dolu. Puanlama, belleğin en az %(low)s kadarının tutulmasını ve hiçbir havuzun %(high)s üzerine çıkmamasını ister."
+
+msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
+msgstr "Bu isteğin karşısında puanlandığı %(requested)s tokenin %(fit)s kadarını tutuyor."
+
+msgid "Score %(total)s"
+msgstr "Puan %(total)s"
+
+msgctxt "column heading"
+msgid "Part"
+msgstr "Bölüm"
+
+msgctxt "column heading"
+msgid "Weight"
+msgstr "Ağırlık"
+
+msgctxt "column heading"
+msgid "Adds"
+msgstr "Katkı"
+
+msgctxt "score part"
+msgid "quality"
+msgstr "kalite"
+
+msgctxt "score part"
+msgid "speed"
+msgstr "hız"
+
+msgctxt "score part"
+msgid "fit"
+msgstr "yer"
+
+msgctxt "score part"
+msgid "context"
+msgstr "bağlam"
+
+msgctxt "board sort"
+msgid "score"
+msgstr "puana"
+
+msgctxt "board sort"
+msgid "speed"
+msgstr "hıza"
+
+msgctxt "board sort"
+msgid "quality"
+msgstr "kaliteye"
+
+msgctxt "board sort"
+msgid "context"
+msgstr "bağlama"
+
+msgctxt "board sort"
+msgid "download size"
+msgstr "indirme boyutuna"
+
+msgctxt "board sort"
+msgid "prompt speed"
+msgstr "prompt hızına"
+
+msgctxt "board sort"
+msgid "card memory"
+msgstr "kart belleğine"
+
+msgctxt "board sort"
+msgid "system memory"
+msgstr "sistem belleğine"
+
+msgctxt "board sort"
+msgid "fit"
+msgstr "yere"
+
+msgctxt "board sort"
+msgid "model id"
+msgstr "model kimliğine"
+
+msgctxt "board sort"
+msgid "quantisation"
+msgstr "nicemlemeye"
+
+msgctxt "column heading"
+msgid "#"
+msgstr "#"
+
+msgctxt "column heading"
+msgid "Model"
+msgstr "Model"
+
+msgctxt "column heading"
+msgid "Size"
+msgstr "Boyut"
+
+msgctxt "column heading"
+msgid "Have"
+msgstr "Var"
+
+msgctxt "column heading"
+msgid "Score"
+msgstr "Puan"
+
+msgctxt "column heading"
+msgid "Qual"
+msgstr "Kalite"
+
+msgctxt "column heading"
+msgid "Prompt tok/s"
+msgstr "Prompt tok/s"
+
+msgctxt "column heading"
+msgid "How"
+msgstr "Nasıl"
+
+msgctxt "model file on this machine"
+msgid "yes"
+msgstr "evet"
+
+msgctxt "model file on this machine"
+msgid "no"
+msgstr "hayır"
+
+msgid "no placement of it fits this machine at any context"
+msgstr "hiçbir yerleştirmesi bu makineye hiçbir bağlamda sığmıyor"
+
+msgctxt "exclusion tag"
+msgid "no room"
+msgstr "yer yok"
+
+msgctxt "exclusion tag"
+msgid "no facts"
+msgstr "bilgi yok"
+
+msgctxt "exclusion tag"
+msgid "not ranked"
+msgstr "sıralanmadı"
+
+msgctxt "board cell with no figure"
+msgid "–"
+msgstr "–"
+
+msgid "%(term)s is not a filter; the terms are %(terms)s, and anything else is text to look for."
+msgstr "%(term)s bir süzgeç değil; terimler şunlar: %(terms)s, geri kalan her şey aranacak metindir."
+
+msgid "fit>= takes one of %(values)s"
+msgstr "fit>= şunlardan birini alır: %(values)s"
+
+msgid "runs= takes one of %(values)s"
+msgstr "runs= şunlardan birini alır: %(values)s"
+
+msgid "%(term)s needs a number"
+msgstr "%(term)s bir sayı ister"
+
+msgid "%(term)s needs a size such as 8G, 7.5GiB or 512M"
+msgstr "%(term)s 8G, 7.5GiB ya da 512M gibi bir boyut ister"
+
+msgctxt "board filter"
+msgid "every candidate"
+msgstr "tüm adaylar"
+
+msgctxt "board filter"
+msgid "the ones with room to spare"
+msgstr "yeri bol olanlar"
+
+msgctxt "board filter"
+msgid "the ones that fit"
+msgstr "sığanlar"
+
+msgctxt "board filter"
+msgid "the ones that run"
+msgstr "çalışanlar"
+
+msgid "matching %(text)s"
+msgstr "%(text)s içerenler"
+
+msgid "running as %(mode)s"
+msgstr "%(mode)s olarak çalışanlar"
+
+msgid "at least %(tps)s tokens per second"
+msgstr "saniyede en az %(tps)s token üretenler"
+
+msgid "no more than %(size)s to download"
+msgstr "indirmesi en çok %(size)s olanlar"
+
+msgid "no more than %(size)s on the card"
+msgstr "kartta en çok %(size)s isteyenler"
+
+msgid "no more than %(size)s of system memory"
+msgstr "sistem belleğinden en çok %(size)s isteyenler"
+
+msgid "holding at least %(context)s tokens"
+msgstr "en az %(context)s token tutanlar"
+
+msgid "a quality of at least %(quality)s"
+msgstr "kalitesi en az %(quality)s olanlar"
+
+msgid "%(shown)d of %(total)d shown"
+msgstr "%(total)d kayıttan %(shown)d tanesi gösteriliyor"
+
+msgid "%(sort)s in reverse"
+msgstr "ters sırada %(sort)s"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s already on this machine."
+msgstr "%(counted)s, %(sort)s göre, %(filter)s gösteriliyor; hepsi zaten bu makinede."
+
+msgctxt "board filter"
+msgid "already on this machine"
+msgstr "zaten bu makinede olanlar"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s."
+msgstr "%(counted)s, %(sort)s göre, %(filter)s gösteriliyor."
+
+msgid "Nothing was ranked. Every candidate is listed below with the reason; widen the request or free some memory."
+msgstr "Hiçbir şey sıralanmadı. Her aday nedeniyle birlikte aşağıda listeleniyor; isteği genişletin ya da biraz bellek boşaltın."
+
+msgid "Recommended"
+msgstr "Önerilenler"
+
+msgid "--min-tps 0: nobody is waiting on these tokens, so nothing was excluded for generating more slowly than a person reads."
+msgstr "--min-tps 0: bu tokenleri bekleyen kimse yok, bu yüzden bir insanın okuduğundan yavaş ürettiği için hiçbir şey dışarıda bırakılmadı."
+
+msgid "--min-tps %(tps)s: this board wanted at least that many tokens per second, and anything slower is excluded below rather than ranked here."
+msgstr "--min-tps %(tps)s: bu tablo saniyede en az bu kadar token istedi; daha yavaş olanlar burada sıralanmak yerine aşağıda dışarıda bırakılıyor."
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; --limit sets how many, and the rest are neither worse-behaved nor hidden, only further down."
+msgstr "Koşulları karşılayan %(total)s aday içinden en iyi %(shown)s tanesi gösteriliyor; kaç tane olacağını --limit belirler ve geri kalanlar ne daha kötü ne de gizli, yalnızca daha aşağıda."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every speed above is a CPU-only speed. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s bu makinede ve hiçbir şey ne kadarının boş olduğunu okuyamadı; bu yüzden yukarıdaki her hız yalnızca CPU hızıdır. `llamafit doctor` bunun nasıl düzeltileceğini söyler."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
+msgstr "Hızlar, her satır aynı ölçüde karşılaştırılsın diye %(working)s token bağlam içindir; bağlam sütunu her birinin tuttuğu en büyük değeri verir. %(use_case)s için %(requested)s token karşısında boyutlandırıldı ve puanlandı."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
+msgstr "Hızlar, her satır aynı ölçüde karşılaştırılsın diye %(working)s token bağlam içindir; bağlam sütunu her birinin tuttuğu en büyük değeri verir. %(planned)s token için boyutlandırıldı ve %(use_case)s için %(requested)s karşısında puanlandı."
+
+msgid "Weights: %(weights)s."
+msgstr "Ağırlıklar: %(weights)s."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free, no card."
+msgstr "%(ram_total)s sistem belleğinin %(ram_free)s kadarı boşken, kartsız hesaplandı."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free and %(vram_free)s of %(vram_total)s free on the %(gpu)s."
+msgstr "%(ram_total)s sistem belleğinin %(ram_free)s kadarı ve %(gpu)s üzerindeki %(vram_total)s belleğin %(vram_free)s kadarı boşken hesaplandı."
+
+msgid "Every speed above is derived from %(bandwidth)s of memory bandwidth."
+msgstr "Yukarıdaki her hız %(bandwidth)s bellek bant genişliğinden türetildi."
+
+msgid "That bandwidth was kept from an earlier run on this machine; `llamafit system --refresh-bandwidth` times it again."
+msgstr "O bant genişliği bu makinedeki daha önceki bir çalıştırmadan korundu; `llamafit system --refresh-bandwidth` onu yeniden ölçer."
+
+msgid "generates fewer than the %(floor)s tokens per second this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "bu isteğin istediği saniyede %(floor)s tokenden azını üretiyor; --min-tps değerini düşürün ya da daha küçük bir model veya nicemleme seçin"
+
+msgid "generates fewer than the %(floor)s tokens per second a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "bir insanın okuduğu saniyede %(floor)s tokenden azını üretiyor: bu makinede karşısına oturulacak değil, toplu iş aracıdır; daha küçük bir model ya da nicemleme yetişirdi"
+
+msgid "%(tps)s tok/s"
+msgstr "%(tps)s tok/s"
+
+msgctxt "exclusion tag"
+msgid "too slow"
+msgstr "çok yavaş"
+
+msgctxt "exclusion tag"
+msgid "too big"
+msgstr "çok büyük"
+
+msgid "larger to download than the %(limit)s this request allows"
+msgstr "indirmesi bu isteğin izin verdiği %(limit)s değerinden büyük"
+
+msgctxt "exclusion tag"
+msgid "unknown quant"
+msgstr "bilinmeyen nicem."
+
+msgid "a quantisation whose cost in quality is not known, so it cannot be scored"
+msgstr "kalitedeki bedeli bilinmeyen bir nicemleme, bu yüzden puanlanamıyor"
+
+msgid "needs more memory than this machine has, even at its smallest context"
+msgstr "en küçük bağlamında bile bu makinede olandan çok bellek istiyor"
+
+msgctxt "exclusion tag"
+msgid "unsupported"
+msgstr "desteklenmiyor"
+
+msgid "no run mode supports this model on this machine"
+msgstr "hiçbir çalışma biçimi bu modeli bu makinede desteklemiyor"
+
+msgctxt "exclusion tag"
+msgid "short context"
+msgstr "kısa bağlam"
+
+msgid "holds fewer than the %(minimum)s tokens asked for; lower the minimum context or free memory to see it ranked"
+msgstr "istenen %(minimum)s tokenden azını tutuyor; en küçük bağlamı düşürün ya da sıralanmış görmek için bellek boşaltın"
+
+msgctxt "exclusion tag"
+msgid "no estimate"
+msgstr "tahmin yok"
+
+msgid "no speed estimate, so it cannot be ranked against models that have one"
+msgstr "hız tahmini yok, bu yüzden tahmini olan modellerin karşısında sıralanamıyor"
+
+msgctxt "exclusion tag"
+msgid "no %(capability)s"
+msgstr "%(capability)s yok"
+
+msgid "no %(capability)s capability; drop it from the request, or ask for a use case that does not need it"
+msgstr "%(capability)s yeteneği yok; isteğinizden çıkarın ya da buna gerek duymayan bir kullanım alanı isteyin"
+
+msgid "Not ranked"
+msgstr "Sıralanmadı"
+
+msgid "Not placed"
+msgstr "Yerleştirilemedi"
+
+msgid "%(tag)s (%(count)s):"
+msgstr "%(tag)s (%(count)s):"
+
+msgid "%(model)s %(quant)s: %(reason)s"
+msgstr "%(model)s %(quant)s: %(reason)s"
+
+msgid "%(tag)s (%(count)s): %(sentence)s."
+msgstr "%(tag)s (%(count)s): %(sentence)s."
+
+msgid "%(model)s %(quant)s (%(figure)s)"
+msgstr "%(model)s %(quant)s (%(figure)s)"
+
+msgid "%(name)s %(quant)s (%(tag)s)"
+msgstr "%(name)s %(quant)s (%(tag)s)"
+
+msgid "%(rank)s. %(name)s %(quant)s"
+msgstr "%(rank)s. %(name)s %(quant)s"
+
+msgid "Nothing fits this machine at that threshold. Try --min-fit tight, or drop --perfect."
+msgstr "Bu eşikte bu makineye hiçbir şey sığmıyor. --min-fit tight deneyin ya da --perfect seçeneğini bırakın."
+
+msgid "Fit on the simulated machine"
+msgstr "Benzetilmiş makinede sığma"
+
+msgid "Fit on this machine"
+msgstr "Bu makinede sığma"
+
+msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
+msgstr "%(context)s token için boyutlandırıldı. Bağlam sütunu, gösterilen biçimde her birinin tuttuğu en büyük değeri verir."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every row was sized as if there were no card. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s bu makinede ve hiçbir şey ne kadarının boş olduğunu okuyamadı; bu yüzden her satır hiç kart yokmuş gibi boyutlandırıldı. `llamafit doctor` bunun nasıl düzeltileceğini söyler."
+
+msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
+msgstr "%(context)s tokende %(mode)s, mikro yığın %(ub)s, %(kv)s önbellek, %(threads)s iş parçacığı."
+
+msgid "This reaches the %(target)s tokens per second asked for."
+msgstr "Bu, istenen saniyede %(target)s tokene ulaşıyor."
+
+msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
+msgstr "Burada saniyede %(target)s tokene ulaşmıyor, ama %(context)s tokenlik bir bağlam ulaşırdı: --context %(tokens)s verin."
+
+msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
+msgstr "Bu model ve nicemlemenin bu makinede yapabildiği hiçbir şey saniyede %(target)s tokene ulaşmıyor; denenen en hızlı yapılandırma %(best)s. Buna ulaştıracak değişiklik daha küçük bir model ya da daha küçük bir nicemlemedir."
+
+msgid "%(name)s %(quant)s"
+msgstr "%(name)s %(quant)s"
+
+msgid "Memory budget"
+msgstr "Bellek bütçesi"
+
+msgid "The %(context)s tokens asked for would have cost"
+msgstr "İstenen %(context)s token şu kadara mal olurdu"
+
+msgid "Command line"
+msgstr "Komut satırı"
+
+msgid "Model file: %(path)s."
+msgstr "Model dosyası: %(path)s."
+
+msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
+msgstr "Model dosyası: %(path)s; henüz bu makinede değil, bir indirme onu oraya koyardı. İndirilecek %(size)s."
+
+msgid "%(shown)d of %(total)d candidate shown."
+msgid_plural "%(shown)d of %(total)d candidates shown."
+msgstr[0] "%(total)d adayın %(shown)d tanesi gösteriliyor."
+msgstr[1] "%(total)d adayın %(shown)d tanesi gösteriliyor."
+
+msgid "Release"
+msgstr "Yayın"
+
+msgid "%(tag)s (build %(build)s)"
+msgstr "%(tag)s (derleme %(build)s)"
+
+msgid "Backend"
+msgstr "Arka uç"
+
+msgid "Archive"
+msgstr "Arşiv"
+
+msgid "Also"
+msgstr "Ayrıca"
+
+msgid "Download"
+msgstr "İndirme"
+
+msgid "%(size)s (%(done)s already on disk)"
+msgstr "%(size)s (%(done)s zaten diskte)"
+
+msgid "Checksum"
+msgstr "Sağlama toplamı"
+
+msgid "published, checked before anything is unpacked"
+msgstr "yayımlanmış, hiçbir şey açılmadan önce denetlenir"
+
+msgid "none published"
+msgstr "yayımlanmamış"
+
+msgid "Install into"
+msgstr "Kurulacağı yer"
+
+msgid "Directory"
+msgstr "Dizin"
+
+msgid "Free space"
+msgstr "Boş alan"
+
+msgid "Free space (cache)"
+msgstr "Boş alan (önbellek)"
+
+msgid "%(free)s on %(path)s, %(needed)s needed"
+msgstr "%(path)s üzerinde %(free)s, gereken %(needed)s"
+
+msgid "will be created"
+msgstr "oluşturulacak"
+
+msgid "exists and is empty"
+msgstr "var ve boş"
+
+msgid "holds %(tag)s, installed by LlamaFit; it will be replaced"
+msgstr "%(tag)s içeriyor, LlamaFit kurmuş; değiştirilecek"
+
+msgid "installed by LlamaFit; it will be replaced"
+msgstr "LlamaFit kurmuş; değiştirilecek"
+
+msgid "was not installed by LlamaFit"
+msgstr "LlamaFit kurmamış"
+
+msgid "Installed llama.cpp %(tag)s into %(path)s."
+msgstr "llama.cpp %(tag)s %(path)s içine kuruldu."
+
+msgid "Replaced %(tag)s."
+msgstr "%(tag)s değiştirildi."
+
+msgid "Backends found in it: %(backends)s"
+msgstr "İçinde bulunan arka uçlar: %(backends)s"
+
+msgid "none"
+msgstr "yok"
+
+msgid "Check it with `llamafit doctor`."
+msgstr "`llamafit doctor` ile denetleyin."
+
+msgid "already here"
+msgstr "zaten burada"
+
+msgid "to fetch"
+msgstr "indirilecek"
+
+msgid "About to download"
+msgstr "İndirilmek üzere"
+
+msgid "Role"
+msgstr "Rol"
+
+msgid "Status"
+msgstr "Durum"
+
+msgid "%(name)s %(quant)s from %(repo)s"
+msgstr "%(repo)s deposundan %(name)s %(quant)s"
+
+msgid "%(count)d file, %(total)s in all, %(needed)s still to fetch."
+msgid_plural "%(count)d files, %(total)s in all, %(needed)s still to fetch."
+msgstr[0] "%(count)d dosya, toplam %(total)s, %(needed)s hâlâ indirilecek."
+msgstr[1] "%(count)d dosya, toplam %(total)s, %(needed)s hâlâ indirilecek."
+
+msgid "Into %(path)s, which has %(free)s free; %(after)s would be left."
+msgstr "%(path)s içine; orada %(free)s boş var, geriye %(after)s kalırdı."
+
+msgid "The catalog holds no checksum for %(files)s."
+msgid_plural "The catalog holds no checksums for %(files)s."
+msgstr[0] "Katalogda %(files)s için sağlama toplamı yok."
+msgstr[1] "Katalogda %(files)s için sağlama toplamı yok."
+
+msgid "%(model)s %(quant)s is already here; nothing to do."
+msgstr "%(model)s %(quant)s zaten burada; yapılacak bir şey yok."
+
+msgid "Stopped. What arrived is kept; run `llamafit install model %(model)s` again to carry on from there."
+msgstr "Durdu. Gelenler korunuyor; oradan sürdürmek için `llamafit install model %(model)s` komutunu yeniden çalıştırın."
+
+msgid "%(count)d file, %(size)s, checked against the catalog."
+msgid_plural "%(count)d files, %(size)s, checked against the catalog."
+msgstr[0] "%(count)d dosya, %(size)s, kataloğa göre denetlendi."
+msgstr[1] "%(count)d dosya, %(size)s, kataloğa göre denetlendi."
+
+msgid "In %(path)s. Run `llamafit plan %(model)s` for the command line that runs it."
+msgstr "%(path)s içinde. Onu çalıştıran komut satırı için `llamafit plan %(model)s` çalıştırın."
+
+msgid "Downloads"
+msgstr "İndirmeler"
+
+msgid "When"
+msgstr "Ne zaman"
+
+msgid "Model"
+msgstr "Model"
+
+msgid "Quant"
+msgstr "Nicemleme"
+
+msgid "Outcome"
+msgstr "Sonuç"
+
+msgid "finished"
+msgstr "tamamlandı"
+
+msgid "stopped"
+msgstr "durdu"
+
+msgid "Bind to this address instead of 127.0.0.1. Anything but loopback puts the dashboard on your network, where there is no password and no login; it prints what that exposes before it starts."
+msgstr "127.0.0.1 yerine bu adrese bağlanır. Geri döngü dışındaki her şey panoyu ağınıza açar; orada ne parola ne de oturum açma vardır, başlamadan önce neyi açığa çıkardığını yazdırır."
+
+msgid "Listen on this port."
+msgstr "Bu portu dinler."
+
+msgid ""
+"Open the dashboard in a browser: the board, the machine and the plans.\n"
+"\n"
+"It serves the same numbers `--json` prints, from the same code, on this machine only. Nothing is fetched from the internet to draw the page."
+msgstr ""
+"Panoyu bir tarayıcıda açar: tabloyu, makineyi ve planları.\n"
+"\n"
+"--json çıktısının yazdırdığı değerleri, aynı koddan, yalnızca bu makinede sunar. Sayfayı çizmek için internetten hiçbir şey alınmaz."
+
+msgid "Open the page in your browser."
+msgstr "Sayfayı tarayıcınızda açar."
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores, then open the Simulate panel on the page: it substitutes a machine for as long as you want it, and marks every answer it produces."
+msgstr "--profile, --memory, --ram ve --cpu-cores seçeneklerini bırakın, sonra sayfadaki Benzetim panelini açın: istediğiniz sürece bir makinenin yerine geçer ve ürettiği her yanıtı imler."
+
+msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
+msgstr "LlamaFit %(url)s adresinde. Durdurmak için Ctrl+C tuşlarına basın."
+
 msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
 msgstr "Bu makinede ne olduğunu gösterir: CPU, bellek, GPU'lar, diskler ve llama.cpp."
 
 msgid "Skip the RAM bandwidth measurement."
 msgstr "RAM bant genişliği ölçümünü atlar."
 
+msgid "Measure RAM bandwidth again instead of reading back the figure kept for this machine, and keep the new one."
+msgstr "Bu makine için saklanan değeri geri okumak yerine RAM bant genişliğini yeniden ölçer ve yenisini saklar."
+
+msgid "%(url)s answered a range request with the whole file."
+msgstr "%(url)s aralık isteğine dosyanın tamamıyla yanıt verdi."
+
+msgid "%(url)s is rate-limiting this download (HTTP %(status)d)."
+msgstr "%(url)s bu indirmenin hızını sınırlıyor (HTTP %(status)d)."
+
+msgid "Check your network connection and run the command again to resume."
+msgstr "Ağ bağlantınızı denetleyin ve sürdürmek için komutu yeniden çalıştırın."
+
+msgid "%(file)s needs authorisation (HTTP %(status)d)."
+msgstr "%(file)s yetkilendirme istiyor (HTTP %(status)d)."
+
+msgid "This repository is gated. Accept its terms on Hugging Face and set HF_TOKEN to a token that can read it."
+msgstr "Bu depo kapalıdır. Koşullarını Hugging Face üzerinde kabul edin ve HF_TOKEN değerini onu okuyabilen bir belirtece ayarlayın."
+
+msgid "%(file)s is not at %(url)s any more (HTTP 404)."
+msgstr "%(file)s artık %(url)s adresinde değil (HTTP 404)."
+
+msgid "Run `llamafit catalog refresh` to pick up the repository's current files."
+msgstr "Deponun şimdiki dosyalarını almak için `llamafit catalog refresh` çalıştırın."
+
+msgid "%(url)s returned HTTP %(status)d."
+msgstr "%(url)s HTTP %(status)d döndürdü."
+
+msgid "Confirm the URL points at a downloadable file."
+msgstr "URL'nin indirilebilir bir dosyaya işaret ettiğini doğrulayın."
+
+msgid "%(url)s did not say how big %(file)s is."
+msgstr "%(url)s, %(file)s dosyasının ne kadar büyük olduğunu söylemedi."
+
+msgid "%(file)s is %(actual)s on the server but the catalog says %(expected)s; the repository has been re-uploaded since the catalog was refreshed."
+msgstr "%(file)s sunucuda %(actual)s ama katalog %(expected)s diyor; katalog yenilendiğinden beri depo yeniden yüklenmiş."
+
+msgid "Run `llamafit catalog refresh` and try again."
+msgstr "`llamafit catalog refresh` çalıştırıp yeniden deneyin."
+
+msgid "%(file)s: the server sent %(actual)d bytes of a %(expected)d byte range."
+msgstr "%(file)s: sunucu %(expected)d baytlık bir aralığın %(actual)d baytını gönderdi."
+
+msgid "Run the command again; the parts that did arrive are kept."
+msgstr "Komutu yeniden çalıştırın; gelen parçalar korunuyor."
+
+msgid "Stopped."
+msgstr "Durdu."
+
+msgid "%(file)s: the server asked for fewer connections; using %(count)d."
+msgstr "%(file)s: sunucu daha az bağlantı istedi; %(count)d kullanılıyor."
+
+msgid "%(file)s: this server will not serve byte ranges; fetching it in one stream."
+msgstr "%(file)s: bu sunucu bayt aralığı sunmuyor; tek akışta indiriliyor."
+
+msgid "%(file)s does not match its checksum; fetching it again."
+msgstr "%(file)s sağlama toplamıyla eşleşmiyor; yeniden indiriliyor."
+
+msgid "Check that the download directory is writable."
+msgstr "İndirme dizininin yazılabilir olduğunu denetleyin."
+
+msgid "%(needed)s is needed for this model but %(path)s has only %(free)s free, %(short)s short of what is wanted with %(headroom)s left spare."
+msgstr "Bu model için %(needed)s gerekiyor ama %(path)s üzerinde yalnızca %(free)s boş var; %(headroom)s pay bırakıldığında istenenin %(short)s kadar altında kalıyor."
+
+msgid "Free some space, or choose another directory with --dir, or a smaller quantisation with --quant."
+msgstr "Yer açın, --dir ile başka bir dizin seçin ya da --quant ile daha küçük bir nicemleme seçin."
+
+msgid "could not measure the free space on %(path)s: %(error)s"
+msgstr "%(path)s üzerindeki boş alan ölçülemedi: %(error)s"
+
+msgid "Check that the download directory's volume is available."
+msgstr "İndirme dizininin bulunduğu birimin erişilebilir olduğunu denetleyin."
+
+msgid "%(model)s has no downloadable source in the catalog."
+msgstr "%(model)s için katalogda indirilebilir bir kaynak yok."
+
+msgid "Only Hugging Face sources can be installed; this entry has none."
+msgstr "Yalnızca Hugging Face kaynakları kurulabilir; bu kayıtta hiç yok."
+
+msgid "the catalog has no file list for %(model)s %(quant)s."
+msgstr "katalogda %(model)s %(quant)s için dosya listesi yok."
+
+msgid "Run `llamafit catalog refresh` to fill in the file names."
+msgstr "Dosya adlarının doldurulması için `llamafit catalog refresh` çalıştırın."
+
+msgid "%(model)s publishes no quantisations."
+msgstr "%(model)s hiçbir nicemleme yayımlamıyor."
+
+msgid "%(model)s does not publish a %(quant)s quantisation."
+msgstr "%(model)s, %(quant)s nicemlemesi yayımlamıyor."
+
+msgid "It publishes: %(quants)s"
+msgstr "Şunları yayımlıyor: %(quants)s"
+
+msgid "the catalog does not record how big %(quant)s is."
+msgstr "katalog %(quant)s nicemlemesinin ne kadar büyük olduğunu kaydetmiyor."
+
+msgid "Run `llamafit catalog refresh` to fill in the sizes."
+msgstr "Boyutların doldurulması için `llamafit catalog refresh` çalıştırın."
+
+msgid "the catalog holds no checksum for %(files)s."
+msgid_plural "the catalog holds no checksums for %(files)s."
+msgstr[0] "katalogda %(files)s için sağlama toplamı yok."
+msgstr[1] "katalogda %(files)s için sağlama toplamı yok."
+
+msgid "Run `llamafit catalog refresh` to fetch them, or pass --allow-unverified to download anyway and check the files yourself."
+msgstr "Onları almak için `llamafit catalog refresh` çalıştırın ya da yine de indirip dosyaları kendiniz denetlemek için --allow-unverified verin."
+
+msgid "%(done)s of %(total)s"
+msgstr "%(total)s içinde %(done)s"
+
+msgid "%(rate)s/s"
+msgstr "%(rate)s/s"
+
+msgid "Fetching %(file)s (%(size)s)"
+msgstr "%(file)s alınıyor (%(size)s)"
+
+msgid "Checking %(file)s against its checksum"
+msgstr "%(file)s sağlama toplamına göre denetleniyor"
+
+msgid "Done: %(file)s"
+msgstr "Bitti: %(file)s"
+
+msgid "could not create %(path)s: %(error)s"
+msgstr "%(path)s oluşturulamadı: %(error)s"
+
+msgid "Check that the download directory is writable and has room."
+msgstr "İndirme dizininin yazılabilir olduğunu ve yeterli yer bulunduğunu denetleyin."
+
+msgid "could not move %(source)s into place: %(error)s"
+msgstr "%(source)s yerine taşınamadı: %(error)s"
+
+msgid "could not record progress in %(path)s: %(error)s"
+msgstr "ilerleme %(path)s içine kaydedilemedi: %(error)s"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "%(url)s alınamadı: %(error)s"
+
+msgid "Stopped before the checksum was finished."
+msgstr "Sağlama toplamı bitmeden durduruldu."
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "%(path)s okunamadı: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Dosyanın var olduğunu ve okunabildiğini denetleyin."
+
+msgid "%(file)s is %(actual)d bytes, but the catalog says %(expected)d"
+msgstr "%(file)s %(actual)d bayt, ama katalog %(expected)d diyor"
+
+msgid "The transfer was cut short. Run the command again to fetch it properly."
+msgstr "Aktarım yarıda kesildi. Düzgün alınması için komutu yeniden çalıştırın."
+
+msgid "%(file)s does not match the checksum the catalog holds."
+msgstr "%(file)s, kataloğun tuttuğu sağlama toplamıyla eşleşmiyor."
+
+msgid "Expected %(expected)s but the file hashes to %(actual)s. The bad copy has been deleted; run the command again to fetch it."
+msgstr "%(expected)s bekleniyordu ama dosyanın özeti %(actual)s. Bozuk kopya silindi; almak için komutu yeniden çalıştırın."
+
 msgid "Command: %(command)s"
 msgstr "Komut: %(command)s"
 
 msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
 msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "kesik GGUF başlığı: %(offset)d konumunda %(wanted)d bayt istendi, %(got)d alındı"
+msgstr[1] "kesik GGUF başlığı: %(offset)d konumunda %(wanted)d bayt istendi, %(got)d alındı"
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Dosya hâlâ iniyor olabilir veya URL bir GGUF dosyasına ait olmayabilir."
@@ -656,10 +2706,23 @@ msgstr "4 konumunda desteklenmeyen GGUF sürümü %(version)d"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit şu GGUF sürümlerini destekler: %(versions)s."
 
+msgid "A memory budget built without these tensors would be too small, so none is built. If llama.cpp loads the file, LlamaFit's tensor-size table is missing the type."
+msgstr "Bu tensörler olmadan kurulan bir bellek bütçesi çok küçük kalırdı, bu yüzden hiç kurulmuyor. llama.cpp dosyayı yüklüyorsa, LlamaFit'in tensör boyutu tablosunda o tür eksiktir."
+
+msgid "%(type)d (%(count)d tensor, first %(name)s)"
+msgid_plural "%(type)d (%(count)d tensors, first %(name)s)"
+msgstr[0] "%(type)d (%(count)d tensör, ilki %(name)s)"
+msgstr[1] "%(type)d (%(count)d tensör, ilki %(name)s)"
+
+msgid "cannot size this GGUF file: %(count)d tensor uses a GGML type LlamaFit does not know: %(details)s"
+msgid_plural "cannot size this GGUF file: %(count)d tensors use GGML types LlamaFit does not know: %(details)s"
+msgstr[0] "bu GGUF dosyası boyutlandırılamıyor: %(count)d tensör, LlamaFit'in bilmediği bir GGML türü kullanıyor: %(details)s"
+msgstr[1] "bu GGUF dosyası boyutlandırılamıyor: %(count)d tensör, LlamaFit'in bilmediği GGML türleri kullanıyor: %(details)s"
+
 msgid "%(count)d shard"
 msgid_plural "%(count)d shards"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d parça"
+msgstr[1] "%(count)d parça"
 
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "bu GGUF dosyaları tek bir bölünmüş model değil: '%(key)s' konusunda ayrışıyor ve %(values)s bildiriyorlar"
@@ -675,14 +2738,14 @@ msgstr "Modelin dosyasını ya da bölünmüş bir modelin tüm parçalarını v
 
 msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
 msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "verilen %(total)d GGUF dosyasından %(count)d tanesi '%(key)s' anahtarını taşımıyor, bu yüzden bölünmüş bir modeldeki yeri belirlenemiyor"
+msgstr[1] "verilen %(total)d GGUF dosyasından %(count)d tanesi '%(key)s' anahtarını taşımıyor, bu yüzden bölünmüş bir modeldeki yerleri belirlenemiyor"
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Bölünmemiş tek bir dosyayı kendi başına ya da tek bir bölünmüş modelin tüm parçalarını verin."
 
 msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr ""
+msgstr "eksik parça kümesi: model %(shards)s bildiriyor ve %(arrived)d geldi (%(key)s %(numbers)s)"
 
 msgid "Pass every shard of the split model."
 msgstr "Bölünmüş modelin tüm parçalarını verin."
@@ -700,21 +2763,12 @@ msgid "Pass each shard of the split model exactly once."
 msgstr "Bölünmüş modelin her parçasını tam olarak bir kez verin."
 
 msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
-msgstr ""
+msgstr "eksik parça kümesi: model %(tensors)s bildiriyor ve %(shards)s parçası aralarında %(held)d tutuyor"
 
 msgid "%(count)d tensor"
 msgid_plural "%(count)d tensors"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "could not read %(path)s: %(error)s"
-msgstr "%(path)s okunamadı: %(error)s"
-
-msgid "Check that the file exists and is readable."
-msgstr "Dosyanın var olduğunu ve okunabildiğini denetleyin."
-
-msgid "could not fetch %(url)s: %(error)s"
-msgstr "%(url)s alınamadı: %(error)s"
+msgstr[0] "%(count)d tensör"
+msgstr[1] "%(count)d tensör"
 
 msgid "Check your network connection and that the URL is reachable."
 msgstr "Ağ bağlantınızı ve URL'ye erişilebildiğini denetleyin."
@@ -744,6 +2798,9 @@ msgstr "WMI hiç görüntü denetleyicisi döndürmedi"
 msgid "lspci found no display controllers"
 msgstr "lspci hiç görüntü denetleyicisi bulamadı"
 
+msgid "vulkaninfo reported no discrete device with a memory heap"
+msgstr "vulkaninfo, bellek yığını olan ayrık bir aygıt bildirmedi"
+
 msgid "no populated memory modules"
 msgstr "dolu bellek modülü yok"
 
@@ -752,8 +2809,8 @@ msgstr "SPMemoryDataType yok"
 
 msgid "%(program)s: timed out after %(seconds)s second"
 msgid_plural "%(program)s: timed out after %(seconds)s seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(program)s: %(seconds)s saniye sonra zaman aşımına uğradı"
+msgstr[1] "%(program)s: %(seconds)s saniye sonra zaman aşımına uğradı"
 
 msgid "empty command"
 msgstr "boş komut"
@@ -764,11 +2821,47 @@ msgstr "%(program)s: %(error)s"
 msgid "%(program)s: not found"
 msgstr "%(program)s: bulunamadı"
 
-msgid "no output"
-msgstr "çıktı yok"
-
 msgid "exit code %(code)d: %(detail)s"
 msgstr "çıkış kodu %(code)d: %(detail)s"
+
+msgid "no hardware profile file at %(path)s"
+msgstr "%(path)s konumunda donanım profili dosyası yok"
+
+msgid "Run `llamafit hardware list` to see the profiles LlamaFit has."
+msgstr "LlamaFit'in sahip olduğu profilleri görmek için `llamafit hardware list` çalıştırın."
+
+msgid "%(path)s is not a valid hardware profile: %(details)s"
+msgstr "%(path)s geçerli bir donanım profili değil: %(details)s"
+
+msgid "Run `llamafit hardware validate FILE` for the whole list."
+msgstr "Listenin tamamı için `llamafit hardware validate FILE` çalıştırın."
+
+msgid "no hardware profile named %(name)s"
+msgstr "%(name)s adlı bir donanım profili yok"
+
+msgid "Profiles LlamaFit has: %(names)s"
+msgstr "LlamaFit'in sahip olduğu profiller: %(names)s"
+
+msgid "Run `llamafit hardware path` to see where your own profiles go."
+msgstr "Kendi profillerinizin nereye gideceğini görmek için `llamafit hardware path` çalıştırın."
+
+msgid "this machine has no graphics card, so there is no VRAM to override"
+msgstr "bu makinede ekran kartı yok, dolayısıyla geçersiz kılınacak VRAM de yok"
+
+msgid "Describe the whole machine in a hardware profile and pass --profile."
+msgstr "Makinenin tamamını bir donanım profilinde anlatın ve --profile verin."
+
+msgid "this machine has one memory pool shared with the graphics card"
+msgstr "bu makinede ekran kartıyla paylaşılan tek bir bellek havuzu var"
+
+msgid "Use --ram to resize the pool; --memory would change only half of it."
+msgstr "Havuzu yeniden boyutlandırmak için --ram kullanın; --memory yalnızca yarısını değiştirirdi."
+
+msgid "%(option)s needs a value above zero"
+msgstr "%(option)s sıfırdan büyük bir değer ister"
+
+msgid "no build number in the version output: %(text)s"
+msgstr "sürüm çıktısında derleme numarası yok: %(text)s"
 
 msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
 msgstr "llama.cpp bulunamadı: PATH üzerinde, LLAMA_CPP_PATH içinde ya da alışılmış dizinlerde llama-server yok"
@@ -776,11 +2869,256 @@ msgstr "llama.cpp bulunamadı: PATH üzerinde, LLAMA_CPP_PATH içinde ya da alı
 msgid "no ggml backend libraries found next to llama-server; the build may be static"
 msgstr "llama-server yanında ggml arka uç kitaplıkları bulunamadı; derleme statik olabilir"
 
+msgid "%(path)s is a file, not a directory."
+msgstr "%(path)s bir dosya, dizin değil."
+
+msgid "%(path)s cannot be read: %(error)s"
+msgstr "%(path)s okunamıyor: %(error)s"
+
+msgid "%(path)s has a marker file that cannot be read."
+msgstr "%(path)s konumunda okunamayan bir im dosyası var."
+
+msgid "%(path)s already holds %(count)d file that LlamaFit did not install."
+msgid_plural "%(path)s already holds %(count)d files that LlamaFit did not install."
+msgstr[0] "%(path)s konumunda LlamaFit'in kurmadığı %(count)d dosya zaten var."
+msgstr[1] "%(path)s konumunda LlamaFit'in kurmadığı %(count)d dosya zaten var."
+
+msgid "%(name)s has no published checksum, so it cannot be verified."
+msgstr "%(name)s için yayımlanmış sağlama toplamı yok, bu yüzden doğrulanamıyor."
+
+msgid "Pass --allow-unverified to install it anyway, knowing the archive is unchecked."
+msgstr "Arşivin denetlenmediğini bilerek yine de kurmak için --allow-unverified verin."
+
+msgid "could not download %(url)s: %(error)s"
+msgstr "%(url)s indirilemedi: %(error)s"
+
+msgid "the connection was closed"
+msgstr "bağlantı kapandı"
+
+msgid "Run the command again; it continues from where it stopped."
+msgstr "Komutu yeniden çalıştırın; kaldığı yerden sürer."
+
+msgid "the download of %(url)s stopped early: %(error)s"
+msgstr "%(url)s indirmesi erken durdu: %(error)s"
+
+msgid "%(got)s of %(want)s arrived"
+msgstr "%(want)s içinden %(got)s geldi"
+
+msgid "the disk holding %(path)s is full."
+msgstr "%(path)s konumunu tutan disk dolu."
+
+msgid "Free some space and run the command again; the download resumes."
+msgstr "Yer açın ve komutu yeniden çalıştırın; indirme sürer."
+
+msgid "Check that the directory exists and is writable."
+msgstr "Dizinin var olduğunu ve yazılabilir olduğunu denetleyin."
+
+msgid "%(name)s did not match its published checksum and was discarded."
+msgstr "%(name)s, yayımlanmış sağlama toplamıyla eşleşmedi ve atıldı."
+
+msgid "Nothing was unpacked. Run the command again: the archive arrived damaged, which a second download usually fixes."
+msgstr "Hiçbir şey açılmadı. Komutu yeniden çalıştırın: arşiv bozuk geldi, ikinci bir indirme bunu genellikle düzeltir."
+
+msgid "%(archive)s contains %(name)s, which would be written outside the install directory."
+msgstr "%(archive)s, kurulum dizininin dışına yazılacak olan %(name)s ögesini içeriyor."
+
+msgid "Do not install this archive; report it to the llama.cpp project."
+msgstr "Bu arşivi kurmayın; llama.cpp projesine bildirin."
+
+msgid "%(name)s is not an archive LlamaFit knows how to unpack."
+msgstr "%(name)s, LlamaFit'in açmayı bildiği bir arşiv değil."
+
+msgid "%(name)s could not be unpacked: %(error)s"
+msgstr "%(name)s açılamadı: %(error)s"
+
+msgid "Delete it and run the command again to download it afresh."
+msgstr "Silin ve baştan indirilmesi için komutu yeniden çalıştırın."
+
+msgid "the archive holds no %(name)s."
+msgstr "arşivde %(name)s yok."
+
+msgid "Report this; the release layout has changed."
+msgstr "Bunu bildirin; yayın düzeni değişmiş."
+
+msgid "%(path)s was not installed by LlamaFit."
+msgstr "%(path)s LlamaFit tarafından kurulmamış."
+
+msgid "Pass --force to replace it, or --dir to install somewhere else. LlamaFit never overwrites an installation it did not create."
+msgstr "Değiştirmek için --force, başka bir yere kurmak için --dir verin. LlamaFit kendi oluşturmadığı bir kurulumun üzerine hiçbir zaman yazmaz."
+
+msgid "%(path)s has %(free)s free; this install needs %(needed)s."
+msgstr "%(path)s üzerinde %(free)s boş var; bu kurulum %(needed)s istiyor."
+
+msgid "Free some space, or pass --dir to install on another volume."
+msgstr "Yer açın ya da başka bir birime kurmak için --dir verin."
+
+msgid "the %(backend)s libraries are not in the installed directory."
+msgstr "%(backend)s kitaplıkları kurulum dizininde değil."
+
+msgid "no ggml backend libraries were installed; the build may be a static one."
+msgstr "hiçbir ggml arka uç kitaplığı kurulmadı; derleme statik olabilir."
+
+msgid "Your PATH could not be read, so it will not be changed."
+msgstr "PATH değeriniz okunamadı, bu yüzden değiştirilmeyecek."
+
+msgid "Add %(path)s to your user PATH (HKCU\\Environment)."
+msgstr "%(path)s kullanıcı PATH değerinize eklenecek (HKCU\\Environment)."
+
+msgid "To undo: run `setx PATH \"%(previous)s\"`, or remove the entry in System > About > Advanced system settings > Environment Variables."
+msgstr "Geri almak için: `setx PATH \"%(previous)s\"` çalıştırın ya da Sistem > Hakkında > Gelişmiş sistem ayarları > Ortam Değişkenleri yolundan kaydı kaldırın."
+
+msgid "%(path)s is already on your PATH."
+msgstr "%(path)s zaten PATH değerinizde."
+
+msgid "Nothing to undo."
+msgstr "Geri alınacak bir şey yok."
+
+msgid "Append a PATH line for %(path)s to %(file)s."
+msgstr "%(file)s dosyasına %(path)s için bir PATH satırı eklenecek."
+
+msgid "To undo: delete the two lines marked `%(mark)s` from %(file)s."
+msgstr "Geri almak için: %(file)s dosyasından `%(mark)s` ile imlenmiş iki satırı silin."
+
+msgid "your PATH could not be changed: %(error)s"
+msgstr "PATH değeriniz değiştirilemedi: %(error)s"
+
+msgid "To remove it later, delete %(path)s."
+msgstr "Sonradan kaldırmak için %(path)s ögesini silin."
+
+msgid "the most recent %(count)d llama.cpp releases hold no build."
+msgstr "llama.cpp'nin en son %(count)d yayınında derleme yok."
+
+msgid "Name one with `llamafit install llama.cpp --tag ...`."
+msgstr "`llamafit install llama.cpp --tag ...` ile birini adlandırın."
+
+msgid "could not reach GitHub at %(url)s: %(error)s"
+msgstr "%(url)s adresinde GitHub'a ulaşılamadı: %(error)s"
+
+msgid "GitHub refused the request for %(url)s: the rate limit is exhausted."
+msgstr "GitHub, %(url)s isteğini geri çevirdi: hız sınırı tükendi."
+
+msgid "Wait for the limit to reset, or set GITHUB_TOKEN to a personal access token with no scopes."
+msgstr "Sınırın sıfırlanmasını bekleyin ya da GITHUB_TOKEN değerini kapsamı olmayan kişisel bir erişim belirtecine ayarlayın."
+
+msgid "GitHub has no release at %(url)s."
+msgstr "GitHub'da %(url)s adresinde yayın yok."
+
+msgid "Check the tag with `llamafit install llama.cpp --tag ...`."
+msgstr "Etiketi `llamafit install llama.cpp --tag ...` ile denetleyin."
+
+msgid "GitHub returned %(status)d for %(url)s."
+msgstr "GitHub, %(url)s için %(status)d döndürdü."
+
+msgid "GitHub's answer for %(url)s was not JSON."
+msgstr "GitHub'ın %(url)s için verdiği yanıt JSON değildi."
+
+msgid "GitHub's answer did not describe a release."
+msgstr "GitHub'ın yanıtı bir yayını anlatmıyordu."
+
 msgid "no llama-server answering"
 msgstr "yanıt veren llama-server yok"
 
 msgid "unexpected response: %(error)s"
 msgstr "beklenmeyen yanıt: %(error)s"
+
+msgid "%(model)s holds %(native)s tokens, fewer than the %(minimum)s asked for."
+msgstr "%(model)s %(native)s token tutuyor; bu, istenen %(minimum)s değerinden az."
+
+msgid "No configuration of this model fits this machine."
+msgstr "Bu modelin hiçbir yapılandırması bu makineye sığmıyor."
+
+msgid "Routed experts are held in system memory, and so are the always-on shared experts, which is what -ot ffn_.*_shexp=CPU does; attention and the KV cache stay on the card."
+msgstr "Yönlendirilen uzmanlar sistem belleğinde tutulur; her zaman etkin olan ortak uzmanlar da öyle, ki -ot ffn_.*_shexp=CPU tam bunu yapar; dikkat ve KV önbelleği kartta kalır."
+
+msgid "Routed experts are held in system memory; attention, the KV cache and the shared experts stay on the card."
+msgstr "Yönlendirilen uzmanlar sistem belleğinde tutulur; dikkat, KV önbelleği ve ortak uzmanlar kartta kalır."
+
+msgid "%(layers)s layers are on the card and the rest run on the processor."
+msgstr "%(layers)s katman kartta, geri kalanı işlemcide çalışır."
+
+msgid "Nothing runs on a graphics card: every weight is in system memory."
+msgstr "Hiçbir şey ekran kartında çalışmıyor: her ağırlık sistem belleğinde."
+
+msgid "%(gpus)s is here, but nothing could read how much of it is free, so this plan was made as if it were not. The real machine will be faster than these figures."
+msgstr "%(gpus)s burada, ama hiçbir şey ne kadarının boş olduğunu okuyamadı; bu yüzden bu plan kart yokmuş gibi yapıldı. Gerçek makine bu değerlerden hızlı olacak."
+
+msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
+msgstr "İstenen %(requested)s yerine %(context)s token için boyutlandırıldı."
+
+msgid "The KV cache is quantised to %(type)s to reach this context."
+msgstr "Bu bağlama ulaşmak için KV önbelleği %(type)s türüne nicemlendi."
+
+msgid "Vision is off: the projector did not fit, on the card or in system memory."
+msgstr "Görü kapalı: yansıtıcı ne karta ne de sistem belleğine sığdı."
+
+msgid "The vision projector is in system memory (--no-mmproj-offload), which costs nothing measurable for text and makes images slower."
+msgstr "Görü yansıtıcısı sistem belleğinde (--no-mmproj-offload); bu metin için ölçülebilir bir bedel getirmez, görüntüleri ise yavaşlatır."
+
+msgid "%(threads)s threads, not the %(available)s this processor has: the efficiency cores are left out because generation measures slower with them, and what is left is the threads the performance cores provide."
+msgstr "Bu işlemcideki %(available)s değil, %(threads)s iş parçacığı: verimlilik çekirdekleri dışarıda bırakılıyor, çünkü onlarla üretim daha yavaş ölçülüyor; geriye performans çekirdeklerinin verdiği iş parçacıkları kalıyor."
+
+msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
+msgstr "Sıkışık: ekran kartının %(vram)s kadarı boş ve bu %(needed)s istiyor; başka bir program onu sınırın ötesine itebilir. Bağlam basamağı tablosu, bir başlatma betiğinin bundan nasıl kurtulduğudur."
+
+msgid "no %(capability)s capability, which %(use_case)s needs; ask for a different use case, or add it to the entry when the model really has it"
+msgstr "%(use_case)s için gereken %(capability)s yeteneği yok; başka bir kullanım alanı isteyin ya da model gerçekten bu yeteneğe sahipse kaydına ekleyin"
+
+msgid "no %(capability)s capability; drop it from the request to see this model"
+msgstr "%(capability)s yeteneği yok; bu modeli görmek için onu isteğinizden çıkarın"
+
+msgid "%(size)s to download, over the %(limit)s this request allows"
+msgstr "indirilecek %(size)s, bu isteğin izin verdiği %(limit)s değerinin üzerinde"
+
+msgid "unknown quantisation %(quant)s, so its cost in quality cannot be told"
+msgstr "bilinmeyen nicemleme %(quant)s, bu yüzden kalitedeki bedeli söylenemiyor"
+
+msgid "nowhere to put it: no placement fits this machine at any context"
+msgstr "koyacak yer yok: hiçbir yerleştirme bu makineye hiçbir bağlamda sığmıyor"
+
+msgid "holds %(fit)s tokens at most, under the %(minimum)s asked for; lower the minimum context or free memory to see it ranked"
+msgstr "en çok %(fit)s token tutuyor; bu, istenen %(minimum)s değerinin altında. En küçük bağlamı düşürün ya da sıralanmış görmek için bellek boşaltın"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "saniyede %(tps)s token üretiyor; bu, bu isteğin istediği %(floor)s değerinin altında. --min-tps değerini düşürün ya da daha küçük bir model veya nicemleme seçin"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "saniyede %(tps)s token üretiyor; bu, bir insanın okuduğu %(floor)s değerinin altında: bu makinede karşısına oturulacak değil, toplu iş aracıdır; daha küçük bir model ya da nicemleme yetişirdi"
+
+msgid "unknown use case %(use_case)s"
+msgstr "bilinmeyen kullanım alanı %(use_case)s"
+
+msgid "Known use cases: %(known)s."
+msgstr "Bilinen kullanım alanları: %(known)s."
+
+msgid "unknown score part %(part)s in the weights for %(use_case)s"
+msgstr "%(use_case)s ağırlıklarında bilinmeyen puan bölümü %(part)s"
+
+msgid "The parts are: %(parts)s."
+msgstr "Bölümler şunlar: %(parts)s."
+
+msgid "the weights for %(use_case)s leave out %(part)s"
+msgstr "%(use_case)s ağırlıklarında %(part)s eksik"
+
+msgid "Overriding a use case means giving all four parts: %(parts)s."
+msgstr "Bir kullanım alanını geçersiz kılmak, dört bölümün hepsini vermek demektir: %(parts)s."
+
+msgid "the weight for %(part)s in %(use_case)s is below zero"
+msgstr "%(use_case)s içindeki %(part)s ağırlığı sıfırın altında"
+
+msgid "A weight says how much a part counts; it cannot count less than none."
+msgstr "Ağırlık, bir bölümün ne kadar saydığını söyler; hiçten az sayamaz."
+
+msgid "the weights for %(use_case)s add up to nothing"
+msgstr "%(use_case)s ağırlıklarının toplamı sıfır"
+
+msgid "At least one part has to count for something."
+msgstr "En az bir bölümün bir şey sayması gerekir."
+
+msgid "unknown preference %(prefer)s"
+msgstr "bilinmeyen yeğleme %(prefer)s"
+
+msgid "Preferences: %(known)s."
+msgstr "Yeğlemeler: %(known)s."
 
 msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
 msgstr "NVIDIA sürücüsünü kurun ya da onarın; nvidia-smi onunla birlikte gelir ve PATH üzerinde olmalıdır."
@@ -815,6 +3153,9 @@ msgstr "llama-server var ama bir sürüm bildirmedi; ikili dosya bozuk olabilir.
 msgid "system_profiler failed; GPU information is unavailable."
 msgstr "system_profiler başarısız oldu; GPU bilgisi yok."
 
+msgid "Install the Vulkan tools (vulkan-tools on Linux, the vendor's Vulkan runtime on Windows) so an unsized card's memory can be read from its driver. This probe runs only when no vendor tool sized the card, so it is the last source there is."
+msgstr "Boyutu okunamayan bir kartın belleği sürücüsünden okunabilsin diye Vulkan araçlarını kurun (Linux'ta vulkan-tools, Windows'ta üreticinin Vulkan çalışma zamanı). Bu yoklama yalnızca hiçbir üretici aracı kartı boyutlandıramadığında çalışır, yani var olan son kaynaktır."
+
 msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
 msgstr "GPU'nun bellek boyutunu hiçbir üretici aracı bildirmedi; bu makine için bütçelerin hesaplanabilmesi adına boyutu bir donanım profiline kaydedin."
 
@@ -833,6 +3174,9 @@ msgstr "llama.cpp bulunamadı"
 
 msgid "no llama-server binary was found"
 msgstr "llama-server ikili dosyası bulunamadı"
+
+msgid "Run `llamafit install llama.cpp`, which picks the right build for this machine, checks it against its published checksum, and never touches an installation LlamaFit did not create."
+msgstr "`llamafit install llama.cpp` çalıştırın; bu makine için doğru derlemeyi seçer, onu yayımlanmış sağlama toplamına göre denetler ve LlamaFit'in oluşturmadığı bir kuruluma hiç dokunmaz."
 
 msgid "Memory size unknown"
 msgstr "Bellek boyutu bilinmiyor"
@@ -858,6 +3202,15 @@ msgstr "%(gpu)s: VRAM boyutu bilinmiyor"
 
 msgid "the vendor tool that reports memory was not available"
 msgstr "belleği bildiren üretici aracı yoktu"
+
+msgid "%(gpus)s: planned around, not planned on"
+msgstr "%(gpus)s: üzerine değil, çevresine planlandı"
+
+msgid "with no reading of how much of the card is free, every budget and every speed on this machine was computed as if there were no card: they are CPU-only figures, and the real machine will be faster."
+msgstr "kartın ne kadarının boş olduğu okunamadığı için bu makinedeki her bütçe ve her hız hiç kart yokmuş gibi hesaplandı: bunlar yalnızca CPU değerleridir ve gerçek makine daha hızlı olacak."
+
+msgid "Install the Vulkan tools so the size can be read from the driver, or record it in a hardware profile (`llamafit hardware path` says where those go) and pass --profile."
+msgstr "Boyutun sürücüden okunabilmesi için Vulkan araçlarını kurun ya da boyutu bir donanım profiline kaydedip (`llamafit hardware path` bunların nereye gittiğini söyler) --profile verin."
 
 msgid "No GPU detected"
 msgstr "GPU algılanmadı"
@@ -903,6 +3256,389 @@ msgstr "%(size)s boş"
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr "İşe yarar modellerin çoğu 5 ile 120 GB arasında yer ister; yer açın ya da indirme dizinini değiştirin."
 
+msgid "%(model)s has no %(quant)s quantisation"
+msgstr "%(model)s modelinde %(quant)s nicemlemesi yok"
+
+msgid "It publishes: %(names)s"
+msgstr "Şunları yayımlıyor: %(names)s"
+
+msgid "licensed %(spdx)s, which this request does not allow"
+msgstr "%(spdx)s lisanslı; bu istek buna izin vermiyor"
+
+msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
+msgstr "Sistem belleği bant genişliği ölçülmedi; %(arch)s için %(gbps).0f GB/s varsayıldı."
+
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
+msgstr "%(gpu)s bant genişliği bilinmiyor; yerine %(backend)s için %(gbps).0f GB/s yedek değeri geçiyor."
+
+msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
+msgstr "Ekran kartı hesap değeri yok: prompt işleme CPU üzerinde tahmin ediliyor."
+
+msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "Token başına %(gb).2f GB yönlendirilen uzman, sistem belleğinden onun %(raw).0f GB/s hızının %(eff).2f kadarıyla okunuyor; çünkü her token farklı bir avuç uzman seçer ve okuma bir akış değil, küçük blokların saçılmasıdır."
+
+msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
+msgstr "Token başına %(gb).2f GB bitişik ağırlık, sistem belleğinden onun %(raw).0f GB/s hızının %(eff).2f kadarıyla okunuyor."
+
+msgid "No active parameter count was supplied; it was inferred from the weight bytes."
+msgstr "Etkin parametre sayısı verilmedi; ağırlıkların baytlarından çıkarıldı."
+
+msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "Katmanların yüzde %(pct).0f kadarı sistem belleğinde duruyor, bu yüzden prompt aritmetiğinin o payı karta değil, %(tflops).2f TFLOP/s ile CPU'ya yazılıyor. İki hız da tek bir makinedeki küçük ve yoğun bir modelden geliyor."
+
+msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "Uzman kümesinin %(gb).1f GB kadarı, mikro yığın başına bir kez bağlantı üzerinden %(gbps).1f GB/s ile akıtılıyor. Bu oran, uzman kümesi sistem belleğine sığmayan tek modele uyarlandı; bu yüzden okumasının bir kısmı diskten geliyor. Sayfa önbelleğinde kalan bir uzman kümesi yaklaşık üç kat hızlı akar ve öyle bir küme için bu terim o kadar yavaş kalır."
+
+msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+msgstr "Uzman kümesinin %(gb).1f GB kadarı, mikro yığın başına bir kez sistem belleğinden %(gbps).1f GB/s ile okunuyor; çünkü akıtılacak bir kart yok."
+
+msgid "No placement of this model on this machine could run it."
+msgstr "Bu modelin bu makinedeki hiçbir yerleştirmesi onu çalıştıramazdı."
+
+msgid "Generation is a benchmark of this configuration, not a prediction."
+msgstr "Üretim, bu yapılandırmanın ölçümüdür, kestirim değil."
+
+msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "Üretim, %(date)s tarihinde bu makinede alınan %(profile)s ölçümünden gelen %(factor).2f ile düzeltilmiş formüldür."
+
+msgid "Prompt processing is a benchmark of this configuration."
+msgstr "Prompt işleme, bu yapılandırmanın ölçümüdür."
+
+msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
+msgstr "Prompt işleme, bir ölçümden gelen %(factor).2f ile düzeltilmiş formüldür."
+
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr "O ölçümün komut satırı karta kaç katman gittiğini kaydetmiyor, bu yüzden düzeltme onun bu yerleştirmeyle çalıştığını varsayıyor."
+
+msgid "This figure assumes nothing pages: a placement this tight often does, silently."
+msgstr "Bu değer hiçbir şeyin sayfalamadığını varsayar: bu kadar sıkışık bir yerleştirme çoğu zaman sessizce sayfalar."
+
+msgid "Board"
+msgstr "Tablo"
+
+msgid "Needs"
+msgstr "Gerekenler"
+
+msgid "Plan"
+msgstr "Plan"
+
+msgid "Simulate"
+msgstr "Benzetim"
+
+msgid "There is no terminal here to draw the dashboard in, so this is what `llamafit recommend` would print."
+msgstr "Panoyu çizecek bir uçbirim yok, bu yüzden aşağıdaki, `llamafit recommend` komutunun yazdıracağıdır."
+
+msgid "%(name)s %(quant)s, %(vendor)s, licensed %(license)s; it can: %(capabilities)s"
+msgstr "%(name)s %(quant)s, %(vendor)s, %(license)s lisanslı; şunları yapabiliyor: %(capabilities)s"
+
+msgid "Choose a row to see what put it there."
+msgstr "Bir satırı oraya neyin getirdiğini görmek için satırı seçin."
+
+msgid "Nothing has been ranked yet."
+msgstr "Henüz hiçbir şey sıralanmadı."
+
+msgid "Every candidate in the catalog was ranked; none was excluded."
+msgstr "Katalogdaki her aday sıralandı; hiçbiri dışarıda bırakılmadı."
+
+msgid "keys"
+msgstr "tuşlar"
+
+msgid "theme"
+msgstr "tema"
+
+msgid "quit"
+msgstr "çık"
+
+msgid "choose"
+msgstr "seç"
+
+msgid "why"
+msgstr "neden"
+
+msgid "command line"
+msgstr "komut satırı"
+
+msgid "search"
+msgstr "ara"
+
+msgid "fit"
+msgstr "yer"
+
+msgid "sort"
+msgstr "sırala"
+
+msgid "sort back"
+msgstr "geri sırala"
+
+msgid "reverse"
+msgstr "ters çevir"
+
+msgid "on disk"
+msgstr "diskte"
+
+msgid "all quants"
+msgstr "tüm nicemlemeler"
+
+msgid "unranked rows"
+msgstr "sıralanmamış satırlar"
+
+msgid "all columns"
+msgstr "tüm sütunlar"
+
+msgid "explanation"
+msgstr "açıklama"
+
+msgid "not ranked"
+msgstr "sıralanmadı"
+
+msgid "apply"
+msgstr "uygula"
+
+msgid "reset"
+msgstr "sıfırla"
+
+msgid "rescan"
+msgstr "yeniden tara"
+
+msgid "more context"
+msgstr "daha çok bağlam"
+
+msgid "less context"
+msgstr "daha az bağlam"
+
+msgid "vision"
+msgstr "görü"
+
+msgid "copy"
+msgstr "kopyala"
+
+msgid "this machine"
+msgstr "bu makine"
+
+msgctxt "use case"
+msgid "general use"
+msgstr "genel kullanım"
+
+msgctxt "use case"
+msgid "writing code"
+msgstr "kod yazma"
+
+msgctxt "use case"
+msgid "reasoning"
+msgstr "akıl yürütme"
+
+msgctxt "use case"
+msgid "chat"
+msgstr "sohbet"
+
+msgctxt "use case"
+msgid "images and text"
+msgstr "görüntü ve metin"
+
+msgctxt "use case"
+msgid "embeddings"
+msgstr "gömmeler"
+
+msgctxt "preference"
+msgid "balanced"
+msgstr "dengeli"
+
+msgctxt "preference"
+msgid "lean towards quality"
+msgstr "kaliteye eğilimli"
+
+msgctxt "preference"
+msgid "lean towards speed"
+msgstr "hıza eğilimli"
+
+msgid "Move with the up and down arrows. Enter says why a row is where it is; p gives the command line that runs it."
+msgstr "Yukarı ve aşağı oklarla gezinin. Enter bir satırın neden orada olduğunu söyler; p onu çalıştıran komut satırını verir."
+
+msgid "Terms: %(terms)s; anything else is text to look for. Enter with the box empty clears them."
+msgstr "Terimler: %(terms)s; geri kalan her şey aranacak metindir. Kutu boşken Enter onları temizler."
+
+msgid "Part of a model name, then Enter"
+msgstr "Bir model adının parçası, sonra Enter"
+
+msgid "Keys"
+msgstr "Tuşlar"
+
+msgctxt "column heading"
+msgid "Screen"
+msgstr "Ekran"
+
+msgctxt "column heading"
+msgid "Key"
+msgstr "Tuş"
+
+msgctxt "column heading"
+msgid "What it does"
+msgstr "Ne yapar"
+
+msgctxt "dashboard screen"
+msgid "Everywhere"
+msgstr "Her yerde"
+
+msgctxt "dashboard screen"
+msgid "Board"
+msgstr "Tablo"
+
+msgctxt "dashboard screen"
+msgid "Needs"
+msgstr "Gerekenler"
+
+msgctxt "dashboard screen"
+msgid "Host"
+msgstr "Makine"
+
+msgctxt "dashboard screen"
+msgid "Plan"
+msgstr "Plan"
+
+msgctxt "dashboard screen"
+msgid "Simulate"
+msgstr "Benzetim"
+
+msgid "Press Escape to go back."
+msgstr "Geri dönmek için Escape tuşuna basın."
+
+msgid "Catalog files with a problem"
+msgstr "Sorunlu katalog dosyaları"
+
+msgid "This machine has not been scanned yet."
+msgstr "Bu makine henüz taranmadı."
+
+msgid "What do you want a model for?"
+msgstr "Modeli ne için istiyorsunuz?"
+
+msgid "It must be able to:"
+msgstr "Şunu yapabilmeli:"
+
+msgid "At least this much context, in tokens:"
+msgstr "En az bu kadar bağlam, token olarak:"
+
+msgid "Willing to download at most, for example 40G (blank for no limit):"
+msgstr "En çok bu kadarını indirmeye razısınız, örneğin 40G (sınırsız için boş bırakın):"
+
+msgid "Slowest generation worth having, in tokens per second (blank for the speed a person reads at; 0 when nobody is waiting on the tokens):"
+msgstr "Değmesi için en yavaş üretim, saniyede token olarak (bir insanın okuma hızı için boş bırakın; tokenleri bekleyen kimse yoksa 0):"
+
+msgid "Licences you will accept (tick none to accept any):"
+msgstr "Kabul ettiğiniz lisanslar (hiçbirini işaretlemezseniz hepsini kabul edersiniz):"
+
+msgid "Lean the score:"
+msgstr "Puanın eğilimi:"
+
+msgid "Keep the vision projector when a model has one"
+msgstr "Modelde varsa görü yansıtıcısını koru"
+
+msgid "Apply"
+msgstr "Uygula"
+
+msgid "Reset"
+msgstr "Sıfırla"
+
+msgid "The minimum context is a number of tokens, for example %(example)s."
+msgstr "En küçük bağlam bir token sayısıdır, örneğin %(example)s."
+
+msgid "The minimum context cannot be below zero."
+msgstr "En küçük bağlam sıfırın altında olamaz."
+
+msgid "The minimum speed is a number of tokens per second, for example 12."
+msgstr "En düşük hız saniyedeki token sayısıdır, örneğin 12."
+
+msgid "The minimum speed cannot be below zero."
+msgstr "En düşük hız sıfırın altında olamaz."
+
+msgid "Choose a row on the Board and press p, and its plan and command line appear here."
+msgstr "Tabloda bir satır seçip p tuşuna basın; planı ve komut satırı burada görünür."
+
+msgid "%(model)s is no longer in the catalog this board was built from."
+msgstr "%(model)s, bu tablonun kurulduğu katalogda artık yok."
+
+msgid "Planned with the vision projector; press v to leave it out."
+msgstr "Görü yansıtıcısıyla planlandı; dışarıda bırakmak için v tuşuna basın."
+
+msgid "Planned without the vision projector; press v to put it back."
+msgstr "Görü yansıtıcısı olmadan planlandı; geri koymak için v tuşuna basın."
+
+msgid "The ladder has no rung above %(context)s."
+msgstr "Merdivende %(context)s üzerinde basamak yok."
+
+msgid "The ladder has no rung below %(context)s."
+msgstr "Merdivende %(context)s altında basamak yok."
+
+msgid "There is no command line to copy yet."
+msgstr "Henüz kopyalanacak bir komut satırı yok."
+
+msgid "The command line is on the clipboard."
+msgstr "Komut satırı panoda."
+
+msgid "Everything on every screen answers about the machine chosen here. While it is not this one, the band at the top says SIMULATED."
+msgstr "Her ekrandaki her şey burada seçilen makine için yanıt verir. Seçilen makine bu değilken üstteki şerit BENZETİM yazar."
+
+msgid "Answer for this machine instead:"
+msgstr "Bunun yerine şu makine için yanıt ver:"
+
+msgid "Pretend the graphics card has this much memory (blank to leave it):"
+msgstr "Ekran kartında bu kadar bellek varmış gibi davran (olduğu gibi bırakmak için boş):"
+
+msgid "Pretend the machine has this much system memory (blank to leave it):"
+msgstr "Makinede bu kadar sistem belleği varmış gibi davran (olduğu gibi bırakmak için boş):"
+
+msgid "Pretend the processor has this many cores (blank to leave it):"
+msgstr "İşlemcide bu kadar çekirdek varmış gibi davran (olduğu gibi bırakmak için boş):"
+
+msgid "Back to this machine"
+msgstr "Bu makineye dön"
+
+msgctxt "hardware profile"
+msgid "this machine"
+msgstr "bu makine"
+
+msgid "The core count is a whole number, for example 8."
+msgstr "Çekirdek sayısı bir tam sayıdır, örneğin 8."
+
+msgctxt "dashboard header separator"
+msgid " · "
+msgstr " · "
+
+msgctxt "dashboard header"
+msgid "no GPU detected"
+msgstr "GPU algılanmadı"
+
+msgid "%(name)s, VRAM unknown"
+msgstr "%(name)s, VRAM bilinmiyor"
+
+msgid "%(name)s, %(free)s free of %(total)s"
+msgstr "%(name)s, %(total)s içinde %(free)s boş"
+
+msgid "%(available)s free of %(total)s RAM"
+msgstr "%(total)s RAM içinde %(available)s boş"
+
+msgid "%(model)s, %(count)d core"
+msgid_plural "%(model)s, %(count)d cores"
+msgstr[0] "%(model)s, %(count)d çekirdek"
+msgstr[1] "%(model)s, %(count)d çekirdek"
+
+msgctxt "dashboard header"
+msgid "llama.cpp not installed"
+msgstr "llama.cpp kurulu değil"
+
+msgctxt "dashboard header"
+msgid "llama.cpp installed"
+msgstr "llama.cpp kurulu"
+
+msgid "llama.cpp b%(build)d"
+msgstr "llama.cpp b%(build)d"
+
+msgctxt "dashboard header"
+msgid "scanning this machine…"
+msgstr "bu makine taranıyor…"
+
+msgid "These speeds were not all arrived at the same way; the How column says which each row is."
+msgstr "Bu hızların hepsi aynı yoldan elde edilmedi; Nasıl sütunu hangisinin ne olduğunu söyler."
+
 msgctxt "thousands separator"
 msgid ","
 msgstr "."
@@ -922,3 +3658,160 @@ msgstr "B"
 msgctxt "size"
 msgid "unknown"
 msgstr "bilinmiyor"
+
+msgid "profile must be a name, not a path: %(value)s"
+msgstr "profile bir ad olmalı, yol değil: %(value)s"
+
+msgid "Ask GET /api/v1/profiles for the names this machine has."
+msgstr "Bu makinedeki adlar için GET /api/v1/profiles isteyin."
+
+msgid "unknown query parameter: %(names)s"
+msgstr "bilinmeyen sorgu parametresi: %(names)s"
+
+msgid "This endpoint takes: %(names)s"
+msgstr "Bu uç nokta şunları alır: %(names)s"
+
+msgid "invalid prefer %(value)s"
+msgstr "geçersiz prefer değeri: %(value)s"
+
+msgid "invalid sort %(value)s"
+msgstr "geçersiz sort değeri: %(value)s"
+
+msgid "%(host)s:%(port)d is not this machine only. Anyone who can reach this computer on that port can read everything the dashboard shows -- your hardware, your disks, your file paths and the models you have downloaded. There is no password, because LlamaFit is meant for the person sitting at the keyboard. Press Ctrl+C now if you did not mean this."
+msgstr "%(host)s:%(port)d yalnızca bu makine değil. Bu bilgisayara o porttan ulaşabilen herkes panonun gösterdiği her şeyi okuyabilir -- donanımınızı, disklerinizi, dosya yollarınızı ve indirdiğiniz modelleri. Parola yok, çünkü LlamaFit klavyenin başında oturan kişi içindir. Bunu istemediyseniz şimdi Ctrl+C tuşlarına basın."
+
+msgid "the web dashboard needs FastAPI and uvicorn, which are not installed"
+msgstr "web panosu, kurulu olmayan FastAPI ve uvicorn paketlerini ister"
+
+msgid "Install them with: pip install \"llamafit[web]\""
+msgstr "Onları şununla kurun: pip install \"llamafit[web]\""
+
+msgid "%(host)s is not a loopback address, and the dashboard has no authentication"
+msgstr "%(host)s bir geri döngü adresi değil ve panoda kimlik doğrulama yok"
+
+msgid "Leave --host alone to serve this machine only, or pass it to mean it."
+msgstr "Yalnızca bu makineye hizmet vermek için --host seçeneğine dokunmayın ya da gerçekten istiyorsanız verin."
+
+msgctxt "column heading"
+msgid "Why not"
+msgstr "Neden değil"
+
+msgid "Why this row"
+msgstr "Neden bu satır"
+
+msgid "Plan this"
+msgstr "Bunu planla"
+
+msgid "Already on this machine"
+msgstr "Zaten bu makinede"
+
+msgid "Score"
+msgstr "Puan"
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; raise “Rows to show” for the rest, which are neither worse-behaved nor hidden, only further down."
+msgstr "Koşulları karşılayan %(total)s aday içinden en iyi %(shown)s tanesi gösteriliyor; geri kalanlar için “Gösterilecek satır” değerini yükseltin — onlar ne daha kötü ne de gizli, yalnızca daha aşağıda."
+
+msgid "What the model is for"
+msgstr "Modelin ne için olduğu"
+
+msgid "Capabilities it must have"
+msgstr "Sahip olması gereken yetenekler"
+
+msgid "Lean the weights"
+msgstr "Ağırlıkların eğilimi"
+
+msgid "Smallest context worth having"
+msgstr "Değmesi için en küçük bağlam"
+
+msgid "Most you will download"
+msgstr "En çok indireceğiniz"
+
+msgid "Show every quantisation"
+msgstr "Tüm nicemlemeleri göster"
+
+msgid "Keep the vision projector"
+msgstr "Görü yansıtıcısını koru"
+
+msgid "Rows to show"
+msgstr "Gösterilecek satır"
+
+msgid "Scan again"
+msgstr "Yeniden tara"
+
+msgid "llama.cpp"
+msgstr "llama.cpp"
+
+msgid "Quantisation"
+msgstr "Nicemleme"
+
+msgid "Context"
+msgstr "Bağlam"
+
+msgid "Micro-batch"
+msgstr "Mikro yığın"
+
+msgid "Plan it"
+msgstr "Planla"
+
+msgid "Copy"
+msgstr "Kopyala"
+
+msgid "Copied"
+msgstr "Kopyalandı"
+
+msgid "Flags"
+msgstr "Seçenekler"
+
+msgid "Speed"
+msgstr "Hız"
+
+msgid "Choose a row on the board first."
+msgstr "Önce tablodan bir satır seçin."
+
+msgid "Hardware profile"
+msgstr "Donanım profili"
+
+msgid "This machine, as scanned"
+msgstr "Bu makine, tarandığı hâliyle"
+
+msgid "Graphics memory"
+msgstr "Grafik belleği"
+
+msgid "System memory"
+msgstr "Sistem belleği"
+
+msgid "Processor cores"
+msgstr "İşlemci çekirdekleri"
+
+msgid "Score against that machine"
+msgstr "O makineye göre puanla"
+
+msgid "What runs here, how fast, and with which settings."
+msgstr "Burada ne çalışır, ne kadar hızlı ve hangi ayarlarla."
+
+msgid "Working…"
+msgstr "Çalışılıyor…"
+
+msgid "Something went wrong"
+msgstr "Bir şeyler ters gitti"
+
+msgid "Hint"
+msgstr "İpucu"
+
+msgid "Command"
+msgstr "Komut"
+
+msgid "About these figures"
+msgstr "Bu değerler hakkında"
+
+msgid "Close"
+msgstr "Kapat"
+
+msgid "%(shown)s of %(total)s in the catalog"
+msgstr "Katalogdaki %(total)s içinden %(shown)s"
+
+msgid "Source code (AGPL-3.0-or-later)"
+msgstr "Kaynak kodu (AGPL-3.0-or-later)"
+
+msgid "This dashboard is served from your own machine and sends nothing anywhere."
+msgstr "Bu pano kendi makinenizden sunuluyor ve hiçbir yere bir şey göndermiyor."

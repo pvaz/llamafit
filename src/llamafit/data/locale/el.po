@@ -9,6 +9,10 @@
 # "directory" is φάκελος here, never κατάλογος, because κατάλογος is already the model
 # catalog and the two appear in the same messages.
 #
+# Every identifier stays in Latin script — a model id, a flag, a quantisation name, a
+# unit — and the sentences here are written so that one always has a space on each
+# side, so a reader of Greek can see where it begins and ends.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: llamafit 0.1.0a1\n"
@@ -19,6 +23,198 @@ msgstr ""
 "Language: el\n"
 "Language-Team: Greek\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "nothing measured touches this term, so there is no equation it appears in"
+msgstr "τίποτα από όσα μετρήθηκαν δεν αγγίζει αυτόν τον όρο, οπότε δεν υπάρχει εξίσωση στην οποία να εμφανίζεται"
+
+msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
+msgstr "%(measurements)d διακριτές διαμορφώσεις για %(parameters)d ελεύθερες παραμέτρους· λιγότερα σημεία από παραμέτρους δίνουν αριθμούς που μοιάζουν ακριβείς και είναι αυθαίρετοι"
+
+msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
+msgstr "οι %(measurements)d διαμορφώσεις δεν μεταβάλλονται αρκετά ανεξάρτητα ώστε να διαχωριστούν %(parameters)d παράμετροι"
+
+msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "η προσαρμογή τον έθεσε στο %(value).3f, που ο ίδιος ο ορισμός του δεν επιτρέπει· οι μετρήσεις διαφωνούν μεταξύ τους υπό το μοντέλο της ενότητας 10.1"
+
+msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "βγήκε %(value).3f, αλλά μια άλλη παράμετρος της ίδιας προσαρμογής ήταν αδύνατη, και τα ελάχιστα τετράγωνα τις επέλεξαν τη μία εις βάρος της άλλης"
+
+msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
+msgstr "ο εκτιμητής δεν έχει τέτοιον όρο: η ενότητα 10.1 αφαίρεσε την επιβάρυνση ανά επίπεδο, η οποία για ένα μοντέλο 28 επιπέδων ξεπερνούσε ολόκληρο το μετρημένο token"
+
+msgid "generation (llama-bench)"
+msgstr "παραγωγή (llama-bench)"
+
+msgid "prompt (llama-bench)"
+msgstr "prompt (llama-bench)"
+
+msgid "generation, first request"
+msgstr "παραγωγή, πρώτο αίτημα"
+
+msgid "generation, 1K prompt"
+msgstr "παραγωγή, prompt 1K"
+
+msgid "prompt, 1K request"
+msgstr "prompt, αίτημα 1K"
+
+msgid "peak VRAM"
+msgstr "μέγιστη VRAM"
+
+msgid "no graphics card"
+msgstr "χωρίς κάρτα γραφικών"
+
+msgid "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+msgstr "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+
+msgid "%(flag)s was asked for as %(wanted)s but the run reports %(actual)s"
+msgstr "το %(flag)s ζητήθηκε ως %(wanted)s αλλά η εκτέλεση αναφέρει %(actual)s"
+
+msgid "The card was full and generation came in below three fifths of the estimate: the driver was paging to system memory, which does not fail and does not appear in the log."
+msgstr "Η κάρτα ήταν γεμάτη και η παραγωγή βγήκε κάτω από τα τρία πέμπτα της εκτίμησης: το πρόγραμμα οδήγησης σελιδοποιούσε στη μνήμη του συστήματος, κάτι που δεν αποτυγχάνει και δεν εμφανίζεται στην καταγραφή."
+
+msgid "Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page."
+msgstr "Η μέγιστη VRAM έμεινε μακριά από το σύνολο της κάρτας, οπότε δεν υπήρχε τίποτα για να σελιδοποιήσει το πρόγραμμα οδήγησης."
+
+msgid "The card was full, which a good plan is meant to be, and the speed was close enough to the estimate that nothing was paging."
+msgstr "Η κάρτα ήταν γεμάτη, όπως οφείλει να είναι ένα καλό σχέδιο, και η ταχύτητα ήταν αρκετά κοντά στην εκτίμηση ώστε να μη σελιδοποιείται τίποτα."
+
+msgid "No VRAM reading was taken during the run, so this configuration has not been cleared of paging; it has only not been checked."
+msgstr "Δεν λήφθηκε καμία μέτρηση VRAM κατά την εκτέλεση, οπότε αυτή η διαμόρφωση δεν έχει απαλλαγεί από τη σελιδοποίηση· απλώς δεν έχει ελεγχθεί."
+
+msgid "The card's total memory is unknown, so a reading of what was in use says nothing about how close to full it was."
+msgstr "Η συνολική μνήμη της κάρτας είναι άγνωστη, οπότε μια μέτρηση του τι χρησιμοποιούνταν δεν λέει τίποτα για το πόσο κοντά στο γεμάτο ήταν."
+
+msgid "There was no estimate to compare the measured speed against, so the second half of the signature could not be tested."
+msgstr "Δεν υπήρχε εκτίμηση με την οποία να συγκριθεί η μετρημένη ταχύτητα, οπότε το δεύτερο μισό της υπογραφής δεν μπόρεσε να ελεγχθεί."
+
+msgid "llama-bench did not produce JSON"
+msgstr "το llama-bench δεν παρήγαγε JSON"
+
+msgid "llama-bench JSON is not a list of results"
+msgstr "το JSON του llama-bench δεν είναι λίστα αποτελεσμάτων"
+
+msgid "llama-bench JSON held no readable results"
+msgstr "το JSON του llama-bench δεν περιείχε αναγνώσιμα αποτελέσματα"
+
+msgid "no llama-bench result rows found"
+msgstr "δεν βρέθηκαν γραμμές αποτελεσμάτων του llama-bench"
+
+msgid "could not open %(path)s for the server log"
+msgstr "δεν ήταν δυνατό να ανοίξει το %(path)s για την καταγραφή του διακομιστή"
+
+msgid "could not start llama-server"
+msgstr "δεν ήταν δυνατή η εκκίνηση του llama-server"
+
+msgid "no output"
+msgstr "χωρίς έξοδο"
+
+msgid "llama-bench exited with code %(code)d: %(detail)s"
+msgstr "το llama-bench τερμάτισε με κωδικό %(code)d: %(detail)s"
+
+msgid "llama-bench output could not be read: %(error)s"
+msgstr "δεν ήταν δυνατή η ανάγνωση της εξόδου του llama-bench: %(error)s"
+
+msgid "llama-server did not become healthy"
+msgstr "ο llama-server δεν έφτασε σε υγιή κατάσταση"
+
+msgid "Its whole output is in the log file `bench` named; the end says why."
+msgstr "Ολόκληρη η έξοδός του βρίσκεται στο αρχείο καταγραφής που ονόμασε το `bench`· το τέλος λέει γιατί."
+
+msgid "%(path)s was written by a newer LlamaFit (benchmark format %(found)d, this build reads %(known)d)"
+msgstr "το %(path)s γράφτηκε από νεότερο LlamaFit (μορφή μετρήσεων %(found)d, αυτή η δόμηση διαβάζει %(known)d)"
+
+msgid "Upgrade LlamaFit, or move the file aside to start a new one."
+msgstr "Αναβαθμίστε το LlamaFit, ή μετακινήστε το αρχείο στην άκρη για να ξεκινήσει ένα νέο."
+
+msgid "a benchmark cannot be recorded against a simulated machine"
+msgstr "δεν μπορεί να καταγραφεί μέτρηση σε προσομοιωμένο μηχάνημα"
+
+msgid "Run `llamafit bench` on the machine itself, without --profile."
+msgstr "Εκτελέστε `llamafit bench` στο ίδιο το μηχάνημα, χωρίς --profile."
+
+msgid "the run did not use the settings it was given: %(problems)s"
+msgstr "η εκτέλεση δεν χρησιμοποίησε τις ρυθμίσεις που της δόθηκαν: %(problems)s"
+
+msgid "Nothing was stored. A result filed under flags it was not taken with would be believed later by everything that reads it."
+msgstr "Δεν αποθηκεύτηκε τίποτα. Ένα αποτέλεσμα καταχωρημένο με σημαίες με τις οποίες δεν λήφθηκε θα το πίστευε αργότερα καθετί που το διαβάζει."
+
+msgid "a conservative default; nobody has measured this card's backend overhead"
+msgstr "μια συντηρητική προεπιλογή· κανείς δεν έχει μετρήσει την επιβάρυνση του υποσυστήματος αυτής της κάρτας"
+
+msgid "measured on this card with driver %(driver)s and llama.cpp %(build)s; one machine"
+msgstr "μετρημένο σε αυτή την κάρτα με πρόγραμμα οδήγησης %(driver)s και llama.cpp %(build)s· ένα μηχάνημα"
+
+msgid "A hybrid placement has to say how many layers are on the graphics card."
+msgstr "Μια υβριδική τοποθέτηση πρέπει να δηλώνει πόσα επίπεδα βρίσκονται στην κάρτα γραφικών."
+
+msgid "Pass gpu_layers, which is what -ngl would be."
+msgstr "Δώστε το gpu_layers, δηλαδή αυτό που θα ήταν το -ngl."
+
+msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
+msgstr "Το LlamaFit δεν έχει διαβάσει το αρχείο %(quant)s του %(model)s, οπότε δεν μπορεί να υπολογίσει το μέγεθός του."
+
+msgid "Run `llamafit catalog refresh` to read the file's header."
+msgstr "Εκτελέστε `llamafit catalog refresh` για να διαβαστεί η κεφαλίδα του αρχείου."
+
+msgid "the server process before any model buffer"
+msgstr "η διεργασία του διακομιστή πριν από οποιαδήποτε ενδιάμεση μνήμη μοντέλου"
+
+msgid "fitted to one machine's measurements; the least certain line here"
+msgstr "προσαρμοσμένο στις μετρήσεις ενός μηχανήματος· η λιγότερο βέβαιη γραμμή εδώ"
+
+msgid "room for one logit per vocabulary entry per token of the batch"
+msgstr "χώρος για ένα logit ανά λήμμα λεξιλογίου ανά token της παρτίδας"
+
+msgid "LlamaFit cannot size a %(kv_type)s key-value cache."
+msgstr "Το LlamaFit δεν μπορεί να υπολογίσει το μέγεθος μιας κρυφής μνήμης κλειδιού-τιμής τύπου %(kv_type)s."
+
+msgid "Use one of: %(types)s."
+msgstr "Χρησιμοποιήστε ένα από: %(types)s."
+
+msgid "This model's file does not say how large its key-value cache is per token."
+msgstr "Το αρχείο αυτού του μοντέλου δεν λέει πόσο μεγάλη είναι η κρυφή μνήμη κλειδιού-τιμής ανά token."
+
+msgid "Refresh the catalog so the file's header is read again."
+msgstr "Ανανεώστε τον κατάλογο ώστε να ξαναδιαβαστεί η κεφαλίδα του αρχείου."
+
+msgid "the attention-layer count was assumed, not counted"
+msgstr "το πλήθος των επιπέδων προσοχής υποτέθηκε, δεν μετρήθηκε"
+
+msgid "%(arch)s allocates more cache than its header describes; see the line below"
+msgstr "το %(arch)s δεσμεύει περισσότερη κρυφή μνήμη από όση περιγράφει η κεφαλίδα του· δείτε την παρακάτω γραμμή"
+
+msgid "what %(arch)s allocates beyond its header, measured rather than derived"
+msgstr "όσα δεσμεύει το %(arch)s πέρα από την κεφαλίδα του, μετρημένα και όχι παραγόμενα"
+
+msgid "from the architecture's state dimensions; it does not grow with context"
+msgstr "από τις διαστάσεις κατάστασης της αρχιτεκτονικής· δεν μεγαλώνει με το πλαίσιο"
+
+msgid "the projector file itself"
+msgstr "το ίδιο το αρχείο του προβολέα"
+
+msgid "the projector's own compute space, measured at 248 MiB"
+msgstr "ο χώρος υπολογισμού του ίδιου του προβολέα, μετρημένος στα 248 MiB"
+
+msgid "attention projections, feed-forward weights and norms"
+msgstr "προβολές προσοχής, βάρη εμπρόσθιας τροφοδότησης και κανονικοποιήσεις"
+
+msgid "always-on experts, which run for every token"
+msgstr "πάντα ενεργοί ειδικοί, που τρέχουν για κάθε token"
+
+msgid "routed experts, read across the bus once per micro-batch"
+msgstr "δρομολογημένοι ειδικοί, που διαβάζονται από τον δίαυλο μία φορά ανά μικροπαρτίδα"
+
+msgid "this model ties its output projection to its embedding table"
+msgstr "αυτό το μοντέλο δένει την προβολή εξόδου του με τον πίνακα ενσωματώσεών του"
+
+msgid "llama.cpp keeps the embedding table in memory even at full offload"
+msgstr "το llama.cpp κρατά τον πίνακα ενσωματώσεων στη μνήμη ακόμη και σε πλήρη εκφόρτωση"
+
+msgid "streamed from disk as it is needed, not held in memory"
+msgstr "μεταφέρεται σε ροή από τον δίσκο όπως χρειάζεται, δεν κρατείται στη μνήμη"
+
+msgid "held in memory, since streaming from disk was turned off"
+msgstr "κρατείται στη μνήμη, αφού η ροή από τον δίσκο απενεργοποιήθηκε"
 
 msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
 msgstr "Το Hugging Face επέστρεψε %(status)d κατά την παράθεση των αρχείων του %(repo)s."
@@ -66,6 +262,9 @@ msgstr "Εκτελέστε `llamafit catalog refresh` χωρίς --model για 
 msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
 msgstr "Βρείτε, μετρήστε, εγκαταστήστε και επαληθεύστε γλωσσικά μοντέλα ανοικτών βαρών για το llama.cpp στο δικό σας μηχάνημα."
 
+msgid "With no command, llamafit opens the terminal dashboard; in a pipe, or with --json, it prints what `llamafit recommend` would."
+msgstr "Χωρίς εντολή, το llamafit ανοίγει τον πίνακα ελέγχου του τερματικού· σε διοχέτευση, ή με --json, εκτυπώνει ό,τι θα εκτύπωνε το `llamafit recommend`."
+
 msgid "Print machine-readable JSON instead of tables."
 msgstr "Εκτυπώνει JSON αναγνώσιμο από μηχανή αντί για πίνακες."
 
@@ -75,17 +274,322 @@ msgstr "Γράφει λεπτομέρειες στο llamafit.log μέσα στ�
 msgid "Disable colours."
 msgstr "Απενεργοποιεί τα χρώματα."
 
+msgid "Answer for the machine this hardware profile describes instead of this one. Nothing about this machine is probed, and every answer is marked as simulated. `llamafit hardware list` names the profiles you have."
+msgstr "Απαντά για το μηχάνημα που περιγράφει αυτό το προφίλ υλικού αντί για αυτό εδώ. Τίποτα από αυτό το μηχάνημα δεν ανιχνεύεται, και κάθε απάντηση σημειώνεται ως προσομοιωμένη. Το `llamafit hardware list` αναφέρει τα προφίλ που έχετε."
+
+msgid "Pretend the graphics card has this much memory, for example 24G. Everything else stays as scanned, and every answer is marked as simulated."
+msgstr "Προσποιείται ότι η κάρτα γραφικών έχει τόση μνήμη, για παράδειγμα 24G. Όλα τα άλλα μένουν όπως σαρώθηκαν, και κάθε απάντηση σημειώνεται ως προσομοιωμένη."
+
+msgid "Pretend the machine has this much system memory, for example 128GiB. Every answer is marked as simulated."
+msgstr "Προσποιείται ότι το μηχάνημα έχει τόση μνήμη συστήματος, για παράδειγμα 128GiB. Κάθε απάντηση σημειώνεται ως προσομοιωμένη."
+
+msgid "Pretend the processor has this many physical cores. Every answer is marked as simulated."
+msgstr "Προσποιείται ότι ο επεξεργαστής έχει τόσους φυσικούς πυρήνες. Κάθε απάντηση σημειώνεται ως προσομοιωμένη."
+
+msgid "Plan, report and score no context longer than this. It caps the model's own length; it does not describe a machine."
+msgstr "Σχεδιάζει, αναφέρει και βαθμολογεί πλαίσιο όχι μεγαλύτερο από αυτό. Περιορίζει το ίδιο το μήκος του μοντέλου· δεν περιγράφει μηχάνημα."
+
 msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
 msgstr "Μιλά αυτή τη γλώσσα, για παράδειγμα pt_PT. Μια γλώσσα που δεν έχει το LlamaFit επιστρέφει στα αγγλικά, και αναφέρει ποιες γλώσσες έχει."
 
 msgid "Print the version and exit."
 msgstr "Εκτυπώνει την έκδοση και τερματίζει."
 
+msgid "the output's encoding"
+msgstr "η κωδικοποίηση της εξόδου"
+
+msgid "%(count)d character could not be written in %(encoding)s and is shown as ?."
+msgid_plural "%(count)d characters could not be written in %(encoding)s and are shown as ?."
+msgstr[0] "%(count)d χαρακτήρας δεν μπόρεσε να γραφτεί σε %(encoding)s και εμφανίζεται ως ?."
+msgstr[1] "%(count)d χαρακτήρες δεν μπόρεσαν να γραφτούν σε %(encoding)s και εμφανίζονται ως ?."
+
+msgid "Set PYTHONUTF8=1 in the environment and run again: Python then writes UTF-8, which carries every language."
+msgstr "Ορίστε PYTHONUTF8=1 στο περιβάλλον και εκτελέστε ξανά: τότε η Python γράφει UTF-8, που μεταφέρει κάθε γλώσσα."
+
+msgid "%(option)s is an option of llamafit itself, so it goes before the command: `llamafit %(option)s %(rest)s`."
+msgstr "Το %(option)s είναι επιλογή του ίδιου του llamafit, οπότε μπαίνει πριν από την εντολή: `llamafit %(option)s %(rest)s`."
+
 msgid "Unexpected error: %(error)s"
 msgstr "Απροσδόκητο σφάλμα: %(error)s"
 
 msgid "Run again with --verbose for the full traceback."
 msgstr "Εκτελέστε ξανά με --verbose για το πλήρες ίχνος κλήσεων."
+
+msgid "A catalog model id."
+msgstr "Ένα αναγνωριστικό μοντέλου του καταλόγου."
+
+msgid "Benchmark this quantisation instead of the planned one."
+msgstr "Μετρά αυτόν τον κβαντισμό αντί για τον σχεδιασμένο."
+
+msgid "Size for this many tokens."
+msgstr "Υπολογίζει τα μεγέθη για τόσα tokens."
+
+msgid "Set the micro-batch by hand; the budget is rebuilt around it."
+msgstr "Ορίζει τη μικροπαρτίδα με το χέρι· ο προϋπολογισμός ξαναχτίζεται γύρω της."
+
+msgid ""
+"Measure a model on this machine and show the measurement beside the estimate.\n"
+"\n"
+"Runs llama-bench and a real server at the planned flags, stores the result with the conditions it was taken under, and flags a configuration the driver was paging. With --calibrate, fits the estimator's constants to this machine from every stored result and says by name which ones the measurements do not determine."
+msgstr ""
+"Μετρά ένα μοντέλο σε αυτό το μηχάνημα και δείχνει τη μέτρηση δίπλα στην εκτίμηση.\n"
+"\n"
+"Εκτελεί το llama-bench και έναν πραγματικό διακομιστή με τις σχεδιασμένες σημαίες, αποθηκεύει το αποτέλεσμα μαζί με τις συνθήκες υπό τις οποίες λήφθηκε, και επισημαίνει μια διαμόρφωση όπου το πρόγραμμα οδήγησης σελιδοποιούσε. Με --calibrate, προσαρμόζει τις σταθερές του εκτιμητή σε αυτό το μηχάνημα από κάθε αποθηκευμένο αποτέλεσμα και λέει ονομαστικά ποιες από αυτές δεν καθορίζονται από τις μετρήσεις."
+
+msgid "Measure prompt processing at every micro-batch of the ladder, not only the planned one. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all."
+msgstr "Μετρά την επεξεργασία prompt σε κάθε μικροπαρτίδα της κλίμακας, όχι μόνο στη σχεδιασμένη. Η ενότητα 10.2 έχει δύο ελεύθερες παραμέτρους και μία μικροπαρτίδα είναι μία εξίσωση, οπότε χωρίς αυτό το μισό της βαθμονόμησης που αφορά το prompt δεν μπορεί να προσαρμοστεί καθόλου."
+
+msgid "Run llama-bench only. Faster, and it gives up the paging check, the buffer sizes and the tool-call test, all of which need a real server."
+msgstr "Εκτελεί μόνο το llama-bench. Ταχύτερο, και θυσιάζει τον έλεγχο σελιδοποίησης, τα μεγέθη των ενδιάμεσων μνημών και τη δοκιμή κλήσης εργαλείων, που όλα χρειάζονται πραγματικό διακομιστή."
+
+msgid "Print the result without writing it to the database."
+msgstr "Εκτυπώνει το αποτέλεσμα χωρίς να το γράψει στη βάση δεδομένων."
+
+msgid "Print the commands that would run, and run nothing."
+msgstr "Εκτυπώνει τις εντολές που θα εκτελούνταν, και δεν εκτελεί τίποτα."
+
+msgid "Fit the estimator's constants to this machine from every result."
+msgstr "Προσαρμόζει τις σταθερές του εκτιμητή σε αυτό το μηχάνημα από κάθε αποτέλεσμα."
+
+msgid "List what is already stored and stop."
+msgstr "Παραθέτει ό,τι είναι ήδη αποθηκευμένο και σταματά."
+
+msgid "`llamafit bench` needs a model to measure"
+msgstr "το `llamafit bench` χρειάζεται ένα μοντέλο για να μετρήσει"
+
+msgid "Try `llamafit bench <model>`, `--calibrate` on its own, or `--show`."
+msgstr "Δοκιμάστε `llamafit bench <model>`, `--calibrate` μόνο του, ή `--show`."
+
+msgid "llama.cpp was not found, so there is nothing to benchmark with"
+msgstr "το llama.cpp δεν βρέθηκε, οπότε δεν υπάρχει τίποτα με το οποίο να γίνει μέτρηση"
+
+msgid "Run `llamafit doctor` to see where it was looked for."
+msgstr "Εκτελέστε `llamafit doctor` για να δείτε πού αναζητήθηκε."
+
+msgid "%(path)s has llama-server but no llama-bench"
+msgstr "το %(path)s έχει llama-server αλλά όχι llama-bench"
+
+msgid "Some release archives leave it out; a full build has it beside the server."
+msgstr "Ορισμένα αρχεία κυκλοφορίας το παραλείπουν· μια πλήρης δόμηση το έχει δίπλα στον διακομιστή."
+
+msgid "this host is simulated, and a simulated machine cannot be measured"
+msgstr "αυτό το μηχάνημα είναι προσομοιωμένο, και ένα προσομοιωμένο μηχάνημα δεν μπορεί να μετρηθεί"
+
+msgid "Run `llamafit bench` on the machine itself."
+msgstr "Εκτελέστε `llamafit bench` στο ίδιο το μηχάνημα."
+
+msgid "the model file is not on this machine: %(path)s"
+msgstr "το αρχείο του μοντέλου δεν βρίσκεται σε αυτό το μηχάνημα: %(path)s"
+
+msgid "Download it first; `llamafit plan` shows the path the command line uses."
+msgstr "Κατεβάστε το πρώτα· το `llamafit plan` δείχνει τη διαδρομή που χρησιμοποιεί η γραμμή εντολών."
+
+msgid "Would run:"
+msgstr "Θα εκτελούνταν:"
+
+msgid "Nothing has been measured on this machine yet."
+msgstr "Δεν έχει μετρηθεί τίποτα σε αυτό το μηχάνημα ακόμη."
+
+msgid "Stored measurements"
+msgstr "Αποθηκευμένες μετρήσεις"
+
+msgid "model"
+msgstr "μοντέλο"
+
+msgid "kind"
+msgstr "είδος"
+
+msgid "gen tok/s"
+msgstr "gen tok/s"
+
+msgid "prompt tok/s"
+msgstr "prompt tok/s"
+
+msgid "taken"
+msgstr "λήφθηκε"
+
+msgid "flags"
+msgstr "σημαίες"
+
+msgid "Nothing was written to the database, so no estimate will be relabelled."
+msgstr "Δεν γράφτηκε τίποτα στη βάση δεδομένων, οπότε καμία εκτίμηση δεν θα επαναχαρακτηριστεί."
+
+msgid "Estimated against measured"
+msgstr "Εκτιμώμενο έναντι μετρημένου"
+
+msgid "figure"
+msgstr "δείκτης"
+
+msgid "context"
+msgstr "πλαίσιο"
+
+msgid "micro-batch"
+msgstr "μικροπαρτίδα"
+
+msgid "estimated"
+msgstr "εκτιμώμενο"
+
+msgid "measured"
+msgstr "μετρημένο"
+
+msgid "ratio"
+msgstr "λόγος"
+
+msgid "The plan sizes this configuration for %(context)s tokens and estimates %(tps)s generated tokens per second there. Nothing above ran at that context, so that figure is reported and not compared."
+msgstr "Το σχέδιο διαστασιολογεί αυτή τη διαμόρφωση για %(context)s tokens και εκτιμά %(tps)s παραγόμενα tokens ανά δευτερόλεπτο εκεί. Τίποτα από τα παραπάνω δεν έτρεξε σε αυτό το πλαίσιο, οπότε αυτή η τιμή αναφέρεται και δεν συγκρίνεται."
+
+msgid "%(count)d figure is outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgid_plural "%(count)d figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgstr[0] "%(count)d τιμή βρίσκεται εκτός της ζώνης 0,8 έως 1,25 μέσα στην οποία αναμένεται να πέσει ένας μη βαθμονομημένος τύπος."
+msgstr[1] "%(count)d τιμές βρίσκονται εκτός της ζώνης 0,8 έως 1,25 μέσα στην οποία αναμένεται να πέσει ένας μη βαθμονομημένος τύπος."
+
+msgid "This configuration was paging."
+msgstr "Αυτή η διαμόρφωση σελιδοποιούσε."
+
+msgid "This configuration was not paging."
+msgstr "Αυτή η διαμόρφωση δεν σελιδοποιούσε."
+
+msgid "Paging could not be checked."
+msgstr "Η σελιδοποίηση δεν μπόρεσε να ελεγχθεί."
+
+msgid "Peak VRAM was %(percent)s percent of the card, and generation was %(speed)s percent of the estimate."
+msgstr "Η μέγιστη VRAM ήταν %(percent)s τοις εκατό της κάρτας, και η παραγωγή ήταν %(speed)s τοις εκατό της εκτίμησης."
+
+msgid "Peak VRAM was %(percent)s percent of the card. Generation was not compared with the estimate."
+msgstr "Η μέγιστη VRAM ήταν %(percent)s τοις εκατό της κάρτας. Η παραγωγή δεν συγκρίθηκε με την εκτίμηση."
+
+msgid "The largest context on the ladder that would not page is %(tokens)s."
+msgstr "Το μεγαλύτερο πλαίσιο της κλίμακας που δεν θα σελιδοποιούσε είναι %(tokens)s."
+
+msgid "Calibration"
+msgstr "Βαθμονόμηση"
+
+msgid "constant"
+msgstr "σταθερά"
+
+msgid "value"
+msgstr "τιμή"
+
+msgid "from"
+msgstr "από"
+
+msgid "%(base)s + %(slope)s per 1K"
+msgstr "%(base)s + %(slope)s ανά 1K"
+
+msgid "%(count)d measured context"
+msgid_plural "%(count)d measured contexts"
+msgstr[0] "%(count)d μετρημένο πλαίσιο"
+msgstr[1] "%(count)d μετρημένα πλαίσια"
+
+msgid "Nothing was fitted. Every line below says what its constant was missing; a calibration made from less than that would look precise and be arbitrary."
+msgstr "Δεν προσαρμόστηκε τίποτα. Κάθε γραμμή παρακάτω λέει τι έλειπε από τη σταθερά της· μια βαθμονόμηση φτιαγμένη από λιγότερα θα έμοιαζε ακριβής και θα ήταν αυθαίρετη."
+
+msgid "%(name)s was not fitted: %(reason)s"
+msgstr "το %(name)s δεν προσαρμόστηκε: %(reason)s"
+
+msgid "%(count)d measured configuration"
+msgid_plural "%(count)d measured configurations"
+msgstr[0] "%(count)d μετρημένη διαμόρφωση"
+msgstr[1] "%(count)d μετρημένες διαμορφώσεις"
+
+msgid "What the model is for. It sets the score weights, the speed target and the context a candidate is measured against."
+msgstr "Για τι προορίζεται το μοντέλο. Ορίζει τα βάρη της βαθμολογίας, τον στόχο ταχύτητας και το πλαίσιο με το οποίο μετριέται ένας υποψήφιος."
+
+msgid "Capability the model must have; a model without it is excluded "
+msgstr "Δυνατότητα που πρέπει να έχει το μοντέλο· ένα μοντέλο χωρίς αυτήν αποκλείεται."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Κρατά μόνο αυτά τα αναγνωριστικά αδειών (επαναλαμβανόμενο)."
+
+msgid "balanced, quality or speed: moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights."
+msgstr "balanced, quality ή speed: μετακινεί το ένα δέκατο του βάρους μεταξύ ποιότητας και ταχύτητας. Γέρνει τον πίνακα· δεν αντικαθιστά τα βάρη."
+
+msgid "Exclude anything larger to download, for example 40G or 7.5GiB."
+msgstr "Αποκλείει οτιδήποτε μεγαλύτερο για λήψη, για παράδειγμα 40G ή 7.5GiB."
+
+msgid "The worst verdict to list: comfortable, fits or tight."
+msgstr "Η χειρότερη ετυμηγορία που παρατίθεται: comfortable, fits ή tight."
+
+msgid "Exclude candidates generating fewer tokens per second than this, in place of the speed a person reads at. Pass 0 when nobody is waiting on the tokens."
+msgstr "Αποκλείει υποψηφίους που παράγουν λιγότερα tokens ανά δευτερόλεπτο από αυτό, στη θέση της ταχύτητας με την οποία διαβάζει ένας άνθρωπος. Δώστε 0 όταν κανείς δεν περιμένει τα tokens."
+
+msgid "Order the rows drawn: score, speed, quality, context, size, prompt, card, ram, fit, model or quant, largest or best first unless :asc says otherwise. The # column keeps the ranking."
+msgstr "Ταξινομεί τις γραμμές που σχεδιάζονται: score, speed, quality, context, size, prompt, card, ram, fit, model ή quant, μεγαλύτερο ή καλύτερο πρώτο εκτός αν το :asc πει διαφορετικά. Η στήλη # διατηρεί την κατάταξη."
+
+msgid "Draw only rows whose id, name or quantisation contains this text."
+msgstr "Σχεδιάζει μόνο τις γραμμές των οποίων το αναγνωριστικό, το όνομα ή ο κβαντισμός περιέχει αυτό το κείμενο."
+
+msgid "Draw only rows whose file is already on this machine."
+msgstr "Σχεδιάζει μόνο τις γραμμές των οποίων το αρχείο βρίσκεται ήδη σε αυτό το μηχάνημα."
+
+msgid "Draw only rows that run this way: gpu, moe-offload, hybrid or cpu."
+msgstr "Σχεδιάζει μόνο τις γραμμές που τρέχουν έτσι: gpu, moe-offload, hybrid ή cpu."
+
+msgid "Draw only rows at or above this verdict: comfortable, fits or tight. The ranking is unchanged and a hidden row is still counted."
+msgstr "Σχεδιάζει μόνο τις γραμμές από αυτή την ετυμηγορία και πάνω: comfortable, fits ή tight. Η κατάταξη παραμένει ίδια και μια κρυμμένη γραμμή εξακολουθεί να μετρά."
+
+msgid "Draw exactly these columns, comma-separated, in this order, named as --json names them: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+msgstr "Σχεδιάζει ακριβώς αυτές τις στήλες, χωρισμένες με κόμμα, με αυτή τη σειρά, ονομασμένες όπως τις ονομάζει το --json: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+
+msgid "Draw every column whatever the terminal's width; a cell that does not fit folds."
+msgstr "Σχεδιάζει κάθε στήλη ανεξάρτητα από το πλάτος του τερματικού· ένα κελί που δεν χωράει αναδιπλώνεται."
+
+msgid "Leave the candidates that were not ranked off the table. The reasons are still printed under it."
+msgstr "Αφήνει εκτός πίνακα τους υποψηφίους που δεν κατατάχθηκαν. Οι λόγοι εξακολουθούν να εκτυπώνονται από κάτω."
+
+msgid "invalid --min-fit %(value)s"
+msgstr "μη έγκυρη τιμή --min-fit: %(value)s"
+
+msgid "Valid values: %(values)s"
+msgstr "Έγκυρες τιμές: %(values)s"
+
+msgid "invalid --prefer %(value)s"
+msgstr "μη έγκυρη τιμή --prefer: %(value)s"
+
+msgid "invalid --runs %(value)s"
+msgstr "μη έγκυρη τιμή --runs: %(value)s"
+
+msgid "invalid --sort %(value)s"
+msgstr "μη έγκυρη τιμή --sort: %(value)s"
+
+msgid "invalid --columns %(value)s"
+msgstr "μη έγκυρη τιμή --columns: %(value)s"
+
+msgid ""
+"Rank the catalog for what you want to do on this machine.\n"
+"\n"
+"Every candidate is planned, sized and estimated here, so the first run scans the machine. Speeds compare candidates at 8K tokens of context; --explain expands a row into the scores, the weights, the budget and the speed breakdown that produced it."
+msgstr ""
+"Κατατάσσει τον κατάλογο για ό,τι θέλετε να κάνετε σε αυτό το μηχάνημα.\n"
+"\n"
+"Κάθε υποψήφιος σχεδιάζεται, διαστασιολογείται και εκτιμάται εδώ, οπότε η πρώτη εκτέλεση σαρώνει το μηχάνημα. Οι ταχύτητες συγκρίνουν τους υποψηφίους στα 8K tokens πλαισίου· το --explain αναπτύσσει μια γραμμή στις βαθμολογίες, τα βάρη, τον προϋπολογισμό και την ανάλυση ταχύτητας που την παρήγαγαν."
+
+msgid "Exclude candidates that cannot hold at least this many tokens."
+msgstr "Αποκλείει υποψηφίους που δεν μπορούν να κρατήσουν τουλάχιστον τόσα tokens."
+
+msgid "Show at most this many rows."
+msgstr "Δείχνει το πολύ τόσες γραμμές."
+
+msgid "Show every quantisation instead of the best one per model."
+msgstr "Δείχνει κάθε κβαντισμό αντί για τον καλύτερο ανά μοντέλο."
+
+msgid "Expand every row shown into the scores, weights, budget and speed breakdown behind it. Combine with --limit 1 for one model."
+msgstr "Αναπτύσσει κάθε γραμμή που εμφανίζεται στις βαθμολογίες, τα βάρη, τον προϋπολογισμό και την ανάλυση ταχύτητας πίσω από αυτήν. Συνδυάστε το με --limit 1 για ένα μοντέλο."
+
+msgid "Plan without a vision projector, freeing its memory."
+msgstr "Σχεδιάζει χωρίς προβολέα όρασης, ελευθερώνοντας τη μνήμη του."
+
+msgid ""
+"Rank every model by how well it uses this machine, whatever it is for.\n"
+"\n"
+"No use case, no weights and no score: this is the memory question on its own. Models are sized for 32K tokens of context, and the context column is the largest each one holds in the mode shown."
+msgstr ""
+"Κατατάσσει κάθε μοντέλο με βάση το πόσο καλά αξιοποιεί αυτό το μηχάνημα, ό,τι κι αν κάνει.\n"
+"\n"
+"Καμία περίπτωση χρήσης, κανένα βάρος και καμία βαθμολογία: αυτό είναι το ερώτημα της μνήμης μόνο του. Τα μοντέλα διαστασιολογούνται για 32K tokens πλαισίου, και η στήλη πλαισίου δείχνει το μεγαλύτερο που κρατά καθένα στον εμφανιζόμενο τρόπο."
+
+msgid "Only the configurations that use the machine well: at least half its memory held in weights, and no pool past four fifths."
+msgstr "Μόνο οι διαμορφώσεις που αξιοποιούν καλά το μηχάνημα: τουλάχιστον η μισή μνήμη του κρατημένη σε βάρη, και καμία δεξαμενή πάνω από τα τέσσερα πέμπτα."
 
 msgid "Maintain the catalog: validate its files, refresh volatile fields."
 msgstr "Συντηρεί τον κατάλογο: επικυρώνει τα αρχεία του, ανανεώνει τα μεταβλητά πεδία."
@@ -96,37 +600,17 @@ msgstr "Κρατά μόνο αυτή την περίπτωση χρήσης."
 msgid "Keep only models with this capability (repeatable)."
 msgstr "Κρατά μόνο τα μοντέλα με αυτή τη δυνατότητα (επαναλαμβανόμενο)."
 
-msgid "Keep only these licence identifiers (repeatable)."
-msgstr "Κρατά μόνο αυτά τα αναγνωριστικά αδειών (επαναλαμβανόμενο)."
+msgid "Show only this quantisation, matched case-insensitively, in both tables."
+msgstr "Δείχνει μόνο αυτόν τον κβαντισμό, με αντιστοίχιση χωρίς διάκριση πεζών-κεφαλαίων, και στους δύο πίνακες."
+
+msgid "Size every quantisation for this many tokens instead of the usual 32,768."
+msgstr "Υπολογίζει τα μεγέθη κάθε κβαντισμού για τόσα tokens αντί για τα συνήθη 32.768."
 
 msgid "Validate only this file instead of the bundled catalog and custom overrides."
 msgstr "Επικυρώνει μόνο αυτό το αρχείο αντί για τον ενσωματωμένο κατάλογο και τις προσαρμογές."
 
-msgid "Did you mean: %(ids)s?"
-msgstr "Μήπως εννοούσατε: %(ids)s;"
-
-msgid "Run `llamafit list` to see every model id."
-msgstr "Εκτελέστε `llamafit list` για να δείτε όλα τα αναγνωριστικά μοντέλων."
-
-msgid "no model named %(id)s in the catalog"
-msgstr "δεν υπάρχει μοντέλο με όνομα %(id)s στον κατάλογο"
-
-msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
-msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
-msgstr[0] "Βρέθηκε %(count)d πρόβλημα στον κατάλογο· εκτελέστε `llamafit catalog validate` για λεπτομέρειες."
-msgstr[1] "Βρέθηκαν %(count)d προβλήματα στον κατάλογο· εκτελέστε `llamafit catalog validate` για λεπτομέρειες."
-
 msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
 msgstr "Κανένα μοντέλο δεν ταιριάζει. Δοκιμάστε ευρύτερο --use-case, --capability, --license, --vendor ή --search."
-
-msgid "invalid --use-case %(value)s"
-msgstr "μη έγκυρη τιμή --use-case: %(value)s"
-
-msgid "Valid use cases: %(values)s"
-msgstr "Έγκυρες περιπτώσεις χρήσης: %(values)s"
-
-msgid "Valid capabilities: %(values)s"
-msgstr "Έγκυρες δυνατότητες: %(values)s"
 
 msgid ""
 "List the model catalog, narrowed by any filters given.\n"
@@ -152,8 +636,14 @@ msgstr "Συντομογραφία για llamafit list --search TEXT."
 msgid "Text to match against id, name, vendor or family."
 msgstr "Κείμενο προς αντιστοίχιση με αναγνωριστικό, όνομα, κατασκευαστή ή οικογένεια."
 
-msgid "A catalog model id."
-msgstr "Ένα αναγνωριστικό μοντέλου του καταλόγου."
+msgid ""
+"Show one model: its facts, the quants it publishes, and what each would cost on this machine.\n"
+"\n"
+"The last table is sized against this machine, so the first run scans it. One line per quantisation; plan opens one of those rows into the memory budget, the context ladder and the command line."
+msgstr ""
+"Δείχνει ένα μοντέλο: τα στοιχεία του, τους κβαντισμούς που δημοσιεύει, και τι θα κόστιζε καθένας σε αυτό το μηχάνημα.\n"
+"\n"
+"Ο τελευταίος πίνακας διαστασιολογείται ως προς αυτό το μηχάνημα, οπότε η πρώτη εκτέλεση το σαρώνει. Μία γραμμή ανά κβαντισμό· το plan ανοίγει μία από αυτές τις γραμμές στον προϋπολογισμό μνήμης, την κλίμακα πλαισίου και τη γραμμή εντολών."
 
 msgid "Validate catalog YAML files against the schema, printing one line per problem."
 msgstr "Επικυρώνει τα αρχεία YAML του καταλόγου ως προς το σχήμα, εκτυπώνοντας μία γραμμή ανά πρόβλημα."
@@ -201,8 +691,387 @@ msgstr "Εκτυπώνει την ακατέργαστη εγγραφή κατα
 msgid "Print YAML instead of JSON."
 msgstr "Εκτυπώνει YAML αντί για JSON."
 
+msgid "Did you mean: %(ids)s?"
+msgstr "Μήπως εννοούσατε: %(ids)s;"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Εκτελέστε `llamafit list` για να δείτε όλα τα αναγνωριστικά μοντέλων."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "δεν υπάρχει μοντέλο με όνομα %(id)s στον κατάλογο"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "Βρέθηκε %(count)d πρόβλημα στον κατάλογο· εκτελέστε `llamafit catalog validate` για λεπτομέρειες."
+msgstr[1] "Βρέθηκαν %(count)d προβλήματα στον κατάλογο· εκτελέστε `llamafit catalog validate` για λεπτομέρειες."
+
+msgid "invalid --use-case %(value)s"
+msgstr "μη έγκυρη τιμή --use-case: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Έγκυρες περιπτώσεις χρήσης: %(values)s"
+
+msgid "invalid %(option)s value: %(values)s"
+msgid_plural "invalid %(option)s values: %(values)s"
+msgstr[0] "μη έγκυρη τιμή %(option)s: %(values)s"
+msgstr[1] "μη έγκυρες τιμές %(option)s: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Έγκυρες δυνατότητες: %(values)s"
+
+msgid "%(option)s is not a size: %(value)s"
+msgstr "το %(option)s δεν είναι μέγεθος: %(value)s"
+
+msgid "Sizes look like 8G, 7.5GiB or 512M; a bare number is bytes."
+msgstr "Τα μεγέθη μοιάζουν με 8G, 7.5GiB ή 512M· ένας σκέτος αριθμός είναι bytes."
+
+msgid "%(ceiling)s %(max)s is below %(floor)s %(min)s"
+msgstr "%(ceiling)s %(max)s είναι κάτω από %(floor)s %(min)s"
+
+msgid "Raise %(ceiling)s, or lower %(floor)s."
+msgstr "Ανεβάστε το %(ceiling)s, ή κατεβάστε το %(floor)s."
+
+msgid "`llamafit %(command)s` reports on the machine LlamaFit is running on"
+msgstr "το `llamafit %(command)s` αναφέρει για το μηχάνημα στο οποίο τρέχει το LlamaFit"
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a profile describes, run `llamafit hardware show NAME --as-host`."
+msgstr "Αφαιρέστε τα --profile, --memory, --ram και --cpu-cores. Για να δείτε το μηχάνημα που περιγράφει ένα προφίλ, εκτελέστε `llamafit hardware show NAME --as-host`."
+
 msgid "Explain what was detected, what failed, and what would unlock more."
 msgstr "Εξηγεί τι εντοπίστηκε, τι απέτυχε και τι θα ξεκλείδωνε περισσότερα."
+
+msgid "Hardware profiles: describe a machine in a file and score models against it."
+msgstr "Προφίλ υλικού: περιγράψτε ένα μηχάνημα σε ένα αρχείο και βαθμολογήστε μοντέλα ως προς αυτό."
+
+msgid "Validate only this file instead of every bundled and user profile."
+msgstr "Επικυρώνει μόνο αυτό το αρχείο αντί για κάθε ενσωματωμένο προφίλ και κάθε δικό σας."
+
+msgid "A profile name, or a path to a profile file."
+msgstr "Ένα όνομα προφίλ, ή μια διαδρομή προς αρχείο προφίλ."
+
+msgid "%(count)d hardware profile problem found; run `llamafit hardware validate` for details."
+msgid_plural "%(count)d hardware profile problems found; run `llamafit hardware validate` for details."
+msgstr[0] "Βρέθηκε %(count)d πρόβλημα προφίλ υλικού· εκτελέστε `llamafit hardware validate` για λεπτομέρειες."
+msgstr[1] "Βρέθηκαν %(count)d προβλήματα προφίλ υλικού· εκτελέστε `llamafit hardware validate` για λεπτομέρειες."
+
+msgid "List the hardware profiles LlamaFit has: the bundled ones and your own."
+msgstr "Παραθέτει τα προφίλ υλικού που έχει το LlamaFit: τα ενσωματωμένα και τα δικά σας."
+
+msgid "No hardware profiles. Run `llamafit hardware path` to see where yours would go."
+msgstr "Κανένα προφίλ υλικού. Εκτελέστε `llamafit hardware path` για να δείτε πού θα πήγαιναν τα δικά σας."
+
+msgid ""
+"Show one profile; with --as-host, the machine it stands in for.\n"
+"\n"
+"A host built from a profile is marked as simulated, in the table and in the JSON, so a what-if is never mistaken for a scan of this machine."
+msgstr ""
+"Δείχνει ένα προφίλ· με --as-host, το μηχάνημα για το οποίο υποκαθιστά.\n"
+"\n"
+"Ένα μηχάνημα φτιαγμένο από προφίλ σημειώνεται ως προσομοιωμένο, στον πίνακα και στο JSON, ώστε ένα υποθετικό σενάριο να μην εκληφθεί ποτέ ως σάρωση αυτού του μηχανήματος."
+
+msgid "Show the host this profile substitutes, as `llamafit system` would."
+msgstr "Δείχνει το μηχάνημα που υποκαθιστά αυτό το προφίλ, όπως θα το έδειχνε το `llamafit system`."
+
+msgid "Check hardware profile files against the schema, printing one line per problem."
+msgstr "Ελέγχει τα αρχεία προφίλ υλικού ως προς το σχήμα, εκτυπώνοντας μία γραμμή ανά πρόβλημα."
+
+msgid "Print the directory your own hardware profiles go in."
+msgstr "Εκτυπώνει τον φάκελο στον οποίο πηγαίνουν τα δικά σας προφίλ υλικού."
+
+msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr "Δεν υπάρχει ακόμη· δημιουργήστε τον και βάλτε μέσα ένα αρχείο %(suffix)s."
+
+msgid "Install what it takes to run a model: llama.cpp itself, and the weights."
+msgstr "Εγκαθιστά ό,τι χρειάζεται για να τρέξει ένα μοντέλο: το ίδιο το llama.cpp, και τα βάρη."
+
+msgid "Fetch this quantisation instead of the first the catalog publishes."
+msgstr "Κατεβάζει αυτόν τον κβαντισμό αντί για τον πρώτο που δημοσιεύει ο κατάλογος."
+
+msgid "Put the files here instead of under the configured downloads directory."
+msgstr "Βάζει τα αρχεία εδώ αντί για τον ρυθμισμένο φάκελο λήψεων."
+
+msgid "Use at most this much bandwidth, for example 5M. Shared across every worker, so the figure is the figure whatever --workers says."
+msgstr "Χρησιμοποιεί το πολύ τόσο εύρος ζώνης, για παράδειγμα 5M. Μοιράζεται σε όλους τους εργάτες, οπότε η τιμή είναι η ίδια ό,τι κι αν λέει το --workers."
+
+msgid "How many requests to keep in flight. More is not always faster, and a home connection is shared with whoever else is using it."
+msgstr "Πόσα αιτήματα να μένουν σε εξέλιξη. Περισσότερα δεν είναι πάντα ταχύτερα, και μια οικιακή σύνδεση μοιράζεται με όποιον άλλον τη χρησιμοποιεί."
+
+msgid "Do not ask before starting."
+msgstr "Δεν ρωτά πριν ξεκινήσει."
+
+msgid "Show what would be fetched and stop before fetching it."
+msgstr "Δείχνει τι θα κατέβαινε και σταματά πριν το κατεβάσει."
+
+msgid "Fetch only the weights, not the vision projector or the draft model."
+msgstr "Κατεβάζει μόνο τα βάρη, όχι τον προβολέα όρασης ή το προσχέδιο μοντέλο."
+
+msgid "Re-read files that are already here and check them against the catalog."
+msgstr "Ξαναδιαβάζει τα αρχεία που βρίσκονται ήδη εδώ και τα ελέγχει ως προς τον κατάλογο."
+
+msgid "Fetch files the catalog holds no checksum for. Nothing will be able to tell you whether they arrived intact."
+msgstr "Κατεβάζει αρχεία για τα οποία ο κατάλογος δεν έχει άθροισμα ελέγχου. Τίποτα δεν θα μπορεί να σας πει αν έφτασαν ακέραια."
+
+msgid "Show at most this many entries."
+msgstr "Δείχνει το πολύ τόσες εγγραφές."
+
+msgid "Download a model's weights, resuming anything an earlier run left and checking every file against the catalog's checksum."
+msgstr "Κατεβάζει τα βάρη ενός μοντέλου, συνεχίζοντας ό,τι άφησε μια προηγούμενη εκτέλεση και ελέγχοντας κάθε αρχείο ως προς το άθροισμα ελέγχου του καταλόγου."
+
+msgid "Start the download?"
+msgstr "Να ξεκινήσει η λήψη;"
+
+msgid "Show what has been downloaded, newest first."
+msgstr "Δείχνει τι έχει κατέβει, με το πιο πρόσφατο πρώτο."
+
+msgid "Nothing has been downloaded yet."
+msgstr "Δεν έχει κατέβει τίποτα ακόμη."
+
+msgid "Install this backend instead of the one chosen for your GPU: cuda, vulkan, hip, sycl, metal or cpu."
+msgstr "Εγκαθιστά αυτό το υποσύστημα αντί για αυτό που επιλέχθηκε για τη GPU σας: cuda, vulkan, hip, sycl, metal ή cpu."
+
+msgid "Install here instead of ~/.llamafit/llama.cpp."
+msgstr "Εγκαθιστά εδώ αντί για το ~/.llamafit/llama.cpp."
+
+msgid "Install this release tag, for example b6100, not the latest."
+msgstr "Εγκαθιστά αυτή την ετικέτα κυκλοφορίας, για παράδειγμα b6100, όχι την τελευταία."
+
+msgid "invalid --backend %(value)s"
+msgstr "μη έγκυρη τιμή --backend: %(value)s"
+
+msgid "Valid backends: %(values)s"
+msgstr "Έγκυρα υποσυστήματα: %(values)s"
+
+msgid "release %(tag)s publishes no %(backend)s build for %(os)s %(arch)s."
+msgstr "η κυκλοφορία %(tag)s δεν δημοσιεύει δόμηση %(backend)s για %(os)s %(arch)s."
+
+msgid "Leave --backend out and LlamaFit will choose a published one."
+msgstr "Παραλείψτε το --backend και το LlamaFit θα επιλέξει μια δημοσιευμένη."
+
+msgid "release %(tag)s publishes nothing for %(os)s %(arch)s."
+msgstr "η κυκλοφορία %(tag)s δεν δημοσιεύει τίποτα για %(os)s %(arch)s."
+
+msgid "Build llama.cpp from source; see the project's own instructions."
+msgstr "Χτίστε το llama.cpp από τον πηγαίο κώδικα· δείτε τις οδηγίες του ίδιου του έργου."
+
+msgid "Downloading"
+msgstr "Γίνεται λήψη"
+
+msgid "Change your PATH?"
+msgstr "Να αλλάξει το PATH σας;"
+
+msgid "PATH left alone."
+msgstr "Το PATH δεν πειράχτηκε."
+
+msgid "PATH changed. Open a new terminal for it to take effect."
+msgstr "Το PATH άλλαξε. Ανοίξτε νέο τερματικό για να τεθεί σε ισχύ."
+
+msgid ""
+"Download a published llama.cpp build and install it into ~/.llamafit/llama.cpp.\n"
+"\n"
+"The plan is printed before anything is written. The archive's checksum is verified before it is unpacked, an interrupted download continues where it stopped, and a directory LlamaFit did not create is never overwritten."
+msgstr ""
+"Κατεβάζει μια δημοσιευμένη δόμηση του llama.cpp και την εγκαθιστά στο ~/.llamafit/llama.cpp.\n"
+"\n"
+"Το σχέδιο εκτυπώνεται πριν γραφτεί οτιδήποτε. Το άθροισμα ελέγχου της αρχειοθήκης επαληθεύεται πριν αποσυμπιεστεί, μια διακοπείσα λήψη συνεχίζει από εκεί που σταμάτησε, και ένας φάκελος που δεν δημιούργησε το LlamaFit δεν αντικαθίσταται ποτέ."
+
+msgid "Offer to add the bin directory to your PATH, showing the undo first."
+msgstr "Προσφέρεται να προσθέσει τον φάκελο bin στο PATH σας, δείχνοντας πρώτα την αναίρεση."
+
+msgid "Install over a directory LlamaFit did not create. Ask yourself twice."
+msgstr "Εγκαθιστά πάνω σε φάκελο που δεν δημιούργησε το LlamaFit. Σκεφτείτε το δύο φορές."
+
+msgid "Install an archive that publishes no checksum. Nothing can be checked."
+msgstr "Εγκαθιστά μια αρχειοθήκη που δεν δημοσιεύει άθροισμα ελέγχου. Τίποτα δεν μπορεί να ελεγχθεί."
+
+msgid "Print the plan and write nothing."
+msgstr "Εκτυπώνει το σχέδιο και δεν γράφει τίποτα."
+
+msgid "Do not ask; assume yes."
+msgstr "Δεν ρωτά· θεωρεί ότι η απάντηση είναι ναι."
+
+msgid "Install this?"
+msgstr "Να εγκατασταθεί αυτό;"
+
+msgid "Nothing was written."
+msgstr "Δεν γράφτηκε τίποτα."
+
+msgid "Plan this quantisation instead of the one that scores best on this machine."
+msgstr "Σχεδιάζει αυτόν τον κβαντισμό αντί για αυτόν που βαθμολογείται καλύτερα σε αυτό το μηχάνημα."
+
+msgid "Size for this many tokens. When it does not fit, the plan sizes down and shows what the context you asked for would have cost."
+msgstr "Υπολογίζει τα μεγέθη για τόσα tokens. Όταν δεν χωράει, το σχέδιο μικραίνει και δείχνει τι θα κόστιζε το πλαίσιο που ζητήσατε."
+
+msgid "Set the micro-batch by hand. The whole budget is rebuilt around it, since it moves the compute buffer and with it the verdict."
+msgstr "Ορίζει τη μικροπαρτίδα με το χέρι. Ολόκληρος ο προϋπολογισμός ξαναχτίζεται γύρω της, αφού μετακινεί την ενδιάμεση μνήμη υπολογισμού και μαζί της την ετυμηγορία."
+
+msgid "A generation speed to answer against: whether this reaches it, and what context would."
+msgstr "Μια ταχύτητα παραγωγής ως προς την οποία να απαντηθεί: αν αυτό τη φτάνει, και ποιο πλαίσιο θα την έφτανε."
+
+msgid "%(model)s publishes no quantisations"
+msgstr "το %(model)s δεν δημοσιεύει κβαντισμούς"
+
+msgid "Run `llamafit catalog refresh --model %(model)s`."
+msgstr "Εκτελέστε `llamafit catalog refresh --model %(model)s`."
+
+msgid ""
+"Place one model on this machine and print the command line that runs it.\n"
+"\n"
+"Shows the memory budget component by component, the context ladder a launch script chooses from, where a token's time goes, and any run the catalog records for comparison."
+msgstr ""
+"Τοποθετεί ένα μοντέλο σε αυτό το μηχάνημα και εκτυπώνει τη γραμμή εντολών που το τρέχει.\n"
+"\n"
+"Δείχνει τον προϋπολογισμό μνήμης στοιχείο προς στοιχείο, την κλίμακα πλαισίου από την οποία διαλέγει ένα σενάριο εκκίνησης, πού πηγαίνει ο χρόνος ενός token, και κάθε εκτέλεση που καταγράφει ο κατάλογος για σύγκριση."
+
+msgid "Leave the vision projector out, freeing its memory for context."
+msgstr "Αφήνει έξω τον προβολέα όρασης, ελευθερώνοντας τη μνήμη του για πλαίσιο."
+
+msgid "Write the files here instead of in LlamaFit's own presets directory."
+msgstr "Γράφει τα αρχεία εδώ αντί για τον δικό του φάκελο προρυθμίσεων του LlamaFit."
+
+msgid "Bind this port instead of llama.cpp's default 8080."
+msgstr "Δεσμεύει αυτή τη θύρα αντί για την προεπιλεγμένη 8080 του llama.cpp."
+
+msgid "Size for this many tokens. It becomes the top of the ladder the script chooses from; the script never goes above it."
+msgstr "Υπολογίζει τα μεγέθη για τόσα tokens. Γίνεται η κορυφή της κλίμακας από την οποία διαλέγει το σενάριο· το σενάριο δεν ανεβαίνει ποτέ πάνω από αυτό."
+
+msgid "%(model)s does not fit this machine in any configuration"
+msgstr "το %(model)s δεν χωράει σε αυτό το μηχάνημα σε καμία διαμόρφωση"
+
+msgid "Run `llamafit plan %(model)s` to see what it would need."
+msgstr "Εκτελέστε `llamafit plan %(model)s` για να δείτε τι θα χρειαζόταν."
+
+msgid ""
+"Write launch scripts for one model: a script that picks its context from free card memory at start time, a router section, and a README.\n"
+"\n"
+"A file you have edited is never overwritten without --force."
+msgstr ""
+"Γράφει σενάρια εκκίνησης για ένα μοντέλο: ένα σενάριο που διαλέγει το πλαίσιό του από την ελεύθερη μνήμη της κάρτας κατά την εκκίνηση, μια ενότητα δρομολογητή και ένα README.\n"
+"\n"
+"Ένα αρχείο που έχετε επεξεργαστεί δεν αντικαθίσταται ποτέ χωρίς --force."
+
+msgid "Overwrite files you have edited. It says which ones it discarded."
+msgstr "Αντικαθιστά αρχεία που έχετε επεξεργαστεί. Λέει ποια απέρριψε."
+
+msgid "Run a model's preset, wait for the server to answer, and print its endpoints. --stop stops the server LlamaFit started."
+msgstr "Τρέχει την προρύθμιση ενός μοντέλου, περιμένει να απαντήσει ο διακομιστής, και εκτυπώνει τα σημεία πρόσβασής του. Το --stop σταματά τον διακομιστή που ξεκίνησε το LlamaFit."
+
+msgid "Stop the server LlamaFit started for this model."
+msgstr "Σταματά τον διακομιστή που ξεκίνησε το LlamaFit για αυτό το μοντέλο."
+
+msgid "Seconds to wait for /health before reporting that it has not answered."
+msgstr "Δευτερόλεπτα αναμονής για το /health πριν αναφερθεί ότι δεν απάντησε."
+
+msgid "the preset could not be written"
+msgstr "δεν ήταν δυνατή η εγγραφή της προρύθμισης"
+
+msgid "Wrote a preset first: %(path)s"
+msgstr "Γράφτηκε πρώτα μια προρύθμιση: %(path)s"
+
+msgid "Nothing to stop: LlamaFit has no record of starting %(model)s."
+msgstr "Τίποτα προς διακοπή: το LlamaFit δεν έχει καταγραφή ότι ξεκίνησε το %(model)s."
+
+msgid "Stopped %(model)s, which was serving on %(url)s."
+msgstr "Σταμάτησε το %(model)s, που εξυπηρετούσε στο %(url)s."
+
+msgid "Preset for %(name)s (%(quant)s) in %(dir)s"
+msgstr "Προρύθμιση για το %(name)s (%(quant)s) στο %(dir)s"
+
+msgid "The server will answer on %(url)s."
+msgstr "Ο διακομιστής θα απαντά στο %(url)s."
+
+msgid "Your edits were kept. Nothing above was written to those files; run the command again with --force to replace them."
+msgstr "Οι αλλαγές σας διατηρήθηκαν. Τίποτα από τα παραπάνω δεν γράφτηκε σε αυτά τα αρχεία· εκτελέστε ξανά την εντολή με --force για να αντικατασταθούν."
+
+msgid "At start time the script reads how much card memory is free, keeps %(reserve)s MiB back, and takes the largest context that still fits."
+msgstr "Κατά την εκκίνηση το σενάριο διαβάζει πόση μνήμη κάρτας είναι ελεύθερη, κρατά %(reserve)s MiB στην άκρη, και παίρνει το μεγαλύτερο πλαίσιο που χωράει ακόμη."
+
+msgid "This machine has nothing the script can ask for free card memory, so it will start at %(context)s tokens; the script's header says why."
+msgstr "Αυτό το μηχάνημα δεν έχει τίποτα από το οποίο να ζητήσει το σενάριο την ελεύθερη μνήμη της κάρτας, οπότε θα ξεκινήσει στα %(context)s tokens· η κεφαλίδα του σεναρίου λέει γιατί."
+
+msgid "Files"
+msgstr "Αρχεία"
+
+msgctxt "column heading"
+msgid "File"
+msgstr "Αρχείο"
+
+msgctxt "column heading"
+msgid "What happened"
+msgstr "Τι έγινε"
+
+msgid "Context tiers the script may choose"
+msgstr "Βαθμίδες πλαισίου που μπορεί να διαλέξει το σενάριο"
+
+msgctxt "column heading"
+msgid "Context"
+msgstr "Πλαίσιο"
+
+msgctxt "column heading"
+msgid "Card needs"
+msgstr "Ανάγκη κάρτας"
+
+msgctxt "column heading"
+msgid "Free card memory to reach it"
+msgstr "Ελεύθερη μνήμη κάρτας που απαιτεί"
+
+msgid "%(value)s MiB"
+msgstr "%(value)s MiB"
+
+msgid "written"
+msgstr "γράφτηκε"
+
+msgid "brought up to date"
+msgstr "ενημερώθηκε"
+
+msgid "already up to date"
+msgstr "ήδη ενημερωμένο"
+
+msgid "kept: you edited it"
+msgstr "διατηρήθηκε: το επεξεργαστήκατε"
+
+msgid "overwritten: your edits are gone"
+msgstr "αντικαταστάθηκε: οι αλλαγές σας χάθηκαν"
+
+msgid "The preset could not be started: %(error)s"
+msgstr "Η προρύθμιση δεν μπόρεσε να ξεκινήσει: %(error)s"
+
+msgid "Started, but %(url)s has not answered yet. A large model can spend minutes reading its weights; try the health endpoint again in a moment, or run `llamafit launch %(model)s --stop`."
+msgstr "Ξεκίνησε, αλλά το %(url)s δεν έχει απαντήσει ακόμη. Ένα μεγάλο μοντέλο μπορεί να χρειαστεί λεπτά για να διαβάσει τα βάρη του· δοκιμάστε ξανά το σημείο πρόσβασης health σε λίγο, ή εκτελέστε `llamafit launch %(model)s --stop`."
+
+msgid "%(model)s was already serving on %(url)s."
+msgstr "Το %(model)s εξυπηρετούσε ήδη στο %(url)s."
+
+msgid "%(model)s is serving on %(url)s."
+msgstr "Το %(model)s εξυπηρετεί στο %(url)s."
+
+msgid "Stop it with `llamafit launch %(model)s --stop`."
+msgstr "Σταματήστε το με `llamafit launch %(model)s --stop`."
+
+msgid "Endpoints"
+msgstr "Σημεία πρόσβασης"
+
+msgctxt "column heading"
+msgid "What"
+msgstr "Τι"
+
+msgctxt "column heading"
+msgid "Where"
+msgstr "Πού"
+
+msgid "Web interface"
+msgstr "Διεπαφή ιστού"
+
+msgid "Chat completions"
+msgstr "Chat completions"
+
+msgid "Models"
+msgstr "Μοντέλα"
+
+msgid "Health"
+msgstr "Health"
+
+msgid "Ask for the model by the alias %(alias)s."
+msgstr "Ζητήστε το μοντέλο με το ψευδώνυμο %(alias)s."
 
 msgctxt "finding level"
 msgid "OK"
@@ -233,6 +1102,50 @@ msgstr "υποτιθέμενο"
 msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "άγνωστο"
+
+# Each row that says "unknown" names its own noun, and Greek follows that noun's gender:
+# το εύρος ζώνης, το μοντέλο, το πλαίσιο and το μέγεθος are neuter, η δόμηση feminine,
+# and τα υποσυστήματα neuter plural.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "άγνωστο"
+
+msgid "%(gbps)s GB/s (%(source)s, cached)"
+msgstr "%(gbps)s GB/s (%(source)s, από την κρυφή μνήμη)"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+msgctxt "simulation override"
+msgid "VRAM"
+msgstr "VRAM"
+
+msgctxt "simulation override"
+msgid "system memory"
+msgstr "μνήμη συστήματος"
+
+msgctxt "simulation override"
+msgid "CPU cores"
+msgstr "πυρήνες CPU"
+
+msgid "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgid_plural "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgstr[0] "αυτές οι τιμές προέρχονται από το προφίλ υλικού %(profile)s με παρακαμμένο το %(fields)s· δεν είναι αυτό το μηχάνημα"
+msgstr[1] "αυτές οι τιμές προέρχονται από το προφίλ υλικού %(profile)s με παρακαμμένα τα %(fields)s· δεν είναι αυτό το μηχάνημα"
+
+msgid "these figures come from the hardware profile %(profile)s; they are not this machine"
+msgstr "αυτές οι τιμές προέρχονται από το προφίλ υλικού %(profile)s· δεν είναι αυτό το μηχάνημα"
+
+msgid "%(fields)s was overridden for a what-if; these figures are not what was scanned"
+msgid_plural "%(fields)s were overridden for a what-if; these figures are not what was scanned"
+msgstr[0] "το %(fields)s παρακάμφθηκε για ένα υποθετικό σενάριο· αυτές οι τιμές δεν είναι ό,τι σαρώθηκε"
+msgstr[1] "τα %(fields)s παρακάμφθηκαν για ένα υποθετικό σενάριο· αυτές οι τιμές δεν είναι ό,τι σαρώθηκε"
+
+msgid "these figures are not this machine"
+msgstr "αυτές οι τιμές δεν είναι αυτό το μηχάνημα"
+
+msgid "SIMULATED"
+msgstr "ΠΡΟΣΟΜΟΙΩΣΗ"
 
 msgctxt "model capability"
 msgid "coding"
@@ -277,16 +1190,16 @@ msgstr "%(compute)s TFLOPS fp16"
 
 msgid "%(count)d core"
 msgid_plural "%(count)d cores"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d πυρήνας"
+msgstr[1] "%(count)d πυρήνες"
 
 msgid "%(count)d thread"
 msgid_plural "%(count)d threads"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d νήμα"
+msgstr[1] "%(count)d νήματα"
 
 msgid "%(cores)s / %(threads)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s"
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -294,10 +1207,10 @@ msgstr[0] "%(count)d πυρήνας απόδοσης"
 msgstr[1] "%(count)d πυρήνες απόδοσης"
 
 msgid "%(cores)s / %(threads)s, %(performance)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s, %(performance)s"
 
 msgid "%(type)s at %(speed)d MT/s"
-msgstr ""
+msgstr "%(type)s στα %(speed)d MT/s"
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -313,23 +1226,23 @@ msgstr[0] "%(count)d κανάλι"
 msgstr[1] "%(count)d κανάλια"
 
 msgid "%(kind)s, %(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s σε %(channels)s"
 
 msgid "%(kind)s, %(modules)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s"
 
 msgid "%(kind)s, %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(channels)s"
 
 msgid "%(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(modules)s σε %(channels)s"
 
 msgctxt "memory type"
 msgid "type unknown"
 msgstr "άγνωστος τύπος"
 
 msgid "%(specs)s (spec), driver %(driver)s"
-msgstr ""
+msgstr "%(specs)s (κατά τις προδιαγραφές), πρόγραμμα οδήγησης %(driver)s"
 
 msgid "%(specs)s (spec)"
 msgstr "%(specs)s (κατά τις προδιαγραφές)"
@@ -340,6 +1253,19 @@ msgstr "πρόγραμμα οδήγησης %(driver)s"
 msgctxt "GPU specifications"
 msgid "no specs"
 msgstr "χωρίς προδιαγραφές"
+
+msgid "%(total)s VRAM, %(free)s free (Vulkan driver)"
+msgstr "%(total)s VRAM, %(free)s ελεύθερα (πρόγραμμα οδήγησης Vulkan)"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, %(free)s ελεύθερα"
+
+msgid "%(total)s VRAM, free unknown"
+msgstr "%(total)s VRAM, άγνωστα ελεύθερα"
+
+msgctxt "GPU VRAM"
+msgid "VRAM unknown"
+msgstr "άγνωστη VRAM"
 
 msgid "Host"
 msgstr "Μηχάνημα"
@@ -352,23 +1278,6 @@ msgstr "%(os)s %(version)s (%(arch)s)"
 
 msgid "CPU"
 msgstr "CPU"
-
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s· %(cores)s· %(isa)s"
-
-msgctxt "CPU instruction sets"
-msgid "isa unknown"
-msgstr "άγνωστο σύνολο εντολών"
-
-msgid "%(gbps)s GB/s (%(source)s)"
-msgstr "%(gbps)s GB/s (%(source)s)"
-
-# Each row that says "unknown" names its own noun, and Greek follows that noun's gender:
-# το εύρος ζώνης, το μοντέλο, το πλαίσιο and το μέγεθος are neuter, η δόμηση feminine,
-# and τα υποσυστήματα neuter plural.
-msgctxt "memory bandwidth"
-msgid "unknown"
-msgstr "άγνωστο"
 
 msgid "Memory"
 msgstr "Μνήμη"
@@ -383,18 +1292,14 @@ msgctxt "GPU"
 msgid "none detected"
 msgstr "δεν εντοπίστηκε καμία"
 
-msgid "%(total)s VRAM, %(free)s free"
-msgstr "%(total)s VRAM, %(free)s ελεύθερα"
-
-msgctxt "GPU VRAM"
-msgid "VRAM unknown"
-msgstr "άγνωστη VRAM"
-
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
 
-msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-msgstr "%(name)s (%(backend)s)· %(vram)s· %(specs)s"
+msgid "Card memory"
+msgstr "Μνήμη κάρτας"
+
+msgid "%(gpus)s: nothing here could read how much of the card is free, so every budget on this machine was computed as if there were no card at all. Install the Vulkan tools, or write the size into a hardware profile."
+msgstr "%(gpus)s: τίποτα εδώ δεν μπόρεσε να διαβάσει πόση από την κάρτα είναι ελεύθερη, οπότε κάθε προϋπολογισμός σε αυτό το μηχάνημα υπολογίστηκε σαν να μην υπήρχε καθόλου κάρτα. Εγκαταστήστε τα εργαλεία Vulkan, ή γράψτε το μέγεθος σε ένα προφίλ υλικού."
 
 msgid "Memory pool"
 msgstr "Δεξαμενή μνήμης"
@@ -501,21 +1406,14 @@ msgid "Params"
 msgstr "Παράμ."
 
 msgctxt "column heading"
-msgid "Context"
-msgstr "Πλαίσιο"
-
-msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Δυνατότητες"
 
 msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr ""
+msgstr "Το %(heading)s είναι η συντακτική βάση, πριν από οποιαδήποτε ποινή κβαντισμού· εκτελέστε `llamafit info <model>` για τις τεκμηριωμένες δοκιμές αναφοράς πίσω από αυτό."
 
 msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr ""
-
-msgid "Models"
-msgstr "Μοντέλα"
+msgstr "Το %(heading)s είναι τα συνολικά/ενεργά δισεκατομμύρια για ένα μοντέλο μείγματος ειδικών, ή ένας αριθμός όταν είναι ίσα."
 
 msgid "Vendor"
 msgstr "Κατασκευαστής"
@@ -536,10 +1434,10 @@ msgid "Parameters"
 msgstr "Παράμετροι"
 
 msgid "%(total)s total, %(active)s active"
-msgstr ""
+msgstr "%(total)s συνολικά, %(active)s ενεργά"
 
 msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
-msgstr ""
+msgstr "%(tokens)s tokens εγγενώς, %(extended)s επεκταμένα μέσω %(method)s"
 
 msgctxt "context extension method"
 msgid "unspecified method"
@@ -584,13 +1482,13 @@ msgstr[0] "%(count)d επίπεδο"
 msgstr[1] "%(count)d επίπεδα"
 
 msgid "%(arch)s, %(layers)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s, %(experts)s"
 
 msgid "%(arch)s, %(layers)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s"
 
 msgid "%(arch)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(experts)s"
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
@@ -621,19 +1519,1170 @@ msgctxt "bits per weight"
 msgid "unknown"
 msgstr "άγνωστο"
 
+msgid "On this machine"
+msgstr "Σε αυτό το μηχάνημα"
+
+msgctxt "column heading"
+msgid "Quant"
+msgstr "Κβάντ."
+
+msgctxt "column heading"
+msgid "Runs"
+msgstr "Τρέχει"
+
+msgctxt "column heading"
+msgid "Card"
+msgstr "Κάρτα"
+
+msgctxt "column heading"
+msgid "RAM"
+msgstr "RAM"
+
+msgctxt "column heading"
+msgid "Tok/s"
+msgstr "Tok/s"
+
+msgctxt "column heading"
+msgid "Ctx"
+msgstr "Πλαίσ."
+
+msgctxt "column heading"
+msgid "Fit"
+msgstr "Χώρος"
+
+msgid "%(quant)s: %(reason)s"
+msgstr "%(quant)s: %(reason)s"
+
+msgctxt "tokens per second"
+msgid "unknown"
+msgstr "άγνωστη"
+
+msgctxt "context length"
+msgid "none"
+msgstr "κανένα"
+
+msgid "Sized for %(context)s tokens, with every figure from a placement computed for this machine. `llamafit plan MODEL --quant NAME` opens one of these rows into the budget line by line, the context ladder and the command line that runs it."
+msgstr "Διαστασιολογημένο για %(context)s tokens, με κάθε τιμή από μια τοποθέτηση υπολογισμένη για αυτό το μηχάνημα. Το `llamafit plan MODEL --quant NAME` ανοίγει μία από αυτές τις γραμμές στον προϋπολογισμό γραμμή προς γραμμή, την κλίμακα πλαισίου και τη γραμμή εντολών που το τρέχει."
+
+msgid "To reach %(context)s tokens, free %(free)s more on the graphics card: that rung needs %(needed)s, which is %(share)s of what is free and over the line where the driver starts paging."
+msgstr "Για να φτάσετε τα %(context)s tokens, ελευθερώστε %(free)s ακόμη στην κάρτα γραφικών: αυτή η βαθμίδα χρειάζεται %(needed)s, που είναι %(share)s του ελεύθερου χώρου και πάνω από το όριο όπου το πρόγραμμα οδήγησης αρχίζει να σελιδοποιεί."
+
+msgid "%(context)s tokens is past what this machine holds: that rung needs %(needed)s on the graphics card and there is nothing left to absorb what would not fit, so freeing the card is not the change that reaches it."
+msgstr "Τα %(context)s tokens ξεπερνούν όσα κρατά αυτό το μηχάνημα: αυτή η βαθμίδα χρειάζεται %(needed)s στην κάρτα γραφικών και δεν μένει τίποτα για να απορροφήσει ό,τι δεν χωρούσε, οπότε η απελευθέρωση της κάρτας δεν είναι η αλλαγή που τα φτάνει."
+
+msgid "%(quant)s, the next quantisation down, could not be sized: %(reason)s"
+msgstr "Ο %(quant)s, ο επόμενος κβαντισμός προς τα κάτω, δεν μπόρεσε να διαστασιολογηθεί: %(reason)s"
+
+msgid "%(quant)s, the next quantisation down, does not fit this machine either."
+msgstr "Ο %(quant)s, ο επόμενος κβαντισμός προς τα κάτω, δεν χωράει ούτε αυτός σε αυτό το μηχάνημα."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens."
+msgstr "Ο %(quant)s, ο επόμενος κβαντισμός προς τα κάτω, σχεδιάστηκε κι αυτός εδώ: %(mode)s, %(verdict)s, έως %(context)s tokens."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens at %(tps)s tokens per second."
+msgstr "Ο %(quant)s, ο επόμενος κβαντισμός προς τα κάτω, σχεδιάστηκε κι αυτός εδώ: %(mode)s, %(verdict)s, έως %(context)s tokens με %(tps)s tokens ανά δευτερόλεπτο."
+
+msgid "It fits entirely on the graphics card, which this one does not."
+msgstr "Χωράει ολόκληρος στην κάρτα γραφικών, κάτι που αυτός εδώ δεν κάνει."
+
+msgid "It fits better: %(theirs)s rather than %(mine)s."
+msgstr "Χωράει καλύτερα: %(theirs)s αντί για %(mine)s."
+
+msgid "It holds %(theirs)s tokens rather than %(mine)s."
+msgstr "Κρατά %(theirs)s tokens αντί για %(mine)s."
+
+msgid "It generates %(theirs)s tokens per second rather than %(mine)s."
+msgstr "Παράγει %(theirs)s tokens ανά δευτερόλεπτο αντί για %(mine)s."
+
+msgid "It is no better here, so there is nothing to gain by dropping to it."
+msgstr "Δεν είναι καλύτερος εδώ, οπότε δεν υπάρχει τίποτα να κερδίσετε πέφτοντας σε αυτόν."
+
+msgid "Every context this model offers already fits here; the machine is not what limits it."
+msgstr "Κάθε πλαίσιο που προσφέρει αυτό το μοντέλο χωράει ήδη εδώ· δεν είναι το μηχάνημα που το περιορίζει."
+
+msgid "What would change it"
+msgstr "Τι θα το άλλαζε"
+
+msgctxt "profile origin"
+msgid "bundled"
+msgstr "ενσωματωμένο"
+
+msgctxt "profile origin"
+msgid "yours"
+msgstr "δικό σας"
+
+msgid "%(ram)s RAM, no graphics card"
+msgstr "%(ram)s RAM, χωρίς κάρτα γραφικών"
+
+msgid "%(ram)s RAM shared with %(gpu)s"
+msgstr "%(ram)s RAM κοινή με %(gpu)s"
+
+msgid "%(ram)s RAM, %(gpu)s with %(vram)s"
+msgstr "%(ram)s RAM, %(gpu)s με %(vram)s"
+
+msgid "%(cores)d core / %(threads)d thread"
+msgid_plural "%(cores)d cores / %(threads)d threads"
+msgstr[0] "%(cores)d πυρήνας / %(threads)d νήμα"
+msgstr[1] "%(cores)d πυρήνες / %(threads)d νήματα"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "άγνωστο σύνολο εντολών"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s· %(cores)s· %(isa)s"
+
+msgid "%(total)s total, %(available)s available; bandwidth %(bandwidth)s"
+msgstr "%(total)s συνολικά, %(available)s διαθέσιμα· εύρος ζώνης %(bandwidth)s"
+
+msgctxt "GPU specifications"
+msgid "no bandwidth or compute figure"
+msgstr "χωρίς τιμή εύρους ζώνης ή υπολογιστικής ισχύος"
+
+msgid "%(specs)s (from the profile)"
+msgstr "%(specs)s (από το προφίλ)"
+
+msgid "%(specs)s (from the specification table)"
+msgstr "%(specs)s (από τον πίνακα προδιαγραφών)"
+
+msgctxt "GPU VRAM"
+msgid "VRAM from the shared pool"
+msgstr "VRAM από την κοινή δεξαμενή"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s)· %(vram)s· %(specs)s"
+
+msgid "Hardware profiles"
+msgstr "Προφίλ υλικού"
+
+msgid "Machine"
+msgstr "Μηχάνημα"
+
+msgid "a graphics card whose name contains %(text)s"
+msgstr "μια κάρτα γραφικών της οποίας το όνομα περιέχει %(text)s"
+
+msgid "a processor whose model contains %(text)s"
+msgstr "έναν επεξεργαστή του οποίου το μοντέλο περιέχει %(text)s"
+
+msgid "at least %(ram)s of memory"
+msgstr "τουλάχιστον %(ram)s μνήμης"
+
+msgctxt "profile match rules"
+msgid "none, so this profile is never chosen for you"
+msgstr "κανένας, οπότε αυτό το προφίλ δεν επιλέγεται ποτέ για εσάς"
+
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgid "From"
+msgstr "Από"
+
+msgid "File"
+msgstr "Αρχείο"
+
+msgid "Matches"
+msgstr "Ταιριάζει με"
+
+msgid "Recorded"
+msgstr "Καταγράφηκε"
+
+msgid "Provenance"
+msgstr "Προέλευση"
+
+msgid "recorded from %(source)s; this build stores it but does not apply it yet"
+msgstr "καταγράφηκε από %(source)s· αυτή η δόμηση το αποθηκεύει αλλά δεν το εφαρμόζει ακόμη"
+
+msgctxt "utilisation"
+msgid "n/a"
+msgstr "δ/υ"
+
+msgctxt "run mode"
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "run mode"
+msgid "experts in RAM"
+msgstr "ειδικοί στη RAM"
+
+msgctxt "run mode"
+msgid "split"
+msgstr "μοιρασμένο"
+
+msgctxt "run mode"
+msgid "CPU"
+msgstr "CPU"
+
+msgctxt "run mode"
+msgid "nowhere"
+msgstr "πουθενά"
+
+msgctxt "fit verdict"
+msgid "roomy"
+msgstr "άνετα"
+
+msgctxt "fit verdict"
+msgid "fits"
+msgstr "χωράει"
+
+msgctxt "fit verdict"
+msgid "tight"
+msgstr "οριακά"
+
+msgctxt "fit verdict"
+msgid "pages"
+msgstr "σελιδοποιεί"
+
+msgctxt "fit verdict"
+msgid "no room"
+msgstr "δεν χωράει"
+
+msgid "Roomy: there is room for a longer context or a second model."
+msgstr "Άνετα: υπάρχει χώρος για μεγαλύτερο πλαίσιο ή για δεύτερο μοντέλο."
+
+msgid "Fits: the intended configuration runs as planned."
+msgstr "Χωράει: η προβλεπόμενη διαμόρφωση τρέχει όπως σχεδιάστηκε."
+
+msgid "Tight: it runs, but a browser or a second process can push it over."
+msgstr "Οριακά: τρέχει, αλλά ένας φυλλομετρητής ή μια δεύτερη διεργασία μπορεί να το ρίξει έξω."
+
+msgid "Pages: this needs more of the graphics card than is free. The driver will not refuse it — it moves the overflow to system memory, the server starts, the log looks healthy, and generation runs at a fraction of its speed with nothing saying why."
+msgstr "Σελιδοποιεί: αυτό χρειάζεται περισσότερη κάρτα γραφικών από όση είναι ελεύθερη. Το πρόγραμμα οδήγησης δεν θα το αρνηθεί — μετακινεί την υπέρβαση στη μνήμη του συστήματος, ο διακομιστής ξεκινά, η καταγραφή φαίνεται υγιής, και η παραγωγή τρέχει σε κλάσμα της ταχύτητάς της χωρίς τίποτα να λέει γιατί."
+
+msgid "No room: more memory than this machine has, with nothing to page to."
+msgstr "Δεν χωράει: περισσότερη μνήμη από όση έχει αυτό το μηχάνημα, χωρίς πουθενά να σελιδοποιήσει."
+
+msgctxt "confidence"
+msgid "measured"
+msgstr "μετρημένη"
+
+msgctxt "confidence"
+msgid "calibrated"
+msgstr "βαθμονομημένη"
+
+msgctxt "confidence"
+msgid "estimated"
+msgstr "εκτιμώμενη"
+
+msgctxt "confidence"
+msgid "no estimate"
+msgstr "χωρίς εκτίμηση"
+
+msgid "Speeds are benchmarks taken on this machine, not predictions."
+msgstr "Οι ταχύτητες είναι μετρήσεις που λήφθηκαν σε αυτό το μηχάνημα, όχι προβλέψεις."
+
+msgid "Speeds are section 10's formula corrected by benchmarks taken on this machine."
+msgstr "Οι ταχύτητες είναι ο τύπος της ενότητας 10 διορθωμένος από μετρήσεις που λήφθηκαν σε αυτό το μηχάνημα."
+
+msgid "Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement."
+msgstr "Οι ταχύτητες είναι ο τύπος της ενότητας 10 με τις προεπιλεγμένες σταθερές του. Τίποτα δεν έχει μετρηθεί σε αυτό το μηχάνημα ακόμη, οπότε καμία τιμή εδώ δεν είναι μέτρηση."
+
+msgid "No speed could be estimated."
+msgstr "Δεν μπόρεσε να εκτιμηθεί καμία ταχύτητα."
+
+msgctxt "memory pool"
+msgid "card"
+msgstr "κάρτα"
+
+msgctxt "memory pool"
+msgid "system"
+msgstr "σύστημα"
+
+msgctxt "memory pool"
+msgid "disk"
+msgstr "δίσκος"
+
+msgctxt "budget component"
+msgid "dense weights"
+msgstr "πυκνά βάρη"
+
+msgctxt "budget component"
+msgid "shared experts"
+msgstr "κοινοί ειδικοί"
+
+msgctxt "budget component"
+msgid "routed experts"
+msgstr "δρομολογημένοι ειδικοί"
+
+msgctxt "budget component"
+msgid "token embedding"
+msgstr "ενσωμάτωση token"
+
+msgctxt "budget component"
+msgid "output head"
+msgstr "κεφαλή εξόδου"
+
+msgctxt "budget component"
+msgid "other weights"
+msgstr "άλλα βάρη"
+
+msgctxt "budget component"
+msgid "streamed tables"
+msgstr "πίνακες σε ροή"
+
+msgctxt "budget component"
+msgid "KV cache"
+msgstr "κρυφή μνήμη KV"
+
+msgctxt "budget component"
+msgid "KV cache, undeclared"
+msgstr "κρυφή μνήμη KV, αδήλωτη"
+
+msgctxt "budget component"
+msgid "recurrent state"
+msgstr "επαναληπτική κατάσταση"
+
+msgctxt "budget component"
+msgid "compute buffer"
+msgstr "ενδιάμεση μνήμη υπολογισμού"
+
+msgctxt "budget component"
+msgid "output buffer"
+msgstr "ενδιάμεση μνήμη εξόδου"
+
+msgctxt "budget component"
+msgid "vision projector"
+msgstr "προβολέας όρασης"
+
+msgctxt "budget component"
+msgid "vision compute"
+msgstr "υπολογισμός όρασης"
+
+msgctxt "budget component"
+msgid "backend overhead"
+msgstr "επιβάρυνση υποσυστήματος"
+
+msgctxt "budget component"
+msgid "process overhead"
+msgstr "επιβάρυνση διεργασίας"
+
+msgctxt "budget line source"
+msgid "file"
+msgstr "αρχείο"
+
+msgctxt "budget line source"
+msgid "formula"
+msgstr "τύπος"
+
+msgctxt "column heading"
+msgid "Component"
+msgstr "Στοιχείο"
+
+msgctxt "column heading"
+msgid "From"
+msgstr "Πηγή"
+
+msgid "Card: %(required)s of %(available)s free, %(share)s used."
+msgstr "Κάρτα: %(required)s από %(available)s ελεύθερα, %(share)s σε χρήση."
+
+msgid "System memory: %(required)s of %(available)s free, %(share)s used."
+msgstr "Μνήμη συστήματος: %(required)s από %(available)s ελεύθερα, %(share)s σε χρήση."
+
+msgid "%(component)s: %(note)s"
+msgstr "%(component)s: %(note)s"
+
+msgid "Context tiers"
+msgstr "Βαθμίδες πλαισίου"
+
+msgctxt "column heading"
+msgid "On this machine"
+msgstr "Σ' αυτό το μηχάνημα"
+
+msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
+msgstr "Ένα σενάριο εκκίνησης συγκρίνει την ελεύθερη μνήμη που βλέπει με τη στήλη της κάρτας και παίρνει τη μεγαλύτερη βαθμίδα που χωράει (δείτε docs/cli.md)."
+
+msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
+msgstr "%(gen)s tokens ανά δευτερόλεπτο παράγονται και %(prompt)s διαβάζονται, σε %(context)s tokens πλαισίου (%(confidence)s)."
+
+msgctxt "column heading"
+msgid "A token's time"
+msgstr "Ο χρόνος ενός token"
+
+msgctxt "token time"
+msgid "reading the card"
+msgstr "ανάγνωση της κάρτας"
+
+msgctxt "token time"
+msgid "reading system memory"
+msgstr "ανάγνωση της μνήμης συστήματος"
+
+msgctxt "token time"
+msgid "everything else"
+msgstr "όλα τα υπόλοιπα"
+
+msgctxt "column heading"
+msgid "A prompt token's time"
+msgstr "Ο χρόνος ενός token prompt"
+
+msgctxt "prompt token time"
+msgid "doing the arithmetic"
+msgstr "οι πράξεις"
+
+msgctxt "prompt token time"
+msgid "streaming the experts across the link"
+msgstr "ροή των ειδικών μέσω της σύνδεσης"
+
+msgctxt "prompt token time"
+msgid "reading the experts from system memory"
+msgstr "ανάγνωση των ειδικών από τη μνήμη συστήματος"
+
+msgctxt "column heading"
+msgid "Seconds"
+msgstr "Δευτ."
+
+msgctxt "column heading"
+msgid "Share"
+msgstr "Ποσοστό"
+
+msgid "Measured on %(date)s."
+msgstr "Μετρήθηκε στις %(date)s."
+
+msgid "Recorded elsewhere"
+msgstr "Καταγεγραμμένα αλλού"
+
+msgctxt "column heading"
+msgid "Run"
+msgstr "Εκτέλεση"
+
+msgctxt "column heading"
+msgid "Date"
+msgstr "Ημ/νία"
+
+msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
+msgstr "Αυτές είναι οι εκτελέσεις του ίδιου του επιμελητή στο δικό του μηχάνημα, όχι μετρήσεις αυτού εδώ, οπότε τίποτα από τα παραπάνω δεν χαρακτηρίζεται μετρημένο. Συγκρίνετέ τες με την εκτίμηση· το `llamafit bench` θα μετρήσει αυτό το μηχάνημα στη φάση 3."
+
+msgid "%(profile)s: %(flags)s"
+msgstr "%(profile)s: %(flags)s"
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
+msgstr "%(baseline)s από τον επιμελητή, μείον %(penalty)s για αυτόν τον κβαντισμό, συν %(bonus)s επειδή το %(use_case)s είναι η δουλειά για την οποία φτιάχτηκε."
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
+msgstr "%(baseline)s από τον επιμελητή, μείον %(penalty)s για αυτόν τον κβαντισμό· αναφέρει το %(use_case)s αλλά δεν φτιάχτηκε γι' αυτό."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
+msgstr "%(gen)s tokens ανά δευτερόλεπτο έναντι των %(target)s που ζητά αυτή η περίπτωση χρήσης, μείον %(penalty)s επειδή διαβάζει ένα prompt με %(prompt)s."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
+msgstr "%(gen)s tokens ανά δευτερόλεπτο έναντι των %(target)s που ζητά αυτή η περίπτωση χρήσης."
+
+msgid "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool is %(share)s full. The score wants at least %(low)s of the memory taken and no more than %(high)s of any one pool."
+msgstr "Τα βάρη του κρατούν %(weights)s από τα %(memory)s αυτού του μηχανήματος και η πιο στενή δεξαμενή είναι %(share)s γεμάτη. Η βαθμολογία θέλει τουλάχιστον %(low)s της μνήμης πιασμένη και όχι πάνω από %(high)s καμίας δεξαμενής."
+
+msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
+msgstr "Κρατά %(fit)s tokens από τα %(requested)s ως προς τα οποία βαθμολογείται αυτό το αίτημα."
+
+msgid "Score %(total)s"
+msgstr "Βαθμολογία %(total)s"
+
+msgctxt "column heading"
+msgid "Part"
+msgstr "Μέρος"
+
+msgctxt "column heading"
+msgid "Weight"
+msgstr "Βάρος"
+
+msgctxt "column heading"
+msgid "Adds"
+msgstr "Συμβολή"
+
+msgctxt "score part"
+msgid "quality"
+msgstr "ποιότητα"
+
+msgctxt "score part"
+msgid "speed"
+msgstr "ταχύτητα"
+
+msgctxt "score part"
+msgid "fit"
+msgstr "χώρος"
+
+msgctxt "score part"
+msgid "context"
+msgstr "πλαίσιο"
+
+msgctxt "board sort"
+msgid "score"
+msgstr "βαθμό"
+
+msgctxt "board sort"
+msgid "speed"
+msgstr "ταχύτητα"
+
+msgctxt "board sort"
+msgid "quality"
+msgstr "ποιότητα"
+
+msgctxt "board sort"
+msgid "context"
+msgstr "πλαίσιο"
+
+msgctxt "board sort"
+msgid "download size"
+msgstr "μέγεθος λήψης"
+
+msgctxt "board sort"
+msgid "prompt speed"
+msgstr "ταχύτητα prompt"
+
+msgctxt "board sort"
+msgid "card memory"
+msgstr "μνήμη κάρτας"
+
+msgctxt "board sort"
+msgid "system memory"
+msgstr "μνήμη συστήματος"
+
+msgctxt "board sort"
+msgid "fit"
+msgstr "χώρο"
+
+msgctxt "board sort"
+msgid "model id"
+msgstr "αναγνωριστικό μοντέλου"
+
+msgctxt "board sort"
+msgid "quantisation"
+msgstr "κβαντισμό"
+
+msgctxt "column heading"
+msgid "#"
+msgstr "#"
+
+msgctxt "column heading"
+msgid "Model"
+msgstr "Μοντέλο"
+
+msgctxt "column heading"
+msgid "Size"
+msgstr "Μέγεθος"
+
+msgctxt "column heading"
+msgid "Have"
+msgstr "Υπάρχει"
+
+msgctxt "column heading"
+msgid "Score"
+msgstr "Βαθμός"
+
+msgctxt "column heading"
+msgid "Qual"
+msgstr "Ποιότ."
+
+msgctxt "column heading"
+msgid "Prompt tok/s"
+msgstr "Prompt tok/s"
+
+msgctxt "column heading"
+msgid "How"
+msgstr "Πώς"
+
+msgctxt "model file on this machine"
+msgid "yes"
+msgstr "ναι"
+
+msgctxt "model file on this machine"
+msgid "no"
+msgstr "όχι"
+
+msgid "no placement of it fits this machine at any context"
+msgstr "καμία τοποθέτησή του δεν χωράει σε αυτό το μηχάνημα σε κανένα πλαίσιο"
+
+msgctxt "exclusion tag"
+msgid "no room"
+msgstr "δεν χωράει"
+
+msgctxt "exclusion tag"
+msgid "no facts"
+msgstr "χωρίς στοιχεία"
+
+msgctxt "exclusion tag"
+msgid "not ranked"
+msgstr "ακατάτακτο"
+
+msgctxt "board cell with no figure"
+msgid "–"
+msgstr "–"
+
+msgid "%(term)s is not a filter; the terms are %(terms)s, and anything else is text to look for."
+msgstr "Το %(term)s δεν είναι φίλτρο· οι όροι είναι %(terms)s, και οτιδήποτε άλλο είναι κείμενο προς αναζήτηση."
+
+msgid "fit>= takes one of %(values)s"
+msgstr "το fit>= δέχεται ένα από %(values)s"
+
+msgid "runs= takes one of %(values)s"
+msgstr "το runs= δέχεται ένα από %(values)s"
+
+msgid "%(term)s needs a number"
+msgstr "το %(term)s χρειάζεται αριθμό"
+
+msgid "%(term)s needs a size such as 8G, 7.5GiB or 512M"
+msgstr "το %(term)s χρειάζεται μέγεθος όπως 8G, 7.5GiB ή 512M"
+
+msgctxt "board filter"
+msgid "every candidate"
+msgstr "κάθε υποψήφιο"
+
+msgctxt "board filter"
+msgid "the ones with room to spare"
+msgstr "όσους αφήνουν χώρο"
+
+msgctxt "board filter"
+msgid "the ones that fit"
+msgstr "όσους χωρούν"
+
+msgctxt "board filter"
+msgid "the ones that run"
+msgstr "όσους τρέχουν"
+
+msgid "matching %(text)s"
+msgstr "που ταιριάζουν με %(text)s"
+
+msgid "running as %(mode)s"
+msgstr "που τρέχουν ως %(mode)s"
+
+msgid "at least %(tps)s tokens per second"
+msgstr "με τουλάχιστον %(tps)s tokens ανά δευτερόλεπτο"
+
+msgid "no more than %(size)s to download"
+msgstr "με το πολύ %(size)s προς λήψη"
+
+msgid "no more than %(size)s on the card"
+msgstr "με το πολύ %(size)s στην κάρτα"
+
+msgid "no more than %(size)s of system memory"
+msgstr "με το πολύ %(size)s μνήμης συστήματος"
+
+msgid "holding at least %(context)s tokens"
+msgstr "που κρατούν τουλάχιστον %(context)s tokens"
+
+msgid "a quality of at least %(quality)s"
+msgstr "με ποιότητα τουλάχιστον %(quality)s"
+
+msgid "%(shown)d of %(total)d shown"
+msgstr "%(shown)d από %(total)d εμφανίζονται"
+
+msgid "%(sort)s in reverse"
+msgstr "%(sort)s αντίστροφα"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s already on this machine."
+msgstr "%(counted)s, κατά %(sort)s, δείχνοντας %(filter)s ήδη σε αυτό το μηχάνημα."
+
+msgctxt "board filter"
+msgid "already on this machine"
+msgstr "ήδη σε αυτό το μηχάνημα"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s."
+msgstr "%(counted)s, κατά %(sort)s, δείχνοντας %(filter)s."
+
+msgid "Nothing was ranked. Every candidate is listed below with the reason; widen the request or free some memory."
+msgstr "Δεν κατατάχθηκε τίποτα. Κάθε υποψήφιος παρατίθεται παρακάτω με τον λόγο· διευρύνετε το αίτημα ή ελευθερώστε λίγη μνήμη."
+
+msgid "Recommended"
+msgstr "Προτεινόμενα"
+
+msgid "--min-tps 0: nobody is waiting on these tokens, so nothing was excluded for generating more slowly than a person reads."
+msgstr "--min-tps 0: κανείς δεν περιμένει αυτά τα tokens, οπότε τίποτα δεν αποκλείστηκε επειδή παράγει πιο αργά από όσο διαβάζει ένας άνθρωπος."
+
+msgid "--min-tps %(tps)s: this board wanted at least that many tokens per second, and anything slower is excluded below rather than ranked here."
+msgstr "--min-tps %(tps)s: αυτός ο πίνακας ήθελε τουλάχιστον τόσα tokens ανά δευτερόλεπτο, και ό,τι είναι πιο αργό αποκλείεται παρακάτω αντί να καταταχθεί εδώ."
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; --limit sets how many, and the rest are neither worse-behaved nor hidden, only further down."
+msgstr "Εμφανίζονται τα καλύτερα %(shown)s από τα %(total)s που πληρούσαν τις προϋποθέσεις· το --limit ορίζει πόσα, και τα υπόλοιπα δεν είναι ούτε χειρότερα ούτε κρυμμένα, απλώς πιο κάτω."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every speed above is a CPU-only speed. `llamafit doctor` says how to fix that."
+msgstr "Το %(gpus)s βρίσκεται σε αυτό το μηχάνημα και τίποτα δεν μπόρεσε να διαβάσει πόσο από αυτό είναι ελεύθερο, οπότε κάθε ταχύτητα παραπάνω είναι ταχύτητα μόνο με CPU. Το `llamafit doctor` λέει πώς διορθώνεται αυτό."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
+msgstr "Οι ταχύτητες αφορούν %(working)s tokens πλαισίου ώστε κάθε γραμμή να συγκρίνεται με όμοιά της· η στήλη πλαισίου δείχνει το μεγαλύτερο που κρατά καθεμιά. Διαστασιολογημένα και βαθμολογημένα για %(use_case)s στα %(requested)s tokens."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
+msgstr "Οι ταχύτητες αφορούν %(working)s tokens πλαισίου ώστε κάθε γραμμή να συγκρίνεται με όμοιά της· η στήλη πλαισίου δείχνει το μεγαλύτερο που κρατά καθεμιά. Διαστασιολογημένα για %(planned)s tokens και βαθμολογημένα για %(use_case)s έναντι %(requested)s."
+
+msgid "Weights: %(weights)s."
+msgstr "Βάρη: %(weights)s."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free, no card."
+msgstr "Υπολογίστηκε με %(ram_free)s από %(ram_total)s μνήμης συστήματος ελεύθερα, χωρίς κάρτα."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free and %(vram_free)s of %(vram_total)s free on the %(gpu)s."
+msgstr "Υπολογίστηκε με %(ram_free)s από %(ram_total)s μνήμης συστήματος ελεύθερα και %(vram_free)s από %(vram_total)s ελεύθερα στη %(gpu)s."
+
+msgid "Every speed above is derived from %(bandwidth)s of memory bandwidth."
+msgstr "Κάθε ταχύτητα παραπάνω προκύπτει από %(bandwidth)s εύρους ζώνης μνήμης."
+
+msgid "That bandwidth was kept from an earlier run on this machine; `llamafit system --refresh-bandwidth` times it again."
+msgstr "Αυτό το εύρος ζώνης κρατήθηκε από προηγούμενη εκτέλεση σε αυτό το μηχάνημα· το `llamafit system --refresh-bandwidth` το ξαναχρονομετρά."
+
+msgid "generates fewer than the %(floor)s tokens per second this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "παράγει λιγότερα από τα %(floor)s tokens ανά δευτερόλεπτο που ζητά αυτό το αίτημα· κατεβάστε το --min-tps ή διαλέξτε μικρότερο μοντέλο ή κβαντισμό"
+
+msgid "generates fewer than the %(floor)s tokens per second a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "παράγει λιγότερα από τα %(floor)s tokens ανά δευτερόλεπτο που διαβάζει ένας άνθρωπος: εργαλείο δέσμης σε αυτό το μηχάνημα και όχι εργαλείο για να κάθεστε μπροστά του· ένα μικρότερο μοντέλο ή κβαντισμός θα προλάβαινε"
+
+msgid "%(tps)s tok/s"
+msgstr "%(tps)s tok/s"
+
+msgctxt "exclusion tag"
+msgid "too slow"
+msgstr "πολύ αργό"
+
+msgctxt "exclusion tag"
+msgid "too big"
+msgstr "πολύ μεγάλο"
+
+msgid "larger to download than the %(limit)s this request allows"
+msgstr "μεγαλύτερο προς λήψη από το %(limit)s που επιτρέπει αυτό το αίτημα"
+
+msgctxt "exclusion tag"
+msgid "unknown quant"
+msgstr "άγνωστο κβάντ."
+
+msgid "a quantisation whose cost in quality is not known, so it cannot be scored"
+msgstr "κβαντισμός του οποίου το κόστος σε ποιότητα δεν είναι γνωστό, οπότε δεν μπορεί να βαθμολογηθεί"
+
+msgid "needs more memory than this machine has, even at its smallest context"
+msgstr "χρειάζεται περισσότερη μνήμη από όση έχει αυτό το μηχάνημα, ακόμη και στο μικρότερο πλαίσιό του"
+
+msgctxt "exclusion tag"
+msgid "unsupported"
+msgstr "ανυποστήρικτο"
+
+msgid "no run mode supports this model on this machine"
+msgstr "κανένας τρόπος εκτέλεσης δεν υποστηρίζει αυτό το μοντέλο σε αυτό το μηχάνημα"
+
+msgctxt "exclusion tag"
+msgid "short context"
+msgstr "μικρό πλαίσιο"
+
+msgid "holds fewer than the %(minimum)s tokens asked for; lower the minimum context or free memory to see it ranked"
+msgstr "κρατά λιγότερα από τα %(minimum)s tokens που ζητήθηκαν· κατεβάστε το ελάχιστο πλαίσιο ή ελευθερώστε μνήμη για να το δείτε καταταγμένο"
+
+msgctxt "exclusion tag"
+msgid "no estimate"
+msgstr "χωρίς εκτίμηση"
+
+msgid "no speed estimate, so it cannot be ranked against models that have one"
+msgstr "καμία εκτίμηση ταχύτητας, οπότε δεν μπορεί να καταταχθεί έναντι μοντέλων που έχουν"
+
+msgctxt "exclusion tag"
+msgid "no %(capability)s"
+msgstr "χωρίς %(capability)s"
+
+msgid "no %(capability)s capability; drop it from the request, or ask for a use case that does not need it"
+msgstr "καμία δυνατότητα %(capability)s· αφαιρέστε την από το αίτημα, ή ζητήστε μια περίπτωση χρήσης που δεν τη χρειάζεται"
+
+msgid "Not ranked"
+msgstr "Χωρίς κατάταξη"
+
+msgid "Not placed"
+msgstr "Χωρίς τοποθέτηση"
+
+msgid "%(tag)s (%(count)s):"
+msgstr "%(tag)s (%(count)s):"
+
+msgid "%(model)s %(quant)s: %(reason)s"
+msgstr "%(model)s %(quant)s: %(reason)s"
+
+msgid "%(tag)s (%(count)s): %(sentence)s."
+msgstr "%(tag)s (%(count)s): %(sentence)s."
+
+msgid "%(model)s %(quant)s (%(figure)s)"
+msgstr "%(model)s %(quant)s (%(figure)s)"
+
+msgid "%(name)s %(quant)s (%(tag)s)"
+msgstr "%(name)s %(quant)s (%(tag)s)"
+
+msgid "%(rank)s. %(name)s %(quant)s"
+msgstr "%(rank)s. %(name)s %(quant)s"
+
+msgid "Nothing fits this machine at that threshold. Try --min-fit tight, or drop --perfect."
+msgstr "Τίποτα δεν χωράει σε αυτό το μηχάνημα με αυτό το κατώφλι. Δοκιμάστε --min-fit tight, ή αφαιρέστε το --perfect."
+
+msgid "Fit on the simulated machine"
+msgstr "Χώρος στο προσομοιωμένο μηχάνημα"
+
+msgid "Fit on this machine"
+msgstr "Χώρος σε αυτό το μηχάνημα"
+
+msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
+msgstr "Διαστασιολογημένα για %(context)s tokens. Η στήλη πλαισίου δείχνει το μεγαλύτερο που κρατά καθένα στον εμφανιζόμενο τρόπο."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every row was sized as if there were no card. `llamafit doctor` says how to fix that."
+msgstr "Το %(gpus)s βρίσκεται σε αυτό το μηχάνημα και τίποτα δεν μπόρεσε να διαβάσει πόσο από αυτό είναι ελεύθερο, οπότε κάθε γραμμή διαστασιολογήθηκε σαν να μην υπήρχε κάρτα. Το `llamafit doctor` λέει πώς διορθώνεται αυτό."
+
+msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
+msgstr "%(mode)s στα %(context)s tokens, μικροπαρτίδα %(ub)s, κρυφή μνήμη %(kv)s, %(threads)s νήματα."
+
+msgid "This reaches the %(target)s tokens per second asked for."
+msgstr "Αυτό φτάνει τα %(target)s tokens ανά δευτερόλεπτο που ζητήθηκαν."
+
+msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
+msgstr "Δεν φτάνει τα %(target)s tokens ανά δευτερόλεπτο εδώ, αλλά %(context)s tokens πλαισίου θα τα έφταναν: δώστε --context %(tokens)s."
+
+msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
+msgstr "Τίποτα από όσα μπορούν να κάνουν αυτό το μοντέλο και ο κβαντισμός σε αυτό το μηχάνημα δεν φτάνει τα %(target)s tokens ανά δευτερόλεπτο· η ταχύτερη διαμόρφωση που δοκιμάστηκε είναι %(best)s. Ένα μικρότερο μοντέλο ή ένας μικρότερος κβαντισμός είναι η αλλαγή που θα τα έφτανε."
+
+msgid "%(name)s %(quant)s"
+msgstr "%(name)s %(quant)s"
+
+msgid "Memory budget"
+msgstr "Προϋπολογισμός μνήμης"
+
+msgid "The %(context)s tokens asked for would have cost"
+msgstr "Τα %(context)s tokens που ζητήθηκαν θα κόστιζαν"
+
+msgid "Command line"
+msgstr "Γραμμή εντολών"
+
+msgid "Model file: %(path)s."
+msgstr "Αρχείο μοντέλου: %(path)s."
+
+msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
+msgstr "Αρχείο μοντέλου: %(path)s, που δεν βρίσκεται ακόμη σε αυτό το μηχάνημα· εκεί θα το έβαζε μια λήψη. %(size)s προς λήψη."
+
+msgid "%(shown)d of %(total)d candidate shown."
+msgid_plural "%(shown)d of %(total)d candidates shown."
+msgstr[0] "%(shown)d από %(total)d υποψήφιο εμφανίζεται."
+msgstr[1] "%(shown)d από %(total)d υποψηφίους εμφανίζονται."
+
+msgid "Release"
+msgstr "Κυκλοφορία"
+
+msgid "%(tag)s (build %(build)s)"
+msgstr "%(tag)s (δόμηση %(build)s)"
+
+msgid "Backend"
+msgstr "Υποσύστημα"
+
+msgid "Archive"
+msgstr "Αρχειοθήκη"
+
+msgid "Also"
+msgstr "Επίσης"
+
+msgid "Download"
+msgstr "Λήψη"
+
+msgid "%(size)s (%(done)s already on disk)"
+msgstr "%(size)s (%(done)s ήδη στον δίσκο)"
+
+msgid "Checksum"
+msgstr "Άθροισμα ελέγχου"
+
+msgid "published, checked before anything is unpacked"
+msgstr "δημοσιευμένο, ελέγχεται πριν αποσυμπιεστεί οτιδήποτε"
+
+msgid "none published"
+msgstr "κανένα δημοσιευμένο"
+
+msgid "Install into"
+msgstr "Εγκατάσταση σε"
+
+msgid "Directory"
+msgstr "Φάκελος"
+
+msgid "Free space"
+msgstr "Ελεύθερος χώρος"
+
+msgid "Free space (cache)"
+msgstr "Ελεύθερος χώρος (κρυφή μνήμη)"
+
+msgid "%(free)s on %(path)s, %(needed)s needed"
+msgstr "%(free)s στο %(path)s, χρειάζονται %(needed)s"
+
+msgid "will be created"
+msgstr "θα δημιουργηθεί"
+
+msgid "exists and is empty"
+msgstr "υπάρχει και είναι κενός"
+
+msgid "holds %(tag)s, installed by LlamaFit; it will be replaced"
+msgstr "περιέχει %(tag)s, εγκατεστημένο από το LlamaFit· θα αντικατασταθεί"
+
+msgid "installed by LlamaFit; it will be replaced"
+msgstr "εγκατεστημένο από το LlamaFit· θα αντικατασταθεί"
+
+msgid "was not installed by LlamaFit"
+msgstr "δεν εγκαταστάθηκε από το LlamaFit"
+
+msgid "Installed llama.cpp %(tag)s into %(path)s."
+msgstr "Εγκαταστάθηκε το llama.cpp %(tag)s στο %(path)s."
+
+msgid "Replaced %(tag)s."
+msgstr "Αντικαταστάθηκε το %(tag)s."
+
+msgid "Backends found in it: %(backends)s"
+msgstr "Υποσυστήματα που βρέθηκαν σε αυτό: %(backends)s"
+
+msgid "none"
+msgstr "κανένα"
+
+msgid "Check it with `llamafit doctor`."
+msgstr "Ελέγξτε το με `llamafit doctor`."
+
+msgid "already here"
+msgstr "ήδη εδώ"
+
+msgid "to fetch"
+msgstr "προς λήψη"
+
+msgid "About to download"
+msgstr "Πρόκειται να κατέβουν"
+
+msgid "Role"
+msgstr "Ρόλος"
+
+msgid "Status"
+msgstr "Κατάσταση"
+
+msgid "%(name)s %(quant)s from %(repo)s"
+msgstr "%(name)s %(quant)s από %(repo)s"
+
+msgid "%(count)d file, %(total)s in all, %(needed)s still to fetch."
+msgid_plural "%(count)d files, %(total)s in all, %(needed)s still to fetch."
+msgstr[0] "%(count)d αρχείο, %(total)s συνολικά, %(needed)s ακόμη προς λήψη."
+msgstr[1] "%(count)d αρχεία, %(total)s συνολικά, %(needed)s ακόμη προς λήψη."
+
+msgid "Into %(path)s, which has %(free)s free; %(after)s would be left."
+msgstr "Στο %(path)s, που έχει %(free)s ελεύθερα· θα έμεναν %(after)s."
+
+msgid "The catalog holds no checksum for %(files)s."
+msgid_plural "The catalog holds no checksums for %(files)s."
+msgstr[0] "Ο κατάλογος δεν έχει άθροισμα ελέγχου για %(files)s."
+msgstr[1] "Ο κατάλογος δεν έχει αθροίσματα ελέγχου για %(files)s."
+
+msgid "%(model)s %(quant)s is already here; nothing to do."
+msgstr "Το %(model)s %(quant)s είναι ήδη εδώ· δεν υπάρχει τίποτα να γίνει."
+
+msgid "Stopped. What arrived is kept; run `llamafit install model %(model)s` again to carry on from there."
+msgstr "Σταμάτησε. Ό,τι έφτασε διατηρείται· εκτελέστε ξανά `llamafit install model %(model)s` για να συνεχίσει από εκεί."
+
+msgid "%(count)d file, %(size)s, checked against the catalog."
+msgid_plural "%(count)d files, %(size)s, checked against the catalog."
+msgstr[0] "%(count)d αρχείο, %(size)s, ελεγμένο ως προς τον κατάλογο."
+msgstr[1] "%(count)d αρχεία, %(size)s, ελεγμένα ως προς τον κατάλογο."
+
+msgid "In %(path)s. Run `llamafit plan %(model)s` for the command line that runs it."
+msgstr "Στο %(path)s. Εκτελέστε `llamafit plan %(model)s` για τη γραμμή εντολών που το τρέχει."
+
+msgid "Downloads"
+msgstr "Λήψεις"
+
+msgid "When"
+msgstr "Πότε"
+
+msgid "Model"
+msgstr "Μοντέλο"
+
+msgid "Quant"
+msgstr "Κβαντισμός"
+
+msgid "Outcome"
+msgstr "Έκβαση"
+
+msgid "finished"
+msgstr "ολοκληρώθηκε"
+
+msgid "stopped"
+msgstr "σταμάτησε"
+
+msgid "Bind to this address instead of 127.0.0.1. Anything but loopback puts the dashboard on your network, where there is no password and no login; it prints what that exposes before it starts."
+msgstr "Δεσμεύεται σε αυτή τη διεύθυνση αντί για 127.0.0.1. Οτιδήποτε εκτός από loopback βάζει τον πίνακα ελέγχου στο δίκτυό σας, όπου δεν υπάρχει κωδικός ούτε σύνδεση· εκτυπώνει τι εκθέτει αυτό πριν ξεκινήσει."
+
+msgid "Listen on this port."
+msgstr "Ακούει σε αυτή τη θύρα."
+
+msgid ""
+"Open the dashboard in a browser: the board, the machine and the plans.\n"
+"\n"
+"It serves the same numbers `--json` prints, from the same code, on this machine only. Nothing is fetched from the internet to draw the page."
+msgstr ""
+"Ανοίγει τον πίνακα ελέγχου σε φυλλομετρητή: τον πίνακα, το μηχάνημα και τα σχέδια.\n"
+"\n"
+"Σερβίρει τις ίδιες τιμές που εκτυπώνει το --json, από τον ίδιο κώδικα, μόνο σε αυτό το μηχάνημα. Τίποτα δεν κατεβαίνει από το διαδίκτυο για να σχεδιαστεί η σελίδα."
+
+msgid "Open the page in your browser."
+msgstr "Ανοίγει τη σελίδα στον φυλλομετρητή σας."
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores, then open the Simulate panel on the page: it substitutes a machine for as long as you want it, and marks every answer it produces."
+msgstr "Αφαιρέστε τα --profile, --memory, --ram και --cpu-cores, και μετά ανοίξτε τον πίνακα Προσομοίωση στη σελίδα: υποκαθιστά ένα μηχάνημα για όσο θέλετε, και σημειώνει κάθε απάντηση που παράγει."
+
+msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
+msgstr "Το LlamaFit βρίσκεται στο %(url)s. Πατήστε Ctrl+C για να σταματήσει."
+
 msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
 msgstr "Δείχνει τι έχει αυτό το μηχάνημα: CPU, μνήμη, GPU, δίσκους και llama.cpp."
 
 msgid "Skip the RAM bandwidth measurement."
 msgstr "Παραλείπει τη μέτρηση του εύρους ζώνης της RAM."
 
+msgid "Measure RAM bandwidth again instead of reading back the figure kept for this machine, and keep the new one."
+msgstr "Μετρά ξανά το εύρος ζώνης της RAM αντί να διαβάσει την τιμή που κρατήθηκε για αυτό το μηχάνημα, και κρατά τη νέα."
+
+msgid "%(url)s answered a range request with the whole file."
+msgstr "Το %(url)s απάντησε σε αίτημα εύρους με ολόκληρο το αρχείο."
+
+msgid "%(url)s is rate-limiting this download (HTTP %(status)d)."
+msgstr "Το %(url)s περιορίζει τον ρυθμό αυτής της λήψης (HTTP %(status)d)."
+
+msgid "Check your network connection and run the command again to resume."
+msgstr "Ελέγξτε τη σύνδεσή σας στο δίκτυο και εκτελέστε ξανά την εντολή για να συνεχίσει."
+
+msgid "%(file)s needs authorisation (HTTP %(status)d)."
+msgstr "Το %(file)s χρειάζεται εξουσιοδότηση (HTTP %(status)d)."
+
+msgid "This repository is gated. Accept its terms on Hugging Face and set HF_TOKEN to a token that can read it."
+msgstr "Αυτό το αποθετήριο είναι περιορισμένο. Αποδεχτείτε τους όρους του στο Hugging Face και ορίστε το HF_TOKEN σε ένα διακριτικό που μπορεί να το διαβάσει."
+
+msgid "%(file)s is not at %(url)s any more (HTTP 404)."
+msgstr "Το %(file)s δεν βρίσκεται πια στο %(url)s (HTTP 404)."
+
+msgid "Run `llamafit catalog refresh` to pick up the repository's current files."
+msgstr "Εκτελέστε `llamafit catalog refresh` για να ληφθούν τα τρέχοντα αρχεία του αποθετηρίου."
+
+msgid "%(url)s returned HTTP %(status)d."
+msgstr "Το %(url)s επέστρεψε HTTP %(status)d."
+
+msgid "Confirm the URL points at a downloadable file."
+msgstr "Επιβεβαιώστε ότι το URL δείχνει σε αρχείο που μπορεί να ληφθεί."
+
+msgid "%(url)s did not say how big %(file)s is."
+msgstr "Το %(url)s δεν είπε πόσο μεγάλο είναι το %(file)s."
+
+msgid "%(file)s is %(actual)s on the server but the catalog says %(expected)s; the repository has been re-uploaded since the catalog was refreshed."
+msgstr "Το %(file)s είναι %(actual)s στον διακομιστή αλλά ο κατάλογος λέει %(expected)s· το αποθετήριο ανέβηκε ξανά αφότου ανανεώθηκε ο κατάλογος."
+
+msgid "Run `llamafit catalog refresh` and try again."
+msgstr "Εκτελέστε `llamafit catalog refresh` και δοκιμάστε ξανά."
+
+msgid "%(file)s: the server sent %(actual)d bytes of a %(expected)d byte range."
+msgstr "%(file)s: ο διακομιστής έστειλε %(actual)d bytes από ένα εύρος %(expected)d bytes."
+
+msgid "Run the command again; the parts that did arrive are kept."
+msgstr "Εκτελέστε ξανά την εντολή· τα μέρη που έφτασαν διατηρούνται."
+
+msgid "Stopped."
+msgstr "Σταμάτησε."
+
+msgid "%(file)s: the server asked for fewer connections; using %(count)d."
+msgstr "%(file)s: ο διακομιστής ζήτησε λιγότερες συνδέσεις· χρησιμοποιούνται %(count)d."
+
+msgid "%(file)s: this server will not serve byte ranges; fetching it in one stream."
+msgstr "%(file)s: αυτός ο διακομιστής δεν εξυπηρετεί εύρη bytes· γίνεται λήψη σε μία ροή."
+
+msgid "%(file)s does not match its checksum; fetching it again."
+msgstr "Το %(file)s δεν ταιριάζει με το άθροισμα ελέγχου του· κατεβαίνει ξανά."
+
+msgid "Check that the download directory is writable."
+msgstr "Ελέγξτε ότι ο φάκελος λήψεων είναι εγγράψιμος."
+
+msgid "%(needed)s is needed for this model but %(path)s has only %(free)s free, %(short)s short of what is wanted with %(headroom)s left spare."
+msgstr "Χρειάζονται %(needed)s για αυτό το μοντέλο αλλά το %(path)s έχει μόνο %(free)s ελεύθερα, %(short)s λιγότερα από όσα χρειάζονται με %(headroom)s περιθώριο."
+
+msgid "Free some space, or choose another directory with --dir, or a smaller quantisation with --quant."
+msgstr "Ελευθερώστε χώρο, ή διαλέξτε άλλον φάκελο με --dir, ή μικρότερο κβαντισμό με --quant."
+
+msgid "could not measure the free space on %(path)s: %(error)s"
+msgstr "δεν ήταν δυνατή η μέτρηση του ελεύθερου χώρου στο %(path)s: %(error)s"
+
+msgid "Check that the download directory's volume is available."
+msgstr "Ελέγξτε ότι ο τόμος του φακέλου λήψεων είναι διαθέσιμος."
+
+msgid "%(model)s has no downloadable source in the catalog."
+msgstr "Το %(model)s δεν έχει πηγή λήψης στον κατάλογο."
+
+msgid "Only Hugging Face sources can be installed; this entry has none."
+msgstr "Μόνο πηγές Hugging Face μπορούν να εγκατασταθούν· αυτή η εγγραφή δεν έχει καμία."
+
+msgid "the catalog has no file list for %(model)s %(quant)s."
+msgstr "ο κατάλογος δεν έχει λίστα αρχείων για το %(model)s %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the file names."
+msgstr "Εκτελέστε `llamafit catalog refresh` για να συμπληρωθούν τα ονόματα των αρχείων."
+
+msgid "%(model)s publishes no quantisations."
+msgstr "Το %(model)s δεν δημοσιεύει κβαντισμούς."
+
+msgid "%(model)s does not publish a %(quant)s quantisation."
+msgstr "Το %(model)s δεν δημοσιεύει κβαντισμό %(quant)s."
+
+msgid "It publishes: %(quants)s"
+msgstr "Δημοσιεύει: %(quants)s"
+
+msgid "the catalog does not record how big %(quant)s is."
+msgstr "ο κατάλογος δεν καταγράφει πόσο μεγάλος είναι ο %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the sizes."
+msgstr "Εκτελέστε `llamafit catalog refresh` για να συμπληρωθούν τα μεγέθη."
+
+msgid "the catalog holds no checksum for %(files)s."
+msgid_plural "the catalog holds no checksums for %(files)s."
+msgstr[0] "ο κατάλογος δεν έχει άθροισμα ελέγχου για %(files)s."
+msgstr[1] "ο κατάλογος δεν έχει αθροίσματα ελέγχου για %(files)s."
+
+msgid "Run `llamafit catalog refresh` to fetch them, or pass --allow-unverified to download anyway and check the files yourself."
+msgstr "Εκτελέστε `llamafit catalog refresh` για να ληφθούν, ή δώστε --allow-unverified για να γίνει λήψη ούτως ή άλλως και να ελέγξετε τα αρχεία μόνοι σας."
+
+msgid "%(done)s of %(total)s"
+msgstr "%(done)s από %(total)s"
+
+msgid "%(rate)s/s"
+msgstr "%(rate)s/s"
+
+msgid "Fetching %(file)s (%(size)s)"
+msgstr "Λήψη του %(file)s (%(size)s)"
+
+msgid "Checking %(file)s against its checksum"
+msgstr "Έλεγχος του %(file)s ως προς το άθροισμα ελέγχου του"
+
+msgid "Done: %(file)s"
+msgstr "Έτοιμο: %(file)s"
+
+msgid "could not create %(path)s: %(error)s"
+msgstr "δεν ήταν δυνατή η δημιουργία του %(path)s: %(error)s"
+
+msgid "Check that the download directory is writable and has room."
+msgstr "Ελέγξτε ότι ο φάκελος λήψεων είναι εγγράψιμος και έχει χώρο."
+
+msgid "could not move %(source)s into place: %(error)s"
+msgstr "δεν ήταν δυνατή η μετακίνηση του %(source)s στη θέση του: %(error)s"
+
+msgid "could not record progress in %(path)s: %(error)s"
+msgstr "δεν ήταν δυνατή η καταγραφή της προόδου στο %(path)s: %(error)s"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "δεν ήταν δυνατή η λήψη του %(url)s: %(error)s"
+
+msgid "Stopped before the checksum was finished."
+msgstr "Σταμάτησε πριν ολοκληρωθεί το άθροισμα ελέγχου."
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "δεν ήταν δυνατή η ανάγνωση του %(path)s: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Ελέγξτε ότι το αρχείο υπάρχει και είναι αναγνώσιμο."
+
+msgid "%(file)s is %(actual)d bytes, but the catalog says %(expected)d"
+msgstr "Το %(file)s είναι %(actual)d bytes, αλλά ο κατάλογος λέει %(expected)d"
+
+msgid "The transfer was cut short. Run the command again to fetch it properly."
+msgstr "Η μεταφορά κόπηκε. Εκτελέστε ξανά την εντολή για να ληφθεί σωστά."
+
+msgid "%(file)s does not match the checksum the catalog holds."
+msgstr "Το %(file)s δεν ταιριάζει με το άθροισμα ελέγχου που έχει ο κατάλογος."
+
+msgid "Expected %(expected)s but the file hashes to %(actual)s. The bad copy has been deleted; run the command again to fetch it."
+msgstr "Αναμενόταν %(expected)s αλλά το αρχείο δίνει %(actual)s. Το χαλασμένο αντίγραφο διαγράφηκε· εκτελέστε ξανά την εντολή για να ληφθεί."
+
 msgid "Command: %(command)s"
 msgstr "Εντολή: %(command)s"
 
 msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
 msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "περικομμένη κεφαλίδα GGUF: ζητήθηκε %(wanted)d byte στη θέση %(offset)d, ελήφθησαν %(got)d"
+msgstr[1] "περικομμένη κεφαλίδα GGUF: ζητήθηκαν %(wanted)d bytes στη θέση %(offset)d, ελήφθησαν %(got)d"
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Το αρχείο μπορεί να κατεβαίνει ακόμη, ή το URL μπορεί να μην είναι αρχείο GGUF."
@@ -656,10 +2705,23 @@ msgstr "μη υποστηριζόμενη έκδοση GGUF %(version)d στη �
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "Το LlamaFit υποστηρίζει τις εκδόσεις GGUF %(versions)s."
 
+msgid "A memory budget built without these tensors would be too small, so none is built. If llama.cpp loads the file, LlamaFit's tensor-size table is missing the type."
+msgstr "Ένας προϋπολογισμός μνήμης φτιαγμένος χωρίς αυτούς τους τανυστές θα ήταν πολύ μικρός, οπότε δεν φτιάχνεται κανένας. Αν το llama.cpp φορτώνει το αρχείο, τότε από τον πίνακα μεγεθών τανυστών του LlamaFit λείπει ο τύπος."
+
+msgid "%(type)d (%(count)d tensor, first %(name)s)"
+msgid_plural "%(type)d (%(count)d tensors, first %(name)s)"
+msgstr[0] "%(type)d (%(count)d τανυστής, πρώτος %(name)s)"
+msgstr[1] "%(type)d (%(count)d τανυστές, πρώτος %(name)s)"
+
+msgid "cannot size this GGUF file: %(count)d tensor uses a GGML type LlamaFit does not know: %(details)s"
+msgid_plural "cannot size this GGUF file: %(count)d tensors use GGML types LlamaFit does not know: %(details)s"
+msgstr[0] "δεν είναι δυνατός ο υπολογισμός του μεγέθους αυτού του αρχείου GGUF: %(count)d τανυστής χρησιμοποιεί τύπο GGML που δεν γνωρίζει το LlamaFit: %(details)s"
+msgstr[1] "δεν είναι δυνατός ο υπολογισμός του μεγέθους αυτού του αρχείου GGUF: %(count)d τανυστές χρησιμοποιούν τύπους GGML που δεν γνωρίζει το LlamaFit: %(details)s"
+
 msgid "%(count)d shard"
 msgid_plural "%(count)d shards"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d τμήμα"
+msgstr[1] "%(count)d τμήματα"
 
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "αυτά τα αρχεία GGUF δεν είναι ένα διαιρεμένο μοντέλο: διαφωνούν ως προς το '%(key)s', δηλώνοντας %(values)s"
@@ -675,14 +2737,14 @@ msgstr "Δώστε το αρχείο του μοντέλου, ή κάθε τμή
 
 msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
 msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d αρχείο GGUF από τα %(total)d που δόθηκαν δεν φέρει κλειδί '%(key)s', οπότε η θέση του σε ένα διαιρεμένο μοντέλο δεν μπορεί να προσδιοριστεί"
+msgstr[1] "%(count)d αρχεία GGUF από τα %(total)d που δόθηκαν δεν φέρουν κλειδί '%(key)s', οπότε η θέση τους σε ένα διαιρεμένο μοντέλο δεν μπορεί να προσδιοριστεί"
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Δώστε ένα μόνο αδιαίρετο αρχείο, ή κάθε τμήμα ενός διαιρεμένου μοντέλου."
 
 msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr ""
+msgstr "ελλιπές σύνολο τμημάτων: το μοντέλο δηλώνει %(shards)s και έφτασαν %(arrived)d (%(key)s %(numbers)s)"
 
 msgid "Pass every shard of the split model."
 msgstr "Δώστε κάθε τμήμα του διαιρεμένου μοντέλου."
@@ -700,21 +2762,12 @@ msgid "Pass each shard of the split model exactly once."
 msgstr "Δώστε κάθε τμήμα του διαιρεμένου μοντέλου ακριβώς μία φορά."
 
 msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
-msgstr ""
+msgstr "ελλιπές σύνολο τμημάτων: το μοντέλο δηλώνει %(tensors)s και τα %(shards)s του κρατούν %(held)d συνολικά"
 
 msgid "%(count)d tensor"
 msgid_plural "%(count)d tensors"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "could not read %(path)s: %(error)s"
-msgstr "δεν ήταν δυνατή η ανάγνωση του %(path)s: %(error)s"
-
-msgid "Check that the file exists and is readable."
-msgstr "Ελέγξτε ότι το αρχείο υπάρχει και είναι αναγνώσιμο."
-
-msgid "could not fetch %(url)s: %(error)s"
-msgstr "δεν ήταν δυνατή η λήψη του %(url)s: %(error)s"
+msgstr[0] "%(count)d τανυστής"
+msgstr[1] "%(count)d τανυστές"
 
 msgid "Check your network connection and that the URL is reachable."
 msgstr "Ελέγξτε τη σύνδεσή σας στο δίκτυο και ότι το URL είναι προσβάσιμο."
@@ -744,6 +2797,9 @@ msgstr "το WMI δεν επέστρεψε ελεγκτές βίντεο"
 msgid "lspci found no display controllers"
 msgstr "το lspci δεν βρήκε ελεγκτές οθόνης"
 
+msgid "vulkaninfo reported no discrete device with a memory heap"
+msgstr "το vulkaninfo δεν ανέφερε διακριτή συσκευή με σωρό μνήμης"
+
 msgid "no populated memory modules"
 msgstr "καμία κατειλημμένη μονάδα μνήμης"
 
@@ -752,8 +2808,8 @@ msgstr "χωρίς SPMemoryDataType"
 
 msgid "%(program)s: timed out after %(seconds)s second"
 msgid_plural "%(program)s: timed out after %(seconds)s seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(program)s: λήξη χρόνου μετά από %(seconds)s δευτερόλεπτο"
+msgstr[1] "%(program)s: λήξη χρόνου μετά από %(seconds)s δευτερόλεπτα"
 
 msgid "empty command"
 msgstr "κενή εντολή"
@@ -764,11 +2820,47 @@ msgstr "%(program)s: %(error)s"
 msgid "%(program)s: not found"
 msgstr "%(program)s: δεν βρέθηκε"
 
-msgid "no output"
-msgstr "χωρίς έξοδο"
-
 msgid "exit code %(code)d: %(detail)s"
 msgstr "κωδικός εξόδου %(code)d: %(detail)s"
+
+msgid "no hardware profile file at %(path)s"
+msgstr "δεν υπάρχει αρχείο προφίλ υλικού στο %(path)s"
+
+msgid "Run `llamafit hardware list` to see the profiles LlamaFit has."
+msgstr "Εκτελέστε `llamafit hardware list` για να δείτε τα προφίλ που έχει το LlamaFit."
+
+msgid "%(path)s is not a valid hardware profile: %(details)s"
+msgstr "το %(path)s δεν είναι έγκυρο προφίλ υλικού: %(details)s"
+
+msgid "Run `llamafit hardware validate FILE` for the whole list."
+msgstr "Εκτελέστε `llamafit hardware validate FILE` για ολόκληρη τη λίστα."
+
+msgid "no hardware profile named %(name)s"
+msgstr "δεν υπάρχει προφίλ υλικού με όνομα %(name)s"
+
+msgid "Profiles LlamaFit has: %(names)s"
+msgstr "Προφίλ που έχει το LlamaFit: %(names)s"
+
+msgid "Run `llamafit hardware path` to see where your own profiles go."
+msgstr "Εκτελέστε `llamafit hardware path` για να δείτε πού πηγαίνουν τα δικά σας προφίλ."
+
+msgid "this machine has no graphics card, so there is no VRAM to override"
+msgstr "αυτό το μηχάνημα δεν έχει κάρτα γραφικών, οπότε δεν υπάρχει VRAM προς παράκαμψη"
+
+msgid "Describe the whole machine in a hardware profile and pass --profile."
+msgstr "Περιγράψτε ολόκληρο το μηχάνημα σε ένα προφίλ υλικού και δώστε --profile."
+
+msgid "this machine has one memory pool shared with the graphics card"
+msgstr "αυτό το μηχάνημα έχει μία δεξαμενή μνήμης κοινή με την κάρτα γραφικών"
+
+msgid "Use --ram to resize the pool; --memory would change only half of it."
+msgstr "Χρησιμοποιήστε το --ram για να αλλάξετε το μέγεθος της δεξαμενής· το --memory θα άλλαζε μόνο το μισό της."
+
+msgid "%(option)s needs a value above zero"
+msgstr "το %(option)s χρειάζεται τιμή πάνω από το μηδέν"
+
+msgid "no build number in the version output: %(text)s"
+msgstr "δεν υπάρχει αριθμός δόμησης στην έξοδο της έκδοσης: %(text)s"
 
 msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
 msgstr "το llama.cpp δεν βρέθηκε: δεν υπάρχει llama-server στο PATH, στο LLAMA_CPP_PATH ή στους συνήθεις φακέλους"
@@ -776,11 +2868,256 @@ msgstr "το llama.cpp δεν βρέθηκε: δεν υπάρχει llama-server
 msgid "no ggml backend libraries found next to llama-server; the build may be static"
 msgstr "δεν βρέθηκαν βιβλιοθήκες υποσυστημάτων ggml δίπλα στο llama-server· η δόμηση μπορεί να είναι στατική"
 
+msgid "%(path)s is a file, not a directory."
+msgstr "Το %(path)s είναι αρχείο, όχι φάκελος."
+
+msgid "%(path)s cannot be read: %(error)s"
+msgstr "Το %(path)s δεν μπορεί να διαβαστεί: %(error)s"
+
+msgid "%(path)s has a marker file that cannot be read."
+msgstr "Το %(path)s έχει αρχείο σήμανσης που δεν μπορεί να διαβαστεί."
+
+msgid "%(path)s already holds %(count)d file that LlamaFit did not install."
+msgid_plural "%(path)s already holds %(count)d files that LlamaFit did not install."
+msgstr[0] "Το %(path)s περιέχει ήδη %(count)d αρχείο που δεν εγκατέστησε το LlamaFit."
+msgstr[1] "Το %(path)s περιέχει ήδη %(count)d αρχεία που δεν εγκατέστησε το LlamaFit."
+
+msgid "%(name)s has no published checksum, so it cannot be verified."
+msgstr "Το %(name)s δεν έχει δημοσιευμένο άθροισμα ελέγχου, οπότε δεν μπορεί να επαληθευτεί."
+
+msgid "Pass --allow-unverified to install it anyway, knowing the archive is unchecked."
+msgstr "Δώστε --allow-unverified για να εγκατασταθεί ούτως ή άλλως, γνωρίζοντας ότι η αρχειοθήκη είναι ανέλεγκτη."
+
+msgid "could not download %(url)s: %(error)s"
+msgstr "δεν ήταν δυνατή η λήψη του %(url)s: %(error)s"
+
+msgid "the connection was closed"
+msgstr "η σύνδεση έκλεισε"
+
+msgid "Run the command again; it continues from where it stopped."
+msgstr "Εκτελέστε ξανά την εντολή· συνεχίζει από εκεί που σταμάτησε."
+
+msgid "the download of %(url)s stopped early: %(error)s"
+msgstr "η λήψη του %(url)s σταμάτησε νωρίς: %(error)s"
+
+msgid "%(got)s of %(want)s arrived"
+msgstr "έφτασαν %(got)s από %(want)s"
+
+msgid "the disk holding %(path)s is full."
+msgstr "ο δίσκος που φιλοξενεί το %(path)s είναι γεμάτος."
+
+msgid "Free some space and run the command again; the download resumes."
+msgstr "Ελευθερώστε χώρο και εκτελέστε ξανά την εντολή· η λήψη συνεχίζει."
+
+msgid "Check that the directory exists and is writable."
+msgstr "Ελέγξτε ότι ο φάκελος υπάρχει και είναι εγγράψιμος."
+
+msgid "%(name)s did not match its published checksum and was discarded."
+msgstr "Το %(name)s δεν ταίριαξε με το δημοσιευμένο άθροισμα ελέγχου του και απορρίφθηκε."
+
+msgid "Nothing was unpacked. Run the command again: the archive arrived damaged, which a second download usually fixes."
+msgstr "Δεν αποσυμπιέστηκε τίποτα. Εκτελέστε ξανά την εντολή: η αρχειοθήκη έφτασε χαλασμένη, κάτι που μια δεύτερη λήψη συνήθως διορθώνει."
+
+msgid "%(archive)s contains %(name)s, which would be written outside the install directory."
+msgstr "Το %(archive)s περιέχει το %(name)s, που θα γραφόταν έξω από τον φάκελο εγκατάστασης."
+
+msgid "Do not install this archive; report it to the llama.cpp project."
+msgstr "Μην εγκαταστήσετε αυτή την αρχειοθήκη· αναφέρετέ το στο έργο llama.cpp."
+
+msgid "%(name)s is not an archive LlamaFit knows how to unpack."
+msgstr "Το %(name)s δεν είναι αρχειοθήκη που ξέρει να αποσυμπιέσει το LlamaFit."
+
+msgid "%(name)s could not be unpacked: %(error)s"
+msgstr "Το %(name)s δεν μπόρεσε να αποσυμπιεστεί: %(error)s"
+
+msgid "Delete it and run the command again to download it afresh."
+msgstr "Διαγράψτε το και εκτελέστε ξανά την εντολή για να ληφθεί από την αρχή."
+
+msgid "the archive holds no %(name)s."
+msgstr "η αρχειοθήκη δεν περιέχει %(name)s."
+
+msgid "Report this; the release layout has changed."
+msgstr "Αναφέρετέ το· η διάταξη της κυκλοφορίας άλλαξε."
+
+msgid "%(path)s was not installed by LlamaFit."
+msgstr "Το %(path)s δεν εγκαταστάθηκε από το LlamaFit."
+
+msgid "Pass --force to replace it, or --dir to install somewhere else. LlamaFit never overwrites an installation it did not create."
+msgstr "Δώστε --force για να αντικατασταθεί, ή --dir για να εγκατασταθεί αλλού. Το LlamaFit δεν αντικαθιστά ποτέ εγκατάσταση που δεν δημιούργησε το ίδιο."
+
+msgid "%(path)s has %(free)s free; this install needs %(needed)s."
+msgstr "Το %(path)s έχει %(free)s ελεύθερα· αυτή η εγκατάσταση χρειάζεται %(needed)s."
+
+msgid "Free some space, or pass --dir to install on another volume."
+msgstr "Ελευθερώστε χώρο, ή δώστε --dir για να εγκατασταθεί σε άλλον τόμο."
+
+msgid "the %(backend)s libraries are not in the installed directory."
+msgstr "οι βιβλιοθήκες %(backend)s δεν βρίσκονται στον φάκελο εγκατάστασης."
+
+msgid "no ggml backend libraries were installed; the build may be a static one."
+msgstr "δεν εγκαταστάθηκαν βιβλιοθήκες υποσυστημάτων ggml· η δόμηση μπορεί να είναι στατική."
+
+msgid "Your PATH could not be read, so it will not be changed."
+msgstr "Το PATH σας δεν μπόρεσε να διαβαστεί, οπότε δεν θα αλλάξει."
+
+msgid "Add %(path)s to your user PATH (HKCU\\Environment)."
+msgstr "Προσθήκη του %(path)s στο PATH του χρήστη σας (HKCU\\Environment)."
+
+msgid "To undo: run `setx PATH \"%(previous)s\"`, or remove the entry in System > About > Advanced system settings > Environment Variables."
+msgstr "Για αναίρεση: εκτελέστε `setx PATH \"%(previous)s\"`, ή αφαιρέστε την καταχώρηση στο Σύστημα > Πληροφορίες > Ρυθμίσεις συστήματος για προχωρημένους > Μεταβλητές περιβάλλοντος."
+
+msgid "%(path)s is already on your PATH."
+msgstr "Το %(path)s βρίσκεται ήδη στο PATH σας."
+
+msgid "Nothing to undo."
+msgstr "Τίποτα προς αναίρεση."
+
+msgid "Append a PATH line for %(path)s to %(file)s."
+msgstr "Προσθήκη γραμμής PATH για το %(path)s στο %(file)s."
+
+msgid "To undo: delete the two lines marked `%(mark)s` from %(file)s."
+msgstr "Για αναίρεση: διαγράψτε τις δύο γραμμές που φέρουν την ένδειξη `%(mark)s` από το %(file)s."
+
+msgid "your PATH could not be changed: %(error)s"
+msgstr "το PATH σας δεν μπόρεσε να αλλάξει: %(error)s"
+
+msgid "To remove it later, delete %(path)s."
+msgstr "Για να το αφαιρέσετε αργότερα, διαγράψτε το %(path)s."
+
+msgid "the most recent %(count)d llama.cpp releases hold no build."
+msgstr "οι %(count)d πιο πρόσφατες κυκλοφορίες του llama.cpp δεν περιέχουν δόμηση."
+
+msgid "Name one with `llamafit install llama.cpp --tag ...`."
+msgstr "Ονομάστε μία με `llamafit install llama.cpp --tag ...`."
+
+msgid "could not reach GitHub at %(url)s: %(error)s"
+msgstr "δεν ήταν δυνατή η σύνδεση με το GitHub στο %(url)s: %(error)s"
+
+msgid "GitHub refused the request for %(url)s: the rate limit is exhausted."
+msgstr "Το GitHub αρνήθηκε το αίτημα για %(url)s: το όριο ρυθμού εξαντλήθηκε."
+
+msgid "Wait for the limit to reset, or set GITHUB_TOKEN to a personal access token with no scopes."
+msgstr "Περιμένετε να μηδενιστεί το όριο, ή ορίστε το GITHUB_TOKEN σε ένα προσωπικό διακριτικό πρόσβασης χωρίς πεδία εφαρμογής."
+
+msgid "GitHub has no release at %(url)s."
+msgstr "Το GitHub δεν έχει κυκλοφορία στο %(url)s."
+
+msgid "Check the tag with `llamafit install llama.cpp --tag ...`."
+msgstr "Ελέγξτε την ετικέτα με `llamafit install llama.cpp --tag ...`."
+
+msgid "GitHub returned %(status)d for %(url)s."
+msgstr "Το GitHub επέστρεψε %(status)d για το %(url)s."
+
+msgid "GitHub's answer for %(url)s was not JSON."
+msgstr "Η απάντηση του GitHub για το %(url)s δεν ήταν JSON."
+
+msgid "GitHub's answer did not describe a release."
+msgstr "Η απάντηση του GitHub δεν περιέγραφε κυκλοφορία."
+
 msgid "no llama-server answering"
 msgstr "κανένας llama-server δεν απαντά"
 
 msgid "unexpected response: %(error)s"
 msgstr "απροσδόκητη απόκριση: %(error)s"
+
+msgid "%(model)s holds %(native)s tokens, fewer than the %(minimum)s asked for."
+msgstr "Το %(model)s κρατά %(native)s tokens, λιγότερα από τα %(minimum)s που ζητήθηκαν."
+
+msgid "No configuration of this model fits this machine."
+msgstr "Καμία διαμόρφωση αυτού του μοντέλου δεν χωράει σε αυτό το μηχάνημα."
+
+msgid "Routed experts are held in system memory, and so are the always-on shared experts, which is what -ot ffn_.*_shexp=CPU does; attention and the KV cache stay on the card."
+msgstr "Οι δρομολογημένοι ειδικοί κρατούνται στη μνήμη του συστήματος, όπως και οι πάντα ενεργοί κοινοί ειδικοί, δηλαδή αυτό που κάνει το -ot ffn_.*_shexp=CPU· η προσοχή και η κρυφή μνήμη KV μένουν στην κάρτα."
+
+msgid "Routed experts are held in system memory; attention, the KV cache and the shared experts stay on the card."
+msgstr "Οι δρομολογημένοι ειδικοί κρατούνται στη μνήμη του συστήματος· η προσοχή, η κρυφή μνήμη KV και οι κοινοί ειδικοί μένουν στην κάρτα."
+
+msgid "%(layers)s layers are on the card and the rest run on the processor."
+msgstr "%(layers)s επίπεδα βρίσκονται στην κάρτα και τα υπόλοιπα τρέχουν στον επεξεργαστή."
+
+msgid "Nothing runs on a graphics card: every weight is in system memory."
+msgstr "Τίποτα δεν τρέχει σε κάρτα γραφικών: κάθε βάρος βρίσκεται στη μνήμη του συστήματος."
+
+msgid "%(gpus)s is here, but nothing could read how much of it is free, so this plan was made as if it were not. The real machine will be faster than these figures."
+msgstr "Το %(gpus)s είναι εδώ, αλλά τίποτα δεν μπόρεσε να διαβάσει πόσο από αυτό είναι ελεύθερο, οπότε αυτό το σχέδιο φτιάχτηκε σαν να μην υπήρχε. Το πραγματικό μηχάνημα θα είναι ταχύτερο από αυτές τις τιμές."
+
+msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
+msgstr "Διαστασιολογημένο για %(context)s tokens αντί για τα %(requested)s που ζητήθηκαν."
+
+msgid "The KV cache is quantised to %(type)s to reach this context."
+msgstr "Η κρυφή μνήμη KV είναι κβαντισμένη σε %(type)s για να φτάσει αυτό το πλαίσιο."
+
+msgid "Vision is off: the projector did not fit, on the card or in system memory."
+msgstr "Η όραση είναι κλειστή: ο προβολέας δεν χώρεσε, ούτε στην κάρτα ούτε στη μνήμη του συστήματος."
+
+msgid "The vision projector is in system memory (--no-mmproj-offload), which costs nothing measurable for text and makes images slower."
+msgstr "Ο προβολέας όρασης βρίσκεται στη μνήμη του συστήματος (--no-mmproj-offload), κάτι που δεν κοστίζει μετρήσιμα για κείμενο και κάνει τις εικόνες πιο αργές."
+
+msgid "%(threads)s threads, not the %(available)s this processor has: the efficiency cores are left out because generation measures slower with them, and what is left is the threads the performance cores provide."
+msgstr "%(threads)s νήματα, όχι τα %(available)s που έχει αυτός ο επεξεργαστής: οι πυρήνες αποδοτικότητας αφήνονται έξω επειδή η παραγωγή μετριέται πιο αργή με αυτούς, και ό,τι μένει είναι τα νήματα που δίνουν οι πυρήνες απόδοσης."
+
+msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
+msgstr "Οριακά: %(vram)s της κάρτας γραφικών είναι ελεύθερα και αυτό χρειάζεται %(needed)s, οπότε ένα άλλο πρόγραμμα μπορεί να το ρίξει έξω. Ο πίνακας βαθμίδων πλαισίου είναι ο τρόπος με τον οποίο ανακάμπτει ένα σενάριο εκκίνησης."
+
+msgid "no %(capability)s capability, which %(use_case)s needs; ask for a different use case, or add it to the entry when the model really has it"
+msgstr "καμία δυνατότητα %(capability)s, την οποία χρειάζεται το %(use_case)s· ζητήστε άλλη περίπτωση χρήσης, ή προσθέστε την στην εγγραφή όταν το μοντέλο πράγματι την έχει"
+
+msgid "no %(capability)s capability; drop it from the request to see this model"
+msgstr "καμία δυνατότητα %(capability)s· αφαιρέστε την από το αίτημα για να δείτε αυτό το μοντέλο"
+
+msgid "%(size)s to download, over the %(limit)s this request allows"
+msgstr "%(size)s προς λήψη, πάνω από το %(limit)s που επιτρέπει αυτό το αίτημα"
+
+msgid "unknown quantisation %(quant)s, so its cost in quality cannot be told"
+msgstr "άγνωστος κβαντισμός %(quant)s, οπότε το κόστος του σε ποιότητα δεν μπορεί να ειπωθεί"
+
+msgid "nowhere to put it: no placement fits this machine at any context"
+msgstr "πουθενά να μπει: καμία τοποθέτηση δεν χωράει σε αυτό το μηχάνημα σε κανένα πλαίσιο"
+
+msgid "holds %(fit)s tokens at most, under the %(minimum)s asked for; lower the minimum context or free memory to see it ranked"
+msgstr "κρατά %(fit)s tokens το πολύ, κάτω από τα %(minimum)s που ζητήθηκαν· κατεβάστε το ελάχιστο πλαίσιο ή ελευθερώστε μνήμη για να το δείτε καταταγμένο"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "παράγει %(tps)s tokens ανά δευτερόλεπτο, κάτω από τα %(floor)s που ζητά αυτό το αίτημα· κατεβάστε το --min-tps ή διαλέξτε μικρότερο μοντέλο ή κβαντισμό"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "παράγει %(tps)s tokens ανά δευτερόλεπτο, κάτω από τα %(floor)s που διαβάζει ένας άνθρωπος: εργαλείο δέσμης σε αυτό το μηχάνημα και όχι εργαλείο για να κάθεστε μπροστά του· ένα μικρότερο μοντέλο ή κβαντισμός θα προλάβαινε"
+
+msgid "unknown use case %(use_case)s"
+msgstr "άγνωστη περίπτωση χρήσης %(use_case)s"
+
+msgid "Known use cases: %(known)s."
+msgstr "Γνωστές περιπτώσεις χρήσης: %(known)s."
+
+msgid "unknown score part %(part)s in the weights for %(use_case)s"
+msgstr "άγνωστο μέρος βαθμολογίας %(part)s στα βάρη για το %(use_case)s"
+
+msgid "The parts are: %(parts)s."
+msgstr "Τα μέρη είναι: %(parts)s."
+
+msgid "the weights for %(use_case)s leave out %(part)s"
+msgstr "τα βάρη για το %(use_case)s παραλείπουν το %(part)s"
+
+msgid "Overriding a use case means giving all four parts: %(parts)s."
+msgstr "Η παράκαμψη μιας περίπτωσης χρήσης σημαίνει ότι δίνονται και τα τέσσερα μέρη: %(parts)s."
+
+msgid "the weight for %(part)s in %(use_case)s is below zero"
+msgstr "το βάρος για το %(part)s στο %(use_case)s είναι κάτω από το μηδέν"
+
+msgid "A weight says how much a part counts; it cannot count less than none."
+msgstr "Ένα βάρος λέει πόσο μετρά ένα μέρος· δεν μπορεί να μετρά λιγότερο από καθόλου."
+
+msgid "the weights for %(use_case)s add up to nothing"
+msgstr "τα βάρη για το %(use_case)s αθροίζουν στο μηδέν"
+
+msgid "At least one part has to count for something."
+msgstr "Τουλάχιστον ένα μέρος πρέπει να μετρά κάτι."
+
+msgid "unknown preference %(prefer)s"
+msgstr "άγνωστη προτίμηση %(prefer)s"
+
+msgid "Preferences: %(known)s."
+msgstr "Προτιμήσεις: %(known)s."
 
 msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
 msgstr "Εγκαταστήστε ή επιδιορθώστε το πρόγραμμα οδήγησης NVIDIA· το nvidia-smi το συνοδεύει και πρέπει να βρίσκεται στο PATH."
@@ -815,6 +3152,9 @@ msgstr "Το llama-server υπάρχει αλλά δεν ανέφερε έκδο
 msgid "system_profiler failed; GPU information is unavailable."
 msgstr "Το system_profiler απέτυχε· δεν υπάρχουν πληροφορίες για τη GPU."
 
+msgid "Install the Vulkan tools (vulkan-tools on Linux, the vendor's Vulkan runtime on Windows) so an unsized card's memory can be read from its driver. This probe runs only when no vendor tool sized the card, so it is the last source there is."
+msgstr "Εγκαταστήστε τα εργαλεία Vulkan (vulkan-tools στο Linux, τον χρόνο εκτέλεσης Vulkan του κατασκευαστή στα Windows) ώστε η μνήμη μιας κάρτας χωρίς μέγεθος να διαβάζεται από το πρόγραμμα οδήγησής της. Αυτή η ανίχνευση τρέχει μόνο όταν κανένα εργαλείο κατασκευαστή δεν μέτρησε την κάρτα, οπότε είναι η τελευταία πηγή που υπάρχει."
+
 msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
 msgstr "Κανένα εργαλείο κατασκευαστή δεν ανέφερε το μέγεθος μνήμης της GPU· καταγράψτε το μέγεθος σε ένα προφίλ υλικού ώστε να μπορούν να υπολογιστούν προϋπολογισμοί για αυτό το μηχάνημα."
 
@@ -833,6 +3173,9 @@ msgstr "το llama.cpp δεν βρέθηκε"
 
 msgid "no llama-server binary was found"
 msgstr "δεν βρέθηκε εκτελέσιμο llama-server"
+
+msgid "Run `llamafit install llama.cpp`, which picks the right build for this machine, checks it against its published checksum, and never touches an installation LlamaFit did not create."
+msgstr "Εκτελέστε `llamafit install llama.cpp`, που διαλέγει τη σωστή δόμηση για αυτό το μηχάνημα, την ελέγχει ως προς το δημοσιευμένο άθροισμα ελέγχου της, και δεν αγγίζει ποτέ εγκατάσταση που δεν δημιούργησε το LlamaFit."
 
 msgid "Memory size unknown"
 msgstr "Άγνωστο μέγεθος μνήμης"
@@ -858,6 +3201,15 @@ msgstr "%(gpu)s: άγνωστο μέγεθος VRAM"
 
 msgid "the vendor tool that reports memory was not available"
 msgstr "το εργαλείο του κατασκευαστή που αναφέρει τη μνήμη δεν ήταν διαθέσιμο"
+
+msgid "%(gpus)s: planned around, not planned on"
+msgstr "%(gpus)s: σχεδιάστηκε γύρω από αυτήν, όχι πάνω της"
+
+msgid "with no reading of how much of the card is free, every budget and every speed on this machine was computed as if there were no card: they are CPU-only figures, and the real machine will be faster."
+msgstr "χωρίς ανάγνωση του πόση από την κάρτα είναι ελεύθερη, κάθε προϋπολογισμός και κάθε ταχύτητα σε αυτό το μηχάνημα υπολογίστηκαν σαν να μην υπήρχε κάρτα: είναι τιμές μόνο για CPU, και το πραγματικό μηχάνημα θα είναι ταχύτερο."
+
+msgid "Install the Vulkan tools so the size can be read from the driver, or record it in a hardware profile (`llamafit hardware path` says where those go) and pass --profile."
+msgstr "Εγκαταστήστε τα εργαλεία Vulkan ώστε το μέγεθος να διαβάζεται από το πρόγραμμα οδήγησης, ή καταγράψτε το σε ένα προφίλ υλικού (το `llamafit hardware path` λέει πού πηγαίνουν αυτά) και δώστε --profile."
 
 msgid "No GPU detected"
 msgstr "Δεν εντοπίστηκε GPU"
@@ -903,6 +3255,389 @@ msgstr "%(size)s ελεύθερα"
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr "Τα περισσότερα χρήσιμα μοντέλα χρειάζονται 5 έως 120 GB· ελευθερώστε χώρο ή αλλάξτε τον φάκελο λήψεων."
 
+msgid "%(model)s has no %(quant)s quantisation"
+msgstr "το %(model)s δεν έχει κβαντισμό %(quant)s"
+
+msgid "It publishes: %(names)s"
+msgstr "Δημοσιεύει: %(names)s"
+
+msgid "licensed %(spdx)s, which this request does not allow"
+msgstr "με άδεια %(spdx)s, την οποία δεν επιτρέπει αυτό το αίτημα"
+
+msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
+msgstr "Το εύρος ζώνης της μνήμης συστήματος δεν μετρήθηκε· θεωρήθηκαν %(gbps).0f GB/s για %(arch)s."
+
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
+msgstr "Το εύρος ζώνης της %(gpu)s είναι άγνωστο· χρησιμοποιείται η εφεδρική τιμή %(gbps).0f GB/s του %(backend)s."
+
+msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
+msgstr "Καμία τιμή υπολογιστικής ισχύος κάρτας γραφικών: η επεξεργασία prompt εκτιμάται στη CPU."
+
+msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "%(gb).2f GB δρομολογημένων ειδικών διαβάζονται από τη μνήμη του συστήματος ανά token με %(eff).2f των %(raw).0f GB/s της, επειδή κάθε token επιλέγει διαφορετική χούφτα ειδικών και η ανάγνωση είναι διασπορά μικρών μπλοκ και όχι ροή."
+
+msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
+msgstr "%(gb).2f GB συνεχόμενων βαρών διαβάζονται από τη μνήμη του συστήματος ανά token με %(eff).2f των %(raw).0f GB/s της."
+
+msgid "No active parameter count was supplied; it was inferred from the weight bytes."
+msgstr "Δεν δόθηκε πλήθος ενεργών παραμέτρων· συνάχθηκε από τα bytes των βαρών."
+
+msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "%(pct).0f τοις εκατό των επιπέδων βρίσκονται στη μνήμη του συστήματος, οπότε αυτό το μερίδιο της αριθμητικής του prompt χρεώνεται στη CPU με %(tflops).2f TFLOP/s αντί στην κάρτα. Και οι δύο ρυθμοί προέρχονται από ένα μικρό πυκνό μοντέλο σε ένα μηχάνημα."
+
+msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "%(gb).1f GB του συνόλου ειδικών μεταφέρονται σε ροή μέσω της σύνδεσης μία φορά ανά μικροπαρτίδα με %(gbps).1f GB/s. Αυτός ο ρυθμός προσαρμόστηκε στο ένα μοντέλο του οποίου το σύνολο ειδικών δεν χωράει στη μνήμη του συστήματος, οπότε μέρος της ανάγνωσής του γίνεται από τον δίσκο· ένα σύνολο ειδικών που μένει στην κρυφή μνήμη σελίδων ρέει περίπου τρεις φορές ταχύτερα, και για ένα τέτοιο αυτός ο όρος είναι άλλο τόσο πιο αργός."
+
+msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+msgstr "%(gb).1f GB του συνόλου ειδικών διαβάζονται από τη μνήμη του συστήματος μία φορά ανά μικροπαρτίδα με %(gbps).1f GB/s, επειδή δεν υπάρχει κάρτα στην οποία να σταλούν σε ροή."
+
+msgid "No placement of this model on this machine could run it."
+msgstr "Καμία τοποθέτηση αυτού του μοντέλου σε αυτό το μηχάνημα δεν θα μπορούσε να το τρέξει."
+
+msgid "Generation is a benchmark of this configuration, not a prediction."
+msgstr "Η παραγωγή είναι μέτρηση αυτής της διαμόρφωσης, όχι πρόβλεψη."
+
+msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "Η παραγωγή είναι ο τύπος διορθωμένος κατά %(factor).2f, από μέτρηση του %(profile)s σε αυτό το μηχάνημα που λήφθηκε στις %(date)s."
+
+msgid "Prompt processing is a benchmark of this configuration."
+msgstr "Η επεξεργασία prompt είναι μέτρηση αυτής της διαμόρφωσης."
+
+msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
+msgstr "Η επεξεργασία prompt είναι ο τύπος διορθωμένος κατά %(factor).2f από μια μέτρηση."
+
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr "Η γραμμή εντολών εκείνης της μέτρησης δεν καταγράφει πόσα επίπεδα πήγαν στην κάρτα, οπότε η διόρθωση υποθέτει ότι έτρεξε σε αυτή την τοποθέτηση."
+
+msgid "This figure assumes nothing pages: a placement this tight often does, silently."
+msgstr "Αυτή η τιμή υποθέτει ότι δεν σελιδοποιείται τίποτα: μια τόσο στενή τοποθέτηση συχνά σελιδοποιεί, σιωπηλά."
+
+msgid "Board"
+msgstr "Πίνακας"
+
+msgid "Needs"
+msgstr "Ανάγκες"
+
+msgid "Plan"
+msgstr "Σχέδιο"
+
+msgid "Simulate"
+msgstr "Προσομοίωση"
+
+msgid "There is no terminal here to draw the dashboard in, so this is what `llamafit recommend` would print."
+msgstr "Δεν υπάρχει τερματικό εδώ για να σχεδιαστεί ο πίνακας ελέγχου, οπότε αυτό είναι ό,τι θα εκτύπωνε το `llamafit recommend`."
+
+msgid "%(name)s %(quant)s, %(vendor)s, licensed %(license)s; it can: %(capabilities)s"
+msgstr "%(name)s %(quant)s, %(vendor)s, με άδεια %(license)s· μπορεί: %(capabilities)s"
+
+msgid "Choose a row to see what put it there."
+msgstr "Διαλέξτε μια γραμμή για να δείτε τι την έφερε εκεί."
+
+msgid "Nothing has been ranked yet."
+msgstr "Δεν έχει καταταχθεί τίποτα ακόμη."
+
+msgid "Every candidate in the catalog was ranked; none was excluded."
+msgstr "Κάθε υποψήφιος του καταλόγου κατατάχθηκε· κανένας δεν αποκλείστηκε."
+
+msgid "keys"
+msgstr "πλήκτρα"
+
+msgid "theme"
+msgstr "θέμα"
+
+msgid "quit"
+msgstr "έξοδος"
+
+msgid "choose"
+msgstr "επιλογή"
+
+msgid "why"
+msgstr "γιατί"
+
+msgid "command line"
+msgstr "γραμμή εντολών"
+
+msgid "search"
+msgstr "αναζήτηση"
+
+msgid "fit"
+msgstr "χώρος"
+
+msgid "sort"
+msgstr "ταξινόμηση"
+
+msgid "sort back"
+msgstr "ταξινόμηση πίσω"
+
+msgid "reverse"
+msgstr "αντιστροφή"
+
+msgid "on disk"
+msgstr "στον δίσκο"
+
+msgid "all quants"
+msgstr "όλοι οι κβαντισμοί"
+
+msgid "unranked rows"
+msgstr "αταξινόμητες γραμμές"
+
+msgid "all columns"
+msgstr "όλες οι στήλες"
+
+msgid "explanation"
+msgstr "εξήγηση"
+
+msgid "not ranked"
+msgstr "χωρίς κατάταξη"
+
+msgid "apply"
+msgstr "εφαρμογή"
+
+msgid "reset"
+msgstr "επαναφορά"
+
+msgid "rescan"
+msgstr "νέα σάρωση"
+
+msgid "more context"
+msgstr "περισσότερο πλαίσιο"
+
+msgid "less context"
+msgstr "λιγότερο πλαίσιο"
+
+msgid "vision"
+msgstr "όραση"
+
+msgid "copy"
+msgstr "αντιγραφή"
+
+msgid "this machine"
+msgstr "αυτό το μηχάνημα"
+
+msgctxt "use case"
+msgid "general use"
+msgstr "γενική χρήση"
+
+msgctxt "use case"
+msgid "writing code"
+msgstr "συγγραφή κώδικα"
+
+msgctxt "use case"
+msgid "reasoning"
+msgstr "συλλογιστική"
+
+msgctxt "use case"
+msgid "chat"
+msgstr "συνομιλία"
+
+msgctxt "use case"
+msgid "images and text"
+msgstr "εικόνες και κείμενο"
+
+msgctxt "use case"
+msgid "embeddings"
+msgstr "embeddings"
+
+msgctxt "preference"
+msgid "balanced"
+msgstr "ισορροπημένα"
+
+msgctxt "preference"
+msgid "lean towards quality"
+msgstr "κλίση προς την ποιότητα"
+
+msgctxt "preference"
+msgid "lean towards speed"
+msgstr "κλίση προς την ταχύτητα"
+
+msgid "Move with the up and down arrows. Enter says why a row is where it is; p gives the command line that runs it."
+msgstr "Μετακινηθείτε με τα βέλη πάνω και κάτω. Το Enter λέει γιατί μια γραμμή βρίσκεται εκεί που βρίσκεται· το p δίνει τη γραμμή εντολών που την τρέχει."
+
+msgid "Terms: %(terms)s; anything else is text to look for. Enter with the box empty clears them."
+msgstr "Όροι: %(terms)s· οτιδήποτε άλλο είναι κείμενο προς αναζήτηση. Το Enter με το πλαίσιο κενό τους καθαρίζει."
+
+msgid "Part of a model name, then Enter"
+msgstr "Μέρος ενός ονόματος μοντέλου, μετά Enter"
+
+msgid "Keys"
+msgstr "Πλήκτρα"
+
+msgctxt "column heading"
+msgid "Screen"
+msgstr "Οθόνη"
+
+msgctxt "column heading"
+msgid "Key"
+msgstr "Πλήκτρο"
+
+msgctxt "column heading"
+msgid "What it does"
+msgstr "Τι κάνει"
+
+msgctxt "dashboard screen"
+msgid "Everywhere"
+msgstr "Παντού"
+
+msgctxt "dashboard screen"
+msgid "Board"
+msgstr "Πίνακας"
+
+msgctxt "dashboard screen"
+msgid "Needs"
+msgstr "Ανάγκες"
+
+msgctxt "dashboard screen"
+msgid "Host"
+msgstr "Μηχάνημα"
+
+msgctxt "dashboard screen"
+msgid "Plan"
+msgstr "Σχέδιο"
+
+msgctxt "dashboard screen"
+msgid "Simulate"
+msgstr "Προσομοίωση"
+
+msgid "Press Escape to go back."
+msgstr "Πατήστε Escape για επιστροφή."
+
+msgid "Catalog files with a problem"
+msgstr "Αρχεία καταλόγου με πρόβλημα"
+
+msgid "This machine has not been scanned yet."
+msgstr "Αυτό το μηχάνημα δεν έχει σαρωθεί ακόμη."
+
+msgid "What do you want a model for?"
+msgstr "Για τι θέλετε ένα μοντέλο;"
+
+msgid "It must be able to:"
+msgstr "Πρέπει να μπορεί να:"
+
+msgid "At least this much context, in tokens:"
+msgstr "Τουλάχιστον τόσο πλαίσιο, σε tokens:"
+
+msgid "Willing to download at most, for example 40G (blank for no limit):"
+msgstr "Διατεθειμένοι να κατεβάσετε το πολύ, για παράδειγμα 40G (κενό για κανένα όριο):"
+
+msgid "Slowest generation worth having, in tokens per second (blank for the speed a person reads at; 0 when nobody is waiting on the tokens):"
+msgstr "Η πιο αργή παραγωγή που αξίζει, σε tokens ανά δευτερόλεπτο (κενό για την ταχύτητα με την οποία διαβάζει ένας άνθρωπος· 0 όταν κανείς δεν περιμένει τα tokens):"
+
+msgid "Licences you will accept (tick none to accept any):"
+msgstr "Άδειες που δέχεστε (μην τσεκάρετε καμία για να τις δέχεστε όλες):"
+
+msgid "Lean the score:"
+msgstr "Κλίση της βαθμολογίας:"
+
+msgid "Keep the vision projector when a model has one"
+msgstr "Διατήρηση του προβολέα όρασης όταν ένα μοντέλο έχει έναν"
+
+msgid "Apply"
+msgstr "Εφαρμογή"
+
+msgid "Reset"
+msgstr "Επαναφορά"
+
+msgid "The minimum context is a number of tokens, for example %(example)s."
+msgstr "Το ελάχιστο πλαίσιο είναι ένα πλήθος tokens, για παράδειγμα %(example)s."
+
+msgid "The minimum context cannot be below zero."
+msgstr "Το ελάχιστο πλαίσιο δεν μπορεί να είναι κάτω από το μηδέν."
+
+msgid "The minimum speed is a number of tokens per second, for example 12."
+msgstr "Η ελάχιστη ταχύτητα είναι ένα πλήθος tokens ανά δευτερόλεπτο, για παράδειγμα 12."
+
+msgid "The minimum speed cannot be below zero."
+msgstr "Η ελάχιστη ταχύτητα δεν μπορεί να είναι κάτω από το μηδέν."
+
+msgid "Choose a row on the Board and press p, and its plan and command line appear here."
+msgstr "Διαλέξτε μια γραμμή στον Πίνακα και πατήστε p, και το σχέδιό της μαζί με τη γραμμή εντολών εμφανίζονται εδώ."
+
+msgid "%(model)s is no longer in the catalog this board was built from."
+msgstr "Το %(model)s δεν βρίσκεται πια στον κατάλογο από τον οποίο φτιάχτηκε αυτός ο πίνακας."
+
+msgid "Planned with the vision projector; press v to leave it out."
+msgstr "Σχεδιάστηκε με τον προβολέα όρασης· πατήστε v για να μείνει έξω."
+
+msgid "Planned without the vision projector; press v to put it back."
+msgstr "Σχεδιάστηκε χωρίς τον προβολέα όρασης· πατήστε v για να μπει ξανά."
+
+msgid "The ladder has no rung above %(context)s."
+msgstr "Η κλίμακα δεν έχει βαθμίδα πάνω από %(context)s."
+
+msgid "The ladder has no rung below %(context)s."
+msgstr "Η κλίμακα δεν έχει βαθμίδα κάτω από %(context)s."
+
+msgid "There is no command line to copy yet."
+msgstr "Δεν υπάρχει ακόμη γραμμή εντολών για αντιγραφή."
+
+msgid "The command line is on the clipboard."
+msgstr "Η γραμμή εντολών βρίσκεται στο πρόχειρο."
+
+msgid "Everything on every screen answers about the machine chosen here. While it is not this one, the band at the top says SIMULATED."
+msgstr "Όλα σε κάθε οθόνη απαντούν για το μηχάνημα που επιλέγεται εδώ. Όσο δεν είναι αυτό εδώ, η λωρίδα στην κορυφή λέει ΠΡΟΣΟΜΟΙΩΣΗ."
+
+msgid "Answer for this machine instead:"
+msgstr "Απάντηση για αυτό το μηχάνημα αντ' αυτού:"
+
+msgid "Pretend the graphics card has this much memory (blank to leave it):"
+msgstr "Υποθετική μνήμη κάρτας γραφικών (κενό για να μείνει ως έχει):"
+
+msgid "Pretend the machine has this much system memory (blank to leave it):"
+msgstr "Υποθετική μνήμη συστήματος (κενό για να μείνει ως έχει):"
+
+msgid "Pretend the processor has this many cores (blank to leave it):"
+msgstr "Υποθετικό πλήθος πυρήνων επεξεργαστή (κενό για να μείνει ως έχει):"
+
+msgid "Back to this machine"
+msgstr "Πίσω σε αυτό το μηχάνημα"
+
+msgctxt "hardware profile"
+msgid "this machine"
+msgstr "αυτό το μηχάνημα"
+
+msgid "The core count is a whole number, for example 8."
+msgstr "Το πλήθος των πυρήνων είναι ακέραιος αριθμός, για παράδειγμα 8."
+
+msgctxt "dashboard header separator"
+msgid " · "
+msgstr " · "
+
+msgctxt "dashboard header"
+msgid "no GPU detected"
+msgstr "δεν εντοπίστηκε GPU"
+
+msgid "%(name)s, VRAM unknown"
+msgstr "%(name)s, άγνωστη VRAM"
+
+msgid "%(name)s, %(free)s free of %(total)s"
+msgstr "%(name)s, %(free)s ελεύθερα από %(total)s"
+
+msgid "%(available)s free of %(total)s RAM"
+msgstr "%(available)s ελεύθερα από %(total)s RAM"
+
+msgid "%(model)s, %(count)d core"
+msgid_plural "%(model)s, %(count)d cores"
+msgstr[0] "%(model)s, %(count)d πυρήνας"
+msgstr[1] "%(model)s, %(count)d πυρήνες"
+
+msgctxt "dashboard header"
+msgid "llama.cpp not installed"
+msgstr "το llama.cpp δεν είναι εγκατεστημένο"
+
+msgctxt "dashboard header"
+msgid "llama.cpp installed"
+msgstr "το llama.cpp είναι εγκατεστημένο"
+
+msgid "llama.cpp b%(build)d"
+msgstr "llama.cpp b%(build)d"
+
+msgctxt "dashboard header"
+msgid "scanning this machine…"
+msgstr "γίνεται σάρωση αυτού του μηχανήματος…"
+
+msgid "These speeds were not all arrived at the same way; the How column says which each row is."
+msgstr "Αυτές οι ταχύτητες δεν προέκυψαν όλες με τον ίδιο τρόπο· η στήλη Πώς λέει ποια είναι καθεμιά."
+
 msgctxt "thousands separator"
 msgid ","
 msgstr "."
@@ -922,3 +3657,160 @@ msgstr "B"
 msgctxt "size"
 msgid "unknown"
 msgstr "άγνωστο"
+
+msgid "profile must be a name, not a path: %(value)s"
+msgstr "το profile πρέπει να είναι όνομα, όχι διαδρομή: %(value)s"
+
+msgid "Ask GET /api/v1/profiles for the names this machine has."
+msgstr "Ζητήστε GET /api/v1/profiles για τα ονόματα που έχει αυτό το μηχάνημα."
+
+msgid "unknown query parameter: %(names)s"
+msgstr "άγνωστη παράμετρος ερωτήματος: %(names)s"
+
+msgid "This endpoint takes: %(names)s"
+msgstr "Αυτό το σημείο πρόσβασης δέχεται: %(names)s"
+
+msgid "invalid prefer %(value)s"
+msgstr "μη έγκυρη τιμή prefer: %(value)s"
+
+msgid "invalid sort %(value)s"
+msgstr "μη έγκυρη τιμή sort: %(value)s"
+
+msgid "%(host)s:%(port)d is not this machine only. Anyone who can reach this computer on that port can read everything the dashboard shows -- your hardware, your disks, your file paths and the models you have downloaded. There is no password, because LlamaFit is meant for the person sitting at the keyboard. Press Ctrl+C now if you did not mean this."
+msgstr "Το %(host)s:%(port)d δεν είναι μόνο αυτό το μηχάνημα. Όποιος μπορεί να φτάσει αυτόν τον υπολογιστή σε αυτή τη θύρα μπορεί να διαβάσει όλα όσα δείχνει ο πίνακας ελέγχου -- το υλικό σας, τους δίσκους σας, τις διαδρομές των αρχείων σας και τα μοντέλα που έχετε κατεβάσει. Δεν υπάρχει κωδικός, επειδή το LlamaFit προορίζεται για το άτομο που κάθεται στο πληκτρολόγιο. Πατήστε Ctrl+C τώρα αν δεν το εννοούσατε."
+
+msgid "the web dashboard needs FastAPI and uvicorn, which are not installed"
+msgstr "ο πίνακας ελέγχου ιστού χρειάζεται τα FastAPI και uvicorn, που δεν είναι εγκατεστημένα"
+
+msgid "Install them with: pip install \"llamafit[web]\""
+msgstr "Εγκαταστήστε τα με: pip install \"llamafit[web]\""
+
+msgid "%(host)s is not a loopback address, and the dashboard has no authentication"
+msgstr "το %(host)s δεν είναι διεύθυνση loopback, και ο πίνακας ελέγχου δεν έχει έλεγχο ταυτότητας"
+
+msgid "Leave --host alone to serve this machine only, or pass it to mean it."
+msgstr "Αφήστε το --host ως έχει για να εξυπηρετεί μόνο αυτό το μηχάνημα, ή δώστε το εννοώντας το."
+
+msgctxt "column heading"
+msgid "Why not"
+msgstr "Γιατί όχι"
+
+msgid "Why this row"
+msgstr "Γιατί αυτή η γραμμή"
+
+msgid "Plan this"
+msgstr "Σχεδιάστε αυτό"
+
+msgid "Already on this machine"
+msgstr "Ήδη σε αυτό το μηχάνημα"
+
+msgid "Score"
+msgstr "Βαθμολογία"
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; raise “Rows to show” for the rest, which are neither worse-behaved nor hidden, only further down."
+msgstr "Εμφανίζονται τα καλύτερα %(shown)s από τα %(total)s που πληρούσαν τις προϋποθέσεις· ανεβάστε το «Γραμμές προς εμφάνιση» για τα υπόλοιπα, που δεν είναι ούτε χειρότερα ούτε κρυμμένα, απλώς πιο κάτω."
+
+msgid "What the model is for"
+msgstr "Για τι προορίζεται το μοντέλο"
+
+msgid "Capabilities it must have"
+msgstr "Δυνατότητες που πρέπει να έχει"
+
+msgid "Lean the weights"
+msgstr "Κλίση των βαρών"
+
+msgid "Smallest context worth having"
+msgstr "Το μικρότερο πλαίσιο που αξίζει"
+
+msgid "Most you will download"
+msgstr "Το πολύ που θα κατεβάσετε"
+
+msgid "Show every quantisation"
+msgstr "Εμφάνιση κάθε κβαντισμού"
+
+msgid "Keep the vision projector"
+msgstr "Διατήρηση του προβολέα όρασης"
+
+msgid "Rows to show"
+msgstr "Γραμμές προς εμφάνιση"
+
+msgid "Scan again"
+msgstr "Νέα σάρωση"
+
+msgid "llama.cpp"
+msgstr "llama.cpp"
+
+msgid "Quantisation"
+msgstr "Κβαντισμός"
+
+msgid "Context"
+msgstr "Πλαίσιο"
+
+msgid "Micro-batch"
+msgstr "Μικροπαρτίδα"
+
+msgid "Plan it"
+msgstr "Σχεδιάστε το"
+
+msgid "Copy"
+msgstr "Αντιγραφή"
+
+msgid "Copied"
+msgstr "Αντιγράφηκε"
+
+msgid "Flags"
+msgstr "Σημαίες"
+
+msgid "Speed"
+msgstr "Ταχύτητα"
+
+msgid "Choose a row on the board first."
+msgstr "Διαλέξτε πρώτα μια γραμμή στον πίνακα."
+
+msgid "Hardware profile"
+msgstr "Προφίλ υλικού"
+
+msgid "This machine, as scanned"
+msgstr "Αυτό το μηχάνημα, όπως σαρώθηκε"
+
+msgid "Graphics memory"
+msgstr "Μνήμη γραφικών"
+
+msgid "System memory"
+msgstr "Μνήμη συστήματος"
+
+msgid "Processor cores"
+msgstr "Πυρήνες επεξεργαστή"
+
+msgid "Score against that machine"
+msgstr "Βαθμολόγηση ως προς εκείνο το μηχάνημα"
+
+msgid "What runs here, how fast, and with which settings."
+msgstr "Τι τρέχει εδώ, πόσο γρήγορα, και με ποιες ρυθμίσεις."
+
+msgid "Working…"
+msgstr "Γίνεται επεξεργασία…"
+
+msgid "Something went wrong"
+msgstr "Κάτι πήγε στραβά"
+
+msgid "Hint"
+msgstr "Υπόδειξη"
+
+msgid "Command"
+msgstr "Εντολή"
+
+msgid "About these figures"
+msgstr "Σχετικά με αυτές τις τιμές"
+
+msgid "Close"
+msgstr "Κλείσιμο"
+
+msgid "%(shown)s of %(total)s in the catalog"
+msgstr "%(shown)s από %(total)s στον κατάλογο"
+
+msgid "Source code (AGPL-3.0-or-later)"
+msgstr "Πηγαίος κώδικας (AGPL-3.0-or-later)"
+
+msgid "This dashboard is served from your own machine and sends nothing anywhere."
+msgstr "Αυτός ο πίνακας ελέγχου σερβίρεται από το ίδιο σας το μηχάνημα και δεν στέλνει τίποτα πουθενά."

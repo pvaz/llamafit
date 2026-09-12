@@ -16,6 +16,11 @@
 # value nobody can see in advance: a model id or a path may begin with either a vowel or
 # a consonant, and Hungarian chooses "a" or "az" accordingly.
 #
+# A Latin identifier takes no Hungarian suffix and cannot take one, so where the
+# grammar would want a case ending on a model id, a flag or a quantisation name, the
+# sentence is rephrased around it and an ordinary noun — "modell", "fájl", "parancs" —
+# carries the ending instead.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: llamafit 0.1.0a1\n"
@@ -26,6 +31,198 @@ msgstr ""
 "Language: hu\n"
 "Language-Team: Hungarian\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "nothing measured touches this term, so there is no equation it appears in"
+msgstr "a mérések közül semmi sem érinti ezt a tagot, így nincs olyan egyenlet, amelyben szerepelne"
+
+msgid "%(measurements)d distinct configurations for %(parameters)d free parameters; fewer points than parameters gives numbers that look precise and are arbitrary"
+msgstr "%(measurements)d különböző beállítás %(parameters)d szabad paraméterre; ha kevesebb a mérési pont, mint a paraméter, az eredmény pontosnak látszik, de önkényes"
+
+msgid "the %(measurements)d configurations do not vary independently enough to separate %(parameters)d parameters"
+msgstr "a %(measurements)d beállítás nem változik egymástól elég függetlenül ahhoz, hogy %(parameters)d paraméter szétválasztható legyen"
+
+msgid "the fit put it at %(value).3f, which its own definition does not allow; the measurements disagree with each other under section 10.1's model"
+msgstr "az illesztés szerint %(value).3f, amit a saját meghatározása nem enged meg; a mérések ellentmondanak egymásnak a 10.1. szakasz modellje szerint"
+
+msgid "it came out at %(value).3f, but another parameter of the same fit was impossible, and least squares chose them against each other"
+msgstr "%(value).3f jött ki, de ugyanennek az illesztésnek egy másik paramétere lehetetlen volt, és a legkisebb négyzetek módszere egymás rovására választotta ki őket"
+
+msgid "the estimator has no such term: section 10.1 removed the per-layer overhead, which for a 28-layer model exceeded the whole measured token"
+msgstr "a becslőnek nincs ilyen tagja: a 10.1. szakasz eltávolította a rétegenkénti többletet, ami egy 28 rétegű modellnél meghaladta a teljes mért tokent"
+
+msgid "generation (llama-bench)"
+msgstr "generálás (llama-bench)"
+
+msgid "prompt (llama-bench)"
+msgstr "prompt (llama-bench)"
+
+msgid "generation, first request"
+msgstr "generálás, első kérés"
+
+msgid "generation, 1K prompt"
+msgstr "generálás, 1K prompt"
+
+msgid "prompt, 1K request"
+msgstr "prompt, 1K kérés"
+
+msgid "peak VRAM"
+msgstr "csúcs VRAM"
+
+msgid "no graphics card"
+msgstr "nincs videokártya"
+
+msgid "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+msgstr "%(os)s %(version)s, %(cpu)s, %(ram)s, %(gpu)s%(driver)s"
+
+msgid "%(flag)s was asked for as %(wanted)s but the run reports %(actual)s"
+msgstr "a(z) %(flag)s kapcsolóra %(wanted)s értéket kértünk, de a futás %(actual)s értéket jelent"
+
+msgid "The card was full and generation came in below three fifths of the estimate: the driver was paging to system memory, which does not fail and does not appear in the log."
+msgstr "A kártya tele volt, és a generálás a becslés háromötöde alá esett: az illesztőprogram a rendszermemóriába lapozott, ami nem hibázik, és nem jelenik meg a naplóban."
+
+msgid "Peak VRAM stayed clear of the card's total, so there was nothing for the driver to page."
+msgstr "A csúcs VRAM messze maradt a kártya teljes méretétől, így az illesztőprogramnak nem volt mit lapoznia."
+
+msgid "The card was full, which a good plan is meant to be, and the speed was close enough to the estimate that nothing was paging."
+msgstr "A kártya tele volt, ahogy egy jó tervnek illik, és a sebesség elég közel járt a becsléshez ahhoz, hogy semmi ne lapozzon."
+
+msgid "No VRAM reading was taken during the run, so this configuration has not been cleared of paging; it has only not been checked."
+msgstr "A futás alatt nem történt VRAM-leolvasás, így ez a beállítás nem tisztázódott a lapozás gyanúja alól; csak nem lett ellenőrizve."
+
+msgid "The card's total memory is unknown, so a reading of what was in use says nothing about how close to full it was."
+msgstr "A kártya teljes memóriája ismeretlen, így a használatban lévő rész leolvasása semmit nem mond arról, mennyire volt tele."
+
+msgid "There was no estimate to compare the measured speed against, so the second half of the signature could not be tested."
+msgstr "Nem volt becslés, amihez a mért sebességet hasonlítani lehetett volna, így az ujjlenyomat második fele nem volt vizsgálható."
+
+msgid "llama-bench did not produce JSON"
+msgstr "a llama-bench nem adott JSON kimenetet"
+
+msgid "llama-bench JSON is not a list of results"
+msgstr "a llama-bench JSON kimenete nem eredménylista"
+
+msgid "llama-bench JSON held no readable results"
+msgstr "a llama-bench JSON kimenete nem tartalmazott olvasható eredményt"
+
+msgid "no llama-bench result rows found"
+msgstr "nem található llama-bench eredménysor"
+
+msgid "could not open %(path)s for the server log"
+msgstr "nem sikerült megnyitni a(z) %(path)s fájlt a kiszolgáló naplójához"
+
+msgid "could not start llama-server"
+msgstr "nem sikerült elindítani a llama-servert"
+
+msgid "no output"
+msgstr "nincs kimenet"
+
+msgid "llama-bench exited with code %(code)d: %(detail)s"
+msgstr "a llama-bench %(code)d kóddal lépett ki: %(detail)s"
+
+msgid "llama-bench output could not be read: %(error)s"
+msgstr "a llama-bench kimenete nem volt beolvasható: %(error)s"
+
+msgid "llama-server did not become healthy"
+msgstr "a llama-server nem került működőképes állapotba"
+
+msgid "Its whole output is in the log file `bench` named; the end says why."
+msgstr "A teljes kimenete abban a naplófájlban van, amelyet a `bench` megnevezett; a vége megmondja, miért."
+
+msgid "%(path)s was written by a newer LlamaFit (benchmark format %(found)d, this build reads %(known)d)"
+msgstr "a(z) %(path)s fájlt újabb LlamaFit írta (mérési formátum: %(found)d, ez a build %(known)d formátumot olvas)"
+
+msgid "Upgrade LlamaFit, or move the file aside to start a new one."
+msgstr "Frissítse a LlamaFitet, vagy tegye félre a fájlt, hogy új induljon."
+
+msgid "a benchmark cannot be recorded against a simulated machine"
+msgstr "szimulált géphez nem rögzíthető mérés"
+
+msgid "Run `llamafit bench` on the machine itself, without --profile."
+msgstr "Futtassa a `llamafit bench` parancsot magán a gépen, --profile nélkül."
+
+msgid "the run did not use the settings it was given: %(problems)s"
+msgstr "a futás nem a neki adott beállításokat használta: %(problems)s"
+
+msgid "Nothing was stored. A result filed under flags it was not taken with would be believed later by everything that reads it."
+msgstr "Semmi nem lett eltárolva. Egy olyan kapcsolók alá iktatott eredménynek, amelyekkel nem is készült, később mindenki hinne, aki beolvassa."
+
+msgid "a conservative default; nobody has measured this card's backend overhead"
+msgstr "óvatos alapérték; ennek a kártyának a háttérrendszer-többletét még senki nem mérte meg"
+
+msgid "measured on this card with driver %(driver)s and llama.cpp %(build)s; one machine"
+msgstr "ezen a kártyán mérve, %(driver)s illesztőprogrammal és llama.cpp %(build)s verzióval; egyetlen gépen"
+
+msgid "A hybrid placement has to say how many layers are on the graphics card."
+msgstr "A hibrid elhelyezésnél meg kell adni, hány réteg kerül a videokártyára."
+
+msgid "Pass gpu_layers, which is what -ngl would be."
+msgstr "Adja meg a gpu_layers értékét, vagyis azt, ami a -ngl lenne."
+
+msgid "LlamaFit has not read %(model)s's %(quant)s file, so it cannot size it."
+msgstr "A LlamaFit nem olvasta be a(z) %(model)s modell %(quant)s fájlját, ezért nem tudja megmérni a méretét."
+
+msgid "Run `llamafit catalog refresh` to read the file's header."
+msgstr "Futtassa a `llamafit catalog refresh` parancsot a fájl fejlécének beolvasásához."
+
+msgid "the server process before any model buffer"
+msgstr "a kiszolgálófolyamat minden modellpuffer előtt"
+
+msgid "fitted to one machine's measurements; the least certain line here"
+msgstr "egyetlen gép méréseihez illesztve; ez a legbizonytalanabb sor itt"
+
+msgid "room for one logit per vocabulary entry per token of the batch"
+msgstr "hely a köteg minden tokenjéhez szótárbejegyzésenként egy logitnak"
+
+msgid "LlamaFit cannot size a %(kv_type)s key-value cache."
+msgstr "A LlamaFit nem tud %(kv_type)s típusú kulcs-érték gyorsítótárat megmérni."
+
+msgid "Use one of: %(types)s."
+msgstr "Válasszon egyet ezek közül: %(types)s."
+
+msgid "This model's file does not say how large its key-value cache is per token."
+msgstr "Ennek a modellnek a fájlja nem mondja meg, mekkora a kulcs-érték gyorsítótára tokenenként."
+
+msgid "Refresh the catalog so the file's header is read again."
+msgstr "Frissítse a katalógust, hogy a fájl fejléce újra beolvasásra kerüljön."
+
+msgid "the attention-layer count was assumed, not counted"
+msgstr "a figyelmi rétegek számát nem megszámoltuk, hanem feltételeztük"
+
+msgid "%(arch)s allocates more cache than its header describes; see the line below"
+msgstr "a(z) %(arch)s több gyorsítótárat foglal, mint amennyit a fejléce leír; lásd az alábbi sort"
+
+msgid "what %(arch)s allocates beyond its header, measured rather than derived"
+msgstr "amit a(z) %(arch)s a fejlécén felül foglal, mérve és nem levezetve"
+
+msgid "from the architecture's state dimensions; it does not grow with context"
+msgstr "az architektúra állapotdimenzióiból; nem nő a kontextussal"
+
+msgid "the projector file itself"
+msgstr "maga a projektorfájl"
+
+msgid "the projector's own compute space, measured at 248 MiB"
+msgstr "a projektor saját számítási tere, 248 MiB-ra mérve"
+
+msgid "attention projections, feed-forward weights and norms"
+msgstr "figyelmi vetítések, előrecsatolt súlyok és normalizálások"
+
+msgid "always-on experts, which run for every token"
+msgstr "mindig aktív szakértők, amelyek minden tokenhez lefutnak"
+
+msgid "routed experts, read across the bus once per micro-batch"
+msgstr "irányított szakértők, amelyeket mikrökötegenként egyszer olvas át a busz"
+
+msgid "this model ties its output projection to its embedding table"
+msgstr "ez a modell a kimeneti vetítését a beágyazási táblájához köti"
+
+msgid "llama.cpp keeps the embedding table in memory even at full offload"
+msgstr "a llama.cpp teljes kihelyezés mellett is a memóriában tartja a beágyazási táblát"
+
+msgid "streamed from disk as it is needed, not held in memory"
+msgstr "igény szerint folyamban érkezik a lemezről, nem a memóriában áll"
+
+msgid "held in memory, since streaming from disk was turned off"
+msgstr "a memóriában áll, mivel a lemezről való folyamatos olvasás ki van kapcsolva"
 
 msgid "Hugging Face returned %(status)d while listing files for %(repo)s."
 msgstr "A Hugging Face %(status)d kódot adott vissza a(z) %(repo)s fájljainak listázásakor."
@@ -73,6 +270,9 @@ msgstr "A teljes fájl újraépítéséhez futtassa a `llamafit catalog refresh`
 msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
 msgstr "Nyílt súlyú nyelvi modellek keresése, méretezése, telepítése és ellenőrzése a llama.cpp számára a saját gépén."
 
+msgid "With no command, llamafit opens the terminal dashboard; in a pipe, or with --json, it prints what `llamafit recommend` would."
+msgstr "Parancs nélkül a llamafit megnyitja a terminál vezérlőpultját; csővezetékben vagy --json esetén azt írja ki, amit a `llamafit recommend` írna."
+
 msgid "Print machine-readable JSON instead of tables."
 msgstr "Táblázatok helyett géppel olvasható JSON kiírása."
 
@@ -82,17 +282,322 @@ msgstr "Részletek írása a naplókönyvtár llamafit.log fájljába, és a hib
 msgid "Disable colours."
 msgstr "A színek kikapcsolása."
 
+msgid "Answer for the machine this hardware profile describes instead of this one. Nothing about this machine is probed, and every answer is marked as simulated. `llamafit hardware list` names the profiles you have."
+msgstr "Arra a gépre válaszoljon, amelyet ez a hardverprofil ír le, ne erre. Ebből a gépből semmit nem vizsgál meg, és minden válasz szimuláltként van megjelölve. A `llamafit hardware list` felsorolja az Ön profiljait."
+
+msgid "Pretend the graphics card has this much memory, for example 24G. Everything else stays as scanned, and every answer is marked as simulated."
+msgstr "Tegyen úgy, mintha a videokártyának ennyi memóriája volna, például 24G. Minden más marad a beolvasottnak megfelelően, és minden válasz szimuláltként van megjelölve."
+
+msgid "Pretend the machine has this much system memory, for example 128GiB. Every answer is marked as simulated."
+msgstr "Tegyen úgy, mintha a gépnek ennyi rendszermemóriája volna, például 128GiB. Minden válasz szimuláltként van megjelölve."
+
+msgid "Pretend the processor has this many physical cores. Every answer is marked as simulated."
+msgstr "Tegyen úgy, mintha a processzornak ennyi fizikai magja volna. Minden válasz szimuláltként van megjelölve."
+
+msgid "Plan, report and score no context longer than this. It caps the model's own length; it does not describe a machine."
+msgstr "Ennél hosszabb kontextust ne tervezzen, ne jelentsen és ne pontozzon. A modell saját hosszát korlátozza; nem gépet ír le."
+
 msgid "Speak this language, for example pt_PT. A language LlamaFit does not have falls back to English, and it says which ones it does have."
 msgstr "Beszéljen ezen a nyelven, például pt_PT. Az a nyelv, amely a LlamaFit-ben nincs meg, angolra vált, és a program megmondja, melyek vannak meg."
 
 msgid "Print the version and exit."
 msgstr "A verzió kiírása és kilépés."
 
+msgid "the output's encoding"
+msgstr "a kimenet kódolása"
+
+msgid "%(count)d character could not be written in %(encoding)s and is shown as ?."
+msgid_plural "%(count)d characters could not be written in %(encoding)s and are shown as ?."
+msgstr[0] "%(count)d karaktert nem lehetett %(encoding)s kódolással kiírni, ezért ? jelenik meg helyette."
+msgstr[1] "%(count)d karaktert nem lehetett %(encoding)s kódolással kiírni, ezért ? jelenik meg helyettük."
+
+msgid "Set PYTHONUTF8=1 in the environment and run again: Python then writes UTF-8, which carries every language."
+msgstr "Állítsa be a PYTHONUTF8=1 értéket a környezetben, és futtassa újra: a Python ekkor UTF-8-at ír, ami minden nyelvet elbír."
+
+msgid "%(option)s is an option of llamafit itself, so it goes before the command: `llamafit %(option)s %(rest)s`."
+msgstr "A(z) %(option)s magának a llamafitnek a kapcsolója, ezért a parancs elé kerül: `llamafit %(option)s %(rest)s`."
+
 msgid "Unexpected error: %(error)s"
 msgstr "Váratlan hiba: %(error)s"
 
 msgid "Run again with --verbose for the full traceback."
 msgstr "A teljes hibakövetésért futtassa újra a --verbose kapcsolóval."
+
+msgid "A catalog model id."
+msgstr "Egy katalógusbeli modellazonosító."
+
+msgid "Benchmark this quantisation instead of the planned one."
+msgstr "A tervezett helyett ennek a kvantálásnak a mérése."
+
+msgid "Size for this many tokens."
+msgstr "Méretezés ennyi tokenre."
+
+msgid "Set the micro-batch by hand; the budget is rebuilt around it."
+msgstr "A mikroköteg kézi beállítása; a keret köréje épül újra."
+
+msgid ""
+"Measure a model on this machine and show the measurement beside the estimate.\n"
+"\n"
+"Runs llama-bench and a real server at the planned flags, stores the result with the conditions it was taken under, and flags a configuration the driver was paging. With --calibrate, fits the estimator's constants to this machine from every stored result and says by name which ones the measurements do not determine."
+msgstr ""
+"Megmér egy modellt ezen a gépen, és a mérést a becslés mellé teszi.\n"
+"\n"
+"Lefuttatja a llama-benchet és egy valódi kiszolgálót a tervezett kapcsolókkal, eltárolja az eredményt azokkal a körülményekkel együtt, amelyek között készült, és megjelöli azt a beállítást, amelynél az illesztőprogram lapozott. A --calibrate kapcsolóval minden eltárolt eredményből erre a gépre illeszti a becslő állandóit, és néven nevezi azokat, amelyeket a mérések nem határoznak meg."
+
+msgid "Measure prompt processing at every micro-batch of the ladder, not only the planned one. Section 10.2 has two free parameters and one micro-batch is one equation, so without this the prompt half of a calibration cannot be fitted at all."
+msgstr "A promptfeldolgozás mérése a létra minden mikrökötegénél, nem csak a tervezettnél. A 10.2. szakasznak két szabad paramétere van, és egy mikroköteg egy egyenlet, ezért enélkül a kalibráció promptra vonatkozó fele egyáltalán nem illeszthető."
+
+msgid "Run llama-bench only. Faster, and it gives up the paging check, the buffer sizes and the tool-call test, all of which need a real server."
+msgstr "Csak a llama-bench futtatása. Gyorsabb, de lemond a lapozásvizsgálatról, a pufferméretekről és az eszközhívás-tesztről, amelyekhez valódi kiszolgáló kell."
+
+msgid "Print the result without writing it to the database."
+msgstr "Az eredmény kiírása anélkül, hogy az adatbázisba kerülne."
+
+msgid "Print the commands that would run, and run nothing."
+msgstr "A lefutó parancsok kiírása anélkül, hogy bármi lefutna."
+
+msgid "Fit the estimator's constants to this machine from every result."
+msgstr "A becslő állandóinak illesztése erre a gépre minden eredményből."
+
+msgid "List what is already stored and stop."
+msgstr "A már eltárolt adatok felsorolása, majd leállás."
+
+msgid "`llamafit bench` needs a model to measure"
+msgstr "a `llamafit bench` parancsnak kell egy modell, amit megmérhet"
+
+msgid "Try `llamafit bench <model>`, `--calibrate` on its own, or `--show`."
+msgstr "Próbálja a `llamafit bench <model>` parancsot, a `--calibrate` kapcsolót önmagában, vagy a `--show` kapcsolót."
+
+msgid "llama.cpp was not found, so there is nothing to benchmark with"
+msgstr "a llama.cpp nem található, így nincs mivel mérni"
+
+msgid "Run `llamafit doctor` to see where it was looked for."
+msgstr "Futtassa a `llamafit doctor` parancsot, hogy lássa, hol kereste."
+
+msgid "%(path)s has llama-server but no llama-bench"
+msgstr "a(z) %(path)s helyen van llama-server, de nincs llama-bench"
+
+msgid "Some release archives leave it out; a full build has it beside the server."
+msgstr "Néhány kiadási archívumból kimarad; egy teljes build a kiszolgáló mellett tartalmazza."
+
+msgid "this host is simulated, and a simulated machine cannot be measured"
+msgstr "ez a gép szimulált, egy szimulált gépet pedig nem lehet megmérni"
+
+msgid "Run `llamafit bench` on the machine itself."
+msgstr "Futtassa a `llamafit bench` parancsot magán a gépen."
+
+msgid "the model file is not on this machine: %(path)s"
+msgstr "a modell fájlja nincs ezen a gépen: %(path)s"
+
+msgid "Download it first; `llamafit plan` shows the path the command line uses."
+msgstr "Előbb töltse le; a `llamafit plan` megmutatja azt az útvonalat, amelyet a parancssor használ."
+
+msgid "Would run:"
+msgstr "Ez futna le:"
+
+msgid "Nothing has been measured on this machine yet."
+msgstr "Ezen a gépen még semmit nem mértek meg."
+
+msgid "Stored measurements"
+msgstr "Eltárolt mérések"
+
+msgid "model"
+msgstr "modell"
+
+msgid "kind"
+msgstr "fajta"
+
+msgid "gen tok/s"
+msgstr "gen tok/s"
+
+msgid "prompt tok/s"
+msgstr "prompt tok/s"
+
+msgid "taken"
+msgstr "mérve"
+
+msgid "flags"
+msgstr "kapcsolók"
+
+msgid "Nothing was written to the database, so no estimate will be relabelled."
+msgstr "Semmi nem került az adatbázisba, így egyetlen becslés címkéje sem változik meg."
+
+msgid "Estimated against measured"
+msgstr "Becsült a mérttel szemben"
+
+msgid "figure"
+msgstr "mérőszám"
+
+msgid "context"
+msgstr "kontextus"
+
+msgid "micro-batch"
+msgstr "mikroköteg"
+
+msgid "estimated"
+msgstr "becsült"
+
+msgid "measured"
+msgstr "mért"
+
+msgid "ratio"
+msgstr "arány"
+
+msgid "The plan sizes this configuration for %(context)s tokens and estimates %(tps)s generated tokens per second there. Nothing above ran at that context, so that figure is reported and not compared."
+msgstr "A terv ezt a beállítást %(context)s tokenre méretezi, és ott %(tps)s generált tokent becsül másodpercenként. A fentiek közül semmi nem futott ezen a kontextuson, ezért ez az érték csak jelentve van, összehasonlítva nem."
+
+msgid "%(count)d figure is outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgid_plural "%(count)d figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
+msgstr[0] "%(count)d érték esik kívül azon a 0,8 és 1,25 közötti sávon, amelyben egy kalibrálatlan képlettől elvárható, hogy landoljon."
+msgstr[1] "%(count)d érték esik kívül azon a 0,8 és 1,25 közötti sávon, amelyben egy kalibrálatlan képlettől elvárható, hogy landoljon."
+
+msgid "This configuration was paging."
+msgstr "Ez a beállítás lapozott."
+
+msgid "This configuration was not paging."
+msgstr "Ez a beállítás nem lapozott."
+
+msgid "Paging could not be checked."
+msgstr "A lapozást nem lehetett ellenőrizni."
+
+msgid "Peak VRAM was %(percent)s percent of the card, and generation was %(speed)s percent of the estimate."
+msgstr "A csúcs VRAM a kártya %(percent)s százaléka volt, a generálás pedig a becslés %(speed)s százaléka."
+
+msgid "Peak VRAM was %(percent)s percent of the card. Generation was not compared with the estimate."
+msgstr "A csúcs VRAM a kártya %(percent)s százaléka volt. A generálás nem lett a becsléshez hasonlítva."
+
+msgid "The largest context on the ladder that would not page is %(tokens)s."
+msgstr "A létra legnagyobb olyan kontextusa, amely nem lapozna: %(tokens)s."
+
+msgid "Calibration"
+msgstr "Kalibráció"
+
+msgid "constant"
+msgstr "állandó"
+
+msgid "value"
+msgstr "érték"
+
+msgid "from"
+msgstr "forrás"
+
+msgid "%(base)s + %(slope)s per 1K"
+msgstr "%(base)s + %(slope)s 1K-nként"
+
+msgid "%(count)d measured context"
+msgid_plural "%(count)d measured contexts"
+msgstr[0] "%(count)d mért kontextus"
+msgstr[1] "%(count)d mért kontextus"
+
+msgid "Nothing was fitted. Every line below says what its constant was missing; a calibration made from less than that would look precise and be arbitrary."
+msgstr "Semmi nem lett illesztve. Az alábbi sorok mindegyike megmondja, mi hiányzott az állandójához; az ennél kevesebből készült kalibráció pontosnak látszana, és önkényes lenne."
+
+msgid "%(name)s was not fitted: %(reason)s"
+msgstr "a(z) %(name)s nem lett illesztve: %(reason)s"
+
+msgid "%(count)d measured configuration"
+msgid_plural "%(count)d measured configurations"
+msgstr[0] "%(count)d mért beállítás"
+msgstr[1] "%(count)d mért beállítás"
+
+msgid "What the model is for. It sets the score weights, the speed target and the context a candidate is measured against."
+msgstr "Mire való a modell. Ez szabja meg a pontozás súlyait, a sebességcélt és azt a kontextust, amelyhez egy jelöltet mérünk."
+
+msgid "Capability the model must have; a model without it is excluded "
+msgstr "Képesség, amellyel a modellnek rendelkeznie kell; az enélküli modell kimarad."
+
+msgid "Keep only these licence identifiers (repeatable)."
+msgstr "Csak ezeknek a licencazonosítóknak a megtartása (többször megadható)."
+
+msgid "balanced, quality or speed: moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights."
+msgstr "balanced, quality vagy speed: a súly egytizedét mozgatja a minőség és a sebesség között. Megdönti a táblát; nem váltja fel a súlyokat."
+
+msgid "Exclude anything larger to download, for example 40G or 7.5GiB."
+msgstr "Az ennél nagyobb letöltések kizárása, például 40G vagy 7.5GiB."
+
+msgid "The worst verdict to list: comfortable, fits or tight."
+msgstr "A legrosszabb felsorolandó ítélet: comfortable, fits vagy tight."
+
+msgid "Exclude candidates generating fewer tokens per second than this, in place of the speed a person reads at. Pass 0 when nobody is waiting on the tokens."
+msgstr "Azoknak a jelölteknek a kizárása, amelyek ennél kevesebb tokent adnak másodpercenként, az olvasási sebesség helyett. Adjon meg 0-t, ha senki nem várja a tokeneket."
+
+msgid "Order the rows drawn: score, speed, quality, context, size, prompt, card, ram, fit, model or quant, largest or best first unless :asc says otherwise. The # column keeps the ranking."
+msgstr "A megrajzolt sorok rendezése: score, speed, quality, context, size, prompt, card, ram, fit, model vagy quant; a nagyobb, illetve a jobb elöl, hacsak a :asc mást nem mond. A # oszlop a rangsort őrzi."
+
+msgid "Draw only rows whose id, name or quantisation contains this text."
+msgstr "Csak azoknak a soroknak a megrajzolása, amelyek azonosítója, neve vagy kvantálása tartalmazza ezt a szöveget."
+
+msgid "Draw only rows whose file is already on this machine."
+msgstr "Csak azoknak a soroknak a megrajzolása, amelyek fájlja már ezen a gépen van."
+
+msgid "Draw only rows that run this way: gpu, moe-offload, hybrid or cpu."
+msgstr "Csak azoknak a soroknak a megrajzolása, amelyek így futnak: gpu, moe-offload, hybrid vagy cpu."
+
+msgid "Draw only rows at or above this verdict: comfortable, fits or tight. The ranking is unchanged and a hidden row is still counted."
+msgstr "Csak az ettől az ítélettől felfelé eső sorok megrajzolása: comfortable, fits vagy tight. A rangsor nem változik, és egy elrejtett sor is beleszámít."
+
+msgid "Draw exactly these columns, comma-separated, in this order, named as --json names them: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+msgstr "Pontosan ezeknek az oszlopoknak a megrajzolása, vesszővel elválasztva, ebben a sorrendben, úgy nevezve, ahogy a --json nevezi őket: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+
+msgid "Draw every column whatever the terminal's width; a cell that does not fit folds."
+msgstr "Minden oszlop megrajzolása a terminál szélességétől függetlenül; a be nem férő cella tördelődik."
+
+msgid "Leave the candidates that were not ranked off the table. The reasons are still printed under it."
+msgstr "A rangsorba nem került jelöltek kihagyása a táblázatból. Az okok ettől még megjelennek alatta."
+
+msgid "invalid --min-fit %(value)s"
+msgstr "érvénytelen --min-fit érték: %(value)s"
+
+msgid "Valid values: %(values)s"
+msgstr "Érvényes értékek: %(values)s"
+
+msgid "invalid --prefer %(value)s"
+msgstr "érvénytelen --prefer érték: %(value)s"
+
+msgid "invalid --runs %(value)s"
+msgstr "érvénytelen --runs érték: %(value)s"
+
+msgid "invalid --sort %(value)s"
+msgstr "érvénytelen --sort érték: %(value)s"
+
+msgid "invalid --columns %(value)s"
+msgstr "érvénytelen --columns érték: %(value)s"
+
+msgid ""
+"Rank the catalog for what you want to do on this machine.\n"
+"\n"
+"Every candidate is planned, sized and estimated here, so the first run scans the machine. Speeds compare candidates at 8K tokens of context; --explain expands a row into the scores, the weights, the budget and the speed breakdown that produced it."
+msgstr ""
+"Rangsorolja a katalógust aszerint, amit ezen a gépen tenni szeretne.\n"
+"\n"
+"Itt minden jelölt megtervezésre, méretezésre és becslésre kerül, ezért az első futás végigméri a gépet. A sebességek 8K token kontextuson hasonlítják össze a jelölteket; a --explain kibontja egy sorból azokat a pontszámokat, súlyokat, kereteket és sebességbontást, amelyek létrehozták."
+
+msgid "Exclude candidates that cannot hold at least this many tokens."
+msgstr "Azoknak a jelölteknek a kizárása, amelyek nem tudnak legalább ennyi tokent tartani."
+
+msgid "Show at most this many rows."
+msgstr "Legfeljebb ennyi sor megjelenítése."
+
+msgid "Show every quantisation instead of the best one per model."
+msgstr "Minden kvantálás megjelenítése a modellenkénti legjobb helyett."
+
+msgid "Expand every row shown into the scores, weights, budget and speed breakdown behind it. Combine with --limit 1 for one model."
+msgstr "Minden megjelenített sor kibontása a mögötte álló pontszámokra, súlyokra, keretre és sebességbontásra. Egyetlen modellhez használja a --limit 1 kapcsolóval."
+
+msgid "Plan without a vision projector, freeing its memory."
+msgstr "Tervezés látásprojektor nélkül, felszabadítva annak memóriáját."
+
+msgid ""
+"Rank every model by how well it uses this machine, whatever it is for.\n"
+"\n"
+"No use case, no weights and no score: this is the memory question on its own. Models are sized for 32K tokens of context, and the context column is the largest each one holds in the mode shown."
+msgstr ""
+"Rangsorol minden modellt aszerint, milyen jól használja ki ezt a gépet, bármire is való.\n"
+"\n"
+"Nincs felhasználási eset, nincsenek súlyok és nincs pontszám: ez pusztán a memória kérdése. A modellek 32K token kontextusra vannak méretezve, és a kontextusoszlop a megjelenített módban a legnagyobbat mutatja, amelyet az adott modell tart."
+
+msgid "Only the configurations that use the machine well: at least half its memory held in weights, and no pool past four fifths."
+msgstr "Csak azok a beállítások, amelyek jól kihasználják a gépet: a memória legalább fele súlyokban, és egyik készlet sem négyötödnél teltebb."
 
 msgid "Maintain the catalog: validate its files, refresh volatile fields."
 msgstr "A katalógus karbantartása: fájljainak ellenőrzése, változó mezőinek frissítése."
@@ -103,37 +608,17 @@ msgstr "Csak ennek a felhasználási esetnek a megtartása."
 msgid "Keep only models with this capability (repeatable)."
 msgstr "Csak az ilyen képességű modellek megtartása (többször megadható)."
 
-msgid "Keep only these licence identifiers (repeatable)."
-msgstr "Csak ezeknek a licencazonosítóknak a megtartása (többször megadható)."
+msgid "Show only this quantisation, matched case-insensitively, in both tables."
+msgstr "Csak ennek a kvantálásnak a megjelenítése, kis- és nagybetűk megkülönböztetése nélkül, mindkét táblázatban."
+
+msgid "Size every quantisation for this many tokens instead of the usual 32,768."
+msgstr "Minden kvantálás méretezése ennyi tokenre a szokásos 32 768 helyett."
 
 msgid "Validate only this file instead of the bundled catalog and custom overrides."
 msgstr "Csak ennek a fájlnak az ellenőrzése a beépített katalógus és az egyéni felülbírálások helyett."
 
-msgid "Did you mean: %(ids)s?"
-msgstr "Erre gondolt: %(ids)s?"
-
-msgid "Run `llamafit list` to see every model id."
-msgstr "Az összes modellazonosító megtekintéséhez futtassa a `llamafit list` parancsot."
-
-msgid "no model named %(id)s in the catalog"
-msgstr "nincs %(id)s nevű modell a katalógusban"
-
-msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
-msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
-msgstr[0] "%(count)d katalógusprobléma található; a részletekért futtassa a `llamafit catalog validate` parancsot."
-msgstr[1] "%(count)d katalógusprobléma található; a részletekért futtassa a `llamafit catalog validate` parancsot."
-
 msgid "No models matched. Try a broader --use-case, --capability, --license, --vendor or --search."
 msgstr "Nincs találat. Próbáljon tágabb --use-case, --capability, --license, --vendor vagy --search értéket."
-
-msgid "invalid --use-case %(value)s"
-msgstr "érvénytelen --use-case érték: %(value)s"
-
-msgid "Valid use cases: %(values)s"
-msgstr "Érvényes felhasználási esetek: %(values)s"
-
-msgid "Valid capabilities: %(values)s"
-msgstr "Érvényes képességek: %(values)s"
 
 msgid ""
 "List the model catalog, narrowed by any filters given.\n"
@@ -159,8 +644,14 @@ msgstr "A llamafit list --search TEXT rövidítése."
 msgid "Text to match against id, name, vendor or family."
 msgstr "Az azonosítóval, a névvel, a gyártóval vagy a családdal egyeztetendő szöveg."
 
-msgid "A catalog model id."
-msgstr "Egy katalógusbeli modellazonosító."
+msgid ""
+"Show one model: its facts, the quants it publishes, and what each would cost on this machine.\n"
+"\n"
+"The last table is sized against this machine, so the first run scans it. One line per quantisation; plan opens one of those rows into the memory budget, the context ladder and the command line."
+msgstr ""
+"Egyetlen modell megjelenítése: adatai, az általa közzétett kvantálások, és hogy ezen a gépen melyik mibe kerülne.\n"
+"\n"
+"Az utolsó táblázat ehhez a géphez van méretezve, ezért az első futás végigméri. Kvantálásonként egy sor; a plan az egyik sort kibontja a memóriakeretre, a kontextuslétrára és a parancssorra."
 
 msgid "Validate catalog YAML files against the schema, printing one line per problem."
 msgstr "A katalógus YAML fájljainak ellenőrzése a séma alapján, problémánként egy sor kiírásával."
@@ -208,8 +699,387 @@ msgstr "Egy modell nyers katalógusbejegyzésének kiírása, alapértelmezés s
 msgid "Print YAML instead of JSON."
 msgstr "YAML kiírása JSON helyett."
 
+msgid "Did you mean: %(ids)s?"
+msgstr "Erre gondolt: %(ids)s?"
+
+msgid "Run `llamafit list` to see every model id."
+msgstr "Az összes modellazonosító megtekintéséhez futtassa a `llamafit list` parancsot."
+
+msgid "no model named %(id)s in the catalog"
+msgstr "nincs %(id)s nevű modell a katalógusban"
+
+msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
+msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
+msgstr[0] "%(count)d katalógusprobléma található; a részletekért futtassa a `llamafit catalog validate` parancsot."
+msgstr[1] "%(count)d katalógusprobléma található; a részletekért futtassa a `llamafit catalog validate` parancsot."
+
+msgid "invalid --use-case %(value)s"
+msgstr "érvénytelen --use-case érték: %(value)s"
+
+msgid "Valid use cases: %(values)s"
+msgstr "Érvényes felhasználási esetek: %(values)s"
+
+msgid "invalid %(option)s value: %(values)s"
+msgid_plural "invalid %(option)s values: %(values)s"
+msgstr[0] "érvénytelen %(option)s érték: %(values)s"
+msgstr[1] "érvénytelen %(option)s értékek: %(values)s"
+
+msgid "Valid capabilities: %(values)s"
+msgstr "Érvényes képességek: %(values)s"
+
+msgid "%(option)s is not a size: %(value)s"
+msgstr "a(z) %(option)s nem méret: %(value)s"
+
+msgid "Sizes look like 8G, 7.5GiB or 512M; a bare number is bytes."
+msgstr "A méret így néz ki: 8G, 7.5GiB vagy 512M; a puszta szám bájtot jelent."
+
+msgid "%(ceiling)s %(max)s is below %(floor)s %(min)s"
+msgstr "%(ceiling)s %(max)s kisebb, mint %(floor)s %(min)s"
+
+msgid "Raise %(ceiling)s, or lower %(floor)s."
+msgstr "Emelje a(z) %(ceiling)s értékét, vagy csökkentse a(z) %(floor)s értékét."
+
+msgid "`llamafit %(command)s` reports on the machine LlamaFit is running on"
+msgstr "a `llamafit %(command)s` arról a gépről ad jelentést, amelyen a LlamaFit fut"
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores. To see the machine a profile describes, run `llamafit hardware show NAME --as-host`."
+msgstr "Hagyja el a --profile, --memory, --ram és --cpu-cores kapcsolókat. Ha azt a gépet szeretné látni, amelyet egy profil leír, futtassa a `llamafit hardware show NAME --as-host` parancsot."
+
 msgid "Explain what was detected, what failed, and what would unlock more."
 msgstr "Bemutatja, mit talált a program, mi hiúsult meg, és mi tenne elérhetővé többet."
+
+msgid "Hardware profiles: describe a machine in a file and score models against it."
+msgstr "Hardverprofilok: írjon le egy gépet egy fájlban, és pontozza hozzá a modelleket."
+
+msgid "Validate only this file instead of every bundled and user profile."
+msgstr "Csak ennek a fájlnak az ellenőrzése az összes beépített és saját profil helyett."
+
+msgid "A profile name, or a path to a profile file."
+msgstr "Egy profil neve vagy egy profilfájl útvonala."
+
+msgid "%(count)d hardware profile problem found; run `llamafit hardware validate` for details."
+msgid_plural "%(count)d hardware profile problems found; run `llamafit hardware validate` for details."
+msgstr[0] "%(count)d hardverprofil-probléma található; a részletekért futtassa a `llamafit hardware validate` parancsot."
+msgstr[1] "%(count)d hardverprofil-probléma található; a részletekért futtassa a `llamafit hardware validate` parancsot."
+
+msgid "List the hardware profiles LlamaFit has: the bundled ones and your own."
+msgstr "Felsorolja a LlamaFit hardverprofiljait: a beépítetteket és az Önéit."
+
+msgid "No hardware profiles. Run `llamafit hardware path` to see where yours would go."
+msgstr "Nincs hardverprofil. Futtassa a `llamafit hardware path` parancsot, hogy lássa, hová kerülnének az Önéi."
+
+msgid ""
+"Show one profile; with --as-host, the machine it stands in for.\n"
+"\n"
+"A host built from a profile is marked as simulated, in the table and in the JSON, so a what-if is never mistaken for a scan of this machine."
+msgstr ""
+"Megjelenít egy profilt; az --as-host kapcsolóval azt a gépet, amelyet helyettesít.\n"
+"\n"
+"A profilból felépített gép szimuláltként van megjelölve a táblázatban és a JSON-ban is, hogy egy feltételezést soha ne lehessen összetéveszteni ennek a gépnek a beolvasásával."
+
+msgid "Show the host this profile substitutes, as `llamafit system` would."
+msgstr "Annak a gépnek a megjelenítése, amelyet ez a profil helyettesít, úgy, ahogy a `llamafit system` mutatná."
+
+msgid "Check hardware profile files against the schema, printing one line per problem."
+msgstr "Hardverprofil-fájlok ellenőrzése a séma alapján, problémánként egy sor kiírásával."
+
+msgid "Print the directory your own hardware profiles go in."
+msgstr "Kiírja azt a könyvtárat, amelybe az Ön saját hardverprofiljai kerülnek."
+
+msgid "It does not exist yet; create it and put a %(suffix)s file in it."
+msgstr "Még nem létezik; hozza létre, és tegyen bele egy %(suffix)s kiterjesztésű fájlt."
+
+msgid "Install what it takes to run a model: llama.cpp itself, and the weights."
+msgstr "Telepíti, ami egy modell futtatásához kell: magát a llama.cpp-t és a súlyokat."
+
+msgid "Fetch this quantisation instead of the first the catalog publishes."
+msgstr "Ennek a kvantálásnak a letöltése a katalógus által közzétett első helyett."
+
+msgid "Put the files here instead of under the configured downloads directory."
+msgstr "A fájlok ide kerüljenek a beállított letöltési könyvtár helyett."
+
+msgid "Use at most this much bandwidth, for example 5M. Shared across every worker, so the figure is the figure whatever --workers says."
+msgstr "Legfeljebb ennyi sávszélesség használata, például 5M. Az összes munkaszál osztozik rajta, így az érték független attól, mit mond a --workers."
+
+msgid "How many requests to keep in flight. More is not always faster, and a home connection is shared with whoever else is using it."
+msgstr "Hány kérés legyen egyszerre úton. A több nem mindig gyorsabb, és egy otthoni kapcsolaton osztozik mindenkivel, aki éppen használja."
+
+msgid "Do not ask before starting."
+msgstr "Ne kérdezzen az indítás előtt."
+
+msgid "Show what would be fetched and stop before fetching it."
+msgstr "Megmutatja, mit töltene le, és leáll, mielőtt letöltené."
+
+msgid "Fetch only the weights, not the vision projector or the draft model."
+msgstr "Csak a súlyok letöltése, a látásprojektoré és a vázlatmodellé nem."
+
+msgid "Re-read files that are already here and check them against the catalog."
+msgstr "A már itt lévő fájlok újraolvasása és összevetése a katalógussal."
+
+msgid "Fetch files the catalog holds no checksum for. Nothing will be able to tell you whether they arrived intact."
+msgstr "Olyan fájlok letöltése, amelyekhez a katalógusnak nincs ellenőrzőösszege. Semmi nem fogja tudni megmondani, hogy épségben érkeztek-e meg."
+
+msgid "Show at most this many entries."
+msgstr "Legfeljebb ennyi bejegyzés megjelenítése."
+
+msgid "Download a model's weights, resuming anything an earlier run left and checking every file against the catalog's checksum."
+msgstr "Letölti egy modell súlyait, folytatva, amit egy korábbi futás hagyott, és minden fájlt összevetve a katalógus ellenőrzőösszegével."
+
+msgid "Start the download?"
+msgstr "Induljon a letöltés?"
+
+msgid "Show what has been downloaded, newest first."
+msgstr "Megmutatja, mi lett letöltve, a legújabbal kezdve."
+
+msgid "Nothing has been downloaded yet."
+msgstr "Még semmi nem lett letöltve."
+
+msgid "Install this backend instead of the one chosen for your GPU: cuda, vulkan, hip, sycl, metal or cpu."
+msgstr "Ennek a háttérrendszernek a telepítése a GPU-jához választott helyett: cuda, vulkan, hip, sycl, metal vagy cpu."
+
+msgid "Install here instead of ~/.llamafit/llama.cpp."
+msgstr "Telepítés ide a ~/.llamafit/llama.cpp helyett."
+
+msgid "Install this release tag, for example b6100, not the latest."
+msgstr "Ennek a kiadási címkének a telepítése, például b6100, nem a legutóbbié."
+
+msgid "invalid --backend %(value)s"
+msgstr "érvénytelen --backend érték: %(value)s"
+
+msgid "Valid backends: %(values)s"
+msgstr "Érvényes háttérrendszerek: %(values)s"
+
+msgid "release %(tag)s publishes no %(backend)s build for %(os)s %(arch)s."
+msgstr "a(z) %(tag)s kiadás nem tesz közzé %(backend)s buildet %(os)s %(arch)s rendszerre."
+
+msgid "Leave --backend out and LlamaFit will choose a published one."
+msgstr "Hagyja el a --backend kapcsolót, és a LlamaFit egy közzétettet választ."
+
+msgid "release %(tag)s publishes nothing for %(os)s %(arch)s."
+msgstr "a(z) %(tag)s kiadás semmit nem tesz közzé %(os)s %(arch)s rendszerre."
+
+msgid "Build llama.cpp from source; see the project's own instructions."
+msgstr "Fordítsa le a llama.cpp-t forrásból; lásd a projekt saját útmutatóját."
+
+msgid "Downloading"
+msgstr "Letöltés"
+
+msgid "Change your PATH?"
+msgstr "Megváltoztassuk a PATH értékét?"
+
+msgid "PATH left alone."
+msgstr "A PATH érintetlen maradt."
+
+msgid "PATH changed. Open a new terminal for it to take effect."
+msgstr "A PATH megváltozott. Nyisson új terminált, hogy életbe lépjen."
+
+msgid ""
+"Download a published llama.cpp build and install it into ~/.llamafit/llama.cpp.\n"
+"\n"
+"The plan is printed before anything is written. The archive's checksum is verified before it is unpacked, an interrupted download continues where it stopped, and a directory LlamaFit did not create is never overwritten."
+msgstr ""
+"Letölti a llama.cpp egy közzétett buildjét, és telepíti a ~/.llamafit/llama.cpp könyvtárba.\n"
+"\n"
+"A terv kiírásra kerül, mielőtt bármit is írna. Az archívum ellenőrzőösszege a kicsomagolás előtt ellenőrzésre kerül, a megszakadt letöltés onnan folytatódik, ahol abbamaradt, és a LlamaFit soha nem ír felül olyan könyvtárat, amelyet nem ő hozott létre."
+
+msgid "Offer to add the bin directory to your PATH, showing the undo first."
+msgstr "Felajánlja a bin könyvtár hozzáadását a PATH értékéhez, előbb megmutatva a visszavonás módját."
+
+msgid "Install over a directory LlamaFit did not create. Ask yourself twice."
+msgstr "Telepítés olyan könyvtárba, amelyet nem a LlamaFit hozott létre. Gondolja meg kétszer."
+
+msgid "Install an archive that publishes no checksum. Nothing can be checked."
+msgstr "Olyan archívum telepítése, amely nem tesz közzé ellenőrzőösszeget. Semmit nem lehet ellenőrizni."
+
+msgid "Print the plan and write nothing."
+msgstr "A terv kiírása, írás nélkül."
+
+msgid "Do not ask; assume yes."
+msgstr "Ne kérdezzen; tekintse igennek."
+
+msgid "Install this?"
+msgstr "Telepítsük ezt?"
+
+msgid "Nothing was written."
+msgstr "Semmi nem került kiírásra."
+
+msgid "Plan this quantisation instead of the one that scores best on this machine."
+msgstr "Ennek a kvantálásnak a tervezése a helyett, amelyik ezen a gépen a legjobb pontszámot kapja."
+
+msgid "Size for this many tokens. When it does not fit, the plan sizes down and shows what the context you asked for would have cost."
+msgstr "Méretezés ennyi tokenre. Ha nem fér el, a terv lejjebb méretez, és megmutatja, mibe került volna a kért kontextus."
+
+msgid "Set the micro-batch by hand. The whole budget is rebuilt around it, since it moves the compute buffer and with it the verdict."
+msgstr "A mikroköteg kézi beállítása. A teljes keret köréje épül újra, mivel elmozdítja a számítási puffert, azzal együtt pedig az ítéletet."
+
+msgid "A generation speed to answer against: whether this reaches it, and what context would."
+msgstr "Egy generálási sebesség, amelyhez viszonyítva válaszolunk: eléri-e ez azt, és melyik kontextus érné el."
+
+msgid "%(model)s publishes no quantisations"
+msgstr "a(z) %(model)s nem tesz közzé kvantálást"
+
+msgid "Run `llamafit catalog refresh --model %(model)s`."
+msgstr "Futtassa a `llamafit catalog refresh --model %(model)s` parancsot."
+
+msgid ""
+"Place one model on this machine and print the command line that runs it.\n"
+"\n"
+"Shows the memory budget component by component, the context ladder a launch script chooses from, where a token's time goes, and any run the catalog records for comparison."
+msgstr ""
+"Elhelyez egy modellt ezen a gépen, és kiírja azt a parancssort, amely futtatja.\n"
+"\n"
+"Megmutatja a memóriakeretet összetevőnként, azt a kontextuslétrát, amelyből egy indítószkript választ, hogy hová megy egy token ideje, és minden olyan futást, amelyet a katalógus összehasonlításul rögzít."
+
+msgid "Leave the vision projector out, freeing its memory for context."
+msgstr "A látásprojektor kihagyása, felszabadítva annak memóriáját a kontextus számára."
+
+msgid "Write the files here instead of in LlamaFit's own presets directory."
+msgstr "A fájlok ide kerüljenek a LlamaFit saját előbeállítás-könyvtára helyett."
+
+msgid "Bind this port instead of llama.cpp's default 8080."
+msgstr "Ennek a portnak a lefoglalása a llama.cpp alapértelmezett 8080-as portja helyett."
+
+msgid "Size for this many tokens. It becomes the top of the ladder the script chooses from; the script never goes above it."
+msgstr "Méretezés ennyi tokenre. Ez lesz a létra teteje, amelyből a szkript választ; a szkript soha nem megy e fölé."
+
+msgid "%(model)s does not fit this machine in any configuration"
+msgstr "a(z) %(model)s semmilyen beállítással nem fér el ezen a gépen"
+
+msgid "Run `llamafit plan %(model)s` to see what it would need."
+msgstr "Futtassa a `llamafit plan %(model)s` parancsot, hogy lássa, mire volna szüksége."
+
+msgid ""
+"Write launch scripts for one model: a script that picks its context from free card memory at start time, a router section, and a README.\n"
+"\n"
+"A file you have edited is never overwritten without --force."
+msgstr ""
+"Indítószkripteket ír egy modellhez: egy szkriptet, amely indításkor a kártya szabad memóriájából választja meg a kontextusát, egy útválasztó szakaszt és egy READMÉ-t.\n"
+"\n"
+"Az Ön által szerkesztett fájlt a --force kapcsoló nélkül soha nem írja felül."
+
+msgid "Overwrite files you have edited. It says which ones it discarded."
+msgstr "Az Ön által szerkesztett fájlok felülírása. Megmondja, melyeket dobta el."
+
+msgid "Run a model's preset, wait for the server to answer, and print its endpoints. --stop stops the server LlamaFit started."
+msgstr "Lefuttatja egy modell előbeállítását, megvárja, míg a kiszolgáló válaszol, és kiírja a végpontjait. A --stop leállítja azt a kiszolgálót, amelyet a LlamaFit indított."
+
+msgid "Stop the server LlamaFit started for this model."
+msgstr "A LlamaFit által ehhez a modellhez indított kiszolgáló leállítása."
+
+msgid "Seconds to wait for /health before reporting that it has not answered."
+msgstr "Hány másodpercig várjon a /health válaszára, mielőtt jelenti, hogy nem felelt."
+
+msgid "the preset could not be written"
+msgstr "az előbeállítást nem sikerült kiírni"
+
+msgid "Wrote a preset first: %(path)s"
+msgstr "Előbb egy előbeállítás készült: %(path)s"
+
+msgid "Nothing to stop: LlamaFit has no record of starting %(model)s."
+msgstr "Nincs mit leállítani: a LlamaFitnek nincs feljegyzése arról, hogy elindította volna a(z) %(model)s modellt."
+
+msgid "Stopped %(model)s, which was serving on %(url)s."
+msgstr "Leállítva: %(model)s, amely a(z) %(url)s címen szolgált ki."
+
+msgid "Preset for %(name)s (%(quant)s) in %(dir)s"
+msgstr "Előbeállítás a(z) %(name)s (%(quant)s) modellhez itt: %(dir)s"
+
+msgid "The server will answer on %(url)s."
+msgstr "A kiszolgáló a(z) %(url)s címen fog válaszolni."
+
+msgid "Your edits were kept. Nothing above was written to those files; run the command again with --force to replace them."
+msgstr "Az Ön módosításai megmaradtak. A fentiekből semmi nem került azokba a fájlokba; futtassa újra a parancsot a --force kapcsolóval, hogy lecserélje őket."
+
+msgid "At start time the script reads how much card memory is free, keeps %(reserve)s MiB back, and takes the largest context that still fits."
+msgstr "Indításkor a szkript beolvassa, mennyi kártyamemória szabad, %(reserve)s MiB-ot félretesz, és a legnagyobb olyan kontextust veszi, amely még elfér."
+
+msgid "This machine has nothing the script can ask for free card memory, so it will start at %(context)s tokens; the script's header says why."
+msgstr "Ezen a gépen nincs semmi, amitől a szkript a kártya szabad memóriáját megkérdezhetné, ezért %(context)s tokennel fog indulni; a szkript fejléce megmondja, miért."
+
+msgid "Files"
+msgstr "Fájlok"
+
+msgctxt "column heading"
+msgid "File"
+msgstr "Fájl"
+
+msgctxt "column heading"
+msgid "What happened"
+msgstr "Mi történt"
+
+msgid "Context tiers the script may choose"
+msgstr "Kontextusfokozatok, amelyek közül a szkript választhat"
+
+msgctxt "column heading"
+msgid "Context"
+msgstr "Kontextus"
+
+msgctxt "column heading"
+msgid "Card needs"
+msgstr "Kártyaigény"
+
+msgctxt "column heading"
+msgid "Free card memory to reach it"
+msgstr "Szükséges szabad memória"
+
+msgid "%(value)s MiB"
+msgstr "%(value)s MiB"
+
+msgid "written"
+msgstr "kiírva"
+
+msgid "brought up to date"
+msgstr "frissítve"
+
+msgid "already up to date"
+msgstr "már naprakész"
+
+msgid "kept: you edited it"
+msgstr "megtartva: Ön szerkesztette"
+
+msgid "overwritten: your edits are gone"
+msgstr "felülírva: az Ön módosításai elvesztek"
+
+msgid "The preset could not be started: %(error)s"
+msgstr "Az előbeállítást nem sikerült elindítani: %(error)s"
+
+msgid "Started, but %(url)s has not answered yet. A large model can spend minutes reading its weights; try the health endpoint again in a moment, or run `llamafit launch %(model)s --stop`."
+msgstr "Elindult, de a(z) %(url)s még nem válaszolt. Egy nagy modell percekig is olvashatja a súlyait; próbálja meg újra a health végpontot kis idő múlva, vagy futtassa a `llamafit launch %(model)s --stop` parancsot."
+
+msgid "%(model)s was already serving on %(url)s."
+msgstr "A(z) %(model)s már a(z) %(url)s címen szolgált ki."
+
+msgid "%(model)s is serving on %(url)s."
+msgstr "A(z) %(model)s a(z) %(url)s címen szolgál ki."
+
+msgid "Stop it with `llamafit launch %(model)s --stop`."
+msgstr "Állítsa le a `llamafit launch %(model)s --stop` paranccsal."
+
+msgid "Endpoints"
+msgstr "Végpontok"
+
+msgctxt "column heading"
+msgid "What"
+msgstr "Mi"
+
+msgctxt "column heading"
+msgid "Where"
+msgstr "Hol"
+
+msgid "Web interface"
+msgstr "Webes felület"
+
+msgid "Chat completions"
+msgstr "Chat completions"
+
+msgid "Models"
+msgstr "Modellek"
+
+msgid "Health"
+msgstr "Health"
+
+msgid "Ask for the model by the alias %(alias)s."
+msgstr "A modellt a(z) %(alias)s álnéven kérje."
 
 msgctxt "finding level"
 msgid "OK"
@@ -238,6 +1108,50 @@ msgstr "feltételezett"
 msgctxt "bandwidth source"
 msgid "unknown"
 msgstr "ismeretlen"
+
+# Hungarian has no grammatical gender, so the rows that ask their own question here all
+# answer with the same words. That is the right answer, not a missed distinction: what
+# the context decides elsewhere, Hungarian does not have to decide at all.
+msgctxt "memory bandwidth"
+msgid "unknown"
+msgstr "ismeretlen"
+
+msgid "%(gbps)s GB/s (%(source)s, cached)"
+msgstr "%(gbps)s GB/s (%(source)s, gyorsítótárból)"
+
+msgid "%(gbps)s GB/s (%(source)s)"
+msgstr "%(gbps)s GB/s (%(source)s)"
+
+msgctxt "simulation override"
+msgid "VRAM"
+msgstr "VRAM"
+
+msgctxt "simulation override"
+msgid "system memory"
+msgstr "rendszermemória"
+
+msgctxt "simulation override"
+msgid "CPU cores"
+msgstr "CPU-magok"
+
+msgid "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgid_plural "these figures come from the hardware profile %(profile)s with %(fields)s overridden; they are not this machine"
+msgstr[0] "ezek az értékek a(z) %(profile)s hardverprofilból származnak, felülbírálva ezzel: %(fields)s; nem ezt a gépet írják le"
+msgstr[1] "ezek az értékek a(z) %(profile)s hardverprofilból származnak, felülbírálva ezekkel: %(fields)s; nem ezt a gépet írják le"
+
+msgid "these figures come from the hardware profile %(profile)s; they are not this machine"
+msgstr "ezek az értékek a(z) %(profile)s hardverprofilból származnak; nem ezt a gépet írják le"
+
+msgid "%(fields)s was overridden for a what-if; these figures are not what was scanned"
+msgid_plural "%(fields)s were overridden for a what-if; these figures are not what was scanned"
+msgstr[0] "a(z) %(fields)s felül lett bírálva egy feltételezéshez; ezek az értékek nem a beolvasottak"
+msgstr[1] "a(z) %(fields)s felül lett bírálva egy feltételezéshez; ezek az értékek nem a beolvasottak"
+
+msgid "these figures are not this machine"
+msgstr "ezek az értékek nem ezt a gépet írják le"
+
+msgid "SIMULATED"
+msgstr "SZIMULÁLT"
 
 msgctxt "model capability"
 msgid "coding"
@@ -282,16 +1196,16 @@ msgstr "%(compute)s TFLOPS fp16"
 
 msgid "%(count)d core"
 msgid_plural "%(count)d cores"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d mag"
+msgstr[1] "%(count)d mag"
 
 msgid "%(count)d thread"
 msgid_plural "%(count)d threads"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d szál"
+msgstr[1] "%(count)d szál"
 
 msgid "%(cores)s / %(threads)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s"
 
 msgid "%(count)d performance core"
 msgid_plural "%(count)d performance cores"
@@ -299,10 +1213,10 @@ msgstr[0] "%(count)d teljesítménymag"
 msgstr[1] "%(count)d teljesítménymag"
 
 msgid "%(cores)s / %(threads)s, %(performance)s"
-msgstr ""
+msgstr "%(cores)s / %(threads)s, %(performance)s"
 
 msgid "%(type)s at %(speed)d MT/s"
-msgstr ""
+msgstr "%(type)s, %(speed)d MT/s"
 
 msgid "%(speed)d MT/s"
 msgstr "%(speed)d MT/s"
@@ -318,23 +1232,23 @@ msgstr[0] "%(count)d csatorna"
 msgstr[1] "%(count)d csatorna"
 
 msgid "%(kind)s, %(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s %(channels)s között elosztva"
 
 msgid "%(kind)s, %(modules)s"
-msgstr ""
+msgstr "%(kind)s, %(modules)s"
 
 msgid "%(kind)s, %(channels)s"
-msgstr ""
+msgstr "%(kind)s, %(channels)s"
 
 msgid "%(modules)s across %(channels)s"
-msgstr ""
+msgstr "%(modules)s %(channels)s között elosztva"
 
 msgctxt "memory type"
 msgid "type unknown"
 msgstr "ismeretlen típus"
 
 msgid "%(specs)s (spec), driver %(driver)s"
-msgstr ""
+msgstr "%(specs)s (specifikáció szerint), illesztőprogram: %(driver)s"
 
 msgid "%(specs)s (spec)"
 msgstr "%(specs)s (specifikáció szerint)"
@@ -345,6 +1259,19 @@ msgstr "illesztőprogram: %(driver)s"
 msgctxt "GPU specifications"
 msgid "no specs"
 msgstr "nincs specifikáció"
+
+msgid "%(total)s VRAM, %(free)s free (Vulkan driver)"
+msgstr "%(total)s VRAM, ebből %(free)s szabad (Vulkan illesztőprogram)"
+
+msgid "%(total)s VRAM, %(free)s free"
+msgstr "%(total)s VRAM, ebből %(free)s szabad"
+
+msgid "%(total)s VRAM, free unknown"
+msgstr "%(total)s VRAM, a szabad rész ismeretlen"
+
+msgctxt "GPU VRAM"
+msgid "VRAM unknown"
+msgstr "ismeretlen VRAM"
 
 msgid "Host"
 msgstr "Gép"
@@ -357,23 +1284,6 @@ msgstr "%(os)s %(version)s (%(arch)s)"
 
 msgid "CPU"
 msgstr "CPU"
-
-msgid "%(model)s; %(cores)s; %(isa)s"
-msgstr "%(model)s; %(cores)s; %(isa)s"
-
-msgctxt "CPU instruction sets"
-msgid "isa unknown"
-msgstr "ismeretlen utasításkészlet"
-
-msgid "%(gbps)s GB/s (%(source)s)"
-msgstr "%(gbps)s GB/s (%(source)s)"
-
-# Hungarian has no grammatical gender, so the rows that ask their own question here all
-# answer with the same words. That is the right answer, not a missed distinction: what
-# the context decides elsewhere, Hungarian does not have to decide at all.
-msgctxt "memory bandwidth"
-msgid "unknown"
-msgstr "ismeretlen"
 
 msgid "Memory"
 msgstr "Memória"
@@ -388,19 +1298,15 @@ msgctxt "GPU"
 msgid "none detected"
 msgstr "nem található egy sem"
 
-msgid "%(total)s VRAM, %(free)s free"
-msgstr "%(total)s VRAM, ebből %(free)s szabad"
-
-msgctxt "GPU VRAM"
-msgid "VRAM unknown"
-msgstr "ismeretlen VRAM"
-
 # Hungarian numbers a thing with an ordinal, so the index leads: "2. GPU", not "GPU 2".
 msgid "GPU %(index)d"
 msgstr "%(index)d. GPU"
 
-msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
-msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgid "Card memory"
+msgstr "Kártyamemória"
+
+msgid "%(gpus)s: nothing here could read how much of the card is free, so every budget on this machine was computed as if there were no card at all. Install the Vulkan tools, or write the size into a hardware profile."
+msgstr "%(gpus)s: itt semmi nem tudta beolvasni, mennyi szabad a kártyán, ezért ezen a gépen minden keret úgy lett kiszámítva, mintha kártya sem volna. Telepítse a Vulkan eszközöket, vagy írja be a méretet egy hardverprofilba."
 
 msgid "Memory pool"
 msgstr "Memóriakészlet"
@@ -507,21 +1413,14 @@ msgid "Params"
 msgstr "Param."
 
 msgctxt "column heading"
-msgid "Context"
-msgstr "Kontextus"
-
-msgctxt "column heading"
 msgid "Capabilities"
 msgstr "Képességek"
 
 msgid "%(heading)s is the editorial baseline, before any quantisation penalty; run `llamafit info <model>` for the sourced benchmarks behind it."
-msgstr ""
+msgstr "A(z) %(heading)s a szerkesztőségi alapérték, bármiféle kvantálási levonás előtt; a mögötte álló, forrásolt teljesítménytesztekért futtassa a `llamafit info <model>` parancsot."
 
 msgid "%(heading)s is total/active billions for a mixture-of-experts model, or one number when they are equal."
-msgstr ""
-
-msgid "Models"
-msgstr "Modellek"
+msgstr "A(z) %(heading)s a szakértőelegy-modellek teljes/aktív milliárdjait adja meg, vagy egyetlen számot, ha a kettő egyenlő."
 
 msgid "Vendor"
 msgstr "Gyártó"
@@ -542,10 +1441,10 @@ msgid "Parameters"
 msgstr "Paraméterek"
 
 msgid "%(total)s total, %(active)s active"
-msgstr ""
+msgstr "%(total)s összesen, ebből %(active)s aktív"
 
 msgid "%(tokens)s tokens native, %(extended)s extended via %(method)s"
-msgstr ""
+msgstr "%(tokens)s token natívan, %(extended)s kiterjesztve ezzel: %(method)s"
 
 msgctxt "context extension method"
 msgid "unspecified method"
@@ -591,13 +1490,13 @@ msgstr[0] "%(count)d réteg"
 msgstr[1] "%(count)d réteg"
 
 msgid "%(arch)s, %(layers)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s, %(experts)s"
 
 msgid "%(arch)s, %(layers)s"
-msgstr ""
+msgstr "%(arch)s, %(layers)s"
 
 msgid "%(arch)s, %(experts)s"
-msgstr ""
+msgstr "%(arch)s, %(experts)s"
 
 msgid "%(count)d expert"
 msgid_plural "%(count)d experts"
@@ -628,19 +1527,1170 @@ msgctxt "bits per weight"
 msgid "unknown"
 msgstr "ismeretlen"
 
+msgid "On this machine"
+msgstr "Ezen a gépen"
+
+msgctxt "column heading"
+msgid "Quant"
+msgstr "Kvant."
+
+msgctxt "column heading"
+msgid "Runs"
+msgstr "Fut"
+
+msgctxt "column heading"
+msgid "Card"
+msgstr "Kártya"
+
+msgctxt "column heading"
+msgid "RAM"
+msgstr "RAM"
+
+msgctxt "column heading"
+msgid "Tok/s"
+msgstr "Tok/s"
+
+msgctxt "column heading"
+msgid "Ctx"
+msgstr "Ktx"
+
+msgctxt "column heading"
+msgid "Fit"
+msgstr "Hely"
+
+msgid "%(quant)s: %(reason)s"
+msgstr "%(quant)s: %(reason)s"
+
+msgctxt "tokens per second"
+msgid "unknown"
+msgstr "ismeretlen"
+
+msgctxt "context length"
+msgid "none"
+msgstr "nincs"
+
+msgid "Sized for %(context)s tokens, with every figure from a placement computed for this machine. `llamafit plan MODEL --quant NAME` opens one of these rows into the budget line by line, the context ladder and the command line that runs it."
+msgstr "%(context)s tokenre méretezve, minden érték egy ehhez a géphez számított elhelyezésből. A `llamafit plan MODEL --quant NAME` az egyik sort kibontja soronkénti keretre, kontextuslétrára és arra a parancssorra, amely futtatja."
+
+msgid "To reach %(context)s tokens, free %(free)s more on the graphics card: that rung needs %(needed)s, which is %(share)s of what is free and over the line where the driver starts paging."
+msgstr "A(z) %(context)s token eléréséhez szabadítson fel még %(free)s helyet a videokártyán: annak a fokozatnak %(needed)s kell, ami a szabad hely %(share)s része, és túl van azon a határon, ahol az illesztőprogram lapozni kezd."
+
+msgid "%(context)s tokens is past what this machine holds: that rung needs %(needed)s on the graphics card and there is nothing left to absorb what would not fit, so freeing the card is not the change that reaches it."
+msgstr "A(z) %(context)s token meghaladja, amennyit ez a gép tartani tud: annak a fokozatnak %(needed)s kell a videokártyán, és nem maradt semmi, ami felszívná a ki nem férő részt, így a kártya felszabadítása nem az a változtatás, amely elérné."
+
+msgid "%(quant)s, the next quantisation down, could not be sized: %(reason)s"
+msgstr "A(z) %(quant)s, a következő kvantálás lefelé, nem volt méretezhető: %(reason)s"
+
+msgid "%(quant)s, the next quantisation down, does not fit this machine either."
+msgstr "A(z) %(quant)s, a következő kvantálás lefelé, szintén nem fér el ezen a gépen."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens."
+msgstr "A(z) %(quant)s, a következő kvantálás lefelé, itt szintén megtervezhető: %(mode)s, %(verdict)s, legfeljebb %(context)s token."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens at %(tps)s tokens per second."
+msgstr "A(z) %(quant)s, a következő kvantálás lefelé, itt szintén megtervezhető: %(mode)s, %(verdict)s, legfeljebb %(context)s token, %(tps)s token másodpercenként."
+
+msgid "It fits entirely on the graphics card, which this one does not."
+msgstr "Egészében elfér a videokártyán, amit ez nem tesz meg."
+
+msgid "It fits better: %(theirs)s rather than %(mine)s."
+msgstr "Jobban elfér: %(theirs)s a(z) %(mine)s helyett."
+
+msgid "It holds %(theirs)s tokens rather than %(mine)s."
+msgstr "%(theirs)s tokent tart %(mine)s helyett."
+
+msgid "It generates %(theirs)s tokens per second rather than %(mine)s."
+msgstr "%(theirs)s tokent generál másodpercenként %(mine)s helyett."
+
+msgid "It is no better here, so there is nothing to gain by dropping to it."
+msgstr "Itt semmivel sem jobb, így nincs mit nyerni azzal, ha lejjebb lép rá."
+
+msgid "Every context this model offers already fits here; the machine is not what limits it."
+msgstr "Ennek a modellnek minden kontextusa elfér itt; nem a gép az, ami korlátozza."
+
+msgid "What would change it"
+msgstr "Mi változtatna rajta"
+
+msgctxt "profile origin"
+msgid "bundled"
+msgstr "beépített"
+
+msgctxt "profile origin"
+msgid "yours"
+msgstr "sajátja"
+
+msgid "%(ram)s RAM, no graphics card"
+msgstr "%(ram)s RAM, nincs videokártya"
+
+msgid "%(ram)s RAM shared with %(gpu)s"
+msgstr "%(ram)s RAM, megosztva ezzel: %(gpu)s"
+
+msgid "%(ram)s RAM, %(gpu)s with %(vram)s"
+msgstr "%(ram)s RAM, %(gpu)s %(vram)s memóriával"
+
+msgid "%(cores)d core / %(threads)d thread"
+msgid_plural "%(cores)d cores / %(threads)d threads"
+msgstr[0] "%(cores)d mag / %(threads)d szál"
+msgstr[1] "%(cores)d mag / %(threads)d szál"
+
+msgctxt "CPU instruction sets"
+msgid "isa unknown"
+msgstr "ismeretlen utasításkészlet"
+
+msgid "%(model)s; %(cores)s; %(isa)s"
+msgstr "%(model)s; %(cores)s; %(isa)s"
+
+msgid "%(total)s total, %(available)s available; bandwidth %(bandwidth)s"
+msgstr "%(total)s összesen, %(available)s elérhető; sávszélesség %(bandwidth)s"
+
+msgctxt "GPU specifications"
+msgid "no bandwidth or compute figure"
+msgstr "nincs sávszélesség- vagy számítási érték"
+
+msgid "%(specs)s (from the profile)"
+msgstr "%(specs)s (a profilból)"
+
+msgid "%(specs)s (from the specification table)"
+msgstr "%(specs)s (a specifikációs táblából)"
+
+msgctxt "GPU VRAM"
+msgid "VRAM from the shared pool"
+msgstr "VRAM a közös készletből"
+
+msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
+
+msgid "Hardware profiles"
+msgstr "Hardverprofilok"
+
+msgid "Machine"
+msgstr "Gép"
+
+msgid "a graphics card whose name contains %(text)s"
+msgstr "olyan videokártya, amelynek neve tartalmazza ezt: %(text)s"
+
+msgid "a processor whose model contains %(text)s"
+msgstr "olyan processzor, amelynek típusa tartalmazza ezt: %(text)s"
+
+msgid "at least %(ram)s of memory"
+msgstr "legalább %(ram)s memória"
+
+msgctxt "profile match rules"
+msgid "none, so this profile is never chosen for you"
+msgstr "nincs, így ezt a profilt a program soha nem választja Önnek"
+
+msgid "Description"
+msgstr "Leírás"
+
+msgid "From"
+msgstr "Forrás"
+
+msgid "File"
+msgstr "Fájl"
+
+msgid "Matches"
+msgstr "Illeszkedés"
+
+msgid "Recorded"
+msgstr "Rögzítve"
+
+msgid "Provenance"
+msgstr "Eredet"
+
+msgid "recorded from %(source)s; this build stores it but does not apply it yet"
+msgstr "%(source)s alapján rögzítve; ez a build eltárolja, de még nem alkalmazza"
+
+msgctxt "utilisation"
+msgid "n/a"
+msgstr "n/a"
+
+msgctxt "run mode"
+msgid "GPU"
+msgstr "GPU"
+
+msgctxt "run mode"
+msgid "experts in RAM"
+msgstr "szakértők a RAM-ban"
+
+msgctxt "run mode"
+msgid "split"
+msgstr "megosztott"
+
+msgctxt "run mode"
+msgid "CPU"
+msgstr "CPU"
+
+msgctxt "run mode"
+msgid "nowhere"
+msgstr "sehol"
+
+msgctxt "fit verdict"
+msgid "roomy"
+msgstr "bőséges"
+
+msgctxt "fit verdict"
+msgid "fits"
+msgstr "elfér"
+
+msgctxt "fit verdict"
+msgid "tight"
+msgstr "szűkös"
+
+msgctxt "fit verdict"
+msgid "pages"
+msgstr "lapoz"
+
+msgctxt "fit verdict"
+msgid "no room"
+msgstr "nincs hely"
+
+msgid "Roomy: there is room for a longer context or a second model."
+msgstr "Bőséges: van hely hosszabb kontextusnak vagy egy második modellnek."
+
+msgid "Fits: the intended configuration runs as planned."
+msgstr "Elfér: a szándékolt beállítás a tervnek megfelelően fut."
+
+msgid "Tight: it runs, but a browser or a second process can push it over."
+msgstr "Szűkös: fut, de egy böngésző vagy egy második folyamat átbillentheti."
+
+msgid "Pages: this needs more of the graphics card than is free. The driver will not refuse it — it moves the overflow to system memory, the server starts, the log looks healthy, and generation runs at a fraction of its speed with nothing saying why."
+msgstr "Lapoz: ehhez több kell a videokártyából, mint amennyi szabad. Az illesztőprogram nem tagadja meg — a túlcsordulást a rendszermemóriába teszi, a kiszolgáló elindul, a napló egészségesnek látszik, a generálás pedig a sebességének töredékén fut anélkül, hogy bármi megmondaná, miért."
+
+msgid "No room: more memory than this machine has, with nothing to page to."
+msgstr "Nincs hely: több memória, mint amennyi ebben a gépben van, és nincs hová lapozni."
+
+msgctxt "confidence"
+msgid "measured"
+msgstr "mért"
+
+msgctxt "confidence"
+msgid "calibrated"
+msgstr "kalibrált"
+
+msgctxt "confidence"
+msgid "estimated"
+msgstr "becsült"
+
+msgctxt "confidence"
+msgid "no estimate"
+msgstr "nincs becslés"
+
+msgid "Speeds are benchmarks taken on this machine, not predictions."
+msgstr "A sebességek ezen a gépen készült mérések, nem jóslatok."
+
+msgid "Speeds are section 10's formula corrected by benchmarks taken on this machine."
+msgstr "A sebességek a 10. szakasz képlete, ezen a gépen készült mérésekkel javítva."
+
+msgid "Speeds are section 10's formula on its default constants. Nothing has been benchmarked on this machine yet, so no figure here is a measurement."
+msgstr "A sebességek a 10. szakasz képlete az alapértelmezett állandóival. Ezen a gépen még semmit nem mértek meg, így itt egyetlen érték sem mérés."
+
+msgid "No speed could be estimated."
+msgstr "Egyetlen sebességet sem lehetett megbecsülni."
+
+msgctxt "memory pool"
+msgid "card"
+msgstr "kártya"
+
+msgctxt "memory pool"
+msgid "system"
+msgstr "rendszer"
+
+msgctxt "memory pool"
+msgid "disk"
+msgstr "lemez"
+
+msgctxt "budget component"
+msgid "dense weights"
+msgstr "sűrű súlyok"
+
+msgctxt "budget component"
+msgid "shared experts"
+msgstr "közös szakértők"
+
+msgctxt "budget component"
+msgid "routed experts"
+msgstr "irányított szakértők"
+
+msgctxt "budget component"
+msgid "token embedding"
+msgstr "tokenbeágyazás"
+
+msgctxt "budget component"
+msgid "output head"
+msgstr "kimeneti fej"
+
+msgctxt "budget component"
+msgid "other weights"
+msgstr "egyéb súlyok"
+
+msgctxt "budget component"
+msgid "streamed tables"
+msgstr "folyamban olvasott táblák"
+
+msgctxt "budget component"
+msgid "KV cache"
+msgstr "KV gyorsítótár"
+
+msgctxt "budget component"
+msgid "KV cache, undeclared"
+msgstr "KV gyorsítótár, bejelentetlen"
+
+msgctxt "budget component"
+msgid "recurrent state"
+msgstr "rekurrens állapot"
+
+msgctxt "budget component"
+msgid "compute buffer"
+msgstr "számítási puffer"
+
+msgctxt "budget component"
+msgid "output buffer"
+msgstr "kimeneti puffer"
+
+msgctxt "budget component"
+msgid "vision projector"
+msgstr "látásprojektor"
+
+msgctxt "budget component"
+msgid "vision compute"
+msgstr "látásszámítás"
+
+msgctxt "budget component"
+msgid "backend overhead"
+msgstr "háttérrendszer-többlet"
+
+msgctxt "budget component"
+msgid "process overhead"
+msgstr "folyamattöbblet"
+
+msgctxt "budget line source"
+msgid "file"
+msgstr "fájl"
+
+msgctxt "budget line source"
+msgid "formula"
+msgstr "képlet"
+
+msgctxt "column heading"
+msgid "Component"
+msgstr "Összetevő"
+
+msgctxt "column heading"
+msgid "From"
+msgstr "Forrás"
+
+msgid "Card: %(required)s of %(available)s free, %(share)s used."
+msgstr "Kártya: %(available)s szabadból %(required)s, %(share)s használatban."
+
+msgid "System memory: %(required)s of %(available)s free, %(share)s used."
+msgstr "Rendszermemória: %(available)s szabadból %(required)s, %(share)s használatban."
+
+msgid "%(component)s: %(note)s"
+msgstr "%(component)s: %(note)s"
+
+msgid "Context tiers"
+msgstr "Kontextusfokozatok"
+
+msgctxt "column heading"
+msgid "On this machine"
+msgstr "Ezen a gépen"
+
+msgid "A launch script compares the free memory it sees against the card column and takes the largest rung that fits (see docs/cli.md)."
+msgstr "Az indítószkript összeveti az általa látott szabad memóriát a kártyaoszloppal, és a legnagyobb beférő fokozatot veszi (lásd docs/cli.md)."
+
+msgid "%(gen)s tokens per second generated and %(prompt)s read, at %(context)s tokens of context (%(confidence)s)."
+msgstr "%(gen)s token generálva és %(prompt)s beolvasva másodpercenként, %(context)s token kontextuson (%(confidence)s)."
+
+msgctxt "column heading"
+msgid "A token's time"
+msgstr "Egy token ideje"
+
+msgctxt "token time"
+msgid "reading the card"
+msgstr "a kártya olvasása"
+
+msgctxt "token time"
+msgid "reading system memory"
+msgstr "a rendszermemória olvasása"
+
+msgctxt "token time"
+msgid "everything else"
+msgstr "minden egyéb"
+
+msgctxt "column heading"
+msgid "A prompt token's time"
+msgstr "Egy prompt token ideje"
+
+msgctxt "prompt token time"
+msgid "doing the arithmetic"
+msgstr "a számolás"
+
+msgctxt "prompt token time"
+msgid "streaming the experts across the link"
+msgstr "a szakértők átfolyatása a buszon"
+
+msgctxt "prompt token time"
+msgid "reading the experts from system memory"
+msgstr "a szakértők olvasása a rendszermemóriából"
+
+msgctxt "column heading"
+msgid "Seconds"
+msgstr "Mp"
+
+msgctxt "column heading"
+msgid "Share"
+msgstr "Arány"
+
+msgid "Measured on %(date)s."
+msgstr "Mérve: %(date)s."
+
+msgid "Recorded elsewhere"
+msgstr "Máshol rögzítve"
+
+msgctxt "column heading"
+msgid "Run"
+msgstr "Futás"
+
+msgctxt "column heading"
+msgid "Date"
+msgstr "Dátum"
+
+msgid "These are the curator's own runs on their machine, not benchmarks of this one, so nothing above is labelled measured. Compare them with the estimate; `llamafit bench` will measure this machine in phase 3."
+msgstr "Ezek a gondozó saját futásai a saját gépén, nem ennek a gépnek a mérései, ezért a fentiek közül semmi nem kap mért címkét. Vesse össze őket a becsléssel; a `llamafit bench` a 3. fázisban fogja megmérni ezt a gépet."
+
+msgid "%(profile)s: %(flags)s"
+msgstr "%(profile)s: %(flags)s"
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation, plus %(bonus)s because %(use_case)s is the job it was built for."
+msgstr "%(baseline)s a gondozótól, mínusz %(penalty)s ezért a kvantálásért, plusz %(bonus)s, mert a(z) %(use_case)s az a feladat, amelyre készült."
+
+msgid "%(baseline)s from the curator, less %(penalty)s for this quantisation; it lists %(use_case)s but was not built for it."
+msgstr "%(baseline)s a gondozótól, mínusz %(penalty)s ezért a kvantálásért; felsorolja a(z) %(use_case)s esetet, de nem arra készült."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for, less %(penalty)s because it reads a prompt at %(prompt)s."
+msgstr "%(gen)s token másodpercenként, szemben a(z) %(target)s értékkel, amit ez a felhasználási eset kér, mínusz %(penalty)s, mert a promptot %(prompt)s sebességgel olvassa."
+
+msgid "%(gen)s tokens per second against the %(target)s this use case asks for."
+msgstr "%(gen)s token másodpercenként, szemben a(z) %(target)s értékkel, amit ez a felhasználási eset kér."
+
+msgid "Its weights hold %(weights)s of this machine's %(memory)s and the tightest pool is %(share)s full. The score wants at least %(low)s of the memory taken and no more than %(high)s of any one pool."
+msgstr "A súlyai a gép %(memory)s memóriájából %(weights)s méretet foglalnak el, és a legszűkösebb készlet %(share)s részéig telt. A pontozás azt kívánja, hogy a memória legalább %(low)s része legyen lefoglalva, és egyik készlet se teljen %(high)s fölé."
+
+msgid "Holds %(fit)s tokens of the %(requested)s this request is scored against."
+msgstr "%(fit)s tokent tart abból a(z) %(requested)s mennyiségből, amelyhez ezt a kérést pontozzuk."
+
+msgid "Score %(total)s"
+msgstr "Pontszám: %(total)s"
+
+msgctxt "column heading"
+msgid "Part"
+msgstr "Rész"
+
+msgctxt "column heading"
+msgid "Weight"
+msgstr "Súly"
+
+msgctxt "column heading"
+msgid "Adds"
+msgstr "Hozzáad"
+
+msgctxt "score part"
+msgid "quality"
+msgstr "minőség"
+
+msgctxt "score part"
+msgid "speed"
+msgstr "sebesség"
+
+msgctxt "score part"
+msgid "fit"
+msgstr "hely"
+
+msgctxt "score part"
+msgid "context"
+msgstr "kontextus"
+
+msgctxt "board sort"
+msgid "score"
+msgstr "pontszám"
+
+msgctxt "board sort"
+msgid "speed"
+msgstr "sebesség"
+
+msgctxt "board sort"
+msgid "quality"
+msgstr "minőség"
+
+msgctxt "board sort"
+msgid "context"
+msgstr "kontextus"
+
+msgctxt "board sort"
+msgid "download size"
+msgstr "letöltési méret"
+
+msgctxt "board sort"
+msgid "prompt speed"
+msgstr "prompt-sebesség"
+
+msgctxt "board sort"
+msgid "card memory"
+msgstr "kártyamemória"
+
+msgctxt "board sort"
+msgid "system memory"
+msgstr "rendszermemória"
+
+msgctxt "board sort"
+msgid "fit"
+msgstr "hely"
+
+msgctxt "board sort"
+msgid "model id"
+msgstr "modellazonosító"
+
+msgctxt "board sort"
+msgid "quantisation"
+msgstr "kvantálás"
+
+msgctxt "column heading"
+msgid "#"
+msgstr "#"
+
+msgctxt "column heading"
+msgid "Model"
+msgstr "Modell"
+
+msgctxt "column heading"
+msgid "Size"
+msgstr "Méret"
+
+msgctxt "column heading"
+msgid "Have"
+msgstr "Megvan"
+
+msgctxt "column heading"
+msgid "Score"
+msgstr "Pont"
+
+msgctxt "column heading"
+msgid "Qual"
+msgstr "Minő."
+
+msgctxt "column heading"
+msgid "Prompt tok/s"
+msgstr "Prompt tok/s"
+
+msgctxt "column heading"
+msgid "How"
+msgstr "Hogyan"
+
+msgctxt "model file on this machine"
+msgid "yes"
+msgstr "igen"
+
+msgctxt "model file on this machine"
+msgid "no"
+msgstr "nem"
+
+msgid "no placement of it fits this machine at any context"
+msgstr "semmilyen elhelyezése nem fér el ezen a gépen egyetlen kontextuson sem"
+
+msgctxt "exclusion tag"
+msgid "no room"
+msgstr "nincs hely"
+
+msgctxt "exclusion tag"
+msgid "no facts"
+msgstr "nincs adat"
+
+msgctxt "exclusion tag"
+msgid "not ranked"
+msgstr "kimaradt"
+
+msgctxt "board cell with no figure"
+msgid "–"
+msgstr "–"
+
+msgid "%(term)s is not a filter; the terms are %(terms)s, and anything else is text to look for."
+msgstr "A(z) %(term)s nem szűrő; a kifejezések ezek: %(terms)s, minden más keresendő szöveg."
+
+msgid "fit>= takes one of %(values)s"
+msgstr "a fit>= ezek egyikét fogadja el: %(values)s"
+
+msgid "runs= takes one of %(values)s"
+msgstr "a runs= ezek egyikét fogadja el: %(values)s"
+
+msgid "%(term)s needs a number"
+msgstr "a(z) %(term)s számot vár"
+
+msgid "%(term)s needs a size such as 8G, 7.5GiB or 512M"
+msgstr "a(z) %(term)s méretet vár, például 8G, 7.5GiB vagy 512M"
+
+msgctxt "board filter"
+msgid "every candidate"
+msgstr "minden jelölt"
+
+msgctxt "board filter"
+msgid "the ones with room to spare"
+msgstr "amelyeknél marad hely"
+
+msgctxt "board filter"
+msgid "the ones that fit"
+msgstr "amelyek elférnek"
+
+msgctxt "board filter"
+msgid "the ones that run"
+msgstr "amelyek elfutnak"
+
+msgid "matching %(text)s"
+msgstr "amelyek illeszkednek erre: %(text)s"
+
+msgid "running as %(mode)s"
+msgstr "amelyek %(mode)s módban futnak"
+
+msgid "at least %(tps)s tokens per second"
+msgstr "amelyek legalább %(tps)s tokent adnak másodpercenként"
+
+msgid "no more than %(size)s to download"
+msgstr "amelyek letöltése legfeljebb %(size)s"
+
+msgid "no more than %(size)s on the card"
+msgstr "amelyek legfeljebb %(size)s helyet kérnek a kártyán"
+
+msgid "no more than %(size)s of system memory"
+msgstr "amelyek legfeljebb %(size)s rendszermemóriát kérnek"
+
+msgid "holding at least %(context)s tokens"
+msgstr "amelyek legalább %(context)s tokent tartanak"
+
+msgid "a quality of at least %(quality)s"
+msgstr "amelyek minősége legalább %(quality)s"
+
+msgid "%(shown)d of %(total)d shown"
+msgstr "%(total)d közül %(shown)d látszik"
+
+msgid "%(sort)s in reverse"
+msgstr "fordított %(sort)s"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s already on this machine."
+msgstr "%(counted)s, %(sort)s szerint; megjelenítve: %(filter)s, már ezen a gépen."
+
+msgctxt "board filter"
+msgid "already on this machine"
+msgstr "már ezen a gépen"
+
+msgid "%(counted)s, by %(sort)s, showing %(filter)s."
+msgstr "%(counted)s, %(sort)s szerint; megjelenítve: %(filter)s."
+
+msgid "Nothing was ranked. Every candidate is listed below with the reason; widen the request or free some memory."
+msgstr "Semmi nem került rangsorba. Minden jelölt fel van sorolva alább az okkal együtt; tágítsa a kérést, vagy szabadítson fel memóriát."
+
+msgid "Recommended"
+msgstr "Ajánlott"
+
+msgid "--min-tps 0: nobody is waiting on these tokens, so nothing was excluded for generating more slowly than a person reads."
+msgstr "--min-tps 0: ezeket a tokeneket senki nem várja, ezért semmi nem lett kizárva azért, mert lassabban generál, mint ahogy egy ember olvas."
+
+msgid "--min-tps %(tps)s: this board wanted at least that many tokens per second, and anything slower is excluded below rather than ranked here."
+msgstr "--min-tps %(tps)s: ez a tábla legalább ennyi tokent kért másodpercenként, és ami ennél lassabb, az alább kizárva jelenik meg, nem itt rangsorolva."
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; --limit sets how many, and the rest are neither worse-behaved nor hidden, only further down."
+msgstr "A megfelelt %(total)s közül a legjobb %(shown)s látszik; a --limit szabja meg, hány, a többi pedig nem rosszabb és nem rejtett, csak lejjebb van."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every speed above is a CPU-only speed. `llamafit doctor` says how to fix that."
+msgstr "A(z) %(gpus)s ebben a gépben van, és semmi nem tudta beolvasni, mennyi szabad belőle, ezért a fenti sebességek mind csak CPU-sebességek. A `llamafit doctor` megmondja, hogyan orvosolható ez."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized and scored for %(use_case)s at %(requested)s tokens."
+msgstr "A sebességek %(working)s token kontextusra vonatkoznak, hogy minden sor összemérhető legyen; a kontextusoszlop azt mutatja, mennyit tart az adott sor legfeljebb. %(use_case)s célra méretezve és pontozva, %(requested)s tokenre."
+
+msgid "Speeds are for %(working)s tokens of context so every row compares like with like; the context column is the largest each one holds. Sized for %(planned)s tokens and scored for %(use_case)s against %(requested)s."
+msgstr "A sebességek %(working)s token kontextusra vonatkoznak, hogy minden sor összemérhető legyen; a kontextusoszlop azt mutatja, mennyit tart az adott sor legfeljebb. %(planned)s tokenre méretezve, és %(use_case)s célra pontozva %(requested)s tokenhez viszonyítva."
+
+msgid "Weights: %(weights)s."
+msgstr "Súlyok: %(weights)s."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free, no card."
+msgstr "A számítás %(ram_total)s rendszermemóriából %(ram_free)s szabaddal készült, kártya nélkül."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free and %(vram_free)s of %(vram_total)s free on the %(gpu)s."
+msgstr "A számítás %(ram_total)s rendszermemóriából %(ram_free)s szabaddal és a(z) %(gpu)s kártyán %(vram_total)s memóriából %(vram_free)s szabaddal készült."
+
+msgid "Every speed above is derived from %(bandwidth)s of memory bandwidth."
+msgstr "A fenti sebességek mindegyike %(bandwidth)s memóriasávszélességből származik."
+
+msgid "That bandwidth was kept from an earlier run on this machine; `llamafit system --refresh-bandwidth` times it again."
+msgstr "Ez a sávszélesség egy korábbi, ezen a gépen végzett futásból maradt meg; a `llamafit system --refresh-bandwidth` újra megméri."
+
+msgid "generates fewer than the %(floor)s tokens per second this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "kevesebbet generál másodpercenként, mint a(z) %(floor)s token, amit ez a kérés kér; csökkentse a --min-tps értékét, vagy válasszon kisebb modellt vagy kvantálást"
+
+msgid "generates fewer than the %(floor)s tokens per second a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "kevesebbet generál másodpercenként, mint a(z) %(floor)s token, amennyit egy ember elolvas: ezen a gépen kötegelt munkára való eszköz, nem olyan, amely elé leülünk; egy kisebb modell vagy kvantálás lépést tartana"
+
+msgid "%(tps)s tok/s"
+msgstr "%(tps)s tok/s"
+
+msgctxt "exclusion tag"
+msgid "too slow"
+msgstr "túl lassú"
+
+msgctxt "exclusion tag"
+msgid "too big"
+msgstr "túl nagy"
+
+msgid "larger to download than the %(limit)s this request allows"
+msgstr "letöltésben nagyobb, mint a(z) %(limit)s, amennyit ez a kérés megenged"
+
+msgctxt "exclusion tag"
+msgid "unknown quant"
+msgstr "ismeretlen kvant."
+
+msgid "a quantisation whose cost in quality is not known, so it cannot be scored"
+msgstr "olyan kvantálás, amelynek minőségbeli ára nem ismert, ezért nem pontozható"
+
+msgid "needs more memory than this machine has, even at its smallest context"
+msgstr "több memóriát kíván, mint amennyi ebben a gépben van, még a legkisebb kontextusán is"
+
+msgctxt "exclusion tag"
+msgid "unsupported"
+msgstr "nem támogatott"
+
+msgid "no run mode supports this model on this machine"
+msgstr "egyetlen futási mód sem támogatja ezt a modellt ezen a gépen"
+
+msgctxt "exclusion tag"
+msgid "short context"
+msgstr "rövid kontextus"
+
+msgid "holds fewer than the %(minimum)s tokens asked for; lower the minimum context or free memory to see it ranked"
+msgstr "kevesebbet tart, mint a kért %(minimum)s token; csökkentse a legkisebb kontextust, vagy szabadítson fel memóriát, hogy rangsorolva lássa"
+
+msgctxt "exclusion tag"
+msgid "no estimate"
+msgstr "nincs becslés"
+
+msgid "no speed estimate, so it cannot be ranked against models that have one"
+msgstr "nincs sebességbecslés, így nem rangsorolható olyan modellekhez képest, amelyeknek van"
+
+msgctxt "exclusion tag"
+msgid "no %(capability)s"
+msgstr "nincs %(capability)s"
+
+msgid "no %(capability)s capability; drop it from the request, or ask for a use case that does not need it"
+msgstr "nincs %(capability)s képessége; hagyja ki a kérésből, vagy kérjen olyan felhasználási esetet, amelynek nincs rá szüksége"
+
+msgid "Not ranked"
+msgstr "Rangsoron kívül"
+
+msgid "Not placed"
+msgstr "Nem elhelyezhető"
+
+msgid "%(tag)s (%(count)s):"
+msgstr "%(tag)s (%(count)s):"
+
+msgid "%(model)s %(quant)s: %(reason)s"
+msgstr "%(model)s %(quant)s: %(reason)s"
+
+msgid "%(tag)s (%(count)s): %(sentence)s."
+msgstr "%(tag)s (%(count)s): %(sentence)s."
+
+msgid "%(model)s %(quant)s (%(figure)s)"
+msgstr "%(model)s %(quant)s (%(figure)s)"
+
+msgid "%(name)s %(quant)s (%(tag)s)"
+msgstr "%(name)s %(quant)s (%(tag)s)"
+
+msgid "%(rank)s. %(name)s %(quant)s"
+msgstr "%(rank)s. %(name)s %(quant)s"
+
+msgid "Nothing fits this machine at that threshold. Try --min-fit tight, or drop --perfect."
+msgstr "Ennél a küszöbnél semmi nem fér el ezen a gépen. Próbálja a --min-fit tight beállítást, vagy hagyja el a --perfect kapcsolót."
+
+msgid "Fit on the simulated machine"
+msgstr "Elférés a szimulált gépen"
+
+msgid "Fit on this machine"
+msgstr "Elférés ezen a gépen"
+
+msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
+msgstr "%(context)s tokenre méretezve. A kontextusoszlop a megjelenített módban a legnagyobbat mutatja, amelyet az adott modell tart."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every row was sized as if there were no card. `llamafit doctor` says how to fix that."
+msgstr "A(z) %(gpus)s ebben a gépben van, és semmi nem tudta beolvasni, mennyi szabad belőle, ezért minden sor úgy lett méretezve, mintha kártya sem volna. A `llamafit doctor` megmondja, hogyan orvosolható ez."
+
+msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
+msgstr "%(mode)s %(context)s tokennél, mikroköteg: %(ub)s, %(kv)s gyorsítótár, %(threads)s szál."
+
+msgid "This reaches the %(target)s tokens per second asked for."
+msgstr "Ez eléri a kért %(target)s tokent másodpercenként."
+
+msgid "It does not reach %(target)s tokens per second here, but %(context)s tokens of context would: pass --context %(tokens)s."
+msgstr "Itt nem éri el a(z) %(target)s tokent másodpercenként, de %(context)s token kontextussal elérné: adja meg a --context %(tokens)s kapcsolót."
+
+msgid "Nothing this model and quantisation can do on this machine reaches %(target)s tokens per second; the fastest configuration tried is %(best)s. A smaller model or a smaller quantisation is the change that would."
+msgstr "Ezen a gépen semmi, amit ez a modell és kvantálás tud, nem éri el a(z) %(target)s tokent másodpercenként; a kipróbált leggyorsabb beállítás %(best)s. Egy kisebb modell vagy egy kisebb kvantálás volna az a változtatás, amely elérné."
+
+msgid "%(name)s %(quant)s"
+msgstr "%(name)s %(quant)s"
+
+msgid "Memory budget"
+msgstr "Memóriakeret"
+
+msgid "The %(context)s tokens asked for would have cost"
+msgstr "A kért %(context)s token ennyibe került volna"
+
+msgid "Command line"
+msgstr "Parancssor"
+
+msgid "Model file: %(path)s."
+msgstr "Modellfájl: %(path)s."
+
+msgid "Model file: %(path)s, which is not on this machine yet; that is where a download would put it. %(size)s to fetch."
+msgstr "Modellfájl: %(path)s, amely még nincs ezen a gépen; egy letöltés oda tenné. %(size)s letöltendő."
+
+msgid "%(shown)d of %(total)d candidate shown."
+msgid_plural "%(shown)d of %(total)d candidates shown."
+msgstr[0] "%(total)d jelölt közül %(shown)d látszik."
+msgstr[1] "%(total)d jelölt közül %(shown)d látszik."
+
+msgid "Release"
+msgstr "Kiadás"
+
+msgid "%(tag)s (build %(build)s)"
+msgstr "%(tag)s (build %(build)s)"
+
+msgid "Backend"
+msgstr "Háttérrendszer"
+
+msgid "Archive"
+msgstr "Archívum"
+
+msgid "Also"
+msgstr "Továbbá"
+
+msgid "Download"
+msgstr "Letöltés"
+
+msgid "%(size)s (%(done)s already on disk)"
+msgstr "%(size)s (%(done)s már a lemezen)"
+
+msgid "Checksum"
+msgstr "Ellenőrzőösszeg"
+
+msgid "published, checked before anything is unpacked"
+msgstr "közzétéve, a kicsomagolás előtt ellenőrizzük"
+
+msgid "none published"
+msgstr "nincs közzétéve"
+
+msgid "Install into"
+msgstr "Telepítés ide"
+
+msgid "Directory"
+msgstr "Könyvtár"
+
+msgid "Free space"
+msgstr "Szabad hely"
+
+msgid "Free space (cache)"
+msgstr "Szabad hely (gyorsítótár)"
+
+msgid "%(free)s on %(path)s, %(needed)s needed"
+msgstr "%(free)s a(z) %(path)s helyen, %(needed)s szükséges"
+
+msgid "will be created"
+msgstr "létre fog jönni"
+
+msgid "exists and is empty"
+msgstr "létezik és üres"
+
+msgid "holds %(tag)s, installed by LlamaFit; it will be replaced"
+msgstr "%(tag)s van benne, a LlamaFit telepítette; le lesz cserélve"
+
+msgid "installed by LlamaFit; it will be replaced"
+msgstr "a LlamaFit telepítette; le lesz cserélve"
+
+msgid "was not installed by LlamaFit"
+msgstr "nem a LlamaFit telepítette"
+
+msgid "Installed llama.cpp %(tag)s into %(path)s."
+msgstr "A llama.cpp %(tag)s telepítve ide: %(path)s."
+
+msgid "Replaced %(tag)s."
+msgstr "Lecserélve: %(tag)s."
+
+msgid "Backends found in it: %(backends)s"
+msgstr "A benne talált háttérrendszerek: %(backends)s"
+
+msgid "none"
+msgstr "nincs"
+
+msgid "Check it with `llamafit doctor`."
+msgstr "Ellenőrizze a `llamafit doctor` paranccsal."
+
+msgid "already here"
+msgstr "már itt van"
+
+msgid "to fetch"
+msgstr "letöltendő"
+
+msgid "About to download"
+msgstr "Letöltés következik"
+
+msgid "Role"
+msgstr "Szerep"
+
+msgid "Status"
+msgstr "Állapot"
+
+msgid "%(name)s %(quant)s from %(repo)s"
+msgstr "%(name)s %(quant)s innen: %(repo)s"
+
+msgid "%(count)d file, %(total)s in all, %(needed)s still to fetch."
+msgid_plural "%(count)d files, %(total)s in all, %(needed)s still to fetch."
+msgstr[0] "%(count)d fájl, összesen %(total)s, ebből %(needed)s még letöltendő."
+msgstr[1] "%(count)d fájl, összesen %(total)s, ebből %(needed)s még letöltendő."
+
+msgid "Into %(path)s, which has %(free)s free; %(after)s would be left."
+msgstr "Ide: %(path)s, ahol %(free)s szabad; %(after)s maradna."
+
+msgid "The catalog holds no checksum for %(files)s."
+msgid_plural "The catalog holds no checksums for %(files)s."
+msgstr[0] "A katalógusnak nincs ellenőrzőösszege ehhez: %(files)s."
+msgstr[1] "A katalógusnak nincs ellenőrzőösszege ezekhez: %(files)s."
+
+msgid "%(model)s %(quant)s is already here; nothing to do."
+msgstr "A(z) %(model)s %(quant)s már itt van; nincs teendő."
+
+msgid "Stopped. What arrived is kept; run `llamafit install model %(model)s` again to carry on from there."
+msgstr "Leállt. Ami megérkezett, megmarad; futtassa újra a `llamafit install model %(model)s` parancsot, hogy onnan folytassa."
+
+msgid "%(count)d file, %(size)s, checked against the catalog."
+msgid_plural "%(count)d files, %(size)s, checked against the catalog."
+msgstr[0] "%(count)d fájl, %(size)s, a katalógushoz mérve ellenőrizve."
+msgstr[1] "%(count)d fájl, %(size)s, a katalógushoz mérve ellenőrizve."
+
+msgid "In %(path)s. Run `llamafit plan %(model)s` for the command line that runs it."
+msgstr "Itt: %(path)s. Futtassa a `llamafit plan %(model)s` parancsot azért a parancssorért, amely futtatja."
+
+msgid "Downloads"
+msgstr "Letöltések"
+
+msgid "When"
+msgstr "Mikor"
+
+msgid "Model"
+msgstr "Modell"
+
+msgid "Quant"
+msgstr "Kvantálás"
+
+msgid "Outcome"
+msgstr "Kimenetel"
+
+msgid "finished"
+msgstr "befejeződött"
+
+msgid "stopped"
+msgstr "leállt"
+
+msgid "Bind to this address instead of 127.0.0.1. Anything but loopback puts the dashboard on your network, where there is no password and no login; it prints what that exposes before it starts."
+msgstr "Ehhez a címhez kössön a 127.0.0.1 helyett. A loopbacken kívül bármi a hálózatára teszi a vezérlőpultot, ahol nincs jelszó és nincs bejelentkezés; indulás előtt kiírja, mit tesz ezzel közzé."
+
+msgid "Listen on this port."
+msgstr "Ezen a porton figyeljen."
+
+msgid ""
+"Open the dashboard in a browser: the board, the machine and the plans.\n"
+"\n"
+"It serves the same numbers `--json` prints, from the same code, on this machine only. Nothing is fetched from the internet to draw the page."
+msgstr ""
+"Megnyitja a vezérlőpultot a böngészőben: a táblát, a gépet és a terveket.\n"
+"\n"
+"Ugyanazokat az értékeket szolgálja ki, amelyeket a --json ír ki, ugyanabból a kódból, kizárólag ezen a gépen. Az oldal megrajzolásához semmit nem tölt le az internetről."
+
+msgid "Open the page in your browser."
+msgstr "Nyissa meg az oldalt a böngészőben."
+
+msgid "Drop --profile, --memory, --ram and --cpu-cores, then open the Simulate panel on the page: it substitutes a machine for as long as you want it, and marks every answer it produces."
+msgstr "Hagyja el a --profile, --memory, --ram és --cpu-cores kapcsolókat, majd nyissa meg a Szimuláció panelt az oldalon: ameddig csak szeretné, helyettesít egy gépet, és minden általa adott választ megjelöl."
+
+msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
+msgstr "A LlamaFit itt érhető el: %(url)s. A leállításhoz nyomja meg a Ctrl+C billentyűt."
+
 msgid "Show what this machine has: CPU, memory, GPUs, disks and llama.cpp."
 msgstr "Megmutatja, mi van ebben a gépben: CPU, memória, GPU-k, lemezek és llama.cpp."
 
 msgid "Skip the RAM bandwidth measurement."
 msgstr "A RAM sávszélesség-mérésének kihagyása."
 
+msgid "Measure RAM bandwidth again instead of reading back the figure kept for this machine, and keep the new one."
+msgstr "A RAM sávszélességének újramérése ahelyett, hogy az ehhez a géphez megőrzött értéket olvasná vissza, és az új megtartása."
+
+msgid "%(url)s answered a range request with the whole file."
+msgstr "A(z) %(url)s a tartománykérésre a teljes fájllal válaszolt."
+
+msgid "%(url)s is rate-limiting this download (HTTP %(status)d)."
+msgstr "A(z) %(url)s korlátozza ennek a letöltésnek a sebességét (HTTP %(status)d)."
+
+msgid "Check your network connection and run the command again to resume."
+msgstr "Ellenőrizze a hálózati kapcsolatot, és futtassa újra a parancsot a folytatáshoz."
+
+msgid "%(file)s needs authorisation (HTTP %(status)d)."
+msgstr "A(z) %(file)s engedélyt kíván (HTTP %(status)d)."
+
+msgid "This repository is gated. Accept its terms on Hugging Face and set HF_TOKEN to a token that can read it."
+msgstr "Ez a tároló korlátozott. Fogadja el a feltételeit a Hugging Face-en, és állítsa a HF_TOKEN értékét egy olyan tokenre, amely olvashatja."
+
+msgid "%(file)s is not at %(url)s any more (HTTP 404)."
+msgstr "A(z) %(file)s már nincs itt: %(url)s (HTTP 404)."
+
+msgid "Run `llamafit catalog refresh` to pick up the repository's current files."
+msgstr "Futtassa a `llamafit catalog refresh` parancsot, hogy a tároló jelenlegi fájljait vegye át."
+
+msgid "%(url)s returned HTTP %(status)d."
+msgstr "A(z) %(url)s HTTP %(status)d kódot adott vissza."
+
+msgid "Confirm the URL points at a downloadable file."
+msgstr "Győződjön meg róla, hogy az URL letölthető fájlra mutat."
+
+msgid "%(url)s did not say how big %(file)s is."
+msgstr "A(z) %(url)s nem mondta meg, mekkora a(z) %(file)s."
+
+msgid "%(file)s is %(actual)s on the server but the catalog says %(expected)s; the repository has been re-uploaded since the catalog was refreshed."
+msgstr "A(z) %(file)s a kiszolgálón %(actual)s, a katalógus szerint viszont %(expected)s; a tárolót újra feltöltötték, amióta a katalógus frissült."
+
+msgid "Run `llamafit catalog refresh` and try again."
+msgstr "Futtassa a `llamafit catalog refresh` parancsot, és próbálja újra."
+
+msgid "%(file)s: the server sent %(actual)d bytes of a %(expected)d byte range."
+msgstr "%(file)s: a kiszolgáló %(actual)d bájtot küldött egy %(expected)d bájtos tartományból."
+
+msgid "Run the command again; the parts that did arrive are kept."
+msgstr "Futtassa újra a parancsot; a megérkezett részek megmaradnak."
+
+msgid "Stopped."
+msgstr "Leállt."
+
+msgid "%(file)s: the server asked for fewer connections; using %(count)d."
+msgstr "%(file)s: a kiszolgáló kevesebb kapcsolatot kért; %(count)d van használatban."
+
+msgid "%(file)s: this server will not serve byte ranges; fetching it in one stream."
+msgstr "%(file)s: ez a kiszolgáló nem szolgál ki bájttartományokat; egyetlen folyamban töltjük le."
+
+msgid "%(file)s does not match its checksum; fetching it again."
+msgstr "A(z) %(file)s nem egyezik az ellenőrzőösszegével; újra letöltjük."
+
+msgid "Check that the download directory is writable."
+msgstr "Ellenőrizze, hogy a letöltési könyvtár írható."
+
+msgid "%(needed)s is needed for this model but %(path)s has only %(free)s free, %(short)s short of what is wanted with %(headroom)s left spare."
+msgstr "Ehhez a modellhez %(needed)s kell, de a(z) %(path)s helyen csak %(free)s szabad, ami %(short)s híján van a kívántnak, %(headroom)s tartalékkal együtt."
+
+msgid "Free some space, or choose another directory with --dir, or a smaller quantisation with --quant."
+msgstr "Szabadítson fel helyet, vagy válasszon másik könyvtárat a --dir kapcsolóval, illetve kisebb kvantálást a --quant kapcsolóval."
+
+msgid "could not measure the free space on %(path)s: %(error)s"
+msgstr "nem sikerült megmérni a szabad helyet itt: %(path)s: %(error)s"
+
+msgid "Check that the download directory's volume is available."
+msgstr "Ellenőrizze, hogy a letöltési könyvtár kötete elérhető."
+
+msgid "%(model)s has no downloadable source in the catalog."
+msgstr "A(z) %(model)s modellhez nincs letölthető forrás a katalógusban."
+
+msgid "Only Hugging Face sources can be installed; this entry has none."
+msgstr "Csak Hugging Face forrásokat lehet telepíteni; ennek a bejegyzésnek egy sincs."
+
+msgid "the catalog has no file list for %(model)s %(quant)s."
+msgstr "a katalógusban nincs fájllista ehhez: %(model)s %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the file names."
+msgstr "Futtassa a `llamafit catalog refresh` parancsot a fájlnevek kitöltéséhez."
+
+msgid "%(model)s publishes no quantisations."
+msgstr "A(z) %(model)s nem tesz közzé kvantálást."
+
+msgid "%(model)s does not publish a %(quant)s quantisation."
+msgstr "A(z) %(model)s nem tesz közzé %(quant)s kvantálást."
+
+msgid "It publishes: %(quants)s"
+msgstr "Ezeket teszi közzé: %(quants)s"
+
+msgid "the catalog does not record how big %(quant)s is."
+msgstr "a katalógus nem rögzíti, mekkora a(z) %(quant)s."
+
+msgid "Run `llamafit catalog refresh` to fill in the sizes."
+msgstr "Futtassa a `llamafit catalog refresh` parancsot a méretek kitöltéséhez."
+
+msgid "the catalog holds no checksum for %(files)s."
+msgid_plural "the catalog holds no checksums for %(files)s."
+msgstr[0] "a katalógusnak nincs ellenőrzőösszege ehhez: %(files)s."
+msgstr[1] "a katalógusnak nincs ellenőrzőösszege ezekhez: %(files)s."
+
+msgid "Run `llamafit catalog refresh` to fetch them, or pass --allow-unverified to download anyway and check the files yourself."
+msgstr "Futtassa a `llamafit catalog refresh` parancsot a letöltésükhöz, vagy adja meg a --allow-unverified kapcsolót, hogy mégis letöltse, és Ön ellenőrizze a fájlokat."
+
+msgid "%(done)s of %(total)s"
+msgstr "%(total)s / %(done)s"
+
+msgid "%(rate)s/s"
+msgstr "%(rate)s/s"
+
+msgid "Fetching %(file)s (%(size)s)"
+msgstr "Letöltés: %(file)s (%(size)s)"
+
+msgid "Checking %(file)s against its checksum"
+msgstr "A(z) %(file)s összevetése az ellenőrzőösszegével"
+
+msgid "Done: %(file)s"
+msgstr "Kész: %(file)s"
+
+msgid "could not create %(path)s: %(error)s"
+msgstr "nem sikerült létrehozni a(z) %(path)s elemet: %(error)s"
+
+msgid "Check that the download directory is writable and has room."
+msgstr "Ellenőrizze, hogy a letöltési könyvtár írható, és van benne hely."
+
+msgid "could not move %(source)s into place: %(error)s"
+msgstr "nem sikerült a helyére mozgatni a(z) %(source)s elemet: %(error)s"
+
+msgid "could not record progress in %(path)s: %(error)s"
+msgstr "nem sikerült rögzíteni a haladást itt: %(path)s: %(error)s"
+
+msgid "could not fetch %(url)s: %(error)s"
+msgstr "nem sikerült letölteni a(z) %(url)s címet: %(error)s"
+
+msgid "Stopped before the checksum was finished."
+msgstr "Leállt, mielőtt az ellenőrzőösszeg elkészült volna."
+
+msgid "could not read %(path)s: %(error)s"
+msgstr "nem sikerült beolvasni a(z) %(path)s fájlt: %(error)s"
+
+msgid "Check that the file exists and is readable."
+msgstr "Ellenőrizze, hogy a fájl létezik és olvasható."
+
+msgid "%(file)s is %(actual)d bytes, but the catalog says %(expected)d"
+msgstr "A(z) %(file)s %(actual)d bájt, a katalógus szerint viszont %(expected)d"
+
+msgid "The transfer was cut short. Run the command again to fetch it properly."
+msgstr "Az átvitel megszakadt. Futtassa újra a parancsot, hogy rendesen letöltődjön."
+
+msgid "%(file)s does not match the checksum the catalog holds."
+msgstr "A(z) %(file)s nem egyezik a katalógusban tárolt ellenőrzőösszeggel."
+
+msgid "Expected %(expected)s but the file hashes to %(actual)s. The bad copy has been deleted; run the command again to fetch it."
+msgstr "A várt érték %(expected)s volt, de a fájl %(actual)s értéket ad. A hibás példány törölve; futtassa újra a parancsot a letöltéséhez."
+
 msgid "Command: %(command)s"
 msgstr "Parancs: %(command)s"
 
 msgid "truncated GGUF header: wanted %(wanted)d byte at offset %(offset)d, got %(got)d"
 msgid_plural "truncated GGUF header: wanted %(wanted)d bytes at offset %(offset)d, got %(got)d"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "csonka GGUF fejléc: %(wanted)d bájt kellett volna a(z) %(offset)d eltolásnál, %(got)d érkezett"
+msgstr[1] "csonka GGUF fejléc: %(wanted)d bájt kellett volna a(z) %(offset)d eltolásnál, %(got)d érkezett"
 
 msgid "The file may still be downloading, or the URL may not be a GGUF file."
 msgstr "Lehet, hogy a fájl még töltődik le, vagy hogy az URL nem GGUF fájlra mutat."
@@ -663,10 +2713,23 @@ msgstr "nem támogatott GGUF verzió: %(version)d a 4 eltolásnál"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "A LlamaFit a következő GGUF verziókat támogatja: %(versions)s."
 
+msgid "A memory budget built without these tensors would be too small, so none is built. If llama.cpp loads the file, LlamaFit's tensor-size table is missing the type."
+msgstr "Az ezek nélkül a tenzorok nélkül felépített memóriakeret túl kicsi lenne, ezért egy sem épül fel. Ha a llama.cpp betölti a fájlt, akkor a LlamaFit tenzorméret-táblájából hiányzik a típus."
+
+msgid "%(type)d (%(count)d tensor, first %(name)s)"
+msgid_plural "%(type)d (%(count)d tensors, first %(name)s)"
+msgstr[0] "%(type)d (%(count)d tenzor, az első: %(name)s)"
+msgstr[1] "%(type)d (%(count)d tenzor, az első: %(name)s)"
+
+msgid "cannot size this GGUF file: %(count)d tensor uses a GGML type LlamaFit does not know: %(details)s"
+msgid_plural "cannot size this GGUF file: %(count)d tensors use GGML types LlamaFit does not know: %(details)s"
+msgstr[0] "ez a GGUF fájl nem méretezhető: %(count)d tenzor olyan GGML típust használ, amelyet a LlamaFit nem ismer: %(details)s"
+msgstr[1] "ez a GGUF fájl nem méretezhető: %(count)d tenzor olyan GGML típusokat használ, amelyeket a LlamaFit nem ismer: %(details)s"
+
 msgid "%(count)d shard"
 msgid_plural "%(count)d shards"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)d rész"
+msgstr[1] "%(count)d rész"
 
 msgid "these GGUF files are not one split model: they disagree about '%(key)s', declaring %(values)s"
 msgstr "ezek a GGUF fájlok nem egyetlen felosztott modellt alkotnak: nem értenek egyet a(z) '%(key)s' kulcsról, ezt jelentik: %(values)s"
@@ -682,14 +2745,14 @@ msgstr "Adja meg a modell fájlját, vagy egy felosztott modell összes részét
 
 msgid "%(count)d GGUF file of the %(total)d given carries no '%(key)s' key, so its place in a split model cannot be established"
 msgid_plural "%(count)d GGUF files of the %(total)d given carry no '%(key)s' key, so their place in a split model cannot be established"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "a megadott %(total)d GGUF fájl közül %(count)d nem hordoz '%(key)s' kulcsot, ezért nem állapítható meg a helye egy felosztott modellben"
+msgstr[1] "a megadott %(total)d GGUF fájl közül %(count)d nem hordoz '%(key)s' kulcsot, ezért nem állapítható meg a helyük egy felosztott modellben"
 
 msgid "Pass a single unsplit file on its own, or every shard of one split model."
 msgstr "Adjon meg egyetlen, fel nem osztott fájlt önmagában, vagy egyetlen felosztott modell összes részét."
 
 msgid "incomplete shard set: the model declares %(shards)s and %(arrived)d arrived (%(key)s %(numbers)s)"
-msgstr ""
+msgstr "hiányos részhalmaz: a modell %(shards)s részt jelent be, és %(arrived)d érkezett (%(key)s %(numbers)s)"
 
 msgid "Pass every shard of the split model."
 msgstr "Adja meg a felosztott modell összes részét."
@@ -707,21 +2770,12 @@ msgid "Pass each shard of the split model exactly once."
 msgstr "A felosztott modell minden részét pontosan egyszer adja meg."
 
 msgid "incomplete shard set: the model declares %(tensors)s and its %(shards)s hold %(held)d between them"
-msgstr ""
+msgstr "hiányos részhalmaz: a modell %(tensors)s tenzort jelent be, a(z) %(shards)s része pedig együttesen %(held)d darabot tart"
 
 msgid "%(count)d tensor"
 msgid_plural "%(count)d tensors"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "could not read %(path)s: %(error)s"
-msgstr "nem sikerült beolvasni a(z) %(path)s fájlt: %(error)s"
-
-msgid "Check that the file exists and is readable."
-msgstr "Ellenőrizze, hogy a fájl létezik és olvasható."
-
-msgid "could not fetch %(url)s: %(error)s"
-msgstr "nem sikerült letölteni a(z) %(url)s címet: %(error)s"
+msgstr[0] "%(count)d tenzor"
+msgstr[1] "%(count)d tenzor"
 
 msgid "Check your network connection and that the URL is reachable."
 msgstr "Ellenőrizze a hálózati kapcsolatot, és hogy az URL elérhető."
@@ -751,6 +2805,9 @@ msgstr "a WMI egyetlen videovezérlőt sem adott vissza"
 msgid "lspci found no display controllers"
 msgstr "az lspci egyetlen megjelenítővezérlőt sem talált"
 
+msgid "vulkaninfo reported no discrete device with a memory heap"
+msgstr "a vulkaninfo nem jelentett memóriahalommal rendelkező különálló eszközt"
+
 msgid "no populated memory modules"
 msgstr "nincs behelyezett memóriamodul"
 
@@ -759,8 +2816,8 @@ msgstr "nincs SPMemoryDataType"
 
 msgid "%(program)s: timed out after %(seconds)s second"
 msgid_plural "%(program)s: timed out after %(seconds)s seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(program)s: időtúllépés %(seconds)s másodperc után"
+msgstr[1] "%(program)s: időtúllépés %(seconds)s másodperc után"
 
 msgid "empty command"
 msgstr "üres parancs"
@@ -771,11 +2828,47 @@ msgstr "%(program)s: %(error)s"
 msgid "%(program)s: not found"
 msgstr "%(program)s: nem található"
 
-msgid "no output"
-msgstr "nincs kimenet"
-
 msgid "exit code %(code)d: %(detail)s"
 msgstr "kilépési kód %(code)d: %(detail)s"
+
+msgid "no hardware profile file at %(path)s"
+msgstr "nincs hardverprofil-fájl itt: %(path)s"
+
+msgid "Run `llamafit hardware list` to see the profiles LlamaFit has."
+msgstr "Futtassa a `llamafit hardware list` parancsot, hogy lássa a LlamaFit profiljait."
+
+msgid "%(path)s is not a valid hardware profile: %(details)s"
+msgstr "a(z) %(path)s nem érvényes hardverprofil: %(details)s"
+
+msgid "Run `llamafit hardware validate FILE` for the whole list."
+msgstr "A teljes listáért futtassa a `llamafit hardware validate FILE` parancsot."
+
+msgid "no hardware profile named %(name)s"
+msgstr "nincs %(name)s nevű hardverprofil"
+
+msgid "Profiles LlamaFit has: %(names)s"
+msgstr "A LlamaFit profiljai: %(names)s"
+
+msgid "Run `llamafit hardware path` to see where your own profiles go."
+msgstr "Futtassa a `llamafit hardware path` parancsot, hogy lássa, hová kerülnek a saját profiljai."
+
+msgid "this machine has no graphics card, so there is no VRAM to override"
+msgstr "ebben a gépben nincs videokártya, így nincs felülbírálandó VRAM"
+
+msgid "Describe the whole machine in a hardware profile and pass --profile."
+msgstr "Írja le az egész gépet egy hardverprofilban, és adja meg a --profile kapcsolót."
+
+msgid "this machine has one memory pool shared with the graphics card"
+msgstr "ebben a gépben egyetlen memóriakészlet van, amelyen a videokártya is osztozik"
+
+msgid "Use --ram to resize the pool; --memory would change only half of it."
+msgstr "A --ram kapcsolóval méretezze át a készletet; a --memory csak a felét változtatná meg."
+
+msgid "%(option)s needs a value above zero"
+msgstr "a(z) %(option)s nullánál nagyobb értéket vár"
+
+msgid "no build number in the version output: %(text)s"
+msgstr "nincs buildszám a verzió kimenetében: %(text)s"
 
 msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
 msgstr "a llama.cpp nem található: nincs llama-server a PATH-ban, a LLAMA_CPP_PATH alatt vagy a szokásos könyvtárakban"
@@ -783,11 +2876,256 @@ msgstr "a llama.cpp nem található: nincs llama-server a PATH-ban, a LLAMA_CPP_
 msgid "no ggml backend libraries found next to llama-server; the build may be static"
 msgstr "nem található ggml háttérkönyvtár a llama-server mellett; lehet, hogy a build statikus"
 
+msgid "%(path)s is a file, not a directory."
+msgstr "A(z) %(path)s fájl, nem könyvtár."
+
+msgid "%(path)s cannot be read: %(error)s"
+msgstr "A(z) %(path)s nem olvasható: %(error)s"
+
+msgid "%(path)s has a marker file that cannot be read."
+msgstr "A(z) %(path)s helyen olyan jelölőfájl van, amely nem olvasható."
+
+msgid "%(path)s already holds %(count)d file that LlamaFit did not install."
+msgid_plural "%(path)s already holds %(count)d files that LlamaFit did not install."
+msgstr[0] "A(z) %(path)s már %(count)d olyan fájlt tartalmaz, amelyet nem a LlamaFit telepített."
+msgstr[1] "A(z) %(path)s már %(count)d olyan fájlt tartalmaz, amelyeket nem a LlamaFit telepített."
+
+msgid "%(name)s has no published checksum, so it cannot be verified."
+msgstr "A(z) %(name)s elemhez nincs közzétett ellenőrzőösszeg, ezért nem ellenőrizhető."
+
+msgid "Pass --allow-unverified to install it anyway, knowing the archive is unchecked."
+msgstr "Adja meg a --allow-unverified kapcsolót, hogy mégis telepítse, tudva, hogy az archívum ellenőrizetlen."
+
+msgid "could not download %(url)s: %(error)s"
+msgstr "nem sikerült letölteni a(z) %(url)s címet: %(error)s"
+
+msgid "the connection was closed"
+msgstr "a kapcsolat lezárult"
+
+msgid "Run the command again; it continues from where it stopped."
+msgstr "Futtassa újra a parancsot; onnan folytatódik, ahol abbamaradt."
+
+msgid "the download of %(url)s stopped early: %(error)s"
+msgstr "a(z) %(url)s letöltése korán megszakadt: %(error)s"
+
+msgid "%(got)s of %(want)s arrived"
+msgstr "%(want)s méretből %(got)s érkezett"
+
+msgid "the disk holding %(path)s is full."
+msgstr "a(z) %(path)s helyet hordozó lemez megtelt."
+
+msgid "Free some space and run the command again; the download resumes."
+msgstr "Szabadítson fel helyet, és futtassa újra a parancsot; a letöltés folytatódik."
+
+msgid "Check that the directory exists and is writable."
+msgstr "Ellenőrizze, hogy a könyvtár létezik és írható."
+
+msgid "%(name)s did not match its published checksum and was discarded."
+msgstr "A(z) %(name)s nem egyezett a közzétett ellenőrzőösszegével, ezért el lett dobva."
+
+msgid "Nothing was unpacked. Run the command again: the archive arrived damaged, which a second download usually fixes."
+msgstr "Semmi nem lett kicsomagolva. Futtassa újra a parancsot: az archívum sérülten érkezett, amit egy második letöltés általában megold."
+
+msgid "%(archive)s contains %(name)s, which would be written outside the install directory."
+msgstr "A(z) %(archive)s tartalmazza a(z) %(name)s elemet, amely a telepítési könyvtáron kívülre íródna."
+
+msgid "Do not install this archive; report it to the llama.cpp project."
+msgstr "Ne telepítse ezt az archívumot; jelentse a llama.cpp projektnek."
+
+msgid "%(name)s is not an archive LlamaFit knows how to unpack."
+msgstr "A(z) %(name)s nem olyan archívum, amelyet a LlamaFit ki tud csomagolni."
+
+msgid "%(name)s could not be unpacked: %(error)s"
+msgstr "A(z) %(name)s nem volt kicsomagolható: %(error)s"
+
+msgid "Delete it and run the command again to download it afresh."
+msgstr "Törölje, és futtassa újra a parancsot, hogy frissen letöltődjön."
+
+msgid "the archive holds no %(name)s."
+msgstr "az archívum nem tartalmaz %(name)s elemet."
+
+msgid "Report this; the release layout has changed."
+msgstr "Jelentse ezt; a kiadás elrendezése megváltozott."
+
+msgid "%(path)s was not installed by LlamaFit."
+msgstr "A(z) %(path)s helyre nem a LlamaFit telepített."
+
+msgid "Pass --force to replace it, or --dir to install somewhere else. LlamaFit never overwrites an installation it did not create."
+msgstr "Adja meg a --force kapcsolót a cseréjéhez, vagy a --dir kapcsolót, hogy máshová telepítsen. A LlamaFit soha nem ír felül olyan telepítést, amelyet nem ő hozott létre."
+
+msgid "%(path)s has %(free)s free; this install needs %(needed)s."
+msgstr "A(z) %(path)s helyen %(free)s szabad; ehhez a telepítéshez %(needed)s kell."
+
+msgid "Free some space, or pass --dir to install on another volume."
+msgstr "Szabadítson fel helyet, vagy adja meg a --dir kapcsolót, hogy másik kötetre telepítsen."
+
+msgid "the %(backend)s libraries are not in the installed directory."
+msgstr "a(z) %(backend)s kódtárak nincsenek a telepítési könyvtárban."
+
+msgid "no ggml backend libraries were installed; the build may be a static one."
+msgstr "nem települt egyetlen ggml háttérkódtár sem; lehet, hogy a build statikus."
+
+msgid "Your PATH could not be read, so it will not be changed."
+msgstr "A PATH nem volt beolvasható, ezért nem fog megváltozni."
+
+msgid "Add %(path)s to your user PATH (HKCU\\Environment)."
+msgstr "A(z) %(path)s hozzáadása a felhasználói PATH értékéhez (HKCU\\Environment)."
+
+msgid "To undo: run `setx PATH \"%(previous)s\"`, or remove the entry in System > About > Advanced system settings > Environment Variables."
+msgstr "A visszavonáshoz: futtassa a `setx PATH \"%(previous)s\"` parancsot, vagy távolítsa el a bejegyzést itt: Rendszer > Névjegy > Speciális rendszerbeállítások > Környezeti változók."
+
+msgid "%(path)s is already on your PATH."
+msgstr "A(z) %(path)s már szerepel a PATH értékében."
+
+msgid "Nothing to undo."
+msgstr "Nincs mit visszavonni."
+
+msgid "Append a PATH line for %(path)s to %(file)s."
+msgstr "Egy PATH sor hozzáfűzése a(z) %(path)s elemhez ebben a fájlban: %(file)s."
+
+msgid "To undo: delete the two lines marked `%(mark)s` from %(file)s."
+msgstr "A visszavonáshoz: törölje a `%(mark)s` jellel jelölt két sort ebből a fájlból: %(file)s."
+
+msgid "your PATH could not be changed: %(error)s"
+msgstr "a PATH nem volt megváltoztatható: %(error)s"
+
+msgid "To remove it later, delete %(path)s."
+msgstr "A későbbi eltávolításhoz törölje ezt: %(path)s."
+
+msgid "the most recent %(count)d llama.cpp releases hold no build."
+msgstr "a llama.cpp %(count)d legutóbbi kiadása nem tartalmaz buildet."
+
+msgid "Name one with `llamafit install llama.cpp --tag ...`."
+msgstr "Nevezzen meg egyet a `llamafit install llama.cpp --tag ...` paranccsal."
+
+msgid "could not reach GitHub at %(url)s: %(error)s"
+msgstr "nem sikerült elérni a GitHubot itt: %(url)s: %(error)s"
+
+msgid "GitHub refused the request for %(url)s: the rate limit is exhausted."
+msgstr "A GitHub elutasította a(z) %(url)s címre irányuló kérést: a sebességkorlát kimerült."
+
+msgid "Wait for the limit to reset, or set GITHUB_TOKEN to a personal access token with no scopes."
+msgstr "Várja meg, míg a korlát visszaáll, vagy állítsa a GITHUB_TOKEN értékét egy hatókör nélküli személyes hozzáférési tokenre."
+
+msgid "GitHub has no release at %(url)s."
+msgstr "A GitHubon nincs kiadás itt: %(url)s."
+
+msgid "Check the tag with `llamafit install llama.cpp --tag ...`."
+msgstr "Ellenőrizze a címkét a `llamafit install llama.cpp --tag ...` paranccsal."
+
+msgid "GitHub returned %(status)d for %(url)s."
+msgstr "A GitHub %(status)d kódot adott vissza erre: %(url)s."
+
+msgid "GitHub's answer for %(url)s was not JSON."
+msgstr "A GitHub válasza a(z) %(url)s címre nem JSON volt."
+
+msgid "GitHub's answer did not describe a release."
+msgstr "A GitHub válasza nem írt le kiadást."
+
 msgid "no llama-server answering"
 msgstr "nincs válaszoló llama-server"
 
 msgid "unexpected response: %(error)s"
 msgstr "váratlan válasz: %(error)s"
+
+msgid "%(model)s holds %(native)s tokens, fewer than the %(minimum)s asked for."
+msgstr "A(z) %(model)s %(native)s tokent tart, kevesebbet, mint a kért %(minimum)s."
+
+msgid "No configuration of this model fits this machine."
+msgstr "Ennek a modellnek egyetlen beállítása sem fér el ezen a gépen."
+
+msgid "Routed experts are held in system memory, and so are the always-on shared experts, which is what -ot ffn_.*_shexp=CPU does; attention and the KV cache stay on the card."
+msgstr "Az irányított szakértők a rendszermemóriában vannak, és velük együtt a mindig aktív közös szakértők is, amit a -ot ffn_.*_shexp=CPU tesz; a figyelem és a KV gyorsítótár a kártyán marad."
+
+msgid "Routed experts are held in system memory; attention, the KV cache and the shared experts stay on the card."
+msgstr "Az irányított szakértők a rendszermemóriában vannak; a figyelem, a KV gyorsítótár és a közös szakértők a kártyán maradnak."
+
+msgid "%(layers)s layers are on the card and the rest run on the processor."
+msgstr "%(layers)s réteg a kártyán van, a többi a processzoron fut."
+
+msgid "Nothing runs on a graphics card: every weight is in system memory."
+msgstr "Semmi nem fut videokártyán: minden súly a rendszermemóriában van."
+
+msgid "%(gpus)s is here, but nothing could read how much of it is free, so this plan was made as if it were not. The real machine will be faster than these figures."
+msgstr "A(z) %(gpus)s itt van, de semmi nem tudta beolvasni, mennyi szabad belőle, ezért ez a terv úgy készült, mintha nem volna. A valódi gép gyorsabb lesz ezeknél az értékeknél."
+
+msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
+msgstr "%(context)s tokenre méretezve a kért %(requested)s helyett."
+
+msgid "The KV cache is quantised to %(type)s to reach this context."
+msgstr "A KV gyorsítótár %(type)s típusra van kvantálva, hogy ez a kontextus elérhető legyen."
+
+msgid "Vision is off: the projector did not fit, on the card or in system memory."
+msgstr "A látás ki van kapcsolva: a projektor nem fért el, sem a kártyán, sem a rendszermemóriában."
+
+msgid "The vision projector is in system memory (--no-mmproj-offload), which costs nothing measurable for text and makes images slower."
+msgstr "A látásprojektor a rendszermemóriában van (--no-mmproj-offload), ami szövegnél mérhetően semmibe nem kerül, a képeket viszont lassabbá teszi."
+
+msgid "%(threads)s threads, not the %(available)s this processor has: the efficiency cores are left out because generation measures slower with them, and what is left is the threads the performance cores provide."
+msgstr "%(threads)s szál, nem az a %(available)s, amennyivel ez a processzor rendelkezik: a hatékonysági magok kimaradnak, mert velük a generálás lassabbnak mérhető, és ami marad, az a teljesítménymagok által adott szálak száma."
+
+msgid "Tight: %(vram)s of the graphics card is free and this needs %(needed)s, so another program can push it over. The context tier table is how a launch script recovers."
+msgstr "Szűkös: a videokártyából %(vram)s szabad, ehhez pedig %(needed)s kell, így egy másik program átbillentheti. A kontextusfokozat-táblázat az, ahogy egy indítószkript ebből visszatalál."
+
+msgid "no %(capability)s capability, which %(use_case)s needs; ask for a different use case, or add it to the entry when the model really has it"
+msgstr "nincs %(capability)s képessége, amelyre a(z) %(use_case)s esetnek szüksége van; kérjen másik felhasználási esetet, vagy vegye fel a bejegyzésbe, ha a modell valóban tudja"
+
+msgid "no %(capability)s capability; drop it from the request to see this model"
+msgstr "nincs %(capability)s képessége; hagyja ki a kérésből, hogy lássa ezt a modellt"
+
+msgid "%(size)s to download, over the %(limit)s this request allows"
+msgstr "%(size)s letöltendő, több, mint a(z) %(limit)s, amennyit ez a kérés megenged"
+
+msgid "unknown quantisation %(quant)s, so its cost in quality cannot be told"
+msgstr "ismeretlen kvantálás: %(quant)s, így a minőségbeli ára nem mondható meg"
+
+msgid "nowhere to put it: no placement fits this machine at any context"
+msgstr "nincs hová tenni: egyetlen elhelyezés sem fér el ezen a gépen egyetlen kontextuson sem"
+
+msgid "holds %(fit)s tokens at most, under the %(minimum)s asked for; lower the minimum context or free memory to see it ranked"
+msgstr "legfeljebb %(fit)s tokent tart, kevesebbet a kért %(minimum)s értéknél; csökkentse a legkisebb kontextust, vagy szabadítson fel memóriát, hogy rangsorolva lássa"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "%(tps)s tokent generál másodpercenként, kevesebbet a(z) %(floor)s értéknél, amit ez a kérés kér; csökkentse a --min-tps értékét, vagy válasszon kisebb modellt vagy kvantálást"
+
+msgid "generates %(tps)s tokens per second, below the %(floor)s a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "%(tps)s tokent generál másodpercenként, kevesebbet a(z) %(floor)s értéknél, amennyit egy ember elolvas: ezen a gépen kötegelt munkára való eszköz, nem olyan, amely elé leülünk; egy kisebb modell vagy kvantálás lépést tartana"
+
+msgid "unknown use case %(use_case)s"
+msgstr "ismeretlen felhasználási eset: %(use_case)s"
+
+msgid "Known use cases: %(known)s."
+msgstr "Ismert felhasználási esetek: %(known)s."
+
+msgid "unknown score part %(part)s in the weights for %(use_case)s"
+msgstr "ismeretlen pontozási rész: %(part)s a(z) %(use_case)s súlyaiban"
+
+msgid "The parts are: %(parts)s."
+msgstr "A részek ezek: %(parts)s."
+
+msgid "the weights for %(use_case)s leave out %(part)s"
+msgstr "a(z) %(use_case)s súlyaiból hiányzik ez: %(part)s"
+
+msgid "Overriding a use case means giving all four parts: %(parts)s."
+msgstr "Egy felhasználási eset felülbírálása azt jelenti, hogy mind a négy részt megadja: %(parts)s."
+
+msgid "the weight for %(part)s in %(use_case)s is below zero"
+msgstr "a(z) %(part)s súlya a(z) %(use_case)s esetben nulla alatt van"
+
+msgid "A weight says how much a part counts; it cannot count less than none."
+msgstr "A súly azt mondja meg, mennyit számít egy rész; a semminél kevesebbet nem számíthat."
+
+msgid "the weights for %(use_case)s add up to nothing"
+msgstr "a(z) %(use_case)s súlyainak összege nulla"
+
+msgid "At least one part has to count for something."
+msgstr "Legalább egy résznek számítania kell valamit."
+
+msgid "unknown preference %(prefer)s"
+msgstr "ismeretlen preferencia: %(prefer)s"
+
+msgid "Preferences: %(known)s."
+msgstr "Preferenciák: %(known)s."
 
 msgid "Install or repair the NVIDIA driver; nvidia-smi ships with it and must be on PATH."
 msgstr "Telepítse vagy javítsa az NVIDIA illesztőprogramot; az nvidia-smi vele érkezik, és a PATH-ban kell lennie."
@@ -822,6 +3160,9 @@ msgstr "A llama-server létezik, de nem jelentett verziót; lehet, hogy a binár
 msgid "system_profiler failed; GPU information is unavailable."
 msgstr "A system_profiler hibát adott; nincs információ a GPU-ról."
 
+msgid "Install the Vulkan tools (vulkan-tools on Linux, the vendor's Vulkan runtime on Windows) so an unsized card's memory can be read from its driver. This probe runs only when no vendor tool sized the card, so it is the last source there is."
+msgstr "Telepítse a Vulkan eszközöket (Linuxon a vulkan-tools csomagot, Windowson a gyártó Vulkan futtatókörnyezetét), hogy egy méret nélküli kártya memóriája kiolvasható legyen az illesztőprogramjából. Ez a próba csak akkor fut le, ha egyetlen gyártói eszköz sem adta meg a kártya méretét, tehát ez az utolsó forrás."
+
 msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
 msgstr "Egyetlen gyártói eszköz sem jelentette a GPU memóriaméretét; rögzítse a méretet egy hardverprofilban, hogy a keretek kiszámíthatók legyenek ehhez a géphez."
 
@@ -840,6 +3181,9 @@ msgstr "a llama.cpp nem található"
 
 msgid "no llama-server binary was found"
 msgstr "nem található llama-server bináris"
+
+msgid "Run `llamafit install llama.cpp`, which picks the right build for this machine, checks it against its published checksum, and never touches an installation LlamaFit did not create."
+msgstr "Futtassa a `llamafit install llama.cpp` parancsot, amely a géphez való buildet választja, összeveti a közzétett ellenőrzőösszegével, és soha nem nyúl olyan telepítéshez, amelyet nem a LlamaFit hozott létre."
 
 msgid "Memory size unknown"
 msgstr "Ismeretlen memóriaméret"
@@ -865,6 +3209,15 @@ msgstr "%(gpu)s: ismeretlen VRAM méret"
 
 msgid "the vendor tool that reports memory was not available"
 msgstr "a memóriát jelentő gyártói eszköz nem volt elérhető"
+
+msgid "%(gpus)s: planned around, not planned on"
+msgstr "%(gpus)s: körülötte terveztünk, nem rá"
+
+msgid "with no reading of how much of the card is free, every budget and every speed on this machine was computed as if there were no card: they are CPU-only figures, and the real machine will be faster."
+msgstr "mivel semmi nem olvasta be, mennyi szabad a kártyán, ezen a gépen minden keret és minden sebesség úgy lett kiszámítva, mintha kártya sem volna: ezek csak CPU-értékek, és a valódi gép gyorsabb lesz."
+
+msgid "Install the Vulkan tools so the size can be read from the driver, or record it in a hardware profile (`llamafit hardware path` says where those go) and pass --profile."
+msgstr "Telepítse a Vulkan eszközöket, hogy a méret kiolvasható legyen az illesztőprogramból, vagy rögzítse egy hardverprofilban (a `llamafit hardware path` megmondja, hová kerülnek), és adja meg a --profile kapcsolót."
 
 msgid "No GPU detected"
 msgstr "Nem található GPU"
@@ -910,6 +3263,389 @@ msgstr "%(size)s szabad"
 msgid "Most useful models need 5 to 120 GB; free space or change the downloads directory."
 msgstr "A legtöbb hasznos modellhez 5-120 GB kell; szabadítson fel helyet, vagy változtassa meg a letöltési könyvtárat."
 
+msgid "%(model)s has no %(quant)s quantisation"
+msgstr "a(z) %(model)s modellnek nincs %(quant)s kvantálása"
+
+msgid "It publishes: %(names)s"
+msgstr "Ezeket teszi közzé: %(names)s"
+
+msgid "licensed %(spdx)s, which this request does not allow"
+msgstr "%(spdx)s licencű, amit ez a kérés nem enged meg"
+
+msgid "System memory bandwidth was not measured; %(gbps).0f GB/s assumed for %(arch)s."
+msgstr "A rendszermemória sávszélessége nem lett megmérve; %(gbps).0f GB/s feltételezve ehhez: %(arch)s."
+
+msgid "%(gpu)s bandwidth is unknown; the %(backend)s fallback of %(gbps).0f GB/s stands in."
+msgstr "A(z) %(gpu)s sávszélessége ismeretlen; a(z) %(backend)s %(gbps).0f GB/s tartalékértéke lép a helyébe."
+
+msgid "No graphics card compute figure: prompt processing is estimated on the CPU."
+msgstr "Nincs videokártya-számítási érték: a promptfeldolgozás a CPU-ra van becsülve."
+
+msgid "%(gb).2f GB of routed experts is read from system memory per token at %(eff).2f of its %(raw).0f GB/s, because each token selects a different handful of experts and the read is a scatter of small blocks rather than a stream."
+msgstr "%(gb).2f GB irányított szakértő olvasódik be a rendszermemóriából tokenenként, annak %(raw).0f GB/s sebességének %(eff).2f részén, mert minden token más maroknyi szakértőt választ, és az olvasás nem folyam, hanem apró blokkok szórása."
+
+msgid "%(gb).2f GB of contiguous weights is read from system memory per token at %(eff).2f of its %(raw).0f GB/s."
+msgstr "%(gb).2f GB összefüggő súly olvasódik be a rendszermemóriából tokenenként, annak %(raw).0f GB/s sebességének %(eff).2f részén."
+
+msgid "No active parameter count was supplied; it was inferred from the weight bytes."
+msgstr "Nem adtak meg aktív paraméterszámot; a súlyok bájtjaiból lett kikövetkeztetve."
+
+msgid "%(pct).0f percent of the layers sit in system memory, so that share of the prompt arithmetic is charged to the CPU at %(tflops).2f TFLOP/s rather than to the card. Both rates come from one small dense model on one machine."
+msgstr "A rétegek %(pct).0f százaléka a rendszermemóriában ül, így a prompt számításainak ez a hányada a CPU-ra terhelődik %(tflops).2f TFLOP/s sebességgel, nem a kártyára. Mindkét sebesség egyetlen kis, sűrű modellből származik, egyetlen gépen."
+
+msgid "%(gb).1f GB of the expert set is streamed across the link once per micro-batch at %(gbps).1f GB/s. That rate was fitted on the one model whose expert set does not fit in system memory, so part of its read comes off the disk; an expert set that stays in the page cache streams about three times faster, and for one of those this term is that much too slow."
+msgstr "A szakértőhalmazból %(gb).1f GB folyik át a buszon mikrökötegenként egyszer, %(gbps).1f GB/s sebességgel. Ezt a sebességet arra az egyetlen modellre illesztettük, amelynek a szakértőhalmaza nem fér el a rendszermemóriában, így az olvasás egy része a lemezről jön; egy olyan szakértőhalmaz, amely a lapgyorsítótárban marad, nagyjából háromszor gyorsabban folyik, és egy ilyennél ez a tag épp ennyivel lassabb."
+
+msgid "%(gb).1f GB of the expert set is read out of system memory once per micro-batch at %(gbps).1f GB/s, because there is no card to stream it to."
+msgstr "A szakértőhalmazból %(gb).1f GB olvasódik ki a rendszermemóriából mikrökötegenként egyszer, %(gbps).1f GB/s sebességgel, mert nincs kártya, ahová átfolyathatná."
+
+msgid "No placement of this model on this machine could run it."
+msgstr "Ennek a modellnek egyetlen elhelyezése sem tudta volna futtatni ezen a gépen."
+
+msgid "Generation is a benchmark of this configuration, not a prediction."
+msgstr "A generálás ennek a beállításnak a mérése, nem jóslat."
+
+msgid "Generation is the formula corrected by %(factor).2f, from a benchmark of %(profile)s on this machine taken on %(date)s."
+msgstr "A generálás a képlet %(factor).2f szorzóval javítva, egy %(profile)s mérésből, amely ezen a gépen %(date)s napon készült."
+
+msgid "Prompt processing is a benchmark of this configuration."
+msgstr "A promptfeldolgozás ennek a beállításnak a mérése."
+
+msgid "Prompt processing is the formula corrected by %(factor).2f from a benchmark."
+msgstr "A promptfeldolgozás a képlet, egy mérésből származó %(factor).2f szorzóval javítva."
+
+msgid "That benchmark's command line does not record how many layers went to the card, so the correction assumes it ran at this placement."
+msgstr "Annak a mérésnek a parancssora nem rögzíti, hány réteg került a kártyára, így a javítás azt feltételezi, hogy ezzel az elhelyezéssel futott."
+
+msgid "This figure assumes nothing pages: a placement this tight often does, silently."
+msgstr "Ez az érték azt feltételezi, hogy semmi nem lapoz: egy ennyire szűkös elhelyezés gyakran mégis lapoz, némán."
+
+msgid "Board"
+msgstr "Tábla"
+
+msgid "Needs"
+msgstr "Igények"
+
+msgid "Plan"
+msgstr "Terv"
+
+msgid "Simulate"
+msgstr "Szimuláció"
+
+msgid "There is no terminal here to draw the dashboard in, so this is what `llamafit recommend` would print."
+msgstr "Nincs itt terminál, amelyben a vezérlőpultot meg lehetne rajzolni, ezért ez az, amit a `llamafit recommend` írna ki."
+
+msgid "%(name)s %(quant)s, %(vendor)s, licensed %(license)s; it can: %(capabilities)s"
+msgstr "%(name)s %(quant)s, %(vendor)s, licenc: %(license)s; ezt tudja: %(capabilities)s"
+
+msgid "Choose a row to see what put it there."
+msgstr "Válasszon egy sort, hogy lássa, mi juttatta oda."
+
+msgid "Nothing has been ranked yet."
+msgstr "Még semmi nem került rangsorba."
+
+msgid "Every candidate in the catalog was ranked; none was excluded."
+msgstr "A katalógus minden jelöltje rangsorba került; egy sem maradt ki."
+
+msgid "keys"
+msgstr "billentyűk"
+
+msgid "theme"
+msgstr "téma"
+
+msgid "quit"
+msgstr "kilépés"
+
+msgid "choose"
+msgstr "választás"
+
+msgid "why"
+msgstr "miért"
+
+msgid "command line"
+msgstr "parancssor"
+
+msgid "search"
+msgstr "keresés"
+
+msgid "fit"
+msgstr "hely"
+
+msgid "sort"
+msgstr "rendezés"
+
+msgid "sort back"
+msgstr "rendezés vissza"
+
+msgid "reverse"
+msgstr "megfordítás"
+
+msgid "on disk"
+msgstr "lemezen"
+
+msgid "all quants"
+msgstr "minden kvantálás"
+
+msgid "unranked rows"
+msgstr "rangsorolatlan sorok"
+
+msgid "all columns"
+msgstr "minden oszlop"
+
+msgid "explanation"
+msgstr "magyarázat"
+
+msgid "not ranked"
+msgstr "rangsoron kívül"
+
+msgid "apply"
+msgstr "alkalmaz"
+
+msgid "reset"
+msgstr "alaphelyzet"
+
+msgid "rescan"
+msgstr "újraolvasás"
+
+msgid "more context"
+msgstr "több kontextus"
+
+msgid "less context"
+msgstr "kevesebb kontextus"
+
+msgid "vision"
+msgstr "látás"
+
+msgid "copy"
+msgstr "másolás"
+
+msgid "this machine"
+msgstr "ez a gép"
+
+msgctxt "use case"
+msgid "general use"
+msgstr "általános használat"
+
+msgctxt "use case"
+msgid "writing code"
+msgstr "kódírás"
+
+msgctxt "use case"
+msgid "reasoning"
+msgstr "gondolatmenet"
+
+msgctxt "use case"
+msgid "chat"
+msgstr "csevegés"
+
+msgctxt "use case"
+msgid "images and text"
+msgstr "kép és szöveg"
+
+msgctxt "use case"
+msgid "embeddings"
+msgstr "beágyazások"
+
+msgctxt "preference"
+msgid "balanced"
+msgstr "kiegyensúlyozott"
+
+msgctxt "preference"
+msgid "lean towards quality"
+msgstr "minőség felé húzva"
+
+msgctxt "preference"
+msgid "lean towards speed"
+msgstr "sebesség felé húzva"
+
+msgid "Move with the up and down arrows. Enter says why a row is where it is; p gives the command line that runs it."
+msgstr "Mozogjon a fel és le nyíllal. Az Enter megmondja, miért van egy sor ott, ahol van; a p megadja azt a parancssort, amely futtatja."
+
+msgid "Terms: %(terms)s; anything else is text to look for. Enter with the box empty clears them."
+msgstr "Kifejezések: %(terms)s; minden más keresendő szöveg. Az üres mezővel megnyomott Enter törli őket."
+
+msgid "Part of a model name, then Enter"
+msgstr "Egy modellnév része, majd Enter"
+
+msgid "Keys"
+msgstr "Billentyűk"
+
+msgctxt "column heading"
+msgid "Screen"
+msgstr "Képernyő"
+
+msgctxt "column heading"
+msgid "Key"
+msgstr "Billentyű"
+
+msgctxt "column heading"
+msgid "What it does"
+msgstr "Mit csinál"
+
+msgctxt "dashboard screen"
+msgid "Everywhere"
+msgstr "Mindenhol"
+
+msgctxt "dashboard screen"
+msgid "Board"
+msgstr "Tábla"
+
+msgctxt "dashboard screen"
+msgid "Needs"
+msgstr "Igények"
+
+msgctxt "dashboard screen"
+msgid "Host"
+msgstr "Gép"
+
+msgctxt "dashboard screen"
+msgid "Plan"
+msgstr "Terv"
+
+msgctxt "dashboard screen"
+msgid "Simulate"
+msgstr "Szimuláció"
+
+msgid "Press Escape to go back."
+msgstr "A visszalépéshez nyomja meg az Escape billentyűt."
+
+msgid "Catalog files with a problem"
+msgstr "Hibás katalógusfájlok"
+
+msgid "This machine has not been scanned yet."
+msgstr "Ezt a gépet még nem olvasta be a program."
+
+msgid "What do you want a model for?"
+msgstr "Mire szeretne modellt?"
+
+msgid "It must be able to:"
+msgstr "Tudnia kell ezt:"
+
+msgid "At least this much context, in tokens:"
+msgstr "Legalább ennyi kontextus, tokenben:"
+
+msgid "Willing to download at most, for example 40G (blank for no limit):"
+msgstr "Legfeljebb ennyit hajlandó letölteni, például 40G (üresen hagyva nincs korlát):"
+
+msgid "Slowest generation worth having, in tokens per second (blank for the speed a person reads at; 0 when nobody is waiting on the tokens):"
+msgstr "A leglassabb generálás, amely még megéri, tokenben másodpercenként (üresen hagyva az emberi olvasási sebesség; 0, ha senki nem várja a tokeneket):"
+
+msgid "Licences you will accept (tick none to accept any):"
+msgstr "Elfogadott licencek (ha egyet sem jelöl be, mindet elfogadja):"
+
+msgid "Lean the score:"
+msgstr "A pontszám döntése:"
+
+msgid "Keep the vision projector when a model has one"
+msgstr "A látásprojektor megtartása, ha a modellnek van"
+
+msgid "Apply"
+msgstr "Alkalmaz"
+
+msgid "Reset"
+msgstr "Alaphelyzet"
+
+msgid "The minimum context is a number of tokens, for example %(example)s."
+msgstr "A legkisebb kontextus tokenek száma, például %(example)s."
+
+msgid "The minimum context cannot be below zero."
+msgstr "A legkisebb kontextus nem lehet nulla alatt."
+
+msgid "The minimum speed is a number of tokens per second, for example 12."
+msgstr "A legkisebb sebesség másodpercenkénti tokenek száma, például 12."
+
+msgid "The minimum speed cannot be below zero."
+msgstr "A legkisebb sebesség nem lehet nulla alatt."
+
+msgid "Choose a row on the Board and press p, and its plan and command line appear here."
+msgstr "Válasszon egy sort a Táblán, és nyomja meg a p billentyűt: a terve és a parancssora itt jelenik meg."
+
+msgid "%(model)s is no longer in the catalog this board was built from."
+msgstr "A(z) %(model)s már nincs abban a katalógusban, amelyből ez a tábla készült."
+
+msgid "Planned with the vision projector; press v to leave it out."
+msgstr "A látásprojektorral megtervezve; nyomja meg a v billentyűt, hogy kimaradjon."
+
+msgid "Planned without the vision projector; press v to put it back."
+msgstr "A látásprojektor nélkül megtervezve; nyomja meg a v billentyűt, hogy visszakerüljön."
+
+msgid "The ladder has no rung above %(context)s."
+msgstr "A létrának nincs foka %(context)s fölött."
+
+msgid "The ladder has no rung below %(context)s."
+msgstr "A létrának nincs foka %(context)s alatt."
+
+msgid "There is no command line to copy yet."
+msgstr "Még nincs másolható parancssor."
+
+msgid "The command line is on the clipboard."
+msgstr "A parancssor a vágólapon van."
+
+msgid "Everything on every screen answers about the machine chosen here. While it is not this one, the band at the top says SIMULATED."
+msgstr "Minden képernyőn minden arra a gépre válaszol, amelyet itt választ ki. Amíg nem ez a gép az, a felső sáv azt írja: SZIMULÁLT."
+
+msgid "Answer for this machine instead:"
+msgstr "Válaszoljon inkább erre a gépre:"
+
+msgid "Pretend the graphics card has this much memory (blank to leave it):"
+msgstr "Tegyük fel, hogy a videokártyának ennyi memóriája van (üresen hagyva marad):"
+
+msgid "Pretend the machine has this much system memory (blank to leave it):"
+msgstr "Tegyük fel, hogy a gépnek ennyi rendszermemóriája van (üresen hagyva marad):"
+
+msgid "Pretend the processor has this many cores (blank to leave it):"
+msgstr "Tegyük fel, hogy a processzornak ennyi magja van (üresen hagyva marad):"
+
+msgid "Back to this machine"
+msgstr "Vissza ehhez a géphez"
+
+msgctxt "hardware profile"
+msgid "this machine"
+msgstr "ez a gép"
+
+msgid "The core count is a whole number, for example 8."
+msgstr "A magok száma egész szám, például 8."
+
+msgctxt "dashboard header separator"
+msgid " · "
+msgstr " · "
+
+msgctxt "dashboard header"
+msgid "no GPU detected"
+msgstr "nem található GPU"
+
+msgid "%(name)s, VRAM unknown"
+msgstr "%(name)s, ismeretlen VRAM"
+
+msgid "%(name)s, %(free)s free of %(total)s"
+msgstr "%(name)s, %(total)s méretből %(free)s szabad"
+
+msgid "%(available)s free of %(total)s RAM"
+msgstr "%(total)s RAM méretből %(available)s szabad"
+
+msgid "%(model)s, %(count)d core"
+msgid_plural "%(model)s, %(count)d cores"
+msgstr[0] "%(model)s, %(count)d mag"
+msgstr[1] "%(model)s, %(count)d mag"
+
+msgctxt "dashboard header"
+msgid "llama.cpp not installed"
+msgstr "a llama.cpp nincs telepítve"
+
+msgctxt "dashboard header"
+msgid "llama.cpp installed"
+msgstr "a llama.cpp telepítve van"
+
+msgid "llama.cpp b%(build)d"
+msgstr "llama.cpp b%(build)d"
+
+msgctxt "dashboard header"
+msgid "scanning this machine…"
+msgstr "a gép beolvasása folyamatban…"
+
+msgid "These speeds were not all arrived at the same way; the How column says which each row is."
+msgstr "Ezek a sebességek nem mind ugyanúgy születtek; a Hogyan oszlop megmondja, melyik melyik."
+
 # The thousands separator below is a no-break space (U+00A0), not an ordinary space
 # and not an empty translation. Hungarian groups digits with a space, and the entry is
 # read literally, so the space is the answer. Do not "tidy" it away.
@@ -932,3 +3668,160 @@ msgstr "B"
 msgctxt "size"
 msgid "unknown"
 msgstr "ismeretlen"
+
+msgid "profile must be a name, not a path: %(value)s"
+msgstr "a profile név legyen, ne útvonal: %(value)s"
+
+msgid "Ask GET /api/v1/profiles for the names this machine has."
+msgstr "Kérdezze meg a GET /api/v1/profiles végpontot a gép által ismert nevekért."
+
+msgid "unknown query parameter: %(names)s"
+msgstr "ismeretlen lekérdezési paraméter: %(names)s"
+
+msgid "This endpoint takes: %(names)s"
+msgstr "Ez a végpont ezeket fogadja el: %(names)s"
+
+msgid "invalid prefer %(value)s"
+msgstr "érvénytelen prefer érték: %(value)s"
+
+msgid "invalid sort %(value)s"
+msgstr "érvénytelen sort érték: %(value)s"
+
+msgid "%(host)s:%(port)d is not this machine only. Anyone who can reach this computer on that port can read everything the dashboard shows -- your hardware, your disks, your file paths and the models you have downloaded. There is no password, because LlamaFit is meant for the person sitting at the keyboard. Press Ctrl+C now if you did not mean this."
+msgstr "A(z) %(host)s:%(port)d nem csak ezt a gépet jelenti. Bárki, aki eléri ezt a számítógépet azon a porton, elolvashat mindent, amit a vezérlőpult mutat -- a hardverét, a lemezeit, a fájlútvonalait és a letöltött modelljeit. Nincs jelszó, mert a LlamaFit annak készült, aki a billentyűzet előtt ül. Nyomja meg most a Ctrl+C billentyűt, ha nem ezt akarta."
+
+msgid "the web dashboard needs FastAPI and uvicorn, which are not installed"
+msgstr "a webes vezérlőpulthoz FastAPI és uvicorn kell, amelyek nincsenek telepítve"
+
+msgid "Install them with: pip install \"llamafit[web]\""
+msgstr "Telepítse őket ezzel: pip install \"llamafit[web]\""
+
+msgid "%(host)s is not a loopback address, and the dashboard has no authentication"
+msgstr "a(z) %(host)s nem loopback cím, a vezérlőpultnak pedig nincs hitelesítése"
+
+msgid "Leave --host alone to serve this machine only, or pass it to mean it."
+msgstr "Hagyja a --host kapcsolót érintetlenül, hogy csak ezt a gépet szolgálja ki, vagy adja meg, ha tényleg ezt akarja."
+
+msgctxt "column heading"
+msgid "Why not"
+msgstr "Miért nem"
+
+msgid "Why this row"
+msgstr "Miért ez a sor"
+
+msgid "Plan this"
+msgstr "Ennek a tervezése"
+
+msgid "Already on this machine"
+msgstr "Már ezen a gépen"
+
+msgid "Score"
+msgstr "Pontszám"
+
+msgid "Showing the best %(shown)s of %(total)s that qualified; raise “Rows to show” for the rest, which are neither worse-behaved nor hidden, only further down."
+msgstr "A megfelelt %(total)s közül a legjobb %(shown)s látszik; a többiért emelje a „Megjelenítendő sorok” értékét — azok nem rosszabbak és nem rejtettek, csak lejjebb vannak."
+
+msgid "What the model is for"
+msgstr "Mire való a modell"
+
+msgid "Capabilities it must have"
+msgstr "Szükséges képességek"
+
+msgid "Lean the weights"
+msgstr "A súlyok döntése"
+
+msgid "Smallest context worth having"
+msgstr "A legkisebb kontextus, amely megéri"
+
+msgid "Most you will download"
+msgstr "Legfeljebb ennyit tölt le"
+
+msgid "Show every quantisation"
+msgstr "Minden kvantálás megjelenítése"
+
+msgid "Keep the vision projector"
+msgstr "A látásprojektor megtartása"
+
+msgid "Rows to show"
+msgstr "Megjelenítendő sorok"
+
+msgid "Scan again"
+msgstr "Újraolvasás"
+
+msgid "llama.cpp"
+msgstr "llama.cpp"
+
+msgid "Quantisation"
+msgstr "Kvantálás"
+
+msgid "Context"
+msgstr "Kontextus"
+
+msgid "Micro-batch"
+msgstr "Mikroköteg"
+
+msgid "Plan it"
+msgstr "Tervezés"
+
+msgid "Copy"
+msgstr "Másolás"
+
+msgid "Copied"
+msgstr "Másolva"
+
+msgid "Flags"
+msgstr "Kapcsolók"
+
+msgid "Speed"
+msgstr "Sebesség"
+
+msgid "Choose a row on the board first."
+msgstr "Válasszon előbb egy sort a táblán."
+
+msgid "Hardware profile"
+msgstr "Hardverprofil"
+
+msgid "This machine, as scanned"
+msgstr "Ez a gép, ahogy beolvastuk"
+
+msgid "Graphics memory"
+msgstr "Grafikus memória"
+
+msgid "System memory"
+msgstr "Rendszermemória"
+
+msgid "Processor cores"
+msgstr "Processzormagok"
+
+msgid "Score against that machine"
+msgstr "Pontozás ahhoz a géphez"
+
+msgid "What runs here, how fast, and with which settings."
+msgstr "Mi fut itt, milyen gyorsan, és milyen beállításokkal."
+
+msgid "Working…"
+msgstr "Dolgozom…"
+
+msgid "Something went wrong"
+msgstr "Valami hiba történt"
+
+msgid "Hint"
+msgstr "Tipp"
+
+msgid "Command"
+msgstr "Parancs"
+
+msgid "About these figures"
+msgstr "Ezekről az értékekről"
+
+msgid "Close"
+msgstr "Bezárás"
+
+msgid "%(shown)s of %(total)s in the catalog"
+msgstr "%(total)s közül %(shown)s a katalógusban"
+
+msgid "Source code (AGPL-3.0-or-later)"
+msgstr "Forráskód (AGPL-3.0-or-later)"
+
+msgid "This dashboard is served from your own machine and sends nothing anywhere."
+msgstr "Ez a vezérlőpult az Ön saját gépéről érkezik, és sehová nem küld semmit."
