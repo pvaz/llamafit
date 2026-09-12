@@ -253,12 +253,12 @@ def _incomplete(
 ) -> LanguageChoice:
     """Say out loud when the catalog that was loaded is only part written.
 
-    Six of the languages LlamaFit ships are finished and the rest are about a quarter
-    done, and because a catalog is filled in from the top of the template down, the
-    quarter that exists is the short fragments and the three quarters that do not are the
-    prose. A reader who asked for one of those meets their own words in the column
-    headings and English in every sentence that explains anything, with nothing anywhere
-    to say which of the two they are looking at. That is the notice.
+    Every catalog that ships is finished today, and this is here for the ones that will
+    not be: a catalog is filled in from the top of the template down, so what a
+    part-written one has is the short fragments and what it lacks is the prose. A reader
+    who asked for such a language meets their own words in the column headings and English
+    in every sentence that explains anything, with nothing anywhere to say which of the
+    two they are looking at. That is the notice.
 
     A substitution notice is not dropped for this one and does not swallow it either: a
     request for a region no catalog covers, served by a catalog that is itself a quarter

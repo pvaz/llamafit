@@ -3,14 +3,19 @@
 # This file is part of LlamaFit; see LICENSE for the full terms and the warranty disclaimer.
 """How much of a language LlamaFit actually speaks, and the sentence that admits it.
 
-Thirty-seven catalogs ship and six of them are finished. The other thirty-one carry
-between a fifth and a quarter of the messages, and because a catalog is written from the
-top of the template down, what they carry is the short fragments -- a column heading, a
-verdict, a unit -- and what they are missing is the prose. The effect on a screen is a
-tool that labels its columns in the reader's language and then explains itself in English,
-which reads less like a translation in progress than like a translation that has gone
-wrong. Nothing used to say otherwise, and the thing a reader cannot be expected to work
-out from the screen is exactly the thing an interface has to say out loud.
+All thirty-seven catalogs that ship are finished today. Thirty-one of them were not, and
+this module is why that was survivable: a catalog is written from the top of the template
+down, so a part-written one carries the short fragments -- a column heading, a verdict, a
+unit -- and is missing the prose. The effect on a screen is a tool that labels its columns
+in the reader's language and then explains itself in English, which reads less like a
+translation in progress than like a translation that has gone wrong. Nothing used to say
+otherwise, and the thing a reader cannot be expected to work out from the screen is
+exactly the thing an interface has to say out loud.
+
+None of this is kept for old times' sake. A language contributed tomorrow arrives part
+written, and a release that adds messages leaves every catalog short until each is caught
+up: the state this module exists for is the normal one between releases, not a phase the
+project has come out of.
 
 So one sentence, once, when the catalog that was loaded is materially incomplete, in the
 same place and by the same route as the notice for a language LlamaFit does not speak at

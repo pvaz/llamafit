@@ -191,11 +191,14 @@ The interface ships in English and 37 other languages, chosen with `--language`,
 for one that is not there and LlamaFit falls back to English **and says so**, because
 quietly ignoring what you asked for is its own kind of bug.
 
-Six of the 37 are close to complete: Portuguese, Brazilian Portuguese, Spanish, French,
-German and Italian. The rest carry about a quarter of the messages — the column headings
-and the short phrases, not the sentences that explain anything — **and LlamaFit tells you
-so the first time you use one**, with the figure and where to help. A tool that lists a
-language it barely speaks is making a promise; saying how far it got is keeping one.
+All 37 carry every message. Thirty-one of them did not until recently: they held the
+column headings and the short phrases and nothing that explained anything, which reads
+less like a translation in progress than like one that has gone wrong. LlamaFit still
+measures what it loaded against the template on every run and **says so when a catalog
+falls materially short**, with the figure and where to help — a language added tomorrow,
+or one left behind by a release that adds messages, gets the same sentence those
+thirty-one used to. A tool that lists a language it barely speaks is making a promise;
+saying how far it got is keeping one.
 
 If the console you are writing to cannot represent the script — a Windows code page and
 Japanese, say — LlamaFit speaks English instead and tells you which encoding refused
