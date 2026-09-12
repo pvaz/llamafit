@@ -15,9 +15,8 @@ import warnings
 from pathlib import Path
 
 import pytest
-from scripts.gen_messages import extract, render_template
+from scripts.gen_messages import extract, project_version, render_template
 
-from llamafit import __version__
 from llamafit.errors import ConfigError
 from llamafit.i18n import SOURCE_LANGUAGE, TEMPLATE_NAME
 from llamafit.i18n.catalogs import available_languages, catalog_dir, catalog_path, load_language
@@ -163,8 +162,17 @@ def test_a_message_missing_from_a_catalog_is_a_warning_not_a_failure(language: s
 
 
 def test_the_committed_template_is_up_to_date() -> None:
+    """Regenerated from the same version source the generator uses, not from the install.
+
+    `llamafit.__version__` reads the installed distribution's metadata, and this compares
+    a file in the source tree. In an editable install those two disagree from the moment
+    of a release bump until somebody reinstalls: this test passed on a clean CI checkout
+    and failed on the machine the bump was made on, and its sibling in
+    `test_gen_messages.py` did the opposite. Both now read `pyproject.toml`, which is the
+    file the release checks the tag against.
+    """
     path = catalog_dir() / TEMPLATE_NAME
-    expected = render_template(extract(), version=__version__)
+    expected = render_template(extract(), version=project_version())
     assert path.read_text(encoding="utf-8") == expected, (
         "regenerate with: python scripts/gen_messages.py"
     )
