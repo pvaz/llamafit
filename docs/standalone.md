@@ -37,7 +37,7 @@ There is no 32-bit build and there is not going to be one.
 Windows Terminal or `cmd` — and run it:
 
 ```
-.\llamafit-0.1.0-windows-x86_64.exe recommend
+.\llamafit-0.1.1-windows-x86_64.exe recommend
 ```
 
 Double-clicking it opens a window that closes again immediately. That is not a fault: it is
@@ -48,7 +48,7 @@ you would rather type less.
 **macOS and Linux.** Unpack it and run it:
 
 ```
-tar -xzf llamafit-0.1.0-macos-arm64.tar.gz
+tar -xzf llamafit-0.1.1-macos-arm64.tar.gz
 ./llamafit recommend
 ```
 
@@ -65,12 +65,12 @@ own `.sha256` file beside it, so checking one download does not mean fetching a 
 five. In the directory you downloaded into:
 
 ```
-sha256sum -c llamafit-0.1.0-linux-x86_64.tar.gz.sha256     # Linux
-shasum -a 256 -c llamafit-0.1.0-macos-arm64.tar.gz.sha256  # macOS
+sha256sum -c llamafit-0.1.1-linux-x86_64.tar.gz.sha256     # Linux
+shasum -a 256 -c llamafit-0.1.1-macos-arm64.tar.gz.sha256  # macOS
 ```
 
 ```powershell
-Get-FileHash .\llamafit-0.1.0-windows-x86_64.exe -Algorithm SHA256   # Windows
+Get-FileHash .\llamafit-0.1.1-windows-x86_64.exe -Algorithm SHA256   # Windows
 ```
 
 and compare with the line in `SHA256SUMS.txt`.

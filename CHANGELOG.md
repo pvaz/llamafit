@@ -7,14 +7,50 @@ the changelog says so when they do.
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-09-12
+
 ### Added
 - Standalone executables for Windows, macOS and Linux on x86-64 and ARM: one
-  self-contained file per platform, built by `.github/workflows/binaries.yml` from
-  `packaging/llamafit.spec` and attached to the GitHub release with SHA-256 checksums.
-  Nothing to install and no Python needed. The build is kept separate from the PyPI
-  release so that binaries can be built, or rebuilt, for a version that has already
-  shipped. `docs/standalone.md` covers which file to take, how to verify it, and what
-  Windows and macOS will say about a binary nobody has paid to sign.
+  self-contained file per platform, with the interpreter, the dependencies, the catalog,
+  the generated facts, the hardware profiles, the schemas and all 37 message catalogs
+  inside it. Nothing to install and no Python needed. Built by
+  `.github/workflows/binaries.yml` from `packaging/llamafit.spec` on five machines --
+  PyInstaller is not a cross-compiler -- and attached to the GitHub release with SHA-256
+  checksums. The Linux builds are made on Ubuntu 22.04 so that they need glibc 2.35 and
+  not 2.39, which is the difference between running on Debian 12 and RHEL 9 and refusing
+  to start there. `docs/standalone.md` covers which file to take, how to verify it, what
+  Windows and macOS will say about a binary nobody has paid to sign, and the one thing
+  the binary leaves out.
+- The build is a separate workflow from the one that publishes to PyPI, on purpose: a
+  version number on PyPI can be used once and never again, while a release asset can be
+  added at any time, so a platform can be rebuilt after a fix without going near an
+  upload that cannot be repeated.
+
+### Changed
+- **All 37 translation catalogs are complete.** Thirty-one of them carried about a
+  quarter of the messages -- the column headings and the short phrases, not the sentences
+  that explain anything -- and now carry all 1,153. Every one of them still says at the
+  top that it has not been read by a speaker of its language, because it has not, and
+  that is still the most useful contribution anyone can make here.
+- Every number a reader sees uses their own decimal separator. Eleven messages formatted
+  floats with a numeric conversion, which writes a point whatever the language, so a
+  sentence saying `0.92 GB` sat directly underneath a table that had just written
+  `0,0165` for the same reader. No wording changed in any language.
+- Eleven catalogs no longer guess the curator's gender in the one message whose English
+  says "their machine". Each uses its own way of saying "one's own" instead.
+
+### Fixed
+- `multiprocessing.freeze_support()` is called before anything else in `main()`. Nothing
+  in LlamaFit starts a process -- the bandwidth measurement uses threads -- but
+  py-cpuinfo does, and in a frozen build a child process is started by re-running the
+  executable with `--multiprocessing-fork`, which Click meets as an option it has never
+  heard of and answers with a usage error printed across whatever the real run was
+  drawing. It affects the standalone binary only, on the first command most people try.
+- The hint that says where a global option goes no longer blames the wrong option.
+  `llamafit --gpu-vram 0 --ram 8GiB plan …` is a usage error about `--gpu-vram`, and the
+  hint declared `--ram` misplaced and offered a command line that was not one: it took
+  the value of the first option for the command name, and moved an option without its
+  value.
 
 ## [0.1.0] - 2026-09-11
 
@@ -679,5 +715,6 @@ the changelog says so when they do.
   `llamafit system --refresh-bandwidth` times it again. Free memory is left to move, because
   reading it is the point of reading it; what that needed was the board saying what it used.
 
-[Unreleased]: https://github.com/pvaz/llamafit/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/pvaz/llamafit/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/pvaz/llamafit/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/pvaz/llamafit/releases/tag/v0.1.0

@@ -37,7 +37,7 @@ $ llamafit list --limit 5
 
 Sixty-two models, strongest first; `--limit` is what keeps five of them on this page.
 
-> **Status.** 0.1.0. Every command in the table below ships and is tested on Windows, macOS
+> **Status.** 0.1.1. Every command in the table below ships and is tested on Windows, macOS
 > and Linux: the host scan and the diagnostics, the catalog, the memory budget, the placement
 > planner, the speed estimator and the ranking, the terminal and web dashboards, the installer
 > and the benchmark verifier. Three pieces named in the design are not built — the terminal
@@ -151,7 +151,7 @@ x86-64 and ARM. Take the one for your machine from the
 [releases page](https://github.com/pvaz/llamafit/releases), and run it:
 
 ```
-tar -xzf llamafit-0.1.0-linux-x86_64.tar.gz && ./llamafit recommend
+tar -xzf llamafit-0.1.1-linux-x86_64.tar.gz && ./llamafit recommend
 ```
 
 It is about 25 MB, it is not code-signed, and your operating system will say something
