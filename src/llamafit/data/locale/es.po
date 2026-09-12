@@ -255,6 +255,9 @@ msgstr "Ejecute `llamafit catalog refresh` sin --model para reconstruir el archi
 msgid "Find, size, install and verify open-weight LLMs for llama.cpp on your own machine."
 msgstr "Encuentre, dimensione, instale y verifique LLM de pesos abiertos para llama.cpp en su propia máquina."
 
+msgid "With no command, llamafit opens the terminal dashboard; in a pipe, or with --json, it prints what `llamafit recommend` would."
+msgstr "Sin ningún comando, llamafit abre el panel en el terminal; en una tubería, o con --json, escribe lo que escribiría `llamafit recommend`."
+
 msgid "Print machine-readable JSON instead of tables."
 msgstr "Escribe JSON legible por máquinas en lugar de tablas."
 
@@ -269,6 +272,20 @@ msgstr "Habla este idioma, por ejemplo pt_PT. Un idioma que LlamaFit no tiene pa
 
 msgid "Print the version and exit."
 msgstr "Escribe la versión y sale."
+
+msgid "the output's encoding"
+msgstr "la codificación de la salida"
+
+msgid "%(count)d character could not be written in %(encoding)s and is shown as ?."
+msgid_plural "%(count)d characters could not be written in %(encoding)s and are shown as ?."
+msgstr[0] "%(count)d carácter no se pudo escribir en %(encoding)s y se muestra como ?."
+msgstr[1] "%(count)d caracteres no se pudieron escribir en %(encoding)s y se muestran como ?."
+
+msgid "Set PYTHONUTF8=1 in the environment and run again: Python then writes UTF-8, which carries every language."
+msgstr "Defina PYTHONUTF8=1 en el entorno y vuelva a ejecutar: Python escribe entonces UTF-8, que admite todos los idiomas."
+
+msgid "%(option)s is an option of llamafit itself, so it goes before the command: `llamafit %(option)s %(rest)s`."
+msgstr "%(option)s es una opción del propio llamafit, así que va antes del comando: `llamafit %(option)s %(rest)s`."
 
 msgid "Unexpected error: %(error)s"
 msgstr "Error inesperado: %(error)s"
@@ -380,6 +397,12 @@ msgstr "Estimado frente a medido"
 msgid "figure"
 msgstr "cifra"
 
+msgid "context"
+msgstr "contexto"
+
+msgid "micro-batch"
+msgstr "microlote"
+
 msgid "estimated"
 msgstr "estimado"
 
@@ -388,6 +411,9 @@ msgstr "medido"
 
 msgid "ratio"
 msgstr "razón"
+
+msgid "The plan sizes this configuration for %(context)s tokens and estimates %(tps)s generated tokens per second there. Nothing above ran at that context, so that figure is reported and not compared."
+msgstr "El plan dimensiona esta configuración para %(context)s tokens y estima ahí %(tps)s tokens generados por segundo. Nada de lo de arriba se ejecutó con ese contexto, así que esa cifra se informa y no se compara."
 
 msgid "%(count)d figure is outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
 msgid_plural "%(count)d figures are outside the 0.8 to 1.25 band an uncalibrated formula is expected to land in."
@@ -405,6 +431,9 @@ msgstr "No se pudo comprobar la paginación."
 
 msgid "Peak VRAM was %(percent)s percent of the card, and generation was %(speed)s percent of the estimate."
 msgstr "El pico de VRAM fue el %(percent)s por ciento de la tarjeta, y la generación el %(speed)s por ciento de la estimación."
+
+msgid "Peak VRAM was %(percent)s percent of the card. Generation was not compared with the estimate."
+msgstr "El pico de VRAM fue el %(percent)s por ciento de la tarjeta. La generación no se comparó con la estimación."
 
 msgid "The largest context on the ladder that would not page is %(tokens)s."
 msgstr "El mayor contexto de la escalera que no paginaría es %(tokens)s."
@@ -470,6 +499,15 @@ msgstr "Valores válidos: %(values)s"
 
 msgid "invalid --prefer %(value)s"
 msgstr "--prefer no válido: %(value)s"
+
+msgid "invalid --runs %(value)s"
+msgstr "--runs no válido: %(value)s"
+
+msgid "invalid --sort %(value)s"
+msgstr "--sort no válido: %(value)s"
+
+msgid "invalid --columns %(value)s"
+msgstr "--columns no válido: %(value)s"
 
 msgid "Rank the catalog for what you want to do on this machine.\n\nEvery candidate is planned, sized and estimated here, so the first run scans the machine. Speeds compare candidates at 8K tokens of context; --explain expands a row into the scores, the weights, the budget and the speed breakdown that produced it."
 msgstr "Ordena el catálogo para lo que quiere hacer en esta máquina.\n\nCada candidato se planifica, se dimensiona y se estima aquí, así que la primera ejecución analiza la máquina. Las velocidades comparan los candidatos a 8K tokens de contexto; --explain despliega una fila en las puntuaciones, los pesos, el presupuesto y el desglose de velocidad que la produjeron."
@@ -1266,6 +1304,9 @@ msgctxt "GPU specifications"
 msgid "no specs"
 msgstr "sin especificaciones"
 
+msgid "%(total)s VRAM, %(free)s free (Vulkan driver)"
+msgstr "%(total)s de VRAM, %(free)s libres (controlador Vulkan)"
+
 msgid "Host"
 msgstr "Equipo"
 
@@ -1294,6 +1335,9 @@ msgctxt "memory bandwidth"
 msgid "unknown"
 msgstr "desconocida"
 
+msgid "%(gbps)s GB/s (%(source)s, cached)"
+msgstr "%(gbps)s GB/s (%(source)s, en caché)"
+
 msgid "Memory"
 msgstr "Memoria"
 
@@ -1313,6 +1357,12 @@ msgstr "VRAM desconocida"
 
 msgid "GPU %(index)d"
 msgstr "GPU %(index)d"
+
+msgid "Card memory"
+msgstr "Memoria de la tarjeta"
+
+msgid "%(gpus)s: nothing here could read how much of the card is free, so every budget on this machine was computed as if there were no card at all. Install the Vulkan tools, or write the size into a hardware profile."
+msgstr "%(gpus)s: nada aquí pudo leer cuánto de la tarjeta está libre, así que todo presupuesto de esta máquina se calculó como si no hubiera tarjeta alguna. Instale las herramientas Vulkan, o escriba el tamaño en un perfil de hardware."
 
 msgid "Memory pool"
 msgstr "Reserva de memoria"
@@ -1531,6 +1581,9 @@ msgctxt "bits per weight"
 msgid "unknown"
 msgstr "desconocido"
 
+msgid "On this machine"
+msgstr "En esta máquina"
+
 msgctxt "profile origin"
 msgid "bundled"
 msgstr "incluido"
@@ -1579,6 +1632,9 @@ msgstr "VRAM de la reserva compartida"
 
 msgid "%(total)s VRAM, %(free)s free"
 msgstr "%(total)s de VRAM, %(free)s libres"
+
+msgid "%(total)s VRAM, free unknown"
+msgstr "%(total)s de VRAM, libre desconocida"
 
 msgid "%(name)s (%(backend)s); %(vram)s; %(specs)s"
 msgstr "%(name)s (%(backend)s); %(vram)s; %(specs)s"
@@ -1961,6 +2017,59 @@ msgctxt "column heading"
 msgid "Fit"
 msgstr "Espacio"
 
+msgid "%(quant)s: %(reason)s"
+msgstr "%(quant)s: %(reason)s"
+
+msgctxt "tokens per second"
+msgid "unknown"
+msgstr "desconocidos"
+
+msgctxt "context length"
+msgid "none"
+msgstr "ninguno"
+
+msgid "Sized for %(context)s tokens, with every figure from a placement computed for this machine. `llamafit plan MODEL --quant NAME` opens one of these rows into the budget line by line, the context ladder and the command line that runs it."
+msgstr "Dimensionado para %(context)s tokens, con cada cifra sacada de una colocación calculada para esta máquina. `llamafit plan MODEL --quant NAME` abre una de estas líneas en el presupuesto línea por línea, la escalera de contextos y la línea de comandos que lo ejecuta."
+
+msgid "To reach %(context)s tokens, free %(free)s more on the graphics card: that rung needs %(needed)s, which is %(share)s of what is free and over the line where the driver starts paging."
+msgstr "Para alcanzar %(context)s tokens, libere %(free)s más en la tarjeta gráfica: ese peldaño necesita %(needed)s, que es el %(share)s de lo que está libre y queda por encima de la línea donde el controlador empieza a paginar."
+
+msgid "%(context)s tokens is past what this machine holds: that rung needs %(needed)s on the graphics card and there is nothing left to absorb what would not fit, so freeing the card is not the change that reaches it."
+msgstr "%(context)s tokens está más allá de lo que esta máquina admite: ese peldaño necesita %(needed)s en la tarjeta gráfica y no queda nada que absorba lo que no cabría, así que liberar la tarjeta no es el cambio que llega hasta ahí."
+
+msgid "%(quant)s, the next quantisation down, could not be sized: %(reason)s"
+msgstr "%(quant)s, la cuantización inmediatamente inferior, no se pudo dimensionar: %(reason)s"
+
+msgid "%(quant)s, the next quantisation down, does not fit this machine either."
+msgstr "%(quant)s, la cuantización inmediatamente inferior, tampoco cabe en esta máquina."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens."
+msgstr "%(quant)s, la cuantización inmediatamente inferior, también se planificó aquí: %(mode)s, %(verdict)s, hasta %(context)s tokens."
+
+msgid "%(quant)s, the next quantisation down, was planned here too: %(mode)s, %(verdict)s, up to %(context)s tokens at %(tps)s tokens per second."
+msgstr "%(quant)s, la cuantización inmediatamente inferior, también se planificó aquí: %(mode)s, %(verdict)s, hasta %(context)s tokens a %(tps)s tokens por segundo."
+
+msgid "It fits entirely on the graphics card, which this one does not."
+msgstr "Cabe entera en la tarjeta gráfica, cosa que esta no hace."
+
+msgid "It fits better: %(theirs)s rather than %(mine)s."
+msgstr "Cabe mejor: %(theirs)s en lugar de %(mine)s."
+
+msgid "It holds %(theirs)s tokens rather than %(mine)s."
+msgstr "Admite %(theirs)s tokens en lugar de %(mine)s."
+
+msgid "It generates %(theirs)s tokens per second rather than %(mine)s."
+msgstr "Genera %(theirs)s tokens por segundo en lugar de %(mine)s."
+
+msgid "It is no better here, so there is nothing to gain by dropping to it."
+msgstr "Aquí no es mejor, así que no hay nada que ganar bajando a ella."
+
+msgid "Every context this model offers already fits here; the machine is not what limits it."
+msgstr "Todos los contextos que ofrece este modelo ya caben aquí; no es la máquina lo que lo limita."
+
+msgid "What would change it"
+msgstr "Qué lo cambiaría"
+
 msgctxt "column heading"
 msgid "Runs"
 msgstr "Dónde"
@@ -1998,6 +2107,27 @@ msgstr "Las velocidades son para %(working)s tokens de contexto, para que todas 
 msgid "Weights: %(weights)s."
 msgstr "Pesos: %(weights)s."
 
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free, no card."
+msgstr "Calculado con %(ram_free)s de %(ram_total)s de memoria del sistema libres, sin tarjeta."
+
+msgid "Computed with %(ram_free)s of %(ram_total)s system memory free and %(vram_free)s of %(vram_total)s free on the %(gpu)s."
+msgstr "Calculado con %(ram_free)s de %(ram_total)s de memoria del sistema libres y %(vram_free)s de %(vram_total)s libres en la %(gpu)s."
+
+msgid "Every speed above is derived from %(bandwidth)s of memory bandwidth."
+msgstr "Toda velocidad de arriba se deriva de %(bandwidth)s de ancho de banda de memoria."
+
+msgid "That bandwidth was kept from an earlier run on this machine; `llamafit system --refresh-bandwidth` times it again."
+msgstr "Ese ancho de banda se guardó de una ejecución anterior en esta máquina; `llamafit system --refresh-bandwidth` lo vuelve a cronometrar."
+
+msgid "generates fewer than the %(floor)s tokens per second this request asks for; lower --min-tps or choose a smaller model or quantisation"
+msgstr "genera menos de los %(floor)s tokens por segundo que pide esta petición; baje --min-tps o elija un modelo o una cuantización más pequeños"
+
+msgid "generates fewer than the %(floor)s tokens per second a person reads at: a batch tool on this machine and not one to sit in front of; a smaller model or quantisation would keep up"
+msgstr "genera menos de los %(floor)s tokens por segundo a los que lee una persona: en esta máquina es una herramienta por lotes y no una para sentarse delante; un modelo o una cuantización más pequeños seguirían el ritmo"
+
+msgid "%(tps)s tok/s"
+msgstr "%(tps)s tok/s"
+
 msgid "Not ranked"
 msgstr "Sin ordenar"
 
@@ -2014,8 +2144,26 @@ msgstr "Espacio en esta máquina"
 msgid "Sized for %(context)s tokens. The context column is the largest each one holds in the mode shown."
 msgstr "Dimensionado para %(context)s tokens. La columna de contexto es el mayor que cada uno alcanza en el modo mostrado."
 
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every row was sized as if there were no card. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s está en esta máquina y nada pudo leer cuánto de ella está libre, así que toda fila se dimensionó como si no hubiera tarjeta. `llamafit doctor` dice cómo arreglarlo."
+
 msgid "Not placed"
 msgstr "Sin colocar"
+
+msgid "%(tag)s (%(count)s):"
+msgstr "%(tag)s (%(count)s):"
+
+msgid "%(model)s %(quant)s: %(reason)s"
+msgstr "%(model)s %(quant)s: %(reason)s"
+
+msgid "%(tag)s (%(count)s): %(sentence)s."
+msgstr "%(tag)s (%(count)s): %(sentence)s."
+
+msgid "%(model)s %(quant)s (%(figure)s)"
+msgstr "%(model)s %(quant)s (%(figure)s)"
+
+msgid "%(name)s %(quant)s (%(tag)s)"
+msgstr "%(name)s %(quant)s (%(tag)s)"
 
 msgid "%(mode)s at %(context)s tokens, micro-batch %(ub)s, %(kv)s cache, %(threads)s threads."
 msgstr "%(mode)s con %(context)s tokens, microlote %(ub)s, caché %(kv)s, %(threads)s hilos."
@@ -2064,6 +2212,9 @@ msgstr "Abre el panel en un navegador: el tablero, la máquina y los planes.\n\n
 msgid "Open the page in your browser."
 msgstr "Abre la página en su navegador."
 
+msgid "Drop --profile, --memory, --ram and --cpu-cores, then open the Simulate panel on the page: it substitutes a machine for as long as you want it, and marks every answer it produces."
+msgstr "Quite --profile, --memory, --ram y --cpu-cores, y luego abra el panel Simular de la página: sustituye una máquina durante el tiempo que quiera, y marca cada respuesta que produce."
+
 msgid "LlamaFit is at %(url)s. Press Ctrl+C to stop it."
 msgstr "LlamaFit está en %(url)s. Pulse Ctrl+C para detenerlo."
 
@@ -2072,6 +2223,9 @@ msgstr "Muestra lo que tiene esta máquina: CPU, memoria, GPU, discos y llama.cp
 
 msgid "Skip the RAM bandwidth measurement."
 msgstr "Omite la medición del ancho de banda de la RAM."
+
+msgid "Measure RAM bandwidth again instead of reading back the figure kept for this machine, and keep the new one."
+msgstr "Mide de nuevo el ancho de banda de la RAM en lugar de leer la cifra guardada para esta máquina, y guarda la nueva."
 
 msgid "%(url)s answered a range request with the whole file."
 msgstr "%(url)s respondió a una petición por rangos con el archivo entero."
@@ -2257,6 +2411,19 @@ msgstr "versión de GGUF no admitida %(version)d en la posición 4"
 msgid "LlamaFit supports GGUF versions %(versions)s."
 msgstr "LlamaFit admite las versiones de GGUF %(versions)s."
 
+msgid "A memory budget built without these tensors would be too small, so none is built. If llama.cpp loads the file, LlamaFit's tensor-size table is missing the type."
+msgstr "Un presupuesto de memoria construido sin estos tensores sería demasiado pequeño, así que no se construye ninguno. Si llama.cpp carga el archivo, a la tabla de tamaños de tensor de LlamaFit le falta el tipo."
+
+msgid "%(type)d (%(count)d tensor, first %(name)s)"
+msgid_plural "%(type)d (%(count)d tensors, first %(name)s)"
+msgstr[0] "%(type)d (%(count)d tensor, el primero %(name)s)"
+msgstr[1] "%(type)d (%(count)d tensores, el primero %(name)s)"
+
+msgid "cannot size this GGUF file: %(count)d tensor uses a GGML type LlamaFit does not know: %(details)s"
+msgid_plural "cannot size this GGUF file: %(count)d tensors use GGML types LlamaFit does not know: %(details)s"
+msgstr[0] "no se puede dimensionar este archivo GGUF: %(count)d tensor usa un tipo GGML que LlamaFit no conoce: %(details)s"
+msgstr[1] "no se puede dimensionar este archivo GGUF: %(count)d tensores usan tipos GGML que LlamaFit no conoce: %(details)s"
+
 msgid "%(count)d shard"
 msgid_plural "%(count)d shards"
 msgstr[0] "%(count)d fragmento"
@@ -2336,6 +2503,9 @@ msgstr "WMI no devolvió ningún controlador de vídeo"
 msgid "lspci found no display controllers"
 msgstr "lspci no encontró ningún controlador de vídeo"
 
+msgid "vulkaninfo reported no discrete device with a memory heap"
+msgstr "vulkaninfo no informó de ningún dispositivo discreto con un heap de memoria"
+
 msgid "no populated memory modules"
 msgstr "ningún módulo de memoria ocupado"
 
@@ -2394,6 +2564,9 @@ msgstr "Use --ram para redimensionar la reserva; --memory cambiaría solo la mit
 
 msgid "%(option)s needs a value above zero"
 msgstr "%(option)s necesita un valor por encima de cero"
+
+msgid "no build number in the version output: %(text)s"
+msgstr "no hay número de compilación en la salida de la versión: %(text)s"
 
 msgid "llama.cpp not found: no llama-server on PATH, in LLAMA_CPP_PATH or in the usual directories"
 msgstr "llama.cpp no encontrado: no hay llama-server en PATH, en LLAMA_CPP_PATH ni en los directorios habituales"
@@ -2573,6 +2746,9 @@ msgstr "%(layers)s capas están en la tarjeta y el resto se ejecuta en el proces
 msgid "Nothing runs on a graphics card: every weight is in system memory."
 msgstr "Nada se ejecuta en una tarjeta gráfica: todos los pesos están en la memoria del sistema."
 
+msgid "%(gpus)s is here, but nothing could read how much of it is free, so this plan was made as if it were not. The real machine will be faster than these figures."
+msgstr "%(gpus)s está aquí, pero nada pudo leer cuánto de ella está libre, así que este plan se hizo como si no lo estuviera. La máquina real será más rápida que estas cifras."
+
 msgid "Sized for %(context)s tokens rather than the %(requested)s asked for."
 msgstr "Dimensionado para %(context)s tokens en lugar de los %(requested)s pedidos."
 
@@ -2687,6 +2863,9 @@ msgstr "llama-server existe pero no indicó una versión; el binario puede estar
 msgid "system_profiler failed; GPU information is unavailable."
 msgstr "system_profiler falló; no hay información de la GPU."
 
+msgid "Install the Vulkan tools (vulkan-tools on Linux, the vendor's Vulkan runtime on Windows) so an unsized card's memory can be read from its driver. This probe runs only when no vendor tool sized the card, so it is the last source there is."
+msgstr "Instale las herramientas Vulkan (vulkan-tools en Linux, el entorno de ejecución Vulkan del fabricante en Windows) para que la memoria de una tarjeta sin dimensionar pueda leerse de su controlador. Esta comprobación solo se ejecuta cuando ninguna herramienta del fabricante dimensionó la tarjeta, así que es la última fuente que hay."
+
 msgid "No vendor tool reported the GPU's memory size; record the size in a hardware profile so budgets can be computed for this machine."
 msgstr "Ninguna herramienta del fabricante indicó el tamaño de la memoria de la GPU; anote el tamaño en un perfil de hardware para que se puedan calcular los presupuestos de esta máquina."
 
@@ -2733,6 +2912,15 @@ msgstr "%(gpu)s: tamaño de VRAM desconocido"
 
 msgid "the vendor tool that reports memory was not available"
 msgstr "la herramienta del fabricante que informa de la memoria no estaba disponible"
+
+msgid "%(gpus)s: planned around, not planned on"
+msgstr "%(gpus)s: se planificó rodeándola, no contando con ella"
+
+msgid "with no reading of how much of the card is free, every budget and every speed on this machine was computed as if there were no card: they are CPU-only figures, and the real machine will be faster."
+msgstr "sin ninguna lectura de cuánto de la tarjeta está libre, todo presupuesto y toda velocidad de esta máquina se calcularon como si no hubiera tarjeta: son cifras solo de CPU, y la máquina real será más rápida."
+
+msgid "Install the Vulkan tools so the size can be read from the driver, or record it in a hardware profile (`llamafit hardware path` says where those go) and pass --profile."
+msgstr "Instale las herramientas Vulkan para que el tamaño pueda leerse del controlador, o anótelo en un perfil de hardware (`llamafit hardware path` dice dónde van) y pase --profile."
 
 msgid "No GPU detected"
 msgstr "No se detectó ninguna GPU"
@@ -2876,6 +3064,30 @@ msgctxt "board sort"
 msgid "download size"
 msgstr "tamaño de la descarga"
 
+msgctxt "board sort"
+msgid "prompt speed"
+msgstr "velocidad del prompt"
+
+msgctxt "board sort"
+msgid "card memory"
+msgstr "memoria de la tarjeta"
+
+msgctxt "board sort"
+msgid "system memory"
+msgstr "memoria del sistema"
+
+msgctxt "board sort"
+msgid "fit"
+msgstr "espacio"
+
+msgctxt "board sort"
+msgid "model id"
+msgstr "ID del modelo"
+
+msgctxt "board sort"
+msgid "quantisation"
+msgstr "cuantización"
+
 msgctxt "board filter"
 msgid "every candidate"
 msgstr "todos los candidatos"
@@ -2884,15 +3096,50 @@ msgctxt "board filter"
 msgid "the ones that run"
 msgstr "los que se ejecutan"
 
+msgid "matching %(text)s"
+msgstr "que coinciden con %(text)s"
+
+msgid "running as %(mode)s"
+msgstr "que se ejecutan como %(mode)s"
+
+msgid "at least %(tps)s tokens per second"
+msgstr "con al menos %(tps)s tokens por segundo"
+
+msgid "no more than %(size)s to download"
+msgstr "con no más de %(size)s de descarga"
+
+msgid "no more than %(size)s on the card"
+msgstr "con no más de %(size)s en la tarjeta"
+
+msgid "no more than %(size)s of system memory"
+msgstr "con no más de %(size)s de memoria del sistema"
+
+msgid "holding at least %(context)s tokens"
+msgstr "que admiten al menos %(context)s tokens"
+
+msgid "a quality of at least %(quality)s"
+msgstr "con una calidad de al menos %(quality)s"
+
 msgctxt "board filter"
 msgid "the ones with room to spare"
 msgstr "los que tienen espacio de sobra"
 
+msgctxt "board filter"
+msgid "the ones that fit"
+msgstr "los que caben"
+
 msgid "%(shown)d of %(total)d shown"
 msgstr "%(shown)d de %(total)d mostrados"
 
+msgid "%(sort)s in reverse"
+msgstr "%(sort)s al revés"
+
 msgid "%(counted)s, by %(sort)s, showing %(filter)s already on this machine."
 msgstr "%(counted)s, por %(sort)s, mostrando %(filter)s que ya están en esta máquina."
+
+msgctxt "board filter"
+msgid "already on this machine"
+msgstr "ya en esta máquina"
 
 msgid "%(counted)s, by %(sort)s, showing %(filter)s."
 msgstr "%(counted)s, por %(sort)s, mostrando %(filter)s."
@@ -2939,11 +3186,23 @@ msgstr "espacio"
 msgid "sort"
 msgstr "ordenar"
 
+msgid "sort back"
+msgstr "ordenar atrás"
+
+msgid "reverse"
+msgstr "invertir"
+
 msgid "on disk"
 msgstr "en disco"
 
 msgid "all quants"
 msgstr "todas las cuant."
+
+msgid "unranked rows"
+msgstr "filas sin ordenar"
+
+msgid "all columns"
+msgstr "todas las columnas"
 
 msgid "explanation"
 msgstr "explicación"
@@ -3014,6 +3273,9 @@ msgstr "inclinarse hacia la velocidad"
 msgid "Move with the up and down arrows. Enter says why a row is where it is; p gives the command line that runs it."
 msgstr "Muévase con las flechas arriba y abajo. Enter dice por qué una fila está donde está; p da la línea de comandos que la ejecuta."
 
+msgid "Terms: %(terms)s; anything else is text to look for. Enter with the box empty clears them."
+msgstr "Términos: %(terms)s; cualquier otra cosa es texto que buscar. Enter con la caja vacía los borra."
+
 msgid "Part of a model name, then Enter"
 msgstr "Parte de un nombre de modelo y luego Enter"
 
@@ -3077,6 +3339,9 @@ msgstr "Al menos este contexto, en tokens:"
 msgid "Willing to download at most, for example 40G (blank for no limit):"
 msgstr "Dispuesto a descargar como mucho, por ejemplo 40G (en blanco para sin límite):"
 
+msgid "Slowest generation worth having, in tokens per second (blank for the speed a person reads at; 0 when nobody is waiting on the tokens):"
+msgstr "La generación más lenta que merece la pena, en tokens por segundo (en blanco para la velocidad a la que lee una persona; 0 cuando nadie espera los tokens):"
+
 msgid "Licences you will accept (tick none to accept any):"
 msgstr "Licencias que acepta (no marque ninguna para aceptar todas):"
 
@@ -3097,6 +3362,12 @@ msgstr "El contexto mínimo es un número de tokens, por ejemplo %(example)s."
 
 msgid "The minimum context cannot be below zero."
 msgstr "El contexto mínimo no puede estar por debajo de cero."
+
+msgid "The minimum speed is a number of tokens per second, for example 12."
+msgstr "La velocidad mínima es un número de tokens por segundo, por ejemplo 12."
+
+msgid "The minimum speed cannot be below zero."
+msgstr "La velocidad mínima no puede ser menor que cero."
 
 msgid "Choose a row on the Board and press p, and its plan and command line appear here."
 msgstr "Elija una fila en el Tablero y pulse p, y su plan y su línea de comandos aparecen aquí."
@@ -3442,6 +3713,30 @@ msgstr ""
 "lugar de la velocidad a la que lee una persona. Pase 0 cuando nadie "
 "espere los tokens."
 
+msgid "Order the rows drawn: score, speed, quality, context, size, prompt, card, ram, fit, model or quant, largest or best first unless :asc says otherwise. The # column keeps the ranking."
+msgstr "Ordena las filas dibujadas: score, speed, quality, context, size, prompt, card, ram, fit, model o quant, lo mayor o lo mejor primero salvo que :asc diga otra cosa. La columna # conserva la clasificación."
+
+msgid "Draw only rows whose id, name or quantisation contains this text."
+msgstr "Dibuja solo las filas cuyo ID, nombre o cuantización contenga este texto."
+
+msgid "Draw only rows whose file is already on this machine."
+msgstr "Dibuja solo las filas cuyo archivo ya está en esta máquina."
+
+msgid "Draw only rows that run this way: gpu, moe-offload, hybrid or cpu."
+msgstr "Dibuja solo las filas que se ejecutan de esta manera: gpu, moe-offload, hybrid o cpu."
+
+msgid "Draw only rows at or above this verdict: comfortable, fits or tight. The ranking is unchanged and a hidden row is still counted."
+msgstr "Dibuja solo las filas con este veredicto o mejor: comfortable, fits o tight. La clasificación no cambia y una fila oculta se sigue contando."
+
+msgid "Draw exactly these columns, comma-separated, in this order, named as --json names them: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+msgstr "Dibuja exactamente estas columnas, separadas por comas, en este orden, nombradas como las nombra --json: rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context."
+
+msgid "Draw every column whatever the terminal's width; a cell that does not fit folds."
+msgstr "Dibuja todas las columnas sea cual sea el ancho del terminal; una celda que no cabe se parte en varias líneas."
+
+msgid "Leave the candidates that were not ranked off the table. The reasons are still printed under it."
+msgstr "Deja fuera de la tabla los candidatos que no se ordenaron. Los motivos se siguen escribiendo debajo."
+
 msgid ""
 "Showing the best %(shown)s of %(total)s that qualified; --limit sets "
 "how many, and the rest are neither worse-behaved nor hidden, only "
@@ -3450,6 +3745,9 @@ msgstr ""
 "Mostrando los mejores %(shown)s de %(total)s que pasaron; --limit "
 "fija cuántos, y los demás no son peores ni están ocultos, solo más "
 "abajo."
+
+msgid "%(gpus)s is on this machine and nothing could read how much of it is free, so every speed above is a CPU-only speed. `llamafit doctor` says how to fix that."
+msgstr "%(gpus)s está en esta máquina y nada pudo leer cuánto de ella está libre, así que toda velocidad de arriba es una velocidad solo de CPU. `llamafit doctor` dice cómo arreglarlo."
 
 msgid ""
 "generates %(tps)s tokens per second, below the %(floor)s a person "
@@ -3482,6 +3780,9 @@ msgctxt "exclusion tag"
 msgid "no %(capability)s"
 msgstr "sin %(capability)s"
 
+msgid "no %(capability)s capability; drop it from the request, or ask for a use case that does not need it"
+msgstr "sin la capacidad %(capability)s; quítela de la petición, o pida un caso de uso que no la necesite"
+
 msgctxt "exclusion tag"
 msgid "no estimate"
 msgstr "sin estimación"
@@ -3490,13 +3791,50 @@ msgctxt "exclusion tag"
 msgid "no room"
 msgstr "no cabe"
 
+# "datos" es la palabra que ya usa la columna Datos; la etiqueta se dibuja en
+# la columna de puntuación, así que se mantiene tan corta como el inglés.
+msgctxt "exclusion tag"
+msgid "no facts"
+msgstr "sin datos"
+
+msgctxt "exclusion tag"
+msgid "not ranked"
+msgstr "sin ordenar"
+
+# Una raya (U+2013), de una celda de ancho, para una celda sin cifra.
+# Ni un espacio ni una palabra: una celda vacía se lee como un cero.
+msgctxt "board cell with no figure"
+msgid "–"
+msgstr "–"
+
+msgid "%(term)s is not a filter; the terms are %(terms)s, and anything else is text to look for."
+msgstr "%(term)s no es un filtro; los términos son %(terms)s, y cualquier otra cosa es texto que buscar."
+
+msgid "fit>= takes one of %(values)s"
+msgstr "fit>= toma uno de %(values)s"
+
+msgid "runs= takes one of %(values)s"
+msgstr "runs= toma uno de %(values)s"
+
+msgid "%(term)s needs a number"
+msgstr "%(term)s necesita un número"
+
+msgid "%(term)s needs a size such as 8G, 7.5GiB or 512M"
+msgstr "%(term)s necesita un tamaño como 8G, 7.5GiB o 512M"
+
 msgctxt "exclusion tag"
 msgid "short context"
 msgstr "poco contexto"
 
+msgid "holds fewer than the %(minimum)s tokens asked for; lower the minimum context or free memory to see it ranked"
+msgstr "admite menos de los %(minimum)s tokens pedidos; baje el contexto mínimo o libere memoria para verlo ordenado"
+
 msgctxt "exclusion tag"
 msgid "too big"
 msgstr "demasiado grande"
+
+msgid "larger to download than the %(limit)s this request allows"
+msgstr "más grande de descargar que los %(limit)s que permite esta petición"
 
 msgctxt "exclusion tag"
 msgid "too slow"
@@ -3505,6 +3843,9 @@ msgstr "demasiado lento"
 msgctxt "exclusion tag"
 msgid "unknown quant"
 msgstr "cuant. desc."
+
+msgid "a quantisation whose cost in quality is not known, so it cannot be scored"
+msgstr "una cuantización cuyo coste en calidad no se conoce, así que no se puede puntuar"
 
 msgctxt "exclusion tag"
 msgid "unsupported"
