@@ -8,7 +8,7 @@ it contains that the `pip` install does not — and the other way round.
 If you already have a Python, `pip install llamafit` is still the better way in, and the
 [README](../README.md#install) says why in two lines. Everything here is for the case where
 acquiring a language runtime to answer "will this model run on my machine?" is a worse
-trade than downloading 33 MB.
+trade than downloading 25 MB.
 
 ## Which file
 
@@ -126,10 +126,28 @@ message catalogs. Every command works offline exactly as it does after a `pip in
 The web dashboard is included, so `llamafit serve` works. NumPy is not, and that is the one
 visible difference: the memory-bandwidth measurement falls back to its pure-Python method,
 which is slightly less accurate. LlamaFit tells you which method it used, so you are never
-reading a number without knowing where it came from. NumPy would have added about half
-again to the download and roughly doubled the time each run spends unpacking itself, to
-sharpen one figure; `pip install "llamafit[fast]"` is there for anyone who wants that trade
-the other way round.
+reading a number without knowing where it came from. NumPy and its dependencies measured
+10.6 MB on a 25 MB binary, unpacked again on every run, to sharpen one figure;
+`pip install "llamafit[fast]"` is there for anyone who wants that trade the other way
+round.
+
+## One thing it cannot be told
+
+LlamaFit falls back to English when the stream it is writing to cannot carry the script
+you asked for, and says which encoding refused which language. For a `pip install` the fix
+is `PYTHONUTF8=1`, which is what the message suggests. **That does not work for the
+binary**, and the message says it anyway: PyInstaller starts the interpreter from an
+isolated configuration, which reads no `PYTHON*` variable at all, so neither
+`PYTHONUTF8` nor `PYTHONIOENCODING` reaches it.
+
+In practice this is narrower than it sounds. On a real terminal it never comes up: Python
+on Windows has written console output as UTF-8 since 3.6, whatever the code page and
+whatever UTF-8 mode says, so every script draws correctly. It appears only when you
+redirect output into a file or a pipe on Windows, where the encoding comes from the ANSI
+code page instead. The setting that does fix that one is Windows' own — Region →
+Administrative → *Beta: Use Unicode UTF-8 for worldwide language support*, which makes the
+ANSI code page UTF-8. `chcp 65001` does not, because it changes the console's code page
+and not that one.
 
 Two smaller things follow from it being one file:
 

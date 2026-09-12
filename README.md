@@ -154,7 +154,7 @@ x86-64 and ARM. Take the one for your machine from the
 tar -xzf llamafit-0.1.0-linux-x86_64.tar.gz && ./llamafit recommend
 ```
 
-It is about 33 MB, it is not code-signed, and your operating system will say something
+It is about 25 MB, it is not code-signed, and your operating system will say something
 about that the first time. [docs/standalone.md](docs/standalone.md) covers the checksums,
 what Windows and macOS will ask you, and the one thing the binary leaves out.
 
@@ -199,7 +199,9 @@ language it barely speaks is making a promise; saying how far it got is keeping 
 
 If the console you are writing to cannot represent the script — a Windows code page and
 Japanese, say — LlamaFit speaks English instead and tells you which encoding refused
-which language, rather than printing a screen of question marks. `PYTHONUTF8=1` fixes it.
+which language, rather than printing a screen of question marks. `PYTHONUTF8=1` fixes it,
+except in the standalone binary, which reads no `PYTHON*` variable at all:
+[docs/standalone.md](docs/standalone.md) says what does.
 
 No catalog has been read by a native speaker, and every one of them says so at the top and
 asks for that review. Correcting a line of your own language is the easiest useful

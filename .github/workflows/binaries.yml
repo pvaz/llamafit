@@ -123,6 +123,21 @@ jobs:
               handle.write(f"VERSION={version}\n")
           PY
 
+      - name: The tag must carry the build recipe
+        shell: bash
+        # A tag from before `packaging/` existed cannot be built here, and the failure
+        # without this step is PyInstaller not finding a spec file, five times over, after
+        # five machines have each installed a toolchain. v0.1.0 is such a tag: it also
+        # predates the `multiprocessing.freeze_support()` call a frozen build needs, so a
+        # binary from it would fail on `llamafit system` even if the recipe were handed to
+        # it. Taking the recipe from this branch and the source from the tag would build
+        # something no tag describes, which is worse than refusing.
+        run: |
+          if [ ! -f packaging/llamafit.spec ]; then
+            echo "::error::$TAG predates packaging/llamafit.spec, so there is no recipe to"                  "build it with. Standalone binaries start at v0.1.1; tag a version that"                  "has the recipe rather than pointing this workflow at an older one."
+            exit 1
+          fi
+
       - name: Install the project and PyInstaller
         shell: bash
         # `[web]` and not `[fast]`: packaging/llamafit.spec says why.

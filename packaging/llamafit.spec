@@ -12,7 +12,7 @@ Run it from the repository root, against an environment where the project is ins
     pip install -e ".[web]" pyinstaller
     pyinstaller packaging/llamafit.spec
 
-`.github/workflows/binaries.yml` does exactly that on four machines and attaches the
+`.github/workflows/binaries.yml` does exactly that on five machines and attaches the
 results to the release. Building by hand gives you the same binary for your own machine
 and nothing else -- PyInstaller is not a cross-compiler, so each target is built on its
 own operating system and architecture.
@@ -21,7 +21,7 @@ Three collections do the work, and each is here because leaving it out produces 
 that starts and then fails at the moment somebody uses it:
 
 - `collect_data_files("llamafit")` carries the catalog, the generated facts, the hardware
-  profiles, the JSON schemas, the GPU table and the 38 message catalogs. These are read
+  profiles, the JSON schemas, the GPU table and the 37 message catalogs. These are read
   through `importlib.resources` at run time, never imported, so nothing in the bytecode
   mentions them and the analysis cannot infer them.
 - `collect_submodules("llamafit")` is what makes those reads resolve. A frozen package is
@@ -30,12 +30,14 @@ that starts and then fails at the moment somebody uses it:
 - `collect_all` for `textual` and `uvicorn`, which both load classes by name at run time:
   Textual its widgets and CSS, uvicorn its HTTP and WebSocket protocol implementations.
 
-The `fast` extra is deliberately absent. NumPy would add about half again to a file people
-download, and roughly double the time each run spends unpacking itself, in exchange for
-sharpening one measurement -- and without it LlamaFit still measures memory bandwidth and
-still says which method it used. The `web` extra is present for the opposite reason:
-without it `llamafit serve` would fail with advice to run `pip install`, which is the one
-thing a person holding a standalone binary cannot do.
+NumPy is deliberately absent, and named in `excludes` below so that it stays absent
+whatever the build environment happens to have. Measured on Windows: it and its
+dependencies are 10.6 MB on a 25 MB binary, and every one of those megabytes is unpacked
+again on every single run, in exchange for sharpening one measurement -- and without it
+LlamaFit still measures memory bandwidth and still says which method it used. The `web`
+extra is present for the opposite reason: without it `llamafit serve` would fail with
+advice to run `pip install`, which is the one thing a person holding a standalone binary
+cannot do.
 """
 
 from __future__ import annotations
@@ -132,9 +134,18 @@ a = Analysis(  # noqa: F821
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    # Nothing in this list is imported by the program. They arrive as dependencies of
-    # dependencies, and each one that stays adds megabytes to a file someone downloads.
     excludes=[
+        # NumPy is named here and not merely left uninstalled. The header above explains
+        # why it stays out; leaving that to `pip install -e ".[web]"` made it a property
+        # of whichever environment ran the build, and building in an ordinary development
+        # virtual environment -- which has it, through `[dev]` -- silently produced a
+        # binary 10.6 MB larger with a slower start, from the same spec file on the same
+        # machine. A decision worth writing down is worth enforcing where it was written.
+        # LlamaFit already runs without NumPy and says which bandwidth method it used, so
+        # excluding it changes one measurement's accuracy and nothing else.
+        "numpy",
+        # Nothing below is imported by the program. They arrive as dependencies of
+        # dependencies, and each one that stays adds megabytes to a file someone downloads.
         "tkinter",
         "unittest",
         "pydoc_data",
