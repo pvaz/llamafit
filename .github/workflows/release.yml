@@ -228,7 +228,11 @@ jobs:
   publish-pypi:
     name: Publish to PyPI
     if: github.event_name == 'push'
-    needs: [checks, build]
+    # `binaries` is in here for the reason at the top of this file: everything that can
+    # refuse a release does so before the first upload. A binary that fails to build is a
+    # cheap failure until PyPI has the version, and an expensive one for ever afterwards,
+    # because that number can never be used again.
+    needs: [checks, build, binaries]
     runs-on: ubuntu-latest
     environment:
       name: pypi
@@ -243,10 +247,20 @@ jobs:
       # Pinned on purpose; the note at the top of this file says why.
       - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
 
+  binaries:
+    # The standalone executables, built by the workflow that owns how they are built, the
+    # way `checks` calls ci.yml rather than repeating it. It runs beside `checks`, and
+    # `publish-pypi` waits for both: five machines that each build a binary and then run
+    # it are five more ways to find out before the upload rather than after it.
+    name: Binaries
+    if: github.event_name == 'push'
+    needs: build
+    uses: ./.github/workflows/binaries.yml
+
   github-release:
     name: GitHub release
     if: github.event_name == 'push'
-    needs: [build, publish-pypi]
+    needs: [build, publish-pypi, binaries]
     runs-on: ubuntu-latest
     permissions:
       contents: write # create the release and attach the files to it
@@ -258,6 +272,22 @@ jobs:
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: release-notes
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: llamafit-*
+          path: binaries
+          merge-multiple: true
+
+      - name: One checksum file covering every binary
+        working-directory: binaries
+        # The per-file .sha256 lines gathered into one list, so a person can check every
+        # download at once; the individual files stay, because docs/standalone.md tells
+        # somebody who took a single binary to check that one.
+        run: |
+          set -euo pipefail
+          cat ./*.sha256 | sort -k2 > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
       - name: Create the release from the tag
         env:
           GH_TOKEN: ${{ github.token }}
@@ -274,4 +304,6 @@ jobs:
             --title "llamafit $VERSION" \
             --notes-file release-notes.md \
             "${flags[@]}" \
-            dist/*
+            dist/* binaries/*
+          echo "on $TAG:"
+          gh release view "$TAG" --json assets --jq '.assets[] | "\(.name)  \(.size) bytes"'

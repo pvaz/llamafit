@@ -10,11 +10,19 @@
 # for a version that has already shipped -- which is how v0.1.0 got its binaries -- without
 # going anywhere near an upload that cannot be repeated.
 #
-# Two ways in, and they do the same thing:
+# Two ways in:
 #
-#   - Pushing a version tag. `release.yml` starts at the same moment and creates the
-#     release; the attach job below waits for it rather than racing it.
-#   - Running it by hand from the Actions tab with a tag, for a release that already exists.
+#   - `release.yml` calls it on a version tag, the way it already calls `ci.yml`. The
+#     files come back as artefacts of the same run and that workflow puts them on the
+#     release it creates, so there is one release, made once, with everything on it.
+#   - Running it by hand from the Actions tab with a tag, for a release that already
+#     exists. That path attaches the files itself.
+#
+# The first of those used to be a tag trigger of its own, with a job here that polled for
+# the release the other workflow was about to create. The two ran at the same moment and
+# the poll gave up after 25 minutes against a release path measured at 57: it would have
+# built five binaries and attached none of them. Ordering belongs in a dependency, not in
+# a timeout.
 #
 # PyInstaller is not a cross-compiler, so each target is built on its own operating system
 # and its own architecture: five machines, five files. What gets built is decided in
@@ -28,13 +36,16 @@
 name: Binaries
 
 on:
-  push:
-    tags:
-      - "v[0-9]+.[0-9]+.[0-9]+*"
+  workflow_call:
+    inputs:
+      tag:
+        description: "The tag to build. Defaults to the tag the calling run was started by."
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
       tag:
-        description: "The release tag to build and attach to, for example v0.1.0"
+        description: "The release tag to build and attach to, for example v0.1.1"
         required: true
         type: string
 
@@ -219,6 +230,9 @@ jobs:
 
   attach:
     name: Attach to the release
+    # Only the by-hand path. When release.yml is the caller it attaches these itself,
+    # to the release it is about to create, and there is nothing here to wait for.
+    if: github.event_name == 'workflow_dispatch'
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -236,36 +250,29 @@ jobs:
           set -euo pipefail
           # The per-file .sha256 lines, gathered and sorted, so a person can verify every
           # download with a single `sha256sum -c SHA256SUMS.txt` in the directory they
-          # landed in. The individual files stay: somebody downloading one binary should
-          # not have to fetch a list of five to check it.
+          # landed in. The individual files stay -- somebody downloading one binary should
+          # not have to fetch a list of five to check it -- which is what docs/standalone.md
+          # tells them to do.
           cat ./*.sha256 | sort -k2 > SHA256SUMS.txt
-          rm -f ./*.sha256
           cat SHA256SUMS.txt
           ls -lh
 
-      - name: Wait for the release to exist
+      - name: The release must already exist
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        # On a tag push, release.yml is creating this release at the same moment, behind
-        # the full test suite and a PyPI upload. Waiting is not a race worth losing by a
-        # minute; twenty-five of them is longer than that path has ever taken, and if the
-        # release never appears the failure below says which of the two workflows to go
-        # and read.
+        # This path is for a tag that has been released. Nothing is being created
+        # concurrently, so a release that is not here is a mistake to report rather than
+        # something to wait for -- the wrong tag, or a tag whose release workflow failed.
         run: |
           set -euo pipefail
-          for attempt in $(seq 1 50); do
-            if gh release view "$TAG" > /dev/null 2>&1; then
-              echo "release $TAG is there"
-              exit 0
-            fi
-            echo "attempt ${attempt}/50: no release $TAG yet"
-            sleep 30
-          done
-          echo "::error::release $TAG never appeared. If this was a tag push, look at the" \
-               "Release workflow for the same tag: it creates the release, and it will have" \
-               "stopped somewhere. The binaries are attached to this run as artefacts either way."
-          exit 1
+          if ! gh release view "$TAG" > /dev/null 2>&1; then
+            echo "::error::there is no release for $TAG. This workflow adds files to a" \
+                 "release that exists; a tag is released by pushing it, which runs" \
+                 "release.yml, which builds these binaries itself."
+            exit 1
+          fi
+          echo "release $TAG is there"
 
       - name: Attach the binaries
         env:
