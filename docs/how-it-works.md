@@ -45,16 +45,16 @@ Instead of a size class per model, LlamaFit reads the header of each GGUF file, 
 over HTTP with range requests that fetch only the header, and derives:
 
 - **bytes of expert weights** (tensor names containing `_exps`), **bytes of every other tensor
-  in a block** — attention projections, feed-forward weights and norms alike, which is nearly
-  the whole file on a dense model — **bytes of the output head and of the token embedding**,
+  in a block** (attention projections, feed-forward weights and norms alike, which is nearly
+  the whole file on a dense model), **bytes of the output head and of the token embedding**,
   and bytes of any table the catalog marks as streamable from disk. Every tensor lands in
   exactly one of these buckets, and they sum to the file's total;
 - **KV cache per token**: the key cache and the value cache are sized separately, each from its
   own head dimension (`attention_layers × kv_heads × key_length` and the same with
   `value_length`), each rounded up to a whole number of blocks of its KV type, and then added.
   llama.cpp allocates them as two tensors, so doubling the key cache is not what it does, and
-  rounding down would report a cache smaller than the one allocated — the direction that tells
-  somebody a model fits when it does not. For hybrid architectures only the full-attention
+  rounding down would report a cache smaller than the one allocated, which is the direction
+  that tells somebody a model fits when it does not. For hybrid architectures only the full-attention
   layers count; the linear-attention layers keep a small fixed recurrent state instead;
 - vocabulary size, layer count, expert count and experts used per token;
 - the context length the file itself declares and, where the architecture declares one, the
@@ -164,24 +164,24 @@ Four scores from 0 to 100:
   Q3 10, IQ3 12, Q2 20, IQ2 24, IQ1 35; dynamic quants one less than their base), plus a small
   bonus when the request names the job the entry was built for. A missing capability excludes
   the candidate, and a request asks for one two ways: by naming it, and by naming a job that needs
-  it — coding needs the coding capability, reasoning needs thinking, multimodal needs vision,
+  it: coding needs the coding capability, reasoning needs thinking, multimodal needs vision,
   embedding needs embeddings. `general` and `chat` need none, so on those two nothing is
   excluded for what was asked. The filter is on what a model can do and never on the jobs its
   entry offers it for, because a coding model is a perfectly good thing to hold a conversation
   with.
-- **Speed**: generation tokens per second, scored between two speeds — the rate a person reads
+- **Speed**: generation tokens per second, scored between two speeds, the rate a person reads
   at (about six tokens per second) and a target for the use case (chat 30, general 25, coding
   20, reasoning 15, multimodal 15), on an axis of doublings rather than of tokens per second.
   Embeddings are scored on prompt throughput instead, with no reading floor, because nobody
   reads one. A candidate below the floor is excluded with its speed in the reason rather than
   ranked: it is a batch tool, not a slow interactive one. `--min-tps` puts the request's own
-  figure in the floor's place — `--min-tps 0` when nobody is waiting on the tokens — and the
-  board says underneath which figure it used. Coding and reasoning take a deduction when prompt
+  figure in the floor's place, with `--min-tps 0` when nobody is waiting on the tokens, and
+  the board says underneath which figure it used. Coding and reasoning take a deduction when prompt
   processing is slow.
-- **Fit**: two questions, scored as the worse of them. *Does it waste the machine?* — the
+- **Fit**: two questions, scored as the worse of them. *Does it waste the machine?* is the
   model's own weights against every byte of memory the machine has to hold them in: full marks
   at half the machine or more, and about 23 points off for each halving below that. *Is it
-  crowded?* — the whole budget against whichever pool is tightest: full marks up to 0.80,
+  crowded?* is the whole budget against whichever pool is tightest: full marks up to 0.80,
   falling to 40 at 0.98, and 0 above. The weights are read apart from the cache and the buffers
   because on a machine with a small card those dominate the pool and say nothing about how big
   the model is.
@@ -208,11 +208,11 @@ and what would move it up a tier (for example "free 1.2 GB of VRAM to reach 64K 
 "the Q3 quant would fit entirely in VRAM at an estimated 18 tokens per second"). The CLI prints
 the same text with `--explain`; the dashboards show it in the detail pane.
 
-The last of those — what would move it up a tier — is printed by `recommend --explain` and
+The last of those, what would move it up a tier, is printed by `recommend --explain` and
 nowhere else yet: the dashboards show the scores, the budget and the ladder, not the two
 counterfactual lines. Each of those lines costs a whole placement search, which is why it is not
-on the board or in `--json`, and each is read off a placement that was actually computed rather
-than scaled from the one it is compared with.
+on the board or in `--json`, and each is read off a placement that was computed rather than
+scaled from the one it is compared with.
 
 ## 9. What changes after a benchmark
 
@@ -225,5 +225,5 @@ do not determine, and stores the fit beside the runs in `benchmarks.sqlite`.
 **Nothing on this page reads that back yet.** The scores above are computed from the constants
 that ship in `llamafit/constants/`, so every speed stays labelled `estimated` however much you
 have measured; [benchmarking.md](benchmarking.md) says what is missing. The reference
-machine's own measurements — the ones those constants were chosen against — are in
+machine's own measurements, the ones those constants were chosen against, are in
 [calibration/](calibration/).

@@ -47,8 +47,8 @@ entries:
 
 A quant needs only its `name`, and an extra only its `file`. `llamafit catalog refresh --model
 my-org-model-7b` fills in the file names, sizes, checksums, bits per weight and GGUF facts, and
-writes them to a `.facts.json` file beside your YAML rather than into it — the same split the
-bundled catalog uses, described in [catalog.md](catalog.md#where-the-facts-live). A quant name
+writes them to a `.facts.json` file beside your YAML rather than into it, which is the same
+split the bundled catalog uses, described in [catalog.md](catalog.md#where-the-facts-live). A quant name
 must not be claimed by two of a model's sources, because that file keys on the name alone.
 
 A file that is not on Hugging Face is described with `kind: local` and the path to the GGUF

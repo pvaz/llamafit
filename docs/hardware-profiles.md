@@ -135,7 +135,7 @@ editor and your CI job.
 
 ### Sizes are written the way the flags are written
 
-`"128GiB"`, `"8188MiB"`, `"8G"`, `"512M"` — the same syntax `--memory 24G` takes, and a plain
+`"128GiB"`, `"8188MiB"`, `"8G"`, `"512M"`: the same syntax `--memory 24G` takes, and a plain
 number is a count of bytes. Binary suffixes (`GiB`) are powers of 1024, bare and decimal ones
 (`G`, `GB`) powers of 1000.
 
@@ -147,9 +147,9 @@ GB/s, which is what a vendor's specification sheet states.
 
 A profile that states `memory.bandwidth_gbps` must state `memory.bandwidth_source` too:
 
-- `measured` — somebody ran the benchmark on this machine.
-- `estimated` — derived from the module type, speed and channel count.
-- `assumed` — a plausible number nobody checked.
+- `measured`: somebody ran the benchmark on this machine.
+- `estimated`: derived from the module type, speed and channel count.
+- `assumed`: a plausible number nobody checked.
 
 There is no default, because the default would be the label nobody chose. Leaving the
 bandwidth out entirely is fine and is often the honest answer: the host then reports
@@ -167,7 +167,7 @@ reports one that disagrees with the table by more than ten percent.
 
 Section 4.4 of the design sketched `pcie_bandwidth_gbps`. It is not here: `Host` has nowhere
 to put it, and the speed estimator reads the link's bandwidth out of the GPU table by card
-name, so a profile that set it would have been quietly ignored. A field nothing can read is a
+name, so a profile that set it would have been silently ignored. A field nothing can read is a
 field that lies.
 
 `calibration` is accepted, validated and stored, and **this build does not apply it**.
@@ -179,14 +179,14 @@ estimator: the constants that count are the reference machine's, in `llamafit/co
 ## Where profiles live
 
 Bundled profiles ship in the package (`src/llamafit/data/profiles/`). Only machines this
-project has actually measured ship there, because a profile is data and an invented memory
+project has measured ship there, because a profile is data and an invented memory
 bandwidth reads exactly like a measured one to everything downstream. Today that is one file:
 
 | Profile | Machine | Where its figures come from |
 |---|---|---|
 | `reference-rtx4060-128gb` | RTX 4060 8 GB, i9-14900KF, 128 GiB DDR5-4200, Windows 11 | The recorded probe output in `tests/fixtures/reference_machine.py` and the measurements in [the calibration record](calibration/2026-09-09-reference-machine.md). Every constant in `llamafit/constants.py` was fitted to this machine and every `measured` block in the catalog was taken on it, so a stranger can reproduce the documentation's numbers without owning it. |
 
-Your own profiles live in the data directory — `llamafit hardware path` prints it, and
+Your own profiles live in the data directory, which `llamafit hardware path` prints, and
 `LLAMAFIT_PROFILES` overrides it. A user profile takes precedence over a bundled one with the
 same name, so recalibrating the machine LlamaFit ships a profile of keeps the name you already
 use.
@@ -239,9 +239,9 @@ guessed at.
 ## Automatic use
 
 A profile is used when you name it: `--profile NAME`, or a path to its file. The `match` rules
-in the schema are read and validated, and nothing selects a profile by them yet — no command
+in the schema are read and validated, and nothing selects a profile by them yet: no command
 picks one up from the live scan, and `doctor` does not report one as being in effect. The
 design's plan for that stands: a calibration `bench` fitted would be stored in a user profile
 whose `match` rules fit the machine, and later runs would pick it up. When it exists, a match
-will never override the live scan's own figures — the scan measured this machine and the
-profile did not.
+will never override the live scan's own figures, because the scan measured this machine and
+the profile did not.

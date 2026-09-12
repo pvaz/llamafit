@@ -11,7 +11,7 @@ translation is read at runtime from a plain text file in this repository.
 >
 > Three kinds of text stay English on purpose, and each says why where it lives: the
 > translation layer's own messages (`src/llamafit/i18n/`, below), the per-field diagnostics
-> `catalog validate` and `catalog refresh` print about a YAML file, and identifiers — command
+> `catalog validate` and `catalog refresh` print about a YAML file, and identifiers: command
 > names, flags, paths, backend names, use-case ids, and the catalog's own data. A model's
 > *capability* is the one enum value that is both: `--capability coding` takes the English
 > identifier, and the word the table shows for it is a message like any other, because
@@ -124,7 +124,7 @@ why the header is required.
 Asking for a language LlamaFit does not have at all falls back to English **and says so**,
 once. An operating system set to such a language simply gets English with no remark: that
 is not somebody asking, and repeating it on every run would be noise. A substitution is
-different, and is announced whatever asked for it — including the operating system —
+different, and is announced whatever asked for it, including the operating system,
 because the reader deserves to know why some of the wording looks foreign.
 
 Where the operating system's locale comes from differs by platform. On Linux and macOS it
@@ -149,7 +149,7 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
    cp src/llamafit/data/locale/messages.pot src/llamafit/data/locale/fr_FR.po
    ```
 
-   Spell it another way — `fr-FR.po`, `FR_fr.po` — and LlamaFit still finds it, because it
+   Spell it another way (`fr-FR.po`, `FR_fr.po`) and LlamaFit still finds it, because it
    offers a language and then opens it by the same rule. Use the canonical name anyway: a
    catalog that ships has to be named for its tag exactly, and the test suite says so.
 
@@ -169,16 +169,16 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
    forms, Japanese has one.
 
    `Plural-Forms` is required in the strong sense: a catalog without one is **refused**
-   with the line number, rather than quietly given English's rule. Inheriting English's
-   rule is the one mistake that produces no error at all — a three-form language would
+   with the line number, rather than silently given English's rule. Inheriting English's
+   rule is the one mistake that produces no error at all: a three-form language would
    simply pick the wrong form, and its reader would meet real words in the wrong grammar
    with nothing anywhere to say why.
 
    `Language` has to agree with the file's name, and a `fr_FR.po` whose header says
    `Language: de` is **refused** too. Nothing downstream would notice otherwise: the tag
    comes from the file's name, so the catalog would be installed as French and would then
-   answer in German with no error anywhere. Spelling is forgiven — `fr-FR`, `FR_fr` and
-   `fr_FR.UTF-8` all mean `fr_FR` — and a catalog that has not filled the header in yet is
+   answer in German with no error anywhere. Spelling is forgiven, since `fr-FR`, `FR_fr` and
+   `fr_FR.UTF-8` all mean `fr_FR`, and a catalog that has not filled the header in yet is
    still read, because saying nothing is not the same as saying something false.
 
 4. Translate. Leave a `msgstr` empty rather than guessing: an empty translation falls back
@@ -202,7 +202,7 @@ standard library's table; `locale.getlocale()` is no use there, because it answe
 
 - **Placeholders keep their names.** `%(count)d module` may become
   `%(count)d módulo`, and the pieces may be reordered, but `%(count)d` itself must survive
-  exactly. A translation whose placeholders do not match its message's is **not used** —
+  exactly. A translation whose placeholders do not match its message's is **not used**:
   LlamaFit shows the English instead and says so once at start-up, and `--verbose` names
   each one in the log. For a catalog that ships, the same mismatch fails the build.
 - **A literal percent sign is written `%%`**, and **placeholders are named, never
@@ -244,15 +244,15 @@ This is not cosmetic. English writes a model's context as `32,768`; a reader who
 groups with a point reads that as a fraction and is told the model holds thirty-two tokens.
 
 **A space is an answer here.** These three entries are read with `pgettext_literal`, which
-takes the `msgstr` exactly as you wrote it, so a language that groups digits with a space —
-French, Russian, Swedish, Polish, Czech, Finnish, Hungarian, Bulgarian, Ukrainian,
-Norwegian — says so by writing that space. Everywhere else in the catalog a translation of
+takes the `msgstr` exactly as you wrote it, so a language that groups digits with a space
+(French, Russian, Swedish, Polish, Czech, Finnish, Hungarian, Bulgarian, Ukrainian,
+Norwegian) says so by writing that space. Everywhere else in the catalog a translation of
 nothing but whitespace still counts as untranslated, because a half-finished sentence must
 degrade to English and never to a blank line; that rule is off for these three and for
 nothing else.
 
 Write a **no-break space** (U+00A0) rather than an ordinary one, and say so in a `#` comment
-above the entry — an invisible character with no note beside it is the next reader's bug.
+above the entry, because an invisible character with no note beside it is the next reader's bug.
 The shipped catalogs use U+00A0 even where CLDR asks for the narrow no-break space U+202F,
 French included, because many terminal fonts have no glyph for U+202F and would drop it or
 draw a box.
@@ -263,22 +263,22 @@ rather than to nothing. That is the one way to say nothing here.
 **`parameter count` stays `B` in every language, and it is not the word *billion*.** It is
 domain vocabulary: the model's own name carries it. The file is `Qwen3-27B`, the vendor
 announces a 27B model, every article about it says 27B, and this cell sits in the same table
-row as that identifier. Localise it and one row disagrees with itself — `27bi` beside
-`Qwen3-27B` — and an abbreviation that means a thousand million in your language may well be
+row as that identifier. Localise it and one row disagrees with itself, `27bi` beside
+`Qwen3-27B`, and an abbreviation that means a thousand million in your language may well be
 read as a million or as a million million by somebody who has spent the day reading model
 names. Your language's actual word for a thousand million belongs in prose, not here.
 
 All thirty-seven catalogs write `B`, each with a `#` comment saying it was decided rather
 than skipped. The entry exists for the language whose readers genuinely would not recognise
 `B`; if that is yours, write what they do use and say in a comment why. Write something
-either way — an empty `msgstr` prints the same `B` and then reads as one message short in
+either way: an empty `msgstr` prints the same `B` and then reads as one message short in
 every completeness report from now on.
 
 **These entries hold a character, not a grouping rule.** LlamaFit groups digits in threes
 everywhere, so Hindi, Bengali and Urdu come out as `3,276,800` rather than on the South
 Asian pattern their readers use, `32,76,800`. That is a known limitation and not something this entry can
 fix: it is one separator, and where the separators go is decided in the code. Say so in an
-issue if it matters to your language — the fix is a grouping pattern per language, and it
+issue if it matters to your language. The fix is a grouping pattern per language, and it
 has to be made once for all of them.
 
 ### What your console can write
@@ -288,9 +288,9 @@ Western code page cannot represent Japanese, Arabic or Hindi, and a terminal tha
 to write a character it has no byte for either raises or prints a substitute.
 
 LlamaFit settles this before it says anything. If the output stream's encoding can carry
-the language's own script, it speaks it, and any single character that will not fit — a
-typographic dash, a curly quote — is written as `?` with a count at the end saying how
-many. If the stream cannot carry the script at all, the language is **refused**: English
+the language's own script, it speaks it, and any single character that will not fit, such
+as a typographic dash or a curly quote, is written as `?` with a count at the end saying
+how many. If the stream cannot carry the script at all, the language is **refused**: English
 is spoken instead and a line on standard error names the encoding and the language, and
 says that `PYTHONUTF8=1` makes Python write UTF-8 and carries every language. A page of
 question marks is not a translation, and a reader can fill in a hole in a familiar
@@ -299,14 +299,14 @@ language but not a screen of them.
 This is why redirecting output to a file is not always the same as watching it: the file's
 encoding is Python's, not your terminal's, and on Windows that is the code page unless
 `PYTHONUTF8=1` is set. It also means a test that writes into an in-memory buffer proves
-nothing about any of this — the buffer has no encoding to refuse.
+nothing about any of this, because the buffer has no encoding to refuse.
 
 ### Right-to-left languages
 
 Three of the catalogs are written right to left: Arabic (`ar.po`), Hebrew (`he.po`) and
 Urdu (`ur.po`). Every identifier LlamaFit prints stays in Latin script by the rule at the
-top of this page — a flag, a command name, a path, a model id, a repository, a URL, a unit
-— so most of their lines mix the two directions, and the Unicode bidirectional algorithm
+top of this page: a flag, a command name, a path, a model id, a repository, a URL, a unit.
+So most of their lines mix the two directions, and the Unicode bidirectional algorithm
 (UAX #9) decides how. It gets one thing wrong for us, by design.
 
 **A leading hyphen has no direction of its own.** Inside a right-to-left paragraph it
@@ -322,8 +322,8 @@ terminals draw them as boxes; a reviewer cannot see them; and no character a tra
 can type will reorder a table's columns. So `src/llamafit/cli/render.py` does it, once,
 for all three languages, at the moment a table is drawn:
 
-- every value the code already treats as data — a flag, a command name, a path, a model or
-  repository id, a URL, a size with its unit — is wrapped in U+2068 FIRST STRONG ISOLATE
+- every value the code already treats as data (a flag, a command name, a path, a model or
+  repository id, a URL, a size with its unit) is wrapped in U+2068 FIRST STRONG ISOLATE
   and U+2069 POP DIRECTIONAL ISOLATE, which is what the standard prescribes for embedding
   a run whose direction is not known in advance;
 - an identifier a translator had to keep verbatim *inside* a sentence gets the same
@@ -337,8 +337,8 @@ for all three languages, at the moment a table is drawn:
   falls at the left, where it finishes.
 
 None of this happens in any other language: for the other thirty-four catalogs, English
-included, the output is byte for byte what it was. None of it reaches `--json` either —
-the marks are added after the services have built their objects, so a program parsing
+included, the output is byte for byte what it was. None of it reaches `--json` either,
+because the marks are added after the services have built their objects, so a program parsing
 LlamaFit never receives one. `tests/unit/test_i18n_bidi.py` and
 `tests/unit/test_cli_rtl.py` assert both, character by character.
 
@@ -347,7 +347,7 @@ exactly as the English message spells it, keep it in Latin script, and write no 
 mark of your own. If an identifier still comes out wrong, open an issue naming the
 message: the fix belongs in the renderer and has to be made once for all three languages.
 
-#### How much of this a reader will actually see
+#### How much of this a reader will see
 
 Honestly: on most terminals, none of it, because most terminals do not implement the
 bidirectional algorithm at all. They draw characters in the order they arrive, so an
@@ -355,8 +355,8 @@ Arabic sentence is already shown with its words running the wrong way, and a mar
 tells a bidi engine what to do reaches no bidi engine. That is not something this code can
 fix, and it is a larger problem for those readers than the flag ever was.
 
-Where it does work: a terminal that implements UAX #9 — mlterm has for years, iTerm2 added
-bidirectional text in 3.5, WezTerm has an implementation that is off by default — and,
+Where it does work: a terminal that implements UAX #9 (mlterm has for years, iTerm2 added
+bidirectional text in 3.5, WezTerm has an implementation that is off by default) and,
 which may matter more in practice, everywhere the output goes *after* the terminal. A line
 pasted into a browser, a chat client, an issue tracker or an editor is laid out by
 something that does implement the algorithm, and there the marks are what make the flag
@@ -372,15 +372,15 @@ them is that terminal's business, and on the common ones today it does not.
   `%(compute)s TFLOPS fp16` and `%(speed)d MT/s` put the number in a placeholder and the
   unit in the message, so the renderer can reach only the number. An island around the
   number alone would leave the unit outside it, and in a right-to-left line the two would
-  be laid out as separate runs and could change places — worse than doing nothing, so the
-  figure is left bare and the whole `45.0 GB/s` stays one run the algorithm keeps
+  be laid out as separate runs and could change places, which is worse than doing nothing,
+  so the figure is left bare and the whole `45.0 GB/s` stays one run the algorithm keeps
   together. `b%(build)d` is the same shape with the letter in front.
 
   The parameter count used to be on this list, as `%(total)sB total`. It no longer is:
   the consolidated English round moved the `B` out of the message and into
   `billions_suffix()`, which is a catalog entry of its own, so what reaches `%(total)s` is
   the whole `27B` and the island goes round both. That is the fix the rest of this bullet
-  is waiting for, and it is what it looks like — a message id changes, which silently
+  is waiting for, and it is what it looks like: a message id changes, which silently
   orphans work already under way in the other catalogs, so each one waits for a round that
   regenerates the template rather than being done in passing.
 - **An interpolated value inside a `doctor` finding.** A finding's `title`, `detail` and
@@ -424,7 +424,7 @@ means the program finds nothing and shows English.
 
 Two entries with the same `msgid` and different contexts are two different entries, and
 so are an entry with a context and an entry without one. If your language uses the same
-words in both, write the same words in both — that is a fine answer, and English does
+words in both, write the same words in both. That is a fine answer, and English does
 exactly that. Leave one empty and that row falls back to English while the other does not,
 which is the one outcome to avoid.
 
@@ -441,7 +441,7 @@ that nobody has checked. A partly finished catalog that a person has read is wel
 complete one that nobody has is not.
 
 The rule is about the *claim*, not only about the file. `pt_PT.po` is in the repository
-and is not yet reviewed — and it says so, at the top of the file and in the table above,
+and is not yet reviewed, and it says so, at the top of the file and in the table above,
 because the failure this rule exists to prevent is a confident claim with nothing behind
 it. Ship what you have, label it honestly, and ask for a reader.
 
@@ -474,7 +474,7 @@ return pgettext("thousands separator", ",")
 
 Only a marked block is copied, so a comment written for whoever maintains the code stays in
 the code. A blank line, or any code, ends the block. Use it when the message alone cannot
-tell a translator what to do — and prefer fixing the message when it can.
+tell a translator what to do, and prefer fixing the message when it can.
 
 It refuses to write anything when a call passes something that is not a literal string:
 
@@ -521,7 +521,7 @@ language inflects: `none detected` is the GPU row's value, where the Portuguese 
 feminine, and the Backends row's, where it is masculine, and one `msgstr` cannot be right
 in both.
 
-`pgettext` and `npgettext` take a context first — a short word naming where the message is
+`pgettext` and `npgettext` take a context first: a short word naming where the message is
 read, written for the translator and never shown to a user:
 
 ```python
@@ -545,15 +545,15 @@ the screen, not the grammar: a translator needs to know *where the words are rea
 which languages inflect for what is their business, not ours.
 
 Reach for a context whenever an English word is short enough that two places could share
-it — a value in a table, a status, a unit. Do not wrap the same bare word twice without
+it: a value in a table, a status, a unit. Do not wrap the same bare word twice without
 one and hope.
 
 ### A count needs an entry of its own
 
 A `.po` entry selects its form on one number. A message carrying two counts therefore has
 one noun agreeing with a count that is not its own, which in Czech, Polish or Russian is
-not a rounding error but a misspelling — and a message carrying a count and no plural
-forms at all cannot agree with anything.
+not a rounding error but a misspelling. A message carrying a count and no plural forms at
+all cannot agree with anything either.
 
 ```python
 # no: two numbers, one entry, and neither noun can be made to agree
@@ -598,8 +598,8 @@ thing: the translator can see the join, name it, and move it.
 ### Anything built at import time needs the deferred pair
 
 `_()` translates at the moment it is called. A module-level constant, a dictionary of
-hints, or an argument to a decorator is built while the module is imported — before any
-interface has chosen a language — so `_()` there freezes the message in English for the
+hints, or an argument to a decorator is built while the module is imported, before any
+interface has chosen a language, so `_()` there freezes the message in English for the
 life of the process, silently. Nothing raises, the interface simply comes out half
 translated, and nobody goes looking.
 
@@ -620,7 +620,7 @@ to, so it works in an f-string, in `%` formatting, and anywhere a string method 
 on it. It deliberately is **not** a `str` subclass: one of those would carry a frozen
 English buffer that C-level fast paths such as `str.join` would use in preference to any
 override, producing another silent English message. A separate type raises `TypeError`
-instead, at the call site — where wrapping it in `str()` is the right fix anyway, because
+instead, at the call site, where wrapping it in `str()` is the right fix anyway, because
 that call site is the render moment:
 
 ```python

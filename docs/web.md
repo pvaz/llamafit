@@ -20,9 +20,9 @@ before.
 
 ## Safety
 
-- **It binds to `127.0.0.1`.** Not by default — by refusal. `llamafit.web.serve()` will not
+- **It binds to `127.0.0.1`.** Not by default but by refusal. `llamafit.web.serve()` will not
   bind to anything else unless the caller says separately that it means to, and the command
-  line says that only when you actually typed `--host`. So the address cannot drift outwards
+  line says that only when you typed `--host` yourself. So the address cannot drift outwards
   through a config file or a default nobody re-read.
 - **Passing `--host` with another address prints what it exposes and then does it.** There is
   no authentication and no password: the server reads your hardware, your disks and your file
@@ -31,7 +31,7 @@ before.
 - **The `Host` header is checked.** Requests are answered only when they are addressed to a
   loopback name, or to the address `--host` bound to. Without that check any website in the
   world could point a hostname of its own at `127.0.0.1` and read this API through the browser
-  of anyone who visited it — DNS rebinding, which is the one way a loopback bind leaks.
+  of anyone who visited it: DNS rebinding, which is the one way a loopback bind leaks.
 - **No CORS headers.** A page on another origin may send a request and may not read the reply.
 - **A profile is named, never pathed.** `--profile` on the command line takes a file path,
   because whoever types it already owns the filesystem. Over HTTP the `profile` parameter takes
@@ -83,19 +83,19 @@ package manager and no framework: it calls the API below and renders the JSON.
 
 Nothing feeds a benchmark into the board, so every speed on the page is a computed estimate.
 The page says so, once, under the header, in the same sentence the command line prints under
-the same table — and it is the sentence for the confidence the rows actually carry, so it will
-say something else on the day a calibration reaches them.
+the same table, and it is the sentence for the confidence the rows carry, so it will say
+something else on the day a calibration reaches them.
 
 ### The page's own language
 
-The dashboard speaks the language LlamaFit was started in — `--language`, then
+The dashboard speaks the language LlamaFit was started in: `--language`, then
 `LLAMAFIT_LANGUAGE`, then the system locale, exactly as the command line chooses it. It does
 not read `Accept-Language`, and it is one language per process: this is a server for the
 person at the keyboard, not a multi-user site.
 
 The page holds no words of its own. `GET /api/v1/ui` returns every label it draws, built on
 the server by the same gettext calls the rest of LlamaFit uses, so a translator who fills in
-a `.po` file translates the dashboard without knowing it exists — and a message they have
+a `.po` file translates the dashboard without knowing it exists, and a message they have
 not reached yet falls back to English, message by message, the way it does anywhere else.
 The words for verdicts, run modes, confidence labels, memory pools and budget components are
 the terminal's own, imported rather than rewritten, so the two interfaces cannot call the
@@ -103,8 +103,8 @@ same thing by different names. [translations.md](translations.md) is the whole s
 
 ## The API
 
-All responses are JSON documents of the same models the CLI prints with `--json` — the
-identical serialisation call, aliases included — so the two never disagree. Errors return
+All responses are JSON documents of the same models the CLI prints with `--json`, through
+the identical serialisation call with aliases included, so the two never disagree. Errors return
 `{"error": {"message": ..., "hint": ..., "command": ...}}` with status 400 (user input), 404
 (unknown model or profile) or 503 (environment problem: a probe that could not run, llama.cpp
 missing, an installation missing its own data).
@@ -152,7 +152,7 @@ words:
 A candidate that did not qualify is never dropped: it comes back in `excluded` with the
 reason, exactly as `recommend` prints it.
 
-### Phase 2 — designed, not built
+### Phase 2: designed, not built
 
 None of the paths in this table answers today. The work they would wrap is done and reachable
 from the command line (`llamafit install`, `preset`, `launch`); what is missing is the job
@@ -167,7 +167,7 @@ model that would let a browser start one and watch it.
 | `POST /api/v1/preset` | write launch scripts for a plan; returns the paths |
 | `POST /api/v1/launch`, `POST /api/v1/launch/{id}/stop` | start and stop a server LlamaFit manages |
 
-### Phase 3 — designed, not built
+### Phase 3: designed, not built
 
 Nor does any of these. `llamafit bench` ships; the HTTP surface for it does not.
 
@@ -192,5 +192,5 @@ for row in board["rows"][:3]:
 
 LlamaFit is AGPL-3.0-or-later, and section 13 is the reason it is that rather than the GPL:
 somebody running a modified version as something people reach over a network has to offer
-them its source. The dashboard's footer links to it, which is where that offer belongs — and
-if you modify LlamaFit and serve it, point that link at *your* source.
+them its source. The dashboard's footer links to it, which is where that offer belongs. If
+you modify LlamaFit and serve it, point that link at *your* source.

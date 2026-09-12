@@ -35,7 +35,7 @@ Whatever they produce is marked, and marked in the data rather than only in a he
   read. `"simulated": false` on a scan is part of the promise: absence is not evidence.
 - On the terminal the first line above the table is red, says `SIMULATED`, and says which
   profile or which pools, before the reader meets a figure. It is above the *answer*, not
-  above the table, so a board that ranked nothing carries it too — that is the answer most
+  above the table, so a board that ranked nothing carries it too: that is the answer most
   worth being warned about, because there is no figure in it to be suspicious of.
 
 **What the sizes mean.** `--ram 16GiB` describes a 16 GiB machine and `--memory 4G` a 4 GiB
@@ -49,7 +49,7 @@ arguments, which opens the dashboard already simulating that machine with its ba
 showing. `doctor` **refuses** them: every line it prints is a probe that ran on the machine
 LlamaFit is running on, a profile carries no probes, and a report about this machine under
 a heading claiming another's would be worse than an error. `bench` refuses a simulated
-machine for the same reason — a benchmark measures what it runs on. The commands that read
+machine for the same reason: a benchmark measures what it runs on. The commands that read
 no machine at all (`list`, `search`, `info`, `catalog`, `hardware`, `llamacpp`, `install`,
 `serve`) ignore them.
 
@@ -104,13 +104,13 @@ tables do and how far it goes.
 |---|---|
 | 0 | Success. |
 | 1 | A user or configuration error; the message says what to change. |
-| 2 | An environment problem: llama.cpp missing, a required tool missing, an installation missing the data that ships inside it, or `doctor` found an error. A command line that cannot be parsed at all — an unknown option, a missing argument — also exits 2, which is the convention every tool built on this argument parser follows. |
+| 2 | An environment problem: llama.cpp missing, a required tool missing, an installation missing the data that ships inside it, or `doctor` found an error. A command line that cannot be parsed at all (an unknown option, a missing argument) also exits 2, which is the convention every tool built on this argument parser follows. |
 
 The global options above belong to `llamafit` itself, so they come **before** the command: `llamafit --json recommend`, not `llamafit recommend --json`. The second form exits 2 and says where the option goes.
 
 ## Commands
 
-### `llamafit system` — phase 1A, shipped
+### `llamafit system` (phase 1A, shipped)
 
 Scan the machine and show CPU, memory, GPUs, disks and the llama.cpp installation.
 
@@ -137,26 +137,26 @@ Backends      cuda, rpc, cpu
 Local models  5
 ```
 
-The paths on the disk lines are the ones LlamaFit cares about — where it was run, where it
-downloads to, where llama.cpp is — reported once per distinct volume, so a machine with all
+The paths on the disk lines are the ones LlamaFit cares about (where it was run, where it
+downloads to, where llama.cpp is), reported once per distinct volume, so a machine with all
 three on one drive shows one line.
 
 With `--json` the output is a `SystemReport`: `{"host": {...}, "llamacpp": {...}, "version": "..."}`.
 Every bandwidth figure carries its `bandwidth_source`: `measured`, `estimated`, `assumed` or `unknown`.
 
-RAM bandwidth is measured as the best of five short windows — contention can only make the
-reading low, never high, so the largest of several is the machine rather than its load — and
-then kept in the platform's cache directory, filed under the processor, the pool and the
-modules' type, speed and channel count. Every later scan reads it back, which is why the same
+RAM bandwidth is measured as the best of five short windows, since contention can only make
+the reading low and never high, so the largest of several is the machine rather than its
+load. It is then kept in the platform's cache directory, filed under the processor, the pool
+and the modules' type, speed and channel count. Every later scan reads it back, which is why the same
 board no longer reports a different tokens-per-second from one minute to the next. A figure
 read back says so (`bandwidth_cached` in the JSON, *cached* in the table); `--refresh-bandwidth`
 times it again.
 
-`recommend --json` and `fit --json` carry a `machine` object with the same figures — what was
-free, and the bandwidth with its source — so two answers taken minutes apart can be told apart
+`recommend --json` and `fit --json` carry a `machine` object with the same figures (what was
+free, and the bandwidth with its source), so two answers taken minutes apart can be told apart
 by reading them. The table says the same thing under the rows.
 
-### `llamafit doctor` — phase 1A, shipped
+### `llamafit doctor` (phase 1A, shipped)
 
 Show every probe that ran, whether it succeeded, and findings ordered worst first: errors
 (llama.cpp missing), warnings (a GPU without a matching backend, an assumed bandwidth, a failed
@@ -166,7 +166,7 @@ carries a hint. Exit code 2 when there is an error, so `doctor` can gate scripts
 With `--json` the output is a `Diagnosis`: the report plus `findings`, each with `level`,
 `title`, `detail` and `hint`.
 
-### `llamafit list` — phase 1B, shipped
+### `llamafit list` (phase 1B, shipped)
 
 List the catalog, narrowed by any filters given.
 
@@ -203,7 +203,7 @@ whole list is one command away.
 
 Columns: id, quality, parameters (one number for a dense model, total/active for a
 mixture-of-experts one), native context and capabilities (as many complete names as fit, plus
-a `+N` marker for the rest) — sorted by quality, the column that says why. Vendor, licence and
+a `+N` marker for the rest), sorted by quality, the column that says why. Vendor, licence and
 quant count are left out of the table; all three are one `info` or `--json` away. At narrow
 widths, context and then capabilities give way first so the id and quality never get cut or
 blanked.
@@ -214,7 +214,7 @@ Nothing matched prints one line saying so, and exits 0: an empty result is an an
 With `--json` the output is a list of `ModelSummary` objects, each with every capability, the
 quant names, and the largest quant size that is known (`null` until `catalog refresh` has run).
 
-### `llamafit search` `<text>` — phase 1B, shipped
+### `llamafit search` `<text>` (phase 1B, shipped)
 
 `list --search` with the text as the argument, and no other filters.
 
@@ -232,7 +232,7 @@ $ llamafit search coder
                                    are equal.
 ```
 
-### `llamafit info` `<model>` — phase 1B, shipped
+### `llamafit info` `<model>` (phase 1B, shipped)
 
 One model's curated facts (licence, parameters, context, architecture, capabilities, quality
 with its sourced benchmarks, sources), every quant it publishes with its size, bits per weight
@@ -269,8 +269,8 @@ Source 1          unsloth/Qwen3-Coder-Next-GGUF (gguf, trust=unsloth)
 
 Those three columns are filled in by `catalog refresh`, and the bundled catalog ships them
 already refreshed: a generated `<family>.facts.json` sits beside every `<family>.yaml` in the
-wheel, so the figures above are what a fresh install prints. A quant nobody has refreshed —
-one you added yourself, or one added to the catalog since the last refresh — reads `unknown`,
+wheel, so the figures above are what a fresh install prints. A quant nobody has refreshed,
+either one you added yourself or one added to the catalog since the last refresh, reads `unknown`,
 `unknown` and `not read yet` until it has been. See
 [catalog.md](catalog.md#where-the-facts-live) for where those numbers live.
 
@@ -300,10 +300,10 @@ context ladder and the command line that runs it.
 
 | Option | Effect |
 |---|---|
-| `--quant NAME` | Show only this quantisation, matched case-insensitively, in both the `Quants` table and the one above. An unknown name exits 1 and lists the ones the model publishes — the same sentence `plan --quant` gives, from the same matcher. |
-| `--context N` | Size every quantisation for this many tokens instead of the 32,768 the planner defaults to, never above what the model holds or what `--max-context` allows. The caption names the figure that was actually used, not the one you typed. |
+| `--quant NAME` | Show only this quantisation, matched case-insensitively, in both the `Quants` table and the one above. An unknown name exits 1 and lists the ones the model publishes: the same sentence `plan --quant` gives, from the same matcher. |
+| `--context N` | Size every quantisation for this many tokens instead of the 32,768 the planner defaults to, never above what the model holds or what `--max-context` allows. The caption names the figure that was used, not the one you typed. |
 
-**One line each, and no more than that — the depth belongs to `plan`.** The question `info`
+**One line each, and no more than that; the depth belongs to `plan`.** The question `info`
 answers is the one before the plan: *which of these quantisations can this machine run, and how
 fast*. The memory budget component by component, the context ladder, where a token's time goes
 and the `llama-server` command line are all about a quantisation already chosen, and printing
@@ -311,8 +311,8 @@ them here for three quants would be three copies of `plan` under a different hea
 table stops at the verdict, both pools, a speed and the largest context each one holds, and the
 caption says where the rest is.
 
-Every figure comes from a placement the planner actually searched for, not from arithmetic on
-another one. A quantisation nobody can size — no GGUF header read yet — is named under the table
+Every figure comes from a placement the planner searched for, not from arithmetic on
+another one. A quantisation nobody can size, because no GGUF header has been read yet, is named under the table
 with the reason rather than dropped from it, and one that fits nowhere gets a row saying
 `nowhere` and `no room` rather than a blank. Its speed column reads `unknown`, not `0.0`: a
 configuration that does not run is not a configuration that runs slowly.
@@ -326,7 +326,7 @@ With `--json` the output is a `ModelDetail`: the whole catalog entry, plus every
 as well. The web API's `GET /api/v1/models/{id}` returns the same shape; it does not size the
 quants today, so those three fields come back empty there.
 
-### `llamafit catalog` `validate|refresh|show` — phase 1B, shipped
+### `llamafit catalog` `validate|refresh|show` (phase 1B, shipped)
 
 - `validate [FILE]`: check the bundled catalog files and the custom models file (or just
   `FILE` when given); exit 1 on any problem, listing each. See
@@ -354,7 +354,7 @@ whose repository has moved on prints the fields instead, one line per model:
 first, each naming the model. A repository that cannot be listed leaves its whole model exactly
 as it was and exits 1, rather than blanking out fields that took a real read to fill in.
 
-### `llamafit fit` — phase 1C, shipped
+### `llamafit fit` (phase 1C, shipped)
 
 Every model in the catalog ranked by how well it uses this machine, and nothing else. There is
 no use case, no weights and no score here: a coding model is not left out of a fit listing for
@@ -401,12 +401,12 @@ no room (11): no placement of it fits this machine at any context.
 
 That second caption is the point of `--limit`: a cut list says so and says how much it cut,
 because a reader who was not told would take five rows for the whole answer. It appears only
-when something was actually cut.
+when something was cut.
 
 Models that cannot be placed at all are listed under **Not placed** with the reason, never
 dropped. `--limit` cuts the ranked rows and never the reasons.
 
-### `llamafit recommend` — phase 1C, shipped
+### `llamafit recommend` (phase 1C, shipped)
 
 The board for your needs: every model planned, sized, estimated and scored, in order. This is
 the command the program exists for, and it scans the machine to answer.
@@ -417,13 +417,13 @@ the command the program exists for, and it scans the machine to answer.
 | `--require CAP` (repeatable) | Capability the model must have: `coding`, `thinking`, `vision`, `tools`, `multilingual`, `long-context`, `embeddings`, `audio`. A model without it is excluded, by name. |
 | `--prefer balanced\|quality\|speed` | Moves a tenth of the weight between quality and speed. It leans the board; it does not replace the weights. Write the four numbers into the config file for that. |
 | `--min-context N` | Exclude candidates that cannot hold at least this many tokens. |
-| `--min-tps N` | Exclude candidates generating fewer tokens per second than this, in place of the speed a person reads at (about 6). `--min-tps 0` says nobody is waiting on the tokens — a batch run — and excludes nothing for being slow. Whatever the figure, the board says under itself which one it used and every excluded row names it. |
+| `--min-tps N` | Exclude candidates generating fewer tokens per second than this, in place of the speed a person reads at (about 6). `--min-tps 0` says nobody is waiting on the tokens, a batch run, and excludes nothing for being slow. Whatever the figure, the board says under itself which one it used and every excluded row names it. |
 | `--max-download SIZE` | Exclude larger downloads. Sizes look like `40G`, `7.5GiB`, `512M`. |
-| `--license SPDX` (repeatable) | Licences the request will accept. A model with another one is excluded and still shown, with the licence it actually has. |
+| `--license SPDX` (repeatable) | Licences the request will accept. A model with another one is excluded and still shown, with the licence it has. |
 | `--limit N` | Show at most this many rows. Defaults to 10. |
 | `--all-quants` | Show every quantisation instead of the best one per model. |
 | `--no-vision` | Plan without a vision projector, freeing its memory for context. |
-| `--explain` | Expand every row shown into the four scores, the weights, the quality it was built from, the memory budget line by line, the context ladder, where a token's time goes and where a prompt token's goes — and then what would change the answer. Combine with `--limit 1` for one model. |
+| `--explain` | Expand every row shown into the four scores, the weights, the quality it was built from, the memory budget line by line, the context ladder, where a token's time goes and where a prompt token's goes, and then what would change the answer. Combine with `--limit 1` for one model. |
 
 The flags above change what is *ranked*, and the board says so: a candidate they exclude is
 listed with the reason. The flags below change only what is *drawn*. The ranking, the count
@@ -438,7 +438,7 @@ that run, matching qwen.`
 | `--sort KEY[:asc\|:desc]` | Order the rows drawn by `score` (the default), `speed`, `quality`, `context`, `size`, `prompt`, `card`, `ram`, `fit`, `model` or `quant`. A figure comes largest first and a verdict best first; a word comes A to Z; `:asc` or `:desc` turns that round. A row with nothing to order by goes last either way. The `#` column keeps the ranking. |
 | `--min-fit comfortable\|fits\|tight` | Draw only rows at or above this verdict. The same name as `fit`'s flag, but here a view filter: the rows hidden are still counted as qualified. |
 | `--search TEXT` | Draw only rows whose id, name or quantisation contains the text. |
-| `--installed` | Draw only rows whose file is already on this machine — the `Have` column's `yes`. |
+| `--installed` | Draw only rows whose file is already on this machine: the `Have` column's `yes`. |
 | `--runs gpu\|moe-offload\|hybrid\|cpu` | Draw only rows that run in this mode. |
 | `--columns LIST` | Draw exactly these columns, comma-separated, in this order, named as `--json` names them: `rank, model, quant, size, have, score, quality, gen, prompt, confidence, mode, vram, ram, verdict, context`. |
 | `--wide` | Draw every column whatever the width of the terminal; a cell that does not fit folds. `COLUMNS=200 llamafit recommend` is the other way to get a wide board. |
@@ -493,8 +493,8 @@ never dropped; the rest are admitted in the order `Tok/s`, `Fit`, `Runs`, `Ctx`,
 `Card`, `Size`, `Have`, `How`, `Prompt tok/s`, `RAM`, each only while its whole content fits
 (`How` is admitted together with `Tok/s`, or not at all, when the rows disagree about how
 their speeds were arrived at). A column that cannot fit is dropped rather than shrunk, and a
-column that is admitted is drawn in the place the web page gives it — `Size` between `Quant`
-and `Score`, `Fit` and `Ctx` last — so a figure lives in the same place at every width. The
+column that is admitted is drawn in the place the web page gives it (`Size` between `Quant`
+and `Score`, `Fit` and `Ctx` last), so a figure lives in the same place at every width. The
 model column is measured from the longest id in the catalog and capped at 28 cells, where a
 longer name folds onto a second line; below about 68 columns it folds harder rather than
 anything being cut. The terminal dashboard chooses with the same function, so it and the
@@ -509,23 +509,23 @@ command line draw the same columns at the same width. On this catalog, in Englis
 | 160 | + `Have How` |
 | 182 and up | + `Prompt tok/s RAM`, all fifteen |
 
-A translated label is wider than its English — `experts in RAM` is fourteen cells and its
-Portuguese is longer — and the budget is measured from the labels in force, so a Portuguese
+A translated label is wider than its English: `experts in RAM` is fourteen cells and its
+Portuguese is longer. The budget is measured from the labels in force, so a Portuguese
 board admits the next column a little later rather than overflowing.
 
 **No row is ever dropped for failing.** A candidate the request excludes is a row of the same
 list, dimmed, below the ranked ones, with every column filled with whatever was computed for
-it — a model excluded for running at four tokens a second was placed, sized and estimated
-first, and those figures are what tell a reader whether a smaller quantisation would rescue it
-— and the word for the reason where its score would be: `too slow`, `no room`, `unsupported`,
-`no coding`, `too big`, `short context`, `unknown quant`, `no estimate`. The sentence goes
+it. A model excluded for running at four tokens a second was placed, sized and estimated
+first, and those figures are what tell a reader whether a smaller quantisation would rescue
+it. The word for the reason goes where its score would be: `too slow`, `no room`,
+`unsupported`, `no coding`, `too big`, `short context`, `unknown quant`, `no estimate`. The sentence goes
 under the table, once per reason, with the ids and their failing figures after it, rather
 than once per row: on the reference machine the old **Not ranked** table said the same forty
 words twenty-six times. `--explain` still prints the whole sentence under an expanded row.
 
 **A model is filtered on what it can do, never on what it is offered for.** `use_cases` is the
 curator's emphasis and sets the primary-use-case bonus; `capabilities` is what the weights can
-actually do, and only that carries a filter. Asking for coding asks for the coding capability,
+do, and only that carries a filter. Asking for coding asks for the coding capability,
 reasoning for thinking, multimodal for vision, embedding for embeddings; `general` and `chat`
 ask for nothing, so a model built for one job is ranked on its merits for either of those. The
 `--use-case` filter on `llamafit list` is a different thing: there you are browsing the catalog
@@ -534,7 +534,7 @@ and asking to see what an entry offers itself for.
 **`--explain` ends with what would change the answer.** Everything above it explains a decision
 already taken; the last block is the only part a reader can act on, and section 12.3 of the
 design asks for it by name. There are exactly two things that can change without changing the
-machine or the model — how much of the card is free, and which quantisation you fetch — so there
+machine or the model: how much of the card is free, and which quantisation you fetch. So there
 are at most two lines:
 
 ```
@@ -549,9 +549,9 @@ It generates 25.1 tokens per second rather than 18.9.
 **Neither line is arithmetic on the row above it.** The context line quotes a rung of the ladder
 whose budget was computed for that rung; the quantisation line quotes a placement the planner
 searched for that quantisation, at the same 8K working context every speed on the board uses. A
-file four fifths the size does not make a budget four fifths the size — the cache, the compute
-buffer and the overheads do not shrink with the weights — so nothing is scaled and nothing is
-guessed. That is also why each line can be absent: a model publishing one quantisation is offered
+file four fifths the size does not make a budget four fifths the size, because the cache, the
+compute buffer and the overheads do not shrink with the weights, so nothing is scaled and
+nothing is guessed. That is also why each line can be absent: a model publishing one quantisation is offered
 no other, and a placement already at the top of its ladder is offered no rung. **A sentence
 saying a smaller quantisation would fit, when it would not, is worse than no sentence.**
 
@@ -559,7 +559,7 @@ The figure to free is what the rung needs to come back inside the band this prog
 recommend, which is a *tight* fit and not a comfortable one. It is only offered where freeing the
 card is the answer at all: a rung system memory could not absorb either is named as out of reach,
 with no figure attached, because closing a browser would not get there. And the second line says
-one thing, not four — the whole model reaching the card beats a better verdict, a better verdict
+one thing, not four: the whole model reaching the card beats a better verdict, a better verdict
 beats more room, and more room beats a speed the estimator only claims to within five per cent.
 When nothing changes it says so, which saves a reader a download.
 
@@ -574,7 +574,7 @@ the constants that ship with LlamaFit, so every speed here is `estimated`. A cat
 own `measured` block is a record from the curator's machine; `plan` shows it beside the
 estimate, and neither is ever allowed to become the other.
 
-### `llamafit plan` — phase 1C, shipped
+### `llamafit plan` (phase 1C, shipped)
 
 `llamafit plan <model>`: place one model on this machine and print the command line that runs
 it. The output is the memory budget component by component with the source of every figure,
@@ -585,9 +585,9 @@ own, the `llama-server` command.
 Both speed tables are read the same way: each is the terms of the formula behind one figure,
 and each trio adds up to one over that figure, so a reader can see which term dominates
 rather than being asked to believe a total. The prompt table's link row is the term this
-project knows least about — its rate was fitted on the single model whose expert set does
-not fit in system memory, and a model whose set stays in the page cache streams about three
-times faster — so it is printed as its own row, with a note saying so, instead of being
+project knows least about. Its rate was fitted on the single model whose expert set does not
+fit in system memory, and a model whose set stays in the page cache streams about three
+times faster, so it is printed as its own row, with a note saying so, instead of being
 folded into a number nobody can question.
 
 | Option | Effect |
@@ -599,12 +599,12 @@ folded into a number nobody can question.
 | `--no-vision` | Leave the vision projector out, freeing its memory for context. |
 
 The context ladder has three states, not two. `fits` is a rung a launch script may take;
-`pages` is a rung the driver will accept and then quietly page to system memory, which is
+`pages` is a rung the driver will accept and then silently page to system memory, which is
 section 8.4's failure and the one a person cannot diagnose for themselves; `no room` is a rung
 system memory could not absorb either. A table showing only yes and no would file the second
 under the third and lose the only one worth warning about.
 
-### `llamafit hardware` `list|show|validate|path` — phase 1C, shipped
+### `llamafit hardware` `list|show|validate|path` (phase 1C, shipped)
 
 Hardware profiles: a machine described in a file, so LlamaFit can answer for a machine
 that is not this one. See [hardware-profiles.md](hardware-profiles.md) for the format.
@@ -612,7 +612,7 @@ that is not this one. See [hardware-profiles.md](hardware-profiles.md) for the f
 - `list`: every profile LlamaFit can reach, bundled ones first, with the machine each
   describes and where its file is.
 - `show <name|file> [--as-host]`: one profile, with the `provenance` line that says where
-  its figures came from. `--as-host` prints the `Host` the profile substitutes — the same
+  its figures came from. `--as-host` prints the `Host` the profile substitutes: the same
   table `llamafit system` prints, opening with the line that says it is not this machine.
 - `validate [FILE]`: check the bundled profiles and your own (or just `FILE`); exit 1 on
   any problem, listing each. Beyond the schema it reports a name two files claim, a GPU
@@ -644,7 +644,7 @@ the problems, whichever the subcommand is about. A host built from a profile car
 `"simulated": true` and a `simulation` object naming the profile and its file, so a script
 can tell a what-if from a scan without reading a heading.
 
-### `llamafit serve` — phase 1D, shipped
+### `llamafit serve` (phase 1D, shipped)
 
 Start the web dashboard and JSON API on this machine.
 
@@ -655,7 +655,7 @@ llamafit serve --port 9000 --open  # another port, and open the browser
 
 | Option | What it does |
 |---|---|
-| `--host ADDRESS` | Bind somewhere other than `127.0.0.1`. Anything but loopback puts the dashboard on your network, where there is no password and no login; the consequence is printed before the server starts. Leaving the flag alone is what keeps the server on this machine — the address is not merely defaulted to loopback, it is refused elsewhere unless the flag was actually typed. |
+| `--host ADDRESS` | Bind somewhere other than `127.0.0.1`. Anything but loopback puts the dashboard on your network, where there is no password and no login; the consequence is printed before the server starts. Leaving the flag alone is what keeps the server on this machine: the address is not merely defaulted to loopback, it is refused elsewhere unless the flag was typed. |
 | `--port N` | Listen on this port. Default 8765. |
 | `--open` | Open the page in your browser once the server is up. |
 
@@ -666,23 +666,23 @@ The dashboard speaks the language `--language` chose, like everything else, and 
 carry the same labels the tables above use. See [web.md](web.md) for the API, the safety
 rules and what the page does about languages.
 
-### `llamafit` (no command) — phase 1D, shipped
+### `llamafit` (no command) (phase 1D, shipped)
 
 Opens the terminal dashboard: the board, the request as a form, the machine, the plan for a
 chosen row and the simulation controls, over one scan and one catalog. It is what somebody
 who has just installed LlamaFit meets, so nothing on it has to be found out from a flag.
 
-Where there is no terminal to draw one in — a pipe, a redirect, a CI job — it says so on
+Where there is no terminal to draw one in (a pipe, a redirect, a CI job), it says so on
 standard error and prints exactly what `llamafit recommend` would print, with the same
 defaults, read off that command rather than repeated here. See [tui.md](tui.md).
 
-### `llamafit install` — phase 2, shipped
+### `llamafit install` (phase 2, shipped)
 
 The `install` group puts onto the machine what it takes to run a model: llama.cpp itself,
-and the weights. Both commands have shipped, and both keep the same rule — the whole plan
+and the weights. Both commands have shipped, and both keep the same rule: the whole plan
 is printed, and only then is the question asked.
 
-#### `llamafit install llama.cpp` — phase 2, shipped
+#### `llamafit install llama.cpp` (phase 2, shipped)
 
 Downloads a published llama.cpp build from the project's GitHub releases and installs it into
 `~/.llamafit/llama.cpp`, which is the first directory the detector looks in, so nothing has to
@@ -713,7 +713,7 @@ without; on Apple silicon, `llama-<tag>-bin-macos-arm64.tar.gz`, which *is* the 
 since Metal is compiled in and has no archive of its own; on Linux with an AMD card,
 `llama-<tag>-bin-ubuntu-rocm-<ver>-x64.tar.gz`, falling through to the Vulkan archive on a
 release that publishes no ROCm build. A machine with no GPU gets the CPU build, and so does a
-Linux machine with an NVIDIA card, because llama.cpp publishes no Linux CUDA archive — there it
+Linux machine with an NVIDIA card, because llama.cpp publishes no Linux CUDA archive; there it
 falls to Vulkan.
 
 **Which CUDA.** A release publishes CUDA archives for two or three CUDA majors at once, and the
@@ -736,7 +736,7 @@ run. Your `PATH` is never changed unless you ask with `--add-to-path` and then a
 **Exit codes.** `0` on success or after a dry run; `1` when you decline, when the directory is
 not LlamaFit's, when a volume has no room, or when an archive fails its checksum.
 
-#### `llamafit install model <id>` — phase 2, shipped
+#### `llamafit install model <id>` (phase 2, shipped)
 
 Download a model's weights from the repository the catalog names, resuming anything an
 earlier run left behind and checking every file against the SHA-256 the catalog holds.
@@ -758,12 +758,12 @@ does not, because there is nobody there to answer.
 | `--quant NAME` | Fetch this quantisation instead of the first the catalog publishes. |
 | `--dir PATH` | Put the files here instead of under the downloads directory. |
 | `--workers N` | Requests in flight, 1 to 32. The default is 8: the specification's 16–32 will take every bit of a domestic connection, and nobody asked for their video call to stop working. |
-| `--limit-rate RATE` | A ceiling in bytes per second — `5M`, `500K` — shared across every worker, so the figure is the figure whatever `--workers` says. |
+| `--limit-rate RATE` | A ceiling in bytes per second (`5M`, `500K`), shared across every worker, so the figure is the figure whatever `--workers` says. |
 | `--yes`, `-y` | Do not ask before starting. |
 | `--dry-run` | Print the plan and the disk arithmetic, fetch nothing. Needs no network. |
 | `--no-extras` | Weights only: no vision projector, no draft model. |
 | `--recheck` | Re-read files that are already here and hash them against the catalog. |
-| `--allow-unverified` | Fetch files the catalog holds no checksum for. Refused by default, because a model that downloaded wrong does not fail loudly — it answers nonsense. |
+| `--allow-unverified` | Fetch files the catalog holds no checksum for. Refused by default, because a model that downloaded wrong does not fail loudly; it answers nonsense. |
 
 What is on disk while a download is running: `<name>.gguf.part`, created at the file's
 final size, and `<name>.gguf.part.state`, a small JSON record of which chunks have
@@ -779,7 +779,7 @@ and the command exits 1. Nothing that could be resumed into the wrong bytes is k
 `install history` lists what has been downloaded, newest first, finished or not.
 `--json` gives the plan (with `--dry-run`), the outcome, or the history records.
 
-### `llamafit preset` — phase 2, shipped
+### `llamafit preset` (phase 2, shipped)
 
 `llamafit preset <model>`: turn the plan for one model into files you can run and edit. A
 plan is a command line somebody has to paste; a preset is a script they can double-click,
@@ -803,7 +803,7 @@ Three files are written, into LlamaFit's own presets directory unless `--dir` sa
 
 **The script chooses its context when it runs.** The plan behind it was computed while the
 machine was idle; it runs when a browser has taken a gigabyte of the card. A configuration
-that asks for more card memory than is free does not fail on an NVIDIA driver — it starts,
+that asks for more card memory than is free does not fail on an NVIDIA driver. It starts,
 pages the overflow into system memory, and runs at a fraction of its speed while `/health`
 answers and the log looks healthy. So the script carries section 9.3's ladder rather than a
 number: it reads how much card memory is free, keeps 256 MiB back for the desktop, and takes
@@ -828,11 +828,11 @@ run.
 file whose checksum no longer matches has been changed, and LlamaFit keeps it and names it.
 `--force` replaces it and says that it did.
 
-### `llamafit launch` — phase 2, shipped
+### `llamafit launch` (phase 2, shipped)
 
-`llamafit launch <model>`: run the model's preset **script** — not a command line rebuilt
-for the occasion, so the ladder still chooses the context and your own edits still apply —
-wait for `/health`, and print the endpoints. If no preset exists yet, one is written first.
+`llamafit launch <model>`: run the model's preset **script**, not a command line rebuilt
+for the occasion, so the ladder still chooses the context and your own edits still apply.
+Then wait for `/health`, and print the endpoints. If no preset exists yet, one is written first.
 
 | Option | Effect |
 |---|---|
@@ -845,13 +845,13 @@ A server already answering on that endpoint is reported rather than joined by a 
 What was started is remembered by process id **and start time**, so `--stop` cannot aim at
 whatever inherited a recycled id.
 
-### `llamafit bench` — phase 3, shipped
+### `llamafit bench` (phase 3, shipped)
 
 `llamafit bench <model>`: measure the model on this machine at the flags `plan` would launch
 it with, and print the measurement beside the estimate. It runs `llama-bench` for a prompt
 row and a generation row, then starts a real `llama-server` and asks it three fixed
-questions — a short prompt on a cold server, a thousand-token prompt on a warm one, and a
-tool call — recording the throughput each reports about itself, the time to first token, the
+questions (a short prompt on a cold server, a thousand-token prompt on a warm one, and a
+tool call), recording the throughput each reports about itself, the time to first token, the
 peak VRAM during the run and the buffer sizes from the server's log.
 
 | Option | Effect |
@@ -868,11 +868,11 @@ peak VRAM during the run and the buffer sizes from the server's log.
 
 The last column of the table is the point of the command. A tool that measured a model and
 then showed only the measurement would leave you better informed about that model and no
-better informed about the next one, so the estimate stays on the page — and the estimate
+better informed about the next one, so the estimate stays on the page, and the estimate
 shown is the one made *before* the run, never one recomputed afterwards from a database that
 by then contains the answer. The first two columns are what make the last one an error rather
 than an artefact: each row's estimate is the formula run at the context that row filled and
-the micro-batch it used, and the plan's own figure — for a context no row reaches — is quoted
+the micro-batch it used, and the plan's own figure, for a context no row reaches, is quoted
 under the table and never given a ratio. [benchmarking.md](benchmarking.md) has the
 arithmetic and the comparison that was rejected.
 
@@ -882,11 +882,11 @@ percent of the card's total **and** generation came in below three fifths of the
 there was no vendor tool, no card total or no estimate. A configuration nobody could check
 has not been cleared.
 
-**A result is refused rather than stored** when the run did not do what it was told — a
-context llama.cpp clamped, a micro-batch it did not use — and when the host is a simulated
+**A result is refused rather than stored** when the run did not do what it was told (a
+context llama.cpp clamped, a micro-batch it did not use) and when the host is a simulated
 one. The flags a stored result hands out are built from what the tool reported about itself
 rather than from the command line it was given, so a micro-batch sweep's rows are each filed
-under the size that row actually ran at.
+under the size that row ran at.
 
 **`--calibrate` fits only what the data determines.** Four measurements pinned four constants
 on the reference machine and two would not have pinned three, so a constant whose column is

@@ -3,7 +3,7 @@
 One file, no Python, no `pip`, no virtual environment. Download it, run it, delete it when
 you are done. This page is about that file: which one to take, how to check it is the one
 this project built, what your operating system will say about it the first time, and what
-it contains that the `pip` install does not — and the other way round.
+it contains that the `pip` install does not, and the other way round.
 
 If you already have a Python, `pip install llamafit` is still the better way in, and the
 [README](../README.md#install) says why in two lines. Everything here is for the case where
@@ -33,8 +33,8 @@ There is no 32-bit build and there is not going to be one.
 
 ## Running it
 
-**Windows.** Put the `.exe` somewhere you can find it, open a terminal there — PowerShell,
-Windows Terminal or `cmd` — and run it:
+**Windows.** Put the `.exe` somewhere you can find it, open a terminal there (PowerShell,
+Windows Terminal or `cmd`), and run it:
 
 ```
 .\llamafit-0.1.1-windows-x86_64.exe recommend
@@ -77,7 +77,7 @@ and compare with the line in `SHA256SUMS.txt`.
 
 This proves the file arrived intact and unmodified from the release page. It is not a
 signature and does not claim to be one: anyone who could replace the binary on that page
-could replace the checksum next to it. What it is good for is the ordinary case — a
+could replace the checksum next to it. What it is good for is the ordinary case: a
 truncated download, a proxy that rewrote something, a mirror you are not sure about.
 
 The binaries are built by
@@ -91,11 +91,11 @@ run them yourself.
 Neither binary is code-signed. A Windows certificate and an Apple Developer ID are annual
 fees and an identity check, which is a reasonable thing for a project to pay for once
 people are relying on it and not a reasonable thing to pretend has already happened. So the
-first run comes with a warning, and it is worth knowing what each one actually means.
+first run comes with a warning, and it is worth knowing what each one means.
 
 **Windows SmartScreen** shows *"Windows protected your PC"* with a **Don't run** button.
 Click **More info**, then **Run anyway**. The message means Microsoft has not seen this
-file often enough to have an opinion about it — it is a statement about the file's
+file often enough to have an opinion about it: the message is about the file's
 popularity and its signature, not about its contents.
 
 **macOS Gatekeeper** refuses with *"cannot be opened because the developer cannot be
@@ -108,8 +108,8 @@ xattr -d com.apple.quarantine ./llamafit
 
 **Antivirus software** occasionally flags PyInstaller binaries in general, because
 "executable that unpacks itself and then runs Python" describes a lot of malware and a
-handful of legitimate tools. There is no compression in these builds — UPX is off on
-purpose, for exactly this reason — but a heuristic is a heuristic. If yours quarantines the
+handful of legitimate tools. There is no compression in these builds, because UPX is off
+on purpose for exactly this reason, but a heuristic is a heuristic. If yours quarantines the
 file, `pip install llamafit` is the way around it, and a report to your vendor is the way
 to fix it for the next person.
 
@@ -144,7 +144,7 @@ In practice this is narrower than it sounds. On a real terminal it never comes u
 on Windows has written console output as UTF-8 since 3.6, whatever the code page and
 whatever UTF-8 mode says, so every script draws correctly. It appears only when you
 redirect output into a file or a pipe on Windows, where the encoding comes from the ANSI
-code page instead. The setting that does fix that one is Windows' own — Region →
+code page instead. The setting that does fix that one is Windows' own: Region →
 Administrative → *Beta: Use Unicode UTF-8 for worldwide language support*, which makes the
 ANSI code page UTF-8. `chcp 65001` does not, because it changes the console's code page
 and not that one.
@@ -158,8 +158,8 @@ Two smaller things follow from it being one file:
 ## It shares its state with the installed version
 
 Settings, caches, benchmark records and downloaded models live in the usual per-user
-directories — `%LOCALAPPDATA%\llamafit` on Windows, `~/Library/Application Support/llamafit`
-on macOS, the XDG directories on Linux — and the binary uses the same ones. Start with the
+directories (`%LOCALAPPDATA%\llamafit` on Windows, `~/Library/Application Support/llamafit`
+on macOS, the XDG directories on Linux), and the binary uses the same ones. Start with the
 binary, install with `pip` later, and everything you measured or configured is still there.
 `LLAMAFIT_HOME` overrides all of it and puts config, cache, logs and models under one
 directory, which is what you want on a USB stick or a machine you are only borrowing.

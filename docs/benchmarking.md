@@ -38,8 +38,8 @@ llama.cpp build, model, quant, the settings the run reported about itself, and t
 clamps a context it cannot honour and expands `-ub 512,1024,2048` into a run apiece, so what a
 row records is the tool's own report of what it did, checked against the command line it was
 given; a disagreement stops the write and names the setting. The host fingerprint includes the
-driver version, so a driver update quietly retires the measurements taken before it — the safe
-direction, since the label then falls back to `estimated`, which is true.
+driver version, so a driver update silently retires the measurements taken before it. That
+is the safe direction, since the label then falls back to `estimated`, which is true.
 
 ## Reading estimate versus measured
 
@@ -75,24 +75,24 @@ wrong formula and was nothing of the kind: the estimate in that column was the p
 at 32,768 tokens of key-value cache, and the measurement beside it was `tg128` generating
 into a cache that starts empty. Section 10.1 charges `kv_bytes_per_token × working_context`
 on every token, so the two were 3.5 GiB per token apart before anything was measured. The
-measurement was right — `docs/calibration/` records the same machine at 279.5 tokens per
-second under `tg128`, which the 279.76 in that sample matched to a tenth of a percent — and
-the estimate was right for the context it was made at. The comparison was what was wrong.
+measurement was right, since `docs/calibration/` records the same machine at 279.5 tokens
+per second under `tg128`, which the 279.76 in that sample matched to a tenth of a percent.
+The estimate was right too, for the context it was made at. The comparison was what was wrong.
 
 Three fixes were available: run `llama-bench` at the planned context with `-d`, estimate at
 the context `llama-bench` used, or print both figures and compare neither. The command takes
 the second. `-d` needs a build new enough to have the flag and costs a full 32,768-token
 prefill per row, and it cannot be done at all for the three fixed server requests without
 making them something other than the fixed questions they are; estimating at the measured
-depth costs nothing, works on every build, and is how the rest of the project already works —
-[the reference machine's record](calibration/2026-09-09-reference-machine.md) gives
+depth costs nothing, works on every build, and is how the rest of the project already works.
+[The reference machine's record](calibration/2026-09-09-reference-machine.md) gives
 "generation, short context, `llama-bench tg128`" and "generation at 32K tokens of context" as
 two measurements on two lines. What it gives up is stated rather than hidden: at 128 tokens the
 key-value term is a rounding error, so a benchmark checks every term of section 10.1 **except
-the growth of the cache**, and the plan's figure for the planned context — the line under the
-table — is the one number here that nothing has checked.
+the growth of the cache**, and the plan's figure for the planned context, the line under the
+table, is the one number here that nothing has checked.
 
-The paging block under the table is three lines — the verdict, the reason it was reached, and
+The paging block under the table is three lines: the verdict, the reason it was reached, and
 the figures behind it. A card that stayed clear of full is cleared on the memory signal
 alone, so the speed half of section 16.4 is never reached and there is no ratio to quote; the
 third line says so rather than leaving a gap where the number would have been.
@@ -113,7 +113,7 @@ third line says so rather than leaving a gap where the number would have been.
 **A run is one equation only if its recorded conditions are its own.** Each row carries the
 traffic the estimator believed it read, at that row's context and micro-batch, and that
 record is what the fit does arithmetic on. Sharing one traffic record across a whole
-benchmark — which is what happened until the comparison above was fixed — gave the solver
+benchmark, which is what happened until the comparison above was fixed, gave the solver
 five rows with an identical column, and identical columns cannot separate parameters: on this
 machine `eff_vram` and `fixed_overhead_s` were both refused as "not identifiable" from a
 sweep that contained exactly the measurements needed to pin them. The same benchmark now fits
@@ -137,9 +137,9 @@ hypothetical: the reference machine's four published runs, solved exactly, put `
 1.62. The shipped constants were chosen as round figures consistent with all four runs, which
 is a different and more defensible thing than a solve.
 
-**`layer_overhead_ms` is never fitted.** Section 10.1 removed the per-layer term — for a
-28-layer model it exceeded the whole measured token — so a number fitted for it would be
-stored, printed, and read by nothing.
+**`layer_overhead_ms` is never fitted.** Section 10.1 removed the per-layer term, because
+for a 28-layer model it exceeded the whole measured token, so a number fitted for it would
+be stored, printed, and read by nothing.
 
 A run the paging detector caught is kept as evidence and never fitted against: it measured the
 driver moving pages, not the configuration. Neither is the first request after a cold start,
@@ -149,12 +149,12 @@ enough for the fit to be stable.
 The fit is stored in the database beside the runs it came from, and printed with its refusals.
 What it is not yet is *applied*: the estimator reads its constants from
 `llamafit.constants.speed`, and the hardware profile block that would carry a per-host set has
-one `ram_efficiency` where the estimator has two — a contiguous read and a scattered one reach
+one `ram_efficiency` where the estimator has two: a contiguous read and a scattered one reach
 meaningfully different fractions of the same memory controller, and collapsing them into one
-field would be exactly the kind of quietly wrong number this page is about.
+field would be exactly the kind of silently wrong number this page is about.
 
 **Nor is a stored run read back.** The estimator can be handed measurements and will prefer
-them to its own formula, producing section 10.3's `measured` and `calibrated` labels — and
+them to its own formula, producing section 10.3's `measured` and `calibrated` labels, and
 nothing hands it any. `fit`, `recommend` and `plan` hand it none: the catalog's own `measured`
 blocks are printed beside the estimate rather than fed into it, and `benchmarks.sqlite` is not
 opened at all. So a machine with a hundred runs behind it gets the same `estimated` board as

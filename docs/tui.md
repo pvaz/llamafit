@@ -2,7 +2,7 @@
 
 `llamafit` with no arguments opens a full-screen dashboard in the terminal. It is built on
 Textual, works at 80 columns, and shows exactly the data the CLI prints with `--json`.
-Where there is no terminal to draw one in — a pipe, a redirect, a CI job — it says so on
+Where there is no terminal to draw one in (a pipe, a redirect, a CI job), it says so on
 standard error and prints what `llamafit recommend` would print instead.
 
 ## Layout
@@ -44,20 +44,20 @@ thinking, vision, tools, multilingual, long-context                             
  n not ranked   ? keys   t theme   q quit
 ```
 
-Both panes scroll — the marks at the right edge are their scrollbars — so the explanation
+Both panes scroll, and the marks at the right edge are their scrollbars, so the explanation
 under the table continues into the context score, the memory budget, the ladder and where a
 token's time goes.
 
 Three lines come before the table and none of them is a footnote: what to do, what a speed
-is, and what is on the screen. The explanation is open by default — on a terminal it costs
-a page per row and sits behind `--explain`; on a screen it costs nothing.
+is, and what is on the screen. The explanation is open by default: on a terminal it costs
+a page per row and sits behind `--explain`, and on a screen it costs nothing.
 
 ## Screens
 
 | Screen | Content | Keys |
 |---|---|---|
-| **Board** | the one list: the ranked table, then the candidates that were not ranked, dimmed, with every figure that was computed for them and the word for the reason where the score would be; and under it the explanation of the row under the cursor: the four scores and their weights, the quality behind them, the budget line by line with the source of each, the context ladder, and where a token's time goes | `↑↓` choose, `Enter` why, `p` command line, `/` filter (see below), `f` cycle the fit filter (every candidate, the ones that run, the ones that fit, the ones with room to spare), `s` next sort key and `S` the previous one (score, speed, quality, context, size, prompt, card, ram, fit, model, quant — the command line's `--sort` words), `o` reverse the order, `a` on disk only, `A` all quantisations, `e` hide or show the unranked rows, `c` every column or the ones the width admits, `x` hide the explanation, `n` jump to the first candidate that was not ranked |
-| **Needs** | section 12.1's request as a form: use case, required capabilities, minimum context, maximum download, the slowest generation worth having (the command line's `--min-tps`), accepted licences, and which way to lean the weights. Each field offers what exists — the six use cases and eight capabilities from the catalog's own types, the licences from its entries | `Ctrl+S` apply, `Ctrl+R` reset |
+| **Board** | the one list: the ranked table, then the candidates that were not ranked, dimmed, with every figure that was computed for them and the word for the reason where the score would be; and under it the explanation of the row under the cursor: the four scores and their weights, the quality behind them, the budget line by line with the source of each, the context ladder, and where a token's time goes | `↑↓` choose, `Enter` why, `p` command line, `/` filter (see below), `f` cycle the fit filter (every candidate, the ones that run, the ones that fit, the ones with room to spare), `s` next sort key and `S` the previous one (score, speed, quality, context, size, prompt, card, ram, fit, model, quant, which are the command line's `--sort` words), `o` reverse the order, `a` on disk only, `A` all quantisations, `e` hide or show the unranked rows, `c` every column or the ones the width admits, `x` hide the explanation, `n` jump to the first candidate that was not ranked |
+| **Needs** | section 12.1's request as a form: use case, required capabilities, minimum context, maximum download, the slowest generation worth having (the command line's `--min-tps`), accepted licences, and which way to lean the weights. Each field offers what exists: the six use cases and eight capabilities from the catalog's own types, the licences from its entries | `Ctrl+S` apply, `Ctrl+R` reset |
 | **Host** | `system` and `doctor` on one page: the scan, llama.cpp, every probe with its outcome, every finding with its hint, and any catalog file the loader could not read | `R` rescan |
 | **Plan** | for the selected row: the memory budget component by component, the context ladder, the flags and the full `llama-server` command line, plus the runs the catalog records for comparison | `+` and `-` move along the ladder, `v` vision on or off, `y` copy the command line |
 | **Simulate** | answer for another machine: a bundled or user hardware profile, or an override of VRAM, system memory or core count. `SIMULATED` shows in the header for as long as the figures are not this machine | `Ctrl+S` apply, `Ctrl+R` back to this machine |
@@ -88,11 +88,11 @@ changes what is drawn and never what is ranked: the request lives on the Needs s
 - A column sort reorders the screen and never the ranking: the `#` column keeps saying where
   `rank` put each row.
 - It degrades on narrow terminals by dropping the least important columns first, in a fixed
-  priority, and never by truncating a model's name. The four columns that identify a row —
-  rank, model, quantisation and score — are never dropped. The chooser is the command line's
+  priority, and never by truncating a model's name. The four columns that identify a row,
+  rank, model, quantisation and score, are never dropped. The chooser is the command line's
   own (`board_columns` in `llamafit/cli/render_board.py`), with the same budget measured from
   the catalog and the labels in force, so the dashboard and `llamafit recommend` draw the same
-  columns at the same width — `docs/cli.md` tabulates them — and a test draws both to check.
+  columns at the same width, which `docs/cli.md` tabulates, and a test draws both to check.
   `c` overrides it with every column, and the table then scrolls sideways under `←` and `→`.
 - A name wider than the model column folds onto a second line, exactly as it does on the
   command line's board, and the row grows a line to hold it. That is what "never truncated"
@@ -104,15 +104,15 @@ changes what is drawn and never what is ranked: the request lives on the Needs s
 - A scan that failed, a catalog that would not load and a substitution the machine cannot
   support each become a band carrying the message and the hint the error was raised with;
   the rest of the screen keeps whatever it still has.
-- Everything the dashboard shows comes from `llamafit/services/` — the same calls the CLI
-  makes — and most of it is drawn with the CLI's own renderables, so there is no
+- Everything the dashboard shows comes from `llamafit/services/`, the same calls the CLI
+  makes, and most of it is drawn with the CLI's own renderables, so there is no
   dashboard-only data and no second opinion about a number.
 
 ## Not yet
 
 **Downloads** and **Benchmarks** are named in section 13.2 and are not built. The commands
 behind them are: `llamafit install model`, `llamafit install llama.cpp` and `llamafit bench`
-all ship, and none of them has a screen here — which is also why nothing on these five
+all ship, and none of them has a screen here, which is also why nothing on these five
 screens downloads, runs or changes anything. Section 12.3's "what would move it up a tier" is
 not a sentence any service produces, so the dashboard shows the context ladder with what each
 rung costs and leaves the reader to draw the conclusion, rather than inventing the arithmetic

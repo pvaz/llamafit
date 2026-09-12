@@ -70,7 +70,7 @@ next to the "No GPU detected" warning, because one of them is usually the reason
 card no vendor tool sized: on a machine where `nvidia-smi` answered, it is never executed and
 never reported. What it reads is the first *device-local* memory heap of each **discrete**
 device, which is the same heap llama.cpp's own Vulkan backend takes for that device's memory,
-together with the `VK_EXT_memory_budget` figures beside it — `heapBudget` is what the driver
+together with the `VK_EXT_memory_budget` figures beside it: `heapBudget` is what the driver
 will let a process allocate given everything already on the card, and `heapUsage` is what this
 process has taken of it, so `budget - usage` is the free figure. It is labelled `estimated`
 rather than `measured`, and printed with `(Vulkan driver)` beside it, because it is the

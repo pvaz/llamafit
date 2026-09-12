@@ -40,7 +40,7 @@ bundled catalog and fails on any problem it finds.
 `.github/workflows/catalog.yml` is the other workflow. Once a week it runs `llamafit catalog
 refresh --check`, which exits non-zero when a repository has published something the committed
 facts files do not record. It needs the network, so it never runs on a pull request: a flaky
-connection must not fail somebody's unrelated change. It opens no issue and no pull request —
+connection must not fail somebody's unrelated change. It opens no issue and no pull request:
 a red run is the notification, and a `catalog refresh` is the answer.
 
 `.github/dependabot.yml` is not a workflow but belongs with them. `.github/workflows/release.yml`
@@ -49,7 +49,7 @@ the token that publishes under this project's name on PyPI and the bytes that go
 file's header comment explains where that line is drawn and why. An exact pin gives up automatic
 updates, so Dependabot opens a weekly pull request when a pinned commit moves and rewrites the
 version in the trailing comment. Read the release notes for what changed, let CI run on it, and
-merge — but never resolve one of those pull requests by replacing a pin with a moving tag.
+merge. Never resolve one of those pull requests by replacing a pin with a moving tag.
 
 ## How detection is tested without hardware
 
@@ -131,7 +131,7 @@ Conventions beyond the tools:
 - The dashboard's HTML, CSS and JavaScript carry the same three-line copyright and licence
   notice every Python module carries, in each language's own comment syntax; `test_web_static.py`
   checks them the way `test_licensing.py` checks the modules, which only walks `*.py`.
-- Nothing on the dashboard is fetched from the internet when the page is opened — no font, no
+- Nothing on the dashboard is fetched from the internet when the page is opened: no font, no
   script, no stylesheet. It ships in the package and works offline.
 - No number reaches the user without a source label.
 - Messages to the user are short sentences with a subject and a verb, and hints are actions.
@@ -167,14 +167,14 @@ pre-release on GitHub.
 
 ### What the workflow does
 
-1. Runs the pull-request checks — it *calls* `ci.yml` rather than copying its steps, so a
+1. Runs the pull-request checks. It *calls* `ci.yml` rather than copying its steps, so a
    release never tests less than a pull request does.
 2. Refuses to go on unless the tag and the `version` in `pyproject.toml` are the same version.
    Publishing 0.2.0 from a tag that says 0.1.0 cannot be undone: a version number on PyPI can
    never be reused, not even after deleting the file.
 3. Builds a wheel and a source distribution and runs `twine check --strict` on both.
-4. Checks that the wheel carries every packaged data directory — the catalog, the generated
-   facts, the JSON schema, the GPU table and the translations — and that it carries no test,
+4. Checks that the wheel carries every packaged data directory (the catalog, the generated
+   facts, the JSON schema, the GPU table and the translations) and that it carries no test,
    script or document. Each of those is read through `importlib.resources`, so a wheel missing
    one installs perfectly and fails only when a user reaches the command that needs it.
 5. Installs that wheel into a clean virtual environment outside the checkout, with no extras,
@@ -187,8 +187,8 @@ pre-release on GitHub.
    as its notes and both files attached.
 
 There is no API token and no secret in the repository. PyPI verifies the workflow's identity
-through GitHub with OpenID Connect — *trusted publishing* — which is why the publishing jobs
-ask for the `id-token: write` permission and name a deployment environment. PyPI's side of the
+through GitHub with OpenID Connect, called *trusted publishing*, which is why the publishing
+jobs ask for the `id-token: write` permission and name a deployment environment. PyPI's side of the
 configuration names this repository, this workflow file and that environment, and refuses a
 token minted for anything else. The environments are `pypi` and `testpypi`.
 

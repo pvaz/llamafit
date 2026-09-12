@@ -95,9 +95,10 @@ string that `doctor` shows with a hint.
 user did. The catalog, the GPU table and the translations are read from inside the package
 through `importlib.resources`, so a wheel built without one of them installs cleanly and fails
 on the first command that needs it. Every reader goes through `llamafit/data/__init__.py`,
-which turns `importlib`'s `ModuleNotFoundError` — and a directory that shipped empty, which the
-catalog loader would otherwise read as a catalog with no models in it and no problem to report
-— into a sentence naming what is missing, with a reinstall as the hint. It is the one error
+which turns `importlib`'s `ModuleNotFoundError` into a sentence naming what is missing, with
+a reinstall as the hint. It does the same for a directory that shipped empty, which the
+catalog loader would otherwise read as a catalog with no models in it and no problem to
+report. It is the one error
 where telling someone to reinstall is honest advice rather than a shrug, and it exits 2 rather
 than 1: an installation missing its own data is an environment problem, not something the user
 wrote wrong.
