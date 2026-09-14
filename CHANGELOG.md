@@ -7,6 +7,21 @@ the changelog says so when they do.
 
 ## [Unreleased]
 
+### Fixed
+- Ignore pending terminal tab activation events after shutdown starts. Closing the
+  dashboard after resetting a simulated machine could otherwise query widgets that had
+  already been removed, intermittently failing the Windows Python 3.10 CI job.
+- Quote copied plan commands for PowerShell or POSIX sh across the CLI, terminal and
+  web dashboards, preserving paths with spaces and literal tensor patterns. JSON plans
+  retain the argument list and add `command_text` and `command_shell`.
+- Accept the explicitly bound loopback address in the dashboard's Host check, including
+  aliases such as `127.0.1.5`. An IPv4 wildcard bind trusts the actual local interface
+  addresses while continuing to reject unrelated Host headers.
+- Send Hugging Face download credentials only to the HTTPS Hugging Face origin, never
+  to arbitrary URLs or lookalike hosts passed to the range reader.
+- Quote the installation directory when adding it to a POSIX shell profile, so shell
+  metacharacters in a path remain literal.
+
 ## [0.1.1] - 2026-09-12
 
 ### Added

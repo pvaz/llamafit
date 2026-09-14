@@ -2471,8 +2471,8 @@ def render_plan(report: PlanReport) -> Group:
         pieces.append(recorded)
     pieces.append(Text(""))
     pieces.extend(_file_lines(report))
-    pieces.append(Text(for_display(_("Command line"))))
-    pieces.append(Text(" ".join(report.command)))
+    pieces.append(Text(for_display(_("Command line")) + f" ({report.command_shell})"))
+    pieces.append(Text(report.command_text))
     return simulated_answer(report.simulation, *pieces)
 
 

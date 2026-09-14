@@ -146,6 +146,10 @@ class LlamaFitApp(App[None]):
     def on_tabbed_content_tab_activated(self, event: TabbedContent.TabActivated) -> None:
         """Follow the tab bar: the key bar and the cursor are about the screen in front of you."""
         event.stop()
+        # Shutdown removes widgets before closing the app's message queue. A tab
+        # activation already in that queue no longer has a screen to redraw.
+        if not self.is_running:
+            return
         self._draw_key_bar()
         self.focus_active_screen()
 

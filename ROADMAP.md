@@ -29,6 +29,8 @@ The tool makes the recommendation run.
 - `preset` (done): launch scripts per OS that choose the context size from the VRAM free at
   start, plus router `models.ini` sections.
 - `launch` (done): start a preset, wait for health, print the endpoints, stop it again.
+- Standalone binaries (done since 0.1.1): release builds for Windows, macOS and Linux,
+  with checksums and packaged-data smoke tests. See [standalone.md](docs/standalone.md).
 - The Downloads screen in the TUI and the install endpoints in the API are **not built**.
   Those four commands are the command line only; `llamafit` with no arguments and `llamafit serve` still read
   the machine and never change it.
@@ -66,7 +68,6 @@ Ideas with a place in the design but no plan yet, in rough order of value:
 - Multi-GPU placement.
 - Ollama and LM Studio as read-only sources of already-downloaded models.
 - A `--target-tps` planner that answers "what would I need to run this at 30 tokens per second".
-- Packaged binaries for people who do not have Python.
 
 ## Not planned
 

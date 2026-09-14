@@ -19,6 +19,9 @@ def _console(width: int, *, terminal: bool = True) -> Console:
     return Console(
         file=io.StringIO(),
         width=width,
+        # Pin both dimensions: TERM=dumb otherwise makes Rich fall back to 80x25,
+        # ignoring a width-only override in headless test workers.
+        height=25,
         force_terminal=terminal,
         no_color=True,
         highlight=False,

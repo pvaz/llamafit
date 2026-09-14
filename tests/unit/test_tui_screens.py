@@ -14,6 +14,7 @@ import pytest
 from rich.console import Console, RenderableType
 from textual.widgets import Button, Input, Static
 
+from llamafit.command_text import render_command
 from llamafit.errors import BudgetError, PackagedDataError
 from llamafit.services.recommend import BoardRow
 from llamafit.tui import explain
@@ -52,8 +53,21 @@ async def test_the_command_line_goes_to_the_clipboard_whole() -> None:
         await pilot.press("p")
         plan = app.query_one("#plan", PlanPane)
         await pilot.press("y")
-        assert app.clipboard == " ".join(plan.command)
+        assert app.clipboard == render_command(plan.command)
         assert "llama-server" in app.clipboard
+
+
+@pytest.mark.asyncio
+async def test_the_copied_command_line_quotes_paths_with_spaces() -> None:
+    app = LlamaFitApp(ready())
+    path = r"C:\Models With Spaces\model.gguf"
+    async with app.run_test(size=(120, 44)) as pilot:
+        await pilot.press("p")
+        plan = app.query_one("#plan", PlanPane)
+        plan.command = ["llama-server", "-m", path, "--fit", "off"]
+        plan.action_copy()
+        assert app.clipboard == render_command(plan.command)
+        assert app.clipboard != " ".join(plan.command)
 
 
 @pytest.mark.asyncio

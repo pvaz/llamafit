@@ -50,6 +50,7 @@ from pathlib import PurePath
 from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 from llamafit.budget import compute
+from llamafit.command_text import command_shell, render_command
 from llamafit.constants import DEFAULT_REQUESTED_CONTEXT, UTILISATION_TIGHT
 from llamafit.errors import CatalogError, LlamaFitError
 from llamafit.i18n import _
@@ -181,7 +182,7 @@ class PlanReport(BaseModel):
             configuration over the card does not fail, it pages, and a plan that showed
             only the smaller configuration it retreated to would never say so.
         flags: The ``llama-server`` arguments, in section 9.5's order.
-        command: The same list with the program name in front, ready to paste.
+        command: The same list with the program name in front, as process arguments.
         model_path: The GGUF file the command line names.
         model_present: Whether that file is already on this machine.
         projector_path: The vision projector the command line names, when there is one.
@@ -211,6 +212,18 @@ class PlanReport(BaseModel):
     measurements: list[Measured] = Field(default_factory=list)
     target: TargetCheck | None = None
     simulation: Simulation | None = None
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def command_shell(self) -> str:
+        """The shell to paste ``command_text`` into on this machine."""
+        return command_shell()
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def command_text(self) -> str:
+        """The command quoted for copying, while ``command`` remains an argv list."""
+        return render_command(self.command)
 
     @computed_field  # type: ignore[prop-decorator]
     @property

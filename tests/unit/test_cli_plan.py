@@ -43,6 +43,24 @@ def test_the_plan_ends_in_a_command_line_that_names_the_planned_flags() -> None:
     assert "--fit off" in result.output.replace("\n", " ")
 
 
+def test_the_printed_command_line_quotes_a_local_model_path_with_spaces(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _model, quant = model_and_quant("qwen3-coder-next")
+    bare = quant.files[0].rsplit("/", 1)[-1]
+    path = f"/models with spaces/{bare}"
+    monkeypatch.setattr(
+        "llamafit.cli.common.scan",
+        lambda **_kw: report(local_models=[LocalModel(path=path, bytes=1)]),
+    )
+    result = runner.invoke(app, ["--language", "en", "plan", "qwen3-coder-next"])
+    line = flat(result.output)
+    assert result.exit_code == 0, result.output
+    assert path in result.output
+    assert f"-m {path}" not in line
+    assert f"'{path}'" in line or f'"{path}"' in line
+
+
 def test_every_budget_line_says_whether_it_is_a_file_figure_or_a_formula() -> None:
     result = runner.invoke(app, ["--language", "en", "plan", "qwen3-coder-next"])
     assert "Memory budget" in result.output
