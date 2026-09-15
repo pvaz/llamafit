@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
+from uuid import uuid4
 
 import httpx
 import pytest
@@ -99,6 +100,80 @@ def test_the_token_is_read_from_the_environment_the_way_the_catalog_reads_it(
     with HttpRangeReader(_client(handle)) as reader, reader.open(URL, 0, 0):
         pass
     assert seen[0]["authorization"] == "Bearer from-the-environment"
+
+
+@pytest.mark.parametrize("explicit_token", [False, True])
+@pytest.mark.parametrize(
+    ("url", "authorised"),
+    [
+        (URL, True),
+        ("https://HUGGINGFACE.CO/acme/model", True),
+        ("https://huggingface.co:443/acme/model", True),
+        ("http://huggingface.co/acme/model", False),
+        ("https://example.invalid/model.gguf", False),
+        ("http://example.invalid/model.gguf", False),
+        ("https://cdn.huggingface.co/model.gguf", False),
+        ("https://huggingface.co.example.invalid/model.gguf", False),
+        ("https://huggingface.co@example.invalid/model.gguf", False),
+        ("https://example.invalid@huggingface.co/model.gguf", False),
+        ("https://huggingface.co:8443/model.gguf", False),
+        ("https://huggingface.co./model.gguf", False),
+    ],
+)
+def test_hugging_face_tokens_are_scoped_to_the_trusted_https_origin(
+    monkeypatch: pytest.MonkeyPatch, explicit_token: bool, url: str, authorised: bool
+) -> None:
+    token = uuid4().hex  # Generated test data; the client below uses only MockTransport.
+    monkeypatch.setenv("HF_TOKEN", token)
+    seen: list[str | None] = []
+
+    def handle(request: httpx.Request) -> httpx.Response:
+        seen.append(request.headers.get("authorization"))
+        return httpx.Response(206, content=b"x")
+
+    with (
+        _client(handle) as client,
+        HttpRangeReader(client, token=token if explicit_token else None) as reader,
+        reader.open(url, 0, 0),
+    ):
+        pass
+    # URLs containing userinfo can cause httpx to supply Basic authentication;
+    # it must never be replaced by the unrelated Hugging Face bearer token.
+    assert (seen == [f"Bearer {token}"]) is authorised
+
+
+@pytest.mark.parametrize(
+    ("target", "keep_token"),
+    [
+        ("https://huggingface.co/acme/redirected.gguf", True),
+        (CDN, False),
+        ("http://huggingface.co/acme/redirected.gguf", False),
+        ("https://huggingface.co:8443/acme/redirected.gguf", False),
+        ("https://cdn.huggingface.co/redirected.gguf", False),
+    ],
+)
+def test_redirects_keep_the_token_only_on_the_same_https_origin(
+    target: str, keep_token: bool
+) -> None:
+    token = uuid4().hex
+    seen: list[str | None] = []
+
+    def handle(request: httpx.Request) -> httpx.Response:
+        seen.append(request.headers.get("authorization"))
+        if str(request.url) == URL:
+            return httpx.Response(302, headers={"location": target})
+        return httpx.Response(206, content=b"x")
+
+    with (
+        _client(handle) as client,
+        HttpRangeReader(client, token=token) as reader,
+        reader.open(URL, 0, 0) as response,
+    ):
+        assert b"".join(response.body) == b"x"
+    assert seen == [
+        f"Bearer {token}",
+        f"Bearer {token}" if keep_token else None,
+    ]
 
 
 def test_the_status_and_headers_come_from_the_final_response() -> None:

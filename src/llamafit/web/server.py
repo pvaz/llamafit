@@ -20,9 +20,12 @@ disks and its file paths.
 from __future__ import annotations
 
 import ipaddress
+import socket
 import threading
 import webbrowser
 from typing import TYPE_CHECKING, Any
+
+import psutil
 
 from llamafit.errors import ConfigError, NotInstalledError
 from llamafit.i18n import _
@@ -36,6 +39,9 @@ DEFAULT_HOST = "127.0.0.1"
 
 DEFAULT_PORT = 8765
 """Section 21's choice: unassigned locally, and easy to remember."""
+
+IPV4_WILDCARD = "0.0.0.0"
+"""Bind every IPv4 interface without trusting every possible Host header."""
 
 _log = get_logger("web")
 
@@ -105,8 +111,35 @@ def build_app(host: str = DEFAULT_HOST) -> FastAPI:
             hint=_('Install them with: pip install "llamafit[web]"'),
             command=str(exc),
         ) from exc
-    extra = () if is_loopback(host) else (host,)
-    return create_app(extra_hosts=extra)
+    return create_app(extra_hosts=_trusted_hosts_for_bind(host))
+
+
+def _trusted_hosts_for_bind(host: str) -> tuple[str, ...]:
+    """Host headers that can legitimately address the socket being bound."""
+    name = host.strip()
+    if name == IPV4_WILDCARD:
+        return _local_ipv4_addresses()
+    return (name,) if name else ()
+
+
+def _local_ipv4_addresses() -> tuple[str, ...]:
+    """The machine's concrete IPv4 addresses, with no wildcard Host match."""
+    addresses: list[str] = []
+    seen: set[str] = set()
+    for entries in psutil.net_if_addrs().values():
+        for entry in entries:
+            if entry.family != socket.AF_INET:
+                continue
+            address = entry.address
+            try:
+                parsed = ipaddress.ip_address(address)
+            except ValueError:
+                continue
+            if parsed.version != 4 or parsed.is_unspecified or address in seen:
+                continue
+            seen.add(address)
+            addresses.append(address)
+    return tuple(addresses)
 
 
 def serve(

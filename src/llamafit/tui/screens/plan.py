@@ -31,6 +31,7 @@ from textual.binding import Binding, BindingType
 from textual.containers import VerticalScroll
 
 from llamafit.cli.render_board import render_plan
+from llamafit.command_text import render_command
 from llamafit.errors import LlamaFitError
 from llamafit.i18n import _, isolate
 from llamafit.models.catalog import CatalogModel, Quant
@@ -185,5 +186,5 @@ class PlanPane(VerticalScroll):
         if not self.command:
             self.notify(_("There is no command line to copy yet."), severity="warning")
             return
-        self.app.copy_to_clipboard(" ".join(self.command))
+        self.app.copy_to_clipboard(render_command(self.command))
         self.notify(_("The command line is on the clipboard."))

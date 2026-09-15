@@ -38,6 +38,7 @@ import errno
 import hashlib
 import json
 import os
+import shlex
 import shutil
 import stat
 import tarfile
@@ -1291,7 +1292,7 @@ def plan_path_change(
         text = profile.read_text(encoding="utf-8")
     except (OSError, UnicodeDecodeError):
         text = ""
-    if entry in text:
+    if entry in text or shlex.quote(entry) in text:
         return PathChange(
             kind="present",
             where=str(profile),
@@ -1350,7 +1351,7 @@ def apply_path_change(change: PathChange, *, runner: Runner) -> None:
             )
         return
     profile = Path(change.where)
-    line = f'\n{PROFILE_MARK}\nexport PATH="{change.directory}:$PATH"\n'
+    line = f"\n{PROFILE_MARK}\nexport PATH={shlex.quote(str(change.directory))}:$PATH\n"
     try:
         with profile.open("a", encoding="utf-8") as handle:
             handle.write(line)

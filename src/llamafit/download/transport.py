@@ -42,6 +42,17 @@ READ_TIMEOUT_SECONDS = 60.0
 """A stalled read is a failure worth retrying, not something to wait out forever."""
 
 
+def _is_hugging_face_origin(url: str) -> bool:
+    """Whether a URL may receive the Hugging Face credential this reader owns."""
+    destination = httpx.URL(url)
+    return (
+        destination.scheme == "https"
+        and destination.host == "huggingface.co"
+        and destination.port is None
+        and not destination.userinfo
+    )
+
+
 @dataclass
 class RangeResponse:
     """What a range request came back with.
@@ -87,7 +98,8 @@ class HttpRangeReader:
             client: An open client to reuse, or ``None`` to create (and own) one.
             piece_bytes: How much of the body to hold in memory at a time.
             token: A Hugging Face token for a gated repository; read from ``HF_TOKEN``
-                when not given, the same way :mod:`llamafit.catalog.hf` reads it.
+                when not given, the same way :mod:`llamafit.catalog.hf` reads it. Either
+                source is sent only to HTTPS huggingface.co on its standard port.
         """
         self._owns_client = client is None
         self._client = (
@@ -147,7 +159,7 @@ class HttpRangeReader:
             # at the end of a very long download.
             "Accept-Encoding": "identity",
         }
-        if self._token:
+        if self._token and _is_hugging_face_origin(url):
             headers["Authorization"] = f"Bearer {self._token}"
         try:
             with self._client.stream(

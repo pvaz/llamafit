@@ -11,7 +11,9 @@ import hashlib
 import io
 import json
 import os
+import shlex
 import shutil
+import subprocess
 import tarfile
 import zipfile
 from collections.abc import Callable
@@ -767,6 +769,67 @@ def test_applying_the_posix_change_appends_a_labelled_block(tmp_path: Path) -> N
     assert text.startswith("# existing\n")
     assert PROFILE_MARK in text
     assert str(tmp_path / "bin") in text
+
+
+def test_applying_the_posix_change_quotes_shell_metacharacters(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    profile = tmp_path / ".profile"
+    profile.write_text("PATH=/usr/bin\n", encoding="utf-8")
+    injected = tmp_path / "injected"
+    backticked = tmp_path / "backticked"
+    directory = Path(
+        f"model cache's dir $(touch {injected}) `touch {backticked}` with spaces\nand another line"
+    )
+    change = plan_path_change(
+        directory,
+        os_name="linux",
+        runner=FakeRunner(responses={}),
+        home=tmp_path,
+        env={},
+    )
+
+    apply_path_change(change, runner=FakeRunner(responses={}))
+
+    text = profile.read_text(encoding="utf-8")
+    assert f"export PATH={shlex.quote(str(directory))}:$PATH\n" in text
+    monkeypatch.setenv("PATH", rf"C:\Program Files\Git\bin{os.pathsep}{os.environ.get('PATH', '')}")
+    shell = shutil.which("sh")
+    if shell is None:
+        return
+    result = subprocess.run(
+        [shell, "-c", f'. {shlex.quote(profile.as_posix())}; printf %s "$PATH"'],
+        capture_output=True,
+        text=True,
+        check=True,
+        timeout=15,
+    )
+    assert not injected.exists()
+    assert not backticked.exists()
+    assert str(directory) in result.stdout
+
+
+def test_a_quoted_posix_path_is_not_appended_to_the_profile_twice(tmp_path: Path) -> None:
+    directory = tmp_path / "O'Brien Models"
+    change = plan_path_change(
+        directory,
+        os_name="linux",
+        runner=FakeRunner(responses={}),
+        home=tmp_path,
+        env={},
+    )
+
+    apply_path_change(change, runner=FakeRunner(responses={}))
+    again = plan_path_change(
+        directory,
+        os_name="linux",
+        runner=FakeRunner(responses={}),
+        home=tmp_path,
+        env={},
+    )
+
+    assert again.kind == "present"
+    assert not again.needed
 
 
 def test_a_profile_that_already_mentions_the_directory_is_not_appended_to_twice(

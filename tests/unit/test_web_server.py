@@ -7,10 +7,13 @@ something is that :func:`serve` refuses an address it was not told, in writing, 
 
 from __future__ import annotations
 
+import socket
 import sys
+from types import SimpleNamespace
 from typing import Any
 
 import pytest
+from fastapi.testclient import TestClient
 
 from llamafit.errors import ConfigError, NotInstalledError
 from llamafit.web import server
@@ -55,6 +58,18 @@ def test_serving_here_binds_here() -> None:
     assert seen["port"] == server.DEFAULT_PORT
 
 
+def test_serving_on_a_loopback_alias_is_still_addressable() -> None:
+    seen: dict[str, Any] = {}
+
+    def runner(app: object, *, host: str, port: int) -> None:
+        seen.update(host=host, port=port, app=app)
+
+    server.serve(host="127.0.1.5", runner=runner)
+    assert seen["host"] == "127.0.1.5"
+    # 127.0.0.0/8 is loopback, but TrustedHost still has to accept the address bound.
+    assert "127.0.1.5" in seen["app"].user_middleware[0].kwargs["allowed_hosts"]
+
+
 def test_serving_elsewhere_on_purpose_is_allowed_and_still_addressable() -> None:
     seen: dict[str, Any] = {}
 
@@ -65,6 +80,40 @@ def test_serving_elsewhere_on_purpose_is_allowed_and_still_addressable() -> None
     assert seen["host"] == "192.168.1.10"
     # The Host header check would otherwise refuse every request to the address just bound.
     assert "192.168.1.10" in seen["app"].user_middleware[0].kwargs["allowed_hosts"]
+
+
+def test_an_ipv4_wildcard_bind_accepts_real_local_interface_addresses(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        server.psutil,
+        "net_if_addrs",
+        lambda: {
+            "Loopback": [SimpleNamespace(family=socket.AF_INET, address="127.0.0.1")],
+            "Ethernet": [SimpleNamespace(family=socket.AF_INET, address="10.1.2.3")],
+        },
+    )
+
+    app = server.build_app("0.0.0.0")
+    allowed = app.user_middleware[0].kwargs["allowed_hosts"]
+    assert "*" not in allowed
+    assert "10.1.2.3" in allowed
+    with TestClient(app, base_url="http://10.1.2.3:8765") as client:
+        assert client.get("/health").status_code == 200
+
+
+def test_an_ipv4_wildcard_bind_still_refuses_other_hostnames(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        server.psutil,
+        "net_if_addrs",
+        lambda: {"Ethernet": [SimpleNamespace(family=socket.AF_INET, address="10.1.2.3")]},
+    )
+
+    app = server.build_app("0.0.0.0")
+    with TestClient(app, base_url="http://attacker.example:8765") as client:
+        assert client.get("/health").status_code == 400
 
 
 def test_opening_a_browser_is_asked_for_and_points_at_a_reachable_address(

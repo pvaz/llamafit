@@ -995,12 +995,12 @@ function renderPlan(plan, target, row) {
     parts.push(el("h3", { text: t("plan.notes") }));
     for (const note of plan.placement.notes) parts.push(el("p", { class: "muted", text: note }));
   }
-  parts.push(el("h3", { text: t("plan.command") }));
-  parts.push(el("pre", { text: plan.command.join(" ") }));
+  parts.push(el("h3", { text: `${t("plan.command")} (${plan.command_shell})` }));
+  parts.push(el("pre", { text: plan.command_text }));
   const copy = el("button", { type: "button", text: t("plan.copy") });
   copy.addEventListener("click", async () => {
     try {
-      await navigator.clipboard.writeText(plan.command.join(" "));
+      await navigator.clipboard.writeText(plan.command_text);
       copy.textContent = t("plan.copied");
     } catch (error) {
       showFailure(error);

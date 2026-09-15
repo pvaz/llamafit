@@ -126,6 +126,11 @@ missing, an installation missing its own data).
 | `GET /api/v1/catalog/schema` | the JSON schema of catalog entries |
 | `GET /api/v1/catalog/problems` | what was wrong with any catalog file, with the sentence to show |
 
+`PlanReport.command` is an argument list for process APIs. `command_text` is the quoted
+text shown by the page's Copy button, and `command_shell` names the shell it targets:
+PowerShell on Windows, `sh` on POSIX. Paste it into that shell. These two fields are
+additions to the JSON response; existing clients can keep using the argument list.
+
 `GET /api/v1/docs` is FastAPI's own interactive documentation for the same surface.
 
 Query parameters for `/api/v1/models` and `/api/v1/models/top`. They mirror the options
