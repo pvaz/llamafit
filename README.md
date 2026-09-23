@@ -18,6 +18,13 @@ It works on Windows, macOS and Linux, installs with `pip`, speaks English and 37
 languages, and never uses a language model to do any of this: every number is computed,
 labelled with how it was obtained, and explainable.
 
+> **Follow or contribute:** If LlamaFit helps you, [star the repository](https://github.com/pvaz/llamafit)
+> to support its visibility. For new-version notifications, select **Watch → Custom → Releases → Apply**.
+> Questions and ideas belong in [Discussions](https://github.com/pvaz/llamafit/discussions), while
+> reproducible defects and scoped work belong in [Issues](https://github.com/pvaz/llamafit/issues).
+> Code, catalog, hardware-data, documentation and translation contributions are welcome through
+> the [contribution guide](CONTRIBUTING.md).
+
 ```console
 $ llamafit list --limit 5
                                          Models
