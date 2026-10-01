@@ -131,6 +131,11 @@ text shown by the page's Copy button, and `command_shell` names the shell it tar
 PowerShell on Windows, `sh` on POSIX. Paste it into that shell. These two fields are
 additions to the JSON response; existing clients can keep using the argument list.
 
+`PlanRequest.target_tps`, when supplied, must be finite and greater than zero. Invalid
+targets return HTTP 422 before catalog loading or hardware scanning. Validation failures
+retain the `detail` array with each error's `type`, `loc` and `msg`. Raw rejected `input`
+and internal `ctx` are omitted, avoiding input disclosure and invalid JSON values.
+
 `GET /api/v1/docs` is FastAPI's own interactive documentation for the same surface.
 
 Query parameters for `/api/v1/models` and `/api/v1/models/top`. They mirror the options

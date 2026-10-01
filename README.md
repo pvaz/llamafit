@@ -44,7 +44,9 @@ $ llamafit list --limit 5
 
 Sixty-two models, strongest first; `--limit` keeps five of them on this page.
 
-> **Status.** 0.1.1. Every command in the table below ships and is tested on Windows, macOS
+> **Status.** 0.1.2 is being prepared; the latest published release is 0.1.1. The
+> [release preparation](docs/plans/2026-10-01-release-0.1.2.md) records the remaining gates.
+> Every command in the table below ships and is tested on Windows, macOS
 > and Linux: the host scan and the diagnostics, the catalog, the memory budget, the placement
 > planner, the speed estimator and the ranking, the terminal and web dashboards, the installer
 > and the benchmark verifier. Three pieces named in the design are not built: the terminal

@@ -16,6 +16,7 @@ The last thing on the page is the command, on a line of its own, unwrapped.
 
 from __future__ import annotations
 
+from math import isfinite
 from typing import cast
 
 import typer
@@ -30,6 +31,14 @@ from llamafit.models.host import Host
 from llamafit.models.plan import Needs
 from llamafit.services.plan import plan_report, quant_named
 from llamafit.services.recommend import best_quant, quant_entries
+
+
+def _checked_target_tps(value: float | None) -> float | None:
+    """Reject unusable speed targets before catalog loading or hardware scanning."""
+    if value is not None and (not isfinite(value) or value <= 0):
+        raise typer.BadParameter(_("Enter a finite number greater than zero."))
+    return value
+
 
 _MODEL_ARGUMENT: str = typer.Argument(
     ..., metavar="MODEL", help=cast(str, lazy_gettext("A catalog model id."))
@@ -69,7 +78,7 @@ _UB_OPTION: int | None = typer.Option(
 _TARGET_TPS_OPTION: float | None = typer.Option(
     None,
     "--target-tps",
-    min=0.0,
+    callback=_checked_target_tps,
     help=cast(
         str,
         lazy_gettext(

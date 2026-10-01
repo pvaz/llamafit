@@ -7,7 +7,13 @@ the changelog says so when they do.
 
 ## [Unreleased]
 
+## [0.1.2] - Unreleased
+
 ### Fixed
+- Reject zero, negative and non-finite `plan --target-tps` values before loading the
+  catalog or scanning hardware. Invalid targets now produce a usage error instead of a
+  late validation crash. The web API applies the same finite, positive constraint and
+  returns a valid JSON 422 response even when a rejected number overflows to infinity.
 - Ignore pending terminal tab activation events after shutdown starts. Closing the
   dashboard after resetting a simulated machine could otherwise query widgets that had
   already been removed, intermittently failing the Windows Python 3.10 CI job.
@@ -738,5 +744,6 @@ the changelog says so when they do.
   reading it is the point of reading it; what that needed was the board saying what it used.
 
 [Unreleased]: https://github.com/pvaz/llamafit/compare/v0.1.1...HEAD
+[0.1.2]: https://github.com/pvaz/llamafit/compare/v0.1.1...HEAD
 [0.1.1]: https://github.com/pvaz/llamafit/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/pvaz/llamafit/releases/tag/v0.1.0
