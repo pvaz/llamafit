@@ -595,7 +595,7 @@ folded into a number nobody can question.
 | `--quant NAME` | Plan this quantisation, matched case-insensitively, instead of the one that scores best on this machine. |
 | `--context N` | Size for this many tokens. When it does not fit, the plan sizes down **and** shows what the context you asked for would have cost, so the overflow is visible rather than merely retreated from. |
 | `--ub N` | Set the micro-batch by hand. The whole budget is rebuilt around it, because it moves the compute buffer and with it the verdict, the largest context that fits and every rung of the ladder. |
-| `--target-tps N` | A generation speed to answer against: whether this reaches it, and which context would. |
+| `--target-tps N` | A finite generation speed greater than zero to answer against: whether this reaches it, and which context would. Invalid values are rejected before catalog loading or hardware scanning. |
 | `--no-vision` | Leave the vision projector out, freeing its memory for context. |
 
 The context ladder has three states, not two. `fits` is a rung a launch script may take;

@@ -55,6 +55,54 @@ def test_health_says_the_version(client: TestClient) -> None:
     assert body["version"]
 
 
+@pytest.mark.parametrize("value", [0, -1, "nan", "inf", "-inf", "1e999", "invalid"])
+def test_invalid_target_speed_is_rejected_before_catalog_or_hardware_work(
+    value: float | str,
+) -> None:
+    def unexpected_work() -> object:
+        raise AssertionError("invalid target speed must be rejected before loading or scanning")
+
+    state = Dashboard(scan=unexpected_work, catalog_loader=unexpected_work)  # type: ignore[arg-type]
+    with TestClient(create_app(state), base_url="http://127.0.0.1") as client:
+        response = client.post(
+            "/api/v1/plan", json={"model": "qwen3.8-flash-next", "target_tps": value}
+        )
+    assert response.status_code == 422
+    assert response.json()["detail"][0]["loc"] == ["body", "target_tps"]
+
+
+@pytest.mark.parametrize("value", ["NaN", "Infinity", "-Infinity", "1e999"])
+def test_nonfinite_json_target_speed_returns_a_serializable_validation_error(value: str) -> None:
+    def unexpected_work() -> object:
+        raise AssertionError("invalid target speed must be rejected before loading or scanning")
+
+    state = Dashboard(scan=unexpected_work, catalog_loader=unexpected_work)  # type: ignore[arg-type]
+    with TestClient(create_app(state), base_url="http://127.0.0.1") as client:
+        response = client.post(
+            "/api/v1/plan",
+            content='{"model":"qwen3.8-flash-next","target_tps":' + value + "}",
+            headers={"Content-Type": "application/json"},
+        )
+    assert response.status_code == 422
+    assert response.json()["detail"][0]["loc"] == ["body", "target_tps"]
+
+
+def test_validation_errors_explain_the_field_without_echoing_private_input() -> None:
+    with TestClient(create_app(), base_url="http://127.0.0.1") as client:
+        response = client.post(
+            "/api/v1/plan",
+            json={"model": "qwen3-coder-next", "target_tps": "private-user-input"},
+        )
+    assert response.status_code == 422
+    detail = response.json()["detail"][0]
+    assert detail["loc"] == ["body", "target_tps"]
+    assert detail["type"] == "float_parsing"
+    assert detail["msg"]
+    assert "private-user-input" not in response.text
+    assert "input" not in detail
+    assert "ctx" not in detail
+
+
 def test_the_ui_payload_carries_the_words_and_the_punctuation(client: TestClient) -> None:
     body = client.get("/api/v1/ui").json()
     assert body["language"] == "en"
@@ -299,14 +347,22 @@ def test_the_api_and_the_command_line_return_the_same_board(
     assert from_api == from_command
 
 
+@pytest.mark.parametrize("target_tps", [None, 0.125, 500.0])
 def test_the_api_and_the_command_line_return_the_same_plan(
-    client: TestClient, monkeypatch: pytest.MonkeyPatch
+    client: TestClient, monkeypatch: pytest.MonkeyPatch, target_tps: float | None
 ) -> None:
     monkeypatch.setattr("llamafit.cli.common.scan", lambda **_kwargs: fake_report())
-    result = runner.invoke(cli_app, ["--json", "plan", "qwen3-coder-next"])
+    args = ["--json", "plan", "qwen3-coder-next"]
+    if target_tps is not None:
+        args = [*args, "--target-tps", str(target_tps)]
+    result = runner.invoke(cli_app, args)
     assert result.exit_code == 0, result.output
     from_command = json.loads(result.stdout)
-    from_api = client.post("/api/v1/plan", json={"model": "qwen3-coder-next"}).json()
+    response = client.post(
+        "/api/v1/plan", json={"model": "qwen3-coder-next", "target_tps": target_tps}
+    )
+    assert response.status_code == 200
+    from_api = response.json()
     assert from_api == from_command
 
 

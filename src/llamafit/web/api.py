@@ -45,9 +45,10 @@ from dataclasses import dataclass
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, FastAPI, Query, Request, Response
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 # Imported for its side effect and its ordering, not for a name. ``llamafit.cli.common``
@@ -91,6 +92,7 @@ from llamafit.services.plan import PlanReport, plan_report
 from llamafit.services.recommend import BoardRow, build_board
 from llamafit.services.scan import scan_system
 from llamafit.web.strings import ui_payload
+from llamafit.web.validation import PlanRequest, validation_failure
 
 API_PREFIX = "/api/v1"
 """Where the JSON lives. The version is in the path so a later shape can live beside it."""
@@ -193,37 +195,6 @@ class Dashboard:
         """
         self.catalog()
         return list(self._problems)
-
-
-class PlanRequest(BaseModel):
-    """The body of ``POST /api/v1/plan``: which model, and how to place it.
-
-    Attributes:
-        model_id: The catalog id, spelled ``model`` in the document because that is what
-            ``docs/web.md`` published.
-        quant: Which quantisation, or the best one for this machine when omitted.
-        context: The context to size for, or the planner's default.
-        ub: A micro-batch chosen by hand, which the whole budget is rebuilt around.
-        vision: Whether to keep the vision projector.
-        target_tps: A generation speed to answer against.
-        profile: A hardware profile's name, to plan for a machine that is not this one.
-        memory: VRAM to pretend the card has.
-        ram: System memory to pretend the machine has.
-        cpu_cores: Physical cores to pretend the processor has.
-    """
-
-    model_config = ConfigDict(extra="forbid", populate_by_name=True)
-
-    model_id: str = Field(alias="model")
-    quant: str | None = None
-    context: int | None = Field(default=None, gt=0)
-    ub: int | None = Field(default=None, gt=0)
-    vision: bool = True
-    target_tps: float | None = Field(default=None, gt=0)
-    profile: str | None = None
-    memory: str | None = None
-    ram: str | None = None
-    cpu_cores: int | None = Field(default=None, gt=0)
 
 
 def _json(model: BaseModel) -> Response:
@@ -487,6 +458,7 @@ def create_app(dashboard: Dashboard | None = None, *, extra_hosts: Sequence[str]
         return JSONResponse(status_code=_status_for(known), content=_error_body(known))
 
     app.add_exception_handler(LlamaFitError, failure)
+    app.add_exception_handler(RequestValidationError, validation_failure)
     app.include_router(router)
     app.mount(
         "/",

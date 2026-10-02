@@ -3,7 +3,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: llamafit 0.1.1\n"
+"Project-Id-Version: llamafit 0.1.2\n"
 "Report-Msgid-Bugs-To: https://github.com/pvaz/llamafit/issues\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -415,7 +415,7 @@ msgstr ""
 #: src/llamafit/cli/catalog_cmd.py:244
 #: src/llamafit/cli/catalog_cmd.py:497
 #: src/llamafit/cli/install_cmd.py:83
-#: src/llamafit/cli/plan_cmd.py:35
+#: src/llamafit/cli/plan_cmd.py:44
 #: src/llamafit/cli/preset_cmd.py:61
 msgid "A catalog model id."
 msgstr ""
@@ -716,8 +716,8 @@ msgstr ""
 #: src/llamafit/cli/board_cmd.py:262
 #: src/llamafit/cli/board_cmd.py:291
 #: src/llamafit/cli/board_cmd.py:300
-#: src/llamafit/web/api.py:439
-#: src/llamafit/web/api.py:451
+#: src/llamafit/web/api.py:410
+#: src/llamafit/web/api.py:422
 msgid "Valid values: %(values)s"
 msgstr ""
 
@@ -915,7 +915,7 @@ msgid "no model named %(id)s in the catalog"
 msgstr ""
 
 #: src/llamafit/cli/common.py:124
-#: src/llamafit/web/api.py:744
+#: src/llamafit/web/api.py:716
 msgid "%(count)d catalog problem found; run `llamafit catalog validate` for details."
 msgid_plural "%(count)d catalog problems found; run `llamafit catalog validate` for details."
 msgstr[0] ""
@@ -1166,41 +1166,45 @@ msgstr ""
 msgid "Nothing was written."
 msgstr ""
 
-#: src/llamafit/cli/plan_cmd.py:42
+#: src/llamafit/cli/plan_cmd.py:39
+msgid "Enter a finite number greater than zero."
+msgstr ""
+
+#: src/llamafit/cli/plan_cmd.py:51
 #: src/llamafit/cli/preset_cmd.py:83
 msgid "Plan this quantisation instead of the one that scores best on this machine."
 msgstr ""
 
-#: src/llamafit/cli/plan_cmd.py:51
+#: src/llamafit/cli/plan_cmd.py:60
 msgid "Size for this many tokens. When it does not fit, the plan sizes down and shows what the context you asked for would have cost."
 msgstr ""
 
-#: src/llamafit/cli/plan_cmd.py:63
+#: src/llamafit/cli/plan_cmd.py:72
 msgid "Set the micro-batch by hand. The whole budget is rebuilt around it, since it moves the compute buffer and with it the verdict."
 msgstr ""
 
-#: src/llamafit/cli/plan_cmd.py:75
+#: src/llamafit/cli/plan_cmd.py:84
 msgid "A generation speed to answer against: whether this reaches it, and what context would."
 msgstr ""
 
-#: src/llamafit/cli/plan_cmd.py:107
+#: src/llamafit/cli/plan_cmd.py:116
 #: src/llamafit/services/plan.py:542
 msgid "%(model)s publishes no quantisations"
 msgstr ""
 
-#: src/llamafit/cli/plan_cmd.py:108
+#: src/llamafit/cli/plan_cmd.py:117
 #: src/llamafit/services/plan.py:543
 msgid "Run `llamafit catalog refresh --model %(model)s`."
 msgstr ""
 
-#: src/llamafit/cli/plan_cmd.py:119
+#: src/llamafit/cli/plan_cmd.py:128
 msgid ""
 "Place one model on this machine and print the command line that runs it.\n"
 "\n"
 "Shows the memory budget component by component, the context ladder a launch script chooses from, where a token's time goes, and any run the catalog records for comparison."
 msgstr ""
 
-#: src/llamafit/cli/plan_cmd.py:139
+#: src/llamafit/cli/plan_cmd.py:148
 msgid "Leave the vision projector out, freeing its memory for context."
 msgstr ""
 
@@ -4951,27 +4955,27 @@ msgctxt "size"
 msgid "unknown"
 msgstr ""
 
-#: src/llamafit/web/api.py:321
+#: src/llamafit/web/api.py:292
 msgid "profile must be a name, not a path: %(value)s"
 msgstr ""
 
-#: src/llamafit/web/api.py:322
+#: src/llamafit/web/api.py:293
 msgid "Ask GET /api/v1/profiles for the names this machine has."
 msgstr ""
 
-#: src/llamafit/web/api.py:428
+#: src/llamafit/web/api.py:399
 msgid "unknown query parameter: %(names)s"
 msgstr ""
 
-#: src/llamafit/web/api.py:429
+#: src/llamafit/web/api.py:400
 msgid "This endpoint takes: %(names)s"
 msgstr ""
 
-#: src/llamafit/web/api.py:438
+#: src/llamafit/web/api.py:409
 msgid "invalid prefer %(value)s"
 msgstr ""
 
-#: src/llamafit/web/api.py:450
+#: src/llamafit/web/api.py:421
 msgid "invalid sort %(value)s"
 msgstr ""
 

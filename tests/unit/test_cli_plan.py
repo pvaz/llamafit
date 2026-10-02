@@ -106,6 +106,31 @@ def test_a_target_speed_is_answered_one_way_or_the_other() -> None:
     assert "500 tokens per second" in flat(result.output)
 
 
+def test_zero_target_speed_is_a_usage_error_instead_of_a_validation_crash() -> None:
+    result = runner.invoke(
+        app, ["--language", "en", "plan", "qwen3.8-flash-next", "--target-tps", "0"]
+    )
+    assert result.exit_code == 2, result.exception
+    assert "--target-tps" in flat(result.output)
+    assert "greater than zero" in flat(result.output)
+
+
+@pytest.mark.parametrize("value", ["0", "-1", "nan", "inf", "-inf", "1e999", "invalid"])
+def test_invalid_target_speed_is_rejected_before_catalog_or_hardware_work(
+    value: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def unexpected_work(*_args: object, **_kwargs: object) -> None:
+        pytest.fail("invalid target speed must be rejected before loading or scanning")
+
+    monkeypatch.setattr("llamafit.cli.plan_cmd.load_catalog_or_warn", unexpected_work)
+    monkeypatch.setattr("llamafit.cli.plan_cmd.machine", unexpected_work)
+    result = runner.invoke(
+        app, ["--language", "en", "plan", "qwen3.8-flash-next", "--target-tps", value]
+    )
+    assert result.exit_code == 2, result.exception
+    assert "--target-tps" in flat(result.output)
+
+
 def test_json_is_the_same_report_the_table_was_drawn_from() -> None:
     result = runner.invoke(app, ["--json", "plan", "qwen3-coder-next"])
     assert result.exit_code == 0, result.output
